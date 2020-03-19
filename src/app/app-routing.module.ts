@@ -17,13 +17,6 @@ const routes: Routes = [
     path: 'dashboard',
     loadChildren: './modules/dashboard/dashboard.module#DashboardModule',
     // canActivate: [ AuthGuard ],
-  },
-  {
-    path: 'documents',
-    loadChildren: './modules/documents/documents.module#DocumentsModule',
-    data: {
-      breadcrumb: 'Documents'
-    }
   }
 ];
 

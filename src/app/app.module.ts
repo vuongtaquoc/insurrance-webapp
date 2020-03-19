@@ -24,7 +24,7 @@ import { AppComponent } from './app.component';
         deps: [HttpClient]
       }
     }),
-    LoadingBarModule,
+    LoadingBarModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ApiPrefixInterceptor, multi: true },
