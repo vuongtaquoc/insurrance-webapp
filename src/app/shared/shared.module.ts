@@ -1,7 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-// import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { DropdownModule } from 'primeng/dropdown';
 
 import {
   LayoutComponent,
@@ -12,16 +14,19 @@ import {
   imports: [
     CommonModule,
     RouterModule,
-    // FormsModule,
-    // ReactiveFormsModule
+    FormsModule,
+    ReactiveFormsModule,
+    TranslateModule,
+    DropdownModule
   ],
   declarations: [
     LayoutComponent,
     AuthLayoutComponent
   ],
   exports: [
-    // FormsModule,
-    // ReactiveFormsModule
+    FormsModule,
+    ReactiveFormsModule,
+    TranslateModule
   ],
   entryComponents: []
 })

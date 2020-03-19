@@ -1,0 +1,24 @@
+{
+  "common": {
+    "languages": {
+      "vi": "Tiếng Việt",
+      "en": "Tiếng Anh"
+    },
+    "title": "Bảo hiểm xã hội",
+    "footer": {
+      "copyright": "Copyrights © 2020 Phần mềm Hóa đơn điện tử. All Rights"
+    }
+  },
+  "auth": {
+    "login": {
+      "pageTitle": "Đăng nhập",
+      "form": {
+        "company": "Đơn vị",
+        "username": "Tên đăng nhập",
+        "password": "Mật khẩu",
+        "remember": "Ghi nhớ?",
+        "submit": "Đăng nhập"
+      }
+    }
+  }
+}

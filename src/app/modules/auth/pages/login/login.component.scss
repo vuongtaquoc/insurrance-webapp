@@ -1,0 +1,43 @@
+.login-page {
+  position: absolute;
+  right: 0;
+  width: 350px;
+  top: 50%;
+  transform: translateY(-50%);
+
+  &__logo {
+    display: inline-block;
+    height: 140px;
+    text-align: center;
+    width: 100%;
+    margin-bottom: 20px;
+    margin-top: 10px;
+
+    img {
+      height: 100%;
+    }
+  }
+
+  &__form {
+    padding: 0 10px;
+  }
+}
+
+.form-group {
+  margin-bottom: 12px;
+
+  &__label {
+    margin-bottom: 5px;
+    display: block;
+  }
+}
+
+.form-group-reset {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+
+  &__forgot {
+    display: flex;
+    align-items: center;
+  }
+}

@@ -1,7 +1,28 @@
 <div class="auth-layout">
-  <img src="/assets/images/logo-login.PNG" class="auth-layout__logo" alt="Auth Login Logo">
-  <h1 class="auth-layout__title">
-    <ng-content select="[auth-layout-title]"></ng-content>
-  </h1>
-  <router-outlet></router-outlet>
+  <header class="header">
+    <div class="container">
+      <div class="header__container">
+        <a [routerLink]="['/']" class="header__logo">
+          <img src="/assets/img/logo.png" alt="Bảo hiểm xã hội">
+          <span>{{'common.title' | translate}}</span>
+        </a>
+        <div></div>
+        <div class="header__languages">
+          <p-dropdown [options]="languages" [(ngModel)]="selectedLanguage"></p-dropdown>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section class="body">
+    <div class="container">
+      <router-outlet></router-outlet>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      {{'common.footer.copyright' | translate}}
+    </div>
+  </footer>
 </div>

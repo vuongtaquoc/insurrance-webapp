@@ -1,10 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 import { Subscription } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
+import { SelectItem } from 'primeng/api';
 
 import { AuthenticationService } from '@app/core/services';
 
@@ -17,6 +18,7 @@ export class AuthLoginComponent implements OnInit, OnDestroy {
   loginForm: FormGroup;
   loading = false;
   errors: any[] = [];
+  companies: SelectItem[] = [];
   private subscription: Subscription;
 
   constructor(
@@ -39,8 +41,16 @@ export class AuthLoginComponent implements OnInit, OnDestroy {
     });
 
     this.loginForm = this.formBuilder.group({
-      userId: [''],
-      password: ['']
+      company: ['1', Validators.required],
+      username: ['', Validators.required],
+      password: ['', Validators.required],
+      remember: [ false ]
+    });
+
+    // TODO call API get data
+    this.companies.push({
+      label: 'Công ty TNHH hóa đơn điện tử M-Invoice',
+      value: '1'
     });
   }
 
@@ -52,7 +62,7 @@ export class AuthLoginComponent implements OnInit, OnDestroy {
     this.loading = true;
 
     this.authService
-      .login(this.form.userId.value, this.form.password.value)
+      .login(this.form.username.value, this.form.password.value)
       .pipe(
         finalize(() => {
           this.loginForm.markAsPristine();
