@@ -1,0 +1,32 @@
+version: "3.7"
+
+services:
+  insurrance-webapp:
+    image: ${DOCKER_IMAGE}
+    networks:
+      - portal
+      - traefik_traefik
+    healthcheck:
+      test: curl http://127.0.0.1/ -s -f -o /dev/null || exit 1
+      interval: 20s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 1
+        delay: 3m
+        order: start-first
+      labels:
+        - traefik.enable=true
+        - traefik.frontend.rule=Host:insurrance.com
+        - traefik.port=80
+        - traefik.docker.network=traefik_traefik
+        - traefik.default.protocol=http
+
+networks:
+  portal:
+    driver: overlay
+  traefik_traefik:
+    external: true

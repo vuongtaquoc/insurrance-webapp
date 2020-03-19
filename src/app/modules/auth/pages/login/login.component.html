@@ -1,0 +1,9 @@
+<div class="login-page">
+  <h1 class="login-page__title">{{ 'auth.login.title' | translate }}</h1>
+  <form [formGroup]="loginForm" (ngSubmit)="handleSubmit()">
+
+    <div class="login-page__reset">
+      {{ 'auth.login.form.resetPassword' | translate }}<a [routerLink]="['/auth/forgot']">{{ 'auth.login.form.resetPasswordLink' | translate }}</a>
+    </div>
+  </form>
+</div>
