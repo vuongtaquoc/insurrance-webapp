@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { DropdownModule } from 'primeng/dropdown';
 
 import {
   LayoutComponent,
@@ -17,7 +16,6 @@ import {
     FormsModule,
     ReactiveFormsModule,
     TranslateModule,
-    DropdownModule
   ],
   declarations: [
     LayoutComponent,

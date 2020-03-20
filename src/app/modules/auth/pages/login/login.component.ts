@@ -5,7 +5,6 @@ import { Title } from '@angular/platform-browser';
 import { Subscription } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
-import { SelectItem } from 'primeng/api';
 
 import { AuthenticationService } from '@app/core/services';
 
@@ -18,7 +17,7 @@ export class AuthLoginComponent implements OnInit, OnDestroy {
   loginForm: FormGroup;
   loading = false;
   errors: any[] = [];
-  companies: SelectItem[] = [];
+  companies: any[] = [];
   private subscription: Subscription;
 
   constructor(

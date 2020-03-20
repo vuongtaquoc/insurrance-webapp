@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { SelectItem } from 'primeng/api';
 
 @Component({
   selector: 'app-auth-layout',
@@ -8,8 +7,8 @@ import { SelectItem } from 'primeng/api';
   styleUrls: ['./auth-layout.component.scss']
 })
 export class AuthLayoutComponent implements OnInit {
-  languages: SelectItem[] = [];
-  selectedLanguage: SelectItem;
+  languages: any[] = [];
+  selectedLanguage: any;
 
   constructor(private translateService: TranslateService) {
   }

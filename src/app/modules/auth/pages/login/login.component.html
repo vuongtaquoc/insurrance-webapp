@@ -1,9 +1,9 @@
-<p-card class="login-page">
+<div class="login-page">
   <a [routerLink]="['/']" class="login-page__logo">
     <img src="/assets/img/logo.png" alt="{{'common.title' | translate}}">
   </a>
   <form [formGroup]="loginForm" (ngSubmit)="handleSubmit()" class="login-page__form">
-    <div class="form-group">
+    <!-- <div class="form-group">
       <label class="form-group__label">{{ 'auth.login.form.company' | translate }} <span class="required">*</span></label>
       <p-dropdown [options]="companies" formControlName="company" class="input-fluid"></p-dropdown>
     </div>
@@ -24,7 +24,7 @@
 
     <div class="form-group">
       <p-button type="submit" label="{{'auth.login.form.submit' | translate}}"></p-button>
-    </div>
+    </div> -->
 
     <div class="form-group-reset">
       <a [routerLink]="['/auth/forgot']" class="form-group-reset__forgot">
@@ -35,4 +35,4 @@
       </a>
     </div>
   </form>
-</p-card>
+</div>
