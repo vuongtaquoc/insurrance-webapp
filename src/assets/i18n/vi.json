@@ -17,7 +17,9 @@
         "username": "Tên đăng nhập",
         "password": "Mật khẩu",
         "remember": "Ghi nhớ?",
-        "submit": "Đăng nhập"
+        "submit": "Đăng nhập",
+        "forgot": "Quên mật khẩu",
+        "register": "Đăng ký"
       }
     }
   }

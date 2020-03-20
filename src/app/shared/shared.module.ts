@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ClarityModule } from '@clr/angular';
 
 import {
   LayoutComponent,
@@ -16,6 +17,7 @@ import {
     FormsModule,
     ReactiveFormsModule,
     TranslateModule,
+    ClarityModule
   ],
   declarations: [
     LayoutComponent,
@@ -24,7 +26,8 @@ import {
   exports: [
     FormsModule,
     ReactiveFormsModule,
-    TranslateModule
+    TranslateModule,
+    ClarityModule
   ],
   entryComponents: []
 })
