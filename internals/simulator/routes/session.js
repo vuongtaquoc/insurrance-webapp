@@ -4,7 +4,7 @@ module.exports = (app) => {
       return res.status(200).json({
         id: 1,
         username: 'user1',
-        token: 'xxx'
+        accessToken: 'xxx'
       })
     })
 }

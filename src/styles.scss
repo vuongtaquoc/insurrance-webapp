@@ -3,6 +3,10 @@
 @import './assets/scss/themes/default.scss';
 @import '../node_modules/@clr/ui/src/utils/components.clarity.scss';
 
+body {
+	background: #ECEFF4;
+}
+
 .container {
 	width: 100%;
 	height: 100%;
@@ -37,4 +41,10 @@
 
 .text-center {
 	text-align: center;
+}
+
+.auth-layout {
+	.clr-form-control {
+		margin-top: 0;
+	}
 }

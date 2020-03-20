@@ -21,9 +21,9 @@ export class AuthenticationService {
     return JSON.parse(localStorage.getItem(CREDENTIAL_STORAGE));
   }
 
-  public login(userId: string, password: string): Observable<Credential> {
+  public login(username: string, password: string): Observable<Credential> {
     return this.http.post<any>('/authenticate', {
-      userId,
+      username,
       password
     }).pipe(
       map(data => {

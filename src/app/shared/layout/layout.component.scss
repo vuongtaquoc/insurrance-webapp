@@ -1,3 +1,29 @@
-.container {
-  padding: 15px;
+.header {
+  background: #20272A;
+  box-shadow: 0 3px 5px 0 rgba(33, 35, 39, 0.15);
+  z-index: 10;
+
+  .branding {
+    align-items: center;
+  }
+
+  .nav-link {
+    height: 50px;
+    line-height: 50px;
+
+    img {
+      height: 100%;
+    }
+
+    span {
+      margin-left: 10px;
+      font-size: 16px;
+      font-weight: 700;
+    }
+  }
+
+  .header-actions > .dropdown > .dropdown-toggle {
+    opacity: 1;
+    outline: none;
+  }
 }

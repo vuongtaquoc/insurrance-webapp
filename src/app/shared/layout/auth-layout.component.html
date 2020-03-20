@@ -8,7 +8,7 @@
         </a>
         <div></div>
         <div class="header__languages">
-          <select clrSelect [(ngModel)]="selectedLanguage">
+          <select clrSelect name="selectedLanguage" [(ngModel)]="selectedLanguage">
             <option *ngFor="let language of languages" value="{{language.value}}">{{language.label}}</option>
           </select>
         </div>

@@ -1,3 +1,38 @@
-<div class="container">
-  <router-outlet></router-outlet>
+<div class="main-container">
+  <header class="header">
+    <div class="branding">
+      <a [routerLink]="['/']" class="nav-link">
+        <img src="/assets/img/logo.png" alt="{{'common.title' | translate}}">
+        <span class="title">{{'common.title' | translate}}</span>
+      </a>
+    </div>
+    <div class="header-actions">
+      <clr-dropdown>
+        <button class="nav-text" clrDropdownTrigger aria-label="open user profile">
+          vuongtaquoc
+          <clr-icon shape="caret down"></clr-icon>
+        </button>
+        <clr-dropdown-menu *clrIfOpen clrPosition="bottom-right">
+          <a href="..." clrDropdownItem>Cài đặt</a>
+          <a href="..." clrDropdownItem>Đăng xuất</a>
+        </clr-dropdown-menu>
+      </clr-dropdown>
+    </div>
+  </header>
+
+  <div class="content-container">
+    <nav class="sidenav">
+      <section class="sidenav-content">
+        <a href="/" class="nav-link active">
+          Trang chủ
+        </a>
+        <a href="/" class="nav-link">
+          Danh mục hồ sơ
+        </a>
+      </section>
+    </nav>
+    <div class="content-area">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
 </div>
