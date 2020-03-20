@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 
+import { SelectItem } from '@app/core/interfaces';
 import { AuthenticationService } from '@app/core/services';
 
 @Component({
@@ -16,8 +17,7 @@ import { AuthenticationService } from '@app/core/services';
 export class AuthLoginComponent implements OnInit, OnDestroy {
   loginForm: FormGroup;
   loading = false;
-  errors: any[] = [];
-  companies: any[] = [];
+  companies: SelectItem[] = [];
   private subscription: Subscription;
 
   constructor(

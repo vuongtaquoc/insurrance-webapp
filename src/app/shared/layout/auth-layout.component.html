@@ -8,7 +8,9 @@
         </a>
         <div></div>
         <div class="header__languages">
-          <!-- <p-dropdown [options]="languages" [(ngModel)]="selectedLanguage"></p-dropdown> -->
+          <select clrSelect [(ngModel)]="selectedLanguage">
+            <option *ngFor="let language of languages" value="{{language.value}}">{{language.label}}</option>
+          </select>
         </div>
       </div>
     </div>

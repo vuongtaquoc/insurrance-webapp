@@ -1,14 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
+import { SelectItem } from '@app/core/interfaces';
+
 @Component({
   selector: 'app-auth-layout',
   templateUrl: './auth-layout.component.html',
   styleUrls: ['./auth-layout.component.scss']
 })
 export class AuthLayoutComponent implements OnInit {
-  languages: any[] = [];
-  selectedLanguage: any;
+  languages: SelectItem[] = [];
+  selectedLanguage: string = 'vi';
 
   constructor(private translateService: TranslateService) {
   }
