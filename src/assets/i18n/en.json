@@ -1,11 +1,11 @@
 {
   "common": {
     "languages": {
-      "vi": "Tiếng Việt",
-      "en": "Tiếng Anh"
+      "vi": "Vietnamese",
+      "en": "English"
     },
     "title": "Bảo hiểm xã hội",
-    "search": "Tìm kiếm theo từ khóa...",
+    "search": "Search for keywords...",
     "footer": {
       "copyright": "Copyrights © 2020 Phần mềm Hóa đơn điện tử. All Rights"
     }

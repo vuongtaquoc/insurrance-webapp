@@ -1,38 +1,74 @@
-<div class="main-container">
-  <header class="header">
-    <div class="branding">
-      <a [routerLink]="['/']" class="nav-link">
-        <img src="/assets/img/logo.png" alt="{{'common.title' | translate}}">
-        <span class="title">{{'common.title' | translate}}</span>
+<div class="layout-wrapper" [ngClass]="{'layout-wrapper-static': isSidebarStatic}">
+  <div class="layout-sidebar"
+    [ngClass]="{ 'layout-sidebar--active': isSidebarActivated }"
+    (mouseenter)="handleActiveSidebar(true)"
+    (mouseleave)="handleActiveSidebar(false)"
+  >
+    <div class="sidebar-logo">
+      <a class="sidebar-pin" title="Toggle Menu" (click)="handleStaticSidebar($event)">
+        <clr-icon shape="lock" class="is-solid" *ngIf="isSidebarStatic"></clr-icon>
+        <clr-icon shape="unlock" class="is-solid" *ngIf="!isSidebarStatic"></clr-icon>
+      </a>
+      <a [routerLink]="['/']">
+        <img alt="logo" src="/assets/img/logo.png" alt="{{'common.title' | translate}}">
+        <span class="app-name">{{'common.title' | translate}}</span>
       </a>
     </div>
-    <div class="header-actions">
-      <clr-dropdown>
-        <button class="nav-text" clrDropdownTrigger aria-label="open user profile">
-          vuongtaquoc
-          <clr-icon shape="caret down"></clr-icon>
-        </button>
-        <clr-dropdown-menu *clrIfOpen clrPosition="bottom-right">
-          <a href="..." clrDropdownItem>Cài đặt</a>
-          <a href="..." clrDropdownItem>Đăng xuất</a>
-        </clr-dropdown-menu>
-      </clr-dropdown>
-    </div>
-  </header>
 
-  <div class="content-container">
-    <nav class="sidenav">
-      <section class="sidenav-content">
-        <a href="/" class="nav-link active">
+    <div class="layout-menu-container">
+      <clr-vertical-nav class="layout-menu-icons">
+        <a clrVerticalNavLink routerLink="./normal" routerLinkActive="active">
+          <clr-icon clrVerticalNavIcon shape="home" size="20" class="is-solid"></clr-icon>
+        </a>
+        <a clrVerticalNavLink routerLink="./electric" routerLinkActive="active">
+          <clr-icon clrVerticalNavIcon shape="form" size="20" class="is-solid"></clr-icon>
+        </a>
+      </clr-vertical-nav>
+
+      <clr-vertical-nav class="layout-menu-text">
+        <a clrVerticalNavLink [routerLink]="['/']">
+          <clr-icon shape="home" class="is-solid" size="20" clrVerticalNavIcon></clr-icon>
           Trang chủ
         </a>
-        <a href="/" class="nav-link">
-          Danh mục hồ sơ
-        </a>
-      </section>
-    </nav>
-    <div class="content-area">
-      <router-outlet></router-outlet>
+        <clr-vertical-nav-group routerLinkActive="active">
+          <clr-icon shape="form" clrVerticalNavIcon size="20" class="is-solid"></clr-icon>
+          Danh mục
+          <clr-vertical-nav-group-children>
+            <a clrVerticalNavLink [routerLink]="['/categories/documents']">
+              Danh mục loại hồ sơ
+            </a>
+          </clr-vertical-nav-group-children>
+        </clr-vertical-nav-group>
+      </clr-vertical-nav>
     </div>
+  </div>
+
+  <div class="layout-main">
+    <header class="header">
+      <form class="search">
+        <label for="search_input">
+          <input id="search_input" type="text" placeholder="{{'common.search' | translate}}">
+        </label>
+      </form>
+      <div class="header-actions">
+        <clr-dropdown>
+          <button class="nav-text" clrDropdownTrigger aria-label="open user profile">
+            <p>
+              <span class="profile-image-wrapper">
+                <img alt="mirage-layout" src="/assets/img/avatar-eklund.png">
+              </span>
+              <span class="profile-info-wrapper">
+                <h3>Vương</h3>
+              </span>
+            </p>
+            <clr-icon shape="caret down"></clr-icon>
+          </button>
+          <clr-dropdown-menu *clrIfOpen clrPosition="bottom-right">
+            <a [routerLink]="['/']" clrDropdownItem>Cài đặt</a>
+            <a [routerLink]="['/']" clrDropdownItem>Đăng xuất</a>
+          </clr-dropdown-menu>
+        </clr-dropdown>
+      </div>
+    </header>
   </div>
 </div>

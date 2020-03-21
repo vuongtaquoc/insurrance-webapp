@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { LayoutComponent } from '@app/shared/layout';
-import { DashboardComponent } from './pages';
+import { DocumentListComponent } from './pages';
 
 const routes: Routes = [
   {
@@ -10,8 +10,8 @@ const routes: Routes = [
     component: LayoutComponent,
     children: [
       {
-        path: '',
-        component: DashboardComponent
+        path: 'documents',
+        component: DocumentListComponent
       }
     ]
   }
@@ -21,4 +21,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class DashboardRoutingModule { }
+export class CategoriesRoutingModule { }

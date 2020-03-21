@@ -6,5 +6,14 @@ import { Component } from '@angular/core';
   styleUrls: ['./layout.component.scss']
 })
 export class LayoutComponent {
+  isSidebarActivated: boolean = false;
+  isSidebarStatic: boolean = false;
 
+  handleActiveSidebar(active) {
+    this.isSidebarActivated = !!active;
+  }
+
+  handleStaticSidebar(event) {
+    this.isSidebarStatic = !this.isSidebarStatic;
+  }
 }
