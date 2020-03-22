@@ -30,7 +30,7 @@ import {
   exports: [
     FormsModule,
     ReactiveFormsModule,
-    TranslateModule
+    TranslateModule,
   ],
   entryComponents: []
 })

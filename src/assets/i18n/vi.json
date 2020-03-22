@@ -27,5 +27,13 @@
         "register": "Đăng ký"
       }
     }
+  },
+  "dashboard": {
+    "title": "Trang chủ"
+  },
+  "categories": {
+    "document-list": {
+      "title": "Danh mục loại hồ sơ"
+    }
   }
 }
