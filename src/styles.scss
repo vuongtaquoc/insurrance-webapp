@@ -1,7 +1,6 @@
 
 @import './assets/scss/reset.scss';
 @import './assets/scss/themes/default.scss';
-@import '../node_modules/@clr/ui/src/utils/components.clarity.scss';
 
 body {
 	background: #ECEFF4;
@@ -47,44 +46,15 @@ a {
 	text-align: center;
 }
 
-.auth-layout {
-	.clr-form-control {
-		margin-top: 0;
-	}
+.required {
+	color: #f00;
+	font-size: 11px;
 }
 
-.layout-menu-container {
-	.clr-vertical-nav {
-		.nav-content {
-			height: 100%;
-		}
+.input-fluid {
+	width: 100%;
 
-		.nav-group,
-		.nav-link {
-			margin-bottom: 10px;
-		}
-
-		.nav-group .nav-group-children .nav-link {
-			margin-bottom: 0;
-		}
-
-		.nav-group-trigger {
-			outline: none;
-		}
-
-		.nav-group-content:hover,
-		.nav-link:hover {
-			background-color: #f4f4f4;
-		}
-
-		.nav-icon {
-			flex: 0 0 1rem;
-		}
-	}
-
-	.layout-menu-icons {
-		.nav-link {
-			padding: 0 0.6rem 0 1rem;
-		}
+	button {
+		width: 100%;
 	}
 }

@@ -3,7 +3,9 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ClarityModule } from '@clr/angular';
+import { DropdownModule } from 'primeng/dropdown';
+import { InputTextModule } from 'primeng/inputtext';
+import { MenuModule } from 'primeng/menu';
 
 import {
   LayoutComponent,
@@ -17,7 +19,9 @@ import {
     FormsModule,
     ReactiveFormsModule,
     TranslateModule,
-    ClarityModule
+    DropdownModule,
+    InputTextModule,
+    MenuModule
   ],
   declarations: [
     LayoutComponent,
@@ -26,8 +30,7 @@ import {
   exports: [
     FormsModule,
     ReactiveFormsModule,
-    TranslateModule,
-    ClarityModule
+    TranslateModule
   ],
   entryComponents: []
 })

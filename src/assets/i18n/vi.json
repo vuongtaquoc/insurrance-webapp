@@ -5,9 +5,13 @@
       "en": "Tiếng Anh"
     },
     "title": "Bảo hiểm xã hội",
-    "search": "Tìm kiếm theo từ khóa...",
+    "search": "Tìm kiếm...",
     "footer": {
       "copyright": "Copyrights © 2020 Phần mềm Hóa đơn điện tử. All Rights"
+    },
+    "headerMenu": {
+      "setting": "Cài đặt",
+      "logout": "Đăng xuất"
     }
   },
   "auth": {

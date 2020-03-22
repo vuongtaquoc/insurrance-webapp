@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
-import { SelectItem } from '@app/core/interfaces';
+import { SelectItem } from 'primeng/api';
 
 @Component({
   selector: 'app-auth-layout',

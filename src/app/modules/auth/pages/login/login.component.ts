@@ -5,8 +5,8 @@ import { Title } from '@angular/platform-browser';
 import { Subscription } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
+import { SelectItem } from 'primeng/api';
 
-import { SelectItem } from '@app/core/interfaces';
 import { AuthenticationService } from '@app/core/services';
 
 @Component({

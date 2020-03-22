@@ -6,8 +6,8 @@
   >
     <div class="sidebar-logo">
       <a class="sidebar-pin" title="Toggle Menu" (click)="handleStaticSidebar($event)">
-        <clr-icon shape="lock" class="is-solid" *ngIf="isSidebarStatic"></clr-icon>
-        <clr-icon shape="unlock" class="is-solid" *ngIf="!isSidebarStatic"></clr-icon>
+        <i class="pi pi-lock" *ngIf="isSidebarStatic"></i>
+        <i class="pi pi-lock-open" *ngIf="!isSidebarStatic"></i>
       </a>
       <a [routerLink]="['/']">
         <img alt="logo" src="/assets/img/logo.png" alt="{{'common.title' | translate}}">
@@ -16,59 +16,46 @@
     </div>
 
     <div class="layout-menu-container">
-      <clr-vertical-nav class="layout-menu-icons">
-        <a clrVerticalNavLink routerLink="./normal" routerLinkActive="active">
-          <clr-icon clrVerticalNavIcon shape="home" size="20" class="is-solid"></clr-icon>
-        </a>
-        <a clrVerticalNavLink routerLink="./electric" routerLinkActive="active">
-          <clr-icon clrVerticalNavIcon shape="form" size="20" class="is-solid"></clr-icon>
-        </a>
-      </clr-vertical-nav>
-
-      <clr-vertical-nav class="layout-menu-text">
-        <a clrVerticalNavLink [routerLink]="['/']">
-          <clr-icon shape="home" class="is-solid" size="20" clrVerticalNavIcon></clr-icon>
-          Trang chủ
-        </a>
-        <clr-vertical-nav-group routerLinkActive="active">
-          <clr-icon shape="form" clrVerticalNavIcon size="20" class="is-solid"></clr-icon>
-          Danh mục
-          <clr-vertical-nav-group-children>
-            <a clrVerticalNavLink [routerLink]="['/categories/documents']">
-              Danh mục loại hồ sơ
-            </a>
-          </clr-vertical-nav-group-children>
-        </clr-vertical-nav-group>
-      </clr-vertical-nav>
+      <ul class="layout-menu">
+        <li>
+          <a [routerLink]="['/']">
+            <span class="menuitem-text">Trang chủ</span>
+            <i class="pi pi-fw pi-home"></i>
+          </a>
+        </li>
+        <li>
+          <a [routerLink]="['/categories/documents']">
+            <span class="menuitem-text">Danh mục loại hồ sơ</span>
+            <i class="pi pi-fw pi-copy"></i>
+          </a>
+        </li>
+      </ul>
     </div>
   </div>
 
   <div class="layout-main">
-    <header class="header">
-      <form class="search">
-        <label for="search_input">
-          <input id="search_input" type="text" placeholder="{{'common.search' | translate}}">
-        </label>
-      </form>
-      <div class="header-actions">
-        <clr-dropdown>
-          <button class="nav-text" clrDropdownTrigger aria-label="open user profile">
-            <p>
-              <span class="profile-image-wrapper">
-                <img alt="mirage-layout" src="/assets/img/avatar-eklund.png">
-              </span>
-              <span class="profile-info-wrapper">
-                <h3>Vương</h3>
-              </span>
-            </p>
-            <clr-icon shape="caret down"></clr-icon>
-          </button>
-          <clr-dropdown-menu *clrIfOpen clrPosition="bottom-right">
-            <a [routerLink]="['/']" clrDropdownItem>Cài đặt</a>
-            <a [routerLink]="['/']" clrDropdownItem>Đăng xuất</a>
-          </clr-dropdown-menu>
-        </clr-dropdown>
+    <div class="layout-topbar">
+      <div class="layout-topbar-wrapper">
+        <form class="search-input-wrapper">
+          <input type="text" pInputText placeholder="{{'common.search' | translate}}" />
+          <i class="pi pi-search"></i>
+        </form>
+        <div class="profile-item-container" (click)="menu.toggle($event)">
+          <div class="profile-item">
+            <span class="profile-image-wrapper">
+              <img alt="mirage-layout" src="/assets/img/avatar-eklund.png">
+            </span>
+            <span class="profile-info-wrapper">
+              <h3>Vương</h3>
+            </span>
+            <p-menu appendTo="body" #menu [popup]="true" [model]="menuItems"></p-menu>
+          </div>
+        </div>
       </div>
-    </header>
+    </div>
+
+    <div class="layout-content">
+      <router-outlet></router-outlet>
+    </div>
   </div>
 </div>
