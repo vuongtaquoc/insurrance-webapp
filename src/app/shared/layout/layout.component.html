@@ -1,61 +1,78 @@
-<div class="layout-wrapper" [ngClass]="{'layout-wrapper-static': isSidebarStatic}">
-  <div class="layout-sidebar"
-    [ngClass]="{ 'layout-sidebar--active': isSidebarActivated }"
-    (mouseenter)="handleActiveSidebar(true)"
-    (mouseleave)="handleActiveSidebar(false)"
-  >
-    <div class="sidebar-logo">
-      <a class="sidebar-pin" title="Toggle Menu" (click)="handleStaticSidebar($event)">
-        <i class="pi pi-lock" *ngIf="isSidebarStatic"></i>
-        <i class="pi pi-lock-open" *ngIf="!isSidebarStatic"></i>
+<div class="layout-wrapper">
+  <header class="layout-header">
+    <div class="layout-header__left">
+      <a [routerLink]="['/']" class="logo">
+        <img src="/assets/img/logo-2.png" alt="{{'common.title' | translate}}">
       </a>
-      <a [routerLink]="['/']">
-        <img alt="logo" src="/assets/img/logo.png" alt="{{'common.title' | translate}}">
-        <span class="app-name">{{'common.title' | translate}}</span>
-      </a>
-    </div>
-
-    <div class="layout-menu-container">
-      <ul class="layout-menu">
-        <li>
-          <a [routerLink]="['/']">
-            <span class="menuitem-text">{{'dashboard.title' | translate}}</span>
-            <i class="pi pi-fw pi-home"></i>
-          </a>
-        </li>
-        <li>
-          <a [routerLink]="['/categories/documents']">
-            <span class="menuitem-text">{{'categories.document-list.title' | translate}}</span>
-            <i class="pi pi-fw pi-copy"></i>
-          </a>
-        </li>
-      </ul>
-    </div>
-  </div>
-
-  <div class="layout-main">
-    <div class="layout-topbar">
-      <div class="layout-topbar-wrapper">
-        <form class="search-input-wrapper">
-          <input type="text" pInputText placeholder="{{'common.search' | translate}}" />
-          <i class="pi pi-search"></i>
-        </form>
-        <div class="profile-item-container" (click)="menu.toggle($event)">
-          <div class="profile-item">
-            <span class="profile-image-wrapper">
-              <img alt="mirage-layout" src="/assets/img/avatar-eklund.png">
-            </span>
-            <span class="profile-info-wrapper">
-              <h3>Vương</h3>
-            </span>
-            <p-menu appendTo="body" #menu [popup]="true" [model]="menuItems"></p-menu>
-          </div>
-        </div>
+      <div class="profile-item-container" (click)="menu.toggle($event)">
+        <span class="profile-image-wrapper">
+          <img alt="mirage-layout" src="/assets/img/avatar-eklund.png">
+          <i class="pi pi-sort-down"></i>
+        </span>
+        <p-menu appendTo="body" #menu [popup]="true" [model]="menuItems"></p-menu>
       </div>
-    </div>
+    </div><!-- layout-header__left -->
 
-    <div class="layout-content">
-      <router-outlet></router-outlet>
-    </div>
+    <div class="layout-header__right">
+      <ul class="layout-menu">
+        <li class="layout-menu__item layout-menu__item--active">
+          <a href="" class="layout-menu__link">
+            <span class="layout-menu__icon">
+              <i class="pi pi-home"></i>
+            </span>
+            <span class="layout-menu__text">Trang chủ</span>
+          </a>
+        </li>
+        <li class="layout-menu__item">
+          <a href="" class="layout-menu__link">
+            <span class="layout-menu__icon">
+              <i class="pi pi-cog"></i>
+            </span>
+            <span class="layout-menu__text">Hệ thống</span>
+          </a>
+        </li>
+        <li class="layout-menu__item">
+          <a href="" class="layout-menu__link">
+            <span class="layout-menu__icon">
+              <i class="pi pi-copy"></i>
+            </span>
+            <span class="layout-menu__text">Danh mục</span>
+          </a>
+        </li>
+        <li class="layout-menu__item">
+          <a href="" class="layout-menu__link">
+            <span class="layout-menu__icon">
+              <i class="pi pi-file"></i>
+            </span>
+            <span class="layout-menu__text">Kê khai</span>
+          </a>
+        </li>
+        <li class="layout-menu__item">
+          <a href="" class="layout-menu__link">
+            <span class="layout-menu__icon">
+              <i class="pi pi-search"></i>
+            </span>
+            <span class="layout-menu__text">Tra cứu</span>
+          </a>
+        </li>
+      </ul><!-- layout-menu -->
+
+      <div class="layout-info">
+        <div class="layout-info__icon">
+          <i class="pi pi-bell"></i>
+          <span class="badge">3</span>
+        </div>
+        <div class="layout-info__icon">
+          <img src="/assets/img/icon-youtube.png">
+        </div>
+        <div class="layout-info__icon">
+          <i class="pi pi-comment"></i>
+        </div>
+      </div><!-- layout-info -->
+    </div><!-- layout-header__right -->
+  </header><!-- layout-header -->
+
+  <div class="layout-container">
+    <router-outlet></router-outlet>
   </div>
 </div>

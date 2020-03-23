@@ -8,8 +8,6 @@ import { MenuItem } from 'primeng/api';
   styleUrls: ['./layout.component.scss']
 })
 export class LayoutComponent implements OnInit {
-  isSidebarActivated: boolean = false;
-  isSidebarStatic: boolean = false;
   menuItems: MenuItem[] = [];
 
   constructor(private translateService: TranslateService) {
@@ -31,13 +29,5 @@ export class LayoutComponent implements OnInit {
       ];
     });
 
-  }
-
-  handleActiveSidebar(active) {
-    this.isSidebarActivated = !!active;
-  }
-
-  handleStaticSidebar(event) {
-    this.isSidebarStatic = !this.isSidebarStatic;
   }
 }
