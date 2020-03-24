@@ -1,0 +1,10 @@
+<div class="input-label" [ngClass]="{
+  'input-label--horizontal': direction === 'horizontal',
+  'input-label--vertical': direction === 'vertical'
+}">
+  <label [ngClass]="{
+    'white': variant === 'white',
+    'black': variant === 'black'
+  }">{{ label }}</label>
+  <ng-content></ng-content>
+</div>

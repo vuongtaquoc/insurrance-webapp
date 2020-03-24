@@ -1,5 +1,15 @@
+$header-height: 83px;
+
+.layout-wrapper {
+  height: 100%;
+}
+
+.layout-container {
+  height: calc(100% - 83px);
+}
+
 .layout-header {
-  height: 83px;
+  height: $header-height;
   width: 100%;
   background-color: #fff;
   display: flex;

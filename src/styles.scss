@@ -3,77 +3,123 @@
 @import './assets/scss/themes/default.scss';
 
 body {
-	background: #2B4A83;
-	font-size: 14px;
-	font-family: 'Open Sans', sans-serif;
+  background: #2B4A83;
+  font-size: 14px;
+  font-family: 'Roboto', sans-serif;
 }
 
 .container {
-	width: 100%;
-	height: 100%;
+  width: 100%;
+  height: 100%;
   margin-right: auto;
-	margin-left: auto;
-	position: relative;
+  margin-left: auto;
+  position: relative;
 
-	@media (min-width: 576px) {
-		max-width: 540px;
-	}
+  @media (min-width: 576px) {
+    max-width: 540px;
+  }
 
-	@media (min-width: 768px) {
-		max-width: 720px;
-	}
+  @media (min-width: 768px) {
+    max-width: 720px;
+  }
 
-	@media (min-width: 992px) {
-		max-width: 960px;
-	}
+  @media (min-width: 992px) {
+    max-width: 960px;
+  }
 
-	@media (min-width: 1360px) {
-		max-width: 1280px;
-	}
+  @media (min-width: 1360px) {
+    max-width: 1280px;
+  }
 }
 
 a {
-	text-decoration: none;
+  text-decoration: none;
 }
 
 .text-left {
-	text-align: left;
+  text-align: left;
 }
 
 .text-right {
-	text-align: right;
+  text-align: right;
 }
 
 .text-center {
-	text-align: center;
+  text-align: center;
 }
 
 .required {
-	color: #f00;
-	font-size: 11px;
+  color: #f00;
+  font-size: 11px;
 }
 
 .input-fluid {
-	width: 100%;
+  width: 100%;
 
-	button {
-		width: 100%;
-	}
+  button,
+  .ui-dropdown {
+    width: 100%;
+  }
 }
 
-// .page-container {
-// 	border-radius: 4px;
-// 	background: #fff;
-// 	padding: 18px;
-
-// 	h1 {
-// 		font-size: 18px;
-//     font-weight: 400;
-// 		margin: 18px 0;
-
-// 		&:first-child {
-// 			margin-top: 0px;
-// 			margin-bottom: 18px;
-// 		}
-// 	}
+// app-root {
+// 	order: 0;
+//   flex: 1 1 auto;
+//   align-self: auto;
+//   display: flex;
 // }
+
+// app-layout {
+// 	order: 0;
+//   flex: 1 1 auto;
+//   align-self: auto;
+//   display: block;
+// }
+
+.page-container {
+  padding: 25px;
+  // height: 100%;
+}
+
+.page-card {
+  background-color: rgba(255, 255, 255, .92);
+  box-shadow: -3px 2px 2px rgba(13, 13, 13, .25);
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+
+  h1 {
+    font-size: 20px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #3266D3;
+    margin: 18px 0;
+
+    &:first-child {
+      margin-top: 0px;
+      margin-bottom: 18px;
+    }
+  }
+
+  &--scrollable {
+    padding-right: 7px;
+  }
+}
+
+.scrollable-container {
+  .ui-scrollpanel-wrapper {
+    border-right: 9px solid transparent;
+  }
+
+  .ui-scrollpanel-bar {
+    background-color: #8BA0B3;
+    opacity: 1;
+    transition: background-color .3s;
+    border-radius: 10px;
+    box-shadow: 3px 2px 2px rgba(0, 0, 0, .16);
+
+    &:hover {
+      background-color: #6D869E;
+    }
+  }
+}

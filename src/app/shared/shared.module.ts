@@ -12,6 +12,8 @@ import {
   AuthLayoutComponent
 } from './layout';
 
+import { InputLabelComponent } from './components';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -25,12 +27,14 @@ import {
   ],
   declarations: [
     LayoutComponent,
-    AuthLayoutComponent
+    AuthLayoutComponent,
+    InputLabelComponent
   ],
   exports: [
     FormsModule,
     ReactiveFormsModule,
     TranslateModule,
+    InputLabelComponent
   ],
   entryComponents: []
 })
