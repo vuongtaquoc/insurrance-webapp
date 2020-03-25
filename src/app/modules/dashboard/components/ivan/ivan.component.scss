@@ -1,0 +1,15 @@
+.page-card {
+  height: 170px;
+}
+
+.ivan {
+  &__group-input {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+
+  &__group-button {
+    text-align: right;
+  }
+}

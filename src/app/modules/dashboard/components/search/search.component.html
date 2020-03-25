@@ -1,0 +1,21 @@
+<form [formGroup]="searchForm" class="search">
+  <div class="ui-g">
+    <div class="ui-g-6">
+      <app-input-label label="Loại hồ sơ">
+        <p-dropdown [options]="documentTypes" placeholder="Lựa chọn" class="input-fluid" formControlName="type"></p-dropdown>
+      </app-input-label>
+    </div>
+
+    <div class="ui-g-3">
+      <app-input-label label="Từ ngày">
+        <p-calendar placeholder="--Chọn--" formControlName="dateFrom"></p-calendar>
+      </app-input-label>
+    </div>
+
+    <div class="ui-g-3">
+      <app-input-label label="Đến ngày">
+        <p-calendar placeholder="--Chọn--" formControlName="dateTo"></p-calendar>
+      </app-input-label>
+    </div>
+  </div>
+</form><!-- search -->

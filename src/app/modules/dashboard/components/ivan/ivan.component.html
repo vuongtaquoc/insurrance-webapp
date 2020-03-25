@@ -1,0 +1,19 @@
+<div class="page-card">
+  <h1>IVAN</h1>
+
+  <form [formGroup]="ivanForm" class="ivan">
+    <div class="ivan__group-input">
+      <app-input-label variant="black" label="Hạn sử dụng">
+        <input type="text" pInputText formControlName="expire" />
+      </app-input-label>
+
+      <app-input-label variant="black" label="Ngày hết hạn">
+        <p-calendar placeholder="--Chọn--" formControlName="expireDate"></p-calendar>
+      </app-input-label>
+    </div>
+
+    <div class="ivan__group-button">
+      <button pButton type="button" class="ui-button-warning" label="Gia hạn"></button>
+    </div>
+  </form><!-- ivan -->
+</div>
