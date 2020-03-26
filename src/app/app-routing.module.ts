@@ -22,6 +22,10 @@ const routes: Routes = [
     path: 'categories',
     loadChildren: './modules/categories/categories.module#CategoriesModule',
     // canActivate: [ AuthGuard ],
+  },
+  {
+    path: 'declarations',
+    loadChildren: './modules/declarations/declarations.module#DeclarationsModule'
   }
 ];
 

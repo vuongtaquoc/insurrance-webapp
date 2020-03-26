@@ -13,6 +13,10 @@ import {
 } from './layout';
 
 import { InputLabelComponent } from './components';
+import {
+  CardFullHeightDirective,
+  PageSplitFullHeightDirective
+} from './directives';
 
 @NgModule({
   imports: [
@@ -28,13 +32,17 @@ import { InputLabelComponent } from './components';
   declarations: [
     LayoutComponent,
     AuthLayoutComponent,
-    InputLabelComponent
+    InputLabelComponent,
+    CardFullHeightDirective,
+    PageSplitFullHeightDirective
   ],
   exports: [
     FormsModule,
     ReactiveFormsModule,
     TranslateModule,
-    InputLabelComponent
+    InputLabelComponent,
+    CardFullHeightDirective,
+    PageSplitFullHeightDirective
   ],
   entryComponents: []
 })

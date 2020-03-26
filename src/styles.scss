@@ -70,19 +70,19 @@ a {
   }
 }
 
-// app-root {
-// 	order: 0;
-//   flex: 1 1 auto;
-//   align-self: auto;
-//   display: flex;
-// }
+app-root {
+	order: 0;
+  flex: 1 1 auto;
+  align-self: auto;
+  display: flex;
+}
 
-// app-layout {
-// 	order: 0;
-//   flex: 1 1 auto;
-//   align-self: auto;
-//   display: block;
-// }
+app-layout {
+	order: 0;
+  flex: 1 1 auto;
+  align-self: auto;
+  display: block;
+}
 
 .page-container {
   padding: 25px;
@@ -172,5 +172,17 @@ a {
     grid-template-columns: max-content max-content max-content;
     grid-gap: 6px;
     align-items: center;
+  }
+}
+
+.page-split {
+  height: 100%;
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  grid-gap: 5px;
+
+  &__sidebar {
+    overflow-y: scroll;
+    overflow-x: auto;
   }
 }
