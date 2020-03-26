@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { SelectItem } from 'primeng/api';
 
 @Component({
   selector: 'app-dashboard',
@@ -6,17 +7,21 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
-  cols: any[];
   documents: any[] = [];
+  pageNumbers: SelectItem[];
 
   ngOnInit() {
-    // this.cols = [
-    //   { field: 'sendDate', header: 'Ngày gửi' },
-    //   { field: 'attachment', header: 'Giấy tờ đi kèm' },
-    //   { field: 'sendTimes', header: 'Lần gửi' },
-    //   { field: 'status', header: 'Trạng thái' },
-    //   { field: 'result', header: 'Kết quả xử lý HS của cơ quan BHXH' }
-    // ];
+    this.pageNumbers = [{
+      label: '5',
+      value: 5
+    }, {
+      label: '10',
+      value: 10
+    }, {
+      label: '15',
+      value: 15
+    }];
+
     this.documents = [{
       id: 1,
       sendDate: {

@@ -2,10 +2,10 @@
   <app-dashboard-search></app-dashboard-search>
 
   <div class="page-card page-card--scrollable">
-    <p-scrollPanel [style]="{width: '100%', height: '570px'}" class="scrollable-container">
-      <h1>Danh sách hồ sơ giao dịch điện tử</h1>
+    <h1>Danh sách hồ sơ giao dịch điện tử</h1>
 
-      <p-table class="table ui-table" [value]="documents">
+    <p-scrollPanel [style]="{width: '100%', height: '475px'}" class="scrollable-container">
+      <p-table class="table ui-table ui-table-custom" [value]="documents">
         <ng-template pTemplate="header">
           <tr>
             <th style="width: 50px" class="table__middle">
@@ -43,6 +43,13 @@
         </ng-template>
       </p-table>
     </p-scrollPanel>
+
+    <div class="ui-table-paging-custom">
+      <div class="ui-table-paging-custom__statistics">* Danh sách có 3/3 hồ sơ</div>
+      <div class="ui-table-paging-custom__paging">
+        <span>Hiển thị</span> <p-dropdown [options]="pageNumbers"></p-dropdown> <span>Hồ sơ/1 trang</span>
+      </div>
+    </div>
   </div>
 
   <div class="p-grid">
