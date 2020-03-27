@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TreeNode } from 'primeng/api';
 
 @Component({
@@ -7,9 +8,18 @@ import { TreeNode } from 'primeng/api';
   styleUrls: ['./increase-labor.component.scss']
 })
 export class InCreaseLaborComponent implements OnInit {
+  form: FormGroup;
   users: TreeNode[];
 
+  constructor(private formBuilder: FormBuilder) {}
+
   ngOnInit() {
+    this.form = this.formBuilder.group({
+      number: ['1'],
+      month: ['03'],
+      year: ['2020']
+    });
+
     // TODO mock data
     this.users = [
       {
@@ -22,14 +32,12 @@ export class InCreaseLaborComponent implements OnInit {
             "data": "Work Folder",
             "expandedIcon": "pi pi-folder-open",
             "collapsedIcon": "pi pi-folder",
-            "children": [{"label": "Expenses.doc", "icon": "pi pi-file", "data": "Expenses Document"}, {"label": "Resume.doc", "icon": "pi pi-file", "data": "Resume Document"}]
           },
           {
             "label": "Home",
             "data": "Home Folder",
             "expandedIcon": "pi pi-folder-open",
             "collapsedIcon": "pi pi-folder",
-            "children": [{"label": "Invoices.txt", "icon": "pi pi-file", "data": "Invoices for this month"}]
           }]
       },
       {
@@ -50,12 +58,10 @@ export class InCreaseLaborComponent implements OnInit {
         "children": [{
             "label": "Al Pacino",
             "data": "Pacino Movies",
-            "children": [{"label": "Scarface", "icon": "pi pi-video", "data": "Scarface Movie"}, {"label": "Serpico", "icon": "pi pi-file-video", "data": "Serpico Movie"}]
           },
           {
             "label": "Robert De Niro",
             "data": "De Niro Movies",
-            "children": [{"label": "Goodfellas", "icon": "pi pi-video", "data": "Goodfellas Movie"}, {"label": "Untouchables", "icon": "pi pi-video", "data": "Untouchables Movie"}]
           }]
       }
     ]

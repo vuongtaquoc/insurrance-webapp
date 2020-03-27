@@ -1,11 +1,42 @@
 <div class="page-container">
-  <div class="page-card page-split" cardFullHeight>
-    <div class="page-split__sidebar">
-      <p-tree [value]="users" selectionMode="checkbox"></p-tree>
-    </div><!-- page-split__sidebar -->
+  <div class="page-declarations" cardFullHeight>
+    <div class="page-declarations__sidebar">
+      <div class="page-declarations__group-button">
+        <p-button icon="pi pi-search" styleClass="ui-button-secondary"></p-button>
+        <p-button icon="pi pi-refresh" styleClass="ui-button-secondary"></p-button>
+        <p-button icon="pi pi-plus" styleClass="ui-button-secondary"></p-button>
+        <p-button icon="pi pi-pencil" styleClass="ui-button-secondary"></p-button>
+        <p-button icon="pi pi-times" styleClass="ui-button-secondary"></p-button>
+      </div><!-- page-declarations__group-button -->
 
-    <div class="page-split__content">
+      <app-users-tree [data]="users"></app-users-tree>
+    </div><!-- page-declarations__sidebar -->
 
-    </div><!-- page-split__content -->
+    <div class="page-declarations__content">
+      <div class="page-declarations__group-button">
+        <p-button icon="pi pi-arrow-up" label="Tăng lao động" styleClass="ui-button-secondary"></p-button>
+        <p-button icon="pi pi-arrow-up" label="Tăng BHYT" styleClass="ui-button-secondary"></p-button>
+        <p-button icon="pi pi-arrow-up" label="Tăng BHTN" styleClass="ui-button-secondary"></p-button>
+        <p-button icon="pi pi-arrow-up" label="Tăng BHTNLĐ, BNN" styleClass="ui-button-secondary"></p-button>
+        <p-button icon="pi pi-arrow-down" label="Giảm BHYT" styleClass="ui-button-secondary"></p-button>
+      </div><!-- page-declarations__group-button -->
+
+      <h1>600 | Báo tăng lao động</h1>
+
+      <div class="page-declarations__title">
+        <h2>Danh sách lao động tham gia BHXH, BHYT, BHTN</h2>
+        <form [formGroup]="form" class="page-declarations__search">
+          <app-input-label label="Số" variant="black">
+            <input type="text" pInputText formControlName="number" class="input-fluid" />
+          </app-input-label>
+          <app-input-label label="Tháng" variant="black">
+            <input type="text" pInputText formControlName="month" class="input-fluid" />
+          </app-input-label>
+          <app-input-label label="Năm" variant="black">
+            <input type="text" pInputText formControlName="year" class="input-fluid" />
+          </app-input-label>
+        </form>
+      </div>
+    </div><!-- page-declarations__content -->
   </div>
 </div>

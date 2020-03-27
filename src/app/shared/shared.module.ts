@@ -6,13 +6,18 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
 import { MenuModule } from 'primeng/menu';
+import { TreeModule } from 'primeng/tree';
 
 import {
   LayoutComponent,
   AuthLayoutComponent
 } from './layout';
 
-import { InputLabelComponent } from './components';
+import {
+  InputLabelComponent,
+  UsersTreeComponent
+} from './components';
+
 import {
   CardFullHeightDirective,
   PageSplitFullHeightDirective
@@ -27,12 +32,14 @@ import {
     TranslateModule,
     DropdownModule,
     InputTextModule,
-    MenuModule
+    MenuModule,
+    TreeModule
   ],
   declarations: [
     LayoutComponent,
     AuthLayoutComponent,
     InputLabelComponent,
+    UsersTreeComponent,
     CardFullHeightDirective,
     PageSplitFullHeightDirective
   ],
@@ -41,6 +48,7 @@ import {
     ReactiveFormsModule,
     TranslateModule,
     InputLabelComponent,
+    UsersTreeComponent,
     CardFullHeightDirective,
     PageSplitFullHeightDirective
   ],
