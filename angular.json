@@ -32,6 +32,8 @@
               "node_modules/primeng/resources/themes/nova-light/theme.css",
               "node_modules/primeng/resources/primeng.min.css",
               "node_modules/primeflex/primeflex.css",
+              "node_modules/jsuites/dist/jsuites.css",
+              "node_modules/jstable-editor/dist/jexcel.css",
               "src/styles.scss"
             ]
           },

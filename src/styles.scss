@@ -228,7 +228,11 @@ app-layout {
   }
 
   &__content {
-    overflow: scroll;
     padding: 5px;
+  }
+
+  &__editor {
+    height: calc(100% - 140px);
+    margin-top: 12px;
   }
 }

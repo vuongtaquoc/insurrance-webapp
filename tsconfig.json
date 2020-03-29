@@ -30,6 +30,9 @@
       ],
       "@assets": [
         "src/assets"
+      ],
+      "@libs": [
+        "src/assets/libs"
       ]
     }
   },

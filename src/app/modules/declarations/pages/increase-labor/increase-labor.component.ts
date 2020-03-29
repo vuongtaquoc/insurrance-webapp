@@ -7,9 +7,10 @@ import { TreeNode } from 'primeng/api';
   templateUrl: './increase-labor.component.html',
   styleUrls: ['./increase-labor.component.scss']
 })
-export class InCreaseLaborComponent implements OnInit {
+export class IncreaseLaborComponent implements OnInit {
   form: FormGroup;
   users: TreeNode[];
+  declarations: any[] = [];
 
   constructor(private formBuilder: FormBuilder) {}
 
@@ -64,6 +65,12 @@ export class InCreaseLaborComponent implements OnInit {
             "data": "De Niro Movies",
           }]
       }
-    ]
+    ];
+
+    for (let i = 1; i <= 40; i++) {
+      this.declarations.push([
+        i
+      ]);
+    }
   }
 }

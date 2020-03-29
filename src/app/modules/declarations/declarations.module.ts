@@ -8,7 +8,12 @@ import { ScrollPanelModule } from 'primeng/scrollpanel';
 import { AuthenticationService } from '@app/core/services';
 import { SharedModule } from '@app/shared/shared.module';
 import { DeclarationsRoutingModule } from './declarations-routing.module';
-import { InCreaseLaborComponent } from './pages';
+
+import { IncreaseLaborComponent } from './pages';
+
+import {
+  TableEditorComponent
+} from './components';
 
 @NgModule({
   imports: [
@@ -21,7 +26,8 @@ import { InCreaseLaborComponent } from './pages';
     SharedModule,
   ],
   declarations: [
-    InCreaseLaborComponent
+    IncreaseLaborComponent,
+    TableEditorComponent
   ],
   providers: [
     AuthenticationService

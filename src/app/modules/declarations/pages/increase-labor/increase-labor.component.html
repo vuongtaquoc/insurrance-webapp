@@ -36,7 +36,11 @@
             <input type="text" pInputText formControlName="year" class="input-fluid" />
           </app-input-label>
         </form>
-      </div>
+      </div><!-- page-declarations__title -->
+
+      <div class="page-declarations__editor">
+        <app-table-editor [data]="declarations"></app-table-editor>
+      </div><!-- page-declarations__editor -->
     </div><!-- page-declarations__content -->
   </div>
 </div>
