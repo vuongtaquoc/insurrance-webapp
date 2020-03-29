@@ -7,6 +7,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { LoadingBarModule } from '@ngx-loading-bar/core';
 
 import { AuthInterceptor, ApiPrefixInterceptor, ErrorInterceptor } from '@app/core/interceptors';
+import { ApplicationHttpClient, applicationHttpClientCreator } from '@app/core/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
@@ -32,6 +33,11 @@ import { AppComponent } from './app.component';
     { provide: HTTP_INTERCEPTORS, useClass: ApiPrefixInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    {
+      provide: ApplicationHttpClient,
+      useFactory: applicationHttpClientCreator,
+      deps: [ HttpClient ]
+    }
   ],
   bootstrap: [AppComponent]
 })

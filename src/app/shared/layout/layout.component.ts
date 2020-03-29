@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { MenuItem } from 'primeng/api';
+
+import { AuthenticationService } from '@app/core/services';
 
 @Component({
   selector: 'app-layout',
@@ -10,7 +13,11 @@ import { MenuItem } from 'primeng/api';
 export class LayoutComponent implements OnInit {
   menuItems: MenuItem[] = [];
 
-  constructor(private translateService: TranslateService) {
+  constructor(
+    private router: Router,
+    private translateService: TranslateService,
+    private authService: AuthenticationService
+  ) {
   }
 
   ngOnInit() {
@@ -24,7 +31,13 @@ export class LayoutComponent implements OnInit {
           icon: 'pi pi-fw pi-cog'
         }, {
           label: text['common.headerMenu.logout'],
-          icon: 'pi pi-fw pi-sign-out'
+          icon: 'pi pi-fw pi-sign-out',
+          command: (event) => {
+            event.originalEvent.preventDefault();
+
+            this.authService.logout();
+            this.router.navigate(['/auth/login'], { replaceUrl: true });
+          }
         }
       ];
     });

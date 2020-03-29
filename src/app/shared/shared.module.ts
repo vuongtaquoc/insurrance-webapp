@@ -8,6 +8,8 @@ import { InputTextModule } from 'primeng/inputtext';
 import { MenuModule } from 'primeng/menu';
 import { TreeModule } from 'primeng/tree';
 
+import { AuthenticationService } from '@app/core/services';
+
 import {
   LayoutComponent,
   AuthLayoutComponent
@@ -51,6 +53,9 @@ import {
     UsersTreeComponent,
     CardFullHeightDirective,
     PageSplitFullHeightDirective
+  ],
+  providers: [
+    AuthenticationService
   ],
   entryComponents: []
 })

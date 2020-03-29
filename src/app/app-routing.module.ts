@@ -16,16 +16,17 @@ const routes: Routes = [
   {
     path: 'dashboard',
     loadChildren: './modules/dashboard/dashboard.module#DashboardModule',
-    // canActivate: [ AuthGuard ],
+    canActivate: [ AuthGuard ],
   },
   {
     path: 'categories',
     loadChildren: './modules/categories/categories.module#CategoriesModule',
-    // canActivate: [ AuthGuard ],
+    canActivate: [ AuthGuard ],
   },
   {
     path: 'declarations',
-    loadChildren: './modules/declarations/declarations.module#DeclarationsModule'
+    loadChildren: './modules/declarations/declarations.module#DeclarationsModule',
+    canActivate: [ AuthGuard ],
   }
 ];
 

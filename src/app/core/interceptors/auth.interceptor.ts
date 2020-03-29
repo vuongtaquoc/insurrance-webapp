@@ -14,7 +14,7 @@ export class AuthInterceptor implements HttpInterceptor {
     if (currentCredentials && currentCredentials.token) {
       request = request.clone({
         setHeaders: {
-          Authorization: `Bearer ${currentCredentials.token}`
+          'X-Authorization-Token': currentCredentials.token
         }
       });
     }

@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { HttpClient } from '@angular/common/http';
+
+import { ApplicationHttpClient } from '@app/core/http';
 
 import { Credential } from '@app/core/models';
 
@@ -12,7 +13,7 @@ export class AuthenticationService {
   private credentialSubject: BehaviorSubject<Credential>;
   public credentials: Observable<Credential>;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: ApplicationHttpClient) {
     this.credentialSubject = new BehaviorSubject<Credential>(JSON.parse(localStorage.getItem(CREDENTIAL_STORAGE)));
     this.credentials = this.credentialSubject.asObservable();
   }
@@ -21,9 +22,9 @@ export class AuthenticationService {
     return JSON.parse(localStorage.getItem(CREDENTIAL_STORAGE));
   }
 
-  public login(username: string, password: string): Observable<Credential> {
-    return this.http.post<any>('/authenticate', {
-      username,
+  public login(userId: string, password: string): Observable<Credential> {
+    return this.http.post('/session/login', {
+      userId,
       password
     }).pipe(
       map(data => {
@@ -33,24 +34,24 @@ export class AuthenticationService {
   }
 
   public logout() {
-    this.http.post<any>('/logout', null).toPromise();
+    this.http.delete('/session/logout').toPromise();
 
     localStorage.removeItem(CREDENTIAL_STORAGE);
     this.credentialSubject.next(null);
   }
 
   public requestResetPassword(email: string) {
-    return this.http.post<any>('/password-reset/email', { email });
+    return this.http.post('/password-reset/email', { email });
   }
 
   public getUserByToken(token: string) {
-    return this.http.get<any>('/token/user', {
+    return this.http.get('/token/user', {
       params: { token }
     });
   }
 
   public resetPassword(token: string, password: string, confirmPassword: string) {
-    return this.http.post<any>(`/password-reset?token=${token}`, {
+    return this.http.post(`/password-reset?token=${token}`, {
       password,
       confirmPassword
     });
@@ -58,7 +59,7 @@ export class AuthenticationService {
 
   private storeCredentials(data) {
     const credentials: Credential = {
-      token: data.accessToken,
+      token: data.token,
       expiresIn: data.expiresIn,
       tokenType: data.tokenType
     };
