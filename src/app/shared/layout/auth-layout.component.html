@@ -1,28 +1,30 @@
 <div class="auth-layout">
-  <header class="header">
-    <div class="container">
-      <div class="header__container">
-        <a [routerLink]="['/']" class="header__logo">
-          <img src="/assets/img/logo.png" alt="Bảo hiểm xã hội">
-          <span>{{'common.title' | translate}}</span>
-        </a>
-        <div></div>
-        <div class="header__languages">
-          <p-dropdown [options]="languages" [(ngModel)]="selectedLanguage"></p-dropdown>
-        </div>
-      </div>
+  <div class="auth-layout-logo">
+    <div class="auth-layout-logo__content">
+      <img src="/assets/img/auth-logo.png">
     </div>
-  </header>
+  </div><!-- auth-layout-logo -->
 
-  <section class="body">
-    <div class="container">
+  <div class="auth-layout-content">
+    <div class="auth-layout-content__form">
       <router-outlet></router-outlet>
-    </div>
-  </section>
+    </div><!-- auth-layout-content__form -->
 
-  <footer class="footer">
-    <div class="container">
-      {{'common.footer.copyright' | translate}}
-    </div>
-  </footer>
+    <div class="auth-layout-content__footer">
+      <div class="auth-layout-content__socials">
+        <a href="https://fb.com" class="auth-layout-content__social">
+          <img src="/assets/img/icon-facebook.png">
+        </a>
+        <a href="https://youtube.com" class="auth-layout-content__social">
+          <img src="/assets/img/icon-youtube2.png">
+        </a>
+        <a href="https://youtube.com" class="auth-layout-content__social">
+          <img src="/assets/img/icon-home.png">
+        </a>
+      </div>
+      <p class="auth-layout-content__copyright">
+        &copy; Copyright 2020
+      </p>
+    </div><!-- auth-layout-content__footer -->
+  </div><!-- auth-layout-content -->
 </div>

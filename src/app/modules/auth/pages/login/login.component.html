@@ -1,38 +1,25 @@
-<p-card class="login-page">
-  <a [routerLink]="['/']" class="login-page__logo">
-    <img src="/assets/img/logo.png" alt="{{'common.title' | translate}}">
-  </a>
-  <form [formGroup]="loginForm" (ngSubmit)="handleSubmit()" class="login-page__form">
-    <div class="form-group">
-      <label class="form-group__label">{{ 'auth.login.form.company' | translate }} <span class="required">*</span></label>
-      <p-dropdown [options]="companies" formControlName="company" class="input-fluid"></p-dropdown>
-    </div>
+<form [formGroup]="loginForm" (ngSubmit)="handleSubmit()" class="login-page">
+  <h1>{{ 'auth.login.pageTitle' | translate }}</h1>
 
-    <div class="form-group">
-      <label class="form-group__label">{{ 'auth.login.form.username' | translate }} <span class="required">*</span></label>
-      <input type="text" pInputText formControlName="username" class="input-fluid" />
-    </div>
+  <div class="form-group">
+    <label class="form-group__label">{{ 'auth.login.form.username' | translate }} <span class="required">*</span></label>
+    <input type="text" pInputText formControlName="username" class="input-fluid" />
+  </div>
 
-    <div class="form-group">
-      <label class="form-group__label">{{ 'auth.login.form.password' | translate }} <span class="required">*</span></label>
-      <input type="password" pPassword formControlName="password" class="input-fluid" />
-    </div>
+  <div class="form-group">
+    <label class="form-group__label">{{ 'auth.login.form.password' | translate }} <span class="required">*</span></label>
+    <input type="password" pPassword formControlName="password" class="input-fluid" />
+  </div>
 
-    <div class="form-group">
-      <p-checkbox formControlName="remember" label="{{'auth.login.form.remember' | translate }}"></p-checkbox>
-    </div>
+  <div class="form-group-remember">
+    <p-checkbox formControlName="remember" label="{{'auth.login.form.remember' | translate }}"></p-checkbox>
+    <a [routerLink]="['/auth/forgot']" class="form-group-reset__forgot">
+      {{ 'auth.login.form.forgot' | translate }}
+    </a>
+  </div>
 
-    <div class="form-group">
-      <p-button class="input-fluid" type="submit" label="{{'auth.login.form.submit' | translate}}"></p-button>
-    </div>
-
-    <div class="form-group-reset">
-      <a [routerLink]="['/auth/forgot']" class="form-group-reset__forgot">
-        <i class="pi pi-key"></i> {{ 'auth.login.form.forgot' | translate }}
-      </a>
-      <a [routerLink]="['/auth/register']" class="form-group-reset__register text-right">
-        {{ 'auth.login.form.register' | translate }}
-      </a>
-    </div>
-  </form>
-</p-card>
+  <div class="form-group-button">
+    <p-button class="input-fluid" styleClass="ui-button-secondary ui-button-outline" type="button" label="{{'auth.login.form.register' | translate}}"></p-button>
+    <p-button class="input-fluid" type="submit" label="{{'auth.login.form.submit' | translate}}"></p-button>
+  </div>
+</form>

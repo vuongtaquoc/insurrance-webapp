@@ -1,43 +1,24 @@
 .login-page {
-  position: absolute;
-  right: 0;
-  width: 350px;
-  top: 50%;
-  transform: translateY(-50%);
+  .form-group {
+    margin-bottom: 25px;
 
-  &__logo {
-    display: inline-block;
-    height: 140px;
-    text-align: center;
-    width: 100%;
-    margin-bottom: 20px;
-    margin-top: 10px;
-
-    img {
-      height: 100%;
+    &__label {
+      margin-bottom: 15px;
+      display: block;
     }
   }
 
-  &__form {
-    padding: 0 10px;
-  }
-}
-
-.form-group {
-  margin-bottom: 12px;
-
-  &__label {
-    margin-bottom: 5px;
-    display: block;
-  }
-}
-
-.form-group-reset {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-
-  &__forgot {
+  .form-group-remember {
     display: flex;
+    justify-content: space-between;
     align-items: center;
+    margin-bottom: 70px;
+  }
+
+  .form-group-button {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 50px;
+    width: 100%;
   }
 }

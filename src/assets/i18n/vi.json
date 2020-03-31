@@ -16,14 +16,14 @@
   },
   "auth": {
     "login": {
-      "pageTitle": "Đăng nhập",
+      "pageTitle": "Phần mềm bảo hiểm xã hội",
       "form": {
         "company": "Đơn vị",
         "username": "Tên đăng nhập",
         "password": "Mật khẩu",
         "remember": "Ghi nhớ?",
         "submit": "Đăng nhập",
-        "forgot": "Quên mật khẩu",
+        "forgot": "Quên mật khẩu?",
         "register": "Đăng ký"
       }
     }
