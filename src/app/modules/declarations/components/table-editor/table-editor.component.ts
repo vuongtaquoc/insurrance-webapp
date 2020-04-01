@@ -31,7 +31,7 @@ export class TableEditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngAfterViewInit() {
     this.spreadsheet = jexcel(this.spreadsheetEl.nativeElement, {
-      data: this.data,
+      data: [],
       nestedHeaders:[
         [
           { title: 'STT', rowspan: '3' },
@@ -266,6 +266,24 @@ export class TableEditorComponent implements OnInit, AfterViewInit, OnDestroy {
     });
 
     this.spreadsheet.hideIndex();
+
+    this.updateData();
+  }
+
+  private updateData() {
+    const readonlyIndexes = [];
+    const data = [];
+
+    this.data.forEach((d, index) => {
+      if (d.readonly) {
+        readonlyIndexes.push(index);
+      }
+
+      data.push(d.data);
+    });
+
+    this.spreadsheet.setData(data);
+    this.spreadsheet.setReadonlyRowsTitle(readonlyIndexes, [0, 1]);
   }
 
   private updateContainerSize() {

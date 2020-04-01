@@ -67,10 +67,21 @@ export class IncreaseLaborComponent implements OnInit {
       }
     ];
 
-    for (let i = 1; i <= 40; i++) {
-      this.declarations.push([
-        i
-      ]);
-    }
+    this.declarations.push({
+      readonly: true,
+      data: [ 'I', 'Tăng' ]
+    }, {
+      readonly: true,
+      data: [ 'I-1', 'Lao động' ]
+    }, {
+      readonly: false,
+      data: [ 1, 'Vuong' ]
+    }, {
+      readonly: true,
+      data: [ 'I-2', 'Bảo hiểm y tế' ]
+    }, {
+      readonly: false,
+      data: [ 2, 'Ha' ]
+    });
   }
 }

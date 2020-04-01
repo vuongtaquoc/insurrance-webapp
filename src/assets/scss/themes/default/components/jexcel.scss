@@ -1,0 +1,8 @@
+@import "../_colors";
+
+.jexcel > tbody > tr > td.row-title-readonly {
+  background-image: none !important;
+  background-color: $jexcel-readonly-color;
+  color: $primary-dark-text-color !important;
+  font-weight: 700;
+}
