@@ -1,0 +1,11 @@
+.sds-float-left {
+  @include float-left;
+}
+
+.sds-float-right {
+  @include float-right;
+}
+
+.sds-float-none {
+  @include float-none;
+}

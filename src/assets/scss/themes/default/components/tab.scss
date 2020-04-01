@@ -1,0 +1,358 @@
+@import "../_colors";
+
+body .ui-tabview.ui-tabview-top,
+body .ui-tabview.ui-tabview-bottom,
+body .ui-tabview.ui-tabview-left,
+body .ui-tabview.ui-tabview-right,
+body .ui-tabmenu {
+    border: 0 none;
+    border-radius: 0;
+}
+
+body .ui-tabview.ui-tabview-left {
+    display: flex;
+}
+
+body .ui-tabview.ui-tabview-right {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+body .ui-tabview,
+body .ui-tabmenu {
+    padding: 0;
+}
+
+body .ui-tabview.ui-widget,
+body .ui-tabmenu.ui-widget {
+    background: none;
+}
+
+body .ui-tabmenu .ui-tabmenu-nav,
+body .ui-tabview.ui-tabview-top > .ui-tabview-nav,
+body .ui-tabview.ui-tabview-bottom > .ui-tabview-nav {
+    white-space: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    display: flex;
+}
+
+body .ui-tabmenu .ui-tabmenu-nav li,
+body .ui-tabview.ui-tabview-top > .ui-tabview-nav li,
+body .ui-tabview.ui-tabview-bottom > .ui-tabview-nav li {
+    float: none !important;
+    display: inline-table !important;
+}
+
+body .ui-tabview.ui-tabview-top > .ui-tabview-nav,
+body .ui-tabview.ui-tabview-bottom > .ui-tabview-nav,
+body .ui-tabview.ui-tabview-left > .ui-tabview-nav,
+body .ui-tabview.ui-tabview-right > .ui-tabview-nav,
+body .ui-tabmenu .ui-tabmenu-nav {
+    padding: 0;
+}
+
+body .ui-tabview.ui-tabview-top > .ui-tabview-nav li,
+body .ui-tabview.ui-tabview-bottom > .ui-tabview-nav li,
+body .ui-tabview.ui-tabview-left > .ui-tabview-nav li,
+body .ui-tabview.ui-tabview-right > .ui-tabview-nav li,
+body .ui-tabmenu .ui-tabmenu-nav li {
+    position: static;
+    margin: 0;
+    box-sizing: border-box;
+    background-color: transparent;
+    cursor: pointer;
+    transition: border-color 200ms ease-out;
+    border-radius: 0;
+
+    &:focus {
+        outline: none;
+        background-color: highlight($default-primary-color);
+    }
+}
+
+body .ui-tabview.ui-tabview-top > .ui-tabview-nav li a,
+body .ui-tabview.ui-tabview-bottom > .ui-tabview-nav li a,
+body .ui-tabview.ui-tabview-left > .ui-tabview-nav li a,
+body .ui-tabview.ui-tabview-right > .ui-tabview-nav li a {
+    position: relative;
+}
+
+body .ui-tabview.ui-tabview-top > .ui-tabview-nav li a > span.sds-badge-error,
+body .ui-tabview.ui-tabview-bottom > .ui-tabview-nav li a > span.sds-badge-error,
+body .ui-tabview.ui-tabview-left > .ui-tabview-nav li a > span.sds-badge-error,
+body .ui-tabview.ui-tabview-right > .ui-tabview-nav li a > span.sds-badge-error,
+body .ui-tabmenu .ui-tabmenu-nav li a > span.sds-badge-error {
+    position: absolute;
+    top: 16px;
+    left: 1px;
+}
+
+body .ui-tabview.ui-tabview-top > .ui-tabview-nav li.ui-state-default a,
+body .ui-tabview.ui-tabview-bottom > .ui-tabview-nav li.ui-state-default a,
+body .ui-tabview.ui-tabview-left > .ui-tabview-nav li.ui-state-default a,
+body .ui-tabview.ui-tabview-right > .ui-tabview-nav li.ui-state-default a,
+body .ui-tabmenu .ui-tabmenu-nav li.ui-state-default a {
+    padding: 10px 15px;
+    box-sizing: border-box;
+    color: $primary-color;
+    transition: color 200ms ease-out;
+
+    &:hover {
+        color: highlight($primary-color);
+    }
+
+    &:focus {
+        outline: 0 none;
+    }
+}
+
+body .ui-tabview.ui-tabview-top > .ui-tabview-nav li.ui-tabview-outline,
+body .ui-tabview.ui-tabview-bottom > .ui-tabview-nav li.ui-tabview-outline,
+body .ui-tabview.ui-tabview-left > .ui-tabview-nav li.ui-tabview-outline,
+body .ui-tabview.ui-tabview-right > .ui-tabview-nav li.ui-tabview-outline,
+body .ui-tabmenu .ui-tabmenu-nav li.ui-tabmenu-outline {
+    outline: 0 none;
+    background-color: #e5eaea;
+}
+
+body .ui-tabview.ui-tabview-top > .ui-tabview-nav li.ui-state-active,
+body .ui-tabview.ui-tabview-bottom > .ui-tabview-nav li.ui-state-active,
+body .ui-tabview.ui-tabview-left > .ui-tabview-nav li.ui-state-active,
+body .ui-tabview.ui-tabview-right > .ui-tabview-nav li.ui-state-active,
+body .ui-tabmenu .ui-tabmenu-nav li.ui-state-active {
+    color: $primary-dark-text-color;
+    font-weight: bold;
+}
+
+body .ui-tabview.ui-tabview-top > .ui-tabview-nav li.ui-state-active a,
+body .ui-tabview.ui-tabview-bottom > .ui-tabview-nav li.ui-state-active a,
+body .ui-tabview.ui-tabview-left > .ui-tabview-nav li.ui-state-active a,
+body .ui-tabview.ui-tabview-right > .ui-tabview-nav li.ui-state-active a,
+body .ui-tabmenu .ui-tabmenu-nav li.ui-state-active a {
+    color: $primary-dark-text-color;
+    cursor: pointer;
+
+    &:hover {
+        color: highlight($primary-dark-text-color);
+    }
+}
+
+body .ui-tabview.ui-tabview-top > .ui-tabview-nav li.ui-state-active.ui-tabview-outline,
+body .ui-tabview.ui-tabview-bottom > .ui-tabview-nav li.ui-state-active.ui-tabview-outline,
+body .ui-tabview.ui-tabview-left > .ui-tabview-nav li.ui-state-active.ui-tabview-outline,
+body .ui-tabview.ui-tabview-right > .ui-tabview-nav li.ui-state-active.ui-tabview-outline,
+body .ui-tabmenu .ui-tabmenu-nav li.ui-state-active.ui-tabmenu-outline {
+    background-color: #4383bb;
+}
+
+body .ui-tabview.ui-tabview-top .ui-tabview-navscroller-btn,
+body .ui-tabview.ui-tabview-bottom .ui-tabview-navscroller-btn,
+body .ui-tabview.ui-tabview-left .ui-tabview-navscroller-btn,
+body .ui-tabview.ui-tabview-right .ui-tabview-navscroller-btn,
+body .ui-tabmenu .ui-tabmenu-navscroller-btn {
+    background-color: #fff;
+}
+
+body .ui-tabview.ui-tabview-top .ui-tabview-navscroller-btn:not(.ui-state-active):not(.ui-state-disabled):hover,
+body .ui-tabview.ui-tabview-bottom .ui-tabview-navscroller-btn:not(.ui-state-active):not(.ui-state-disabled):hover,
+body .ui-tabview.ui-tabview-left .ui-tabview-navscroller-btn:not(.ui-state-active):not(.ui-state-disabled):hover,
+body .ui-tabview.ui-tabview-right .ui-tabview-navscroller-btn:not(.ui-state-active):not(.ui-state-disabled):hover,
+body .ui-tabmenu .ui-tabmenu-navscroller-btn:not(.ui-state-active):not(.ui-state-disabled):hover {
+    background-color: #f4f3f4;
+}
+
+body .ui-tabview.ui-tabview-top .ui-tabview-navscroller-btn.ui-tabview-navscroller-btn-left,
+body .ui-tabview.ui-tabview-bottom .ui-tabview-navscroller-btn.ui-tabview-navscroller-btn-left,
+body .ui-tabview.ui-tabview-left .ui-tabview-navscroller-btn.ui-tabview-navscroller-btn-left,
+body .ui-tabview.ui-tabview-right .ui-tabview-navscroller-btn.ui-tabview-navscroller-btn-left,
+body .ui-tabmenu .ui-tabmenu-navscroller-btn.ui-tabmenu-navscroller-btn-left {
+    left: 0;
+    height: 2.063em;
+}
+
+body .ui-tabview.ui-tabview-top .ui-tabview-navscroller-btn.ui-tabview-navscroller-btn-right,
+body .ui-tabview.ui-tabview-bottom .ui-tabview-navscroller-btn.ui-tabview-navscroller-btn-right,
+body .ui-tabview.ui-tabview-left .ui-tabview-navscroller-btn.ui-tabview-navscroller-btn-right,
+body .ui-tabview.ui-tabview-right .ui-tabview-navscroller-btn.ui-tabview-navscroller-btn-right,
+body .ui-tabmenu .ui-tabmenu-navscroller-btn.ui-tabmenu-navscroller-btn-right {
+    right: 0;
+    height: 2.125em;
+}
+
+body .ui-tabview.ui-tabview-top .ui-tabview-navscroller-btn .ui-icon,
+body .ui-tabview.ui-tabview-bottom .ui-tabview-navscroller-btn .ui-icon,
+body .ui-tabview.ui-tabview-left .ui-tabview-navscroller-btn .ui-icon,
+body .ui-tabview.ui-tabview-right .ui-tabview-navscroller-btn .ui-icon,
+body .ui-tabmenu .ui-tabview-navscroller-btn .ui-icon {
+    margin-top: 0.5em;
+}
+
+body .ui-tabview.ui-tabview-left > .ui-tabview-nav,
+body .ui-tabview.ui-tabview-right > .ui-tabview-nav {
+    height: unset;
+    flex: 1;
+}
+
+body .ui-tabview.ui-tabview-left > .ui-tabview-nav li,
+body .ui-tabview.ui-tabview-right > .ui-tabview-nav li {
+    width: 100%;
+}
+
+body .ui-tabview > .ui-tabview-nav,
+body .ui-tabmenu .ui-tabmenu-nav,
+body .ui-tabmenu .ui-tabmenu-nav li.ui-state-active,
+body .ui-tabview.ui-tabview-bottom > .ui-tabview-nav li.ui-state-active,
+body .ui-tabview.ui-tabview-left > .ui-tabview-nav li.ui-state-active,
+body .ui-tabview.ui-tabview-right > .ui-tabview-nav li.ui-state-active,
+body .ui-tabview.ui-tabview-top > .ui-tabview-nav li.ui-state-active {
+    border: none;
+    -moz-border-radius: 0;
+    -webkit-border-radius: 0;
+    border-radius: 0;
+}
+
+body .ui-tabmenu .ui-tabmenu-nav li.ui-tabmenuitem {
+    margin-right: 0;
+}
+
+body .ui-tabview.ui-tabview-top > .ui-tabview-nav li,
+body .ui-tabmenu .ui-tabmenu-nav li.ui-tabmenuitem {
+    border-bottom: 5px solid transparent;
+
+    &:hover,
+    &:focus {
+        border-bottom: 5px solid $default-secondary-color;
+    }
+
+    &.ui-state-active {
+        border-bottom: 5px solid $primary-color;
+
+        &:hover,
+        &:focus {
+            border-bottom: 5px solid highlight($primary-color);
+        }
+    }
+}
+
+body .ui-tabview.ui-tabview-bottom > .ui-tabview-nav li {
+    border-top: 5px solid transparent;
+
+    &:hover,
+    &:focus {
+        border-top: 5px solid $default-secondary-color;
+    }
+
+    &.ui-state-active {
+        border-top: 5px solid $primary-color;
+
+        &:hover,
+        &:focus {
+            border-top: 5px solid highlight($primary-color);
+        }
+    }
+}
+
+body .ui-tabview.ui-tabview-right > .ui-tabview-nav li {
+    border-left: 5px solid transparent;
+
+    &:hover,
+    &:focus {
+        border-left: 5px solid $default-secondary-color;
+    }
+
+    &.ui-state-active {
+        border-left: 5px solid $primary-color;
+
+        &:hover,
+        &:focus {
+            border-left: 5px solid highlight($primary-color);
+        }
+    }
+}
+
+body .ui-tabview.ui-tabview-left > .ui-tabview-nav li {
+    border-right: 5px solid transparent;
+
+    &:hover,
+    &:focus {
+        border-right: 5px solid $default-secondary-color;
+    }
+
+    &.ui-state-active {
+        border-right: 5px solid $primary-color;
+
+        &:hover,
+        &:focus {
+            border-right: 5px solid highlight($primary-color);
+        }
+    }
+}
+
+body .ui-tabmenu .ui-tabmenu-nav {
+    margin-bottom: 10px;
+}
+
+body .ui-tabview.ui-tabview-top > .ui-tabview-nav,
+body .ui-tabmenu .ui-tabmenu-nav {
+    border-bottom: 1px solid $default-primary-color;
+}
+
+body .ui-tabview.ui-tabview-right > .ui-tabview-nav {
+    border-left: 1px solid $default-primary-color;
+}
+
+body .ui-tabview.ui-tabview-bottom > .ui-tabview-nav {
+    border-top: 1px solid $default-primary-color;
+}
+
+body .ui-tabview.ui-tabview-left > .ui-tabview-nav {
+    border-right: 1px solid $default-primary-color;
+}
+
+body .ui-tabmenu .ui-tabmenu-nav {
+    margin-bottom: 10px;
+}
+
+body .ui-tabview.ui-tabview-top > .ui-tabview-nav,
+body .ui-tabmenu .ui-tabmenu-nav {
+    border-bottom: 1px solid #cccccc;
+}
+
+body .ui-tabview.ui-tabview-right > .ui-tabview-nav {
+    border-left: 1px solid #cccccc;
+}
+
+body .ui-tabview.ui-tabview-bottom > .ui-tabview-nav {
+    border-top: 1px solid #cccccc;
+}
+
+body .ui-tabview.ui-tabview-left > .ui-tabview-nav {
+    border-right: 1px solid #cccccc;
+}
+
+body .ui-tabview.ui-tabview-top > .ui-tabview-panels > p-tabpanel > .ui-tabview-panel {
+    padding: 10px 0 0 0;
+}
+
+body .ui-tabview.ui-tabview-right > .ui-tabview-panels > p-tabpanel > .ui-tabview-panel {
+    padding: 0 10px 0 0;
+}
+
+body .ui-tabview.ui-tabview-bottom > .ui-tabview-panels > p-tabpanel > .ui-tabview-panel {
+    padding: 0 0 10px 0;
+}
+
+body .ui-tabview.ui-tabview-left > .ui-tabview-panels > p-tabpanel > .ui-tabview-panel {
+    padding: 0 0 0 10px;
+}
+
+.ui-tabs .ui-tabs-navscroller-btn {
+    display: inline;
+}
+
+body .ui-tabmenu .ui-tabmenu-nav li,
+body .ui-tabview.ui-tabview-top > .ui-tabview-nav li,
+body .ui-tabview.ui-tabview-bottom > .ui-tabview-nav li {
+    height: 100%;
+}

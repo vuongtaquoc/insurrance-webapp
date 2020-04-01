@@ -1,0 +1,15 @@
+@import "../_colors";
+
+body .ui-inputswitch-slider {
+    background-color: #cccccc;
+    border-radius: 20px;
+}
+
+body .ui-inputswitch-slider::before {
+    background-color: #ffffff;
+    border-radius: 20px;
+}
+
+body .ui-inputswitch-checked .ui-inputswitch-slider {
+    background-color: #428bca;
+}

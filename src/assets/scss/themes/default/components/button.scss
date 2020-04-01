@@ -1,0 +1,121 @@
+body .ui-button {
+    color: $primary-light-text-color;
+    background-color: $primary-color;
+    border: 0 solid;
+    padding: 5px 10px;
+    font-size: 14px;
+    min-height: 34px;
+    transition: background-color 200ms ease-out, color 200ms ease-out, border-color 200ms ease-out;
+
+    &:hover {
+        background-color: darken($primary-color, 15%);
+    }
+
+    &:focus {
+        background-color: darken($primary-color, 15%);
+        border-color: #22DCE6;
+    }
+
+    &:active:not(:disabled) {
+        background-color: darken($primary-color, 20%);
+        border-color: darken($primary-color, 20%);
+    }
+}
+
+
+body .ui-button {
+    margin-right: 0;
+}
+
+body .ui-button .ui-button-text {
+    padding: 0 !important;
+}
+
+body .ui-button:not(.ui-button-icon-only) .ui-button-icon-left,
+body .ui-button:not(.ui-button-icon-only) .ui-button-icon-right {
+    display: none;
+}
+
+body .ui-buton-icon-only {
+    width: auto;
+    min-width: 1em !important;
+}
+
+body .ui-inputgroup .ui-button,
+body .ui-calendar .ui-button,
+body .ui-autocomplete .ui-button {
+    min-width: auto;
+    width: auto;
+    border-left: 0 none !important;
+}
+
+body .ui-button + .ui-button,
+body s-button + .ui-button,
+body s-button + button,
+body s-button + p-button,
+body s-button + s-button,
+body button + s-button,
+body p-button + s-button {
+    margin-left: 10px;
+}
+
+body .ui-dialog .ui-dialog-footer s-button + s-button {
+    margin-right: 10px;
+    margin-left: 0;
+}
+
+body .ui-fluid s-button button {
+    width: 100%;
+}
+
+body .ui-button.ui-button-primary {
+    @include buttonVariation($primary-color, $primary-light-text-color, $primary-color);
+}
+
+body .ui-button.ui-button-secondary {
+    @include buttonVariation($secondary-color, $primary-dark-text-color, $secondary-color);
+}
+
+body .ui-button.ui-button-default {
+    @include buttonVariation($default-color, $primary-dark-text-color, $default-primary-color);
+}
+
+body .ui-button.ui-button-warning {
+    @include buttonVariation($warning-color, $primary-dark-text-color, $default-primary-color);
+}
+
+body .ui-button.ui-button-link.ui-state-default {
+    background-color: transparent;
+    border-color: transparent;
+
+    & .ui-button-text {
+        color: $primary-color;
+    }
+
+    &:hover {
+        background-color: transparent;
+        & .s-button-icon,
+        & .s-button-text,
+        & .s-button-menu-icon {
+            color: darken($primary-color, 15%);
+        }
+    }
+
+    &:focus {
+        border-color: #22DCE6;
+        background-color: transparent;
+
+        & .ui-button-text {
+            color: darken($primary-color, 15%);
+        }
+    }
+
+    &:active:not(:disabled) {
+        background-color: transparent;
+        border-color: transparent;
+
+        & .ui-button-text {
+            color: darken($primary-color, 20%);
+        }
+    }
+}

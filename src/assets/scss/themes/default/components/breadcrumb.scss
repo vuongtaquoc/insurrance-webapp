@@ -1,0 +1,56 @@
+@import "../_colors";
+
+body .ui-breadcrumb {
+    background-color: transparent;
+    border: none;
+    padding: 0 0 20px;
+    margin: 10px 0 0;
+}
+
+body .ui-breadcrumb ul li {
+    float: none;
+    display: inline-block;
+}
+
+body .ui-breadcrumb ul li .ui-menuitem-link {
+    color: $primary-color;
+    margin: 0;
+    position: relative;
+    top: 0;
+
+    &.ui-state-active,
+    &.ui-state-active:hover {
+        background-color: transparent;
+        color: $secondary-dark-text-color;
+        cursor: text;
+    }
+}
+
+body .ui-breadcrumb ul li .ui-menuitem-link .ui-menuitem-text {
+    font-size: 12px;
+}
+
+body .ui-breadcrumb ul li.ui-breadcrumb-chevron {
+    font-size: 1em;
+    margin: 0 5px;
+    color: $secondary-dark-text-color;
+}
+
+body .ui-breadcrumb ul li.ui-breadcrumb-chevron:before {
+    content: "";
+    font-size: 14px;
+}
+
+body .ui-breadcrumb .ui-breadcrumb-home {
+    font-size: 12px;
+}
+
+body .ui-breadcrumb ul li:first-child a.ui-icon-home {
+    color: $secondary-dark-text-color;
+    margin: 0;
+}
+
+p-breadcrumb ul li a.ui-menuitem-link.ui-state-disabled,
+p-breadcrumb ul li a.ui-menuitem-link.ui-state-disabled:hover {
+    cursor: text;
+}

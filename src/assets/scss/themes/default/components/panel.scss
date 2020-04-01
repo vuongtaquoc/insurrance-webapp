@@ -1,0 +1,47 @@
+@import "../_colors";
+
+$panel-padding-size: 15px;
+$panel-border-color: $default-primary-color;
+
+body .ui-panel {
+    padding: 15px;
+    border: 1px solid $panel-border-color;
+    border-radius: 0 !important;
+}
+
+body .ui-panel .ui-panel-content {
+    height: 100%;
+    box-sizing: border-box;
+    padding: 0;
+}
+
+body .ui-panel .ui-panel-titlebar .ui-panel-titlebar-icon {
+    position: relative;
+    color: $secondary-dark-text-color;
+    padding-top: 3px;
+    font-size: 16px;
+    text-align: center;
+    height: 25px;
+    width: 25px;
+}
+
+body .ui-panel .ui-panel-titlebar .ui-panel-titlebar-icon:hover {
+    color: $primary-dark-text-color;
+}
+
+body .ui-panel .ui-panel-footer {
+    padding: $panel-padding-size 0 0 0;
+    border: 0 none;
+    border-top: 1px solid #ccc;
+    margin: $panel-padding-size 0 0 0;
+}
+
+body .ui-panel .ui-panel-titlebar + .ui-panel-content-wrapper .ui-panel-content {
+    padding-top: $panel-padding-size;
+    margin-top: $panel-padding-size;
+    border-top: 1px solid $panel-border-color;
+}
+
+body .ui-panel .ui-panel-content-wrapper {
+    border-top: none;
+}

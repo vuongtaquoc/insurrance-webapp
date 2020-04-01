@@ -1,19 +1,10 @@
 
 @import './assets/scss/reset.scss';
-@import './assets/scss/themes/default.scss';
 
 body {
   background: #2B4A83;
   font-size: 14px;
   font-family: 'Roboto', sans-serif;
-}
-
-* {
-  font-family: 'Roboto', sans-serif !important;
-}
-
-.pi {
-  font-family: 'primeicons' !important;
 }
 
 .container {
@@ -74,6 +65,10 @@ a {
   background-color: transparent !important;
   border: 1px solid #2254BF !important;
   color: #2254BF !important;
+
+  .ui-button-text {
+    color: #2254BF !important;
+  }
 }
 
 app-root {
@@ -156,6 +151,10 @@ app-layout {
       padding: 30px 0.857em;
       font-size: 20px;
       white-space: nowrap;
+
+      &:not(:last-child) {
+        border: 0;
+      }
     }
 
     .ui-table-tbody > tr {

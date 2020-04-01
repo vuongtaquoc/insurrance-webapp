@@ -1,0 +1,152 @@
+@import "../_colors";
+
+body .ui-treetable .ui-treetable-header {
+    padding: 12px 20px;
+    background-color: $default-color;
+}
+
+body .ui-treetable .ui-treetable-footer {
+    padding: 12px 20px;
+    background-color: $default-color;
+}
+
+body .ui-treetable .ui-treetable-caption,
+body .ui-treetable .ui-treetable-summary {
+    padding: 10px 0;
+}
+
+body .ui-treetable thead th {
+    background-color: $default-color;
+    padding: 10px;
+    border-color: $default-primary-color;
+    color: $primary-dark-text-color;
+}
+
+body .ui-treetable thead th.ui-state-active {
+    border-color: $primary-color;
+    background-color: $primary-color;
+    color: $primary-light-text-color;
+}
+
+body .ui-treetable tfoot td {
+    background-color: #fff;
+    padding: 10px;
+    border-color: #e5eaea;
+}
+
+body .ui-treetable .ui-treetable-data tr:not(.ui-state-highlight):hover {
+    background-color: #e5eaea;
+}
+
+body .ui-treetable .ui-treetable-row.ui-state-highlight .ui-chkbox-icon {
+    color: $primary-dark-text-color;
+    margin: 0;
+}
+
+body .ui-treetable .ui-treetable-row.ui-state-highlight .ui-treetable-toggler {
+    color: $primary-light-text-color;
+}
+
+body .ui-treetable .ui-treetable-row.ui-treetable-row-selectable:not(.ui-state-highlight):hover {
+    background-color: #e5eaea;
+}
+
+body .ui-treetable .ui-treetable-data tr.ui-state-highlight {
+    border-color: active($primary-color);
+}
+
+body .ui-treetable .ui-treetable-data tr td .ui-treetable-toggler {
+    font-size: 48px;
+    vertical-align: middle;
+    display: inline-block;
+    position: relative;
+}
+
+body .ui-treetable .ui-treetable-data tr td .ui-chkbox {
+    vertical-align: middle;
+    display: inline-block;
+    position: relative;
+}
+
+body .ui-treetable thead.ui-treetable-thead th,
+body .ui-treetable tbody.ui-treetable-tbody td,
+body .ui-treetable tfoot.ui-treetable-tfoot td {
+    padding: 10px;
+}
+
+body .ui-treetable .ui-treetable-data tr td .ui-chkbox .ui-chkbox-icon {
+    color: active($primary-color);
+    left: 0;
+}
+
+body .ui-treetable .ui-treetable-scrollable-header,
+body .ui-treetable .ui-treetable-scrollable-footer {
+    background-color: #fff;
+}
+
+body .ui-treetable .ui-treetable-scrollable-header .ui-treetable-scrollable-header-box td,
+body .ui-treetable .ui-treetable-scrollable-footer .ui-treetable-scrollable-header-box td {
+    color: $primary-dark-text-color;
+}
+
+body .ui-treetable {
+    .ui-treetable-thead > tr > th {
+        text-align: left;
+    }
+
+    .ui-treetable-thead > tr > th,
+    .ui-treetable-tfoot > tr > td {
+        background-color: $default-color;
+        border: 1px solid $default-primary-color;
+        color: $primary-dark-text-color;
+        font-weight: bold;
+    }
+
+    .ui-treetable-tbody > tr {
+        background-color: $default-color;
+        color: $primary-dark-text-color;
+
+        > td {
+            border: 1px solid $default-primary-color;
+            background-color: inherit;
+        }
+
+        &.ui-state-highlight {
+            background-color: $primary-color;
+            color: $primary-light-text-color;
+
+            .ui-treetable-toggler {
+                color: $primary-light-text-color;
+            }
+        }
+
+        .ui-treetable-toggler {
+            color: $primary-dark-text-color;
+            font-size: 10px;
+        }
+    }
+
+    .ui-sortable-column {
+        .ui-sortable-column-icon {
+            @include disabled();
+            color: $secondary-dark-text-color;
+        }
+
+        &.ui-state-highlight {
+            background-color: $default-color;
+            color: $primary-dark-text-color;
+
+            .ui-sortable-column-icon {
+                color: $default-primary-color;
+            }
+        }
+    }
+
+    &.ui-treetable-hoverable-rows {
+        .ui-treetable-tbody > tr:not(.ui-state-highlight):not(.ui-contextmenu-selected):hover {
+            cursor: pointer;
+            background-color: #e5eaea;
+            color: $primary-dark-text-color;
+        }
+    }
+}

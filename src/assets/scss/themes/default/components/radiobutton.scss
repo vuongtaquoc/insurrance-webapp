@@ -1,0 +1,41 @@
+@import "../_colors";
+
+body .ui-radiobutton {
+    margin-right: 10px;
+    margin-top: 1px;
+    vertical-align: top;
+}
+
+body p-radiobutton + p-radiobutton {
+    margin-left: 20px;
+}
+
+body .ui-radiobutton .ui-radiobutton-box {
+    background-color: $default-color;
+    border: 1px solid $default-primary-color;
+    border-radius: 50%;
+    height: 20px;
+    transition: background-color 400ms ease-out, border-color 400ms ease-out;
+    width: 20px;
+
+    &.ui-state-active {
+        background-color: $primary-color;
+        border-color: $primary-color;
+        color: $primary-light-text-color;
+    }
+}
+
+body .ui-radiobutton .ui-radiobutton-box:not(.ui-state-disabled):not(.ui-state-active):hover {
+    background-color: highlight($default-primary-color);
+}
+
+body .ui-radiobutton .ui-radiobutton-box.ui-state-focus,
+body .ui-radiobutton .ui-radiobutton-box:active {
+    border: 1px solid highlight($primary-color);
+}
+
+body .ui-radiobutton-label {
+    max-width: calc(100% - 30px);
+    display: inline-block;
+    margin-bottom: 0;
+}

@@ -1,0 +1,203 @@
+@import "../_colors";
+
+body .ui-calendar {
+    display: inline-flex;
+}
+
+body .ui-calendar {
+    .ui-calendar-button {
+        color: $primary-dark-text-color;
+        background-color: $default-color;
+        border: 1px solid $default-primary-color;
+        width: 34px;
+        height: 34px;
+    }
+
+    .ui-button:hover {
+        background-color: highlight($default-primary-color);
+    }
+
+    .ui-button:enabled:active {
+        background-color: $default-primary-color;
+    }
+}
+
+body .ui-calendar .ui-calendar-button:enabled:hover,
+body .ui-calendar .ui-calendar-button:focus {
+    background-color: highlight($default-primary-color);
+    border-color: $default-primary-color;
+}
+
+body .ui-calendar .ui-calendar-button .ui-button-icon-left {
+    font-size: 1em;
+}
+
+body .ui-datepicker {
+    &.ui-datepicker-inline {
+        border: 1px solid $default-secondary-color;
+    }
+
+    & th {
+        color: #999;
+        font-weight: normal;
+        font-size: 12px;
+    }
+
+    & td {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+
+        & a {
+            font-size: 14px;
+            padding: 10px;
+            margin: 0;
+        }
+    }
+
+    & .ui-datepicker-buttonbar {
+        border: none;
+        padding: 10px 0 0 0;
+    }
+
+    & .ui-datepicker-title select {
+        height: 34px;
+        border-radius: 4px;
+        border-color: #ccc;
+    }
+}
+
+body .ui-fluid .ui-calendar.ui-calendar-w-btn .ui-inputtext {
+    width: calc(100% - 34px);
+}
+
+body .ui-timepicker {
+    border: none;
+    margin-top: -5px;
+
+    &.ui-timepicker-inline {
+        border: 1px solid $default-secondary-color;
+    }
+
+    .ui-hour-picker span,
+    .ui-minute-picker span,
+    .ui-second-picker span {
+        font-size: 14px;
+    }
+
+    .ui-hour-picker > span,
+    .ui-minute-picker > span,
+    .ui-second-picker > span {
+        display: inline-block;
+        margin-top: 5px;
+        font-size: 20px;
+    }
+
+    .ui-hour-picker a,
+    .ui-minute-picker a,
+    .ui-second-picker a,
+    .ui-ampm-picker a {
+        color: $primary-dark-text-color;
+        font-size: 18px;
+        font-weight: bold;
+        margin-top: 0;
+        opacity: 1;
+    }
+}
+
+body .ui-datepicker,
+body .ui-datepicker.ui-widget {
+    padding: 10px;
+}
+
+body .ui-datepicker .ui-datepicker-header {
+    padding: 0;
+    background-color: transparent;
+    border: none;
+    font-weight: bold;
+}
+
+body .ui-datepicker .ui-datepicker-header .ui-datepicker-prev,
+body .ui-datepicker .ui-datepicker-header .ui-datepicker-next {
+    cursor: pointer;
+    color: $secondary-dark-text-color;
+    display: inline-block;
+    text-align: center;
+    top: 0;
+
+    &:hover {
+        color: highlight($secondary-dark-text-color);
+    }
+}
+
+body .ui-datepicker table {
+    font-size: 1em;
+    height: 250px;
+}
+
+body .ui-datepicker table td a {
+    min-width: 1em;
+    text-align: center;
+    color: $primary-dark-text-color;
+    font-size: 14px;
+    outline: none;
+    transition: background-color 200ms ease-out, color 200ms ease-out;
+}
+
+body .ui-datepicker table td a:hover {
+    background-color: $default-secondary-color;
+}
+
+body .ui-datepicker table td a.ui-state-highlight {
+    color: $primary-dark-text-color;
+    background-color: highlight($default-primary-color);
+
+    &:hover {
+        background-color: $default-primary-color;
+    }
+}
+
+body .ui-datepicker table td a.ui-state-active {
+    color: $primary-light-text-color;
+    background-color: $primary-color;
+
+    &:hover {
+        background-color: highlight($primary-color);
+    }
+}
+
+body .ui-datepicker.ui-datepicker-multiple-month .ui-datepicker-group {
+    padding: 0 10px;
+}
+
+body .ui-datepicker.ui-datepicker-multiple-month .ui-datepicker-group:first-child {
+    padding-left: 0;
+}
+
+body .ui-datepicker.ui-datepicker-multiple-month .ui-datepicker-group:last-child {
+    padding-right: 0;
+    border-right: 0 none;
+}
+
+body .ui-datepicker-monthpicker .ui-monthpicker-month {
+    color: $primary-dark-text-color;
+    text-decoration: none;
+    transition: background-color 200ms ease-out, color 200ms ease-out;
+
+    &:hover {
+        background-color: $default-secondary-color;
+    }
+}
+
+body .ui-datepicker-monthpicker .ui-monthpicker-month.ui-state-active {
+    color: $primary-light-text-color;
+    background-color: $primary-color;
+
+    &:hover {
+        background-color: highlight($primary-color);
+    }
+}
+
+body .ui-datepicker-monthpicker select.ui-datepicker-year {
+    width: 35%;
+}

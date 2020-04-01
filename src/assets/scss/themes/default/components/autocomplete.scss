@@ -1,0 +1,72 @@
+@import "../_colors";
+@import "../_queries";
+@import "../_sizes";
+
+body .ui-autocomplete {
+    display: inline-flex;
+
+    & input {
+        font-size: 14px !important;
+    }
+
+    & .ui-autocomplete-items .ui-state-highlight {
+        background-color: $default-primary-color;
+        color: $primary-dark-text-color;
+    }
+}
+
+body p-autocomplete .ui-autocomplete .ui-autocomplete-dropdown.ui-button {
+    color: $primary-dark-text-color;
+    background-color: $default-color;
+    border: 1px solid $input-border-color;
+    border-left: none;
+    width: $input-trigger-size;
+    height: auto;
+
+    &:focus,
+    &:hover {
+        background-color: highlight($default-primary-color) !important;
+    }
+
+    &:enabled:active {
+        background-color: active($default-primary-color);
+    }
+}
+
+body .ui-autocomplete-emptymessage {
+    font-size: 13px;
+    font-style: italic;
+    color: $secondary-dark-text-color;
+}
+
+body .ui-autocomplete .ui-autocomplete-loader {
+    right: 10px;
+
+    &::before {
+        content: "\f1ce";
+    }
+}
+
+body .ui-autocomplete.ui-autocomplete-dd .ui-autocomplete-loader {
+    right: 44px;
+}
+
+body .ui-autocomplete .ui-autocomplete-token {
+    max-width: 100%;
+}
+
+body .ui-autocomplete .ui-autocomplete-token-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+body .ui-fluid .ui-autocomplete .ui-autocomplete-dropdown.ui-button {
+    width: $input-trigger-size;
+}
+
+body .ui-fluid .ui-autocomplete.ui-autocomplete-dd .ui-autocomplete-input,
+body .ui-fluid .ui-autocomplete.ui-autocomplete-dd .ui-autocomplete-multiple-container {
+    width: calc(100% - #{$input-trigger-size});
+}

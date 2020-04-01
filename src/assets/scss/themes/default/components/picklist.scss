@@ -1,0 +1,51 @@
+@import "../_colors";
+@import "../_queries";
+@import "../_sizes";
+
+body .ui-picklist .ui-picklist-buttons button {
+    margin-left: 0;
+}
+
+body .ui-picklist .ui-picklist-listwrapper {
+    border: 1px solid $default-secondary-color;
+}
+
+body .ui-picklist .ui-picklist-list,
+body .ui-picklist .ui-picklist-filter-container {
+    border-top: 1px solid $default-secondary-color;
+}
+
+
+body .ui-picklist .ui-picklist-caption {
+    padding: 0.75em 1.25em;
+    background-color: #f5f5f5;
+}
+
+body .ui-picklist .ui-picklist-filter-container {
+    margin-bottom: 0.063em;
+}
+
+body .ui-picklist .ui-picklist-filter-container .ui-icon {
+    top: 0.313em;
+    right: 0.25em;
+    color: #999;
+}
+
+body .ui-picklist .ui-picklist-list .ui-picklist-item {
+    padding: 5px 10px;
+    margin: 0;
+    -moz-border-radius: 0;
+    -webkit-border-radius: 0;
+    border-radius: 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+body .ui-picklist .ui-picklist-list .ui-picklist-item:not(.ui-state-highlight):hover {
+    background-color: #f4f3f4;
+    color: #697882;
+}
+
+body .ui-picklist .ui-picklist-list .ui-picklist-item.ui-state-highlight {
+    background-color: #248bca;
+    color: $primary-light-text-color;
+}
