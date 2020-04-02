@@ -1,6 +1,6 @@
 import { AfterViewInit, Directive, ElementRef, OnDestroy } from '@angular/core';
 
-const CARD_OFFSET = 50;
+const CARD_OFFSET = 40;
 
 @Directive({
   // tslint:disable-next-line:directive-selector

@@ -8,21 +8,13 @@ import 'jsuites/dist/jsuites.js';
   styleUrls: ['./table-editor.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class TableEditorComponent implements OnInit, AfterViewInit, OnDestroy {
+export class TableEditorComponent implements AfterViewInit, OnDestroy {
   @ViewChild('spreadsheet', { static: true }) spreadsheetEl;
   @Input() data: any = [];
 
   spreadsheet: any;
-  containerSize: { width: number, height: number } = { width: 0, height: 0 };
 
   constructor(private element: ElementRef) {
-    this.updateContainerSize = this.updateContainerSize.bind(this);
-  }
-
-  ngOnInit() {
-    this.updateContainerSize();
-
-    window.addEventListener('resize', this.updateContainerSize);
   }
 
   ngOnDestroy() {
@@ -30,6 +22,8 @@ export class TableEditorComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
+    const containerSize = this.getContainerSize();
+
     this.spreadsheet = jexcel(this.spreadsheetEl.nativeElement, {
       data: [],
       nestedHeaders:[
@@ -263,6 +257,9 @@ export class TableEditorComponent implements OnInit, AfterViewInit, OnDestroy {
       }],
       allowInsertColumn: false,
       allowInsertRow: false,
+      tableOverflow: true,
+      tableWidth: `${ containerSize.width }px`,
+      tableHeight: `${ containerSize.height }px`
     });
 
     this.spreadsheet.hideIndex();
@@ -286,11 +283,11 @@ export class TableEditorComponent implements OnInit, AfterViewInit, OnDestroy {
     this.spreadsheet.setReadonlyRowsTitle(readonlyIndexes, [0, 1]);
   }
 
-  private updateContainerSize() {
+  private getContainerSize() {
     const element = this.element.nativeElement;
     const parent = element.parentNode;
 
-    this.containerSize = {
+    return {
       width: parent.offsetWidth,
       height: parent.offsetHeight
     };

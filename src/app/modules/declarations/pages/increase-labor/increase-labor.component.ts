@@ -82,6 +82,102 @@ export class IncreaseLaborComponent implements OnInit {
     }, {
       readonly: false,
       data: [ 2, 'Ha' ]
+    }, {
+      readonly: false,
+      data: [ 2, 'Ha' ]
+    }, {
+      readonly: false,
+      data: [ 2, 'Ha' ]
+    }, {
+      readonly: false,
+      data: [ 2, 'Ha' ]
+    }, {
+      readonly: false,
+      data: [ 2, 'Ha' ]
+    }, {
+      readonly: false,
+      data: [ 2, 'Ha' ]
+    }, {
+      readonly: false,
+      data: [ 2, 'Ha' ]
+    }, {
+      readonly: false,
+      data: [ 2, 'Ha' ]
+    }, {
+      readonly: false,
+      data: [ 2, 'Ha' ]
+    }, {
+      readonly: false,
+      data: [ 2, 'Ha' ]
+    }, {
+      readonly: false,
+      data: [ 2, 'Ha' ]
+    }, {
+      readonly: false,
+      data: [ 2, 'Ha' ]
+    }, {
+      readonly: false,
+      data: [ 2, 'Ha' ]
+    }, {
+      readonly: false,
+      data: [ 2, 'Ha' ]
+    }, {
+      readonly: false,
+      data: [ 2, 'Ha' ]
+    }, {
+      readonly: false,
+      data: [ 2, 'Ha' ]
+    }, {
+      readonly: false,
+      data: [ 2, 'Ha' ]
+    }, {
+      readonly: false,
+      data: [ 2, 'Ha' ]
+    }, {
+      readonly: false,
+      data: [ 2, 'Ha' ]
+    }, {
+      readonly: false,
+      data: [ 2, 'Ha' ]
+    }, {
+      readonly: false,
+      data: [ 2, 'Ha' ]
+    }, {
+      readonly: false,
+      data: [ 2, 'Ha' ]
+    }, {
+      readonly: false,
+      data: [ 2, 'Ha' ]
+    }, {
+      readonly: false,
+      data: [ 2, 'Ha' ]
+    }, {
+      readonly: false,
+      data: [ 2, 'Ha' ]
+    }, {
+      readonly: false,
+      data: [ 2, 'Ha' ]
+    }, {
+      readonly: false,
+      data: [ 2, 'Ha' ]
+    }, {
+      readonly: false,
+      data: [ 2, 'Ha' ]
+    }, {
+      readonly: false,
+      data: [ 2, 'Ha' ]
+    }, {
+      readonly: false,
+      data: [ 2, 'Ha' ]
+    }, {
+      readonly: false,
+      data: [ 2, 'Ha' ]
+    }, {
+      readonly: false,
+      data: [ 2, 'Ha' ]
+    }, {
+      readonly: false,
+      data: [ 2, 'Ha' ]
     });
   }
 }
