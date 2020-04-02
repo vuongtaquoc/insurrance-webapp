@@ -7,3 +7,11 @@
   color: $primary-dark-text-color !important;
   font-weight: 700;
 }
+
+.jexcel > tbody > tr > td.row-formula-readonly,
+.jexcel_content.table-freeze-column .jexcel > tbody > tr > td.jexcel_freezed.row-formula-readonly {
+  background-image: none !important;
+  background-color: $jexcel-readonly-formula-color;
+  color: $primary-dark-text-color !important;
+  font-weight: 700;
+}

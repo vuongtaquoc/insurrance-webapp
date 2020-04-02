@@ -205,7 +205,9 @@ export class TableEditorComponent implements AfterViewInit, OnDestroy {
       }, {
         type: 'text',
         width: 80,
-        title: '(22.1)'
+        title: '(22.1)',
+        mask: '#.##,000',
+        decimal: ','
       }, {
         type: 'text',
         width: 80,
@@ -259,7 +261,8 @@ export class TableEditorComponent implements AfterViewInit, OnDestroy {
       allowInsertRow: false,
       tableOverflow: true,
       tableWidth: `${ containerSize.width }px`,
-      tableHeight: `${ containerSize.height }px`
+      tableHeight: `${ containerSize.height }px`,
+      columnSorting: false
     });
 
     this.spreadsheet.hideIndex();
@@ -269,6 +272,8 @@ export class TableEditorComponent implements AfterViewInit, OnDestroy {
 
   private updateData() {
     const readonlyIndexes = [];
+    const formulaIndexes = [];
+    let formulaIgnoreIndexes = [];
     const data = [];
 
     this.data.forEach((d, index) => {
@@ -276,11 +281,27 @@ export class TableEditorComponent implements AfterViewInit, OnDestroy {
         readonlyIndexes.push(index);
       }
 
+      if (d.formula) {
+        formulaIndexes.push(index);
+
+        formulaIgnoreIndexes = d.data.reduce(
+          (combine, current, i) => {
+            if (current) {
+              return [ ...combine, i ];
+            }
+
+            return [ ...combine ];
+          },
+          []
+        );
+      }
+
       data.push(d.data);
     });
 
     this.spreadsheet.setData(data);
     this.spreadsheet.setReadonlyRowsTitle(readonlyIndexes, [0, 1]);
+    this.spreadsheet.setReadonlyRowsFormula(formulaIndexes, formulaIgnoreIndexes);
   }
 
   private getContainerSize() {

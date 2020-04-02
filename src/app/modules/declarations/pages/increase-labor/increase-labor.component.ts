@@ -75,13 +75,13 @@ export class IncreaseLaborComponent implements OnInit {
       data: [ 'I-1', 'Lao động' ]
     }, {
       readonly: false,
-      data: [ 1, 'Vuong' ]
+      data: [ 1, 'Vuong', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 20000000 ]
     }, {
       readonly: true,
       data: [ 'I-2', 'Bảo hiểm y tế' ]
     }, {
       readonly: false,
-      data: [ 2, 'Ha' ]
+      data: [ 2, 'Ha', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 10000000 ]
     }, {
       readonly: false,
       data: [ 2, 'Ha' ]
@@ -179,5 +179,10 @@ export class IncreaseLaborComponent implements OnInit {
       readonly: false,
       data: [ 2, 'Ha' ]
     });
+
+    this.declarations.push({
+      formula: true,
+      data: [ '', 'Cộng tăng', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', `=SUM(AD3:AD${ this.declarations.length })` ]
+    })
   }
 }
