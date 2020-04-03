@@ -26,7 +26,7 @@
     "@ngx-translate/core": "11.0.1",
     "@ngx-translate/http-loader": "4.0.0",
     "http-status-codes": "1.3.2",
-    "jstable-editor": "3.10.7",
+    "jstable-editor": "3.10.11",
     "jsuites": "2.7.1",
     "primeflex": "1.0.0",
     "primeicons": "2.0.0",

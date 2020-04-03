@@ -5,7 +5,7 @@ import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { ScrollPanelModule } from 'primeng/scrollpanel';
 
-import { AuthenticationService } from '@app/core/services';
+import { AuthenticationService, DeclarationService } from '@app/core/services';
 import { SharedModule } from '@app/shared/shared.module';
 import { DeclarationsRoutingModule } from './declarations-routing.module';
 
@@ -30,7 +30,8 @@ import {
     TableEditorComponent
   ],
   providers: [
-    AuthenticationService
+    AuthenticationService,
+    DeclarationService
   ],
   entryComponents: []
 })

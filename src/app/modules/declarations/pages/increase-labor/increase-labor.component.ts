@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { TreeNode } from 'primeng/api';
+import { FormBuilder, FormGroup } from '@angular/forms';
+
+import { Declaration } from '@app/core/models';
+import { DeclarationService } from '@app/core/services';
+
+import { TABLE_NESTED_HEADERS, TABLE_HEADER_COLUMNS } from '@app/modules/declarations/data/increase-labor';
 
 @Component({
   selector: 'app-declaration-increase-labor',
@@ -9,10 +13,14 @@ import { TreeNode } from 'primeng/api';
 })
 export class IncreaseLaborComponent implements OnInit {
   form: FormGroup;
-  users: TreeNode[];
-  declarations: any[] = [];
+  declarations: Declaration[] = [];
+  tableNestedHeaders: any[] = TABLE_NESTED_HEADERS;
+  tableHeaderColumns: any[] = TABLE_HEADER_COLUMNS;
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private declarationService: DeclarationService
+  ) {}
 
   ngOnInit() {
     this.form = this.formBuilder.group({
@@ -21,168 +29,38 @@ export class IncreaseLaborComponent implements OnInit {
       year: ['2020']
     });
 
-    // TODO mock data
-    this.users = [
-      {
-        "label": "Documents",
-        "data": "Documents Folder",
-        "expandedIcon": "pi pi-folder-open",
-        "collapsedIcon": "pi pi-folder",
-        "children": [{
-            "label": "Work",
-            "data": "Work Folder",
-            "expandedIcon": "pi pi-folder-open",
-            "collapsedIcon": "pi pi-folder",
-          },
-          {
-            "label": "Home",
-            "data": "Home Folder",
-            "expandedIcon": "pi pi-folder-open",
-            "collapsedIcon": "pi pi-folder",
-          }]
-      },
-      {
-        "label": "Pictures",
-        "data": "Pictures Folder",
-        "expandedIcon": "pi pi-folder-open",
-        "collapsedIcon": "pi pi-folder",
-        "children": [
-          {"label": "barcelona.jpg", "icon": "pi pi-image", "data": "Barcelona Photo"},
-          {"label": "logo.jpg", "icon": "pi pi-file", "data": "PrimeFaces Logo"},
-          {"label": "primeui.png", "icon": "pi pi-image", "data": "PrimeUI Logo"}]
-      },
-      {
-        "label": "Movies",
-        "data": "Movies Folder",
-        "expandedIcon": "pi pi-folder-open",
-        "collapsedIcon": "pi pi-folder",
-        "children": [{
-            "label": "Al Pacino",
-            "data": "Pacino Movies",
-          },
-          {
-            "label": "Robert De Niro",
-            "data": "De Niro Movies",
-          }]
-      }
-    ];
+    this.declarationService.getDeclarationInitials('600').subscribe(declarations => {
+      const data = [];
 
-    this.declarations.push({
-      readonly: true,
-      data: [ 'I', 'Tăng' ]
-    }, {
-      readonly: true,
-      data: [ 'I-1', 'Lao động' ]
-    }, {
-      readonly: false,
-      data: [ 1, 'Vuong', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 20000000 ]
-    }, {
-      readonly: true,
-      data: [ 'I-2', 'Bảo hiểm y tế' ]
-    }, {
-      readonly: false,
-      data: [ 2, 'Ha', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 10000000 ]
-    }, {
-      readonly: false,
-      data: [ 2, 'Ha' ]
-    }, {
-      readonly: false,
-      data: [ 2, 'Ha' ]
-    }, {
-      readonly: false,
-      data: [ 2, 'Ha' ]
-    }, {
-      readonly: false,
-      data: [ 2, 'Ha' ]
-    }, {
-      readonly: false,
-      data: [ 2, 'Ha' ]
-    }, {
-      readonly: false,
-      data: [ 2, 'Ha' ]
-    }, {
-      readonly: false,
-      data: [ 2, 'Ha' ]
-    }, {
-      readonly: false,
-      data: [ 2, 'Ha' ]
-    }, {
-      readonly: false,
-      data: [ 2, 'Ha' ]
-    }, {
-      readonly: false,
-      data: [ 2, 'Ha' ]
-    }, {
-      readonly: false,
-      data: [ 2, 'Ha' ]
-    }, {
-      readonly: false,
-      data: [ 2, 'Ha' ]
-    }, {
-      readonly: false,
-      data: [ 2, 'Ha' ]
-    }, {
-      readonly: false,
-      data: [ 2, 'Ha' ]
-    }, {
-      readonly: false,
-      data: [ 2, 'Ha' ]
-    }, {
-      readonly: false,
-      data: [ 2, 'Ha' ]
-    }, {
-      readonly: false,
-      data: [ 2, 'Ha' ]
-    }, {
-      readonly: false,
-      data: [ 2, 'Ha' ]
-    }, {
-      readonly: false,
-      data: [ 2, 'Ha' ]
-    }, {
-      readonly: false,
-      data: [ 2, 'Ha' ]
-    }, {
-      readonly: false,
-      data: [ 2, 'Ha' ]
-    }, {
-      readonly: false,
-      data: [ 2, 'Ha' ]
-    }, {
-      readonly: false,
-      data: [ 2, 'Ha' ]
-    }, {
-      readonly: false,
-      data: [ 2, 'Ha' ]
-    }, {
-      readonly: false,
-      data: [ 2, 'Ha' ]
-    }, {
-      readonly: false,
-      data: [ 2, 'Ha' ]
-    }, {
-      readonly: false,
-      data: [ 2, 'Ha' ]
-    }, {
-      readonly: false,
-      data: [ 2, 'Ha' ]
-    }, {
-      readonly: false,
-      data: [ 2, 'Ha' ]
-    }, {
-      readonly: false,
-      data: [ 2, 'Ha' ]
-    }, {
-      readonly: false,
-      data: [ 2, 'Ha' ]
-    }, {
-      readonly: false,
-      data: [ 2, 'Ha' ]
+      declarations.forEach(d => {
+        if (!d.hasChildren) {
+          data.push({
+            readonly: true,
+            data: [ d.codeView, d.groupName ]
+          });
+        } else {
+          data.push({
+            readonly: true,
+            data: [ d.codeView, d.groupName ]
+          });
+
+          d.declarations.forEach(employee => {
+            data.push({
+              data: this.tableHeaderColumns.map(column => {
+                if (!column.key) return '';
+
+                return employee[column.key];
+              })
+            });
+          });
+        }
+      });
+
+      this.declarations = data;
     });
+  }
 
-    this.declarations.push({
-      formula: true,
-      data: [ '', 'Cộng tăng', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', `=SUM(AD3:AD${ this.declarations.length })` ]
-    })
+  handleSelectEmployees(employees) {
+    console.log(employees)
   }
 }

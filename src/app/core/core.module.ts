@@ -1,6 +1,8 @@
 import { NgModule, Optional, SkipSelf } from '@angular/core';
 import {
   AuthenticationService,
+  DeclarationService,
+  EmployeeService,
   NavigationService
 } from './services';
 
@@ -8,6 +10,8 @@ import {
   imports: [],
   providers: [
     AuthenticationService,
+    DeclarationService,
+    EmployeeService,
     NavigationService
   ],
   declarations: []

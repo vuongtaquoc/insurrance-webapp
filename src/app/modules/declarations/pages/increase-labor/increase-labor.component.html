@@ -9,7 +9,7 @@
         <p-button icon="pi pi-times" styleClass="ui-button-secondary"></p-button>
       </div><!-- page-declarations__group-button -->
 
-      <app-users-tree [data]="users"></app-users-tree>
+      <app-users-tree (onSelectEmployees)="handleSelectEmployees($event)"></app-users-tree>
     </div><!-- page-declarations__sidebar -->
 
     <div class="page-declarations__content">
@@ -39,7 +39,7 @@
       </div><!-- page-declarations__title -->
 
       <div class="page-declarations__editor">
-        <app-table-editor [data]="declarations"></app-table-editor>
+        <app-table-editor [nestedHeaders]="tableNestedHeaders" [columns]="tableHeaderColumns" [data]="declarations"></app-table-editor>
       </div><!-- page-declarations__editor -->
     </div><!-- page-declarations__content -->
   </div>
