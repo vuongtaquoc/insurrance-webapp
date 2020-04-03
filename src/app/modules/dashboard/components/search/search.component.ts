@@ -24,14 +24,20 @@ export class DashboardSearchComponent implements OnInit {
       dateTo: ['']
     });
     this.getDocumentTypies();
-    // this.documentTypes = [{
-    //   label: 'Hồ sơ 1',
-    //   value: 1
-    // }];
   }
 
   getDocumentTypies() {
-    console.log('OOO');
-    this.documentTypeService.categories();
+    this.documentTypeService.getCategories().subscribe(datas => {
+      this.formatObjectDropdown(datas)
+    });
+  }
+
+  formatObjectDropdown(datas: any) {
+    datas.forEach((item) => {
+      this.documentTypes.push({
+        label: item.groupName,
+        value: item.groupCode
+      });
+    });
   }
 }

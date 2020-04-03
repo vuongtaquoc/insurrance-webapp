@@ -13,9 +13,9 @@ export class DocumentTypeService {
   constructor(private http: ApplicationHttpClient) {
   }
 
-  public categories(): Observable<DocumentType> {
-      return this.http.get('/document-types/categories', {
-      });
+  public getCategories(): Observable<DocumentType> {
+    return this.http.get('/document-types/categories', {
+    });
   }
   
   public getDetailByGroupCode(groupCode: string) {
