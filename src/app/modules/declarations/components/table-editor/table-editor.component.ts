@@ -8,21 +8,13 @@ import 'jsuites/dist/jsuites.js';
   styleUrls: ['./table-editor.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class TableEditorComponent implements OnInit, AfterViewInit, OnDestroy {
+export class TableEditorComponent implements AfterViewInit, OnDestroy {
   @ViewChild('spreadsheet', { static: true }) spreadsheetEl;
   @Input() data: any = [];
 
   spreadsheet: any;
-  containerSize: { width: number, height: number } = { width: 0, height: 0 };
 
   constructor(private element: ElementRef) {
-    this.updateContainerSize = this.updateContainerSize.bind(this);
-  }
-
-  ngOnInit() {
-    this.updateContainerSize();
-
-    window.addEventListener('resize', this.updateContainerSize);
   }
 
   ngOnDestroy() {
@@ -30,6 +22,8 @@ export class TableEditorComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
+    const containerSize = this.getContainerSize();
+
     this.spreadsheet = jexcel(this.spreadsheetEl.nativeElement, {
       data: [],
       nestedHeaders:[
@@ -211,7 +205,9 @@ export class TableEditorComponent implements OnInit, AfterViewInit, OnDestroy {
       }, {
         type: 'text',
         width: 80,
-        title: '(22.1)'
+        title: '(22.1)',
+        mask: '#.##,000',
+        decimal: ','
       }, {
         type: 'text',
         width: 80,
@@ -263,6 +259,10 @@ export class TableEditorComponent implements OnInit, AfterViewInit, OnDestroy {
       }],
       allowInsertColumn: false,
       allowInsertRow: false,
+      tableOverflow: true,
+      tableWidth: `${ containerSize.width }px`,
+      tableHeight: `${ containerSize.height }px`,
+      columnSorting: false
     });
 
     this.spreadsheet.hideIndex();
@@ -272,6 +272,8 @@ export class TableEditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private updateData() {
     const readonlyIndexes = [];
+    const formulaIndexes = [];
+    let formulaIgnoreIndexes = [];
     const data = [];
 
     this.data.forEach((d, index) => {
@@ -279,18 +281,34 @@ export class TableEditorComponent implements OnInit, AfterViewInit, OnDestroy {
         readonlyIndexes.push(index);
       }
 
+      if (d.formula) {
+        formulaIndexes.push(index);
+
+        formulaIgnoreIndexes = d.data.reduce(
+          (combine, current, i) => {
+            if (current) {
+              return [ ...combine, i ];
+            }
+
+            return [ ...combine ];
+          },
+          []
+        );
+      }
+
       data.push(d.data);
     });
 
     this.spreadsheet.setData(data);
     this.spreadsheet.setReadonlyRowsTitle(readonlyIndexes, [0, 1]);
+    this.spreadsheet.setReadonlyRowsFormula(formulaIndexes, formulaIgnoreIndexes);
   }
 
-  private updateContainerSize() {
+  private getContainerSize() {
     const element = this.element.nativeElement;
     const parent = element.parentNode;
 
-    this.containerSize = {
+    return {
       width: parent.offsetWidth,
       height: parent.offsetHeight
     };
