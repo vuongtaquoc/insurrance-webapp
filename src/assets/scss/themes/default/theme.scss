@@ -90,10 +90,10 @@ body .ui-inputtext {
     padding: 5px 10px;
     border: 1px solid $default-primary-color;
     border-radius: 4px;
-    font-size: 14px;
+    font-size: 13px;
     color: $primary-dark-text-color;
-    line-height: 1.25;
-    min-height: 34px;
+    line-height: 1.2;
+    min-height: 24px;
 }
 
 body .ui-inputtext.ui-state-focus,
@@ -1157,7 +1157,7 @@ label {
     display: block;
     max-width: 100%;
     margin-bottom: 5px;
-    font-size: 14px;
+    font-size: 13px;
 }
 
 .required > label:after {
@@ -1186,7 +1186,7 @@ p-listbox .ui-inputtext {
 .ui-listbox-header .ui-inputtext {
     padding: 5px 10px !important;
     font-size: 14px !important;
-    min-height: 34px;
+    min-height: 24px;
 }
 
 .ui-listbox-header .ui-listbox-filter-container .fa {
@@ -1205,6 +1205,20 @@ body .ui-slider .ui-slider-handle {
 
 body .ui-slider-horizontal {
     height: 10px !important;
+}
+
+body .ui-chkbox .ui-chkbox-box {
+    width: 17px !important;
+    height: 17px !important;
+}
+
+body .ui-tree .ui-tree-filter-container .ui-tree-filter-icon {
+    top: 0.6em;
+}
+
+body .ui-button {
+    font-size: 13px !important;
+    min-height: 24px!important;
 }
 
 @import "mixins";

@@ -29,19 +29,19 @@ export class IncreaseLaborComponent implements OnInit {
       year: ['2020']
     });
 
-    this.declarationService.getDeclarationInitials('600').subscribe(declarations => {
+    this.declarationService.getDeclarationInitials('600a').subscribe(declarations => {
       const data = [];
 
       declarations.forEach(d => {
         if (!d.hasChildren) {
           data.push({
             readonly: true,
-            data: [ d.codeView, d.groupName ]
+            data: [ d.codeView, d.name ]
           });
         } else {
           data.push({
             readonly: true,
-            data: [ d.codeView, d.groupName ]
+            data: [ d.codeView, d.name ]
           });
 
           d.declarations.forEach(employee => {

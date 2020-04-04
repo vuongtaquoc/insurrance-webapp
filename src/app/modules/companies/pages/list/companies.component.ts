@@ -15,12 +15,6 @@ export class CompaniesComponent implements OnInit, OnDestroy {
   }
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
-      subject: ['', Validators.required],
-      name: ['', Validators.required],
-      taxcode: ['', Validators.required],
-      address: ['', Validators.required],
-      addressregister: ['', Validators.required],
-      companycode: ['', Validators.required] 
     });
   }
 

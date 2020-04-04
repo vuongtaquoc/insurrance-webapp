@@ -3,7 +3,7 @@ import {
   AuthenticationService,
   DeclarationService,
   EmployeeService,
-  NavigationService
+  NavigationService,
   DocumentTypeService,
   CompaniesService
 } from './services';
@@ -13,7 +13,8 @@ import {
   providers: [
     AuthenticationService,
     DocumentTypeService,
-    CompaniesService    DeclarationService,
+    CompaniesService ,
+    DeclarationService,
     EmployeeService,
     NavigationService
   ],

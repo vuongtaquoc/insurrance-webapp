@@ -39,6 +39,7 @@
     &__label {
       display: block;
       text-align: left;
+      
     }
 
     &__label_right {
@@ -56,4 +57,8 @@
   } 
   .text-padding-left {
     text-indent: 40px;
+    line-height: 32px;
+  }
+  .input-label {
+    color: #000 !important;
   }
