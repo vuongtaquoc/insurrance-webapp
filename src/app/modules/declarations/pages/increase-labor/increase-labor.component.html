@@ -14,19 +14,19 @@
 
     <div class="page-declarations__content">
       <div class="page-declarations__group-button">
-        <button nz-button nzType="default" >
+        <button nz-button nzType="default" (click)="handleAddEmployee('I1')">
           <i nz-icon nzType="arrow-up"></i>Tăng lao động
         </button>
-        <button nz-button nzType="default" >
+        <button nz-button nzType="default" (click)="handleAddEmployee('I2')">
           <i nz-icon nzType="arrow-up"></i>Tăng BHYT
         </button>
-        <button nz-button nzType="default" >
+        <button nz-button nzType="default" (click)="handleAddEmployee('I3')">
           <i nz-icon nzType="arrow-up"></i>Tăng BHTN
         </button>
-        <button nz-button nzType="default" >
+        <button nz-button nzType="default" (click)="handleAddEmployee('III')">
           <i nz-icon nzType="arrow-up"></i>Tăng BHTNLĐ, BNN
         </button>
-        <button nz-button nzType="default" >
+        <button nz-button nzType="default" (click)="handleAddEmployee('II1')">
           <i nz-icon nzType="arrow-down"></i>Giảm BHYT
         </button>
       </div><!-- page-declarations__group-button -->
@@ -58,8 +58,19 @@
       </div><!-- page-declarations__title -->
 
       <div class="page-declarations__editor">
-        <app-table-editor [nestedHeaders]="tableNestedHeaders" [columns]="tableHeaderColumns" [data]="declarations"></app-table-editor>
+        <app-table-editor
+          [nestedHeaders]="tableNestedHeaders"
+          [columns]="tableHeaderColumns"
+          [data]="declarations"
+          [events]="eventsSubject.asObservable()"
+        ></app-table-editor>
       </div><!-- page-declarations__editor -->
+
+      <div class="page-declarations__footer">
+        <button nz-button nzType="default" (click)="emitEventToChild('save')">
+          <i nz-icon nzType="save"></i>Lưu lại
+        </button>
+      </div><!-- page-declarations__footer -->
     </div><!-- page-declarations__content -->
   </div>
 </div>

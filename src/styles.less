@@ -199,6 +199,7 @@ app-layout {
   border-radius: 10px;
   padding: 15px;
   margin-bottom: 20px;
+  width: 100%;
 
   h1 {
     font-size: 15px;
@@ -243,10 +244,18 @@ app-layout {
 
   &__content {
     padding: 5px;
+    width: 100%;
   }
 
   &__editor {
-    height: calc(100% - 140px);
-    margin-top: 12px;
+    height: calc(100% - 200px);
+    width: 100%;
+  }
+
+  &__footer {
+    height: 37px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
   }
 }

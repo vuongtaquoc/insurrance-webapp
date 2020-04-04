@@ -1,4 +1,5 @@
-import { Component, OnInit, ViewEncapsulation, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, Output, EventEmitter, ViewChild } from '@angular/core';
+import { NzFormatEmitEvent } from 'ng-zorro-antd/core';
 
 import { EmployeeService } from '@app/core/services';
 
@@ -12,7 +13,6 @@ export class UsersTreeComponent implements OnInit {
   @Output() onSelectEmployees = new EventEmitter();
 
   employees: any[];
-  selected: any[];
   searchValue = '';
 
   constructor(private employeeService: EmployeeService) {}
@@ -23,8 +23,20 @@ export class UsersTreeComponent implements OnInit {
     });
   }
 
-  nzEvent(event) {
-    console.log(event)
-    // this.onSelectEmployees.emit(this.selected);
+  nzCheck(event: NzFormatEmitEvent) {
+    const selected = event.checkedKeys.reduce(
+      (combine, current, index): any => {
+        if (current.level === 0 && current.isChecked) {
+          const children = current.getChildren();
+
+          return [ ...combine, ...children.map(child => child.origin) ];
+        }
+
+        return [ ...combine, current.origin ];
+      },
+      []
+    );
+
+    this.onSelectEmployees.emit(selected);
   }
 }

@@ -45,12 +45,18 @@
           </a>
         </li>
         <li class="layout-menu__item">
-          <a href="" class="layout-menu__link">
+          <a class="layout-menu__link" nz-dropdown nzTrigger="click" [nzDropdownMenu]="declarationMenu">
             <span class="layout-menu__icon">
               <i class="pi pi-file"></i>
             </span>
             <span class="layout-menu__text">Kê khai</span>
           </a>
+          <nz-dropdown-menu #declarationMenu="nzDropdownMenu">
+            <ul nz-menu>
+              <li nz-menu-item><a [routerLink]="['/declarations/increase-labor']"><i nz-icon nzType="arrow-up" nzTheme="outline"></i>Báo tăng lao động</a></li>
+              <li nz-menu-item><a [routerLink]="['/declarations/increase-labor']"><i nz-icon nzType="arrow-down" nzTheme="outline"></i>Báo giảm lao động</a></li>
+            </ul>
+          </nz-dropdown-menu>
         </li>
         <li class="layout-menu__item">
           <a href="" class="layout-menu__link">

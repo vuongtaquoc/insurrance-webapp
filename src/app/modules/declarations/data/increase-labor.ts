@@ -70,11 +70,13 @@ export const TABLE_HEADER_COLUMNS = [{
   type: 'checkbox',
   width: 45,
   title: '(3)',
-  align: 'center'
+  align: 'center',
+  key: 'isurranceNo'
 }, {
   type: 'text',
   width: 120,
-  title: '(4)'
+  title: '(4)',
+  key: 'isurranceCode'
 }, {
   type: 'text',
   width: 123,
