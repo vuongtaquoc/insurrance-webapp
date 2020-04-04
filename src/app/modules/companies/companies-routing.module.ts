@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { LayoutComponent } from '@app/shared/layout';
-import { CompaniesComponent } from './pages';
+import { CompaniesComponent, CompanyEidtComponent } from './pages';
 
 const routes: Routes = [
   {
@@ -12,6 +12,10 @@ const routes: Routes = [
       {
         path: 'list',
         component: CompaniesComponent
+      },
+      {
+        path: 'edit',
+        component: CompanyEidtComponent
       }
     ]
   }

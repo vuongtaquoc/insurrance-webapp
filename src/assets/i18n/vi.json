@@ -35,5 +35,41 @@
     "document-list": {
       "title": "Danh mục loại hồ sơ"
     }
+  },
+  "company": {
+    "company-list": {
+      "title": "Danh sách công ty"
+    },
+	"from" : {
+	   "subject": "Kính gửi",
+	   "city": "Tỉnh thành phố",
+	   "area": "Vùng",
+	   "insurrancemanagement": "Cơ quan BHXH quản lý",	   
+       "name": "Tên đơn vị",
+	   "companycode": "Mã số đơn vị",
+	   "taxcode": "Mã số thuế/ mã ngân sách",
+	   "addressregister": "Địa chỉ đăng ký kinh doanh",
+	   "address": "Địa chỉ giao dịch hoặc liên hệ",
+	   "companytype": "Loại hình đơn vị",
+	   "mobile": "Điện thoại di động",
+	   "regency": "Chức danh",	   
+	   "traders": "Người giao dịch BHX",	   
+	   "tel": "Điện thoại cố định",
+	   "delegate": "Người đại diện",
+	   "email": "Email đơn vị",
+	   "emailcontract": "Email liên hệ",
+	   "responseresults": "Nhận kết quả",	   
+	   "license": "QĐ thành lập/Giấy phép ĐKKD số",
+	   "issued": "Nơi cấp",
+	   "methodpay": "Phương thức đóng",
+	   "methodpayother": "Phương thức đóng khác",
+	   "notechange": "Nội dung thay đổi, yêu cầu",
+	   "documentfile": "Hồ sơ kèm theo(nếu có)",
+	   "monthly": "Hàng tháng  ",
+	   "quarterly": "Hàng quý  ",
+	   "sixmonth": "6 tháng",
+	   "group": "Nhóm đối tượng",
+	   "submission": "Trình ký số"
+	}
   }
 }

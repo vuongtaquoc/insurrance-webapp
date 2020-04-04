@@ -1,4 +1,83 @@
 <div class="page-container">
-  <h1>{{'categories.document-list.title' | translate}}</h1>
-  djhsgdjasfgjskfgks
+  <div class="page-company" cardFullHeight>
+     <div class="page-company__blank"></div>
+     <div class="page-company__main">
+        <form [formGroup]="loginForm" (ngSubmit)="handleSubmit()" class="login-page">
+              <h1>604 | Đăng ký thay đổi thông tin đơn vị</h1>
+              <div class="form-group-header">
+                  <div>
+                      <textarea pInputTextarea rows="3" autoResize="autoResize" cols="40" type="text" formControlName="name"></textarea>
+                  </div>
+                  <div></div>
+                  <div class="form-group-header__caption">
+                      <label>CÔNG HÒA XÃ HỘI CHỦ NGHĨ VIỆT NAM</label>
+                      <label>Độc lập - Tự do - Hạnh phúc</label>
+                  </div>
+              </div>
+              <div class="form-group-infomation">
+                  <label class="form-group-infomation__label_right">{{ 'company.from.subject' | translate }} <span class="required">*</span></label>
+                  <input type="text" pInputText formControlName="subject" class="input-fluid" />
+              </div>
+              <div class="form-group-infomation">
+                  <label class="form-group-infomation__label">{{ 'company.from.name' | translate }} <span class="required">*</span></label>
+                  <input type="text" pInputText formControlName="name" class="input-fluid" />
+              </div>
+              <div class="form-group-infomation">
+                  <label class="form-group-infomation__label">{{ 'company.from.companycode' | translate }} <span class="required">*</span></label>
+                  <input type="text" pInputText formControlName="companycode" class="input-fluid" />
+              </div>
+              <div class="form-group-infomation">
+                  <label class="form-group-infomation__label">{{ 'company.from.taxcode' | translate }} <span class="required">*</span></label>
+                  <input type="text" pInputText formControlName="taxcode" class="input-fluid" />
+              </div>
+              <div class="form-group-infomation">
+                  <label class="form-group-infomation__label">{{ 'company.from.addressregister' | translate }} <span class="required">*</span></label>
+                  <input type="text" pInputText formControlName="addressregister" class="input-fluid" />
+              </div>
+              <div class="form-group-infomation">
+                  <label class="form-group-infomation__label">{{ 'company.from.address' | translate }} <span class="required">*</span></label>
+                  <input type="text" pInputText formControlName="address" class="input-fluid" />
+              </div>
+              <div class="form-group-infomation">
+                  <label class="form-group-infomation__label">{{ 'company.from.companytype' | translate }} <span class="required">*</span></label>
+                  <input type="text" pInputText formControlName="address" class="input-fluid" />
+              </div>
+
+              <div class="form-group-contact">
+                  <label class="form-group-infomation__label">{{ 'company.from.tel' | translate }} <span class="required">*</span></label>
+                  <input type="text" pInputText formControlName="address" class="input-fluid" />
+                  <label class="form-group-infomation__label">{{ 'company.from.email' | translate }} <span class="required">*</span></label>
+                  <input type="text" pInputText formControlName="address" class="input-fluid" />
+              </div>
+              <div class="form-group-contact">
+                  <label class="form-group-infomation__label">{{ 'company.from.license' | translate }} <span class="required">*</span></label>
+                  <input type="text" pInputText formControlName="address" class="input-fluid" />
+                  <label class="form-group-infomation__label">{{ 'company.from.issued' | translate }} <span class="required">*</span></label>
+                  <input type="text" pInputText formControlName="address" class="input-fluid" />
+              </div>
+              <div class="form-group-infomation">
+                  <label class="form-group-infomation__label">{{ 'company.from.methodpay' | translate }} <span class="required">*</span></label>
+                  <div>
+                    <p-checkbox formControlName="address" label="{{'company.from.monthly' | translate }}"></p-checkbox>
+                    &nbsp; &nbsp; &nbsp; 
+                    <p-checkbox formControlName="address" label="{{'company.from.quarterly' | translate }}"></p-checkbox>
+                    &nbsp; &nbsp; &nbsp; 
+                    <p-checkbox formControlName="address" label="{{'company.from.sixmonth' | translate }}"></p-checkbox>
+                  </div>
+              </div>
+              <div class="form-group-infomation">
+                  <label class="form-group-infomation__label">{{ 'company.from.notechange' | translate }} <span class="required">*</span></label>
+                  <input type="text" pInputText formControlName="address" class="input-fluid" />
+              </div>
+              <div class="form-group-infomation">
+                  <label class="form-group-infomation__label">{{ 'company.from.documentfile' | translate }}</label>
+                  <input type="text" pInputText formControlName="address" class="input-fluid" />
+              </div>
+              <div class="form-group-button">
+                  <p-button class="input-fluid" styleClass="ui-button-secondary ui-button-outline" type="button" label="{{'auth.login.form.register' | translate}}"></p-button>
+                  <p-button class="input-fluid" type="submit" label="{{'auth.login.form.submit' | translate}}"></p-button>
+              </div>
+        </form>
+     </div>
+  </div>
 </div>

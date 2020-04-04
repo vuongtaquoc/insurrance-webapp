@@ -96,7 +96,7 @@ app-layout {
 }
 
 .page-container {
-  padding: 25px;
+  padding: 15px;
   // height: 100%;
 }
 
@@ -250,4 +250,32 @@ app-layout {
     height: calc(100% - 140px);
     margin-top: 12px;
   }
+}
+
+.page-company {
+  height: 100%;
+  display: grid;
+  grid-template-columns: 15% 1fr 15%;
+  grid-gap: 5px;
+  background-color: rgba(255, 255, 255, 1);
+  box-shadow: -3px 2px 2px rgba(13, 13, 13, .25);
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 10px;
+
+  h1 {
+    font-size: 15px;
+    font-weight: 700;
+    color: #3266D3;
+    margin-bottom: 10px;
+  }
+
+  &__blank { 
+    display: block;
+  }
+
+  &__main { 
+    display: block;
+  }
+
 }

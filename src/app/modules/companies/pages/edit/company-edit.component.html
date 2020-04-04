@@ -1,0 +1,83 @@
+<div class="page-container">    
+  <div class="page-company" cardFullHeight>
+     <div class="page-company__blank"></div>
+     <div class="page-company__main">
+        <form [formGroup]="loginForm" (ngSubmit)="handleSubmit()" class="login-page">
+              <h1>A. Thông tin đơn vị</h1>
+              <div class="form-group-contact">
+                    <label class="form-group-infomation__label">{{ 'company.from.city' | translate }} <span class="required">*</span></label>
+                    <p-dropdown [options]="documentTypes" placeholder="Lựa chọn" class="input-fluid" formControlName="address"></p-dropdown>
+                    <label class="form-group-infomation__label text-padding-left">{{ 'company.from.insurrancemanagement' | translate }} <span class="required">*</span></label>
+                    <p-dropdown [options]="documentTypes" placeholder="Lựa chọn" class="input-fluid" formControlName="address"></p-dropdown>
+              </div>
+              <div class="form-group-contact">
+                    <label class="form-group-infomation__label">{{ 'company.from.companycode' | translate }} <span class="required">*</span></label>
+                    <input type="text" pInputText formControlName="address" class="input-fluid" />
+                    <label class="form-group-infomation__label text-padding-left">{{ 'company.from.area' | translate }} <span class="required">*</span></label>
+                    <p-dropdown [options]="documentTypes" placeholder="Lựa chọn" class="input-fluid" formControlName="address"></p-dropdown>
+              </div>
+              <div class="form-group-infomation">
+                    <label class="form-group-infomation__label">{{ 'company.from.name' | translate }} <span class="required">*</span></label>
+                    <input type="text" pInputText formControlName="name" class="input-fluid" />
+                </div>
+                <div class="form-group-infomation">
+                    <label class="form-group-infomation__label">{{ 'company.from.addressregister' | translate }} <span class="required">*</span></label>
+                    <input type="text" pInputText formControlName="addressregister" class="input-fluid" />
+                </div>
+                <div class="form-group-infomation">
+                        <label class="form-group-infomation__label">{{ 'company.from.address' | translate }} <span class="required">*</span></label>
+                        <input type="text" pInputText formControlName="addressregister" class="input-fluid" />
+                </div>
+                
+                <div class="form-group-contact">
+                        <label class="form-group-infomation__label">{{ 'company.from.taxcode' | translate }} <span class="required">*</span></label>
+                        <input type="text" pInputText formControlName="taxcode" class="input-fluid" />
+                        <label class="form-group-infomation__label text-padding-left">{{ 'company.from.tel' | translate }} <span class="required">*</span></label>
+                        <input type="text" pInputText formControlName="taxcode" class="input-fluid" />
+                </div>
+
+                <div class="form-group-contact">
+                        <label class="form-group-infomation__label">{{ 'company.from.delegate' | translate }} <span class="required">*</span></label>
+                        <input type="text" pInputText formControlName="address" class="input-fluid" />
+                        <label class="form-group-infomation__label text-padding-left">{{ 'company.from.regency' | translate }} <span class="required">*</span></label>
+                        <input type="text" pInputText formControlName="address" class="input-fluid" />
+                </div>
+                <div class="form-group-contact">
+                        <label class="form-group-infomation__label">{{ 'company.from.traders' | translate }} <span class="required">*</span></label>
+                        <input type="text" pInputText formControlName="address" class="input-fluid" />
+                        <label class="form-group-infomation__label text-padding-left">{{ 'company.from.mobile' | translate }} <span class="required">*</span></label>
+                        <input type="text" pInputText formControlName="address" class="input-fluid" />
+                </div>
+
+                <div class="form-group-infomation">
+                        <label class="form-group-infomation__label">{{ 'company.from.emailcontract' | translate }} <span class="required">*</span></label>
+                        <input type="text" pInputText formControlName="addressregister" class="input-fluid" />
+                </div>
+                <div class="form-group-contact">
+                        <label class="form-group-infomation__label">{{ 'company.from.methodpay' | translate }} <span class="required">*</span></label>
+                        <p-dropdown [options]="documentTypes" placeholder="Lựa chọn" class="input-fluid" formControlName="address"></p-dropdown>
+                        <label class="form-group-infomation__label text-padding-left">{{ 'company.from.responseresults' | translate }} <span class="required">*</span></label>
+                        <div>
+                                <p-radioButton name="groupname" value="0" label="Nhận tại CQBH" [(ngModel)]="responseresults"></p-radioButton>
+                                <p-radioButton name="groupname" value="1" label="Nhận qua BĐ" [(ngModel)]="responseresults"></p-radioButton>
+                        </div>
+                </div>
+
+               
+              <h1>B. Cấu hình kê khai</h1>
+
+              <div class="form-group-infomation">
+                    <label class="form-group-infomation__label">{{ 'company.from.group' | translate }} <span class="required">*</span></label>
+                    <p-dropdown [options]="documentTypes" placeholder="Lựa chọn" class="input-fluid" formControlName="address"></p-dropdown>
+              </div>
+              <div class="form-group-infomation">
+                    <label class="form-group-infomation__label">{{ 'company.from.submission' | translate }} <span class="required">*</span></label>
+                    <div>
+                            <p-radioButton name="groupsubmission" value="0" label="Ký và nộp luôn" [(ngModel)]="responseresults"></p-radioButton>
+                            <p-radioButton name="groupsubmission" value="1" label="Phải trình ký" [(ngModel)]="responseresults"></p-radioButton>
+                    </div>
+              </div>
+        </form>
+     </div>
+  </div>
+</div>

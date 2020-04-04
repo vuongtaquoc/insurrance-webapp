@@ -2,11 +2,11 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-companies',
-  templateUrl: './companies.component.html',
-  styleUrls: ['./companies.component.scss']
+  selector: 'app-company-edit',
+  templateUrl: './company-edit.component.html',
+  styleUrls: ['./company-edit.component.scss']
 })
-export class CompaniesComponent implements OnInit, OnDestroy {
+export class CompanyEidtComponent implements OnInit, OnDestroy {
   loginForm: FormGroup;
   loading = false;
   constructor(
@@ -20,7 +20,8 @@ export class CompaniesComponent implements OnInit, OnDestroy {
       taxcode: ['', Validators.required],
       address: ['', Validators.required],
       addressregister: ['', Validators.required],
-      companycode: ['', Validators.required] 
+      companycode: ['', Validators.required] ,
+      responseresults: ['1', Validators.required] 
     });
   }
 
