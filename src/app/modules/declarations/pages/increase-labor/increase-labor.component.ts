@@ -29,34 +29,8 @@ export class IncreaseLaborComponent implements OnInit {
       year: ['2020']
     });
 
-    this.declarationService.getDeclarationInitials('600').subscribe(declarations => {
-      const data = [];
-
-      declarations.forEach(d => {
-        if (!d.hasChildren) {
-          data.push({
-            readonly: true,
-            data: [ d.codeView, d.groupName ]
-          });
-        } else {
-          data.push({
-            readonly: true,
-            data: [ d.codeView, d.groupName ]
-          });
-
-          d.declarations.forEach(employee => {
-            data.push({
-              data: this.tableHeaderColumns.map(column => {
-                if (!column.key) return '';
-
-                return employee[column.key];
-              })
-            });
-          });
-        }
-      });
-
-      this.declarations = data;
+    this.declarationService.getDeclarationInitials('600a', this.tableHeaderColumns).subscribe(declarations => {
+      this.declarations = declarations;
     });
   }
 

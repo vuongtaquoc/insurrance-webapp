@@ -24,6 +24,7 @@ export class UsersTreeComponent implements OnInit {
   }
 
   nodeSelect() {
-    this.onSelectEmployees.emit(this.selected);
+    // this.onSelectEmployees.emit(this.selected);
+    console.log(this.selected)
   }
 }

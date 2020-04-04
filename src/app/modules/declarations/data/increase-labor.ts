@@ -6,7 +6,7 @@ export const TABLE_NESTED_HEADERS = [
     { title: 'Số sổ BHXH', rowspan: '3' },
     { title: 'Kiểm tra mã số BHXH', colspan: '2' },
     { title: 'Chỉ có năm sinh hoặc tháng/năm', rowspan: '3' },
-    { title: 'Ngày,tháng,năm sinh', rowspan: '3' },
+    { title: 'Ngày, tháng, năm sinh', rowspan: '3' },
     { title: 'Nữ', rowspan: '3' },
     { title: 'Dân tộc', rowspan: '3' },
     { title: 'Quốc tịch', rowspan: '3' },
@@ -69,7 +69,8 @@ export const TABLE_HEADER_COLUMNS = [{
 }, {
   type: 'checkbox',
   width: 45,
-  title: '(3)'
+  title: '(3)',
+  align: 'center'
 }, {
   type: 'text',
   width: 120,
@@ -94,21 +95,25 @@ export const TABLE_HEADER_COLUMNS = [{
 }, {
   type: 'checkbox',
   width: 35,
-  title: '(8)'
+  title: '(8)',
+  align: 'center'
 }, {
   type: 'dropdown',
   width: 75,
   title: '(9)',
-  source: [ 'Chọn', 'Kinh', 'Mường' ]
+  source: [ 'Chọn', 'Kinh', 'Mường' ],
+  align: 'center'
 }, {
   type: 'dropdown',
   width: 100,
   title: '(10)',
-  source: [ 'Việt Nam' ]
+  source: [ 'Việt Nam' ],
+  align: 'center'
 }, {
   type: 'text',
   width: 135,
-  title: '(11)'
+  title: '(11)',
+  align: 'center'
 }, {
   type: 'text',
   width: 135,
@@ -182,23 +187,36 @@ export const TABLE_HEADER_COLUMNS = [{
   width: 80,
   title: '(22.1)',
   mask: '#.##,000',
-  decimal: ','
+  decimal: ',',
+  sum: true
 }, {
   type: 'text',
   width: 80,
-  title: '(22.2)'
+  title: '(22.2)',
+  mask: '#.##,000',
+  decimal: ',',
+  sum: true
 }, {
   type: 'text',
   width: 80,
-  title: '(22.3)'
+  title: '(22.3)',
+  mask: '#.##,000',
+  decimal: ',',
+  sum: true
 }, {
   type: 'text',
   width: 80,
-  title: '(22.4)'
+  title: '(22.4)',
+  mask: '#.##,000',
+  decimal: ',',
+  sum: true
 }, {
   type: 'text',
   width: 80,
-  title: '(22.5)'
+  title: '(22.5)',
+  mask: '#.##,000',
+  decimal: ',',
+  sum: true
 }, {
   type: 'text',
   width: 70,
@@ -210,7 +228,10 @@ export const TABLE_HEADER_COLUMNS = [{
 }, {
   type: 'text',
   width: 80,
-  title: '(22.8)'
+  title: '(22.8)',
+  mask: '#.##,000',
+  decimal: ',',
+  sum: true
 }, {
   type: 'text',
   width: 60,

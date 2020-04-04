@@ -41,7 +41,8 @@ export class TableEditorComponent implements AfterViewInit, OnDestroy, OnChanges
       tableOverflow: true,
       tableWidth: `${ containerSize.width }px`,
       tableHeight: `${ containerSize.height }px`,
-      columnSorting: false
+      columnSorting: false,
+      defaultColAlign: 'left'
     });
 
     this.spreadsheet.hideIndex();
