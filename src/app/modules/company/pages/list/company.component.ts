@@ -3,10 +3,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-companies',
-  templateUrl: './companies.component.html',
-  styleUrls: ['./companies.component.scss']
+  templateUrl: './company.component.html',
+  styleUrls: ['./company.component.scss']
 })
-export class CompaniesComponent implements OnInit, OnDestroy {
+export class CompanyComponent implements OnInit, OnDestroy {
   loginForm: FormGroup;
   loading = false;
   constructor(

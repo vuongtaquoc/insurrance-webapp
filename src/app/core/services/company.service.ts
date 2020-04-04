@@ -8,7 +8,7 @@ import { Company } from '@app/core/models';
 
 
 @Injectable({ providedIn: 'root' })
-export class CompaniesService {
+export class CompanyService {
 
   constructor(private http: ApplicationHttpClient) {
   }

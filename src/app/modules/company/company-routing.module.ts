@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { LayoutComponent } from '@app/shared/layout';
-import { CompaniesComponent, CompanyEidtComponent } from './pages';
+import { CompanyComponent, CompanyEditComponent } from './pages';
 
 const routes: Routes = [
   {
@@ -11,11 +11,11 @@ const routes: Routes = [
     children: [
       {
         path: 'list',
-        component: CompaniesComponent
+        component: CompanyComponent
       },
       {
         path: 'edit',
-        component: CompanyEidtComponent
+        component: CompanyEditComponent
       }
     ]
   }
@@ -25,4 +25,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class CompaniesRoutingModule { }
+export class CompanyRoutingModule { }

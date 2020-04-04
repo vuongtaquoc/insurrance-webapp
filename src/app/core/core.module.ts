@@ -5,7 +5,7 @@ import {
   EmployeeService,
   NavigationService,
   DocumentTypeService,
-  CompaniesService
+  CompanyService
 } from './services';
 
 @NgModule({
@@ -13,7 +13,7 @@ import {
   providers: [
     AuthenticationService,
     DocumentTypeService,
-    CompaniesService ,
+    CompanyService ,
     DeclarationService,
     EmployeeService,
     NavigationService

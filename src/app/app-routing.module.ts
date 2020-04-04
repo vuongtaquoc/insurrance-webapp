@@ -30,7 +30,7 @@ const routes: Routes = [
   },
   {
     path: 'company',
-    loadChildren: './modules/companies/companies.module#CompaniesModule',
+    loadChildren: './modules/company/company.module#CompanyModule',
     canActivate: [ AuthGuard ],
   }
 ];

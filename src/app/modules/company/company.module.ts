@@ -2,19 +2,20 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CheckboxModule } from 'primeng/checkbox';
-import { AuthenticationService } from '@app/core/services';
-import { SharedModule } from '@app/shared/shared.module';
-import { CompaniesRoutingModule } from './companies-routing.module';
-import { CompaniesComponent, CompanyEidtComponent } from './pages';
 import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
 import { RadioButtonModule } from 'primeng/radiobutton';
+import { AuthenticationService } from '@app/core/services';
+import { SharedModule } from '@app/shared/shared.module';
+import { CompanyRoutingModule } from './company-routing.module';
+import { CompanyComponent, CompanyEditComponent } from './pages';
+
 
 @NgModule({
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    CompaniesRoutingModule,
+    CompanyRoutingModule,
     SharedModule,
     CheckboxModule,
     ButtonModule,
@@ -22,12 +23,12 @@ import { RadioButtonModule } from 'primeng/radiobutton';
     RadioButtonModule
   ],
   declarations: [
-    CompaniesComponent,
-    CompanyEidtComponent    
+    CompanyComponent,
+    CompanyEditComponent    
   ],
   providers: [
     AuthenticationService
   ],
   entryComponents: []
 })
-export class CompaniesModule { }
+export class CompanyModule { }

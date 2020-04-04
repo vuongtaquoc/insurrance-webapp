@@ -6,7 +6,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   templateUrl: './company-edit.component.html',
   styleUrls: ['./company-edit.component.scss']
 })
-export class CompanyEidtComponent implements OnInit, OnDestroy {
+export class CompanyEditComponent implements OnInit, OnDestroy {
   loginForm: FormGroup;
   loading = false;
   constructor(
