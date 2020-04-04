@@ -1,7 +1,9 @@
 import { NgModule, Optional, SkipSelf } from '@angular/core';
 import {
   AuthenticationService,
-  NavigationService,
+  DeclarationService,
+  EmployeeService,
+  NavigationService
   DocumentTypeService,
   CompaniesService
 } from './services';
@@ -10,9 +12,10 @@ import {
   imports: [],
   providers: [
     AuthenticationService,
-    NavigationService,
     DocumentTypeService,
-    CompaniesService
+    CompaniesService    DeclarationService,
+    EmployeeService,
+    NavigationService
   ],
   declarations: []
 })

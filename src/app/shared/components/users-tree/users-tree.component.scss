@@ -11,4 +11,8 @@
   .ui-treenode-icon {
     display: none !important;
   }
+
+  .users-tree-parent > .ui-treenode-content > .ui-treenode-label {
+    font-weight: 700;
+  }
 }

@@ -15,3 +15,11 @@
   color: $primary-dark-text-color !important;
   font-weight: 700;
 }
+
+.jexcel_content.table-sticky-header .jexcel > thead > tr > td {
+  border-bottom-color: transparent !important;
+}
+
+.jexcel_content.table-sticky-header .jexcel > thead > tr:not(.jexcel_nested) > td {
+  border-bottom-color: #ccc !important;
+}

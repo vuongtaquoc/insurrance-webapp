@@ -1,4 +1,7 @@
-import { Component, Input, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, Output, EventEmitter } from '@angular/core';
+import { TreeNode } from 'primeng/api';
+
+import { EmployeeService } from '@app/core/services';
 
 @Component({
   selector: 'app-users-tree',
@@ -6,6 +9,21 @@ import { Component, Input, ViewEncapsulation } from '@angular/core';
   styleUrls: ['./users-tree.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class UsersTreeComponent {
-  @Input() data: any[];
+export class UsersTreeComponent implements OnInit {
+  @Output() onSelectEmployees = new EventEmitter();
+
+  employees: TreeNode[];
+  selected: TreeNode[];
+
+  constructor(private employeeService: EmployeeService) {}
+
+  ngOnInit() {
+    this.employeeService.getEmployeeTrees().subscribe(employees => {
+      this.employees = employees;
+    });
+  }
+
+  nodeSelect() {
+    this.onSelectEmployees.emit(this.selected);
+  }
 }
