@@ -11,7 +11,7 @@ import { AuthenticationService } from '@app/core/services';
 @Component({
   selector: 'app-auth-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.less']
 })
 export class AuthLoginComponent implements OnInit, OnDestroy {
   loginForm: FormGroup;

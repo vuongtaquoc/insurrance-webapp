@@ -9,7 +9,7 @@ import { TABLE_NESTED_HEADERS, TABLE_HEADER_COLUMNS } from '@app/modules/declara
 @Component({
   selector: 'app-declaration-increase-labor',
   templateUrl: './increase-labor.component.html',
-  styleUrls: ['./increase-labor.component.scss']
+  styleUrls: ['./increase-labor.component.less']
 })
 export class IncreaseLaborComponent implements OnInit {
   form: FormGroup;
@@ -29,34 +29,8 @@ export class IncreaseLaborComponent implements OnInit {
       year: ['2020']
     });
 
-    this.declarationService.getDeclarationInitials('600a').subscribe(declarations => {
-      const data = [];
-
-      declarations.forEach(d => {
-        if (!d.hasChildren) {
-          data.push({
-            readonly: true,
-            data: [ d.codeView, d.name ]
-          });
-        } else {
-          data.push({
-            readonly: true,
-            data: [ d.codeView, d.name ]
-          });
-
-          d.declarations.forEach(employee => {
-            data.push({
-              data: this.tableHeaderColumns.map(column => {
-                if (!column.key) return '';
-
-                return employee[column.key];
-              })
-            });
-          });
-        }
-      });
-
-      this.declarations = data;
+    this.declarationService.getDeclarationInitials('600a', this.tableHeaderColumns).subscribe(declarations => {
+      this.declarations = declarations;
     });
   }
 

@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 @Component({
   selector: 'app-dashboard-ivan',
   templateUrl: './ivan.component.html',
-  styleUrls: ['./ivan.component.scss']
+  styleUrls: ['./ivan.component.less']
 })
 export class DashboardIvanComponent implements OnInit {
   ivanForm: FormGroup;

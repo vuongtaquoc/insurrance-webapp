@@ -45,3 +45,4 @@ testem.log
 .DS_Store
 Thumbs.db
 /internals/simulator/node_modules
+/package-lock.json

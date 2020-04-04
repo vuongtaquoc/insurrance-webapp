@@ -4,13 +4,18 @@
       <a [routerLink]="['/']" class="logo">
         <img src="/assets/img/logo-2.png" alt="{{'common.title' | translate}}">
       </a>
-      <div class="profile-item-container" (click)="menu.toggle($event)">
+      <div class="profile-item-container" nz-dropdown nzTrigger="click" [nzDropdownMenu]="menu">
         <span class="profile-image-wrapper">
           <img alt="mirage-layout" src="/assets/img/avatar-eklund.png">
-          <i class="pi pi-sort-down"></i>
+          <i nz-icon nzType="caret-down" nzTheme="outline"></i>
         </span>
-        <p-menu appendTo="body" #menu [popup]="true" [model]="menuItems"></p-menu>
       </div>
+      <nz-dropdown-menu #menu="nzDropdownMenu">
+        <ul nz-menu>
+          <li nz-menu-item><i nz-icon nzType="setting" nzTheme="outline"></i>{{'common.headerMenu.setting' | translate}}</li>
+          <li nz-menu-item (click)="handleLogout()"><i nz-icon nzType="logout" nzTheme="outline"></i>{{'common.headerMenu.logout' | translate}}</li>
+        </ul>
+      </nz-dropdown-menu>
     </div><!-- layout-header__left -->
 
     <div class="layout-header__right">
@@ -59,7 +64,7 @@
 
       <div class="layout-info">
         <div class="layout-info__icon">
-          <i class="pi pi-bell"></i>
+          <i nz-icon nzType="bell" nzTheme="outline" style="font-size: 24px;"></i>
           <span class="badge">3</span>
         </div>
         <div class="layout-info__icon">

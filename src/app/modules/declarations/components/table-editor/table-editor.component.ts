@@ -5,7 +5,7 @@ import 'jsuites/dist/jsuites.js';
 @Component({
   selector: 'app-table-editor',
   templateUrl: './table-editor.component.html',
-  styleUrls: ['./table-editor.component.scss'],
+  styleUrls: ['./table-editor.component.less'],
   encapsulation: ViewEncapsulation.None
 })
 export class TableEditorComponent implements AfterViewInit, OnDestroy, OnChanges {
@@ -41,7 +41,8 @@ export class TableEditorComponent implements AfterViewInit, OnDestroy, OnChanges
       tableOverflow: true,
       tableWidth: `${ containerSize.width }px`,
       tableHeight: `${ containerSize.height }px`,
-      columnSorting: false
+      columnSorting: false,
+      defaultColAlign: 'left'
     });
 
     this.spreadsheet.hideIndex();

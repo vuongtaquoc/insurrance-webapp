@@ -3,10 +3,11 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { DropdownModule } from 'primeng/dropdown';
-import { InputTextModule } from 'primeng/inputtext';
-import { MenuModule } from 'primeng/menu';
-import { TreeModule } from 'primeng/tree';
+
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzTreeModule } from 'ng-zorro-antd/tree';
 
 import { AuthenticationService, EmployeeService } from '@app/core/services';
 
@@ -32,10 +33,10 @@ import {
     FormsModule,
     ReactiveFormsModule,
     TranslateModule,
-    DropdownModule,
-    InputTextModule,
-    MenuModule,
-    TreeModule
+    NzDropDownModule,
+    NzIconModule,
+    NzInputModule,
+    NzTreeModule
   ],
   declarations: [
     LayoutComponent,

@@ -1,0 +1,27 @@
+@jexcel-readonly-color: #B3E5FC;
+@jexcel-readonly-formula-color: #E0E0E0;
+@primary-dark-text-color: #333333;
+
+.jexcel > tbody > tr > td.row-title-readonly,
+.jexcel_content.table-freeze-column .jexcel > tbody > tr > td.jexcel_freezed.row-title-readonly {
+  background-image: none !important;
+  background-color: @jexcel-readonly-color;
+  color: @primary-dark-text-color !important;
+  font-weight: 700;
+}
+
+.jexcel > tbody > tr > td.row-formula-readonly,
+.jexcel_content.table-freeze-column .jexcel > tbody > tr > td.jexcel_freezed.row-formula-readonly {
+  background-image: none !important;
+  background-color: @jexcel-readonly-formula-color;
+  color: @primary-dark-text-color !important;
+  font-weight: 700;
+}
+
+.jexcel_content.table-sticky-header .jexcel > thead > tr > td {
+  border-bottom-color: transparent !important;
+}
+
+.jexcel_content.table-sticky-header .jexcel > thead > tr:not(.jexcel_nested) > td {
+  border-bottom-color: #ccc !important;
+}

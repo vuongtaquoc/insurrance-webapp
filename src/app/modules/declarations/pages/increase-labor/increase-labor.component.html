@@ -2,11 +2,11 @@
   <div class="page-declarations" cardFullHeight>
     <div class="page-declarations__sidebar">
       <div class="page-declarations__group-button">
-        <p-button icon="pi pi-search" styleClass="ui-button-secondary"></p-button>
-        <p-button icon="pi pi-refresh" styleClass="ui-button-secondary"></p-button>
-        <p-button icon="pi pi-plus" styleClass="ui-button-secondary"></p-button>
-        <p-button icon="pi pi-pencil" styleClass="ui-button-secondary"></p-button>
-        <p-button icon="pi pi-times" styleClass="ui-button-secondary"></p-button>
+        <button nz-button nzType="default"><i nz-icon nzType="search"></i></button>
+        <button nz-button nzType="default"><i nz-icon nzType="sync"></i></button>
+        <button nz-button nzType="default"><i nz-icon nzType="plus"></i></button>
+        <button nz-button nzType="default"><i nz-icon nzType="edit"></i></button>
+        <button nz-button nzType="default"><i nz-icon nzType="close"></i></button>
       </div><!-- page-declarations__group-button -->
 
       <app-users-tree (onSelectEmployees)="handleSelectEmployees($event)"></app-users-tree>
@@ -14,27 +14,46 @@
 
     <div class="page-declarations__content">
       <div class="page-declarations__group-button">
-        <p-button icon="pi pi-arrow-up" label="Tăng lao động" styleClass="ui-button-secondary"></p-button>
-        <p-button icon="pi pi-arrow-up" label="Tăng BHYT" styleClass="ui-button-secondary"></p-button>
-        <p-button icon="pi pi-arrow-up" label="Tăng BHTN" styleClass="ui-button-secondary"></p-button>
-        <p-button icon="pi pi-arrow-up" label="Tăng BHTNLĐ, BNN" styleClass="ui-button-secondary"></p-button>
-        <p-button icon="pi pi-arrow-down" label="Giảm BHYT" styleClass="ui-button-secondary"></p-button>
+        <button nz-button nzType="default" >
+          <i nz-icon nzType="arrow-up"></i>Tăng lao động
+        </button>
+        <button nz-button nzType="default" >
+          <i nz-icon nzType="arrow-up"></i>Tăng BHYT
+        </button>
+        <button nz-button nzType="default" >
+          <i nz-icon nzType="arrow-up"></i>Tăng BHTN
+        </button>
+        <button nz-button nzType="default" >
+          <i nz-icon nzType="arrow-up"></i>Tăng BHTNLĐ, BNN
+        </button>
+        <button nz-button nzType="default" >
+          <i nz-icon nzType="arrow-down"></i>Giảm BHYT
+        </button>
       </div><!-- page-declarations__group-button -->
 
       <h1>600 | Báo tăng lao động</h1>
 
       <div class="page-declarations__title">
         <h2>Danh sách lao động tham gia BHXH, BHYT, BHTN</h2>
-        <form [formGroup]="form" class="page-declarations__search">
-          <app-input-label label="Số" variant="black">
-            <input type="text" pInputText formControlName="number" class="input-fluid" />
-          </app-input-label>
-          <app-input-label label="Tháng" variant="black">
-            <input type="text" pInputText formControlName="month" class="input-fluid" />
-          </app-input-label>
-          <app-input-label label="Năm" variant="black">
-            <input type="text" pInputText formControlName="year" class="input-fluid" />
-          </app-input-label>
+        <form nz-form [formGroup]="form" class="page-declarations__search">
+          <nz-form-item>
+            <nz-form-label [nzNoColon]="true" [nzSpan]="10">Số</nz-form-label>
+            <nz-form-control [nzSpan]="14">
+              <input nz-input formControlName="number">
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-label [nzNoColon]="true" [nzSpan]="10">Tháng</nz-form-label>
+            <nz-form-control [nzSpan]="14">
+              <input nz-input formControlName="month">
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-label [nzNoColon]="true" [nzSpan]="10">Năm</nz-form-label>
+            <nz-form-control [nzSpan]="14">
+              <input nz-input formControlName="year">
+            </nz-form-control>
+          </nz-form-item>
         </form>
       </div><!-- page-declarations__title -->
 

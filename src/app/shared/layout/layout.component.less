@@ -1,0 +1,130 @@
+$header-height: 55px;
+
+.layout-wrapper {
+  height: 100%;
+}
+
+.layout-container {
+  height: calc(100% - 55px);
+}
+
+.layout-header {
+  height: @header-height;
+  width: 100%;
+  background-color: #fff;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 27px;
+
+  &__left {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    align-items: center;
+    grid-gap: 22px;
+  }
+
+  &__right {
+    display: grid;
+    grid-template-columns: 1fr max-content;
+    align-items: center;
+  }
+
+  // left
+  .logo {
+    display: block;
+    height: 45px;
+
+    img {
+      height: 100%;
+    }
+  }
+
+  .profile-item-container {
+    height: 41px;
+
+    .profile-image-wrapper {
+      display: flex;
+      height: 100%;
+      align-items: center;
+      cursor: pointer;
+
+      img {
+        width: 41px;
+        height: 41px;
+        border-radius: 50%;
+        margin-right: 5px;
+      }
+
+      i {
+        color: #8BA0B3;
+      }
+    }
+  }
+
+  // right
+  .layout-menu {
+    &__item {
+      display: inline-block;
+      margin-right: 41px;
+
+      &:hover,
+      &--active {
+        .layout-menu__link {
+          color: #4D86EF;
+        }
+      }
+    }
+
+    &__link {
+      color: #333333;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    &__icon {
+      display: block;
+      text-align: center;
+      margin-bottom: 5px;
+
+      i {
+        font-size: 25px;
+        color: #8BA0B3;
+      }
+    }
+  }
+
+  .layout-info {
+    display: grid;
+    grid-template-columns: max-content max-content max-content;
+    grid-gap: 20px;
+    justify-content: space-between;
+    align-items: center;
+
+    &__icon {
+      cursor: pointer;
+      position: relative;
+
+      i {
+        font-size: 28px;
+        color: #8BA0B3;
+      }
+
+      img {
+        height: 20px;
+      }
+
+      .badge {
+        position: absolute;
+        top: -10px;
+        right: -5px;
+        width: 20px;
+        height: 20px;
+        line-height: 20px;
+        text-align: center;
+        background-color: #EF4D4D;
+        color: #fff;
+        border-radius: 50%;
+      }
+    }
+  }
+}

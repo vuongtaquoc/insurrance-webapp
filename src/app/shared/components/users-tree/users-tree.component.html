@@ -1,8 +1,14 @@
-<p-tree [value]="employees"
-  [filter]="true"
-  [(selection)]="selected"
-  (onNodeSelect)="nodeSelect($event)"
-  filterMode="strict"
-  selectionMode="checkbox"
-  styleClass="users-tree"
-></p-tree>
+<nz-input-group [nzSuffix]="suffixIcon">
+  <input type="text" nz-input placeholder="Search" [(ngModel)]="searchValue" />
+</nz-input-group>
+<ng-template #suffixIcon>
+  <i nz-icon nzType="search"></i>
+</ng-template>
+<nz-tree
+  nzCheckable
+  nzMultiple
+  [nzData]="employees"
+  [nzSearchValue]="searchValue"
+  (nzCheckBoxChange)="nzEvent($event)"
+>
+</nz-tree>

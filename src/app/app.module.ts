@@ -5,6 +5,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { LoadingBarModule } from '@ngx-loading-bar/core';
+import { NZ_I18N, en_US } from 'ng-zorro-antd';
 
 import { AuthInterceptor, ApiPrefixInterceptor, ErrorInterceptor } from '@app/core/interceptors';
 import { ApplicationHttpClient, applicationHttpClientCreator } from '@app/core/http';
@@ -37,7 +38,8 @@ import { AppComponent } from './app.component';
       provide: ApplicationHttpClient,
       useFactory: applicationHttpClientCreator,
       deps: [ HttpClient ]
-    }
+    },
+    { provide: NZ_I18N, useValue: en_US }
   ],
   bootstrap: [AppComponent]
 })

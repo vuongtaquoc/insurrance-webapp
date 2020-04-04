@@ -11,7 +11,7 @@ import { AuthenticationService } from '@app/core/services';
 @Component({
   selector: 'app-auth-request-reset',
   templateUrl: './request-reset-password.component.html',
-  styleUrls: ['./request-reset-password.component.scss']
+  styleUrls: ['./request-reset-password.component.less']
 })
 export class RequestResetPasswordComponent implements OnInit, OnDestroy {
   resetForm: FormGroup;
