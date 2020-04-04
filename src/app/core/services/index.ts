@@ -4,3 +4,8 @@ export * from './employee.service';
 export * from './navigation.service';
 export * from './document-type.service';
 export * from './company.service';
+export * from './group-conpany.service';
+export * from './salary-area.service';
+export * from './wards.service';
+export * from './payment-method.service';
+export * from './city.service';

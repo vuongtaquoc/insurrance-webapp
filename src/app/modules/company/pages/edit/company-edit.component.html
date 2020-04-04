@@ -9,7 +9,7 @@
               <label class="label">{{ 'company.from.city' | translate }} <span class="required">*</span></label>  
             </div>
             <div class="ui-g-3">
-              <p-dropdown [options]="documentTypes" placeholder="Lựa chọn" class="input-fluid" formControlName="address"></p-dropdown>                    
+              <p-dropdown [options]="cities" placeholder="Lựa chọn" class="input-fluid" formControlName="cityId"></p-dropdown>                    
             </div>
             <div class="ui-g-3">
               <label class="label text-padding-left">{{ 'company.from.insurranceManagement' | translate }} <span class="required">*</span></label>                      
@@ -123,16 +123,21 @@
           </div>
           <div class="ui-g">
               <div class="ui-g-12">
-                
+                  <br>
+                  <label class="form-group-infomation__label">
+                    Đơn vị cam kết hoàn toàn chịu trách nhiệm trước pháp luật về tính chính xác, trung thực của nội dung trên.
+                  </label>
+                  <br>
               </div>
           </div>
-          <h1>B. Cấu hình kê khai</h1>
+          <h1>B. Cấu hình kê khai {{groupCompanyCode || 'none'}}</h1>
           <div class="ui-g">
               <div class="ui-g-3">
                 <label class="form-group-infomation__label">{{ 'company.from.group' | translate }} <span class="required">*</span></label>
               </div>
               <div class="ui-g-9">
-                  <p-dropdown [options]="documentTypes" placeholder="Lựa chọn" class="input-fluid" formControlName="address"></p-dropdown>
+                  <p-dropdown [options]="groupCompanies" placeholder="Lựa chọn" (onChange)="onChange($event)" class="input-fluid" 
+                  [(ngModel)]="groupCompanyCode" formControlName="groupCompanyCode"></p-dropdown>
               </div>
           </div>
           <div class="ui-g">
@@ -143,6 +148,32 @@
                 <p-radioButton name="groupsubmission" value="0" label="Ký và nộp luôn" [(ngModel)]="responseresults"></p-radioButton>
                 <p-radioButton name="groupsubmission" value="1" label="Phải trình ký" [(ngModel)]="responseresults"></p-radioButton>
             </div>
+          </div>
+          <div class="ui-g" *ngIf="(groupCompanyCode === '02' || groupCompanyCode === '04' || groupCompanyCode === '05')">
+              <div class="ui-g-3">
+                  <label class="form-group-infomation__label">{{ 'company.from.district' | translate }} <span class="required">*</span></label>
+              </div>
+              <div class="ui-g-3">
+                  <p-dropdown [options]="documentTypes" placeholder="Lựa chọn" class="input-fluid" formControlName="address"></p-dropdown>                  
+              </div>
+              <div class="ui-g-3" *ngIf="(groupCompanyCode === '02' || groupCompanyCode === '05')">
+                  <label class="form-group-infomation__label text-padding-left">{{ 'company.from.wards' | translate }} <span class="required">*</span></label>
+              </div>
+              <div class="ui-g-3" *ngIf="(groupCompanyCode === '02' || groupCompanyCode === '05')">
+                  <p-dropdown [options]="documentTypes" placeholder="Lựa chọn" class="input-fluid" formControlName="address"></p-dropdown>                  
+              </div>
+          </div>
+          <div class="ui-g" *ngIf="(groupCompanyCode == '03')">
+              <div class="ui-g-3">
+                  <label class="form-group-infomation__label">{{ 'company.from.object' | translate }} <span class="required">*</span></label>
+              </div>
+              <div class="ui-g-9">
+                  <p-radioButton name="groupsubmission" value="0" label="{{ 'company.from.studentLevelOne' | translate }}" [(ngModel)]="responseresults"></p-radioButton>
+                  <p-radioButton name="groupsubmission" value="1" label="{{ 'company.from.studentLevelTwo' | translate }}" [(ngModel)]="responseresults"></p-radioButton>
+              </div>
+          </div>
+          <div class="ui-g" *ngIf="(groupCompanyCode == '01')">
+            <div class="ui-g-12">Danh sách phòng ban</div>
           </div>
         </div>
       </div>

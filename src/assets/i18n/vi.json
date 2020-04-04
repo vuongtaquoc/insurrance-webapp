@@ -69,7 +69,12 @@
 	   "quarterly": "Hàng quý  ",
 	   "sixMonth": "6 tháng",
 	   "group": "Nhóm đối tượng",
-	   "submission": "Trình ký số"
+	   "submission": "Trình ký số",
+	   "district": "Quận huyện",
+	   "wards": "Phường xã",
+	   "object": "Đôi tượng cấp thẻ",
+	   "studentLevelOne": "Học sinh(Lớp 1->12)",
+	   "studentLevelTwo": "Sinh viên(Đại học, Cao đẳng, Trung học chuyên nghiệp, Nghề...)"	   
 	}
   }
 }

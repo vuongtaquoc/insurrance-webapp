@@ -5,7 +5,11 @@ import {
   EmployeeService,
   NavigationService,
   DocumentTypeService,
-  CompanyService
+  CompanyService,
+  GroupCompanyService,
+  SalaryAreaService,
+  WardsService,
+  CityService
 } from './services';
 
 @NgModule({
@@ -16,6 +20,10 @@ import {
     CompanyService ,
     DeclarationService,
     EmployeeService,
+    GroupCompanyService,
+    SalaryAreaService,
+    WardsService,
+    CityService,
     NavigationService
   ],
   declarations: []

@@ -4,22 +4,22 @@ import { map } from 'rxjs/operators';
 
 import { ApplicationHttpClient } from '@app/core/http';
 
-import { City } from '@app/core/models';
+import { GroupCompany } from '@app/core/models';
 
 
 @Injectable({ providedIn: 'root' })
-export class CityService {
+export class GroupCompanyService {
 
   constructor(private http: ApplicationHttpClient) {
   }
 
-  public getCities(): Observable<City> {
-    return this.http.get('/cities', {
+  public getGroupCompany(): Observable<GroupCompany> {
+    return this.http.get('/group', {
     });
   }
   
   public getDetailById(id: string) {
-    return this.http.get('/cities', {
+    return this.http.get('/group', {
       params: { id }
     });
   }
