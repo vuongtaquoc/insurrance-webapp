@@ -13,14 +13,11 @@ export class EmployeeService {
     return this.http.get('/employeers/declarations').pipe(
       map(employees => {
         return employees.map(employee => ({
-          label: employee.groupName,
-          data: employee.groupName,
+          title: employee.groupName,
           expanded: true,
-          styleClass: 'users-tree-parent',
           children: employee.employeers.map(e => ({
             ...e,
-            label: e.fullName,
-            data: e.fullName
+            title: e.fullName
           }))
         }));
       })

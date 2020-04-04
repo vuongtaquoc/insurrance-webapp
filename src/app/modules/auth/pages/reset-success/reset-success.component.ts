@@ -6,7 +6,7 @@ import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'app-auth-reset-success',
   templateUrl: './reset-success.component.html',
-  styleUrls: ['./reset-success.component.scss']
+  styleUrls: ['./reset-success.component.less']
 })
 export class ResetSuccessComponent implements OnInit, OnDestroy {
   private subscription: Subscription;

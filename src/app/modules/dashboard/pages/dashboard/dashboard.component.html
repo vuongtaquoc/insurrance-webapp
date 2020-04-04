@@ -4,12 +4,20 @@
   <div class="page-card page-card--scrollable">
     <h1>Danh sách hồ sơ giao dịch điện tử</h1>
 
-    <p-scrollPanel [style]="{width: '100%', height: '475px'}" class="scrollable-container">
-      <p-table class="table ui-table ui-table-custom" [value]="documents">
-        <ng-template pTemplate="header">
+    <div class="scrollable-container">
+      <nz-table
+        class="table ui-table-custom"
+        #basicTable
+        [nzData]="documents"
+        [nzShowPagination]="false"
+      >
+        <thead>
           <tr>
-            <th style="width: 50px" class="table__middle">
-              <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+            <th
+              style="width: 50px"
+              class="table__middle"
+              nzShowCheckbox
+            >
             </th>
             <th class="table__middle">Ngày gửi</th>
             <th class="table__middle">Giấy tờ đi kèm</th>
@@ -17,12 +25,12 @@
             <th class="table__middle">Trạng thái</th>
             <th class="table__middle">Kết quả xử lý HS của cơ quan BHXH</th>
           </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-document>
-          <tr>
-            <td class="text-center table__middle">
-              <p-tableCheckbox [value]="document.id"></p-tableCheckbox>
-            </td>
+        </thead>
+        <tbody>
+          <tr *ngFor="let document of basicTable.data">
+            <td
+              nzShowCheckbox
+            ></td>
             <td class="text-center table__middle">
               <span class="table__date">{{document.sendDate.date}}</span>
               <span class="table__time">{{document.sendDate.time}}</span>
@@ -40,24 +48,27 @@
               Tiến độ xử lý: <a class="table__label-detail">Chi tiết</a>
             </td>
           </tr>
-        </ng-template>
-      </p-table>
-    </p-scrollPanel>
+        </tbody>
+      </nz-table>
+    </div>
 
     <div class="ui-table-paging-custom">
       <div class="ui-table-paging-custom__statistics">* Danh sách có 3/3 hồ sơ</div>
       <div class="ui-table-paging-custom__paging">
-        <span>Hiển thị</span> <p-dropdown [options]="pageNumbers"></p-dropdown> <span>Hồ sơ/1 trang</span>
+        <span>Hiển thị</span>
+        <nz-select nzSize="small">
+          <nz-option *ngFor="let page of pageNumbers" [nzLabel]="page.label" [nzValue]="page.value"></nz-option>
+        </nz-select>
+        <span>Hồ sơ/1 trang</span>
       </div>
     </div>
   </div>
 
-  <div class="p-grid">
-    <div class="p-col-6">
+  <div nz-row [nzGutter]="20">
+    <div nz-col nzMd="12">
       <app-dashboard-ivan></app-dashboard-ivan>
     </div>
-
-    <div class="p-col-6">
+    <div nz-col nzMd="12">
       <app-dashboard-news></app-dashboard-news>
     </div>
   </div>

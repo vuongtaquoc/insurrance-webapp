@@ -1,9 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ButtonModule } from 'primeng/button';
-import { InputTextModule } from 'primeng/inputtext';
-import { ScrollPanelModule } from 'primeng/scrollpanel';
+
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { AuthenticationService, DeclarationService } from '@app/core/services';
 import { SharedModule } from '@app/shared/shared.module';
@@ -19,9 +21,10 @@ import {
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    ButtonModule,
-    InputTextModule,
-    ScrollPanelModule,
+    NzButtonModule,
+    NzFormModule,
+    NzInputModule,
+    NzIconModule,
     DeclarationsRoutingModule,
     SharedModule,
   ],

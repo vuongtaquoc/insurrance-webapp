@@ -1,13 +1,14 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ButtonModule } from 'primeng/button';
-import { CalendarModule } from 'primeng/calendar';
-import { CardModule } from 'primeng/card';
-import { DropdownModule } from 'primeng/dropdown';
-import { InputTextModule } from 'primeng/inputtext';
-import { ScrollPanelModule } from 'primeng/scrollpanel';
-import { TableModule } from 'primeng/table';
+
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzGridModule } from 'ng-zorro-antd/grid';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzTableModule } from 'ng-zorro-antd/table';
 
 import { AuthenticationService } from '@app/core/services';
 import { SharedModule } from '@app/shared/shared.module';
@@ -23,13 +24,13 @@ import {
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    ButtonModule,
-    CalendarModule,
-    CardModule,
-    DropdownModule,
-    InputTextModule,
-    ScrollPanelModule,
-    TableModule,
+    NzButtonModule,
+    NzDatePickerModule,
+    NzFormModule,
+    NzInputModule,
+    NzGridModule,
+    NzSelectModule,
+    NzTableModule,
     DashboardRoutingModule,
     SharedModule
   ],

@@ -1,25 +1,31 @@
-<form [formGroup]="loginForm" (ngSubmit)="handleSubmit()" class="login-page">
+<form nz-form layout="vertical" [formGroup]="loginForm" (ngSubmit)="handleSubmit()" class="login-page">
   <h1>{{ 'auth.login.pageTitle' | translate }}</h1>
 
-  <div class="form-group">
-    <label class="form-group__label">{{ 'auth.login.form.username' | translate }} <span class="required">*</span></label>
-    <input type="text" pInputText formControlName="username" class="input-fluid" />
-  </div>
+  <nz-form-item>
+    <nz-form-label [nzRequired]="true">{{ 'auth.login.form.username' | translate }}</nz-form-label>
+    <nz-form-control>
+      <input nz-input formControlName="username">
+    </nz-form-control>
+  </nz-form-item >
 
-  <div class="form-group">
-    <label class="form-group__label">{{ 'auth.login.form.password' | translate }} <span class="required">*</span></label>
-    <input type="password" pPassword formControlName="password" class="input-fluid" />
-  </div>
+  <nz-form-item>
+    <nz-form-label [nzRequired]="true">{{ 'auth.login.form.password' | translate }}</nz-form-label>
+    <nz-form-control>
+      <input type="password" nz-input formControlName="password">
+    </nz-form-control>
+  </nz-form-item >
 
   <div class="form-group-remember">
-    <p-checkbox formControlName="remember" label="{{'auth.login.form.remember' | translate }}"></p-checkbox>
+    <label nz-checkbox formControlName="remember">
+      <span>{{'auth.login.form.remember' | translate }}</span>
+    </label>
     <a [routerLink]="['/auth/forgot']" class="form-group-reset__forgot">
       {{ 'auth.login.form.forgot' | translate }}
     </a>
   </div>
 
   <div class="form-group-button">
-    <p-button class="input-fluid" styleClass="ui-button-secondary ui-button-outline" type="button" label="{{'auth.login.form.register' | translate}}"></p-button>
-    <p-button class="input-fluid" type="submit" label="{{'auth.login.form.submit' | translate}}"></p-button>
+    <button nz-button nzType="default" class="ui-button-outline" type="button">{{'auth.login.form.register' | translate}}</button>
+    <button nz-button nzType="primary" type="submit">{{'auth.login.form.submit' | translate}}</button>
   </div>
 </form>

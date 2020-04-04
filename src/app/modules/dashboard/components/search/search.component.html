@@ -1,21 +1,38 @@
-<form [formGroup]="searchForm" class="search">
-  <div class="ui-g">
-    <div class="ui-g-6">
-      <app-input-label label="Loại hồ sơ">
-        <p-dropdown [options]="documentTypes" placeholder="Lựa chọn" class="input-fluid" formControlName="type"></p-dropdown>
-      </app-input-label>
+<form nz-form [formGroup]="searchForm" class="search">
+  <div nz-row>
+    <div nz-col nzMd="12">
+      <nz-form-item>
+        <nz-form-label class="white" [nzSpan]="6">Loại hồ sơ</nz-form-label>
+        <nz-form-control
+          [nzSpan]="16"
+        >
+          <nz-select formControlName="type" nzAllowClear nzPlaceHolder="Lựa chọn">
+            <nz-option [nzValue]="type.value" [nzLabel]="type.label" *ngFor="let type of documentTypes"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
     </div>
 
-    <div class="ui-g-3">
-      <app-input-label label="Từ ngày">
-        <p-calendar placeholder="--Chọn--" formControlName="dateFrom"></p-calendar>
-      </app-input-label>
+    <div nz-col nzMd="6">
+      <nz-form-item>
+        <nz-form-label class="white" [nzSpan]="8">Từ ngày</nz-form-label>
+        <nz-form-control
+          [nzSpan]="16"
+        >
+          <nz-date-picker nzPlaceHolder="--Chọn--" formControlName="dateFrom"></nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
     </div>
 
-    <div class="ui-g-3">
-      <app-input-label label="Đến ngày">
-        <p-calendar placeholder="--Chọn--" formControlName="dateTo"></p-calendar>
-      </app-input-label>
+    <div nz-col nzMd="6">
+      <nz-form-item>
+        <nz-form-label class="white" [nzSpan]="8">Đến ngày</nz-form-label>
+        <nz-form-control
+          [nzSpan]="16"
+        >
+          <nz-date-picker nzPlaceHolder="--Chọn--" formControlName="dateTo"></nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
     </div>
   </div>
 </form><!-- search -->
