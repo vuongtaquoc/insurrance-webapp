@@ -41,7 +41,6 @@ export class ApplicationHttpClient {
   }
 
   delete<T>(endpoint: string, options?: RequestOptions): Observable<any> {
-    console.log(endpoint, options)
     return this.http.delete<any>(endpoint, options);
   }
 

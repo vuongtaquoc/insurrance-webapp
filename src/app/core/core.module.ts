@@ -3,15 +3,30 @@ import {
   AuthenticationService,
   DeclarationService,
   EmployeeService,
-  NavigationService
+  NavigationService,
+  DocumentTypeService,
+  CompanyService,
+  GroupCompanyService,
+  SalaryAreaService,
+  CityService,
+  DistrictService,
+  WardsService
+  
 } from './services';
 
 @NgModule({
   imports: [],
   providers: [
     AuthenticationService,
+    DocumentTypeService,
+    CompanyService ,
     DeclarationService,
     EmployeeService,
+    GroupCompanyService,
+    SalaryAreaService,
+    CityService,
+    DistrictService,
+    WardsService,
     NavigationService
   ],
   declarations: []

@@ -59,9 +59,12 @@ export class AuthenticationService {
 
   private storeCredentials(data) {
     const credentials: Credential = {
-      token: data.token,
-      expiresIn: data.expiresIn,
-      tokenType: data.tokenType
+      token: data.token,      
+      username: data.username,  
+      email: data.email,
+      currentDate: data.currentDate,
+      companyInfo: data.company,
+      role: data.role
     };
 
     localStorage.setItem(CREDENTIAL_STORAGE, JSON.stringify(credentials));
