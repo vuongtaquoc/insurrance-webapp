@@ -27,6 +27,11 @@ const routes: Routes = [
     path: 'declarations',
     loadChildren: './modules/declarations/declarations.module#DeclarationsModule',
     canActivate: [ AuthGuard ],
+  },
+  {
+    path: 'company',
+    loadChildren: './modules/company/company.module#CompanyModule',
+    canActivate: [ AuthGuard ],
   }
 ];
 

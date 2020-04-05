@@ -35,5 +35,46 @@
     "document-list": {
       "title": "Danh mục loại hồ sơ"
     }
+  },
+  "company": {
+    "company-list": {
+      "title": "Danh sách công ty"
+    },
+	"from" : {
+	   "subject": "Kính gửi",
+	   "city": "Tỉnh thành phố",
+	   "area": "Vùng",
+	   "insurranceManagement": "Cơ quan BHXH quản lý",	   
+       "name": "Tên đơn vị",
+	   "companyCode": "Mã số đơn vị",
+	   "taxCode": "Mã số thuế/ mã ngân sách",
+	   "addressRegister": "Địa chỉ đăng ký kinh doanh",
+	   "address": "Địa chỉ giao dịch hoặc liên hệ",
+	   "companyType": "Loại hình đơn vị",
+	   "mobile": "Điện thoại di động",
+	   "regency": "Chức danh",	   
+	   "traders": "Người giao dịch BHX",	   
+	   "tel": "Điện thoại cố định",
+	   "delegate": "Người đại diện",
+	   "email": "Email đơn vị",
+	   "emailContract": "Email liên hệ",
+	   "responseResults": "Nhận kết quả",	   
+	   "license": "QĐ thành lập/Giấy phép ĐKKD số",
+	   "issued": "Nơi cấp",
+	   "methodPay": "Phương thức đóng",
+	   "methodPayother": "Phương thức đóng khác",
+	   "noteChange": "Nội dung thay đổi, yêu cầu",
+	   "documentFile": "Hồ sơ kèm theo(nếu có)",
+	   "monthly": "Hàng tháng  ",
+	   "quarterly": "Hàng quý  ",
+	   "sixMonth": "6 tháng",
+	   "group": "Nhóm đối tượng",
+	   "submission": "Trình ký số",
+	   "district": "Quận huyện",
+	   "wards": "Phường xã",
+	   "object": "Đôi tượng cấp thẻ",
+	   "studentLevelOne": "Học sinh(Lớp 1->12)",
+	   "studentLevelTwo": "Sinh viên(Đại học, Cao đẳng, Trung học chuyên nghiệp, Nghề...)"	   
+	}
   }
 }
