@@ -29,7 +29,7 @@ export class DeclarationService {
           });
 
           if (d.hasChildren) {
-            d.declarations.forEach(employee => data.push(this.getLeaf(d, employee, tableHeaderColumns)));
+            d.declarations.forEach(employee => data.push(this.getLeaf(d, employee, tableHeaderColumns, true)));
           }
         });
 
@@ -61,12 +61,13 @@ export class DeclarationService {
     return declarations;
   }
 
-  public getLeaf(parent, employee, tableHeaderColumns) {
+  public getLeaf(parent, employee, tableHeaderColumns, isInitialize = false) {
     return {
       origin: employee,
       parent: parent,
       parentKey: parent.code || parent.key,
       isLeaf: true,
+      isInitialize,
       data: tableHeaderColumns.map(column => {
         if (!column.key) return '';
 
