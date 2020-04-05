@@ -174,7 +174,7 @@
                   <nz-form-control
                   [nzSpan]="24"
                 >
-                  <nz-radio-group formControlName="responseResults"  [(ngModel)]="responseResults">
+                  <nz-radio-group formControlName="responseResults">
                     <label nz-radio nzValue="1">Nhận tại CQBH</label>
                     <label nz-radio nzValue="2">Nhận qua BĐ</label>
                   </nz-radio-group>
@@ -188,7 +188,7 @@
               </div>
           </div>
 
-        <h1>B. Cấu hình kê khai {{ loginForm.get('groupCompanyCode').value || 'note'}}</h1>
+        <h1>B. Cấu hình kê khai {{ companyForm.get('groupCompanyCode').value || 'note'}}</h1>
         
         <div nz-row nzGutter="8">
             <div nz-col nzMd="6">
