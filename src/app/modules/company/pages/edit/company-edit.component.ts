@@ -2,7 +2,6 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthenticationService,GroupCompanyService, PaymentMethodServiced, SalaryAreaService,} from '@app/core/services';
 import { CityService, DistrictService, WardsService, IsurranceDepartmentService } from '@app/core/services';
-import { SelectItem } from '@app/core/interfaces';
 import { TABLE_COLUMNS_TYPE, TABLE_HEADERS, TABLE_COLUMNS_WIDTHS } from '@app/modules/company/data/department-table';
 import { Department, Company } from '@app/core/models';
 
@@ -63,13 +62,13 @@ export class CompanyEditComponent implements OnInit, OnDestroy {
       object: ['', Validators.required]
     });
     // this.item = new Company(this.loginForm);
-    this.loginForm.get('code').setValue('DUCLV88');
+    this.companyForm.get('code').setValue('DUCLV88');
     this.getCities();
     this.getGroupCompanies();
     this.getSalaryAreas();
     this.getPaymentMethods();
     this.setInfoModelFromSession();
-    this.loginForm.get('groupCompanyCode').setValue('05');
+    this.companyForm.get('groupCompanyCode').setValue('05');
   }
 
   ngOnDestroy() {
@@ -134,7 +133,7 @@ export class CompanyEditComponent implements OnInit, OnDestroy {
     const currentCredentials = this.authenticationService.currentCredentials;
   }
   get form() {
-    return this.loginForm.controls;
+    return this.companyForm.controls;
   }
 }
 

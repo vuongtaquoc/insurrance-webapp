@@ -1,17 +1,17 @@
-import { AfterViewInit, Directive, ElementRef, OnDestroy } from '@angular/core';
+import { OnInit, Directive, ElementRef, OnDestroy } from '@angular/core';
 
-const CARD_OFFSET = 40;
+const CARD_OFFSET = 20;
 
 @Directive({
   // tslint:disable-next-line:directive-selector
   selector: '[cardFullHeight]'
 })
-export class CardFullHeightDirective implements AfterViewInit, OnDestroy {
+export class CardFullHeightDirective implements OnInit, OnDestroy {
   constructor(private elementRef: ElementRef) {
     this.updateElementHeight = this.updateElementHeight.bind(this);
   }
 
-  ngAfterViewInit(): void {
+  ngOnInit() {
     this.updateElementHeight();
 
     window.addEventListener('resize', this.updateElementHeight);

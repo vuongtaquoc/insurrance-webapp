@@ -54,6 +54,7 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
       tableOverflow: true,
       tableWidth: `${ containerSize.width }px`,
       tableHeight: `${ containerSize.height }px`,
+      // tableHeight: '613px',
       columnSorting: false,
       defaultColAlign: 'left'
     });
@@ -154,7 +155,7 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
     // setTimeout(() => {
     //   console.log(parent, {
     //     width: parent.offsetWidth,
-    //     height: parent.offsetHeight
+    //     height: parent.clientHeight
     //   })
     // }, 100);
 

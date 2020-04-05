@@ -23,7 +23,7 @@ import {
 
 import {
   CardFullHeightDirective,
-  PageSplitFullHeightDirective
+  EditorAutoSizeDirective
 } from './directives';
 
 @NgModule({
@@ -44,7 +44,7 @@ import {
     InputLabelComponent,
     UsersTreeComponent,
     CardFullHeightDirective,
-    PageSplitFullHeightDirective
+    EditorAutoSizeDirective
   ],
   exports: [
     FormsModule,
@@ -53,7 +53,7 @@ import {
     InputLabelComponent,
     UsersTreeComponent,
     CardFullHeightDirective,
-    PageSplitFullHeightDirective
+    EditorAutoSizeDirective
   ],
   providers: [
     AuthenticationService,
