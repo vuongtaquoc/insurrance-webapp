@@ -1,180 +1,275 @@
-<form [formGroup]="loginForm" (ngSubmit)="handleSubmit()" class="login-page">
+<form  nz-form [formGroup]="loginForm" (ngSubmit)="handleSubmit()" class="login-page">
   <div class="page-container">    
       <div class="page-company" cardFullHeight>
         <div class="page-company__blank"></div>
         <div class="page-company__main">
           <h1>A. Thông tin đơn vị</h1> 
-          <div class="ui-g">
-            <div class="ui-g-3">
-              <label class="label">{{ 'company.from.city' | translate }} <span class="required">*</span></label>  
-            </div>
-            <div class="ui-g-3">
-              <p-dropdown [options]="cities" placeholder="Lựa chọn" class="input-fluid" formControlName="cityId"></p-dropdown>                    
-            </div>
-            <div class="ui-g-3">
-              <label class="label text-padding-left">{{ 'company.from.insurranceManagement' | translate }} <span class="required">*</span></label>                      
-            </div>
-            <div class="ui-g-3">
-              <p-dropdown [options]="documentTypes" placeholder="Lựa chọn" class="input-fluid" formControlName="address"></p-dropdown>                       
-            </div>
-          </div>
-          <div class="ui-g">
-            <div class="ui-g-3">
-              <label class="form-group-infomation__label">{{ 'company.from.companyCode' | translate }} <span class="required">*</span></label>               
-            </div>
-            <div class="ui-g-3">
-              <input type="text" pInputText formControlName="address" class="input-fluid" />               
-            </div>
-            <div class="ui-g-3">
-              <label class="form-group-infomation__label text-padding-left">{{ 'company.from.area' | translate }} <span class="required">*</span></label>                    
-            </div>
-            <div class="ui-g-3">
-              <p-dropdown [options]="documentTypes" placeholder="Lựa chọn" class="input-fluid" formControlName="address"></p-dropdown>                  
-            </div>
-          </div>
-          <div class="ui-g">
-            <div class="ui-g-3">
-              <label class="form-group-infomation__label">{{ 'company.from.name' | translate }} <span class="required">*</span></label>               
-            </div>   
-            <div class="ui-g-9">
-              <input type="text" pInputText formControlName="name" class="input-fluid" />
-            </div>
-          </div>  
-          <div class="ui-g">
-            <div class="ui-g-3">
-              <label class="form-group-infomation__label">{{ 'company.from.addressRegister' | translate }} <span class="required">*</span></label>
-            </div>   
-            <div class="ui-g-9">
-              <input type="text" pInputText formControlName="name" class="input-fluid" />
-            </div>
-          </div>          
-          <div class="ui-g">
-            <div class="ui-g-3">
-              <label class="form-group-infomation__label">{{ 'company.from.address' | translate }} <span class="required">*</span></label>
-            </div>   
-            <div class="ui-g-9">
-              <input type="text" pInputText formControlName="addressregister" class="input-fluid" />
-            </div>
-          </div>
-          <div class="ui-g">
-            <div class="ui-g-3">   
-                <label class="form-group-infomation__label">{{ 'company.from.taxCode' | translate }} <span class="required">*</span></label>
-            </div>
-            <div class="ui-g-3">
-              <input type="text" pInputText formControlName="taxcode" class="input-fluid" />
-            </div>
-            <div class="ui-g-3">
-                <label class="form-group-infomation__label text-padding-left">{{ 'company.from.tel' | translate }} <span class="required">*</span></label>
-            </div>
-            <div class="ui-g-3">
-                <input type="text" pInputText formControlName="taxcode" class="input-fluid" />
-            </div>
-          </div>
-          <div class="ui-g">
-              <div class="ui-g-3">
-                <label class="form-group-infomation__label">{{ 'company.from.delegate' | translate }} <span class="required">*</span></label>
+          <div nz-row nzGutter="8">
+              <div nz-col nzMd="6">
+                  <nz-form-label class="black" [nzSpan]="24">{{ 'company.from.city' | translate }} <span class="required">*</span></nz-form-label>
               </div>
-              <div class="ui-g-3">
-                <input type="text" pInputText formControlName="address" class="input-fluid" />
+              <div nz-col nzMd="6">
+                <nz-form-control
+                  [nzSpan]="24"
+                >
+                  <nz-select formControlName="cities" (ngModelChange)="changeCity($event);"  nzAllowClear nzPlaceHolder="Lựa chọn">
+                    <nz-option [nzValue]="city.id" [nzLabel]="city.name" *ngFor="let city of cities"></nz-option>
+                  </nz-select>
+                </nz-form-control>
               </div>
-              <div class="ui-g-3">
-                <label class="form-group-infomation__label text-padding-left">{{ 'company.from.regency' | translate }} <span class="required">*</span></label>
+              <div nz-col nzMd="6">
+                  <nz-form-label class="black text-padding-left" [nzSpan]="24">{{ 'company.from.insurranceManagement' | translate }} <span class="required">*</span></nz-form-label>
               </div>
-              <div class="ui-g-3">
-                  <input type="text" pInputText formControlName="address" class="input-fluid" />
+              <div nz-col nzMd="6">
+                <nz-form-control
+                  [nzSpan]="24"
+                >
+                  <nz-select formControlName="insurranceManagement" nzAllowClear nzPlaceHolder="Lựa chọn">
+                    <nz-option [nzValue]="type.value" [nzLabel]="type.label" *ngFor="let type of documentTypes"></nz-option>
+                  </nz-select>
+                </nz-form-control>
               </div>
           </div>
-          <div class="ui-g">
-              <div class="ui-g-3">
-                <label class="form-group-infomation__label">{{ 'company.from.traders' | translate }} <span class="required">*</span></label>
+
+          <div nz-row nzGutter="8">
+              <div nz-col nzMd="6">
+                  <nz-form-label class="black" [nzSpan]="24">{{ 'company.from.companyCode' | translate }} <span class="required">*</span></nz-form-label>
               </div>
-              <div class="ui-g-3">
-                <input type="text" pInputText formControlName="address" class="input-fluid" />
+              <div nz-col nzMd="6">
+                  <nz-form-control
+                  [nzSpan]="24"
+                >
+                <input formControlName="code" class="ant-input" placeholder="Nhập dữ liệu" [(ngModel)]="code" />
+                </nz-form-control>
               </div>
-              <div class="ui-g-3">
-                <label class="form-group-infomation__label text-padding-left">{{ 'company.from.mobile' | translate }} <span class="required">*</span></label>
+              <div nz-col nzMd="6">
+                  <nz-form-label class="black text-padding-left" [nzSpan]="24">{{ 'company.from.area' | translate }} <span class="required">*</span></nz-form-label>
               </div>
-              <div class="ui-g-3">
-                  <input type="text" pInputText formControlName="address" class="input-fluid" />
+              <div nz-col nzMd="6">
+                <nz-form-control
+                  [nzSpan]="24"
+                >
+                  <nz-select formControlName="salaryAreas"  [(ngModel)]="salaryAreaId" nzAllowClear nzPlaceHolder="Lựa chọn">
+                    <nz-option [nzValue]="salaryArea.id" [nzLabel]="salaryArea.name" *ngFor="let salaryArea of salaryAreas"></nz-option>
+                  </nz-select>
+                </nz-form-control>
               </div>
           </div>
-          <div class="ui-g">
-              <div class="ui-g-3">
-                <label class="form-group-infomation__label">{{ 'company.from.emailContract' | translate }} <span class="required">*</span></label>
+
+          <div nz-row nzGutter="8">
+              <div nz-col nzMd="6">
+                  <nz-form-label class="black" [nzSpan]="24">{{ 'company.from.name' | translate }} <span class="required">*</span></nz-form-label>
               </div>
-              <div class="ui-g-9">
-                <input type="text" pInputText formControlName="addressregister" class="input-fluid" />
+              <div nz-col nzMd="18">
+                  <nz-form-control
+                  [nzSpan]="24"
+                >
+                <input formControlName="name" class="ant-input" placeholder="Nhập dữ liệu" [(ngModel)]="name" />
+                </nz-form-control>
               </div>
           </div>
-          <div class="ui-g">
-            <div class="ui-g-3">
-                <label class="form-group-infomation__label">{{ 'company.from.methodPay' | translate }} <span class="required">*</span></label>
+
+          <div nz-row nzGutter="8">
+              <div nz-col nzMd="6">
+                  <nz-form-label class="black" [nzSpan]="24">{{ 'company.from.addressRegister' | translate }} <span class="required">*</span></nz-form-label>
+              </div>
+              <div nz-col nzMd="18">
+                  <nz-form-control
+                  [nzSpan]="24"
+                >
+                <input formControlName="addressRegister" class="ant-input" placeholder="Nhập dữ liệu" [(ngModel)]="addressRegister" />
+                </nz-form-control>
+              </div>
+          </div>
+
+          <div nz-row nzGutter="8">
+              <div nz-col nzMd="6">
+                  <nz-form-label class="black" [nzSpan]="24">{{ 'company.from.address' | translate }} <span class="required">*</span></nz-form-label>
+              </div>
+              <div nz-col nzMd="18">
+                  <nz-form-control
+                  [nzSpan]="24"
+                >
+                <input formControlName="address" class="ant-input" placeholder="Nhập dữ liệu" [(ngModel)]="address" />
+                </nz-form-control>
+              </div>
+          </div>
+
+          <div nz-row nzGutter="8">
+              <div nz-col nzMd="6">
+                  <nz-form-label class="black" [nzSpan]="24">{{ 'company.from.taxCode' | translate }} <span class="required">*</span></nz-form-label>
+              </div>
+              <div nz-col nzMd="6">
+                  <nz-form-control
+                  [nzSpan]="24"
+                >
+                <input formControlName="taxCode" class="ant-input" placeholder="Nhập dữ liệu" [(ngModel)]="taxCode" />
+                </nz-form-control>
+              </div>
+              <div nz-col nzMd="6">
+                  <nz-form-label class="black text-padding-left" [nzSpan]="24">{{ 'company.from.delegate' | translate }} <span class="required">*</span></nz-form-label>
+              </div>
+              <div nz-col nzMd="6">
+                  <nz-form-control
+                  [nzSpan]="24"
+                >
+                <input formControlName="delegate"   class="ant-input"  placeholder="Nhập dữ liệu" [(ngModel)]="delegate" />
+                </nz-form-control>
+              </div>
+          </div>
+
+          <div nz-row nzGutter="8">
+              <div nz-col nzMd="6">
+                  <nz-form-label class="black" [nzSpan]="24">{{ 'company.from.traders' | translate }} <span class="required">*</span></nz-form-label>
+              </div>
+              <div nz-col nzMd="6">
+                  <nz-form-control
+                  [nzSpan]="24"
+                >
+                <input formControlName="traders" class="ant-input" placeholder="Nhập dữ liệu" [(ngModel)]="traders" />
+                </nz-form-control>
+              </div>
+              <div nz-col nzMd="6">
+                  <nz-form-label class="black text-padding-left" [nzSpan]="24">{{ 'company.from.mobile' | translate }} <span class="required">*</span></nz-form-label>
+              </div>
+              <div nz-col nzMd="6">
+                  <nz-form-control
+                  [nzSpan]="24"
+                >
+                <input formControlName="mobile" class="ant-input"  placeholder="Nhập dữ liệu" [(ngModel)]="mobile" />
+                </nz-form-control>
+              </div>
+          </div>
+
+          <div nz-row nzGutter="8">
+              <div nz-col nzMd="6">
+                  <nz-form-label class="black" [nzSpan]="24">{{ 'company.from.emailContract' | translate }} <span class="required">*</span></nz-form-label>
+              </div>
+              <div nz-col nzMd="18">
+                  <nz-form-control
+                  [nzSpan]="24"
+                >
+                <input formControlName="emailOfContract" class="ant-input" placeholder="Nhập dữ liệu" [(ngModel)]="emailOfContract" />
+                </nz-form-control>
+              </div>
+          </div>
+
+          <div nz-row nzGutter="8">
+              <div nz-col nzMd="6">
+                  <nz-form-label class="black" [nzSpan]="24">{{ 'company.from.methodPay' | translate }} <span class="required">*</span></nz-form-label>
+              </div>
+              <div nz-col nzMd="6">
+                  <nz-form-control
+                  [nzSpan]="24"
+                >
+                  <nz-select formControlName="paymentMethodId" nzAllowClear  [(ngModel)]="paymentMethodId" nzPlaceHolder="Lựa chọn">
+                    <nz-option [nzValue]="paymentMethod.id" [nzLabel]="paymentMethod.name" *ngFor="let type of paymentMethods"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </div>
+              <div nz-col nzMd="5">
+                  <nz-form-label class="black text-padding-left" [nzSpan]="24">{{ 'company.from.responseResults' | translate }} <span class="required">*</span></nz-form-label>
+              </div>
+              <div nz-col nzMd="7">
+                  <nz-form-control
+                  [nzSpan]="24"
+                >
+                  <nz-radio-group [(ngModel)]="responseResults">
+                    <label nz-radio nzValue="1">Nhận tại CQBH</label>
+                    <label nz-radio nzValue="2">Nhận qua BĐ</label>
+                  </nz-radio-group>
+                </nz-form-control>
+              </div>
+          </div>
+
+          <div nz-row nzGutter="8">
+              <div nz-col nzMd="24">
+                  <nz-form-label class="black" [nzSpan]="24">Đơn vị cam kết hoàn toàn chịu trách nhiệm trước pháp luật về tính chính xác, trung thực của nội dung trên.</nz-form-label>
+              </div>
+          </div>
+
+        <h1>B. Cấu hình kê khai</h1>
+        
+        <div nz-row nzGutter="8">
+            <div nz-col nzMd="6">
+                <nz-form-label class="black" [nzSpan]="24">{{ 'company.from.group' | translate }} <span class="required">*</span></nz-form-label>
             </div>
-            <div class="ui-g-3">
-                <p-dropdown [options]="documentTypes" placeholder="Lựa chọn" class="input-fluid" formControlName="address"></p-dropdown>
+            <div nz-col nzMd="18">
+                <nz-form-control
+                  [nzSpan]="24"
+                >
+                  <nz-select formControlName="groupCompanyCode" nzAllowClear  [(ngModel)]="groupCompanyCode" nzPlaceHolder="Lựa chọn">
+                    <nz-option [nzValue]="groupCompany.code" [nzLabel]="groupCompany.name" *ngFor="let groupCompany of groupCompanies"></nz-option>
+                  </nz-select>
+                </nz-form-control>
             </div>
-            <div class="ui-g-2">
-              <label class="form-group-infomation__label text-padding-left">{{ 'company.from.responseResults' | translate }} <span class="required">*</span></label>
+        </div>
+
+        <div nz-row nzGutter="8">
+            <div nz-col nzMd="6">
+                <nz-form-label class="black" [nzSpan]="24">{{ 'company.from.submission' | translate }} <span class="required">*</span></nz-form-label>
             </div>
-            <div class="ui-g-4">
-              <p-radioButton name="groupname" value="0" label="Nhận tại CQBH" [(ngModel)]="responseresults"></p-radioButton>
-              <p-radioButton name="groupname" value="1" label="Nhận qua BĐ" [(ngModel)]="responseresults"></p-radioButton>
+            <div nz-col nzMd="18">
+                <nz-form-control
+                  [nzSpan]="24"
+                >
+                  <nz-radio-group [(ngModel)]="submissionType">
+                    <label nz-radio nzValue="0">Ký và nộp luôn</label>
+                    <label nz-radio nzValue="1">Phải trình ký</label>
+                  </nz-radio-group>
+                </nz-form-control>
             </div>
-          </div>
-          <div class="ui-g">
-              <div class="ui-g-12">
-                  <br>
-                  <label class="form-group-infomation__label">
-                    Đơn vị cam kết hoàn toàn chịu trách nhiệm trước pháp luật về tính chính xác, trung thực của nội dung trên.
-                  </label>
-                  <br>
-              </div>
-          </div>
-          <h1>B. Cấu hình kê khai {{groupCompanyCode || 'none'}}</h1>
-          <div class="ui-g">
-              <div class="ui-g-3">
-                <label class="form-group-infomation__label">{{ 'company.from.group' | translate }} <span class="required">*</span></label>
-              </div>
-              <div class="ui-g-9">
-                  <p-dropdown [options]="groupCompanies" placeholder="Lựa chọn" (onChange)="onChange($event)" class="input-fluid" 
-                  [(ngModel)]="groupCompanyCode" formControlName="groupCompanyCode"></p-dropdown>
-              </div>
-          </div>
-          <div class="ui-g">
-            <div class="ui-g-3">
-                <label class="form-group-infomation__label">{{ 'company.from.submission' | translate }} <span class="required">*</span></label>
+        </div>
+
+        <div nz-row nzGutter="8" *ngIf="(groupCompanyCode === '02' || groupCompanyCode === '04' || groupCompanyCode === '05')">
+            <div nz-col nzMd="6">
+                <nz-form-label class="black" [nzSpan]="24">{{ 'company.from.district' | translate }} <span class="required">*</span></nz-form-label>
             </div>
-            <div class="ui-g-9">
-                <p-radioButton name="groupsubmission" value="0" label="Ký và nộp luôn" [(ngModel)]="responseresults"></p-radioButton>
-                <p-radioButton name="groupsubmission" value="1" label="Phải trình ký" [(ngModel)]="responseresults"></p-radioButton>
+            <div nz-col nzMd="6">
+              <nz-form-control
+                [nzSpan]="24"
+              >
+                <nz-select formControlName="type" nzAllowClear nzPlaceHolder="Lựa chọn">
+                  <nz-option [nzValue]="district.id" [nzLabel]="district.name" *ngFor="let district of districts"></nz-option>
+                </nz-select>
+              </nz-form-control>
             </div>
-          </div>
-          <div class="ui-g" *ngIf="(groupCompanyCode === '02' || groupCompanyCode === '04' || groupCompanyCode === '05')">
-              <div class="ui-g-3">
-                  <label class="form-group-infomation__label">{{ 'company.from.district' | translate }} <span class="required">*</span></label>
-              </div>
-              <div class="ui-g-3">
-                  <p-dropdown [options]="documentTypes" placeholder="Lựa chọn" class="input-fluid" formControlName="address"></p-dropdown>                  
-              </div>
-              <div class="ui-g-3" *ngIf="(groupCompanyCode === '02' || groupCompanyCode === '05')">
-                  <label class="form-group-infomation__label text-padding-left">{{ 'company.from.wards' | translate }} <span class="required">*</span></label>
-              </div>
-              <div class="ui-g-3" *ngIf="(groupCompanyCode === '02' || groupCompanyCode === '05')">
-                  <p-dropdown [options]="documentTypes" placeholder="Lựa chọn" class="input-fluid" formControlName="address"></p-dropdown>                  
-              </div>
-          </div>
-          <div class="ui-g" *ngIf="(groupCompanyCode == '03')">
-              <div class="ui-g-3">
-                  <label class="form-group-infomation__label">{{ 'company.from.object' | translate }} <span class="required">*</span></label>
-              </div>
-              <div class="ui-g-9">
-                  <p-radioButton name="groupsubmission" value="0" label="{{ 'company.from.studentLevelOne' | translate }}" [(ngModel)]="responseresults"></p-radioButton>
-                  <p-radioButton name="groupsubmission" value="1" label="{{ 'company.from.studentLevelTwo' | translate }}" [(ngModel)]="responseresults"></p-radioButton>
-              </div>
-          </div>
-          <div class="ui-g" *ngIf="(groupCompanyCode == '01')">
-            <div class="ui-g-12">Danh sách phòng ban</div>
-          </div>
+            <div nz-col nzMd="6" *ngIf="(groupCompanyCode === '02' || groupCompanyCode === '05')">
+                <nz-form-label class="black text-padding-left" [nzSpan]="24">{{ 'company.from.wards' | translate }} <span class="required">*</span></nz-form-label>
+            </div>
+            <div nz-col nzMd="6" *ngIf="(groupCompanyCode === '02' || groupCompanyCode === '05')">
+              <nz-form-control
+                [nzSpan]="24"
+              >
+                <nz-select formControlName="type" nzAllowClear nzPlaceHolder="Lựa chọn">
+                  <nz-option [nzValue]="type.value" [nzLabel]="type.label" *ngFor="let type of documentTypes"></nz-option>
+                </nz-select>
+              </nz-form-control>
+            </div>
+        </div>
+
+        <div nz-row nzGutter="8" *ngIf="(groupCompanyCode == '03')">
+            <div nz-col nzMd="6">
+                <nz-form-label class="black" [nzSpan]="24">{{ 'company.from.object' | translate }} <span class="required">*</span></nz-form-label>
+            </div>
+            <div nz-col nzMd="18">
+                <nz-form-control
+                  [nzSpan]="24"
+                >
+                  <nz-radio-group [(ngModel)]="radioValue">
+                    <label nz-radio nzValue="A">{{ 'company.from.studentLevelOne' | translate }}</label>
+                    <label nz-radio nzValue="B">{{ 'company.from.studentLevelTwo' | translate }}</label>
+                  </nz-radio-group>
+                </nz-form-control>
+            </div>
+        </div>
+
+        <div nz-row nzGutter="8" *ngIf="(groupCompanyCode == '01')">
+            <div nz-col nzMd="24">
+                <nz-form-label class="black" [nzSpan]="24">Danh sách phòng ban</nz-form-label>
+            </div>
+        </div>
+
         </div>
       </div>
   </div>

@@ -4,7 +4,7 @@ import { map } from 'rxjs/operators';
 
 import { ApplicationHttpClient } from '@app/core/http';
 
-import { DocumentType } from '@app/core/models';
+import { District } from '@app/core/models';
 
 
 @Injectable({ providedIn: 'root' })
@@ -13,7 +13,7 @@ export class DistrictService {
   constructor(private http: ApplicationHttpClient) {
   }
 
-  public getDistrict(cityId: string): Observable<DocumentType> {
+  public getDistrict(cityId: string): Observable<District> {
     return this.http.get('/district/city', {
       params: { cityId }
     });

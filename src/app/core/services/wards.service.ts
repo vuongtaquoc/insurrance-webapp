@@ -13,8 +13,9 @@ export class WardsService {
   constructor(private http: ApplicationHttpClient) {
   }
 
-  public getWards(): Observable<Wards> {
+  public getWards(districtId: string): Observable<Wards> {
     return this.http.get('/salary-area', {
+      params: { districtId }
     });
   }
   

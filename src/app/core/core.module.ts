@@ -8,8 +8,10 @@ import {
   CompanyService,
   GroupCompanyService,
   SalaryAreaService,
-  WardsService,
-  CityService
+  CityService,
+  DistrictService,
+  WardsService
+  
 } from './services';
 
 @NgModule({
@@ -22,8 +24,9 @@ import {
     EmployeeService,
     GroupCompanyService,
     SalaryAreaService,
-    WardsService,
     CityService,
+    DistrictService,
+    WardsService,
     NavigationService
   ],
   declarations: []

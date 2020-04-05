@@ -1,44 +1,58 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { SelectItem } from 'primeng/api';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { GroupCompanyService, PaymentMethodServiced, SalaryAreaService, CityService } from '@app/core/services';
+import { GroupCompanyService, PaymentMethodServiced, SalaryAreaService, CityService, DistrictService, WardsService } from '@app/core/services';
+import { SelectItem } from '@app/core/interfaces';
 
 @Component({
   selector: 'app-company-edit',
   templateUrl: './company-edit.component.html',
-  styleUrls: ['./company-edit.component.scss']
+  styleUrls: ['./company-edit.component.less']
 })
 export class CompanyEditComponent implements OnInit, OnDestroy {
   loginForm: FormGroup;
   loading = false;
+  groupCompanies: any;
+  cities: any;
+  wards: any;
+  districts: any;
+  salaryAreas: any;
   groupCompanyCode: any;
-  groupCompanies: SelectItem[] = [];
-  paymentMethods: SelectItem[] = [];
-  salaryAreas: SelectItem[] = [];
-  cities: SelectItem[] = [];
+  documentTypes: SelectItem[] = [];
   constructor(
     private formBuilder: FormBuilder,
     private groupCompanyService: GroupCompanyService,
     private paymentMethodServiced: PaymentMethodServiced,
     private salaryAreaService: SalaryAreaService,
     private cityService: CityService,
+    private districtService: DistrictService,
+    private wardsService: WardsService,
   ) {
   }
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
-      subject: ['', Validators.required],
+      cities: ['', Validators.required],
+      insurranceManagement: ['', Validators.required],
+      code: ['', Validators.required],
+      salaryAreaId: ['', Validators.required],
       name: ['', Validators.required],
-      taxcode: ['', Validators.required],
+      addressRegister: ['', Validators.required] ,
       address: ['', Validators.required],
-      addressregister: ['', Validators.required],
-      companycode: ['', Validators.required] ,
-      responseresults: ['1', Validators.required],
+      taxCode: ['', Validators.required],
+      delegate: ['', Validators.required],
+      traders: ['', Validators.required],
+      mobile: ['', Validators.required],
+      emailOfContract: ['', Validators.required],
+      paymentMethodId: ['', Validators.required],
+      responseResults: ['1', Validators.required],
       groupCompanyCode: ['', Validators.required],
-      cityId: ['', Validators.required] 
+      submissionType: ['0', Validators.required],
+      districts: ['', Validators.required],
+      wards: ['', Validators.required]
     });
 
-    this.getGroupCompanies();
     this.getCities();
+    this.getGroupCompanies();
+    this.getSalaryAreas();
   }
 
   ngOnDestroy() {
@@ -46,31 +60,40 @@ export class CompanyEditComponent implements OnInit, OnDestroy {
 
   getGroupCompanies() {
     this.groupCompanyService.getGroupCompany().subscribe(datas => {
-      this.formatObjectDropdown(datas, this.groupCompanies, false)
+      this.groupCompanies = datas;
     });
   }
 
-  onChange(itemSelected) {
-    console.log('event :' + itemSelected);
-    console.log(itemSelected.value);
-  }
 
   getCities() {
     this.cityService.getCities().subscribe(datas => {
-      this.formatObjectDropdown(datas, this.cities, true)
+      this.cities = datas;
     });
   }
 
-  formatObjectDropdown(datas: any, sourceDropDown: SelectItem[], isSetId: boolean) {
-    datas.forEach((item) => {
-      if(isSetId) {
-        sourceDropDown.push({label: item.name,value: item.id});
-      }else {
-        sourceDropDown.push({label: item.name,value: item.code});
-      }
+  getdistricts(cityId: string) {
+    this.districtService.getDistrict(cityId).subscribe(datas => {
+      this.districts = datas;
     });
   }
 
+  getWads(districtId: string) {
+    this.wardsService.getWards(districtId).subscribe(datas => {
+      this.cities = datas;
+    });
+  }
+
+  getSalaryAreas() {
+    this.salaryAreas.getSalaryAreas().subscribe(datas => {
+      this.salaryAreas = datas;
+    });
+  }
+   
+  changeCity(item) {
+    if(item) {
+      this.getdistricts(item);
+    }
+  }
   get form() {
     return this.loginForm.controls;
   }
