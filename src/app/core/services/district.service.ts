@@ -12,10 +12,9 @@ export class DistrictService {
 
   constructor(private http: ApplicationHttpClient) {
   }
-
+  
   public getDistrict(cityId: string): Observable<District> {
-    return this.http.get('/district/city', {
-      params: { cityId }
+    return this.http.get(`/district/city/${ cityId }`, {
     });
   }
   

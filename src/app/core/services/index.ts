@@ -10,3 +10,4 @@ export * from './payment-method.service';
 export * from './city.service';
 export * from './district.service';
 export * from './wards.service';
+export * from './isurrance-department.service';

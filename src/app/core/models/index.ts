@@ -9,3 +9,5 @@ export * from './city';
 export * from './district';
 export * from './wards';
 export * from './payment-method';
+export * from './department';
+export * from './isurrance-department';

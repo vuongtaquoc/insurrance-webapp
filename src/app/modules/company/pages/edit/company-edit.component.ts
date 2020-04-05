@@ -1,7 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { GroupCompanyService, PaymentMethodServiced, SalaryAreaService, CityService, DistrictService, WardsService } from '@app/core/services';
+import { AuthenticationService,GroupCompanyService, PaymentMethodServiced, SalaryAreaService,} from '@app/core/services';
+import { CityService, DistrictService, WardsService, IsurranceDepartmentService } from '@app/core/services';
 import { SelectItem } from '@app/core/interfaces';
+import { TABLE_COLUMNS_TYPE, TABLE_HEADERS, TABLE_COLUMNS_WIDTHS } from '@app/modules/company/data/department-table';
+import { Department } from '@app/core/models';
 
 @Component({
   selector: 'app-company-edit',
@@ -10,14 +13,20 @@ import { SelectItem } from '@app/core/interfaces';
 })
 export class CompanyEditComponent implements OnInit, OnDestroy {
   loginForm: FormGroup;
+  declarations: Department[] = [];
+  tableColumnType: any[] = TABLE_COLUMNS_TYPE;
+  tableHeader: any[] = TABLE_HEADERS;
+  tableColumnWidth: any[] = TABLE_COLUMNS_WIDTHS;
+
   loading = false;
   groupCompanies: any;
   cities: any;
   wards: any;
   districts: any;
   salaryAreas: any;
+  paymentMethods: any;
   groupCompanyCode: any;
-  documentTypes: SelectItem[] = [];
+  isurranceDepartments: any;
   constructor(
     private formBuilder: FormBuilder,
     private groupCompanyService: GroupCompanyService,
@@ -26,6 +35,8 @@ export class CompanyEditComponent implements OnInit, OnDestroy {
     private cityService: CityService,
     private districtService: DistrictService,
     private wardsService: WardsService,
+    private authenticationService: AuthenticationService,
+    private isurranceDepartmentService: IsurranceDepartmentService,
   ) {
   }
   ngOnInit() {
@@ -33,7 +44,7 @@ export class CompanyEditComponent implements OnInit, OnDestroy {
       cities: ['', Validators.required],
       insurranceManagement: ['', Validators.required],
       code: ['', Validators.required],
-      salaryAreaId: ['', Validators.required],
+      salaryAreas: ['', Validators.required],
       name: ['', Validators.required],
       addressRegister: ['', Validators.required] ,
       address: ['', Validators.required],
@@ -47,12 +58,15 @@ export class CompanyEditComponent implements OnInit, OnDestroy {
       groupCompanyCode: ['', Validators.required],
       submissionType: ['0', Validators.required],
       districts: ['', Validators.required],
-      wards: ['', Validators.required]
+      wards: ['', Validators.required],
+      object: ['', Validators.required]
     });
 
     this.getCities();
     this.getGroupCompanies();
     this.getSalaryAreas();
+    this.getPaymentMethods();
+    this.setInfoModelFromSession();
   }
 
   ngOnDestroy() {
@@ -71,7 +85,7 @@ export class CompanyEditComponent implements OnInit, OnDestroy {
     });
   }
 
-  getdistricts(cityId: string) {
+  getDistricts(cityId: string) {
     this.districtService.getDistrict(cityId).subscribe(datas => {
       this.districts = datas;
     });
@@ -79,20 +93,42 @@ export class CompanyEditComponent implements OnInit, OnDestroy {
 
   getWads(districtId: string) {
     this.wardsService.getWards(districtId).subscribe(datas => {
-      this.cities = datas;
+      this.wards = datas;
     });
   }
 
   getSalaryAreas() {
-    this.salaryAreas.getSalaryAreas().subscribe(datas => {
+    this.salaryAreaService.getSalaryAreas().subscribe(datas => {
       this.salaryAreas = datas;
     });
   }
-   
+  getPaymentMethods() {
+    this.paymentMethodServiced.getPaymentMethods().subscribe(datas => {
+      this.paymentMethods = datas;
+    });
+  }
+
+  getIsurranceDepartments(cityId: string) {
+    this.isurranceDepartmentService.getIsurranceDepartments(cityId).subscribe(datas => {
+      this.isurranceDepartments = datas;
+    });
+  }
+
   changeCity(item) {
     if(item) {
-      this.getdistricts(item);
+      this.getDistricts(item);
+      this.getIsurranceDepartments(item)
     }
+  }
+
+  changeDistrict(item) {
+    if(item) {
+      this.getWads(item);
+    }
+  }
+
+  setInfoModelFromSession() {
+    const currentCredentials = this.authenticationService.currentCredentials;
   }
   get form() {
     return this.loginForm.controls;

@@ -4,22 +4,22 @@ import { map } from 'rxjs/operators';
 
 import { ApplicationHttpClient } from '@app/core/http';
 
-import { PaymentMethod } from '@app/core/models';
+import { IsurranceDepartment } from '@app/core/models';
 
 
 @Injectable({ providedIn: 'root' })
-export class PaymentMethodServiced {
+export class IsurranceDepartmentService {
 
   constructor(private http: ApplicationHttpClient) {
   }
-
-  public getPaymentMethods(): Observable<PaymentMethod> {
-    return this.http.get('/payment-method', {
+  
+  public getIsurranceDepartments(cityId: string): Observable<IsurranceDepartment> {
+    return this.http.get(`/isurrance-department/city/${ cityId }`, {
     });
   }
   
   public getDetailById(id: string) {
-    return this.http.get('/payment-method', {
+    return this.http.get('/isurrance-department', {
       params: { id }
     });
   }

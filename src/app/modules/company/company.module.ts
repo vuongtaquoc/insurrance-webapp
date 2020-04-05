@@ -16,6 +16,9 @@ import { SharedModule } from '@app/shared/shared.module';
 import { CompanyRoutingModule } from './company-routing.module';
 import { CompanyComponent, CompanyEditComponent } from './pages';
 
+import {
+  TableEditorComponent
+} from './components';
 
 @NgModule({
   imports: [
@@ -34,7 +37,8 @@ import { CompanyComponent, CompanyEditComponent } from './pages';
   ],
   declarations: [
     CompanyComponent,
-    CompanyEditComponent    
+    CompanyEditComponent,
+    TableEditorComponent
   ],
   providers: [
     AuthenticationService

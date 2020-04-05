@@ -14,13 +14,12 @@ export class WardsService {
   }
 
   public getWards(districtId: string): Observable<Wards> {
-    return this.http.get('/salary-area', {
-      params: { districtId }
+    return this.http.get(`/wards/district/${ districtId }`, {
     });
   }
   
   public getDetailById(id: string) {
-    return this.http.get('/salary-area', {
+    return this.http.get('/wards', {
       params: { id }
     });
   }

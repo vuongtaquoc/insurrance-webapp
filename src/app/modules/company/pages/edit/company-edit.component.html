@@ -25,7 +25,7 @@
                   [nzSpan]="24"
                 >
                   <nz-select formControlName="insurranceManagement" nzAllowClear nzPlaceHolder="Lựa chọn">
-                    <nz-option [nzValue]="type.value" [nzLabel]="type.label" *ngFor="let type of documentTypes"></nz-option>
+                    <nz-option [nzValue]="insurranceManagement.id" [nzLabel]="insurranceManagement.name" *ngFor="let insurranceManagement of isurranceDepartments"></nz-option>
                   </nz-select>
                 </nz-form-control>
               </div>
@@ -163,7 +163,7 @@
                   [nzSpan]="24"
                 >
                   <nz-select formControlName="paymentMethodId" nzAllowClear  [(ngModel)]="paymentMethodId" nzPlaceHolder="Lựa chọn">
-                    <nz-option [nzValue]="paymentMethod.id" [nzLabel]="paymentMethod.name" *ngFor="let type of paymentMethods"></nz-option>
+                    <nz-option [nzValue]="paymentMethod.id" [nzLabel]="paymentMethod.name" *ngFor="let paymentMethod of paymentMethods"></nz-option>
                   </nz-select>
                 </nz-form-control>
               </div>
@@ -174,7 +174,7 @@
                   <nz-form-control
                   [nzSpan]="24"
                 >
-                  <nz-radio-group [(ngModel)]="responseResults">
+                  <nz-radio-group formControlName="responseResults"  [(ngModel)]="responseResults">
                     <label nz-radio nzValue="1">Nhận tại CQBH</label>
                     <label nz-radio nzValue="2">Nhận qua BĐ</label>
                   </nz-radio-group>
@@ -213,7 +213,7 @@
                 <nz-form-control
                   [nzSpan]="24"
                 >
-                  <nz-radio-group [(ngModel)]="submissionType">
+                  <nz-radio-group formControlName="submissionType" [(ngModel)]="submissionType">
                     <label nz-radio nzValue="0">Ký và nộp luôn</label>
                     <label nz-radio nzValue="1">Phải trình ký</label>
                   </nz-radio-group>
@@ -229,7 +229,7 @@
               <nz-form-control
                 [nzSpan]="24"
               >
-                <nz-select formControlName="type" nzAllowClear nzPlaceHolder="Lựa chọn">
+                <nz-select formControlName="districts" (ngModelChange)="changeDistrict($event);" nzAllowClear nzPlaceHolder="Lựa chọn">
                   <nz-option [nzValue]="district.id" [nzLabel]="district.name" *ngFor="let district of districts"></nz-option>
                 </nz-select>
               </nz-form-control>
@@ -241,8 +241,8 @@
               <nz-form-control
                 [nzSpan]="24"
               >
-                <nz-select formControlName="type" nzAllowClear nzPlaceHolder="Lựa chọn">
-                  <nz-option [nzValue]="type.value" [nzLabel]="type.label" *ngFor="let type of documentTypes"></nz-option>
+                <nz-select formControlName="wards" nzAllowClear nzPlaceHolder="Lựa chọn">
+                  <nz-option [nzValue]="ward.id" [nzLabel]="ward.name" *ngFor="let ward of wards"></nz-option>
                 </nz-select>
               </nz-form-control>
             </div>
@@ -256,7 +256,7 @@
                 <nz-form-control
                   [nzSpan]="24"
                 >
-                  <nz-radio-group [(ngModel)]="radioValue">
+                  <nz-radio-group formControlName="object" [(ngModel)]="object">
                     <label nz-radio nzValue="A">{{ 'company.from.studentLevelOne' | translate }}</label>
                     <label nz-radio nzValue="B">{{ 'company.from.studentLevelTwo' | translate }}</label>
                   </nz-radio-group>
@@ -268,8 +268,17 @@
             <div nz-col nzMd="24">
                 <nz-form-label class="black" [nzSpan]="24">Danh sách phòng ban</nz-form-label>
             </div>
+            <div nz-col nzMd="24">
+                <div class="page-declarations__editor">
+                    <app-table-editor
+                      [headers]="tableHeader"
+                      [columns]="tableColumnType"
+                      [columnWidths]="tableColumnWidth"
+                      [data]="department"
+                    ></app-table-editor>
+                  </div><!-- page-declarations__editor -->
+            </div>
         </div>
-
         </div>
       </div>
   </div>
