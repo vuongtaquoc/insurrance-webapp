@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnDestroy, OnChanges, AfterViewInit, ViewChild, ElementRef, ViewEncapsulation } from '@angular/core';
+import { Component, Input, Output, OnInit, OnDestroy, OnChanges, AfterViewInit, ViewChild, ElementRef, EventEmitter, ViewEncapsulation } from '@angular/core';
 import { Subscription, Observable } from 'rxjs';
 import * as jexcel from 'jstable-editor/dist/jexcel.js';
 import 'jsuites/dist/jsuites.js';
@@ -15,6 +15,7 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
   @Input() columns: any[] = [];
   @Input() nestedHeaders: any[] = [];
   @Input() events: Observable<void>;
+  @Output() onSubmit: EventEmitter<any> = new EventEmitter();
 
   spreadsheet: any;
   private eventsSubscription: Subscription;
@@ -24,6 +25,8 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
   }
 
   ngOnInit() {
+    const containerSize = this.getContainerSize();
+
     this.eventsSubscription = this.events.subscribe((type) => this.handleEvent(type));
   }
 
@@ -35,7 +38,7 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
 
   ngOnChanges(changes) {
     if (changes.data && changes.data.currentValue.length) {
-      this.updateData();
+      this.updateTable();
     }
   }
 
@@ -57,12 +60,12 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
 
     this.spreadsheet.hideIndex();
 
-    this.updateData();
+    this.updateTable();
 
     window.addEventListener('resize', this.updateTableSize);
   }
 
-  private updateData() {
+  private updateTable() {
     const readonlyIndexes = [];
     const formulaIndexes = [];
     let formulaIgnoreIndexes = [];
@@ -91,7 +94,9 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
       d.data.origin = d.origin;
       d.data.options = {
         hasLeaf: d.hasLeaf,
-        isLeaf: d.isLeaf
+        isLeaf: d.isLeaf,
+        parentKey: d.parentKey,
+        key: d.key
       };
 
       data.push(d.data);
@@ -104,9 +109,54 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
     this.updateTableSize();
   }
 
+  private handleEvent(type) {
+    const data = this.spreadsheet.getJson();
+    const declarations = {};
+
+    data.forEach(d => {
+      if (!d.options.hasLeaf && !d.options.isLeaf) {
+        declarations[d.options.key] = { ...d.origin };
+      } else if (d.options.hasLeaf) {
+        declarations[d.options.key] = {
+          ...d.origin,
+          declarations: []
+        };
+      } else if (d.options.isLeaf) {
+        declarations[d.options.parentKey].declarations.push(this.arrayToProps(d, this.columns));
+      }
+    });
+
+    this.onSubmit.emit({
+      type,
+      data: Object.values(declarations)
+    });
+  }
+
+  private arrayToProps(array, columns) {
+    return Object.keys(array).reduce(
+      (combine, current) => {
+        const column = columns[current];
+
+        if (current === 'origin' || current === 'options' || !column.key) {
+          return { ...combine };
+        }
+
+        return { ...combine, [ column.key ]: column.key === 'gender' ? +array[current] : array[current] };
+      },
+      {}
+    );
+  }
+
   private getContainerSize() {
     const element = this.element.nativeElement;
     const parent = element.parentNode;
+
+    // setTimeout(() => {
+    //   console.log(parent, {
+    //     width: parent.offsetWidth,
+    //     height: parent.offsetHeight
+    //   })
+    // }, 100);
 
     return {
       width: parent.offsetWidth,
@@ -118,11 +168,5 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
     const containerSize = this.getContainerSize();
 
     this.spreadsheet.updateTableSize(`${ containerSize.width }px`, `${ containerSize.height }px`);
-  }
-
-  private handleEvent(type) {
-    if (type === 'save') {
-      console.log(this.spreadsheet.getJson())
-    }
   }
 }

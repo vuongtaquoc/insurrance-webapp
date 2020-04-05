@@ -17,13 +17,13 @@ export class DeclarationService {
         const data = [];
 
         declarations.forEach((d, index) => {
-          const hasFormula = d.Code.indexOf('SUM') > -1;
+          const hasFormula = d.code.indexOf('SUM') > -1;
 
           data.push({
             readonly: !hasFormula,
             formula: hasFormula,
             origin: d,
-            key: d.Code,
+            key: d.code,
             data: [ d.codeView, d.name ],
             hasLeaf: d.hasChildren
           });
@@ -36,6 +36,10 @@ export class DeclarationService {
         return this.updateFormula(data, tableHeaderColumns);
       })
     );
+  }
+
+  public create(body, options = {}) {
+    return this.http.post('/declarations', body, options);
   }
 
   public updateFormula(declarations, tableHeaderColumns) {
@@ -61,7 +65,7 @@ export class DeclarationService {
     return {
       origin: employee,
       parent: parent,
-      parentKey: parent.Code || parent.key,
+      parentKey: parent.code || parent.key,
       isLeaf: true,
       data: tableHeaderColumns.map(column => {
         if (!column.key) return '';

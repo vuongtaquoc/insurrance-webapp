@@ -76,11 +76,12 @@ export const TABLE_HEADER_COLUMNS = [{
   type: 'text',
   width: 120,
   title: '(4)',
-  key: 'isurranceCode'
+  key: 'isurranceNo'
 }, {
-  type: 'text',
+  type: 'numberic',
   width: 123,
-  title: '(5.1)'
+  title: '(5.1)',
+  key: 'isurranceCode'
 }, {
   type: 'text',
   width: 123,
@@ -93,81 +94,106 @@ export const TABLE_HEADER_COLUMNS = [{
 }, {
   type: 'calendar',
   width: 80,
-  title: '(7)'
+  title: '(7)',
+  key: 'birthday'
 }, {
   type: 'checkbox',
   width: 35,
   title: '(8)',
-  align: 'center'
+  align: 'center',
+  key: 'gender'
 }, {
   type: 'dropdown',
   width: 75,
   title: '(9)',
   source: [ 'Chọn', 'Kinh', 'Mường' ],
-  align: 'center'
+  align: 'center',
+  key: 'peopleId'
 }, {
   type: 'dropdown',
   width: 100,
   title: '(10)',
   source: [ 'Việt Nam' ],
-  align: 'center'
+  align: 'center',
+  key: 'nationalityId'
 }, {
-  type: 'text',
+  type: 'numberic',
   width: 135,
   title: '(11)',
-  align: 'center'
+  align: 'center',
+  key: 'identityCar'
 }, {
-  type: 'text',
+  type: 'numberic',
   width: 135,
-  title: '(12)'
+  title: '(12)',
+  key: 'mobile'
 }, {
-  type: 'text',
+  type: 'numberic',
   width: 135,
-  title: '(13)'
+  title: '(13)',
+  key: 'familyNo'
 }, {
-  type: 'text',
+  type: 'dropdown',
   width: 145,
-  title: '(14.1)'
+  title: '(14.1)',
+  source: [ 'Chọn', 'Hà Nội', 'TP. HCM' ],
+  key: 'registerCityId'
 }, {
-  type: 'text',
+  type: 'dropdown',
   width: 145,
-  title: '(14.2)'
+  source: [ 'Chọn', 'Đống Đa', 'Nam Từ Liêm' ],
+  title: '(14.2)',
+  key: 'registerDistrictId'
 }, {
-  type: 'text',
+  type: 'dropdown',
   width: 175,
-  title: '(14.3)'
+  title: '(14.3)',
+  source: [ 'Chọn', 'Phường Thịnh Quang', 'Mễ Trì' ],
+  key: 'registerWardsId'
 }, {
-  type: 'text',
+  type: 'dropdown',
   width: 145,
-  title: '(15.1)'
+  title: '(15.1)',
+  source: [ 'Chọn', 'Hà Nội', 'TP. HCM' ],
+  key: 'recipientsCityId'
 }, {
-  type: 'text',
+  type: 'dropdown',
   width: 145,
-  title: '(15.2)'
+  title: '(15.2)',
+  source: [ 'Chọn', 'Đống Đa', 'Nam Từ Liêm' ],
+  key: 'recipientsDistrictId'
 }, {
-  type: 'text',
+  type: 'dropdown',
   width: 175,
-  title: '(15.3)'
+  title: '(15.3)',
+  source: [ 'Chọn', 'Phường Thịnh Quang', 'Mễ Trì' ],
+  key: 'recipientsWardsId'
 }, {
   type: 'text',
   width: 165,
-  title: '(15.4)'
+  title: '(15.4)',
+  key: 'recipientsWardsName'
 }, {
-  type: 'text',
+  type: 'dropdown',
   width: 75,
-  title: '(16)'
+  title: '(16)',
+  source: [ 'Chọn', 'Vùng I', 'Vùng II', 'Vùng III', 'Vùng IV' ],
 }, {
-  type: 'text',
+  type: 'dropdown',
   width: 85,
-  title: '(17.1)'
+  title: '(17.1)',
+  source: [ 'Chọn', '01-104: Bệnh viện trung ương quân đội 108' ],
+  key: 'hospitalFirstRegistId'
 }, {
   type: 'text',
   width: 300,
-  title: '(17.2)'
+  title: '(17.2)',
+  key: 'hospitalFirstRegistName'
 }, {
   type: 'text',
   width: 135,
-  title: '(18)'
+  title: '(18)',
+  key: 'levelWork'
 }, {
   type: 'text',
   width: 135,
@@ -177,69 +203,81 @@ export const TABLE_HEADER_COLUMNS = [{
   width: 135,
   title: '(20)'
 }, {
-  type: 'text',
+  type: 'numberic',
   width: 100,
-  title: '(21.1)'
+  title: '(21.1)',
+  key: 'contractNo'
 }, {
-  type: 'text',
+  type: 'calendar',
   width: 100,
-  title: '(21.2)'
+  title: '(21.2)',
+  key: 'DateSign'
 }, {
-  type: 'text',
+  type: 'numberic',
   width: 80,
   title: '(22.1)',
   mask: '#.##,000',
   decimal: ',',
-  sum: true
+  sum: true,
+  key: 'salary'
 }, {
-  type: 'text',
+  type: 'numberic',
   width: 80,
   title: '(22.2)',
   mask: '#.##,000',
   decimal: ',',
-  sum: true
+  sum: true,
+  key: 'ratio'
 }, {
-  type: 'text',
+  type: 'numberic',
   width: 80,
   title: '(22.3)',
   mask: '#.##,000',
   decimal: ',',
-  sum: true
+  sum: true,
+  key: 'allowanceSalary'
 }, {
-  type: 'text',
+  type: 'numberic',
   width: 80,
   title: '(22.4)',
   mask: '#.##,000',
   decimal: ',',
-  sum: true
+  sum: true,
+  key: 'allowanceAdditional'
 }, {
-  type: 'text',
+  type: 'numberic',
   width: 80,
   title: '(22.5)',
   mask: '#.##,000',
   decimal: ',',
-  sum: true
+  sum: true,
+  key: 'allowanceLevel'
 }, {
   type: 'text',
   width: 70,
-  title: '(22.6)'
+  title: '(22.6)',
+  key: 'allowanceSeniority',
+  mask: '##%'
 }, {
   type: 'text',
   width: 70,
-  title: '(22.7)'
+  title: '(22.7)',
+  key: 'allowanceSeniorityJob',
+  mask: '##%'
 }, {
-  type: 'text',
+  type: 'numberic',
   width: 80,
   title: '(22.8)',
   mask: '#.##,000',
   decimal: ',',
-  sum: true
+  sum: true,
+  key: 'allowanceOther'
 }, {
-  type: 'text',
+  type: 'calendar',
   width: 60,
   title: '(23)'
 }, {
-  type: 'text',
+  type: 'calendar',
   width: 60,
   title: '(24)'
 }, {

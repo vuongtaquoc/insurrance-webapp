@@ -65,7 +65,6 @@ export class IncreaseLaborComponent implements OnInit {
         declarations.splice(parentIndex + 1, 0, this.declarationService.getLeaf(declarations[parentIndex], employee, this.tableHeaderColumns));
       });
     }
-
   }
 
   handleSelectEmployees(employees) {
@@ -74,5 +73,22 @@ export class IncreaseLaborComponent implements OnInit {
 
   emitEventToChild(type) {
     this.eventsSubject.next(type);
+  }
+
+  handleSubmit(event) {
+    if (event.type === 'save') {
+      const { number, month, year } = this.form.value;
+
+      this.declarationService.create({
+        documentType: 600,
+        documentNo: number,
+        documentName: 'Báo tăng lao động',
+        createDate: `01/${ month }/${ year }`,
+        documentStatus: 0,
+        documentDetail: event.data
+      }).subscribe(data => {
+        console.log(data)
+      });
+    }
   }
 }
