@@ -63,13 +63,13 @@ export class CompanyEditComponent implements OnInit, OnDestroy {
       object: ['', Validators.required]
     });
     // this.item = new Company(this.loginForm);
-    this.companyForm.get('code').setValue('DUCLV88');
+    // this.companyForm.get('code').setValue('DUCLV88');
     this.getCities();
     this.getGroupCompanies();
     this.getSalaryAreas();
     this.getPaymentMethods();
     this.setInfoModelFromSession();
-    this.companyForm.get('groupCompanyCode').setValue('05');
+    // this.companyForm.get('groupCompanyCode').setValue('05');
   }
 
   ngOnDestroy() {
