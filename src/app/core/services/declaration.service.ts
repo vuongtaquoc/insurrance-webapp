@@ -22,19 +22,14 @@ export class DeclarationService {
           data.push({
             readonly: !hasFormula,
             formula: hasFormula,
-            data: [ d.codeView, d.name ]
+            origin: d,
+            key: d.Code,
+            data: [ d.codeView, d.name ],
+            hasLeaf: d.hasChildren
           });
 
           if (d.hasChildren) {
-            d.declarations.forEach(employee => {
-              data.push({
-                data: tableHeaderColumns.map(column => {
-                  if (!column.key) return '';
-
-                  return employee[column.key];
-                })
-              });
-            });
+            d.declarations.forEach(employee => data.push(this.getLeaf(d, employee, tableHeaderColumns)));
           }
         });
 
@@ -60,6 +55,20 @@ export class DeclarationService {
     });
 
     return declarations;
+  }
+
+  public getLeaf(parent, employee, tableHeaderColumns) {
+    return {
+      origin: employee,
+      parent: parent,
+      parentKey: parent.Code || parent.key,
+      isLeaf: true,
+      data: tableHeaderColumns.map(column => {
+        if (!column.key) return '';
+
+        return employee[column.key];
+      })
+    };
   }
 
   private getSumColumnIndexes(columns) {

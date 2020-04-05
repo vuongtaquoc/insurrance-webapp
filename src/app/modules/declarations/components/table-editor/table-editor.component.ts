@@ -1,4 +1,5 @@
-import { Component, Input, OnDestroy, OnChanges, AfterViewInit, ViewChild, ElementRef, ViewEncapsulation } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, OnChanges, AfterViewInit, ViewChild, ElementRef, ViewEncapsulation } from '@angular/core';
+import { Subscription, Observable } from 'rxjs';
 import * as jexcel from 'jstable-editor/dist/jexcel.js';
 import 'jsuites/dist/jsuites.js';
 
@@ -8,23 +9,32 @@ import 'jsuites/dist/jsuites.js';
   styleUrls: ['./table-editor.component.less'],
   encapsulation: ViewEncapsulation.None
 })
-export class TableEditorComponent implements AfterViewInit, OnDestroy, OnChanges {
+export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, OnChanges {
   @ViewChild('spreadsheet', { static: true }) spreadsheetEl;
   @Input() data: any[] = [];
   @Input() columns: any[] = [];
   @Input() nestedHeaders: any[] = [];
+  @Input() events: Observable<void>;
 
   spreadsheet: any;
+  private eventsSubscription: Subscription;
 
   constructor(private element: ElementRef) {
+    this.updateTableSize = this.updateTableSize.bind(this);
+  }
+
+  ngOnInit() {
+    this.eventsSubscription = this.events.subscribe((type) => this.handleEvent(type));
   }
 
   ngOnDestroy() {
     jexcel.destroy(this.spreadsheetEl.nativeElement, true);
+    window.removeEventListener('resize', this.updateTableSize);
+    this.eventsSubscription.unsubscribe();
   }
 
   ngOnChanges(changes) {
-    if (changes.data.currentValue.length) {
+    if (changes.data && changes.data.currentValue.length) {
       this.updateData();
     }
   }
@@ -48,6 +58,8 @@ export class TableEditorComponent implements AfterViewInit, OnDestroy, OnChanges
     this.spreadsheet.hideIndex();
 
     this.updateData();
+
+    window.addEventListener('resize', this.updateTableSize);
   }
 
   private updateData() {
@@ -76,12 +88,20 @@ export class TableEditorComponent implements AfterViewInit, OnDestroy, OnChanges
         );
       }
 
+      d.data.origin = d.origin;
+      d.data.options = {
+        hasLeaf: d.hasLeaf,
+        isLeaf: d.isLeaf
+      };
+
       data.push(d.data);
     });
 
     this.spreadsheet.setData(data);
     this.spreadsheet.setReadonlyRowsTitle(readonlyIndexes, [0, 1]);
     this.spreadsheet.setReadonlyRowsFormula(formulaIndexes, formulaIgnoreIndexes);
+
+    this.updateTableSize();
   }
 
   private getContainerSize() {
@@ -92,5 +112,17 @@ export class TableEditorComponent implements AfterViewInit, OnDestroy, OnChanges
       width: parent.offsetWidth,
       height: parent.offsetHeight
     };
+  }
+
+  private updateTableSize() {
+    const containerSize = this.getContainerSize();
+
+    this.spreadsheet.updateTableSize(`${ containerSize.width }px`, `${ containerSize.height }px`);
+  }
+
+  private handleEvent(type) {
+    if (type === 'save') {
+      console.log(this.spreadsheet.getJson())
+    }
   }
 }

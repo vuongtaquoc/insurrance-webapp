@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { Subject } from 'rxjs';
+import findLastIndex from 'lodash/findLastIndex';
+import findIndex from 'lodash/findIndex';
 
 import { Declaration } from '@app/core/models';
 import { DeclarationService } from '@app/core/services';
@@ -16,6 +19,8 @@ export class IncreaseLaborComponent implements OnInit {
   declarations: Declaration[] = [];
   tableNestedHeaders: any[] = TABLE_NESTED_HEADERS;
   tableHeaderColumns: any[] = TABLE_HEADER_COLUMNS;
+  employeeSelected: any[] = [];
+  eventsSubject: Subject<string> = new Subject<string>();
 
   constructor(
     private formBuilder: FormBuilder,
@@ -29,12 +34,45 @@ export class IncreaseLaborComponent implements OnInit {
       year: ['2020']
     });
 
-    this.declarationService.getDeclarationInitials('600a', this.tableHeaderColumns).subscribe(declarations => {
+    this.declarationService.getDeclarationInitials('600', this.tableHeaderColumns).subscribe(declarations => {
       this.declarations = declarations;
     });
   }
 
+  handleAddEmployee(type) {
+    if (!this.employeeSelected.length) {
+      return;
+    }
+
+    const declarations = [ ...this.declarations ];
+    const parentIndex = findIndex(declarations, d => d.key === type);
+    const childLastIndex = findLastIndex(declarations, d => d.isLeaf && d.parentKey === type);
+
+    if (childLastIndex > -1) {
+      const employeeExists = declarations.filter(d => d.parentKey === type);
+
+      this.employeeSelected.forEach(employee => {
+        const accepted = employeeExists.findIndex(e => e.origin.id === employee.id) === -1;
+
+        if (accepted) {
+          declarations.splice(childLastIndex + 1, 0, this.declarationService.getLeaf(declarations[parentIndex], employee, this.tableHeaderColumns));
+        }
+      });
+
+      this.declarations = declarations;
+    } else {
+      this.employeeSelected.forEach(employee => {
+        declarations.splice(parentIndex + 1, 0, this.declarationService.getLeaf(declarations[parentIndex], employee, this.tableHeaderColumns));
+      });
+    }
+
+  }
+
   handleSelectEmployees(employees) {
-    console.log(employees)
+    this.employeeSelected = employees;
+  }
+
+  emitEventToChild(type) {
+    this.eventsSubject.next(type);
   }
 }
