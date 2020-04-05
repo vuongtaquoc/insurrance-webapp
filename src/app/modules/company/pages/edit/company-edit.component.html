@@ -1,4 +1,4 @@
-<form  nz-form [formGroup]="loginForm" (ngSubmit)="handleSubmit()" class="login-page">
+<form  nz-form [formGroup]="companyForm" (ngSubmit)="handleSubmit()" class="login-page">
   <div class="page-container">    
       <div class="page-company" cardFullHeight>
         <div class="page-company__blank"></div>
@@ -39,7 +39,7 @@
                   <nz-form-control
                   [nzSpan]="24"
                 >
-                <input formControlName="code" class="ant-input" placeholder="Nhập dữ liệu" [(ngModel)]="code" />
+                <input formControlName="code" class="ant-input" placeholder="Nhập dữ liệu" />
                 </nz-form-control>
               </div>
               <div nz-col nzMd="6">
@@ -188,7 +188,7 @@
               </div>
           </div>
 
-        <h1>B. Cấu hình kê khai</h1>
+        <h1>B. Cấu hình kê khai {{ loginForm.get('groupCompanyCode').value || 'note'}}</h1>
         
         <div nz-row nzGutter="8">
             <div nz-col nzMd="6">
@@ -198,7 +198,7 @@
                 <nz-form-control
                   [nzSpan]="24"
                 >
-                  <nz-select formControlName="groupCompanyCode" nzAllowClear  [(ngModel)]="groupCompanyCode" nzPlaceHolder="Lựa chọn">
+                  <nz-select formControlName="groupCompanyCode" nzAllowClear  nzPlaceHolder="Lựa chọn">
                     <nz-option [nzValue]="groupCompany.code" [nzLabel]="groupCompany.name" *ngFor="let groupCompany of groupCompanies"></nz-option>
                   </nz-select>
                 </nz-form-control>
@@ -221,7 +221,7 @@
             </div>
         </div>
 
-        <div nz-row nzGutter="8" *ngIf="(groupCompanyCode === '02' || groupCompanyCode === '04' || groupCompanyCode === '05')">
+        <div nz-row nzGutter="8" *ngIf="(companyForm.get('groupCompanyCode').value === '02' || companyForm.get('groupCompanyCode').value === '04' || companyForm.get('groupCompanyCode').value === '05')">
             <div nz-col nzMd="6">
                 <nz-form-label class="black" [nzSpan]="24">{{ 'company.from.district' | translate }} <span class="required">*</span></nz-form-label>
             </div>
@@ -234,10 +234,10 @@
                 </nz-select>
               </nz-form-control>
             </div>
-            <div nz-col nzMd="6" *ngIf="(groupCompanyCode === '02' || groupCompanyCode === '05')">
+            <div nz-col nzMd="6" *ngIf="(companyForm.get('groupCompanyCode').value === '02' || companyForm.get('groupCompanyCode').value === '05')">
                 <nz-form-label class="black text-padding-left" [nzSpan]="24">{{ 'company.from.wards' | translate }} <span class="required">*</span></nz-form-label>
             </div>
-            <div nz-col nzMd="6" *ngIf="(groupCompanyCode === '02' || groupCompanyCode === '05')">
+            <div nz-col nzMd="6" *ngIf="(companyForm.get('groupCompanyCode').value === '02' || companyForm.get('groupCompanyCode').value === '05')">
               <nz-form-control
                 [nzSpan]="24"
               >
@@ -248,7 +248,7 @@
             </div>
         </div>
 
-        <div nz-row nzGutter="8" *ngIf="(groupCompanyCode == '03')">
+        <div nz-row nzGutter="8" *ngIf="(companyForm.get('groupCompanyCode').value == '03')">
             <div nz-col nzMd="6">
                 <nz-form-label class="black" [nzSpan]="24">{{ 'company.from.object' | translate }} <span class="required">*</span></nz-form-label>
             </div>
@@ -264,7 +264,7 @@
             </div>
         </div>
 
-        <div nz-row nzGutter="8" *ngIf="(groupCompanyCode == '01')">
+        <div nz-row nzGutter="8" *ngIf="(companyForm.get('groupCompanyCode').value == '01')">
             <div nz-col nzMd="24">
                 <nz-form-label class="black" [nzSpan]="24">Danh sách phòng ban</nz-form-label>
             </div>

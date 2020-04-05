@@ -4,7 +4,7 @@ import { AuthenticationService,GroupCompanyService, PaymentMethodServiced, Salar
 import { CityService, DistrictService, WardsService, IsurranceDepartmentService } from '@app/core/services';
 import { SelectItem } from '@app/core/interfaces';
 import { TABLE_COLUMNS_TYPE, TABLE_HEADERS, TABLE_COLUMNS_WIDTHS } from '@app/modules/company/data/department-table';
-import { Department } from '@app/core/models';
+import { Department, Company } from '@app/core/models';
 
 @Component({
   selector: 'app-company-edit',
@@ -12,7 +12,8 @@ import { Department } from '@app/core/models';
   styleUrls: ['./company-edit.component.less']
 })
 export class CompanyEditComponent implements OnInit, OnDestroy {
-  loginForm: FormGroup;
+  item: Company;
+  companyForm: FormGroup;
   declarations: Department[] = [];
   tableColumnType: any[] = TABLE_COLUMNS_TYPE;
   tableHeader: any[] = TABLE_HEADERS;
@@ -40,7 +41,7 @@ export class CompanyEditComponent implements OnInit, OnDestroy {
   ) {
   }
   ngOnInit() {
-    this.loginForm = this.formBuilder.group({
+    this.companyForm = this.formBuilder.group({
       cities: ['', Validators.required],
       insurranceManagement: ['', Validators.required],
       code: ['', Validators.required],
@@ -61,12 +62,14 @@ export class CompanyEditComponent implements OnInit, OnDestroy {
       wards: ['', Validators.required],
       object: ['', Validators.required]
     });
-
+    // this.item = new Company(this.loginForm);
+    this.loginForm.get('code').setValue('DUCLV88');
     this.getCities();
     this.getGroupCompanies();
     this.getSalaryAreas();
     this.getPaymentMethods();
     this.setInfoModelFromSession();
+    this.loginForm.get('groupCompanyCode').setValue('05');
   }
 
   ngOnDestroy() {
