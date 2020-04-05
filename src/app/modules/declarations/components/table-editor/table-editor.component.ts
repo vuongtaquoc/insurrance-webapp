@@ -25,8 +25,6 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
   }
 
   ngOnInit() {
-    const containerSize = this.getContainerSize();
-
     this.eventsSubscription = this.events.subscribe((type) => this.handleEvent(type));
   }
 
@@ -54,7 +52,6 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
       tableOverflow: true,
       tableWidth: `${ containerSize.width }px`,
       tableHeight: `${ containerSize.height }px`,
-      // tableHeight: '613px',
       columnSorting: false,
       defaultColAlign: 'left'
     });
@@ -151,13 +148,6 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
   private getContainerSize() {
     const element = this.element.nativeElement;
     const parent = element.parentNode;
-
-    // setTimeout(() => {
-    //   console.log(parent, {
-    //     width: parent.offsetWidth,
-    //     height: parent.clientHeight
-    //   })
-    // }, 100);
 
     return {
       width: parent.offsetWidth,

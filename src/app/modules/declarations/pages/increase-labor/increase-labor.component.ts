@@ -55,7 +55,15 @@ export class IncreaseLaborComponent implements OnInit {
         const accepted = employeeExists.findIndex(e => e.origin.id === employee.id) === -1;
 
         if (accepted) {
-          declarations.splice(childLastIndex + 1, 0, this.declarationService.getLeaf(declarations[parentIndex], employee, this.tableHeaderColumns));
+          if (declarations[childLastIndex].isInitialize) {
+            // remove initialize data
+            declarations.splice(childLastIndex, 1);
+
+            // replace
+            declarations.splice(childLastIndex, 0, this.declarationService.getLeaf(declarations[parentIndex], employee, this.tableHeaderColumns));
+          } else {
+            declarations.splice(childLastIndex + 1, 0, this.declarationService.getLeaf(declarations[parentIndex], employee, this.tableHeaderColumns));
+          }
         }
       });
 

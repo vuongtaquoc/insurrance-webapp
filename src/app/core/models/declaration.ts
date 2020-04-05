@@ -5,4 +5,5 @@ export class Declaration {
   origin?: any;
   key?: string;
   parentKey?: string;
+  isInitialize?: boolean;
 }
