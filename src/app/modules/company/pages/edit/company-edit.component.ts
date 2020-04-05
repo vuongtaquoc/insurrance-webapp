@@ -2,7 +2,6 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthenticationService,GroupCompanyService, PaymentMethodServiced, SalaryAreaService,} from '@app/core/services';
 import { CityService, DistrictService, WardsService, IsurranceDepartmentService } from '@app/core/services';
-import { SelectItem } from '@app/core/interfaces';
 import { TABLE_COLUMNS_TYPE, TABLE_HEADERS, TABLE_COLUMNS_WIDTHS } from '@app/modules/company/data/department-table';
 import { Department, Company } from '@app/core/models';
 

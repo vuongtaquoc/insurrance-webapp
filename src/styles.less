@@ -197,7 +197,7 @@ app-layout {
   background-color: rgba(255, 255, 255, 1);
   box-shadow: -3px 2px 2px rgba(13, 13, 13, .25);
   border-radius: 10px;
-  padding: 5px;
+  padding: 10px;
   width: 100%;
   overflow: hidden;
 
@@ -233,6 +233,10 @@ app-layout {
     overflow-x: auto;
     padding: 5px;
     height: 100%;
+
+    .page-declarations__group-button {
+      margin-bottom: 10px;
+    }
   }
 
   &__content {
@@ -240,7 +244,7 @@ app-layout {
     width: 100%;
     height: 100%;
     display: grid;
-    grid-template-rows: 32px 15px 75px 1fr 37px;
+    grid-template-rows: 42px 15px 75px 1fr 37px;
     grid-gap: 10px;
   }
 
@@ -286,11 +290,11 @@ app-layout {
     margin-bottom: 10px;
   }
 
-  &__blank { 
+  &__blank {
     display: block;
   }
 
-  &__main { 
+  &__main {
     display: block;
   }
 
