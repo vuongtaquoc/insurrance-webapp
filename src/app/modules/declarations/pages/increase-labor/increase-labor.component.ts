@@ -1,11 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Subject } from 'rxjs';
+import { Subject, forkJoin } from 'rxjs';
 import findLastIndex from 'lodash/findLastIndex';
 import findIndex from 'lodash/findIndex';
 
 import { Declaration } from '@app/core/models';
-import { DeclarationService } from '@app/core/services';
+import {
+  CityService,
+  DistrictService,
+  DeclarationService,
+  HospitalService,
+  NationalityService,
+  PeopleService,
+  WardsService
+} from '@app/core/services';
 
 import { TABLE_NESTED_HEADERS, TABLE_HEADER_COLUMNS } from '@app/modules/declarations/data/increase-labor';
 
@@ -24,7 +32,13 @@ export class IncreaseLaborComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private declarationService: DeclarationService
+    private cityService: CityService,
+    private districtService: DistrictService,
+    private declarationService: DeclarationService,
+    private hospitalService: HospitalService,
+    private nationalityService: NationalityService,
+    private peopleService: PeopleService,
+    private wardService: WardsService
   ) {}
 
   ngOnInit() {
@@ -34,8 +48,19 @@ export class IncreaseLaborComponent implements OnInit {
       year: ['2020']
     });
 
-    this.declarationService.getDeclarationInitials('600', this.tableHeaderColumns).subscribe(declarations => {
-      this.declarations = declarations;
+    forkJoin([
+      this.cityService.getCities(),
+      this.nationalityService.getNationalities(),
+      this.peopleService.getPeoples(),
+    ]).subscribe(([ cities, nationalities, peoples ]) => {
+      this.updateSourceToColumn('peopleId', peoples);
+      this.updateSourceToColumn('nationalityId', nationalities);
+      this.updateSourceToColumn('registerCityId', cities);
+      this.updateSourceToColumn('recipientsCityId', cities);
+
+      this.declarationService.getDeclarationInitials('600', this.tableHeaderColumns).subscribe(declarations => {
+        this.declarations = declarations;
+      });
     });
   }
 
@@ -67,11 +92,13 @@ export class IncreaseLaborComponent implements OnInit {
         }
       });
 
-      this.declarations = declarations;
+      this.declarations = this.declarationService.updateFormula(declarations, this.tableHeaderColumns);
     } else {
       this.employeeSelected.forEach(employee => {
         declarations.splice(parentIndex + 1, 0, this.declarationService.getLeaf(declarations[parentIndex], employee, this.tableHeaderColumns));
       });
+
+      this.declarations = this.declarationService.updateFormula(declarations, this.tableHeaderColumns);
     }
   }
 
@@ -97,6 +124,14 @@ export class IncreaseLaborComponent implements OnInit {
       }).subscribe(data => {
         console.log(data)
       });
+    }
+  }
+
+  private updateSourceToColumn(key, sources) {
+    const column = this.tableHeaderColumns.find(c => c.key === key);
+
+    if (column) {
+      column.source = sources;
     }
   }
 }

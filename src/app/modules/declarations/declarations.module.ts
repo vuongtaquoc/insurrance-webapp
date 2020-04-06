@@ -7,7 +7,16 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
-import { AuthenticationService, DeclarationService } from '@app/core/services';
+import {
+  AuthenticationService,
+  CityService,
+  DistrictService,
+  DeclarationService,
+  HospitalService,
+  NationalityService,
+  PeopleService,
+  WardsService
+} from '@app/core/services';
 import { SharedModule } from '@app/shared/shared.module';
 import { DeclarationsRoutingModule } from './declarations-routing.module';
 
@@ -34,7 +43,13 @@ import {
   ],
   providers: [
     AuthenticationService,
-    DeclarationService
+    CityService,
+    DistrictService,
+    DeclarationService,
+    HospitalService,
+    NationalityService,
+    PeopleService,
+    WardsService
   ],
   entryComponents: []
 })

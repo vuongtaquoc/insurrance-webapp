@@ -11,3 +11,6 @@ export * from './city.service';
 export * from './district.service';
 export * from './wards.service';
 export * from './isurrance-department.service';
+export * from './nationality.service';
+export * from './hospital.service';
+export * from './people.service';
