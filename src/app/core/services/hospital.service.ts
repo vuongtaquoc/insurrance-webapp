@@ -13,6 +13,6 @@ export class HospitalService {
   }
 
   public getHospitals(cityId): Observable<any> {
-    return this.http.get(`/hospital/${ cityId }`);
+    return this.http.get(`/hospital/city/${ cityId }`);
   }
 }

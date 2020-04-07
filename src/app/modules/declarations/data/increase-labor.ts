@@ -141,32 +141,32 @@ export const TABLE_HEADER_COLUMNS = [{
 }, {
   type: 'dropdown',
   width: 145,
-  source: [ 'Chọn', 'Đống Đa', 'Nam Từ Liêm' ],
+  source: [ ],
   title: '(14.2)',
   key: 'registerDistrictId'
 }, {
   type: 'dropdown',
   width: 175,
   title: '(14.3)',
-  source: [ 'Chọn', 'Phường Thịnh Quang', 'Mễ Trì' ],
+  source: [  ],
   key: 'registerWardsId'
 }, {
   type: 'dropdown',
   width: 145,
   title: '(15.1)',
-  source: [ 'Chọn', 'Hà Nội', 'TP. HCM' ],
+  source: [ 'Chọn' ],
   key: 'recipientsCityId'
 }, {
   type: 'dropdown',
   width: 145,
   title: '(15.2)',
-  source: [ 'Chọn', 'Đống Đa', 'Nam Từ Liêm' ],
+  source: [ ],
   key: 'recipientsDistrictId'
 }, {
   type: 'dropdown',
   width: 175,
   title: '(15.3)',
-  source: [ 'Chọn', 'Phường Thịnh Quang', 'Mễ Trì' ],
+  source: [ ],
   key: 'recipientsWardsId'
 }, {
   type: 'text',
@@ -182,7 +182,7 @@ export const TABLE_HEADER_COLUMNS = [{
   type: 'dropdown',
   width: 85,
   title: '(17.1)',
-  source: [ 'Chọn', '01-104: Bệnh viện trung ương quân đội 108' ],
+  source: [ ],
   key: 'hospitalFirstRegistId'
 }, {
   type: 'text',

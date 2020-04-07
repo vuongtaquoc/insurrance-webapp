@@ -6,4 +6,6 @@ export class Declaration {
   key?: string;
   parentKey?: string;
   isInitialize?: boolean;
+  hasLeaf?: boolean;
+  isLeaf?: boolean;
 }
