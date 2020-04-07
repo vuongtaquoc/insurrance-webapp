@@ -39,7 +39,11 @@ export class IncreaseLaborComponent implements OnInit {
     private nationalityService: NationalityService,
     private peopleService: PeopleService,
     private wardService: WardsService
-  ) {}
+  ) {
+    this.getDistrictsByCityId = this.getDistrictsByCityId.bind(this);
+    this.getWardsByDistrictId = this.getWardsByDistrictId.bind(this);
+    this.getHospitalsByCityId = this.getHospitalsByCityId.bind(this);
+  }
 
   ngOnInit() {
     this.form = this.formBuilder.group({
@@ -58,6 +62,13 @@ export class IncreaseLaborComponent implements OnInit {
       this.updateSourceToColumn('registerCityId', cities);
       this.updateSourceToColumn('recipientsCityId', cities);
 
+      // get filter columns
+      this.updateFilterToColumn('registerDistrictId', this.getDistrictsByCityId);
+      this.updateFilterToColumn('registerWardsId', this.getWardsByDistrictId);
+      this.updateFilterToColumn('recipientsDistrictId', this.getDistrictsByCityId);
+      this.updateFilterToColumn('recipientsWardsId', this.getWardsByDistrictId);
+      this.updateFilterToColumn('hospitalFirstRegistId', this.getHospitalsByCityId);
+
       this.declarationService.getDeclarationInitials('600', this.tableHeaderColumns).subscribe(declarations => {
         this.declarations = declarations;
       });
@@ -71,6 +82,7 @@ export class IncreaseLaborComponent implements OnInit {
 
     const declarations = [ ...this.declarations ];
     const parentIndex = findIndex(declarations, d => d.key === type);
+    const childFirstIndex = findIndex(declarations, d => d.isLeaf && d.parentKey === type);
     const childLastIndex = findLastIndex(declarations, d => d.isLeaf && d.parentKey === type);
 
     if (childLastIndex > -1) {
@@ -85,12 +97,19 @@ export class IncreaseLaborComponent implements OnInit {
             declarations.splice(childLastIndex, 1);
 
             // replace
+            employee.orders = 1;
+
             declarations.splice(childLastIndex, 0, this.declarationService.getLeaf(declarations[parentIndex], employee, this.tableHeaderColumns));
           } else {
+            console.log(childLastIndex, childFirstIndex)
+
             declarations.splice(childLastIndex + 1, 0, this.declarationService.getLeaf(declarations[parentIndex], employee, this.tableHeaderColumns));
           }
         }
       });
+
+      // update orders
+      this.updateOrders(declarations);
 
       this.declarations = this.declarationService.updateFormula(declarations, this.tableHeaderColumns);
     } else {
@@ -127,11 +146,54 @@ export class IncreaseLaborComponent implements OnInit {
     }
   }
 
+  private updateOrders(declarations) {
+    const order: { index: 0, key: string } = { index: 0, key: '' };
+
+    declarations.forEach((declaration, index) => {
+      if (declaration.hasLeaf) {
+        order.index = 0;
+        order.key = declaration.key;
+      }
+
+      if (declaration.isLeaf && declaration.parentKey === order.key && !declaration.isInitialize) {
+        order.index += 1;
+
+        declaration.data[0] = order.index;
+      }
+    });
+  }
+
   private updateSourceToColumn(key, sources) {
     const column = this.tableHeaderColumns.find(c => c.key === key);
 
     if (column) {
       column.source = sources;
     }
+  }
+
+  private updateFilterToColumn(key, filterCb) {
+    const column = this.tableHeaderColumns.find(c => c.key === key);
+
+    if (column) {
+      column.filter = filterCb;
+    }
+  }
+
+  private getDistrictsByCityId(instance, cell, c, r, source) {
+    const value = instance.jexcel.getValueFromCoords(c - 1, r);
+
+    return this.districtService.getDistrict(value).toPromise();
+  }
+
+  private getWardsByDistrictId(instance, cell, c, r, source) {
+    const value = instance.jexcel.getValueFromCoords(c - 1, r);
+
+    return this.wardService.getWards(value).toPromise();
+  }
+
+  private getHospitalsByCityId(instance, cell, c, r, source) {
+    const value = instance.jexcel.getValueFromCoords(c - 5, r);
+
+    return this.hospitalService.getHospitals(value).toPromise();
   }
 }
