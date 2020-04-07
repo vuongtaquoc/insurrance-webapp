@@ -1,0 +1,47 @@
+<div class="page-card">
+    <h1>{{'contract.contract-list.title' | translate}}</h1>
+    <nz-table
+      nzBordered 
+      #ajaxTable
+      nzShowSizeChanger
+      [nzFrontPagination]="false"
+      [nzData]="listOfData"
+      [nzLoading]="loading"
+      [nzTotal]="total"
+      [(nzPageIndex)]="pageIndex"
+      [(nzPageSize)]="pageSize"
+      (nzPageIndexChange)="searchData()"
+      (nzPageSizeChange)="searchData(true)"
+      class="table-editor "
+    >
+      <thead (nzSortChange)="sort($event)" nzSingleSort>
+        <tr>
+          <th>{{'contract.table.stt' | translate}}</th>
+          <th nzShowFilter [nzFilters]="filterGender" (nzFilterChange)="updateFilter($event)">{{'contract.table.company' | translate}}</th>
+          <th nzShowSort nzSortKey="email"><span>{{'contract.table.contractNo' | translate}}</span></th>
+          <th nzShowSort nzSortKey="email"><span>{{'contract.table.numberMonth' | translate}}</span></th>
+          <th nzShowSort nzSortKey="email"><span>{{'contract.table.contractType' | translate}}</span></th>
+          <th nzShowSort nzSortKey="email"><span>{{'contract.table.createDate' | translate}}</span></th>
+          <th nzShowSort nzSortKey="email"><span>{{'contract.table.action' | translate}}</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of ajaxTable.data">
+          <td>1</td>
+          <td>{{ data.gender }} {{ data.gender }}</td>
+          <td>{{ data.gender }}</td>
+          <td>{{ data.email }}</td>
+          <td>{{ data.email }} {{ data.email }}</td>
+          <td>{{ data.gender }}</td>
+          <td>
+            <ng-container>
+                <a (click)="startEdit(data.id)">
+                    <i nz-icon nzType="search" nzTheme="outline"></i>
+                </a>
+            </ng-container>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+</div>
+

@@ -6,11 +6,11 @@ import { TABLE_COLUMNS_TYPE, TABLE_HEADERS, TABLE_COLUMNS_WIDTHS } from '@app/mo
 import { Department, Company } from '@app/core/models';
 
 @Component({
-  selector: 'app-company-edit',
-  templateUrl: './company-edit.component.html',
-  styleUrls: ['./company-edit.component.less']
+  selector: 'app-contract-edit',
+  templateUrl: './contract-edit.component.html',
+  styleUrls: ['./contract-edit.component.less']
 })
-export class CompanyEditComponent implements OnInit, OnDestroy {
+export class ContractEditComponent implements OnInit, OnDestroy {
   item: Company;
   companyForm: FormGroup;
   declarations: Department[] = [];
