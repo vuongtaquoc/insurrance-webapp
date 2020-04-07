@@ -106,14 +106,14 @@ export const TABLE_HEADER_COLUMNS = [{
   type: 'dropdown',
   width: 75,
   title: '(9)',
-  source: [ 'Chọn', 'Kinh', 'Mường' ],
+  source: [ 'Chọn' ],
   align: 'center',
   key: 'peopleId'
 }, {
   type: 'dropdown',
   width: 100,
   title: '(10)',
-  source: [ 'Việt Nam' ],
+  source: [ 'Chọn' ],
   align: 'center',
   key: 'nationalityId'
 }, {
@@ -136,7 +136,7 @@ export const TABLE_HEADER_COLUMNS = [{
   type: 'dropdown',
   width: 145,
   title: '(14.1)',
-  source: [ 'Chọn', 'Hà Nội', 'TP. HCM' ],
+  source: [ 'Chọn' ],
   key: 'registerCityId'
 }, {
   type: 'dropdown',
@@ -216,7 +216,7 @@ export const TABLE_HEADER_COLUMNS = [{
   type: 'numberic',
   width: 80,
   title: '(22.1)',
-  mask: '#.##,000',
+  mask: '# ##0',
   decimal: ',',
   sum: true,
   key: 'salary'
@@ -224,7 +224,7 @@ export const TABLE_HEADER_COLUMNS = [{
   type: 'numberic',
   width: 80,
   title: '(22.2)',
-  mask: '#.##,000',
+  mask: '# ##0',
   decimal: ',',
   sum: true,
   key: 'ratio'
@@ -232,7 +232,7 @@ export const TABLE_HEADER_COLUMNS = [{
   type: 'numberic',
   width: 80,
   title: '(22.3)',
-  mask: '#.##,000',
+  mask: '# ##0',
   decimal: ',',
   sum: true,
   key: 'allowanceSalary'
@@ -240,7 +240,7 @@ export const TABLE_HEADER_COLUMNS = [{
   type: 'numberic',
   width: 80,
   title: '(22.4)',
-  mask: '#.##,000',
+  mask: '# ##0',
   decimal: ',',
   sum: true,
   key: 'allowanceAdditional'
@@ -248,7 +248,7 @@ export const TABLE_HEADER_COLUMNS = [{
   type: 'numberic',
   width: 80,
   title: '(22.5)',
-  mask: '#.##,000',
+  mask: '# ##0',
   decimal: ',',
   sum: true,
   key: 'allowanceLevel'
@@ -268,7 +268,7 @@ export const TABLE_HEADER_COLUMNS = [{
   type: 'numberic',
   width: 80,
   title: '(22.8)',
-  mask: '#.##,000',
+  mask: '# ##0',
   decimal: ',',
   sum: true,
   key: 'allowanceOther'
