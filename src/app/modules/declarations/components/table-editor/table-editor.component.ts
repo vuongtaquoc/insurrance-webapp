@@ -15,6 +15,7 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
   @Input() columns: any[] = [];
   @Input() nestedHeaders: any[] = [];
   @Input() events: Observable<void>;
+  @Output() onChange: EventEmitter<any> = new EventEmitter();
   @Output() onSubmit: EventEmitter<any> = new EventEmitter();
 
   spreadsheet: any;
@@ -53,7 +54,13 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
       tableWidth: `${ containerSize.width }px`,
       tableHeight: `${ containerSize.height }px`,
       columnSorting: false,
-      defaultColAlign: 'left'
+      defaultColAlign: 'left',
+      onchange: (instance, cell, c, r, value) => {
+        this.onChange.emit({
+          instance, cell, c, r, value,
+          records: this.spreadsheet.getJson()
+        });
+      }
     });
 
     this.spreadsheet.hideIndex();

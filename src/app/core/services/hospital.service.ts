@@ -13,6 +13,13 @@ export class HospitalService {
   }
 
   public getHospitals(cityId): Observable<any> {
-    return this.http.get(`/hospital/city/${ cityId }`);
+    return this.http.get(`/hospital/city/${ cityId }`).pipe(
+      map(hospitals => {
+        return hospitals.map(hospital => ({
+          ...hospital,
+          name: `${ hospital.code } - ${ hospital.name }`
+        }));
+      })
+    );
   }
 }

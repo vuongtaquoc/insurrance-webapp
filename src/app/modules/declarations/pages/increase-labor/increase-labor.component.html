@@ -64,6 +64,7 @@
           [data]="declarations"
           [events]="eventsSubject.asObservable()"
           (onSubmit)="handleSubmit($event)"
+          (onChange)="handleChangeTable($event)"
         ></app-table-editor>
       </div><!-- page-declarations__editor -->
 

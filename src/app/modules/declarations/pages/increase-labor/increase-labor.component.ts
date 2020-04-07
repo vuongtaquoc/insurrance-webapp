@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { Subject, forkJoin } from 'rxjs';
 import findLastIndex from 'lodash/findLastIndex';
 import findIndex from 'lodash/findIndex';
+import * as jexcel from 'jstable-editor/dist/jexcel.js';
 
 import { Declaration } from '@app/core/models';
 import {
@@ -82,7 +83,6 @@ export class IncreaseLaborComponent implements OnInit {
 
     const declarations = [ ...this.declarations ];
     const parentIndex = findIndex(declarations, d => d.key === type);
-    const childFirstIndex = findIndex(declarations, d => d.isLeaf && d.parentKey === type);
     const childLastIndex = findLastIndex(declarations, d => d.isLeaf && d.parentKey === type);
 
     if (childLastIndex > -1) {
@@ -91,18 +91,16 @@ export class IncreaseLaborComponent implements OnInit {
       this.employeeSelected.forEach(employee => {
         const accepted = employeeExists.findIndex(e => e.origin.id === employee.id) === -1;
 
+        // replace
+        employee.gender = !employee.gender;
+
         if (accepted) {
           if (declarations[childLastIndex].isInitialize) {
             // remove initialize data
             declarations.splice(childLastIndex, 1);
 
-            // replace
-            employee.orders = 1;
-
             declarations.splice(childLastIndex, 0, this.declarationService.getLeaf(declarations[parentIndex], employee, this.tableHeaderColumns));
           } else {
-            console.log(childLastIndex, childFirstIndex)
-
             declarations.splice(childLastIndex + 1, 0, this.declarationService.getLeaf(declarations[parentIndex], employee, this.tableHeaderColumns));
           }
         }
@@ -146,6 +144,30 @@ export class IncreaseLaborComponent implements OnInit {
     }
   }
 
+  handleChangeTable({ instance, cell, c, r, records }) {
+    c = Number(c);
+    const column = this.tableHeaderColumns[c];
+
+    if (column.key === 'hospitalFirstRegistId') {
+      const hospitalFirstRegistName = cell.innerText.split(' - ').pop();
+
+      this.updateNextColumns(instance, r, hospitalFirstRegistName, [ c + 1 ]);
+    } else if (column.key === 'registerCityId') {
+      this.updateNextColumns(instance, r, '', [ c + 1, c + 2 ]);
+    } else if (column.key === 'recipientsCityId') {
+      this.updateNextColumns(instance, r, '', [ c + 1, c + 2, c + 5, c + 6 ]);
+    }
+
+    // update declarations
+    this.declarations.forEach((declaration, index) => {
+      const record = records[index];
+
+      Object.keys(record).forEach(index => {
+        declaration.data[index] = record[index];
+      });
+    });
+  }
+
   private updateOrders(declarations) {
     const order: { index: 0, key: string } = { index: 0, key: '' };
 
@@ -182,11 +204,19 @@ export class IncreaseLaborComponent implements OnInit {
   private getDistrictsByCityId(instance, cell, c, r, source) {
     const value = instance.jexcel.getValueFromCoords(c - 1, r);
 
+    if (!value) {
+      return [];
+    }
+
     return this.districtService.getDistrict(value).toPromise();
   }
 
   private getWardsByDistrictId(instance, cell, c, r, source) {
     const value = instance.jexcel.getValueFromCoords(c - 1, r);
+
+    if (!value) {
+      return [];
+    }
 
     return this.wardService.getWards(value).toPromise();
   }
@@ -194,6 +224,18 @@ export class IncreaseLaborComponent implements OnInit {
   private getHospitalsByCityId(instance, cell, c, r, source) {
     const value = instance.jexcel.getValueFromCoords(c - 5, r);
 
+    if (!value) {
+      return [];
+    }
+
     return this.hospitalService.getHospitals(value).toPromise();
+  }
+
+  private updateNextColumns(instance, r, value, nextColumns = []) {
+    nextColumns.forEach(columnIndex => {
+      const columnName = jexcel.getColumnNameFromId([columnIndex, r]);
+
+      instance.jexcel.setValue(columnName, value);
+    });
   }
 }
