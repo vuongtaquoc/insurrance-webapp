@@ -1,5 +1,67 @@
 <div class="page-card">
-    <h1>{{'contract.contract-list.title' | translate}}</h1>
+  <div class="page-title ">
+      <h1>{{'contract.contract-list.title' | translate}}</h1>
+      <div class="page-declarations__footer">
+          <button nz-button nzType="default" (click)="emitEventToChild('save')">
+            <i nz-icon nzType="search"></i>Search
+          </button>
+      </div>
+  </div>
+    <div class="page-search">
+      <div nz-row nzGutter="30">
+          <div nz-col nzMd="4">
+            <nz-form-item>
+              <nz-form-label>{{ 'contract.contract-list.keyWords' | translate }}</nz-form-label>
+              <nz-form-control>
+                <input type="text" nz-input formControlName="keyword">
+              </nz-form-control>
+            </nz-form-item >
+          </div>
+          <div nz-col nzMd="3">
+            <nz-form-item>
+              <nz-form-label>{{ 'contract.contract-list.dateFrom' | translate }}</nz-form-label>
+              <nz-form-control>
+                <nz-date-picker nzPlaceHolder="--Chọn--" formControlName="dateFrom"></nz-date-picker>
+              </nz-form-control>
+            </nz-form-item >
+          </div>
+          <div nz-col nzMd="3">
+            <nz-form-item>
+              <nz-form-label>{{ 'contract.contract-list.dateTo' | translate }}</nz-form-label>
+              <nz-form-control>
+                <nz-date-picker nzPlaceHolder="--Chọn--" formControlName="dateTo"></nz-date-picker>
+              </nz-form-control>
+            </nz-form-item >
+          </div>
+
+          <div nz-col nzMd="4">
+            <nz-form-item>
+              <nz-form-label>{{ 'contract.contract-list.companyType' | translate }}</nz-form-label>
+              <nz-form-control
+                [nzSpan]="24"
+              >
+                <nz-select formControlName="type" nzAllowClear nzPlaceHolder="Lựa chọn">
+                  <nz-option [nzValue]="type.value" [nzLabel]="type.label" *ngFor="let type of documentTypes"></nz-option>
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item >
+          </div>
+
+          <div nz-col nzMd="3">
+            <nz-form-item>
+              <nz-form-label [nzRequired]="true">{{ 'contract.contract-list.contractStatus' | translate }}</nz-form-label>
+              <nz-form-control
+                [nzSpan]="24"
+              >
+                <nz-select formControlName="type" nzAllowClear nzPlaceHolder="Lựa chọn">
+                  <nz-option [nzValue]="type.value" [nzLabel]="type.label" *ngFor="let type of documentTypes"></nz-option>
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item >
+          </div>        
+
+      </div>
+    </div>
     <nz-table
       nzBordered 
       #ajaxTable

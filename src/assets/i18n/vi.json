@@ -79,7 +79,12 @@
   },  
   "contract": {
     "contract-list": {
-      "title": "Danh sách hợp đồng"	   
+      "title": "Danh sách hợp đồng"	,  
+	  "dateFrom": "Từ ngày",
+	  "dateTo": "Đến ngày",
+	  "companyType": "Loại hợp đồng",
+	  "contractStatus": "Trạng thái",
+	  "keyWords": "Từ khóa"
     },
 	"table": {
       "stt": "STT",
