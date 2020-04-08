@@ -6,6 +6,7 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzTableModule } from 'ng-zorro-antd/table';
 
 import {
   AuthenticationService,
@@ -20,7 +21,10 @@ import {
 import { SharedModule } from '@app/shared/shared.module';
 import { DeclarationsRoutingModule } from './declarations-routing.module';
 
-import { IncreaseLaborComponent } from './pages';
+import {
+  IncreaseLaborListComponent,
+  IncreaseLaborComponent
+} from './pages';
 
 import {
   TableEditorComponent
@@ -34,10 +38,12 @@ import {
     NzFormModule,
     NzInputModule,
     NzIconModule,
+    NzTableModule,
     DeclarationsRoutingModule,
     SharedModule,
   ],
   declarations: [
+    IncreaseLaborListComponent,
     IncreaseLaborComponent,
     TableEditorComponent
   ],
