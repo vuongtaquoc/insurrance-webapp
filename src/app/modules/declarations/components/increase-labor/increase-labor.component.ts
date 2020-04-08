@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Subject, forkJoin } from 'rxjs';
 import findLastIndex from 'lodash/findLastIndex';
@@ -24,6 +24,9 @@ import { TABLE_NESTED_HEADERS, TABLE_HEADER_COLUMNS } from '@app/modules/declara
   styleUrls: ['./increase-labor.component.less']
 })
 export class IncreaseLaborComponent implements OnInit {
+  @Input() declarationId: string;
+  @Output() onSubmit: EventEmitter<any> = new EventEmitter();
+
   form: FormGroup;
   declarations: Declaration[] = [];
   tableNestedHeaders: any[] = TABLE_NESTED_HEADERS;
@@ -47,10 +50,12 @@ export class IncreaseLaborComponent implements OnInit {
   }
 
   ngOnInit() {
+    const date = new Date();
+
     this.form = this.formBuilder.group({
-      number: ['1'],
-      month: ['03'],
-      year: ['2020']
+      number: [ '1' ],
+      month: [ date.getMonth() + 1 ],
+      year: [ date.getFullYear() ]
     });
 
     forkJoin([
@@ -70,9 +75,15 @@ export class IncreaseLaborComponent implements OnInit {
       this.updateFilterToColumn('recipientsWardsId', this.getWardsByDistrictId);
       this.updateFilterToColumn('hospitalFirstRegistId', this.getHospitalsByCityId);
 
-      this.declarationService.getDeclarationInitials('600', this.tableHeaderColumns).subscribe(declarations => {
-        this.declarations = declarations;
-      });
+      if (this.declarationId) {
+        this.declarationService.getDeclarationsByDocumentId(this.declarationId, this.tableHeaderColumns).subscribe(declarations => {
+          this.declarations = declarations;
+        });
+      } else {
+        this.declarationService.getDeclarationInitials('600', this.tableHeaderColumns).subscribe(declarations => {
+          this.declarations = declarations;
+        });
+      }
     });
   }
 
@@ -131,15 +142,13 @@ export class IncreaseLaborComponent implements OnInit {
     if (event.type === 'save') {
       const { number, month, year } = this.form.value;
 
-      this.declarationService.create({
+      this.onSubmit.emit({
         documentType: 600,
         documentNo: number,
         documentName: 'Báo tăng lao động',
         createDate: `01/${ month }/${ year }`,
         documentStatus: 0,
         documentDetail: event.data
-      }).subscribe(data => {
-        console.log(data)
       });
     }
   }

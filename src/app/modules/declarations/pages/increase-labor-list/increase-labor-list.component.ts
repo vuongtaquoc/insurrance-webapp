@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
-import { SelectItem } from '@app/core/interfaces';
+import { DeclarationService } from '@app/core/services';
+import { Declaration } from '@app/core/interfaces';
 
 interface ItemData {
   id: number;
@@ -18,20 +19,23 @@ export class IncreaseLaborListComponent implements OnInit {
   isAllDisplayDataChecked = false;
   isIndeterminate = false;
   listOfDisplayData: ItemData[] = [];
-  listOfAllData: ItemData[] = [];
   mapOfCheckedId: { [key: string]: boolean } = {};
+  year: any = null;
+  declarations: Declaration[] = [];
+
+  constructor(
+    private declarationService: DeclarationService
+  ) {}
 
   ngOnInit() {
-    for (let i = 0; i < 100; i++) {
-      this.listOfAllData.push({
-        id: i,
-        name: `Edward King ${i}`,
-        age: 32,
-        address: `London, Park Lane no. ${i}`
-      });
-    }
+    this.declarationService.getDeclarations({
+      documentType: 600
+    }).subscribe(declarations => {
+      this.declarations = declarations;
 
-    this.listOfDisplayData = [ ...this.listOfAllData ];
+      this.listOfDisplayData = [ ...declarations ];
+    });
+
   }
 
   refreshStatus(): void {
@@ -43,5 +47,9 @@ export class IncreaseLaborListComponent implements OnInit {
   checkAll(value: boolean): void {
     this.listOfDisplayData.forEach(item => (this.mapOfCheckedId[item.id] = value));
     this.refreshStatus();
+  }
+
+  onChange(value) {
+    console.log(value)
   }
 }
