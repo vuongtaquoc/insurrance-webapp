@@ -13,8 +13,8 @@ export class WardsService {
   constructor(private http: ApplicationHttpClient) {
   }
 
-  public getWards(districtId: string): Observable<Wards> {
-    return this.http.get(`/wards/district/${ districtId }`, {
+  public getWards(districtCode: string): Observable<Wards> {
+    return this.http.get(`/wards/district/${ districtCode }`, {
     });
   }
   

@@ -12,8 +12,8 @@ export class HospitalService {
   constructor(private http: ApplicationHttpClient) {
   }
 
-  public getHospitals(cityId): Observable<any> {
-    return this.http.get(`/hospital/city/${ cityId }`).pipe(
+  public getHospitals(cityCode): Observable<any> {
+    return this.http.get(`/hospital/city/${ cityCode }`).pipe(
       map(hospitals => {
         return hospitals.map(hospital => ({
           ...hospital,

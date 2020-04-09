@@ -11,3 +11,4 @@ export * from './wards';
 export * from './payment-method';
 export * from './department';
 export * from './isurrance-department';
+export * from './plan';

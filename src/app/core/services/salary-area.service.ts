@@ -13,7 +13,7 @@ export class SalaryAreaService {
   constructor(private http: ApplicationHttpClient) {
   }
 
-  public getSalaryAreas(): Observable<SalaryArea> {
+  public getSalaryAreas(): Observable<any> {
     return this.http.get('/salary-area', {
     });
   }

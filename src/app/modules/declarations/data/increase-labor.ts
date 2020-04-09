@@ -90,7 +90,8 @@ export const TABLE_HEADER_COLUMNS = [{
   type: 'dropdown',
   width: 70,
   title: '(6)',
-  source: [ 'Chọn', 'tháng/năm', 'năm' ]
+  source: [ 'Chọn', 'tháng/năm', 'năm' ],
+  key: 'typeBirthday'
 }, {
   type: 'calendar',
   width: 80,
@@ -108,14 +109,14 @@ export const TABLE_HEADER_COLUMNS = [{
   title: '(9)',
   source: [ 'Chọn' ],
   align: 'center',
-  key: 'peopleId'
+  key: 'peopleCode'
 }, {
   type: 'dropdown',
   width: 100,
   title: '(10)',
   source: [ 'Chọn' ],
   align: 'center',
-  key: 'nationalityId'
+  key: 'nationalityCode'
 }, {
   type: 'numberic',
   width: 135,
@@ -137,53 +138,54 @@ export const TABLE_HEADER_COLUMNS = [{
   width: 145,
   title: '(14.1)',
   source: [ 'Chọn' ],
-  key: 'registerCityId'
+  key: 'registerCityCode'
 }, {
   type: 'dropdown',
   width: 145,
   source: [ ],
   title: '(14.2)',
-  key: 'registerDistrictId'
+  key: 'registerDistrictCode'
 }, {
   type: 'dropdown',
   width: 175,
   title: '(14.3)',
   source: [  ],
-  key: 'registerWardsId'
+  key: 'registerWardsCode'
 }, {
   type: 'dropdown',
   width: 145,
   title: '(15.1)',
   source: [ 'Chọn' ],
-  key: 'recipientsCityId'
+  key: 'recipientsCityCode'
 }, {
   type: 'dropdown',
   width: 145,
   title: '(15.2)',
   source: [ ],
-  key: 'recipientsDistrictId'
+  key: 'recipientsDistrictCode'
 }, {
   type: 'dropdown',
   width: 175,
   title: '(15.3)',
   source: [ ],
-  key: 'recipientsWardsId'
+  key: 'recipientsWardsCode'
 }, {
   type: 'text',
   width: 165,
   title: '(15.4)',
-  key: 'recipientsWardsName'
+  key: 'recipientsAddress'
 }, {
   type: 'dropdown',
   width: 75,
   title: '(16)',
-  source: [ 'Chọn', 'Vùng I', 'Vùng II', 'Vùng III', 'Vùng IV' ],
+  source: [ ],
+  key: 'salaryAreaCode'
 }, {
   type: 'dropdown',
   width: 85,
   title: '(17.1)',
   source: [ ],
-  key: 'hospitalFirstRegistId'
+  key: 'hospitalFirstRegistCode'
 }, {
   type: 'text',
   width: 300,
@@ -211,7 +213,7 @@ export const TABLE_HEADER_COLUMNS = [{
   type: 'calendar',
   width: 100,
   title: '(21.2)',
-  key: 'DateSign'
+  key: 'dateSign'
 }, {
   type: 'numberic',
   width: 80,
@@ -275,21 +277,29 @@ export const TABLE_HEADER_COLUMNS = [{
 }, {
   type: 'calendar',
   width: 60,
-  title: '(23)'
+  title: '(23)',
+  key: 'fromDate'
 }, {
   type: 'calendar',
   width: 60,
-  title: '(24)'
+  title: '(24)',
+  key: 'toDate'
 }, {
-  type: 'text',
+  type: 'dropdown',
   width: 50,
-  title: '(25)'
+  title: '(25)',
+  source: [ ],
+  key: 'planCode'
 }, {
-  type: 'text',
+  type: 'numberic',
+  mask: '# ##0',
+  decimal: ',',
   width: 50,
-  title: '(26)'
+  title: '(26)',
+  key: 'ratio'
 }, {
   type: 'text',
   width: 180,
-  title: '(28)'
+  title: '(28)',
+  key: 'note'
 }];

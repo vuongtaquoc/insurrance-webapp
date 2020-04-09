@@ -13,7 +13,8 @@ import {
   WardsService,
   HospitalService,
   NationalityService,
-  PeopleService
+  PeopleService,
+  PlanService
 } from './services';
 
 @NgModule({
@@ -32,7 +33,8 @@ import {
     NavigationService,
     HospitalService,
     NationalityService,
-    PeopleService
+    PeopleService,
+    PlanService
   ],
   declarations: []
 })

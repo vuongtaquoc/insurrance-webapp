@@ -14,3 +14,4 @@ export * from './isurrance-department.service';
 export * from './nationality.service';
 export * from './hospital.service';
 export * from './people.service';
+export * from './plan.service';

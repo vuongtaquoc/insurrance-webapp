@@ -13,7 +13,9 @@ import {
   HospitalService,
   NationalityService,
   PeopleService,
-  WardsService
+  WardsService,
+  SalaryAreaService,
+  PlanService
 } from '@app/core/services';
 
 import { TABLE_NESTED_HEADERS, TABLE_HEADER_COLUMNS } from '@app/modules/declarations/data/increase-labor';
@@ -42,11 +44,13 @@ export class IncreaseLaborComponent implements OnInit {
     private hospitalService: HospitalService,
     private nationalityService: NationalityService,
     private peopleService: PeopleService,
-    private wardService: WardsService
+    private wardService: WardsService,
+    private salaryAreaService: SalaryAreaService,
+    private planService: PlanService
   ) {
-    this.getDistrictsByCityId = this.getDistrictsByCityId.bind(this);
-    this.getWardsByDistrictId = this.getWardsByDistrictId.bind(this);
-    this.getHospitalsByCityId = this.getHospitalsByCityId.bind(this);
+    this.getDistrictsByCityCode = this.getDistrictsByCityCode.bind(this);
+    this.getWardsByDistrictCode = this.getWardsByDistrictCode.bind(this);
+    this.getHospitalsByCityCode = this.getHospitalsByCityCode.bind(this);
   }
 
   ngOnInit() {
@@ -62,18 +66,24 @@ export class IncreaseLaborComponent implements OnInit {
       this.cityService.getCities(),
       this.nationalityService.getNationalities(),
       this.peopleService.getPeoples(),
-    ]).subscribe(([ cities, nationalities, peoples ]) => {
-      this.updateSourceToColumn('peopleId', peoples);
-      this.updateSourceToColumn('nationalityId', nationalities);
-      this.updateSourceToColumn('registerCityId', cities);
-      this.updateSourceToColumn('recipientsCityId', cities);
+      this.salaryAreaService.getSalaryAreas(),
+      this.planService.getPlans(),
+      
+    ]).subscribe(([ cities, nationalities, peoples, salaryAreas, plans ]) => {
+      this.updateSourceToColumn('peopleCode', peoples);
+      this.updateSourceToColumn('nationalityCode', nationalities);
+      this.updateSourceToColumn('registerCityCode', cities);
+      this.updateSourceToColumn('recipientsCityCode', cities);
+      this.updateSourceToColumn('salaryAreaCode', salaryAreas);
+      this.updateSourceToColumn('planCode', plans);
+      
 
       // get filter columns
-      this.updateFilterToColumn('registerDistrictId', this.getDistrictsByCityId);
-      this.updateFilterToColumn('registerWardsId', this.getWardsByDistrictId);
-      this.updateFilterToColumn('recipientsDistrictId', this.getDistrictsByCityId);
-      this.updateFilterToColumn('recipientsWardsId', this.getWardsByDistrictId);
-      this.updateFilterToColumn('hospitalFirstRegistId', this.getHospitalsByCityId);
+      this.updateFilterToColumn('registerDistrictCode', this.getDistrictsByCityCode);
+      this.updateFilterToColumn('registerWardsCode', this.getWardsByDistrictCode);
+      this.updateFilterToColumn('recipientsDistrictCode', this.getDistrictsByCityCode);
+      this.updateFilterToColumn('recipientsWardsCode', this.getWardsByDistrictCode);
+      this.updateFilterToColumn('hospitalFirstRegistCode', this.getHospitalsByCityCode);
 
       if (this.declarationId) {
         this.declarationService.getDeclarationsByDocumentId(this.declarationId, this.tableHeaderColumns).subscribe(declarations => {
@@ -157,13 +167,13 @@ export class IncreaseLaborComponent implements OnInit {
     c = Number(c);
     const column = this.tableHeaderColumns[c];
 
-    if (column.key === 'hospitalFirstRegistId') {
+    if (column.key === 'hospitalFirstRegistCode') {
       const hospitalFirstRegistName = cell.innerText.split(' - ').pop();
 
       this.updateNextColumns(instance, r, hospitalFirstRegistName, [ c + 1 ]);
-    } else if (column.key === 'registerCityId') {
+    } else if (column.key === 'registerCityCode') {
       this.updateNextColumns(instance, r, '', [ c + 1, c + 2 ]);
-    } else if (column.key === 'recipientsCityId') {
+    } else if (column.key === 'recipientsCityCode') {
       this.updateNextColumns(instance, r, '', [ c + 1, c + 2, c + 5, c + 6 ]);
     }
 
@@ -210,7 +220,7 @@ export class IncreaseLaborComponent implements OnInit {
     }
   }
 
-  private getDistrictsByCityId(instance, cell, c, r, source) {
+  private getDistrictsByCityCode(instance, cell, c, r, source) {
     const value = instance.jexcel.getValueFromCoords(c - 1, r);
 
     if (!value) {
@@ -220,7 +230,7 @@ export class IncreaseLaborComponent implements OnInit {
     return this.districtService.getDistrict(value).toPromise();
   }
 
-  private getWardsByDistrictId(instance, cell, c, r, source) {
+  private getWardsByDistrictCode(instance, cell, c, r, source) {
     const value = instance.jexcel.getValueFromCoords(c - 1, r);
 
     if (!value) {
@@ -230,7 +240,7 @@ export class IncreaseLaborComponent implements OnInit {
     return this.wardService.getWards(value).toPromise();
   }
 
-  private getHospitalsByCityId(instance, cell, c, r, source) {
+  private getHospitalsByCityCode(instance, cell, c, r, source) {
     const value = instance.jexcel.getValueFromCoords(c - 5, r);
 
     if (!value) {
