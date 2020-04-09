@@ -38,6 +38,43 @@ export class DeclarationService {
     );
   }
 
+  public getDeclarations(filters = {}) {
+    return this.http.get('/declarations', {
+      params: {
+        ...filters
+      }
+    });
+  }
+
+  public getDeclarationsByDocumentId(id, tableHeaderColumns) {
+    return this.http.get(`/declarations/${ id }`).pipe(
+      map(detail => {
+        const documents = detail.documentDetail;
+
+        const data = [];
+
+        documents.forEach((d, index) => {
+          const hasFormula = d.code.indexOf('SUM') > -1;
+
+          data.push({
+            readonly: !hasFormula,
+            formula: hasFormula,
+            origin: d,
+            key: d.code,
+            data: [ d.codeView, d.name ],
+            hasLeaf: d.hasChildren
+          });
+
+          if (d.hasChildren) {
+            d.declarations.forEach(employee => data.push(this.getLeaf(d, employee, tableHeaderColumns, true)));
+          }
+        });
+
+        return this.updateFormula(data, tableHeaderColumns);
+      })
+    );
+  }
+
   public create(body, options = {}) {
     return this.http.post('/declarations', body, options);
   }

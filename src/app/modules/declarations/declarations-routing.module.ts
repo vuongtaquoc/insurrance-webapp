@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { LayoutComponent } from '@app/shared/layout';
-import { IncreaseLaborComponent } from './pages';
+import { IncreaseLaborAddComponent, IncreaseLaborListComponent, IncreaseLaborEditComponent } from './pages';
 
 const routes: Routes = [
   {
@@ -10,8 +10,16 @@ const routes: Routes = [
     component: LayoutComponent,
     children: [
       {
+        path: 'increase-labor/add',
+        component: IncreaseLaborAddComponent
+      },
+      {
+        path: 'increase-labor/:id/edit',
+        component: IncreaseLaborEditComponent
+      },
+      {
         path: 'increase-labor',
-        component: IncreaseLaborComponent
+        component: IncreaseLaborListComponent
       }
     ]
   }

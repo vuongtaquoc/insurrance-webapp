@@ -1,1 +1,3 @@
-export * from './increase-labor/increase-labor.component';
+export * from './increase-labor-add/increase-labor-add.component';
+export * from './increase-labor-list/increase-labor-list.component';
+export * from './increase-labor-edit/increase-labor-edit.component';

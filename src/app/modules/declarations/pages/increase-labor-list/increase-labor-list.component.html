@@ -1,0 +1,51 @@
+<div class="page-container">
+  <div class="page-card page-increase-labor">
+    <h1>600 | Báo tăng lao động</h1>
+
+    <div class="page-increase-labor__menu-bar">
+      <div class="page-increase-labor__filter">
+        <nz-year-picker [(ngModel)]="year" (ngModelChange)="onChange($event)" nzPlaceHolder="Chọn năm"></nz-year-picker>
+      </div>
+
+      <div class="page-increase-labor__group-button">
+        <a [routerLink]="['/declarations/increase-labor/add']" nz-button nzType="default"><i nz-icon nzType="container"></i>Lập tờ khai</a>
+        <!-- <a nz-button nzType="default"><i nz-icon nzType="edit"></i>Sửa</a>
+        <button nz-button nzType="default"><i nz-icon nzType="delete"></i>Xóa</button> -->
+      </div>
+    </div><!-- page-increase-labor__menu-bar -->
+
+    <nz-table
+      #rowSelectionTable
+      [nzData]="declarations"
+      [nzPageSize]="declarations.length"
+      [nzShowPagination]="false"
+      class="table ui-table-custom ui-table-custom--center"
+    >
+      <thead>
+        <tr>
+          <th>Ngày lập</th>
+          <th>Số hồ sơ</th>
+          <th>Giấy tờ, biểu mẫu</th>
+          <th>Ngày nộp</th>
+          <th>Kết quả giải quyết</th>
+          <th>Tờ khai</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of rowSelectionTable.data">
+          <td class="text-center">{{ data.createDate }}</td>
+          <td class="text-center">{{ data.documentNo }}</td>
+          <td>{{ data.documentDetail }}</td>
+          <td class="text-center">{{ data.sendDate }}</td>
+          <td class="text-center">{{ data.documentStatusName }}</td>
+          <td class="text-center"><button nz-button nzType="link" nzBlock>Xem</button></td>
+          <td class="text-center">
+            <a [routerLink]="['/declarations/increase-labor/' + data.id + '/edit']" nz-button nzType="link">Sửa</a>
+            <button nz-button nzType="link">Xóa</button>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </div>
+</div>

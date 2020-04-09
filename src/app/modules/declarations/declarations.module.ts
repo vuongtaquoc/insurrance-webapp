@@ -3,9 +3,11 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzTableModule } from 'ng-zorro-antd/table';
 
 import {
   AuthenticationService,
@@ -20,10 +22,15 @@ import {
 import { SharedModule } from '@app/shared/shared.module';
 import { DeclarationsRoutingModule } from './declarations-routing.module';
 
-import { IncreaseLaborComponent } from './pages';
+import {
+  IncreaseLaborListComponent,
+  IncreaseLaborAddComponent,
+  IncreaseLaborEditComponent
+} from './pages';
 
 import {
-  TableEditorComponent
+  TableEditorComponent,
+  IncreaseLaborComponent
 } from './components';
 
 @NgModule({
@@ -31,15 +38,20 @@ import {
     CommonModule,
     ReactiveFormsModule,
     NzButtonModule,
+    NzDatePickerModule,
     NzFormModule,
     NzInputModule,
     NzIconModule,
+    NzTableModule,
     DeclarationsRoutingModule,
     SharedModule,
   ],
   declarations: [
-    IncreaseLaborComponent,
-    TableEditorComponent
+    IncreaseLaborListComponent,
+    IncreaseLaborAddComponent,
+    IncreaseLaborEditComponent,
+    TableEditorComponent,
+    IncreaseLaborComponent
   ],
   providers: [
     AuthenticationService,
