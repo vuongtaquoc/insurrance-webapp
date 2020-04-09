@@ -17,6 +17,7 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
   @Input() events: Observable<void>;
   @Output() onChange: EventEmitter<any> = new EventEmitter();
   @Output() onSubmit: EventEmitter<any> = new EventEmitter();
+  @Output() onDelete: EventEmitter<any> = new EventEmitter();
 
   spreadsheet: any;
   private eventsSubscription: Subscription;
@@ -58,6 +59,13 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
       onchange: (instance, cell, c, r, value) => {
         this.onChange.emit({
           instance, cell, c, r, value,
+          records: this.spreadsheet.getJson()
+        });
+      },
+      ondeleterow: (el, rowNumber, numOfRows) => {
+        this.onDelete.emit({
+          rowNumber,
+          numOfRows,
           records: this.spreadsheet.getJson()
         });
       }
@@ -138,7 +146,7 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
   }
 
   private arrayToProps(array, columns) {
-    return Object.keys(array).reduce(
+    const object: any = Object.keys(array).reduce(
       (combine, current) => {
         const column = columns[current];
 
@@ -146,10 +154,20 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
           return { ...combine };
         }
 
+        if (column.type === 'numberic') {
+          return { ...combine, [ column.key ]: array[current].toString().split(' ').join('') };
+        }
+
         return { ...combine, [ column.key ]: column.key === 'gender' ? +array[current] : array[current] };
       },
       {}
     );
+
+    if (array.origin.id) {
+      object.employeerId = array.origin.id;
+    }
+
+    return object;
   }
 
   private getContainerSize() {

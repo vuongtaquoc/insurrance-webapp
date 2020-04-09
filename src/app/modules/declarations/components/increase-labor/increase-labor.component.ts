@@ -67,8 +67,7 @@ export class IncreaseLaborComponent implements OnInit {
       this.nationalityService.getNationalities(),
       this.peopleService.getPeoples(),
       this.salaryAreaService.getSalaryAreas(),
-      this.planService.getPlans(),
-      
+      this.planService.getPlans()
     ]).subscribe(([ cities, nationalities, peoples, salaryAreas, plans ]) => {
       this.updateSourceToColumn('peopleCode', peoples);
       this.updateSourceToColumn('nationalityCode', nationalities);
@@ -76,7 +75,7 @@ export class IncreaseLaborComponent implements OnInit {
       this.updateSourceToColumn('recipientsCityCode', cities);
       this.updateSourceToColumn('salaryAreaCode', salaryAreas);
       this.updateSourceToColumn('planCode', plans);
-      
+
 
       // get filter columns
       this.updateFilterToColumn('registerDistrictCode', this.getDistrictsByCityCode);
@@ -87,6 +86,8 @@ export class IncreaseLaborComponent implements OnInit {
 
       if (this.declarationId) {
         this.declarationService.getDeclarationsByDocumentId(this.declarationId, this.tableHeaderColumns).subscribe(declarations => {
+          this.updateOrders(declarations);
+
           this.declarations = declarations;
         });
       } else {
@@ -164,17 +165,19 @@ export class IncreaseLaborComponent implements OnInit {
   }
 
   handleChangeTable({ instance, cell, c, r, records }) {
-    c = Number(c);
-    const column = this.tableHeaderColumns[c];
+    if (c !== null && c !== undefined) {
+      c = Number(c);
+      const column = this.tableHeaderColumns[c];
 
-    if (column.key === 'hospitalFirstRegistCode') {
-      const hospitalFirstRegistName = cell.innerText.split(' - ').pop();
+      if (column.key === 'hospitalFirstRegistCode') {
+        const hospitalFirstRegistName = cell.innerText.split(' - ').pop();
 
-      this.updateNextColumns(instance, r, hospitalFirstRegistName, [ c + 1 ]);
-    } else if (column.key === 'registerCityCode') {
-      this.updateNextColumns(instance, r, '', [ c + 1, c + 2 ]);
-    } else if (column.key === 'recipientsCityCode') {
-      this.updateNextColumns(instance, r, '', [ c + 1, c + 2, c + 5, c + 6 ]);
+        this.updateNextColumns(instance, r, hospitalFirstRegistName, [ c + 1 ]);
+      } else if (column.key === 'registerCityCode') {
+        this.updateNextColumns(instance, r, '', [ c + 1, c + 2 ]);
+      } else if (column.key === 'recipientsCityCode') {
+        this.updateNextColumns(instance, r, '', [ c + 1, c + 2, c + 5, c + 6 ]);
+      }
     }
 
     // update declarations
@@ -185,6 +188,16 @@ export class IncreaseLaborComponent implements OnInit {
         declaration.data[index] = record[index];
       });
     });
+  }
+
+  handleDeleteData({ rowNumber, numOfRows }) {
+    const declarations = [ ...this.declarations ];
+
+    declarations.splice(rowNumber, numOfRows);
+
+    this.updateOrders(declarations);
+
+    this.declarations = this.declarationService.updateFormula(declarations, this.tableHeaderColumns);
   }
 
   private updateOrders(declarations) {
