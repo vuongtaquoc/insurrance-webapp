@@ -59,6 +59,21 @@
           </nz-dropdown-menu>
         </li>
         <li class="layout-menu__item">
+            <a class="layout-menu__link" nz-dropdown nzTrigger="click" [nzDropdownMenu]="contractMenu">
+              <span class="layout-menu__icon">
+                <i nz-icon nzType="file" nzTheme="fill"></i>
+              </span>
+              <span class="layout-menu__text">Quản lý hợp đồng</span>
+            </a>
+            <nz-dropdown-menu #contractMenu="nzDropdownMenu">
+              <ul nz-menu>
+                  <li nz-menu-item><a [routerLink]="['/customer/list']"><i nz-icon nzType="file" nzTheme="outline"></i>Danh sách khách hàng</a></li>
+                <li nz-menu-item><a [routerLink]="['/contract/new']"><i nz-icon nzType="file" nzTheme="outline"></i>Tạo mới hợp đồng</a></li>
+                <li nz-menu-item><a [routerLink]="['/contract/list']"><i nz-icon nzType="book" nzTheme="outline"></i>Danh sách hợp đồng</a></li>
+              </ul>
+            </nz-dropdown-menu>
+          </li>
+        <li class="layout-menu__item">
           <a href="" class="layout-menu__link">
             <span class="layout-menu__icon">
               <i nz-icon nzType="search" nzTheme="outline"></i>

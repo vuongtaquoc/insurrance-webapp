@@ -90,17 +90,28 @@
       <tbody>
         <tr *ngFor="let data of ajaxTable.data">
           <td>1</td>
-          <td>{{ data.gender }} {{ data.gender }}</td>
-          <td>{{ data.gender }}</td>
-          <td>{{ data.email }}</td>
-          <td>{{ data.email }} {{ data.email }}</td>
-          <td>{{ data.gender }}</td>
+          <td>{{ data.company }}</td>
+          <td>{{ data.contractNo }}</td>
+          <td>{{ data.numberMonth }}</td>
+          <td>{{ data.contractType}}</td>
+          <td>{{ data.createDate }}</td>
           <td>
             <ng-container>
                 <a (click)="startEdit(data.id)">
-                    <i nz-icon nzType="search" nzTheme="outline"></i>
+                    <i nz-icon nzType="edit" nzTheme="outline"></i>
+                </a>               
+            </ng-container>
+            <ng-container>
+                <a (click)="startEdit(data.id)">
+                    <i nz-icon nzType="delete" nzTheme="outline"></i>
                 </a>
             </ng-container>
+            <ng-container>
+                <a (click)="startEdit(data.id)">
+                    <i nz-icon nzType="eye" nzTheme="outline"></i>
+                </a>
+            </ng-container>
+            
           </td>
         </tr>
       </tbody>
