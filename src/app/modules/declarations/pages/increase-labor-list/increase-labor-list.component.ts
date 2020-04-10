@@ -3,13 +3,6 @@ import { Component, OnInit } from '@angular/core';
 import { DeclarationService } from '@app/core/services';
 import { Declaration } from '@app/core/interfaces';
 
-interface ItemData {
-  id: number;
-  name: string;
-  age: number;
-  address: string;
-}
-
 @Component({
   selector: 'app-increase-labor-list',
   templateUrl: './increase-labor-list.component.html',
@@ -18,7 +11,7 @@ interface ItemData {
 export class IncreaseLaborListComponent implements OnInit {
   isAllDisplayDataChecked = false;
   isIndeterminate = false;
-  listOfDisplayData: ItemData[] = [];
+  listOfDisplayData: Declaration[] = [];
   mapOfCheckedId: { [key: string]: boolean } = {};
   year: any = null;
   declarations: Declaration[] = [];

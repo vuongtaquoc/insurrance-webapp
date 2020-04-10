@@ -66,7 +66,7 @@ export class DeclarationService {
           });
 
           if (d.hasChildren) {
-            d.declarations.forEach(employee => data.push(this.getLeaf(d, employee, tableHeaderColumns, true)));
+            d.declarations.forEach(employee => data.push(this.getLeaf(d, employee, tableHeaderColumns, !employee.employeerId)));
           }
         });
 
@@ -77,6 +77,10 @@ export class DeclarationService {
 
   public create(body, options = {}) {
     return this.http.post('/declarations', body, options);
+  }
+
+  public update(id, body, options = {}) {
+    return this.http.post(`/declarations/${ id }`, body, options);
   }
 
   public updateFormula(declarations, tableHeaderColumns) {

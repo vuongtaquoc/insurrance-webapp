@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
+import { DeclarationService } from '@app/core/services';
+
 @Component({
   selector: 'app-declaration-increase-labor-edit',
   templateUrl: './increase-labor-edit.component.html',
@@ -11,7 +13,8 @@ export class IncreaseLaborEditComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private declarationService: DeclarationService
   ) {}
 
   ngOnInit() {
@@ -19,6 +22,8 @@ export class IncreaseLaborEditComponent implements OnInit {
   }
 
   handleSubmit(data) {
-
+    this.declarationService.update(this.declarationId, data).subscribe(() => {
+      this.router.navigate(['/declarations/increase-labor']);
+    });
   }
 }
