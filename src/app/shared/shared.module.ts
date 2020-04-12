@@ -4,12 +4,29 @@ import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzModalModule } from 'ng-zorro-antd/modal';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzTabsModule } from 'ng-zorro-antd/tabs';
 import { NzTreeModule } from 'ng-zorro-antd/tree';
 
-import { AuthenticationService, EmployeeService } from '@app/core/services';
+import {
+  AuthenticationService,
+  CityService,
+  DistrictService,
+  DeclarationService,
+  EmployeeService,
+  HospitalService,
+  NationalityService,
+  PeopleService,
+  WardsService
+} from '@app/core/services';
 
 import {
   LayoutComponent,
@@ -18,7 +35,10 @@ import {
 
 import {
   InputLabelComponent,
-  UsersTreeComponent
+  UsersTreeComponent,
+  EmployeeFormComponent,
+  EmployeeProcessTableComponent,
+  EmployeeFamilyTableComponent
 } from './components';
 
 import {
@@ -33,14 +53,24 @@ import {
     FormsModule,
     ReactiveFormsModule,
     TranslateModule,
+    NzButtonModule,
+    NzDatePickerModule,
     NzDropDownModule,
+    NzFormModule,
+    NzGridModule,
     NzIconModule,
     NzInputModule,
+    NzModalModule,
+    NzSelectModule,
+    NzTabsModule,
     NzTreeModule
   ],
   declarations: [
     LayoutComponent,
     AuthLayoutComponent,
+    EmployeeFormComponent,
+    EmployeeProcessTableComponent,
+    EmployeeFamilyTableComponent,
     InputLabelComponent,
     UsersTreeComponent,
     CardFullHeightDirective,
@@ -50,6 +80,7 @@ import {
     FormsModule,
     ReactiveFormsModule,
     TranslateModule,
+    EmployeeFormComponent,
     InputLabelComponent,
     UsersTreeComponent,
     CardFullHeightDirective,
@@ -57,8 +88,17 @@ import {
   ],
   providers: [
     AuthenticationService,
-    EmployeeService
+    CityService,
+    DistrictService,
+    DeclarationService,
+    EmployeeService,
+    HospitalService,
+    NationalityService,
+    PeopleService,
+    WardsService
   ],
-  entryComponents: []
+  entryComponents: [
+    EmployeeFormComponent
+  ]
 })
 export class SharedModule {}

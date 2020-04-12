@@ -16,6 +16,7 @@
 
     <nz-table
       #rowSelectionTable
+      nzBordered
       [nzData]="declarations"
       [nzPageSize]="declarations.length"
       [nzShowPagination]="false"
@@ -41,8 +42,12 @@
           <td class="text-center">{{ data.documentStatusName }}</td>
           <td class="text-center"><button nz-button nzType="link" nzBlock>Xem</button></td>
           <td class="text-center">
-            <a [routerLink]="['/declarations/increase-labor/' + data.id + '/edit']" nz-button nzType="link">Sửa</a>
-            <button nz-button nzType="link">Xóa</button>
+            <a [routerLink]="['/declarations/increase-labor/' + data.id + '/edit']" nz-button nzType="link">
+              <i nz-icon nzType="edit" nzTheme="outline"></i>
+            </a>
+            <button nz-button nzType="link">
+              <i nz-icon nzType="delete" nzTheme="outline"></i>
+            </button>
           </td>
         </tr>
       </tbody>

@@ -1,0 +1,64 @@
+.employee-form {
+  height: 100%;
+
+  form, .ant-tabs {
+    height: 100%;
+    overflow: visible;
+  }
+
+  .ant-tabs .ant-tabs-top-content {
+    height: calc(100% - 60px);
+  }
+
+  &__content {
+    height: 100%;
+  }
+
+  &__group-title {
+    font-weight: 700;
+    margin-bottom: 10px;
+
+    &--disabled {
+      color: #999;
+    }
+  }
+
+  &__info {
+    background-color: #f1f1f1;
+    margin-bottom: 10px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 10px;
+  }
+
+  &__info-col {
+    padding: 5px 10px;
+  }
+
+  &__process-table {
+    height: calc(100% - 103px);
+  }
+
+  &__family-table {
+    height: calc(100% - 223px);
+  }
+}
+
+.employee-modal {
+  .ant-modal {
+    top: 20px;
+    height: calc(100% - 40px);
+    bottom: 20px;
+    padding-bottom: 0;
+  }
+
+  .ant-modal-content {
+    height: 100%;
+  }
+
+  .ant-modal-body {
+    height: calc(100% - 108px);
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+}
