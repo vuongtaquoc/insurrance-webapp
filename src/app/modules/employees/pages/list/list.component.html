@@ -37,13 +37,13 @@
       <tbody>
         <tr *ngFor="let data of rowSelectionTable.data">
           <td class="text-center">{{ data.fullName }}</td>
-          <td class="text-center">{{ data.employeeNo }}</td>
+          <td class="text-center">{{ data.code }}</td>
           <td></td>
-          <td class="text-center"></td>
-          <td class="text-center"></td>
-          <td class="text-center"></td>
-          <td class="text-center"></td>
-          <td class="text-center"></td>
+          <td class="text-center">{{ data.isurranceCode }}</td>
+          <td class="text-center">{{ data.isurranceNo }}</td>
+          <td class="text-center">{{ data.identityCar }}</td>
+          <td class="text-center">{{ data.birthday }}</td>
+          <td class="text-center">{{ data.hospitalFirstRegistName }}</td>
           <td class="text-center">
             <a [routerLink]="['/employees/' + data.id + '/edit']" nz-button nzType="link">
               <i nz-icon nzType="edit" nzTheme="outline"></i>

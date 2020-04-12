@@ -14,7 +14,10 @@ import {
   HospitalService,
   NationalityService,
   PeopleService,
-  PlanService
+  PlanService,
+  PaymentStatusServiced,
+  RelationshipService,  
+  BankService
 } from './services';
 
 @NgModule({
@@ -34,7 +37,10 @@ import {
     HospitalService,
     NationalityService,
     PeopleService,
-    PlanService
+    PlanService,
+    PaymentStatusServiced,
+    RelationshipService,
+    BankService
   ],
   declarations: []
 })

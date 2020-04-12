@@ -44,7 +44,7 @@
               <nz-form-item>
                 <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Quốc tịch</nz-form-label>
                 <nz-form-control [nzSpan]="14">
-                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="nationalityId">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="nationalityCode">
                     <nz-option *ngFor="let national of nationalities" [nzLabel]="national.name" [nzValue]="national.id"></nz-option>
                   </nz-select>
                 </nz-form-control>
@@ -54,7 +54,7 @@
               <nz-form-item>
                 <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Dân tộc</nz-form-label>
                 <nz-form-control [nzSpan]="14">
-                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="peopleId">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="peopleCode">
                     <nz-option *ngFor="let people of peoples" [nzLabel]="people.name" [nzValue]="people.id"></nz-option>
                   </nz-select>
                 </nz-form-control>
@@ -70,7 +70,7 @@
                 <nz-form-control [nzSpan]="14">
                   <input nz-input
                     placeholder="Mã nhân viên"
-                    formControlName="employeeCode"
+                    formControlName="code"
                   />
                 </nz-form-control>
               </nz-form-item>
@@ -93,7 +93,7 @@
               <nz-form-item>
                 <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Tỉnh/TP</nz-form-label>
                 <nz-form-control [nzSpan]="14">
-                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="registerCityCode">
                     <nz-option *ngFor="let city of cities" [nzLabel]="city.name" [nzValue]="city.id"></nz-option>
                   </nz-select>
                 </nz-form-control>
@@ -103,7 +103,7 @@
               <nz-form-item>
                 <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Quận/huyện</nz-form-label>
                 <nz-form-control [nzSpan]="14">
-                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="registerDistrictCode">
                     <nz-option *ngFor="let national of nationalities" [nzLabel]="national.name" [nzValue]="national.id"></nz-option>
                   </nz-select>
                 </nz-form-control>
@@ -113,7 +113,7 @@
               <nz-form-item>
                 <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Phường/xã</nz-form-label>
                 <nz-form-control [nzSpan]="14">
-                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="registerWardsCode">
                     <nz-option *ngFor="let people of peoples" [nzLabel]="people.name" [nzValue]="people.id"></nz-option>
                   </nz-select>
                 </nz-form-control>
@@ -128,7 +128,7 @@
               <nz-form-item>
                 <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Tỉnh/TP</nz-form-label>
                 <nz-form-control [nzSpan]="14">
-                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="recipientsCityCode">
                     <nz-option *ngFor="let city of cities" [nzLabel]="city.name" [nzValue]="city.id"></nz-option>
                   </nz-select>
                 </nz-form-control>
@@ -138,8 +138,10 @@
               <nz-form-item>
                 <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Quận/huyện</nz-form-label>
                 <nz-form-control [nzSpan]="14">
-                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn">
-                    <nz-option *ngFor="let national of nationalities" [nzLabel]="national.name" [nzValue]="national.id"></nz-option>
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn"
+                  formControlName="recipientsDistrictCode"
+                  >
+                    <nz-option *ngFor="let district of districts" [nzLabel]="district.name" [nzValue]="district.id"></nz-option>
                   </nz-select>
                 </nz-form-control>
               </nz-form-item>
@@ -148,8 +150,10 @@
               <nz-form-item>
                 <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Phường/xã</nz-form-label>
                 <nz-form-control [nzSpan]="14">
-                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn">
-                    <nz-option *ngFor="let people of peoples" [nzLabel]="people.name" [nzValue]="people.id"></nz-option>
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn"
+                  formControlName="recipientsWardsCode"
+                  >
+                    <nz-option *ngFor="let ward of wards" [nzLabel]="ward.name" [nzValue]="ward.id"></nz-option>
                   </nz-select>
                 </nz-form-control>
               </nz-form-item>
@@ -165,6 +169,7 @@
                 <nz-form-control [nzSpan]="14">
                   <input nz-input
                     placeholder="Mã số BHXH"
+                    formControlName="isurranceCode"
                   />
                 </nz-form-control>
               </nz-form-item>
@@ -175,6 +180,7 @@
                 <nz-form-control [nzSpan]="14">
                   <input nz-input
                     placeholder="Điện thoại liên hệ"
+                    formControlName="mobile"
                   />
                 </nz-form-control>
               </nz-form-item>
@@ -185,6 +191,7 @@
                 <nz-form-control [nzSpan]="9">
                   <input nz-input
                     placeholder="Số CMT/HC/Thẻ căn cước"
+                    formControlName="identityCar"
                   />
                 </nz-form-control>
               </nz-form-item>
@@ -199,6 +206,7 @@
                 <nz-form-control [nzSpan]="14">
                   <input nz-input
                     placeholder="Mã số hộ gia đình"
+                    formControlName="familyNo"
                   />
                 </nz-form-control>
               </nz-form-item>
@@ -209,6 +217,7 @@
                 <nz-form-control [nzSpan]="14">
                   <input nz-input
                     placeholder="Số sổ BHXH"
+                    formControlName="isurranceNo"
                   />
                 </nz-form-control>
               </nz-form-item>
@@ -219,6 +228,7 @@
                 <nz-form-control [nzSpan]="14">
                   <input nz-input
                     placeholder="Số thẻ BHYT"
+                    formControlName="healthNo"
                   />
                 </nz-form-control>
               </nz-form-item>
@@ -233,6 +243,7 @@
                 <nz-form-control [nzSpan]="14">
                   <input nz-input
                     placeholder="Số HĐLĐ/QĐ"
+                    formControlName="contractNo"
                   />
                 </nz-form-control>
               </nz-form-item>
@@ -241,7 +252,7 @@
               <nz-form-item>
                 <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Ngày ký</nz-form-label>
                 <nz-form-control [nzSpan]="14">
-                  <nz-date-picker placeholder="Ngày ký" formControlName="birthday"></nz-date-picker>
+                  <nz-date-picker placeholder="Ngày ký" formControlName="dateSign"></nz-date-picker>
                 </nz-form-control>
               </nz-form-item>
             </div><!-- col -->
@@ -251,6 +262,7 @@
                 <nz-form-control [nzSpan]="14">
                   <input nz-input
                     placeholder="Cấp bậc, chức vụ"
+                    formControlName="levelWork"
                   />
                 </nz-form-control>
               </nz-form-item>
@@ -265,6 +277,7 @@
                 <nz-form-control [nzSpan]="14">
                   <input nz-input
                     placeholder="Tiền lương"
+                    formControlName="salary"
                   />
                 </nz-form-control>
               </nz-form-item>
@@ -275,6 +288,7 @@
                 <nz-form-control [nzSpan]="5">
                   <input nz-input
                     placeholder="Hệ số"
+                    formControlName="ratio"
                   />
                 </nz-form-control>
               </nz-form-item>
@@ -287,7 +301,7 @@
               <nz-form-item>
                 <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Vùng lương</nz-form-label>
                 <nz-form-control [nzSpan]="14">
-                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="salaryAreaCode">
                     <nz-option *ngFor="let salaryArea of salaryAreas" [nzLabel]="salaryArea.name" [nzValue]="salaryArea.id"></nz-option>
                   </nz-select>
                 </nz-form-control>
@@ -298,7 +312,8 @@
                 <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Tỷ lệ đóng (%)</nz-form-label>
                 <nz-form-control [nzSpan]="14">
                   <input nz-input
-                    placeholder="Hệ số"
+                    placeholder="Tỷ lệ"
+                    formControlName="rate"
                   />
                 </nz-form-control>
               </nz-form-item>
@@ -307,8 +322,8 @@
               <nz-form-item>
                 <nz-form-label class="text-left" [nzSpan]="10">Phương thức đóng</nz-form-label>
                 <nz-form-control [nzSpan]="14">
-                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn">
-                    <nz-option [nzLabel]="'Hàng tháng'" [nzValue]="'1'"></nz-option>
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="paymentMethodCode">
+                    <nz-option *ngFor="let paymentMethod of paymentMethods" [nzLabel]="paymentMethod.name" [nzValue]="paymentMethod.id"></nz-option>
                   </nz-select>
                 </nz-form-control>
               </nz-form-item>
@@ -322,7 +337,7 @@
               <nz-form-item>
                 <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="12">Tỉnh/TP nơi KCBBĐ</nz-form-label>
                 <nz-form-control [nzSpan]="12">
-                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="cityFirstRegistCode">
                     <nz-option *ngFor="let city of cities" [nzLabel]="city.name" [nzValue]="city.id"></nz-option>
                   </nz-select>
                 </nz-form-control>
@@ -332,8 +347,8 @@
               <nz-form-item>
                 <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Nơi KCBBĐ</nz-form-label>
                 <nz-form-control [nzSpan]="14">
-                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn">
-                    <nz-option *ngFor="let national of nationalities" [nzLabel]="national.name" [nzValue]="national.id"></nz-option>
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="hospitalFirstRegistCode">
+                    <nz-option *ngFor="let hospital of hospitals" [nzLabel]="hospital.name" [nzValue]="hospital.id"></nz-option>
                   </nz-select>
                 </nz-form-control>
               </nz-form-item>
@@ -349,6 +364,7 @@
                 <nz-form-control [nzSpan]="14">
                   <input nz-input
                     placeholder="Chức vụ"
+                    formControlName="allowanceLevel"
                   />
                 </nz-form-control>
               </nz-form-item>
@@ -359,6 +375,7 @@
                 <nz-form-control [nzSpan]="14">
                   <input nz-input
                     placeholder="TN VK (%)"
+                    formControlName="allowanceSeniority"
                   />
                 </nz-form-control>
               </nz-form-item>
@@ -369,6 +386,7 @@
                 <nz-form-control [nzSpan]="14">
                   <input nz-input
                     placeholder="TN nghề (%)"
+                    formControlName="allowanceSeniorityJob"
                   />
                 </nz-form-control>
               </nz-form-item>
@@ -383,6 +401,7 @@
                 <nz-form-control [nzSpan]="14">
                   <input nz-input
                     placeholder="PC lương"
+                    formControlName="allowanceSalary"
                   />
                 </nz-form-control>
               </nz-form-item>
@@ -393,6 +412,7 @@
                 <nz-form-control [nzSpan]="14">
                   <input nz-input
                     placeholder="Các khoản bổ sung"
+                    formControlName="allowanceAdditional"
                   />
                 </nz-form-control>
               </nz-form-item>
@@ -403,6 +423,7 @@
                 <nz-form-control [nzSpan]="14">
                   <input nz-input
                     placeholder="PC CLBL"
+                    formControlName="allowanceOther"
                   />
                 </nz-form-control>
               </nz-form-item>
@@ -418,6 +439,7 @@
                 <nz-form-control [nzSpan]="14">
                   <input nz-input
                     placeholder="Mã số thuế TNCN"
+                    formControlName="mstncn"
                   />
                 </nz-form-control>
               </nz-form-item>
@@ -428,6 +450,7 @@
                 <nz-form-control [nzSpan]="14">
                   <input nz-input
                     placeholder="Số tài khoản"
+                    formControlName="bankAccount"
                   />
                 </nz-form-control>
               </nz-form-item>
@@ -436,8 +459,8 @@
               <nz-form-item>
                 <nz-form-label class="text-left" [nzSpan]="10">Ngân hàng</nz-form-label>
                 <nz-form-control [nzSpan]="14">
-                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn">
-                    <nz-option [nzLabel]="'Vietcombank'" [nzValue]="'1'"></nz-option>
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="bankId">
+                    <nz-option *ngFor="let bank of banks" [nzLabel]="bank.name" [nzValue]="bank.id"></nz-option>
                   </nz-select>
                 </nz-form-control>
               </nz-form-item>
@@ -452,6 +475,7 @@
                 <nz-form-control [nzSpan]="14">
                   <input nz-input
                     placeholder="Chủ tài khoản"
+                    formControlName="accountHolder"
                   />
                 </nz-form-control>
               </nz-form-item>
@@ -460,8 +484,8 @@
               <nz-form-item>
                 <nz-form-label class="text-left" [nzSpan]="10">Tình trạng</nz-form-label>
                 <nz-form-control [nzSpan]="14">
-                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn">
-                    <nz-option [nzLabel]="'Đang kê khai'" [nzValue]="'1'"></nz-option>
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="paymentStatusCode">
+                    <nz-option *ngFor="let payment of paymentStatus" [nzLabel]="payment.name" [nzValue]="payment.id"></nz-option>
                   </nz-select>
                 </nz-form-control>
               </nz-form-item>
@@ -472,6 +496,7 @@
                 <nz-form-control [nzSpan]="14">
                   <input nz-input
                     placeholder="Thứ tự"
+                    formControlName="orders"
                   />
                 </nz-form-control>
               </nz-form-item>

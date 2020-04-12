@@ -35,85 +35,85 @@ export const TABLE_HEADER_COLUMNS = [{
   type: 'calendar',
   width: 70,
   title: '(2)',
-  key: 'orders'
+  key: 'fromDate'
 }, {
   type: 'calendar',
   width: 70,
   title: '(3)',
-  key: 'orders'
+  key: 'toDate'
 }, {
   type: 'text',
   width: 75,
   title: '(4)',
-  key: 'orders'
+  key: 'companyCode'
 }, {
   type: 'text',
   width: 210,
   title: '(5)',
-  key: 'orders'
+  key: 'companyName'
 }, {
   type: 'text',
   width: 120,
   title: '(6)',
-  key: 'orders'
+  key: 'levelWork'
 }, {
-  type: 'text',
+  type: 'numberic',
   width: 90,
   title: '(7)',
-  key: 'orders'
+  key: 'salary'
 }, {
-  type: 'text',
+  type: 'numberic',
   width: 55,
   title: '(8)',
-  key: 'orders'
+  key: 'allowanceLevel'
 }, {
-  type: 'text',
+  type: 'numberic',
   width: 65,
   title: '(9)',
-  key: 'orders'
+  key: 'allowanceSeniority'
 }, {
-  type: 'text',
+  type: 'numberic',
   width: 65,
   title: '(10)',
-  key: 'orders'
+  key: 'allowanceSeniorityJob'
 }, {
-  type: 'text',
+  type: 'numberic',
   width: 65,
   title: '(11)',
-  key: 'orders'
+  key: 'allowanceOther'
 }, {
-  type: 'text',
+  type: 'numberic',
   width: 90,
   title: '(12)',
-  key: 'orders'
+  key: 'allowanceSalary'
 }, {
-  type: 'text',
+  type: 'numberic',
   width: 90,
   title: '(13)',
-  key: 'orders'
+  key: 'allowanceAdditional'
 }, {
-  type: 'text',
+  type: 'numberic',
   width: 40,
   title: '(14)',
-  key: 'orders'
+  key: 'planCode'
 }, {
-  type: 'text',
+  type: 'numberic',
   width: 70,
   title: '(15)',
-  key: 'orders'
+  key: 'ratioBHXH'
 }, {
-  type: 'text',
+  type: 'numberic',
   width: 70,
   title: '(16)',
-  key: 'orders'
+  key: 'ratioBHTNLD'
 }, {
-  type: 'text',
+  type: 'numberic',
   width: 70,
   title: '(17)',
-  key: 'orders'
+  key: 'ratioBHTN'
 }, {
-  type: 'text',
+  type: 'numberic',
   width: 70,
   title: '(18)',
-  key: 'orders'
+  key: 'ratioBHYT'
 }];

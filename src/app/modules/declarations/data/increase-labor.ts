@@ -65,7 +65,7 @@ export const TABLE_HEADER_COLUMNS = [{
   type: 'text',
   width: 170,
   title: '(2)',
-  key: 'fullName'
+  key: 'fullName' 
 }, {
   type: 'checkbox',
   width: 45,
@@ -94,6 +94,7 @@ export const TABLE_HEADER_COLUMNS = [{
   key: 'typeBirthday'
 }, {
   type: 'calendar',
+  options: { format:'YYYY' },
   width: 80,
   title: '(7)',
   key: 'birthday'
@@ -211,6 +212,7 @@ export const TABLE_HEADER_COLUMNS = [{
   key: 'contractNo'
 }, {
   type: 'calendar',
+  options: { format:'DD/MM/YYYY' },
   width: 100,
   title: '(21.2)',
   key: 'dateSign'
@@ -276,11 +278,13 @@ export const TABLE_HEADER_COLUMNS = [{
   key: 'allowanceOther'
 }, {
   type: 'calendar',
+  options: { format:'MM/YYYY' },
   width: 60,
   title: '(23)',
   key: 'fromDate'
 }, {
   type: 'calendar',
+  options: { format:'MM/YYYY' },
   width: 60,
   title: '(24)',
   key: 'toDate'

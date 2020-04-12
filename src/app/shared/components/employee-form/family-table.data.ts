@@ -28,12 +28,12 @@ export const TABLE_HEADER_COLUMNS = [{
   type: 'text',
   width: 180,
   title: '(2)',
-  key: 'orders'
+  key: 'fullName'
 }, {
   type: 'text',
   width: 110,
   title: '(3)',
-  key: 'orders'
+  key: 'isurranceCode'
 }, {
   type: 'dropdown',
   width: 75,
@@ -55,34 +55,34 @@ export const TABLE_HEADER_COLUMNS = [{
   type: 'dropdown',
   width: 130,
   title: '(7)',
-  key: 'orders',
-  source: [ 'Chọn' ]
+  key: 'cityCode',
+  source: []
 }, {
   type: 'dropdown',
   width: 170,
   title: '(8)',
-  key: 'orders',
+  key: 'districtCode',
   source: [ ]
 }, {
   type: 'dropdown',
   width: 170,
   title: '(9)',
-  key: 'orders',
+  key: 'wardsCode',
   source: [ ]
 }, {
   type: 'dropdown',
   width: 65,
   title: '(10)',
-  key: 'orders',
+  key: 'relationshipCode',
   source: [ ]
 }, {
   type: 'text',
   width: 120,
   title: '(11)',
-  key: 'orders'
+  key: 'identityCar'
 }, {
   type: 'text',
   width: 120,
   title: '(12)',
-  key: 'orders'
+  key: 'note'
 }];

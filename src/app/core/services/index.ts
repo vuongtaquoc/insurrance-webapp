@@ -15,3 +15,6 @@ export * from './nationality.service';
 export * from './hospital.service';
 export * from './people.service';
 export * from './plan.service';
+export * from './payment-status.service';
+export * from './relationship.service';
+export * from './bank.service';
