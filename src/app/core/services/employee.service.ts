@@ -31,4 +31,8 @@ export class EmployeeService {
       })
     );
   }
+
+  public create(data) {
+
+  }
 }

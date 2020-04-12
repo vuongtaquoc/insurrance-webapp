@@ -92,9 +92,10 @@ export const TABLE_HEADER_COLUMNS = [{
   title: '(13)',
   key: 'allowanceAdditional'
 }, {
-  type: 'numberic',
+  type: 'dropdown',
   width: 40,
   title: '(14)',
+  source: [],
   key: 'planCode'
 }, {
   type: 'numberic',

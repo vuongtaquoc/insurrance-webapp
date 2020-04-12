@@ -6,7 +6,7 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzTableModule } from 'ng-zorro-antd/table';
 
-import { AuthenticationService } from '@app/core/services';
+import { AuthenticationService, EmployeeService } from '@app/core/services';
 import { SharedModule } from '@app/shared/shared.module';
 import { EmployeesRoutingModule } from './employees-routing.module';
 import {
@@ -27,7 +27,8 @@ import {
     EmployeeListComponent
   ],
   providers: [
-    AuthenticationService
+    AuthenticationService,
+    EmployeeService
   ],
   entryComponents: []
 })

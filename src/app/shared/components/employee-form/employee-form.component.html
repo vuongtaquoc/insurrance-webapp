@@ -21,9 +21,21 @@
               <nz-form-item>
                 <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Ngày sinh</nz-form-label>
                 <nz-form-control [nzSpan]="14">
-                  <nz-date-picker placeholder="Ngày sinh" formControlName="birthday"></nz-date-picker>
+                  <nz-month-picker
+                    formControlName="birthday"
+                    nzPlaceHolder="Ngày sinh"
+                    *ngIf="birthdayType == '1'"
+                  ></nz-month-picker>
+
+                  <nz-year-picker formControlName="birthday" nzPlaceHolder="Ngày sinh" *ngIf="birthdayType == '2'"></nz-year-picker>
                 </nz-form-control>
               </nz-form-item>
+            </div><!-- col -->
+            <div nz-col [nzSpan]="8">
+              <nz-radio-group formControlName="typeBirthday">
+                <label nz-radio nzValue="1">Chỉ có tháng/năm sinh</label>
+                <label nz-radio nzValue="2">Chỉ có năm sinh</label>
+              </nz-radio-group>
             </div><!-- col -->
           </div><!-- END ROW -->
 
@@ -93,7 +105,7 @@
               <nz-form-item>
                 <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Tỉnh/TP</nz-form-label>
                 <nz-form-control [nzSpan]="14">
-                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="registerCityCode">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="registerCityCode" (ngModelChange)="changeRegisterCity($event)">
                     <nz-option *ngFor="let city of cities" [nzLabel]="city.name" [nzValue]="city.id"></nz-option>
                   </nz-select>
                 </nz-form-control>
@@ -103,8 +115,8 @@
               <nz-form-item>
                 <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Quận/huyện</nz-form-label>
                 <nz-form-control [nzSpan]="14">
-                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="registerDistrictCode">
-                    <nz-option *ngFor="let national of nationalities" [nzLabel]="national.name" [nzValue]="national.id"></nz-option>
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="registerDistrictCode" (ngModelChange)="changeRegisterDistrict($event)">
+                    <nz-option *ngFor="let district of registerDistricts" [nzLabel]="district.name" [nzValue]="district.id"></nz-option>
                   </nz-select>
                 </nz-form-control>
               </nz-form-item>
@@ -114,7 +126,7 @@
                 <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Phường/xã</nz-form-label>
                 <nz-form-control [nzSpan]="14">
                   <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="registerWardsCode">
-                    <nz-option *ngFor="let people of peoples" [nzLabel]="people.name" [nzValue]="people.id"></nz-option>
+                    <nz-option *ngFor="let ward of registerWards" [nzLabel]="ward.name" [nzValue]="ward.id"></nz-option>
                   </nz-select>
                 </nz-form-control>
               </nz-form-item>
@@ -128,7 +140,7 @@
               <nz-form-item>
                 <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Tỉnh/TP</nz-form-label>
                 <nz-form-control [nzSpan]="14">
-                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="recipientsCityCode">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="recipientsCityCode" (ngModelChange)="changeRecipientsCity($event)">
                     <nz-option *ngFor="let city of cities" [nzLabel]="city.name" [nzValue]="city.id"></nz-option>
                   </nz-select>
                 </nz-form-control>
@@ -139,9 +151,10 @@
                 <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Quận/huyện</nz-form-label>
                 <nz-form-control [nzSpan]="14">
                   <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn"
-                  formControlName="recipientsDistrictCode"
+                    formControlName="recipientsDistrictCode"
+                    (ngModelChange)="changeRecipientsDistrict($event)"
                   >
-                    <nz-option *ngFor="let district of districts" [nzLabel]="district.name" [nzValue]="district.id"></nz-option>
+                    <nz-option *ngFor="let district of recipientsDistricts" [nzLabel]="district.name" [nzValue]="district.id"></nz-option>
                   </nz-select>
                 </nz-form-control>
               </nz-form-item>
@@ -151,9 +164,9 @@
                 <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Phường/xã</nz-form-label>
                 <nz-form-control [nzSpan]="14">
                   <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn"
-                  formControlName="recipientsWardsCode"
+                    formControlName="recipientsWardsCode"
                   >
-                    <nz-option *ngFor="let ward of wards" [nzLabel]="ward.name" [nzValue]="ward.id"></nz-option>
+                    <nz-option *ngFor="let ward of recipientsWards" [nzLabel]="ward.name" [nzValue]="ward.id"></nz-option>
                   </nz-select>
                 </nz-form-control>
               </nz-form-item>
@@ -337,7 +350,7 @@
               <nz-form-item>
                 <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="12">Tỉnh/TP nơi KCBBĐ</nz-form-label>
                 <nz-form-control [nzSpan]="12">
-                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="cityFirstRegistCode">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="cityFirstRegistCode" (ngModelChange)="changeFirstRegisterCity($event)">
                     <nz-option *ngFor="let city of cities" [nzLabel]="city.name" [nzValue]="city.id"></nz-option>
                   </nz-select>
                 </nz-form-control>
@@ -515,14 +528,17 @@
               Ngày sinh: {{ birthday }}
             </div>
             <div class="employee-form__info-col">
-              Mã số BHXH: {{ birthday }}
+              Mã số BHXH: {{ insurranceCode }}
             </div>
           </div><!-- END ROW -->
 
           <h3 class="employee-form__group-title">Thông tin quá trình tham gia BHXH</h3>
           <div class="employee-form__process-table">
             <app-employee-process-table
+              [data]="evolutionIsurrances"
               [events]="processSubject.asObservable()"
+              (onChange)="handleChangeProcessTable($event)"
+              (onDelete)="handleDeleteProcessData($event)"
             ></app-employee-process-table>
           </div>
         </nz-tab><!-- Tab 2 -->
@@ -623,9 +639,13 @@
             </div><!-- col -->
           </div><!-- END ROW -->
 
+          <h3 class="employee-form__group-title">Kê khai đầy đủ thành viên hộ gia đình trong sổ hộ khẩu hoặc sổ tạm trú</h3>
           <div class="employee-form__family-table">
             <app-employee-family-table
+              [data]="families"
               [events]="familySubject.asObservable()"
+              (onChange)="handleChangeFamilyTable($event)"
+              (onDelete)="handleDeleteFamilyData($event)"
             ></app-employee-family-table>
           </div>
         </nz-tab><!-- Tab 3 -->

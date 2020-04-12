@@ -1,7 +1,9 @@
-import { Component, Input, Output, OnInit, OnDestroy, OnChanges, ViewChild, ElementRef, EventEmitter, ViewEncapsulation } from '@angular/core';
+import { Component, Input, Output, OnInit, OnDestroy, OnChanges, ViewChild, EventEmitter, ViewEncapsulation } from '@angular/core';
 import { Subscription, Observable } from 'rxjs';
 import * as jexcel from 'jstable-editor/dist/jexcel.js';
 import 'jsuites/dist/jsuites.js';
+
+import { PlanService } from '@app/core/services';
 
 import { TABLE_HEADER_COLUMNS, TABLE_NESTED_HEADERS } from './process-table.data';
 
@@ -25,39 +27,36 @@ export class EmployeeProcessTableComponent implements OnInit, OnDestroy, OnChang
   isInitialized = false;
   private eventsSubscription: Subscription;
 
-  constructor(private element: ElementRef) {
+  constructor(
+    private planService: PlanService
+  ) {
   }
 
   ngOnInit() {
     this.eventsSubscription = this.events.subscribe((type) => this.handleEvent(type));
+
+    this.planService.getPlans().subscribe(plans => {
+      this.updateSourceToColumn('planCode', plans);
+    });
   }
 
   ngOnDestroy() {
     jexcel.destroy(this.spreadsheetEl.nativeElement, true);
-    // window.removeEventListener('resize', this.updateTableSize);
     this.eventsSubscription.unsubscribe();
   }
 
   ngOnChanges(changes) {
     if (changes.data && changes.data.currentValue.length) {
+      this.updateTable();
     }
   }
 
   handleEvent(type) {
     if (type === 'ready' && !this.isInitialized) {
       this.isInitialized = true;
-      // const containerSize = this.getContainerSize();
-      const data = this.data;
-
-      // init default data
-      if (!data.length) {
-        for (let i = 1; i <= 15; i++) {
-          data.push([ i ]);
-        }
-      }
 
       this.spreadsheet = jexcel(this.spreadsheetEl.nativeElement, {
-        data,
+        data: this.data,
         nestedHeaders: this.nestedHeaders,
         columns: this.columns,
         allowInsertColumn: false,
@@ -71,29 +70,56 @@ export class EmployeeProcessTableComponent implements OnInit, OnDestroy, OnChang
         onchange: (instance, cell, c, r, value) => {
           this.onChange.emit({
             instance, cell, c, r, value,
-            records: this.spreadsheet.getJson()
+            records: this.spreadsheet.getJson(),
+            columns: this.columns
           });
         },
         ondeleterow: (el, rowNumber, numOfRows) => {
           this.onDelete.emit({
             rowNumber,
             numOfRows,
-            records: this.spreadsheet.getJson()
+            records: this.spreadsheet.getJson(),
+            columns: this.columns
           });
         }
       });
 
       this.spreadsheet.hideIndex();
+
+      this.updateTable();
     }
   }
 
-  private getContainerSize() {
-    const element = this.element.nativeElement;
-    const parent = element.parentNode;
+  private updateTable() {
+    const data = [];
 
-    return {
-      width: parent.offsetWidth,
-      height: parent.offsetHeight
-    };
+    this.data.forEach((d, index) => {
+      const familyRow = [];
+
+      this.columns.forEach(column => {
+        familyRow.push(d[column.key]);
+      });
+
+      data.push(familyRow);
+    });
+
+    // init default data
+    if (!data.length) {
+      for (let i = 1; i <= 15; i++) {
+        data.push([ i ]);
+      }
+    }
+
+    this.data = data;
+
+    this.spreadsheet.setData(this.data);
+  }
+
+  private updateSourceToColumn(key, sources) {
+    const column = this.columns.find(c => c.key === key);
+
+    if (column) {
+      column.source = sources;
+    }
   }
 }

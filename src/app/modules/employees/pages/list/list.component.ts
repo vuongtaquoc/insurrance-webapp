@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NzModalService } from 'ng-zorro-antd/modal';
 
+import { EmployeeService } from '@app/core/services';
 import { EmployeeFormComponent } from '@app/shared/components';
 
 @Component({
@@ -11,7 +12,10 @@ import { EmployeeFormComponent } from '@app/shared/components';
 export class EmployeeListComponent implements OnInit {
   employees: any[] = [];
 
-  constructor(private modalService: NzModalService) {}
+  constructor(
+    private modalService: NzModalService,
+    private employeeService: EmployeeService
+  ) {}
 
   ngOnInit() {
     for (let i = 1; i < 21; i++) {
@@ -23,10 +27,6 @@ export class EmployeeListComponent implements OnInit {
     }
   }
 
-  onChange(value) {
-    console.log(value)
-  }
-
   add() {
     const modal = this.modalService.create({
       nzWidth: 980,
@@ -36,6 +36,8 @@ export class EmployeeListComponent implements OnInit {
       nzOnOk: (data) => console.log('Click ok', data)
     });
 
-    modal.afterClose.subscribe(result => console.log('[afterClose] The result is:', result));
+    modal.afterClose.subscribe(result => {
+      this.employeeService.create(result);
+    });
   }
 }

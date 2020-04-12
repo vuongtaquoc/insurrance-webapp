@@ -12,16 +12,16 @@ export class DistrictService {
 
   constructor(private http: ApplicationHttpClient) {
   }
-  
-  public getDistrict(cityCode: string): Observable<District> {
+
+  public getDistrict(cityCode: string) {
     return this.http.get(`/district/city/${ cityCode }`, {
     });
   }
-  
+
   public getDetailById(id: string) {
     return this.http.get('/district', {
       params: { id }
     });
   }
-  
+
 }

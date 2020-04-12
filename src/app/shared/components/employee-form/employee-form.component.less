@@ -1,15 +1,6 @@
 .employee-form {
   height: 100%;
 
-  form, .ant-tabs {
-    height: 100%;
-    overflow: visible;
-  }
-
-  .ant-tabs .ant-tabs-top-content {
-    height: calc(100% - 60px);
-  }
-
   &__content {
     height: 100%;
   }
@@ -40,7 +31,28 @@
   }
 
   &__family-table {
-    height: calc(100% - 223px);
+    height: calc(100% - 218px);
+  }
+
+  form, .ant-tabs {
+    height: 100%;
+    overflow: visible;
+  }
+
+  .ant-form-item {
+    margin-bottom: 12px;
+  }
+
+  .ant-tabs .ant-tabs-top-content {
+    height: calc(100% - 60px);
+  }
+
+  .ant-radio-group {
+    line-height: 40px;
+  }
+
+  .ant-radio-wrapper span.ant-radio + * {
+    font-size: 12px;
   }
 }
 
@@ -60,5 +72,6 @@
     height: calc(100% - 108px);
     overflow-y: auto;
     overflow-x: hidden;
+    padding: 10px 20px;
   }
 }

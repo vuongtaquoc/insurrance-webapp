@@ -17,7 +17,7 @@ export class HospitalService {
       map(hospitals => {
         return hospitals.map(hospital => ({
           ...hospital,
-          name: `${ hospital.code } - ${ hospital.name }`
+          name: `${ hospital.id } - ${ hospital.name }`
         }));
       })
     );

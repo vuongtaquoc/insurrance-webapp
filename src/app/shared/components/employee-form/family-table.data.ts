@@ -38,7 +38,7 @@ export const TABLE_HEADER_COLUMNS = [{
   type: 'dropdown',
   width: 75,
   title: '(4)',
-  source: [ 'Chọn', 'tháng/năm', 'năm' ],
+  source: [ { id: '1', name: 'tháng/năm' }, { id: '2', name: 'năm' } ],
   key: 'typeBirthday'
 }, {
   type: 'calendar',
