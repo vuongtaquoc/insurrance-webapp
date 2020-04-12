@@ -13,15 +13,15 @@ export class CityService {
   constructor(private http: ApplicationHttpClient) {
   }
 
-  public getCities(): Observable<City> {
+  public getCities() {
     return this.http.get('/cities', {
     });
   }
-  
+
   public getDetailById(id: string) {
     return this.http.get('/cities', {
       params: { id }
     });
   }
-  
+
 }

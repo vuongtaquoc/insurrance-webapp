@@ -1,0 +1,615 @@
+<div class="employee-form">
+  <div class="employee-form__content">
+    <form nz-form [formGroup]="employeeForm">
+      <nz-tabset (nzSelectChange)="changeTab($event)">
+        <nz-tab nzTitle="Thông tin NLĐ">
+          <h3 class="employee-form__group-title">Thông tin NLĐ</h3>
+          <!-- ROW START -->
+          <div nz-row [nzGutter]="10">
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Họ và tên</nz-form-label>
+                <nz-form-control [nzSpan]="14">
+                  <input nz-input
+                    placeholder="Họ và tên"
+                    formControlName="fullName"
+                  />
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Ngày sinh</nz-form-label>
+                <nz-form-control [nzSpan]="14">
+                  <nz-date-picker placeholder="Ngày sinh" formControlName="birthday"></nz-date-picker>
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+          </div><!-- END ROW -->
+
+          <!-- ROW START -->
+          <div nz-row [nzGutter]="10">
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Giới tính</nz-form-label>
+                <nz-form-control [nzSpan]="14">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="gender">
+                    <nz-option nzLabel="Nam" nzValue="0"></nz-option>
+                    <nz-option nzLabel="Nữ" nzValue="1"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Quốc tịch</nz-form-label>
+                <nz-form-control [nzSpan]="14">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="nationalityId">
+                    <nz-option *ngFor="let national of nationalities" [nzLabel]="national.name" [nzValue]="national.id"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Dân tộc</nz-form-label>
+                <nz-form-control [nzSpan]="14">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="peopleId">
+                    <nz-option *ngFor="let people of peoples" [nzLabel]="people.name" [nzValue]="people.id"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+          </div><!-- END ROW -->
+
+          <!-- ROW START -->
+          <div nz-row [nzGutter]="10">
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Mã nhân viên</nz-form-label>
+                <nz-form-control [nzSpan]="14">
+                  <input nz-input
+                    placeholder="Mã nhân viên"
+                    formControlName="employeeCode"
+                  />
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Phòng ban</nz-form-label>
+                <nz-form-control [nzSpan]="14">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn phòng ban" formControlName="departmentId">
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+          </div><!-- END ROW -->
+
+          <h3 class="employee-form__group-title employee-form__group-title--disabled">Nơi đăng ký giấy khai sinh hoặc nguyên quán hoặc HKTT hoặc tạm trú</h3>
+          <!-- ROW START -->
+          <div nz-row [nzGutter]="10">
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Tỉnh/TP</nz-form-label>
+                <nz-form-control [nzSpan]="14">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn">
+                    <nz-option *ngFor="let city of cities" [nzLabel]="city.name" [nzValue]="city.id"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Quận/huyện</nz-form-label>
+                <nz-form-control [nzSpan]="14">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn">
+                    <nz-option *ngFor="let national of nationalities" [nzLabel]="national.name" [nzValue]="national.id"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Phường/xã</nz-form-label>
+                <nz-form-control [nzSpan]="14">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn">
+                    <nz-option *ngFor="let people of peoples" [nzLabel]="people.name" [nzValue]="people.id"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+          </div><!-- END ROW -->
+
+          <h3 class="employee-form__group-title employee-form__group-title--disabled">Địa chỉ nhận hồ sơ (nơi sinh sống)</h3>
+          <!-- ROW START -->
+          <div nz-row [nzGutter]="10">
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Tỉnh/TP</nz-form-label>
+                <nz-form-control [nzSpan]="14">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn">
+                    <nz-option *ngFor="let city of cities" [nzLabel]="city.name" [nzValue]="city.id"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Quận/huyện</nz-form-label>
+                <nz-form-control [nzSpan]="14">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn">
+                    <nz-option *ngFor="let national of nationalities" [nzLabel]="national.name" [nzValue]="national.id"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Phường/xã</nz-form-label>
+                <nz-form-control [nzSpan]="14">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn">
+                    <nz-option *ngFor="let people of peoples" [nzLabel]="people.name" [nzValue]="people.id"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+          </div><!-- END ROW -->
+
+          <h3 class="employee-form__group-title">Thông tin tham gia BHXH, BHYT</h3>
+          <!-- ROW START -->
+          <div nz-row [nzGutter]="10">
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzSpan]="10">Mã số BHXH</nz-form-label>
+                <nz-form-control [nzSpan]="14">
+                  <input nz-input
+                    placeholder="Mã số BHXH"
+                  />
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzSpan]="10">Điện thoại liên hệ</nz-form-label>
+                <nz-form-control [nzSpan]="14">
+                  <input nz-input
+                    placeholder="Điện thoại liên hệ"
+                  />
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="15">Số CMT/HC/Thẻ căn cước</nz-form-label>
+                <nz-form-control [nzSpan]="9">
+                  <input nz-input
+                    placeholder="Số CMT/HC/Thẻ căn cước"
+                  />
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+          </div><!-- END ROW -->
+
+          <!-- ROW START -->
+          <div nz-row [nzGutter]="10">
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzSpan]="10">Mã số hộ gia đình</nz-form-label>
+                <nz-form-control [nzSpan]="14">
+                  <input nz-input
+                    placeholder="Mã số hộ gia đình"
+                  />
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzSpan]="10">Số sổ BHXH</nz-form-label>
+                <nz-form-control [nzSpan]="14">
+                  <input nz-input
+                    placeholder="Số sổ BHXH"
+                  />
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzSpan]="10">Số thẻ BHYT</nz-form-label>
+                <nz-form-control [nzSpan]="14">
+                  <input nz-input
+                    placeholder="Số thẻ BHYT"
+                  />
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+          </div><!-- END ROW -->
+
+          <!-- ROW START -->
+          <div nz-row [nzGutter]="10">
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Số HĐLĐ/QĐ</nz-form-label>
+                <nz-form-control [nzSpan]="14">
+                  <input nz-input
+                    placeholder="Số HĐLĐ/QĐ"
+                  />
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Ngày ký</nz-form-label>
+                <nz-form-control [nzSpan]="14">
+                  <nz-date-picker placeholder="Ngày ký" formControlName="birthday"></nz-date-picker>
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Cấp bậc, chức vụ</nz-form-label>
+                <nz-form-control [nzSpan]="14">
+                  <input nz-input
+                    placeholder="Cấp bậc, chức vụ"
+                  />
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+          </div><!-- END ROW -->
+
+          <!-- ROW START -->
+          <div nz-row [nzGutter]="10">
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Tiền lương</nz-form-label>
+                <nz-form-control [nzSpan]="14">
+                  <input nz-input
+                    placeholder="Tiền lương"
+                  />
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Hệ số</nz-form-label>
+                <nz-form-control [nzSpan]="5">
+                  <input nz-input
+                    placeholder="Hệ số"
+                  />
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+          </div><!-- END ROW -->
+
+          <!-- ROW START -->
+          <div nz-row [nzGutter]="10">
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Vùng lương</nz-form-label>
+                <nz-form-control [nzSpan]="14">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn">
+                    <nz-option *ngFor="let salaryArea of salaryAreas" [nzLabel]="salaryArea.name" [nzValue]="salaryArea.id"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Tỷ lệ đóng (%)</nz-form-label>
+                <nz-form-control [nzSpan]="14">
+                  <input nz-input
+                    placeholder="Hệ số"
+                  />
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzSpan]="10">Phương thức đóng</nz-form-label>
+                <nz-form-control [nzSpan]="14">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn">
+                    <nz-option [nzLabel]="'Hàng tháng'" [nzValue]="'1'"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+          </div><!-- END ROW -->
+
+          <h3 class="employee-form__group-title employee-form__group-title--disabled">Đăng ký nơi khám chữa bệnh ban đầu</h3>
+          <!-- ROW START -->
+          <div nz-row [nzGutter]="10">
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="12">Tỉnh/TP nơi KCBBĐ</nz-form-label>
+                <nz-form-control [nzSpan]="12">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn">
+                    <nz-option *ngFor="let city of cities" [nzLabel]="city.name" [nzValue]="city.id"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Nơi KCBBĐ</nz-form-label>
+                <nz-form-control [nzSpan]="14">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn">
+                    <nz-option *ngFor="let national of nationalities" [nzLabel]="national.name" [nzValue]="national.id"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+          </div><!-- END ROW -->
+
+          <h3 class="employee-form__group-title employee-form__group-title--disabled">Các phụ cấp hiện tại</h3>
+          <!-- ROW START -->
+          <div nz-row [nzGutter]="10">
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzSpan]="10">Chức vụ</nz-form-label>
+                <nz-form-control [nzSpan]="14">
+                  <input nz-input
+                    placeholder="Chức vụ"
+                  />
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzSpan]="10">TN VK (%)</nz-form-label>
+                <nz-form-control [nzSpan]="14">
+                  <input nz-input
+                    placeholder="TN VK (%)"
+                  />
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzSpan]="10">TN nghề (%)</nz-form-label>
+                <nz-form-control [nzSpan]="14">
+                  <input nz-input
+                    placeholder="TN nghề (%)"
+                  />
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+          </div><!-- END ROW -->
+
+          <!-- ROW START -->
+          <div nz-row [nzGutter]="10">
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzSpan]="10">PC lương</nz-form-label>
+                <nz-form-control [nzSpan]="14">
+                  <input nz-input
+                    placeholder="PC lương"
+                  />
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzSpan]="10">Các khoản bổ sung</nz-form-label>
+                <nz-form-control [nzSpan]="14">
+                  <input nz-input
+                    placeholder="Các khoản bổ sung"
+                  />
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzSpan]="10">PC CLBL</nz-form-label>
+                <nz-form-control [nzSpan]="14">
+                  <input nz-input
+                    placeholder="PC CLBL"
+                  />
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+          </div><!-- END ROW -->
+
+          <h3 class="employee-form__group-title">Thông tin khác</h3>
+          <!-- ROW START -->
+          <div nz-row [nzGutter]="10">
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzSpan]="10">Mã số thuế TNCN</nz-form-label>
+                <nz-form-control [nzSpan]="14">
+                  <input nz-input
+                    placeholder="Mã số thuế TNCN"
+                  />
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzSpan]="10">Số tài khoản</nz-form-label>
+                <nz-form-control [nzSpan]="14">
+                  <input nz-input
+                    placeholder="Số tài khoản"
+                  />
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzSpan]="10">Ngân hàng</nz-form-label>
+                <nz-form-control [nzSpan]="14">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn">
+                    <nz-option [nzLabel]="'Vietcombank'" [nzValue]="'1'"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+          </div><!-- END ROW -->
+
+          <!-- ROW START -->
+          <div nz-row [nzGutter]="10">
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzSpan]="10">Chủ tài khoản</nz-form-label>
+                <nz-form-control [nzSpan]="14">
+                  <input nz-input
+                    placeholder="Chủ tài khoản"
+                  />
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzSpan]="10">Tình trạng</nz-form-label>
+                <nz-form-control [nzSpan]="14">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn">
+                    <nz-option [nzLabel]="'Đang kê khai'" [nzValue]="'1'"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzSpan]="10">Thứ tự</nz-form-label>
+                <nz-form-control [nzSpan]="14">
+                  <input nz-input
+                    placeholder="Thứ tự"
+                  />
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+          </div><!-- END ROW -->
+        </nz-tab><!-- Tab 1 -->
+
+        <nz-tab nzTitle="Quá trình tham gia BHXH">
+          <h3 class="employee-form__group-title">Thông tin NLĐ</h3>
+          <!-- ROW START -->
+          <div class="employee-form__info">
+            <div class="employee-form__info-col">
+              Họ và tên: {{ fullName }}
+            </div>
+            <div class="employee-form__info-col">
+              Ngày sinh: {{ birthday }}
+            </div>
+            <div class="employee-form__info-col">
+              Mã số BHXH: {{ birthday }}
+            </div>
+          </div><!-- END ROW -->
+
+          <h3 class="employee-form__group-title">Thông tin quá trình tham gia BHXH</h3>
+          <div class="employee-form__process-table">
+            <app-employee-process-table
+              [events]="processSubject.asObservable()"
+            ></app-employee-process-table>
+          </div>
+        </nz-tab><!-- Tab 2 -->
+
+        <nz-tab nzTitle="Thành viên hộ gia đình">
+          <h3 class="employee-form__group-title">Phụ lục: Thành viên hộ gia đình của NLĐ</h3>
+          <!-- ROW START -->
+          <div nz-row [nzGutter]="10">
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Họ và tên chủ hộ</nz-form-label>
+                <nz-form-control [nzSpan]="14">
+                  <input nz-input
+                    placeholder="Họ và tên chủ hộ"
+                  />
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzSpan]="10">Loại giấy tờ</nz-form-label>
+                <nz-form-control [nzSpan]="14">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn">
+                    <nz-option [nzLabel]="'Sổ hộ khẩu'" [nzValue]="1"></nz-option>
+                    <nz-option [nzLabel]="'Sổ tạm trú'" [nzValue]="2"></nz-option>
+                    <nz-option [nzLabel]="'Giấy tạm trú'" [nzValue]="3"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzSpan]="10">Số sổ hộ khẩu</nz-form-label>
+                <nz-form-control [nzSpan]="14">
+                  <input nz-input
+                    placeholder="Số sổ hộ khẩu"
+                  />
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+          </div><!-- END ROW -->
+
+          <!-- ROW START -->
+          <div nz-row [nzGutter]="10">
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Tỉnh/TP</nz-form-label>
+                <nz-form-control [nzSpan]="14">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn">
+                    <nz-option *ngFor="let city of cities" [nzLabel]="city.name" [nzValue]="city.id"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Quận/huyện</nz-form-label>
+                <nz-form-control [nzSpan]="14">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn">
+                    <nz-option *ngFor="let national of nationalities" [nzLabel]="national.name" [nzValue]="national.id"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Phường/xã</nz-form-label>
+                <nz-form-control [nzSpan]="14">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn">
+                    <nz-option *ngFor="let people of peoples" [nzLabel]="people.name" [nzValue]="people.id"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+          </div><!-- END ROW -->
+
+          <!-- ROW START -->
+          <div nz-row [nzGutter]="10">
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzSpan]="10">Thôn (bản/tổ dân phố)</nz-form-label>
+                <nz-form-control [nzSpan]="14">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn">
+                    <nz-option *ngFor="let city of cities" [nzLabel]="city.name" [nzValue]="city.id"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzSpan]="10">Số điện thoại</nz-form-label>
+                <nz-form-control [nzSpan]="14">
+                  <input nz-input
+                    placeholder="Số điện thoại"
+                  />
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+          </div><!-- END ROW -->
+
+          <div class="employee-form__family-table">
+            <app-employee-family-table
+              [events]="familySubject.asObservable()"
+            ></app-employee-family-table>
+          </div>
+        </nz-tab><!-- Tab 3 -->
+      </nz-tabset>
+    </form>
+  </div>
+
+  <div class="employee-form__footer" *nzModalFooter>
+    <button nz-button nzType="primary" (click)="save()">Lưu</button>
+    <button nz-button nzType="default" (click)="dismiss()">Đóng</button>
+  </div>
+</div>

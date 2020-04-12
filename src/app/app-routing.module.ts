@@ -37,6 +37,11 @@ const routes: Routes = [
     path: 'contract',
     loadChildren: './modules/contract/contract.module#ContractModule',
     canActivate: [ AuthGuard ],
+  },
+  {
+    path: 'employees',
+    loadChildren: './modules/employees/employees.module#EmployeesModule',
+    canActivate: [ AuthGuard ],
   }
 ];
 

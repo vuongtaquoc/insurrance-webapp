@@ -29,12 +29,17 @@
           </a>
         </li>
         <li class="layout-menu__item">
-          <a href="" class="layout-menu__link">
+          <a class="layout-menu__link" nz-dropdown nzTrigger="click" [nzDropdownMenu]="systemMenu" [nzOverlayClassName]="'header-dropdown-menu'">
             <span class="layout-menu__icon">
               <i nz-icon nzType="setting" nzTheme="fill"></i>
             </span>
             <span class="layout-menu__text">Hệ thống</span>
           </a>
+          <nz-dropdown-menu #systemMenu="nzDropdownMenu">
+            <ul nz-menu>
+              <li nz-menu-item><a [routerLink]="['/employees']"><i nz-icon nzType="user" nzTheme="outline"></i>Quản lý người lao động</a></li>
+            </ul>
+          </nz-dropdown-menu>
         </li>
         <li class="layout-menu__item">
           <a href="" class="layout-menu__link">
@@ -45,7 +50,7 @@
           </a>
         </li>
         <li class="layout-menu__item">
-          <a class="layout-menu__link" nz-dropdown nzTrigger="click" [nzDropdownMenu]="declarationMenu">
+          <a class="layout-menu__link" nz-dropdown nzTrigger="click" [nzDropdownMenu]="declarationMenu" [nzOverlayClassName]="'header-dropdown-menu'">
             <span class="layout-menu__icon">
               <i nz-icon nzType="file" nzTheme="fill"></i>
             </span>
@@ -59,7 +64,7 @@
           </nz-dropdown-menu>
         </li>
         <li class="layout-menu__item">
-            <a class="layout-menu__link" nz-dropdown nzTrigger="click" [nzDropdownMenu]="contractMenu">
+            <a class="layout-menu__link" nz-dropdown nzTrigger="click" [nzDropdownMenu]="contractMenu" [nzOverlayClassName]="'header-dropdown-menu'">
               <span class="layout-menu__icon">
                 <i nz-icon nzType="file" nzTheme="fill"></i>
               </span>
