@@ -65,7 +65,7 @@ export const TABLE_HEADER_COLUMNS = [{
   type: 'text',
   width: 170,
   title: '(2)',
-  key: 'fullName' 
+  key: 'fullName'
 }, {
   type: 'checkbox',
   width: 45,
@@ -145,13 +145,15 @@ export const TABLE_HEADER_COLUMNS = [{
   width: 145,
   source: [ ],
   title: '(14.2)',
-  key: 'registerDistrictCode'
+  key: 'registerDistrictCode',
+  defaultLoad: true
 }, {
   type: 'dropdown',
   width: 175,
   title: '(14.3)',
   source: [  ],
-  key: 'registerWardsCode'
+  key: 'registerWardsCode',
+  defaultLoad: true
 }, {
   type: 'dropdown',
   width: 145,
@@ -163,13 +165,15 @@ export const TABLE_HEADER_COLUMNS = [{
   width: 145,
   title: '(15.2)',
   source: [ ],
-  key: 'recipientsDistrictCode'
+  key: 'recipientsDistrictCode',
+  defaultLoad: true
 }, {
   type: 'dropdown',
   width: 175,
   title: '(15.3)',
   source: [ ],
-  key: 'recipientsWardsCode'
+  key: 'recipientsWardsCode',
+  defaultLoad: true
 }, {
   type: 'text',
   width: 165,
@@ -186,7 +190,8 @@ export const TABLE_HEADER_COLUMNS = [{
   width: 85,
   title: '(17.1)',
   source: [ ],
-  key: 'hospitalFirstRegistCode'
+  key: 'hospitalFirstRegistCode',
+  defaultLoad: true
 }, {
   type: 'text',
   width: 300,

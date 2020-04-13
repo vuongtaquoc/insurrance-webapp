@@ -132,6 +132,15 @@ export class EmployeeFamilyTableComponent implements OnInit, OnDestroy, OnChange
     this.data = data;
 
     this.spreadsheet.setData(this.data);
+
+    // update dropdown data
+    data.forEach((row, rowIndex) => {
+      this.columns.forEach((column, colIndex) => {
+        if (column.defaultLoad) {
+          this.spreadsheet.updateDropdownValue(colIndex, rowIndex);
+        }
+      });
+    });
   }
 
   private updateSourceToColumn(key, sources) {

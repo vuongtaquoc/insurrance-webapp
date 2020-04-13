@@ -26,7 +26,7 @@
     "@ngx-translate/core": "11.0.1",
     "@ngx-translate/http-loader": "4.0.0",
     "http-status-codes": "1.3.2",
-    "jstable-editor": "3.10.33",
+    "jstable-editor": "3.10.37",
     "jsuites": "2.7.1",
     "lodash": "4.17.15",
     "moment": "2.24.0",

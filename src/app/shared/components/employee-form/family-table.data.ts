@@ -62,12 +62,14 @@ export const TABLE_HEADER_COLUMNS = [{
   width: 170,
   title: '(8)',
   key: 'districtCode',
+  defaultLoad: true,
   source: [ ]
 }, {
   type: 'dropdown',
   width: 170,
   title: '(9)',
   key: 'wardsCode',
+  defaultLoad: true,
   source: [ ]
 }, {
   type: 'dropdown',
