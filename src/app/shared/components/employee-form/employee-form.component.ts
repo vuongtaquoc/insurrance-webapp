@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { forkJoin, Subject } from 'rxjs';
 import { NzModalRef } from 'ng-zorro-antd/modal';
@@ -34,6 +34,8 @@ import { DATE_FORMAT } from '@app/shared/constant';
   encapsulation: ViewEncapsulation.None
 })
 export class EmployeeFormComponent implements OnInit {
+  @Input() employee: any = {};
+
   employeeForm: FormGroup;
   cities: City[] = [];
   nationalities: DropdownItem[] = [];
@@ -77,7 +79,8 @@ export class EmployeeFormComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    forkJoin([
+    const employee = this.employee;
+    const jobs = [
       this.cityService.getCities(),
       this.nationalityService.getNationalities(),
       this.peopleService.getPeoples(),
@@ -87,8 +90,20 @@ export class EmployeeFormComponent implements OnInit {
       this.relationshipService.getRelationships(),
       this.bankService.getBanks(),
       this.departmentService.getDepartments(),
-    ]).subscribe(([ cities, nationalities, peoples, salaryAreas, paymentStatus,
-       paymentMethods, relationships, banks, departments ]) => {
+    ];
+
+    if (employee.registerCityCode) jobs.push(this.districtService.getDistrict(employee.registerCityCode));
+    if (employee.registerDistrictCode) jobs.push(this.wardService.getWards(employee.registerDistrictCode));
+    if (employee.recipientsCityCode) jobs.push(this.districtService.getDistrict(employee.recipientsCityCode));
+    if (employee.recipientsDistrictCode) jobs.push(this.wardService.getWards(employee.recipientsDistrictCode));
+    if (employee.cityFirstRegistCode) jobs.push(this.hospitalService.getHospitals(employee.cityFirstRegistCode));
+    if (employee.relationshipCityCode) jobs.push(this.districtService.getDistrict(employee.relationshipCityCode));
+    if (employee.relationshipDistrictCode) jobs.push(this.wardService.getWards(employee.relationshipDistrictCode));
+    if (employee.relationshipWardsCode) jobs.push(this.villageService.getVillage(employee.relationshipWardsCode));
+
+    forkJoin(jobs).subscribe(([ cities, nationalities, peoples, salaryAreas, paymentStatus,
+       paymentMethods, relationships, banks, departments,
+       registerDistricts, registerWards, recipientsDistricts, recipientsWards, hospitals, relationshipDistricts, relationshipWards, relationshipVillages ]) => {
       this.nationalities = nationalities;
       this.peoples = peoples;
       this.salaryAreas = salaryAreas;
@@ -98,70 +113,91 @@ export class EmployeeFormComponent implements OnInit {
       this.relationships = relationships;
       this.banks = banks;
       this.departments = departments;
+
+      if (registerDistricts) this.registerDistricts = registerDistricts;
+      if (registerWards) this.registerWards = registerWards;
+      if (recipientsDistricts) this.recipientsDistricts = recipientsDistricts;
+      if (recipientsWards) this.recipientsWards = recipientsWards;
+      if (hospitals) this.hospitals = hospitals;
+      if (relationshipDistricts) this.relationshipDistricts = relationshipDistricts;
+      if (relationshipWards) this.relationshipWards = relationshipWards;
+      if (relationshipVillages) this.relationshipVillages = relationshipVillages;
     });
 
+    const dateFormat = employee.typeBirthday === '1' ? DATE_FORMAT.ONLY_MONTH_YEAR : DATE_FORMAT.ONLY_YEAR;
+    const birthday = employee.birthday ? moment(employee.birthday, dateFormat) : '';
+    const dateSign = employee.dateSign ? moment(employee.dateSign, DATE_FORMAT.FULL) : '';
+
+    console.log(employee.paymentStatusCode)
+
     this.employeeForm = this.formBuilder.group({
-      fullName: [''],
-      birthday: [''],
-      typeBirthday: ['1'],
-      gender: [''],
-      nationalityCode: [''],
-      peopleCode: [''],
-      code: [''],
-      departmentId: [''],
-      registerCityCode: [''],
-      registerDistrictCode: [''],
-      registerWardsCode: [''],
-      recipientsCityCode: [''],
-      recipientsDistrictCode: [''],
-      recipientsWardsCode: [''],
-      recipientsAddress: [''],
-      isurranceCode: [''],
-      mobile: [''],
-      identityCar: [''],
-      familyNo: [''],
-      isurranceNo: [''],
-      healthNo: [''],
-      contractNo: [''],
-      dateSign: [''],
-      levelWork: [''],
-      salary: [''],
-      ratio: [''],
-      salaryAreaCode: [''],
-      paymentMethodCode: [''],
-      rate: [''],
-      cityFirstRegistCode: [''],
-      hospitalFirstRegistCode: [''],
-      allowanceLevel: [''],
-      allowanceSeniority: [''],
-      allowanceSeniorityJob: [''],
-      allowanceSalary: [''],
-      allowanceAdditional: [''],
-      allowanceOther: [''],
-      mstncn: [''],
-      bankAccount: [''],
-      bankId: [''],
-      accountHolder: [''],
-      paymentStatusCode: [''],
-      orders: [''],
-      relationshipFullName: [''],
-      relationshipDocumentType: [''],
-      relationshipBookNo: [''],
-      relationshipCityCode: [''],
-      relationshipDistrictCode: [''],
-      relationshipWardsCode: [''],
-      relationshipVillageCode: [''],
-      relationshipMobile: ['']
+      fullName: [employee.fullName],
+      birthday: [birthday ? new Date(birthday.valueOf()) : ''],
+      typeBirthday: [employee.typeBirthday || '1'],
+      gender: [employee.gender],
+      nationalityCode: [employee.nationalityCode],
+      peopleCode: [employee.peopleCode],
+      code: [employee.code],
+      departmentId: [employee.departmentId],
+      registerCityCode: [employee.registerCityCode],
+      registerDistrictCode: [employee.registerDistrictCode],
+      registerWardsCode: [employee.registerWardsCode],
+      recipientsCityCode: [employee.recipientsCityCode],
+      recipientsDistrictCode: [employee.recipientsDistrictCode],
+      recipientsWardsCode: [employee.recipientsWardsCode],
+      recipientsAddress: [employee.recipientsAddress],
+      isurranceCode: [employee.isurranceCode],
+      mobile: [employee.mobile],
+      identityCar: [employee.identityCar],
+      familyNo: [employee.familyNo],
+      isurranceNo: [employee.isurranceNo],
+      healthNo: [employee.healthNo],
+      contractNo: [employee.contractNo],
+      dateSign: [employee.dateSign ? new Date(dateSign.valueOf()) : ''],
+      levelWork: [employee.levelWork],
+      salary: [employee.salary],
+      ratio: [employee.ratio],
+      salaryAreaCode: [employee.salaryAreaCode],
+      paymentMethodCode: [employee.paymentMethodCode ? Number(employee.paymentMethodCode) : ''],
+      rate: [employee.rate],
+      cityFirstRegistCode: [employee.cityFirstRegistCode],
+      hospitalFirstRegistCode: [employee.hospitalFirstRegistCode],
+      allowanceLevel: [employee.allowanceLevel],
+      allowanceSeniority: [employee.allowanceSeniority],
+      allowanceSeniorityJob: [employee.allowanceSeniorityJob],
+      allowanceSalary: [employee.allowanceSalary],
+      allowanceAdditional: [employee.allowanceAdditional],
+      allowanceOther: [employee.allowanceOther],
+      mstncn: [employee.mstncn],
+      bankAccount: [employee.bankAccount],
+      bankId: [employee.bankId ? employee.bankId.toString() : ''],
+      accountHolder: [employee.accountHolder],
+      paymentStatusCode: [employee.paymentStatusCode ? Number(employee.paymentStatusCode) : ''],
+      orders: [employee.orders],
+      relationshipFullName: [employee.relationshipFullName],
+      relationshipDocumentType: [employee.relationshipDocumentType],
+      relationshipBookNo: [employee.relationshipBookNo],
+      relationshipCityCode: [employee.relationshipCityCode],
+      relationshipDistrictCode: [employee.relationshipDistrictCode],
+      relationshipWardsCode: [employee.relationshipWardsCode],
+      relationshipVillageCode: [employee.relationshipVillageCode],
+      relationshipMobile: [employee.relationshipMobile]
     });
   }
 
   save(): void {
     const formData = this.getData();
-    this.employeeService.create(formData).subscribe(() => {
-        this.modal.destroy(formData);
-    });
-  }
 
+    if (this.employee) {
+      this.employeeService.update(this.employee.id, formData).subscribe(() => {
+        this.modal.destroy(formData);
+      });
+    } else {
+      this.employeeService.create(formData).subscribe(() => {
+        this.modal.destroy(formData);
+      });
+    }
+  }
 
   getData() {
     const formData = {
@@ -318,7 +354,7 @@ export class EmployeeFormComponent implements OnInit {
 
   get birthday() {
     const birthday = this.employeeForm.get('birthday').value;
-    const format = this.birthdayType === '1' ? DATE_FORMAT.BIRTHDAY_ONLY_MONTH_YEAR : DATE_FORMAT.BIRTHDAY_ONLY_YEAR;
+    const format = this.birthdayType === '1' ? DATE_FORMAT.ONLY_MONTH_YEAR : DATE_FORMAT.ONLY_YEAR;
 
     return moment(birthday).format(format);
   }
@@ -342,6 +378,6 @@ export class EmployeeFormComponent implements OnInit {
       name = item.name;
     }
     return name;
-  } 
-  
+  }
+
 }

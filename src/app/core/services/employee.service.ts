@@ -40,6 +40,10 @@ export class EmployeeService {
     });
   }
 
+  public getEmployeeById(id) {
+    return this.http.get(`/employees/${ id }`);
+  }
+
   public create(body, options = {}) {
     return this.http.post('/employees', body, options);
   }
