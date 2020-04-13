@@ -39,7 +39,7 @@ export class EmployeeListComponent implements OnInit {
     });
 
     modal.afterClose.subscribe(result => {
-      this.employeeService.create(result);
+      this.getEmployees();
     });
   }
 }
