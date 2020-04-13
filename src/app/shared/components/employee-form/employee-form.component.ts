@@ -128,8 +128,6 @@ export class EmployeeFormComponent implements OnInit {
     const birthday = employee.birthday ? moment(employee.birthday, dateFormat) : '';
     const dateSign = employee.dateSign ? moment(employee.dateSign, DATE_FORMAT.FULL) : '';
 
-    console.log(employee.paymentStatusCode)
-
     this.employeeForm = this.formBuilder.group({
       fullName: [employee.fullName],
       birthday: [birthday ? new Date(birthday.valueOf()) : ''],
@@ -354,6 +352,9 @@ export class EmployeeFormComponent implements OnInit {
 
   get birthday() {
     const birthday = this.employeeForm.get('birthday').value;
+
+    if (!birthday) return '';
+
     const format = this.birthdayType === '1' ? DATE_FORMAT.ONLY_MONTH_YEAR : DATE_FORMAT.ONLY_YEAR;
 
     return moment(birthday).format(format);
@@ -365,6 +366,9 @@ export class EmployeeFormComponent implements OnInit {
 
   get dateSign() {
     const dateSign = this.employeeForm.get('dateSign').value;
+
+    if (!dateSign) return '';
+
     return moment(dateSign).format(DATE_FORMAT.FULL);
   }
 

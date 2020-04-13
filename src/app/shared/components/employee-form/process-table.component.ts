@@ -47,7 +47,7 @@ export class EmployeeProcessTableComponent implements OnInit, OnDestroy, OnChang
 
   ngOnChanges(changes) {
     if (changes.data && changes.data.currentValue.length) {
-      this.updateTable();
+      // this.updateTable();
     }
   }
 

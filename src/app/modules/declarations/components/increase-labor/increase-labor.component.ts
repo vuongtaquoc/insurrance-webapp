@@ -48,8 +48,10 @@ export class IncreaseLaborComponent implements OnInit {
     private salaryAreaService: SalaryAreaService,
     private planService: PlanService
   ) {
-    this.getDistrictsByCityCode = this.getDistrictsByCityCode.bind(this);
-    this.getWardsByDistrictCode = this.getWardsByDistrictCode.bind(this);
+    this.getRecipientsDistrictsByCityCode = this.getRecipientsDistrictsByCityCode.bind(this);
+    this.getRecipientsWardsByDistrictCode = this.getRecipientsWardsByDistrictCode.bind(this);
+    this.getRegisterDistrictsByCityCode = this.getRegisterDistrictsByCityCode.bind(this);
+    this.getRegisterWardsByDistrictCode = this.getRegisterWardsByDistrictCode.bind(this);
     this.getHospitalsByCityCode = this.getHospitalsByCityCode.bind(this);
   }
 
@@ -78,10 +80,10 @@ export class IncreaseLaborComponent implements OnInit {
 
 
       // get filter columns
-      this.updateFilterToColumn('registerDistrictCode', this.getDistrictsByCityCode);
-      this.updateFilterToColumn('registerWardsCode', this.getWardsByDistrictCode);
-      this.updateFilterToColumn('recipientsDistrictCode', this.getDistrictsByCityCode);
-      this.updateFilterToColumn('recipientsWardsCode', this.getWardsByDistrictCode);
+      this.updateFilterToColumn('registerDistrictCode', this.getRegisterDistrictsByCityCode);
+      this.updateFilterToColumn('registerWardsCode', this.getRegisterWardsByDistrictCode);
+      this.updateFilterToColumn('recipientsDistrictCode', this.getRecipientsDistrictsByCityCode);
+      this.updateFilterToColumn('recipientsWardsCode', this.getRecipientsWardsByDistrictCode);
       this.updateFilterToColumn('hospitalFirstRegistCode', this.getHospitalsByCityCode);
 
       if (this.declarationId) {
@@ -233,24 +235,59 @@ export class IncreaseLaborComponent implements OnInit {
     }
   }
 
-  private getDistrictsByCityCode(instance, cell, c, r, source) {
+  private getRegisterDistrictsByCityCode(instance, cell, c, r, source) {
     const value = instance.jexcel.getValueFromCoords(c - 1, r);
 
     if (!value) {
       return [];
     }
 
-    return this.districtService.getDistrict(value).toPromise();
+    return this.districtService.getDistrict(value).toPromise().then(districts => {
+      this.updateSourceToColumn('registerDistrictCode', districts);
+
+      return districts;
+    });
   }
 
-  private getWardsByDistrictCode(instance, cell, c, r, source) {
+  private getRegisterWardsByDistrictCode(instance, cell, c, r, source) {
     const value = instance.jexcel.getValueFromCoords(c - 1, r);
 
     if (!value) {
       return [];
     }
 
-    return this.wardService.getWards(value).toPromise();
+    return this.wardService.getWards(value).toPromise().then(wards => {
+      this.updateSourceToColumn('registerWardsCode', wards);
+      return wards;
+    });
+  }
+
+  private getRecipientsDistrictsByCityCode(instance, cell, c, r, source) {
+    const value = instance.jexcel.getValueFromCoords(c - 1, r);
+
+    if (!value) {
+      return [];
+    }
+
+    return this.districtService.getDistrict(value).toPromise().then(districts => {
+      this.updateSourceToColumn('recipientsDistrictCode', districts);
+
+      return districts;
+    });
+  }
+
+  private getRecipientsWardsByDistrictCode(instance, cell, c, r, source) {
+    const value = instance.jexcel.getValueFromCoords(c - 1, r);
+
+    if (!value) {
+      return [];
+    }
+
+    return this.wardService.getWards(value).toPromise().then(wards => {
+      this.updateSourceToColumn('recipientsWardsCode', wards);
+
+      return wards;
+    });
   }
 
   private getHospitalsByCityCode(instance, cell, c, r, source) {

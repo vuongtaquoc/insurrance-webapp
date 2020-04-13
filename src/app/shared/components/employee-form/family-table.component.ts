@@ -66,7 +66,7 @@ export class EmployeeFamilyTableComponent implements OnInit, OnDestroy, OnChange
 
   ngOnChanges(changes) {
     if (changes.data && changes.data.currentValue.length) {
-      this.updateTable();
+      // this.updateTable();
     }
   }
 
@@ -157,7 +157,11 @@ export class EmployeeFamilyTableComponent implements OnInit, OnDestroy, OnChange
       return [];
     }
 
-    return this.districtService.getDistrict(value).toPromise();
+    return this.districtService.getDistrict(value).toPromise().then((districts) => {
+      this.updateSourceToColumn('districtCode', districts);
+
+      return districts;
+    });
   }
 
   private getWardsByDistrictCode(instance, cell, c, r, source) {
@@ -167,6 +171,10 @@ export class EmployeeFamilyTableComponent implements OnInit, OnDestroy, OnChange
       return [];
     }
 
-    return this.wardsService.getWards(value).toPromise();
+    return this.wardsService.getWards(value).toPromise().then((wards) => {
+      this.updateSourceToColumn('wardsCode', wards);
+
+      return wards;
+    });
   }
 }
