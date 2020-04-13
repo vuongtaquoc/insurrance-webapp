@@ -11,7 +11,7 @@ export class EmployeeService {
   }
 
   public getEmployeeTrees() {
-    return this.http.get('/employeers/declarations').pipe(
+    return this.http.get('/employees/declarations').pipe(
       map(employees => {
         return employees.map(employee => {
           const parentKey = uuid.v4();
@@ -32,7 +32,19 @@ export class EmployeeService {
     );
   }
 
-  public create(data) {
+  public getEmployees(filters = {}) {
+    return this.http.get('/employees', {
+      params: {
+        ...filters
+      }
+    });
+  }
 
+  public create(body, options = {}) {
+    return this.http.post('/employees', body, options);
+  }
+
+  public update(id, body, options = {}) {
+    return this.http.post(`/employees/${ id }`, body, options);
   }
 }

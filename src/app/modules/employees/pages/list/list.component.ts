@@ -18,13 +18,15 @@ export class EmployeeListComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    for (let i = 1; i < 21; i++) {
-      this.employees.push({
-        id: i,
-        fullName: `Vương ${i}`,
-        employeeCode: `000${i}`,
-      })
-    }
+    this.getEmployees();
+  }
+
+  getEmployees() {
+    this.employeeService.getEmployees({
+      keyWord: ''
+    }).subscribe(data => {
+      this.employees = data;
+    });
   }
 
   add() {

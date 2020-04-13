@@ -18,3 +18,5 @@ export * from './plan.service';
 export * from './payment-status.service';
 export * from './relationship.service';
 export * from './bank.service';
+export * from './department.service';
+export * from './village.service';

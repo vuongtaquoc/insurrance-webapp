@@ -89,9 +89,10 @@
             </div><!-- col -->
             <div nz-col [nzSpan]="8">
               <nz-form-item>
-                <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Phòng ban</nz-form-label>
+                <nz-form-label class="text-left" [nzSpan]="10">Phòng ban</nz-form-label>
                 <nz-form-control [nzSpan]="14">
                   <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn phòng ban" formControlName="departmentId">
+                      <nz-option *ngFor="let department of departments" [nzLabel]="department.name" [nzValue]="department.id"></nz-option>
                   </nz-select>
                 </nz-form-control>
               </nz-form-item>
@@ -172,6 +173,20 @@
               </nz-form-item>
             </div><!-- col -->
           </div><!-- END ROW -->
+           <!-- ROW START -->
+           <div nz-row [nzGutter]="10">
+            <div nz-col [nzSpan]="24">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="5">Số nhà, đường phố, thôn xóm</nz-form-label>
+                <nz-form-control [nzSpan]="19">
+                  <input nz-input
+                    placeholder="Số nhà, đường phố, thôn xóm"
+                    formControlName="recipientsAddress"
+                  />
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+           </div><!-- END ROW -->
 
           <h3 class="employee-form__group-title">Thông tin tham gia BHXH, BHYT</h3>
           <!-- ROW START -->
@@ -553,6 +568,7 @@
                 <nz-form-control [nzSpan]="14">
                   <input nz-input
                     placeholder="Họ và tên chủ hộ"
+                    formControlName="relationshipFullName"
                   />
                 </nz-form-control>
               </nz-form-item>
@@ -561,7 +577,7 @@
               <nz-form-item>
                 <nz-form-label class="text-left" [nzSpan]="10">Loại giấy tờ</nz-form-label>
                 <nz-form-control [nzSpan]="14">
-                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="relationshipDocumentType" >
                     <nz-option [nzLabel]="'Sổ hộ khẩu'" [nzValue]="1"></nz-option>
                     <nz-option [nzLabel]="'Sổ tạm trú'" [nzValue]="2"></nz-option>
                     <nz-option [nzLabel]="'Giấy tạm trú'" [nzValue]="3"></nz-option>
@@ -575,6 +591,7 @@
                 <nz-form-control [nzSpan]="14">
                   <input nz-input
                     placeholder="Số sổ hộ khẩu"
+                    formControlName="relationshipBookNo"
                   />
                 </nz-form-control>
               </nz-form-item>
@@ -587,7 +604,8 @@
               <nz-form-item>
                 <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Tỉnh/TP</nz-form-label>
                 <nz-form-control [nzSpan]="14">
-                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="relationshipCityCode"
+                  (ngModelChange)="changeRelationshipCities($event)">
                     <nz-option *ngFor="let city of cities" [nzLabel]="city.name" [nzValue]="city.id"></nz-option>
                   </nz-select>
                 </nz-form-control>
@@ -597,8 +615,11 @@
               <nz-form-item>
                 <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Quận/huyện</nz-form-label>
                 <nz-form-control [nzSpan]="14">
-                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn">
-                    <nz-option *ngFor="let national of nationalities" [nzLabel]="national.name" [nzValue]="national.id"></nz-option>
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn"
+                   formControlName="relationshipDistrictCode"
+                   (ngModelChange)="changeRelationshipDistrict($event)"
+                   >
+                    <nz-option *ngFor="let district of relationshipDistricts" [nzLabel]="district.name" [nzValue]="district.id"></nz-option>
                   </nz-select>
                 </nz-form-control>
               </nz-form-item>
@@ -607,8 +628,11 @@
               <nz-form-item>
                 <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Phường/xã</nz-form-label>
                 <nz-form-control [nzSpan]="14">
-                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn">
-                    <nz-option *ngFor="let people of peoples" [nzLabel]="people.name" [nzValue]="people.id"></nz-option>
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" 
+                  formControlName="relationshipWardsCode"
+                  (ngModelChange)="changeRelationshipWards($event)"
+                  >
+                    <nz-option *ngFor="let ward of relationshipWards" [nzLabel]="ward.name" [nzValue]="ward.id"></nz-option>
                   </nz-select>
                 </nz-form-control>
               </nz-form-item>
@@ -621,8 +645,8 @@
               <nz-form-item>
                 <nz-form-label class="text-left" [nzSpan]="10">Thôn (bản/tổ dân phố)</nz-form-label>
                 <nz-form-control [nzSpan]="14">
-                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn">
-                    <nz-option *ngFor="let city of cities" [nzLabel]="city.name" [nzValue]="city.id"></nz-option>
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="relationshipVillageCode">
+                    <nz-option *ngFor="let village of relationshipVillages" [nzLabel]="village.name" [nzValue]="village.id"></nz-option>
                   </nz-select>
                 </nz-form-control>
               </nz-form-item>
@@ -633,6 +657,7 @@
                 <nz-form-control [nzSpan]="14">
                   <input nz-input
                     placeholder="Số điện thoại"
+                    formControlName="relationshipMobile"
                   />
                 </nz-form-control>
               </nz-form-item>

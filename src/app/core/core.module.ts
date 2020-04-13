@@ -17,7 +17,9 @@ import {
   PlanService,
   PaymentStatusServiced,
   RelationshipService,  
-  BankService
+  BankService,
+  DepartmentService,
+  VillageService
 } from './services';
 
 @NgModule({
@@ -40,7 +42,9 @@ import {
     PlanService,
     PaymentStatusServiced,
     RelationshipService,
-    BankService
+    BankService,
+    DepartmentService,
+    VillageService
   ],
   declarations: []
 })

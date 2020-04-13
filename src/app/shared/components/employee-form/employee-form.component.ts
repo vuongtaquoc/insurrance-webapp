@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { forkJoin, Subject } from 'rxjs';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 import * as moment from 'moment';
+import * as _ from 'lodash';
 
 import { DropdownItem } from '@app/core/interfaces';
 import { City, District, Wards } from '@app/core/models';
@@ -18,7 +19,10 @@ import {
   PaymentMethodServiced,
   PaymentStatusServiced,
   RelationshipService,
-  BankService
+  BankService,
+  EmployeeService,
+  DepartmentService,
+  VillageService
 } from '@app/core/services';
 
 import { DATE_FORMAT } from '@app/shared/constant';
@@ -46,6 +50,10 @@ export class EmployeeFormComponent implements OnInit {
   hospitals: DropdownItem[] = [];
   families: any[] = [];
   evolutionIsurrances: any[] = [];
+  relationshipDistricts: District[] = [];
+  relationshipWards: Wards[] = [];
+  departments: DropdownItem[] = [];
+  relationshipVillages: DropdownItem[] = [];
   processSubject: Subject<string> = new Subject<string>();
   familySubject: Subject<string> = new Subject<string>();
 
@@ -63,6 +71,9 @@ export class EmployeeFormComponent implements OnInit {
     private paymentStatusServiced: PaymentStatusServiced,
     private relationshipService: RelationshipService,
     private bankService: BankService,
+    private employeeService: EmployeeService,
+    private departmentService: DepartmentService,
+    private villageService: VillageService,
   ) {}
 
   ngOnInit() {
@@ -74,9 +85,10 @@ export class EmployeeFormComponent implements OnInit {
       this.paymentStatusServiced.getPaymentStatus(),
       this.paymentMethodServiced.getPaymentMethods(),
       this.relationshipService.getRelationships(),
-      this.bankService.getBanks()
+      this.bankService.getBanks(),
+      this.departmentService.getDepartments(),
     ]).subscribe(([ cities, nationalities, peoples, salaryAreas, paymentStatus,
-       paymentMethods, relationships, banks ]) => {
+       paymentMethods, relationships, banks, departments ]) => {
       this.nationalities = nationalities;
       this.peoples = peoples;
       this.salaryAreas = salaryAreas;
@@ -85,6 +97,7 @@ export class EmployeeFormComponent implements OnInit {
       this.paymentMethods = paymentMethods;
       this.relationships = relationships;
       this.banks = banks;
+      this.departments = departments;
     });
 
     this.employeeForm = this.formBuilder.group({
@@ -102,6 +115,7 @@ export class EmployeeFormComponent implements OnInit {
       recipientsCityCode: [''],
       recipientsDistrictCode: [''],
       recipientsWardsCode: [''],
+      recipientsAddress: [''],
       isurranceCode: [''],
       mobile: [''],
       identityCar: [''],
@@ -129,14 +143,32 @@ export class EmployeeFormComponent implements OnInit {
       bankId: [''],
       accountHolder: [''],
       paymentStatusCode: [''],
-      orders: ['']
+      orders: [''],
+      relationshipFullName: [''],
+      relationshipDocumentType: [''],
+      relationshipBookNo: [''],
+      relationshipCityCode: [''],
+      relationshipDistrictCode: [''],
+      relationshipWardsCode: [''],
+      relationshipVillageCode: [''],
+      relationshipMobile: ['']
     });
   }
 
   save(): void {
+    const formData = this.getData();
+    this.employeeService.create(formData).subscribe(() => {
+        this.modal.destroy(formData);
+    });
+  }
+
+
+  getData() {
     const formData = {
       ...this.employeeForm.value,
-      birthday: this.employeeForm.value.birthday.toString(),
+      birthday: this.birthday,
+      dateSign: this.dateSign,
+      nationalityName: this.getNameOfDropdown(this.nationalities , this.employeeForm.value.nationalityCode),
       families: this.families.reduce(
         (combine, current) => {
           if (current.fullName) {
@@ -158,8 +190,7 @@ export class EmployeeFormComponent implements OnInit {
         []
       )
     };
-
-    this.modal.destroy(formData);
+    return formData;
   }
 
   dismiss(): void {
@@ -230,6 +261,18 @@ export class EmployeeFormComponent implements OnInit {
     this.wardService.getWards(value).subscribe(data => this.recipientsWards = data);
   }
 
+  changeRelationshipWards(value) {
+    this.villageService.getVillage(value).subscribe(data => this.relationshipVillages = data);
+  }
+
+  changeRelationshipCities(value) {
+    this.districtService.getDistrict(value).subscribe(data => this.relationshipDistricts = data);
+  }
+
+  changeRelationshipDistrict(value) {
+    this.wardService.getWards(value).subscribe(data => this.relationshipWards = data);
+  }
+
   changeFirstRegisterCity(value) {
     this.hospitalService.getHospitals(value).subscribe(data => this.hospitals = data);
   }
@@ -283,4 +326,22 @@ export class EmployeeFormComponent implements OnInit {
   get insurranceCode() {
     return this.employeeForm.get('isurranceCode').value;
   }
+
+  get dateSign() {
+    const dateSign = this.employeeForm.get('dateSign').value;
+    return moment(dateSign).format(DATE_FORMAT.FULL);
+  }
+
+  getNameOfDropdown(sourceOfDropdown: any, id: string) {
+    let name = '';
+    const item = _.find(sourceOfDropdown, {
+      id: id,
+    });
+
+    if (item) {
+      name = item.name;
+    }
+    return name;
+  } 
+  
 }
