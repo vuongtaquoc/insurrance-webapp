@@ -20,7 +20,7 @@ export class EmployeeService {
             title: employee.groupName,
             expanded: true,
             key: parentKey,
-            children: employee.employeers.map(e => ({
+            children: employee.employees.map(e => ({
               ...e,
               title: e.fullName,
               key: e.id,
