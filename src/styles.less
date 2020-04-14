@@ -279,8 +279,10 @@ app-layout {
 
   &__footer {
     height: 37px;
-    display: flex;
+    display: grid;
+    grid-gap: 7px;
     justify-content: flex-end;
+    grid-template-columns: repeat(5, max-content);
     align-items: flex-end;
   }
 }

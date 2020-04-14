@@ -1,0 +1,36 @@
+<div class="document-form">
+  <div class="document-form__content">
+    <form nz-form [formGroup]="documentForm">
+        <h1>600 | Báo tăng lao động</h1>
+        <!-- ROW START -->
+        <div nz-row [nzGutter]="10">
+          <div nz-col [nzSpan]="12">
+            <nz-form-item>
+              <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Người nộp</nz-form-label>
+              <nz-form-control [nzSpan]="14">
+                <input nz-input
+                  placeholder="Người nộp"
+                />
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <div nz-col [nzSpan]="12">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Số điện thoại</nz-form-label>
+                <nz-form-control [nzSpan]="14">
+                  <input nz-input
+                    placeholder="Số điện thoại"
+                  />
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+        </div>
+        <!-- ROW END -->
+        <h1>Thành phần hồ sơ</h1>
+    </form>
+  </div>
+  <div class="document-form__footer" *nzModalFooter>
+    <button nz-button nzType="primary" (click)="save()">Lưu</button>
+    <button nz-button nzType="default" (click)="dismiss()">Đóng</button>
+  </div>
+</div>

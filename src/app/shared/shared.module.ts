@@ -39,7 +39,8 @@ import {
   UsersTreeComponent,
   EmployeeFormComponent,
   EmployeeProcessTableComponent,
-  EmployeeFamilyTableComponent
+  EmployeeFamilyTableComponent,
+  DocumentFormComponent,
 } from './components';
 
 import {
@@ -73,6 +74,7 @@ import {
     EmployeeFormComponent,
     EmployeeProcessTableComponent,
     EmployeeFamilyTableComponent,
+    DocumentFormComponent,
     InputLabelComponent,
     UsersTreeComponent,
     CardFullHeightDirective,
@@ -83,6 +85,7 @@ import {
     ReactiveFormsModule,
     TranslateModule,
     EmployeeFormComponent,
+    DocumentFormComponent,
     InputLabelComponent,
     UsersTreeComponent,
     CardFullHeightDirective,
@@ -100,7 +103,8 @@ import {
     WardsService
   ],
   entryComponents: [
-    EmployeeFormComponent
+    EmployeeFormComponent,
+    DocumentFormComponent
   ]
 })
 export class SharedModule {}

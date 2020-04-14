@@ -93,6 +93,7 @@ export const TABLE_HEADER_COLUMNS = [{
   key: 'allowanceAdditional'
 }, {
   type: 'dropdown',
+  autocomplete: true,
   width: 40,
   title: '(14)',
   source: [],

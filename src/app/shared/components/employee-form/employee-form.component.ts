@@ -52,6 +52,7 @@ export class EmployeeFormComponent implements OnInit {
   hospitals: DropdownItem[] = [];
   families: any[] = [];
   evolutionIsurrances: any[] = [];
+  relationshipCities: District[] = [];
   relationshipDistricts: District[] = [];
   relationshipWards: Wards[] = [];
   departments: DropdownItem[] = [];
@@ -136,7 +137,7 @@ export class EmployeeFormComponent implements OnInit {
       nationalityCode: [employee.nationalityCode],
       peopleCode: [employee.peopleCode],
       code: [employee.code],
-      departmentId: [employee.departmentId],
+      departmentId: [employee.departmentId ? Number(employee.departmentId) : ''],
       registerCityCode: [employee.registerCityCode],
       registerDistrictCode: [employee.registerDistrictCode],
       registerWardsCode: [employee.registerWardsCode],
@@ -156,7 +157,7 @@ export class EmployeeFormComponent implements OnInit {
       salary: [employee.salary],
       ratio: [employee.ratio],
       salaryAreaCode: [employee.salaryAreaCode],
-      paymentMethodCode: [employee.paymentMethodCode ? Number(employee.paymentMethodCode) : ''],
+      paymentMethodCode: [employee.paymentMethodCode],
       rate: [employee.rate],
       cityFirstRegistCode: [employee.cityFirstRegistCode],
       hospitalFirstRegistCode: [employee.hospitalFirstRegistCode],
@@ -170,10 +171,10 @@ export class EmployeeFormComponent implements OnInit {
       bankAccount: [employee.bankAccount],
       bankId: [employee.bankId ? employee.bankId.toString() : ''],
       accountHolder: [employee.accountHolder],
-      paymentStatusCode: [employee.paymentStatusCode ? Number(employee.paymentStatusCode) : ''],
+      paymentStatusCode: [employee.paymentStatusCode],
       orders: [employee.orders],
       relationshipFullName: [employee.relationshipFullName],
-      relationshipDocumentType: [employee.relationshipDocumentType],
+      relationshipDocumentType:[employee.relationshipDocumentType ? Number(employee.relationshipDocumentType) : ''],
       relationshipBookNo: [employee.relationshipBookNo],
       relationshipCityCode: [employee.relationshipCityCode],
       relationshipDistrictCode: [employee.relationshipDistrictCode],
@@ -203,6 +204,7 @@ export class EmployeeFormComponent implements OnInit {
       birthday: this.birthday,
       dateSign: this.dateSign,
       nationalityName: this.getNameOfDropdown(this.nationalities , this.employeeForm.value.nationalityCode),
+      hospitalFirstRegistName: this.getNameOfDropdown(this.hospitals , this.employeeForm.value.hospitalFirstRegistCode),
       families: this.families.reduce(
         (combine, current) => {
           if (current.fullName) {

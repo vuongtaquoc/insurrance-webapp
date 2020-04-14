@@ -106,6 +106,7 @@ export const TABLE_HEADER_COLUMNS = [{
   key: 'gender'
 }, {
   type: 'dropdown',
+  autocomplete: true,
   width: 75,
   title: '(9)',
   source: [ 'Chọn' ],
@@ -113,6 +114,7 @@ export const TABLE_HEADER_COLUMNS = [{
   key: 'peopleCode'
 }, {
   type: 'dropdown',
+  autocomplete: true,
   width: 100,
   title: '(10)',
   source: [ 'Chọn' ],
@@ -131,6 +133,7 @@ export const TABLE_HEADER_COLUMNS = [{
   key: 'mobile'
 }, {
   type: 'numberic',
+  autocomplete: true,
   width: 135,
   title: '(13)',
   key: 'familyNo'
@@ -142,6 +145,7 @@ export const TABLE_HEADER_COLUMNS = [{
   key: 'registerCityCode'
 }, {
   type: 'dropdown',
+  autocomplete: true,
   width: 145,
   source: [ ],
   title: '(14.2)',
@@ -149,6 +153,7 @@ export const TABLE_HEADER_COLUMNS = [{
   defaultLoad: true
 }, {
   type: 'dropdown',
+  autocomplete: true,
   width: 175,
   title: '(14.3)',
   source: [  ],
@@ -156,12 +161,14 @@ export const TABLE_HEADER_COLUMNS = [{
   defaultLoad: true
 }, {
   type: 'dropdown',
+  autocomplete: true,
   width: 145,
   title: '(15.1)',
   source: [ 'Chọn' ],
   key: 'recipientsCityCode'
 }, {
   type: 'dropdown',
+  autocomplete: true,
   width: 145,
   title: '(15.2)',
   source: [ ],
@@ -169,6 +176,7 @@ export const TABLE_HEADER_COLUMNS = [{
   defaultLoad: true
 }, {
   type: 'dropdown',
+  autocomplete: true,
   width: 175,
   title: '(15.3)',
   source: [ ],
@@ -181,12 +189,14 @@ export const TABLE_HEADER_COLUMNS = [{
   key: 'recipientsAddress'
 }, {
   type: 'dropdown',
+  autocomplete: true,
   width: 75,
   title: '(16)',
   source: [ ],
   key: 'salaryAreaCode'
 }, {
   type: 'dropdown',
+  autocomplete: true,
   width: 85,
   title: '(17.1)',
   source: [ ],
@@ -295,6 +305,7 @@ export const TABLE_HEADER_COLUMNS = [{
   key: 'toDate'
 }, {
   type: 'dropdown',
+  autocomplete: true,
   width: 50,
   title: '(25)',
   source: [ ],

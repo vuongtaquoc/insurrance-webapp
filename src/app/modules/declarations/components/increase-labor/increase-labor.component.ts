@@ -4,6 +4,8 @@ import { Subject, forkJoin } from 'rxjs';
 import findLastIndex from 'lodash/findLastIndex';
 import findIndex from 'lodash/findIndex';
 import * as jexcel from 'jstable-editor/dist/jexcel.js';
+import { NzModalService } from 'ng-zorro-antd/modal';
+import { DocumentFormComponent } from '@app/shared/components';
 
 import { Declaration } from '@app/core/models';
 import {
@@ -46,7 +48,8 @@ export class IncreaseLaborComponent implements OnInit {
     private peopleService: PeopleService,
     private wardService: WardsService,
     private salaryAreaService: SalaryAreaService,
-    private planService: PlanService
+    private planService: PlanService,
+    private modalService: NzModalService
   ) {
     this.getRecipientsDistrictsByCityCode = this.getRecipientsDistrictsByCityCode.bind(this);
     this.getRecipientsWardsByDistrictCode = this.getRecipientsWardsByDistrictCode.bind(this);
@@ -305,6 +308,19 @@ export class IncreaseLaborComponent implements OnInit {
       const columnName = jexcel.getColumnNameFromId([columnIndex, r]);
 
       instance.jexcel.setValue(columnName, value);
+    });
+  }
+
+  viewDocument(documentCode: string) {
+    const modal = this.modalService.create({
+      nzWidth: 980,
+      nzWrapClassName: 'document-modal',
+      nzTitle: 'Danh mục tài liệu',
+      nzContent: DocumentFormComponent,
+      nzOnOk: (data) => console.log('Click ok', data)
+    });
+
+    modal.afterClose.subscribe(result => {
     });
   }
 }

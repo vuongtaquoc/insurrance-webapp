@@ -36,12 +36,14 @@ export const TABLE_HEADER_COLUMNS = [{
   key: 'isurranceCode'
 }, {
   type: 'dropdown',
+  autocomplete: true,
   width: 75,
   title: '(4)',
   source: [ { id: '1', name: 'tháng/năm' }, { id: '2', name: 'năm' } ],
   key: 'typeBirthday'
 }, {
-  type: 'calendar',
+  //type: 'calendar',
+  type: 'text',
   width: 80,
   title: '(5)',
   key: 'birthday'
@@ -53,12 +55,14 @@ export const TABLE_HEADER_COLUMNS = [{
   align: 'center',
 }, {
   type: 'dropdown',
+  autocomplete: true,
   width: 130,
   title: '(7)',
   key: 'cityCode',
   source: []
 }, {
   type: 'dropdown',
+  autocomplete: true,
   width: 170,
   title: '(8)',
   key: 'districtCode',
@@ -66,6 +70,7 @@ export const TABLE_HEADER_COLUMNS = [{
   source: [ ]
 }, {
   type: 'dropdown',
+  autocomplete: true,
   width: 170,
   title: '(9)',
   key: 'wardsCode',
@@ -73,6 +78,7 @@ export const TABLE_HEADER_COLUMNS = [{
   source: [ ]
 }, {
   type: 'dropdown',
+  autocomplete: true,
   width: 65,
   title: '(10)',
   key: 'relationshipCode',
