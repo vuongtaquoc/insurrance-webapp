@@ -6,6 +6,7 @@ import 'jsuites/dist/jsuites.js';
 import { PlanService } from '@app/core/services';
 
 import { TABLE_HEADER_COLUMNS, TABLE_NESTED_HEADERS } from './process-table.data';
+import { customPicker } from '@app/shared/utils/custom-editor';
 
 @Component({
   selector: 'app-employee-process-table',
@@ -46,7 +47,7 @@ export class EmployeeProcessTableComponent implements OnInit, OnDestroy, OnChang
   }
 
   ngOnChanges(changes) {
-    if (changes.data && changes.data.currentValue.length) {
+    if (changes.data && changes.data.currentValue && changes.data.currentValue.length) {
       // this.updateTable();
     }
   }
@@ -56,7 +57,7 @@ export class EmployeeProcessTableComponent implements OnInit, OnDestroy, OnChang
       this.isInitialized = true;
 
       this.spreadsheet = jexcel(this.spreadsheetEl.nativeElement, {
-        data: this.data,
+        data: [],
         nestedHeaders: this.nestedHeaders,
         columns: this.columns,
         allowInsertColumn: false,
@@ -84,6 +85,10 @@ export class EmployeeProcessTableComponent implements OnInit, OnDestroy, OnChang
         }
       });
 
+      // update editor
+      this.updateEditorToColumn('fromDate', 'month');
+      this.updateEditorToColumn('toDate', 'month');
+
       this.spreadsheet.hideIndex();
 
       this.updateTable();
@@ -104,10 +109,14 @@ export class EmployeeProcessTableComponent implements OnInit, OnDestroy, OnChang
     });
 
     // init default data
-    if (!data.length) {
-      for (let i = 1; i <= 15; i++) {
-        data.push([ i ]);
+    if (data.length < 15) {
+      const length = 15 - data.length;
+
+      for (let i = 1; i <= length; i++) {
+        data.push([ ]);
       }
+
+      data.forEach((d, i) => d[0] = i + 1);
     }
 
     this.data = data;
@@ -121,5 +130,13 @@ export class EmployeeProcessTableComponent implements OnInit, OnDestroy, OnChang
     if (column) {
       column.source = sources;
     }
+  }
+
+  private updateEditorToColumn(key, type) {
+    const column = this.columns.find(c => c.key === key);
+
+    if (!column) return;
+
+    column.editor = customPicker(this.spreadsheet, type);
   }
 }

@@ -11,6 +11,7 @@ import {
 } from '@app/core/services';
 
 import { TABLE_HEADER_COLUMNS, TABLE_NESTED_HEADERS } from './family-table.data';
+import { customPicker } from '@app/shared/utils/custom-editor';
 
 @Component({
   selector: 'app-employee-family-table',
@@ -65,7 +66,7 @@ export class EmployeeFamilyTableComponent implements OnInit, OnDestroy, OnChange
   }
 
   ngOnChanges(changes) {
-    if (changes.data && changes.data.currentValue.length) {
+    if (changes.data && changes.data.currentValue && changes.data.currentValue.length) {
       // this.updateTable();
     }
   }
@@ -75,7 +76,7 @@ export class EmployeeFamilyTableComponent implements OnInit, OnDestroy, OnChange
       this.isInitialized = true;
 
       this.spreadsheet = jexcel(this.spreadsheetEl.nativeElement, {
-        data: this.data,
+        data: [],
         nestedHeaders: this.nestedHeaders,
         columns: this.columns,
         allowInsertColumn: false,
@@ -92,6 +93,18 @@ export class EmployeeFamilyTableComponent implements OnInit, OnDestroy, OnChange
             records: this.spreadsheet.getJson(),
             columns: this.columns
           });
+
+          const column = this.columns[c];
+
+          if (column.key === 'typeBirthday') {
+            const nextColumn = jexcel.getColumnNameFromId([Number(c) + 1, r]);
+
+            instance.jexcel.setValue(nextColumn, '');
+
+            const type = value === '1' ? 'month' : (value === '2' ? 'year' : '');
+
+            this.updateEditorToColumn('birthday', type);
+          }
         },
         ondeleterow: (el, rowNumber, numOfRows) => {
           this.onDelete.emit({
@@ -104,6 +117,8 @@ export class EmployeeFamilyTableComponent implements OnInit, OnDestroy, OnChange
       });
 
       this.spreadsheet.hideIndex();
+
+      this.updateEditorToColumn('birthday', 'month', true);
 
       this.updateTable();
     }
@@ -123,10 +138,14 @@ export class EmployeeFamilyTableComponent implements OnInit, OnDestroy, OnChange
     });
 
     // init default data
-    if (!data.length) {
-      for (let i = 1; i <= 15; i++) {
-        data.push([ i ]);
+    if (data.length < 15) {
+      const length = 15 - data.length;
+
+      for (let i = 1; i <= length; i++) {
+        data.push([ ]);
       }
+
+      data.forEach((d, i) => d[0] = i + 1);
     }
 
     this.data = data;
@@ -156,6 +175,18 @@ export class EmployeeFamilyTableComponent implements OnInit, OnDestroy, OnChange
 
     if (column) {
       column.filter = filterCb;
+    }
+  }
+
+  private updateEditorToColumn(key, type, isCustom = false) {
+    const column = this.columns.find(c => c.key === key);
+
+    if (!column) return;
+
+    if (isCustom) {
+      column.editor = customPicker(this.spreadsheet, type, true);
+    } else {
+      column.editor = customPicker(this.spreadsheet, type);
     }
   }
 

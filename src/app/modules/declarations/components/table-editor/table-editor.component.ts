@@ -3,6 +3,8 @@ import { Subscription, Observable } from 'rxjs';
 import * as jexcel from 'jstable-editor/dist/jexcel.js';
 import 'jsuites/dist/jsuites.js';
 
+import { customPicker } from '@app/shared/utils/custom-editor';
+
 @Component({
   selector: 'app-table-editor',
   templateUrl: './table-editor.component.html',
@@ -61,6 +63,18 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
           instance, cell, c, r, value,
           records: this.spreadsheet.getJson()
         });
+
+        const column = this.columns[c];
+
+        if (column.key === 'typeBirthday') {
+          const nextColumn = jexcel.getColumnNameFromId([Number(c) + 1, r]);
+
+          instance.jexcel.setValue(nextColumn, '');
+
+          const type = value === '1' ? 'month' : (value === '2' ? 'year' : '');
+
+          this.updateEditorToColumn('birthday', type);
+        }
       },
       ondeleterow: (el, rowNumber, numOfRows) => {
         this.onDelete.emit({
@@ -70,6 +84,9 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
         });
       }
     });
+
+    this.updateEditorToColumn('dateSign', 'date');
+    this.updateEditorToColumn('birthday', 'month', true);
 
     this.spreadsheet.hideIndex();
 
@@ -85,7 +102,7 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
     const data = [];
 
     this.data.forEach((d, index) => {
-      if (d.readonly) {
+      if (d.readonly || d.formula) {
         readonlyIndexes.push(index);
       }
 
@@ -193,5 +210,13 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
     const containerSize = this.getContainerSize();
 
     this.spreadsheet.updateTableSize(`${ containerSize.width }px`, `${ containerSize.height }px`);
+  }
+
+  private updateEditorToColumn(key, type, isCustom = false) {
+    const column = this.columns.find(c => c.key === key);
+
+    if (!column) return;
+
+    column.editor = customPicker(this.spreadsheet, type, isCustom);
   }
 }
