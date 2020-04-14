@@ -41,6 +41,7 @@ import {
   EmployeeProcessTableComponent,
   EmployeeFamilyTableComponent,
   DocumentFormComponent,
+  DocumentTableComponent,
 } from './components';
 
 import {
@@ -75,6 +76,7 @@ import {
     EmployeeProcessTableComponent,
     EmployeeFamilyTableComponent,
     DocumentFormComponent,
+    DocumentTableComponent,
     InputLabelComponent,
     UsersTreeComponent,
     CardFullHeightDirective,

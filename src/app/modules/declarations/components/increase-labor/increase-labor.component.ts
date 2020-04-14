@@ -312,12 +312,24 @@ export class IncreaseLaborComponent implements OnInit {
   }
 
   viewDocument(documentCode: string) {
+    let employee = [{
+      id: '01',
+      doumentName: 'Phần mềm'
+    },
+    {
+      id: '02',
+      doumentName: 'Phần cứng'
+    }
+  ];
     const modal = this.modalService.create({
       nzWidth: 980,
       nzWrapClassName: 'document-modal',
       nzTitle: 'Danh mục tài liệu',
       nzContent: DocumentFormComponent,
-      nzOnOk: (data) => console.log('Click ok', data)
+      nzOnOk: (data) => console.log('Click ok', data),
+      nzComponentParams: {
+        employee
+      }
     });
 
     modal.afterClose.subscribe(result => {

@@ -27,6 +27,13 @@
         </div>
         <!-- ROW END -->
         <h1>Thành phần hồ sơ</h1>
+        <div class="document-form__process-table">
+            <app-document-table
+              [data]="documentlist"  
+              (onChange)="handleChangeProcessTable($event)"
+              (onDelete)="handleDeleteProcessData($event)"            
+            ></app-document-table>
+        </div>
     </form>
   </div>
   <div class="document-form__footer" *nzModalFooter>
