@@ -1,17 +1,19 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Subject, forkJoin } from 'rxjs';
+import { NzModalService } from 'ng-zorro-antd/modal';
 import findLastIndex from 'lodash/findLastIndex';
 import findIndex from 'lodash/findIndex';
 import * as jexcel from 'jstable-editor/dist/jexcel.js';
-import { NzModalService } from 'ng-zorro-antd/modal';
-import { DocumentFormComponent } from '@app/shared/components';
+
+import { DocumentFormComponent, EmployeeFormComponent } from '@app/shared/components';
 
 import { Declaration } from '@app/core/models';
 import {
   CityService,
   DistrictService,
   DeclarationService,
+  EmployeeService,
   HospitalService,
   NationalityService,
   PeopleService,
@@ -37,12 +39,14 @@ export class IncreaseLaborComponent implements OnInit {
   tableHeaderColumns: any[] = TABLE_HEADER_COLUMNS;
   employeeSelected: any[] = [];
   eventsSubject: Subject<string> = new Subject<string>();
+  employeeSubject: Subject<any> = new Subject<any>();
 
   constructor(
     private formBuilder: FormBuilder,
     private cityService: CityService,
     private districtService: DistrictService,
     private declarationService: DeclarationService,
+    private employeeService: EmployeeService,
     private hospitalService: HospitalService,
     private nationalityService: NationalityService,
     private peopleService: PeopleService,
@@ -203,6 +207,58 @@ export class IncreaseLaborComponent implements OnInit {
     this.updateOrders(declarations);
 
     this.declarations = this.declarationService.updateFormula(declarations, this.tableHeaderColumns);
+  }
+
+  addEmployee() {
+    const modal = this.modalService.create({
+      nzWidth: 980,
+      nzWrapClassName: 'employee-modal',
+      nzTitle: 'Cập nhật thông tin người lao động',
+      nzContent: EmployeeFormComponent,
+      nzOnOk: (data) => console.log('Click ok', data)
+    });
+
+    modal.afterClose.subscribe(result => {
+      this.employeeSubject.next({
+        type: 'add',
+        status: 'success'
+      });
+    });
+  }
+
+  editEmployee() {
+    if (!this.employeeSelected.length) {
+      return;
+    }
+
+    if (this.employeeSelected.length > 1) {
+      return this.modalService.error({
+        nzTitle: 'Có lỗi xảy ra',
+        nzContent: 'Bạn chỉ có thể sửa 1 nhân viên'
+      });
+    }
+
+    const selected = this.employeeSelected[0];
+
+    this.employeeService.getEmployeeById(selected.id).subscribe(employee => {
+      const modal = this.modalService.create({
+        nzWidth: 980,
+        nzWrapClassName: 'employee-modal',
+        nzTitle: 'Chỉnh sửa thông tin người lao động',
+        nzContent: EmployeeFormComponent,
+        nzOnOk: (data) => console.log('Click ok', data),
+        nzComponentParams: {
+          employee
+        }
+      });
+
+      modal.afterClose.subscribe(result => {
+        this.employeeSubject.next({
+          type: 'edit',
+          status: 'success'
+        });
+      });
+    });
   }
 
   private updateOrders(declarations) {

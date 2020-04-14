@@ -182,12 +182,21 @@ export class EmployeeFormComponent implements OnInit {
       relationshipVillageCode: [employee.relationshipVillageCode],
       relationshipMobile: [employee.relationshipMobile]
     });
+
+    // update table data
+    if (employee.families) {
+      this.families = employee.families;
+    }
+
+    if (employee.evolutionIsurrances) {
+      this.evolutionIsurrances = employee.evolutionIsurrances;
+    }
   }
 
   save(): void {
     const formData = this.getData();
 
-    if (this.employee) {
+    if (this.employee.id) {
       this.employeeService.update(this.employee.id, formData).subscribe(() => {
         this.modal.destroy(formData);
       });

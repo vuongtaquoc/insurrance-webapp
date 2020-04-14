@@ -66,7 +66,7 @@ export class DeclarationService {
           });
 
           if (d.hasChildren) {
-            d.declarations.forEach(employee => data.push(this.getLeaf(d, employee, tableHeaderColumns, !employee.employeerId)));
+            d.declarations.forEach(employee => data.push(this.getLeaf(d, employee, tableHeaderColumns, !employee.employeeId)));
           }
         });
 

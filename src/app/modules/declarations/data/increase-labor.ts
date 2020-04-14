@@ -60,7 +60,9 @@ export const TABLE_HEADER_COLUMNS = [{
   type: 'text',
   width: 35,
   title: '(1)',
-  key: 'orders'
+  key: 'orders',
+  readOnly: true,
+  align: 'center'
 }, {
   type: 'text',
   width: 170,
@@ -90,11 +92,10 @@ export const TABLE_HEADER_COLUMNS = [{
   type: 'dropdown',
   width: 70,
   title: '(6)',
-  source: [ 'Chọn', 'tháng/năm', 'năm' ],
+  source: [ { id: '1', name: 'tháng/năm' }, { id: '2', name: 'năm' } ],
   key: 'typeBirthday'
 }, {
-  type: 'calendar',
-  options: { format:'YYYY' },
+  type: 'text',
   width: 80,
   title: '(7)',
   key: 'birthday'
@@ -226,8 +227,7 @@ export const TABLE_HEADER_COLUMNS = [{
   title: '(21.1)',
   key: 'contractNo'
 }, {
-  type: 'calendar',
-  options: { format:'DD/MM/YYYY' },
+  type: 'text',
   width: 100,
   title: '(21.2)',
   key: 'dateSign'

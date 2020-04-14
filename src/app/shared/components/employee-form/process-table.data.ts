@@ -31,16 +31,19 @@ export const TABLE_HEADER_COLUMNS = [{
   title: '(1)',
   key: 'orders',
   align: 'center',
+  readOnly: true,
 }, {
-  type: 'calendar',
+  type: 'text',
   width: 70,
   title: '(2)',
-  key: 'fromDate'
+  key: 'fromDate',
+  isCalendar: true
 }, {
-  type: 'calendar',
+  type: 'text',
   width: 70,
   title: '(3)',
-  key: 'toDate'
+  key: 'toDate',
+  isCalendar: true
 }, {
   type: 'text',
   width: 75,

@@ -24,6 +24,7 @@ export const TABLE_HEADER_COLUMNS = [{
   title: '(1)',
   key: 'orders',
   align: 'center',
+  readOnly: true,
 }, {
   type: 'text',
   width: 180,
@@ -42,11 +43,11 @@ export const TABLE_HEADER_COLUMNS = [{
   source: [ { id: '1', name: 'tháng/năm' }, { id: '2', name: 'năm' } ],
   key: 'typeBirthday'
 }, {
-  //type: 'calendar',
   type: 'text',
   width: 80,
   title: '(5)',
-  key: 'birthday'
+  key: 'birthday',
+  isCalendar: true
 }, {
   type: 'checkbox',
   width: 30,
