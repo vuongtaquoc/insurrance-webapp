@@ -101,8 +101,10 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
     let formulaIgnoreIndexes = [];
     const data = [];
 
+    console.log(this.data)
+
     this.data.forEach((d, index) => {
-      if (d.readonly || d.formula) {
+      if (d.readonly) {
         readonlyIndexes.push(index);
       }
 
@@ -112,6 +114,7 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
         formulaIgnoreIndexes = d.data.reduce(
           (combine, current, i) => {
             if (current) {
+              console.log(current, i)
               return [ ...combine, i ];
             }
 
