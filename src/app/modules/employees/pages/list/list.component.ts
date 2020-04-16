@@ -4,6 +4,8 @@ import { NzModalService } from 'ng-zorro-antd/modal';
 import { EmployeeService } from '@app/core/services';
 import { EmployeeFormComponent } from '@app/shared/components';
 
+import { PAGE_SIZE } from '@app/shared/constant';
+
 @Component({
   selector: 'app-employees-list',
   templateUrl: './list.component.html',
@@ -11,6 +13,10 @@ import { EmployeeFormComponent } from '@app/shared/components';
 })
 export class EmployeeListComponent implements OnInit {
   employees: any[] = [];
+  total: number;
+  skip: number;
+  selectedPage: number = 1;
+  isSpinning: boolean;
 
   constructor(
     private modalService: NzModalService,
@@ -21,12 +27,29 @@ export class EmployeeListComponent implements OnInit {
     this.getEmployees();
   }
 
-  getEmployees() {
+  getEmployees(skip = 0, take = PAGE_SIZE) {
     this.employeeService.getEmployees({
-      keyWord: ''
-    }).subscribe(data => {
-      this.employees = data;
+      keyWord: '',
+      skip,
+      take
+    }).subscribe(res => {
+      this.employees = res.data;
+      this.total = res.total;
+      this.skip = skip;
+
+      if (res.data.length === 0 && this.selectedPage > 1) {
+        this.skip -= PAGE_SIZE;
+        this.selectedPage -= 1;
+
+        this.getEmployees(this.skip);
+      }
     });
+  }
+
+  pageChange({ skip, page }) {
+    this.selectedPage = page;
+
+    this.getEmployees(skip);
   }
 
   add() {
@@ -44,7 +67,11 @@ export class EmployeeListComponent implements OnInit {
   }
 
   edit(employeeId) {
+    this.isSpinning = true;
+
     this.employeeService.getEmployeeById(employeeId).subscribe(employee => {
+      this.isSpinning = false;
+
       const modal = this.modalService.create({
         nzWidth: 980,
         nzWrapClassName: 'employee-modal',
@@ -59,6 +86,12 @@ export class EmployeeListComponent implements OnInit {
       modal.afterClose.subscribe(result => {
         this.getEmployees();
       });
+    });
+  }
+
+  delete(employeeId) {
+    this.employeeService.delete(employeeId).subscribe(() => {
+      this.getEmployees(this.skip);
     });
   }
 }

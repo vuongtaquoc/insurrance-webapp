@@ -40,6 +40,7 @@ export class IncreaseLaborComponent implements OnInit {
   employeeSelected: any[] = [];
   eventsSubject: Subject<string> = new Subject<string>();
   employeeSubject: Subject<any> = new Subject<any>();
+  isSpinning: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -238,9 +239,11 @@ export class IncreaseLaborComponent implements OnInit {
       });
     }
 
+    this.isSpinning = true;
     const selected = this.employeeSelected[0];
 
     this.employeeService.getEmployeeById(selected.id).subscribe(employee => {
+      this.isSpinning = false;
       const modal = this.modalService.create({
         nzWidth: 980,
         nzWrapClassName: 'employee-modal',

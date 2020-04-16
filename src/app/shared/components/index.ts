@@ -4,3 +4,5 @@ export * from './employee-form/family-table.component';
 export * from './document-form/document-form.component';
 export * from './input-label/input-label.component';
 export * from './users-tree/users-tree.component';
+export * from './pagination/pagination.component';
+export * from './button-delete/button-delete.component';

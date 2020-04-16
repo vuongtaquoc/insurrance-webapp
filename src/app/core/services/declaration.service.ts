@@ -6,6 +6,8 @@ import * as jexcel from 'jstable-editor/dist/jexcel.js';
 
 import { ApplicationHttpClient } from '@app/core/http';
 
+import { PAGE_SIZE } from '@app/shared/constant';
+
 @Injectable({ providedIn: 'root' })
 export class DeclarationService {
   constructor(private http: ApplicationHttpClient) {
@@ -39,7 +41,7 @@ export class DeclarationService {
   }
 
   public getDeclarations(filters = {}) {
-    return this.http.get('/declarations', {
+    return this.http.getList('/declarations', {
       params: {
         ...filters
       }
@@ -81,6 +83,10 @@ export class DeclarationService {
 
   public update(id, body, options = {}) {
     return this.http.post(`/declarations/${ id }`, body, options);
+  }
+
+  public delete(id) {
+    return this.http.delete(`/declarations/${ id }`);
   }
 
   public updateFormula(declarations, tableHeaderColumns) {

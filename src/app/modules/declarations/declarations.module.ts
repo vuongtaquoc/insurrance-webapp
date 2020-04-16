@@ -7,6 +7,8 @@ import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzPaginationModule } from 'ng-zorro-antd/pagination';
+import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
 
@@ -43,6 +45,8 @@ import {
     NzFormModule,
     NzInputModule,
     NzIconModule,
+    NzPaginationModule,
+    NzSpinModule,
     NzTableModule,
     NzTabsModule,
     DeclarationsRoutingModule,

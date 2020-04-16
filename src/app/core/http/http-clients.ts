@@ -7,9 +7,9 @@ export interface RequestOptions {
   headers?: HttpHeaders | {
     [header: string]: string | string[];
   };
-  observe?: 'body';
+  observe?: any;
   params?: HttpParams | {
-    [param: string]: string | string[];
+    [param: string]: any;
   };
   reportProgress?: boolean;
   responseType?: 'json';
@@ -28,6 +28,28 @@ export class ApplicationHttpClient {
   get<T>(endpoint: string, options?: RequestOptions): Observable<any> {
     return this.http.get<any>(endpoint, options)
       .pipe(map(data => this.handleResponse(data)));
+  }
+
+  getList<T>(endpoint: string, options?: RequestOptions): Observable<any> {
+    return this.http.get<any>(endpoint, {
+      ...options,
+      observe: 'response'
+    })
+      .pipe(map(res => {
+        const body = res.body;
+
+        if (body.code === 1) {
+          return {
+            total: res.headers.get('X-Collection-Total') || 0,
+            data: body.data
+          }
+        }
+
+        return throwError({
+          code: body.code,
+          message: body.message
+        });
+      }));
   }
 
   post<T>(endpoint: string, body: any | null, options?: RequestOptions): Observable<any> {

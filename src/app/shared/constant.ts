@@ -4,3 +4,4 @@ export const DATE_FORMAT = {
   FULL: 'DD/MM/YYYY'
 };
 
+export const PAGE_SIZE = 10;

@@ -45,12 +45,11 @@
             <a [routerLink]="['/declarations/increase-labor/' + data.id + '/edit']" nz-button nzType="link">
               <i nz-icon nzType="edit" nzTheme="outline"></i>
             </a>
-            <button nz-button nzType="link">
-              <i nz-icon nzType="delete" nzTheme="outline"></i>
-            </button>
+            <app-button-delete [id]="data.id" (delete)="delete($event)"></app-button-delete>
           </td>
         </tr>
       </tbody>
     </nz-table>
+    <app-pagination [total]="total" [selected]="selectedPage" (onPageChange)="pageChange($event)"></app-pagination>
   </div>
 </div>
