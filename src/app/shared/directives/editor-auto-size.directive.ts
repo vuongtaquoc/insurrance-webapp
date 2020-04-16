@@ -1,7 +1,7 @@
 import { AfterViewInit, Directive, ElementRef, OnDestroy, Output, EventEmitter } from '@angular/core';
 
 const GRID_GAP = 10;
-const OFFSET = 30;
+const OFFSET = 12;
 
 @Directive({
   // tslint:disable-next-line:directive-selector

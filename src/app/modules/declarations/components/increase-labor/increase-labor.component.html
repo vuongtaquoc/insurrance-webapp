@@ -1,88 +1,101 @@
 <div class="page-container">
   <div class="page-declarations" cardFullHeight>
-    <div class="page-declarations__sidebar">
-      <div class="page-declarations__group-button">
-        <button nz-button nzType="default"><i nz-icon nzType="search"></i></button>
-        <button nz-button nzType="default"><i nz-icon nzType="sync"></i></button>
-        <button nz-button nzType="default" (click)="addEmployee()"><i nz-icon nzType="plus"></i></button>
-        <button nz-button nzType="default" (click)="editEmployee()"><i nz-icon nzType="edit"></i></button>
-        <button nz-button nzType="default"><i nz-icon nzType="close"></i></button>
-      </div><!-- page-declarations__group-button -->
+    <nz-tabset nzSize="small" nzTabPosition="bottom" nzSelectedIndex="2">
+      <nz-tab nzTitle="Danh mục tài liệu">
+        <div class="page-declarations__container">
 
-      <app-users-tree [events]="employeeSubject.asObservable()" (onSelectEmployees)="handleSelectEmployees($event)"></app-users-tree>
-    </div><!-- page-declarations__sidebar -->
+        </div><!-- page-declarations__container -->
+      </nz-tab><!-- tab 1-->
 
-    <div class="page-declarations__content">
-      <div class="page-declarations__group-button">
-        <button nz-button nzType="default" (click)="handleAddEmployee('I1')">
-          <i nz-icon nzType="arrow-up"></i>Tăng lao động
-        </button>
-        <button nz-button nzType="default" (click)="handleAddEmployee('I2')">
-          <i nz-icon nzType="arrow-up"></i>Tăng BHYT
-        </button>
-        <button nz-button nzType="default" (click)="handleAddEmployee('I3')">
-          <i nz-icon nzType="arrow-up"></i>Tăng BHTN
-        </button>
-        <button nz-button nzType="default" (click)="handleAddEmployee('III')">
-          <i nz-icon nzType="arrow-up"></i>Tăng BHTNLĐ, BNN
-        </button>
-        <button nz-button nzType="default" (click)="handleAddEmployee('II1')">
-          <i nz-icon nzType="arrow-down"></i>Giảm BHYT
-        </button>
-      </div><!-- page-declarations__group-button -->
+      <nz-tab nzTitle="D02-TS">
+        <div class="page-declarations__container">
+          <div class="page-declarations__sidebar">
+            <div class="page-declarations__group-button">
+              <button nz-button nzType="default"><i nz-icon nzType="search"></i></button>
+              <button nz-button nzType="default"><i nz-icon nzType="sync"></i></button>
+              <button nz-button nzType="default" (click)="addEmployee()"><i nz-icon nzType="plus"></i></button>
+              <button nz-button nzType="default" (click)="editEmployee()"><i nz-icon nzType="edit"></i></button>
+              <button nz-button nzType="default"><i nz-icon nzType="close"></i></button>
+            </div><!-- page-declarations__group-button -->
 
-      <h1>600 | Báo tăng lao động</h1>
+            <app-users-tree [events]="employeeSubject.asObservable()" (onSelectEmployees)="handleSelectEmployees($event)"></app-users-tree>
+          </div><!-- page-declarations__sidebar -->
 
-      <div class="page-declarations__title">
-        <h2>Danh sách lao động tham gia BHXH, BHYT, BHTN</h2>
-        <form nz-form [formGroup]="form" class="page-declarations__search">
-          <nz-form-item>
-            <nz-form-label [nzNoColon]="true" [nzSpan]="10">Số</nz-form-label>
-            <nz-form-control [nzSpan]="14">
-              <input nz-input formControlName="number">
-            </nz-form-control>
-          </nz-form-item>
-          <nz-form-item>
-            <nz-form-label [nzNoColon]="true" [nzSpan]="10">Tháng</nz-form-label>
-            <nz-form-control [nzSpan]="14">
-              <input nz-input formControlName="month">
-            </nz-form-control>
-          </nz-form-item>
-          <nz-form-item>
-            <nz-form-label [nzNoColon]="true" [nzSpan]="10">Năm</nz-form-label>
-            <nz-form-control [nzSpan]="14">
-              <input nz-input formControlName="year">
-            </nz-form-control>
-          </nz-form-item>
-        </form>
-      </div><!-- page-declarations__title -->
+          <div class="page-declarations__content">
+            <div class="page-declarations__group-button">
+              <div class="page-declarations__buttons">
+                <button nz-button nzType="default" (click)="handleAddEmployee('I1')">
+                  <i nz-icon nzType="arrow-up"></i>Tăng lao động
+                </button>
+                <button nz-button nzType="default" (click)="handleAddEmployee('I2')">
+                  <i nz-icon nzType="arrow-up"></i>Tăng BHYT
+                </button>
+                <button nz-button nzType="default" (click)="handleAddEmployee('I3')">
+                  <i nz-icon nzType="arrow-up"></i>Tăng BHTN
+                </button>
+                <button nz-button nzType="default" (click)="handleAddEmployee('III')">
+                  <i nz-icon nzType="arrow-up"></i>Tăng BHTNLĐ, BNN
+                </button>
+                <button nz-button nzType="default" (click)="handleAddEmployee('II1')">
+                  <i nz-icon nzType="arrow-down"></i>Giảm BHYT
+                </button>
+              </div>
+              <h1>600 | Báo tăng lao động</h1>
+            </div><!-- page-declarations__group-button -->
 
-      <div class="page-declarations__editor" editorAutoSize>
-        <app-table-editor
-          [nestedHeaders]="tableNestedHeaders"
-          [columns]="tableHeaderColumns"
-          [data]="declarations"
-          [events]="eventsSubject.asObservable()"
-          (onSubmit)="handleSubmit($event)"
-          (onChange)="handleChangeTable($event)"
-          (onDelete)="handleDeleteData($event)"
-        ></app-table-editor>
-      </div><!-- page-declarations__editor -->
+            <div class="page-declarations__title">
+              <h2>Danh sách lao động tham gia BHXH, BHYT, BHTN</h2>
+              <form nz-form [formGroup]="form" class="page-declarations__search">
+                <nz-form-item>
+                  <nz-form-label [nzNoColon]="true" [nzSpan]="10">Số</nz-form-label>
+                  <nz-form-control [nzSpan]="14">
+                    <input nz-input formControlName="number">
+                  </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                  <nz-form-label [nzNoColon]="true" [nzSpan]="10">Tháng</nz-form-label>
+                  <nz-form-control [nzSpan]="14">
+                    <input nz-input formControlName="month">
+                  </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                  <nz-form-label [nzNoColon]="true" [nzSpan]="10">Năm</nz-form-label>
+                  <nz-form-control [nzSpan]="14">
+                    <input nz-input formControlName="year">
+                  </nz-form-control>
+                </nz-form-item>
+              </form>
+            </div><!-- page-declarations__title -->
 
-      <div class="page-declarations__footer">
-          <button nz-button nzType="default" (click)="viewDocument('save')">
-              <i nz-icon nzType="file"></i>Danh sách tài liệu
-        </button>
-        <button nz-button nzType="default" (click)="emitEventToChild('save')">
-              <i nz-icon nzType="export"></i>Xuất tờ khai
-        </button>
-        <button nz-button nzType="default" (click)="emitEventToChild('save')">
-          <i nz-icon nzType="save"></i>Ghi lại
-        </button>
-        <button nz-button nzType="default" (click)="emitEventToChild('save')">
-            <i nz-icon nzType="rollback"></i>Quạy lại
-        </button>
-      </div><!-- page-declarations__footer -->
-    </div><!-- page-declarations__content -->
+            <div class="page-declarations__editor" editorAutoSize>
+              <app-table-editor
+                [nestedHeaders]="tableNestedHeaders"
+                [columns]="tableHeaderColumns"
+                [data]="declarations"
+                [events]="eventsSubject.asObservable()"
+                (onSubmit)="handleSubmit($event)"
+                (onChange)="handleChangeTable($event)"
+                (onDelete)="handleDeleteData($event)"
+              ></app-table-editor>
+            </div><!-- page-declarations__editor -->
+
+            <div class="page-declarations__footer">
+                <button nz-button nzType="default" (click)="viewDocument('save')">
+                    <i nz-icon nzType="file"></i>Danh sách tài liệu
+              </button>
+              <button nz-button nzType="default" (click)="emitEventToChild('save')">
+                    <i nz-icon nzType="export"></i>Xuất tờ khai
+              </button>
+              <button nz-button nzType="default" (click)="emitEventToChild('save')">
+                <i nz-icon nzType="save"></i>Ghi lại
+              </button>
+              <button nz-button nzType="default" (click)="emitEventToChild('save')">
+                  <i nz-icon nzType="rollback"></i>Quạy lại
+              </button>
+            </div><!-- page-declarations__footer -->
+          </div><!-- page-declarations__content -->
+        </div><!-- page-declarations__container -->
+      </nz-tab><!-- tab 2 -->
+    </nz-tabset>
   </div>
 </div>
