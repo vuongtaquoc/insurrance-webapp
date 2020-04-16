@@ -14,6 +14,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
+import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
 import { NzTreeModule } from 'ng-zorro-antd/tree';
 
@@ -66,6 +67,7 @@ import {
     NzModalModule,
     NzSelectModule,
     NzRadioModule,
+    NzCheckboxModule,
     NzTabsModule,
     NzTreeModule
   ],

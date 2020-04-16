@@ -17,8 +17,8 @@ import { DATE_FORMAT } from '@app/shared/constant';
   encapsulation: ViewEncapsulation.None
 })
 export class DocumentFormComponent implements OnInit {
-  @Input() employee: any = {};
-  documentlist: any[] = [];
+  @Input() documentsInfo: any;
+  documentList: any[] = [];
   documentForm: FormGroup;
 
   constructor(
@@ -27,11 +27,12 @@ export class DocumentFormComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    const employee = this.employee;
-    console.log(employee);
-    this.documentlist = employee;
+    this.documentList = this.documentsInfo.documentList;
+    this.updateOrders(this.documentList);
     this.documentForm = this.formBuilder.group({
-      
+      userAction: [this.documentsInfo.userAction],
+      mobile: [this.documentsInfo.mobile],
+      usedocumentDT01: [this.documentsInfo.usedocumentDT01],
     });
   }
 
@@ -49,13 +50,13 @@ export class DocumentFormComponent implements OnInit {
   }
 
   handleDeleteProcessData({ rowNumber, numOfRows }) {
-    const documentlist = [ ...this.documentlist ];
+    const documentList = [ ...this.documentList ];
 
-    documentlist.splice(rowNumber, numOfRows);
+    documentList.splice(rowNumber, numOfRows);
 
-    this.updateOrders(documentlist);
+    this.updateOrders(documentList);
 
-    this.documentlist = documentlist;
+    this.documentList = documentList;
   }
 
   private updateOrders(data) {

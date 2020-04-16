@@ -10,6 +10,7 @@
               <nz-form-control [nzSpan]="14">
                 <input nz-input
                   placeholder="Người nộp"
+                  formControlName="userAction"
                 />
               </nz-form-control>
             </nz-form-item>
@@ -20,6 +21,7 @@
                 <nz-form-control [nzSpan]="14">
                   <input nz-input
                     placeholder="Số điện thoại"
+                    formControlName="mobile"
                   />
                 </nz-form-control>
               </nz-form-item>
@@ -29,15 +31,26 @@
         <h1>Thành phần hồ sơ</h1>
         <div class="document-form__process-table">
             <app-document-table
-              [data]="documentlist"  
+              [data]="documentList"  
               (onChange)="handleChangeProcessTable($event)"
               (onDelete)="handleDeleteProcessData($event)"            
             ></app-document-table>
         </div>
+        <div nz-row [nzGutter]="10">
+          <div nz-col [nzSpan]="12">
+            <nz-form-item>
+              <label nz-checkbox  formControlName="usedocumentDT01">Phát sinh kê khai Mẫu D01T-TS Bảng kê thông tin</label>
+            </nz-form-item>
+          </div>
+        </div>
     </form>
   </div>
   <div class="document-form__footer" *nzModalFooter>
-    <button nz-button nzType="primary" (click)="save()">Lưu</button>
-    <button nz-button nzType="default" (click)="dismiss()">Đóng</button>
+    <button nz-button nzType="primary" (click)="save()">
+      <i nz-icon nzType="export"></i>Lưu
+    </button>
+    <button nz-button nzType="default" (click)="dismiss()">
+      <i nz-icon nzType="rollback"></i>Quay lại
+    </button>
   </div>
 </div>

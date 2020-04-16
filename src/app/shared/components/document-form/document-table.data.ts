@@ -6,7 +6,7 @@ export const TABLE_HEADER_COLUMNS = [{
   align: 'center',
 }, {
   type: 'text',
-  width: 910,
+  width: 920,
   title: 'Loại giấy tờ, biểu mẫu',
   align: 'left',
   key: 'documentName'

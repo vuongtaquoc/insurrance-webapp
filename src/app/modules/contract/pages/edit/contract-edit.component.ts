@@ -118,7 +118,6 @@ export class ContractEditComponent implements OnInit, OnDestroy {
     if(item) {
       this.getDistricts(item);
       this.getIsurranceDepartments(item)
-      console.log('0o');
     }
   }
 

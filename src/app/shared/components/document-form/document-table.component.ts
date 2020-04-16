@@ -48,7 +48,6 @@ export class DocumentTableComponent implements OnInit, OnDestroy, OnChanges, Aft
       tableWidth: '100%',
       tableHeight: '100%',
       columnSorting: false,
-      freezeColumns: 2,
       defaultColAlign: 'left',
       onchange: (instance, cell, c, r, value) => {
         this.onChange.emit({
@@ -74,7 +73,6 @@ export class DocumentTableComponent implements OnInit, OnDestroy, OnChanges, Aft
 
   private updateTable() {
     const data = [];
-
     this.data.forEach((d, index) => {
       const documentRow = [];
       this.columns.forEach(column => {
@@ -90,7 +88,6 @@ export class DocumentTableComponent implements OnInit, OnDestroy, OnChanges, Aft
       }
     }
     this.data = data;
-    console.log(data);
     this.spreadsheet.setData(this.data);
   }
 

@@ -8,7 +8,7 @@ import * as jexcel from 'jstable-editor/dist/jexcel.js';
 
 import { DocumentFormComponent, EmployeeFormComponent } from '@app/shared/components';
 
-import { Declaration } from '@app/core/models';
+import { Declaration, DocumentList } from '@app/core/models';
 import {
   CityService,
   DistrictService,
@@ -19,7 +19,8 @@ import {
   PeopleService,
   WardsService,
   SalaryAreaService,
-  PlanService
+  PlanService,
+  DocumentListService
 } from '@app/core/services';
 
 import { TABLE_NESTED_HEADERS, TABLE_HEADER_COLUMNS } from '@app/modules/declarations/data/increase-labor';
@@ -40,6 +41,7 @@ export class IncreaseLaborComponent implements OnInit {
   employeeSelected: any[] = [];
   eventsSubject: Subject<string> = new Subject<string>();
   employeeSubject: Subject<any> = new Subject<any>();
+  documentList: DocumentList[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -53,7 +55,8 @@ export class IncreaseLaborComponent implements OnInit {
     private wardService: WardsService,
     private salaryAreaService: SalaryAreaService,
     private planService: PlanService,
-    private modalService: NzModalService
+    private modalService: NzModalService,
+    private documentListService: DocumentListService
   ) {
     this.getRecipientsDistrictsByCityCode = this.getRecipientsDistrictsByCityCode.bind(this);
     this.getRecipientsWardsByDistrictCode = this.getRecipientsWardsByDistrictCode.bind(this);
@@ -71,6 +74,10 @@ export class IncreaseLaborComponent implements OnInit {
       year: [ date.getFullYear() ]
     });
 
+    this.documentListService.getDocumentList('600').subscribe(documentList => {
+      this.documentList = documentList;
+    });
+
     forkJoin([
       this.cityService.getCities(),
       this.nationalityService.getNationalities(),
@@ -84,15 +91,13 @@ export class IncreaseLaborComponent implements OnInit {
       this.updateSourceToColumn('recipientsCityCode', cities);
       this.updateSourceToColumn('salaryAreaCode', salaryAreas);
       this.updateSourceToColumn('planCode', plans);
-
-
       // get filter columns
       this.updateFilterToColumn('registerDistrictCode', this.getRegisterDistrictsByCityCode);
       this.updateFilterToColumn('registerWardsCode', this.getRegisterWardsByDistrictCode);
       this.updateFilterToColumn('recipientsDistrictCode', this.getRecipientsDistrictsByCityCode);
       this.updateFilterToColumn('recipientsWardsCode', this.getRecipientsWardsByDistrictCode);
       this.updateFilterToColumn('hospitalFirstRegistCode', this.getHospitalsByCityCode);
-
+      
       if (this.declarationId) {
         this.declarationService.getDeclarationsByDocumentId(this.declarationId, this.tableHeaderColumns).subscribe(declarations => {
           this.updateOrders(declarations);
@@ -368,15 +373,12 @@ export class IncreaseLaborComponent implements OnInit {
   }
 
   viewDocument(documentCode: string) {
-    let employee = [{
-      id: '01',
-      doumentName: 'Phần mềm'
-    },
-    {
-      id: '02',
-      doumentName: 'Phần cứng'
-    }
-  ];
+    const documentsInfo =  {
+      userAction: 'Lê văn đức',
+      mobile: '097865',
+      usedocumentDT01: 1,
+      documentList: this.documentList
+    };
     const modal = this.modalService.create({
       nzWidth: 980,
       nzWrapClassName: 'document-modal',
@@ -384,7 +386,7 @@ export class IncreaseLaborComponent implements OnInit {
       nzContent: DocumentFormComponent,
       nzOnOk: (data) => console.log('Click ok', data),
       nzComponentParams: {
-        employee
+        documentsInfo
       }
     });
 

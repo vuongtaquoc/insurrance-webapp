@@ -20,3 +20,5 @@ export * from './relationship.service';
 export * from './bank.service';
 export * from './department.service';
 export * from './village.service';
+export * from './document-list.service';
+export * from './declaration-file.service';

@@ -12,3 +12,4 @@ export * from './payment-method';
 export * from './department';
 export * from './isurrance-department';
 export * from './plan';
+export * from './document-list';
