@@ -102,7 +102,7 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
     const data = [];
 
     this.data.forEach((d, index) => {
-      if (d.readonly || d.formula) {
+      if (d.readonly) {
         readonlyIndexes.push(index);
       }
 

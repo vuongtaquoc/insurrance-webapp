@@ -8,6 +8,7 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzTableModule } from 'ng-zorro-antd/table';
+import { NzTabsModule } from 'ng-zorro-antd/tabs';
 
 import {
   AuthenticationService,
@@ -43,6 +44,7 @@ import {
     NzInputModule,
     NzIconModule,
     NzTableModule,
+    NzTabsModule,
     DeclarationsRoutingModule,
     SharedModule,
   ],
