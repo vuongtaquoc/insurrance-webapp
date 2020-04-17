@@ -34,9 +34,9 @@
                 <div class="document-form__process-table">
                     <div class="document-form__process-table">
                         <app-document-table
-                          [data]="documentList"  
+                          [data]="documentList"
                           (onChange)="handleChangeProcessTable($event)"
-                          (onDelete)="handleDeleteProcessData($event)"            
+                          (onDelete)="handleDeleteProcessData($event)"
                         ></app-document-table>
                     </div>
                 </div>
@@ -53,17 +53,7 @@
 
         <nz-tab nzTitle="D02-TS">
           <div class="page-declarations__container">
-            <div class="page-declarations__sidebar">
-              <div class="page-declarations__group-button">
-                <button nz-button nzType="default"><i nz-icon nzType="search"></i></button>
-                <button nz-button nzType="default"><i nz-icon nzType="sync"></i></button>
-                <button nz-button nzType="default" (click)="addEmployee()"><i nz-icon nzType="plus"></i></button>
-                <button nz-button nzType="default" (click)="editEmployee()"><i nz-icon nzType="edit"></i></button>
-                <button nz-button nzType="default"><i nz-icon nzType="close"></i></button>
-              </div><!-- page-declarations__group-button -->
-
-              <app-users-tree [events]="employeeSubject.asObservable()" (onSelectEmployees)="handleSelectEmployees($event)"></app-users-tree>
-            </div><!-- page-declarations__sidebar -->
+            <app-declaration-sidebar (onSelectEmployees)="handleSelectEmployees($event)"></app-declaration-sidebar>
 
             <div class="page-declarations__content">
               <div class="page-declarations__group-button">
@@ -141,16 +131,16 @@
           </div><!-- page-declarations__container -->
         </nz-tab><!-- tab 2 -->
         <nz-tab nzTitle="Bảng kê hồ sơ" *ngIf="(usedocumentDT01)">
-            <div class="page-document-list__container"> 
+            <div class="page-document-list__container">
               <form nz-form [formGroup]="documentForm">
                     <h1>600 | Báo tăng lao động</h1>
                     <h2>Bảng kê thôn tin</h2>
 
                     <div class="document-form__process-table">
                         <app-document-list-table
-                          [data]="documentList"  
+                          [data]="documentList"
                           (onChange)="handleChangeProcessTable($event)"
-                          (onDelete)="handleDeleteProcessData($event)"            
+                          (onDelete)="handleDeleteProcessData($event)"
                         ></app-document-list-table>
                     </div>
                 </form>

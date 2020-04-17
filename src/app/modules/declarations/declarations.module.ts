@@ -30,14 +30,20 @@ import { DeclarationsRoutingModule } from './declarations-routing.module';
 import {
   IncreaseLaborListComponent,
   IncreaseLaborAddComponent,
-  IncreaseLaborEditComponent
+  IncreaseLaborEditComponent,
+  RegimeApprovalListComponent
 } from './pages';
 
 import {
   TableEditorComponent,
   DocumentTableComponent,
   DocumentListTableComponent,
-  IncreaseLaborComponent
+  IncreaseLaborComponent,
+  HealthRecoveryComponent,
+  MaternityComponent,
+  RegimeApprovalComponent,
+  SicknessesComponent,
+  DeclarationSidebarComponent
 } from './components';
 
 @NgModule({
@@ -65,7 +71,13 @@ import {
     TableEditorComponent,
     DocumentTableComponent,
     DocumentListTableComponent,
-    IncreaseLaborComponent
+    IncreaseLaborComponent,
+    RegimeApprovalListComponent,
+    HealthRecoveryComponent,
+    MaternityComponent,
+    RegimeApprovalComponent,
+    SicknessesComponent,
+    DeclarationSidebarComponent
   ],
   providers: [
     AuthenticationService,

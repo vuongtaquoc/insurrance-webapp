@@ -1,19 +1,15 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Subject, forkJoin } from 'rxjs';
-import { NzModalService } from 'ng-zorro-antd/modal';
 import findLastIndex from 'lodash/findLastIndex';
 import findIndex from 'lodash/findIndex';
 import * as jexcel from 'jstable-editor/dist/jexcel.js';
-
-import { DocumentFormComponent, EmployeeFormComponent } from '@app/shared/components';
 
 import { Declaration, DocumentList } from '@app/core/models';
 import {
   CityService,
   DistrictService,
   DeclarationService,
-  EmployeeService,
   HospitalService,
   NationalityService,
   PeopleService,
@@ -41,23 +37,19 @@ export class IncreaseLaborComponent implements OnInit {
   tableHeaderColumns: any[] = TABLE_HEADER_COLUMNS;
   employeeSelected: any[] = [];
   eventsSubject: Subject<string> = new Subject<string>();
-  employeeSubject: Subject<any> = new Subject<any>();
   documentList: DocumentList[] = [];
-  isSpinning: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
     private cityService: CityService,
     private districtService: DistrictService,
     private declarationService: DeclarationService,
-    private employeeService: EmployeeService,
     private hospitalService: HospitalService,
     private nationalityService: NationalityService,
     private peopleService: PeopleService,
     private wardService: WardsService,
     private salaryAreaService: SalaryAreaService,
     private planService: PlanService,
-    private modalService: NzModalService,
     private documentListService: DocumentListService
   ) {
     this.getRecipientsDistrictsByCityCode = this.getRecipientsDistrictsByCityCode.bind(this);
@@ -104,7 +96,7 @@ export class IncreaseLaborComponent implements OnInit {
       this.updateFilterToColumn('recipientsDistrictCode', this.getRecipientsDistrictsByCityCode);
       this.updateFilterToColumn('recipientsWardsCode', this.getRecipientsWardsByDistrictCode);
       this.updateFilterToColumn('hospitalFirstRegistCode', this.getHospitalsByCityCode);
-      
+
       if (this.declarationId) {
         this.declarationService.getDeclarationsByDocumentId(this.declarationId, this.tableHeaderColumns).subscribe(declarations => {
           this.updateOrders(declarations);
@@ -115,7 +107,7 @@ export class IncreaseLaborComponent implements OnInit {
         this.declarationService.getDeclarationInitials('600', this.tableHeaderColumns).subscribe(declarations => {
           this.declarations = declarations;
         });
-      }    
+      }
     });
   }
 
@@ -221,60 +213,6 @@ export class IncreaseLaborComponent implements OnInit {
     this.declarations = this.declarationService.updateFormula(declarations, this.tableHeaderColumns);
   }
 
-  addEmployee() {
-    const modal = this.modalService.create({
-      nzWidth: 980,
-      nzWrapClassName: 'employee-modal',
-      nzTitle: 'Cập nhật thông tin người lao động',
-      nzContent: EmployeeFormComponent,
-      nzOnOk: (data) => console.log('Click ok', data)
-    });
-
-    modal.afterClose.subscribe(result => {
-      this.employeeSubject.next({
-        type: 'add',
-        status: 'success'
-      });
-    });
-  }
-
-  editEmployee() {
-    if (!this.employeeSelected.length) {
-      return;
-    }
-
-    if (this.employeeSelected.length > 1) {
-      return this.modalService.error({
-        nzTitle: 'Có lỗi xảy ra',
-        nzContent: 'Bạn chỉ có thể sửa 1 nhân viên'
-      });
-    }
-
-    this.isSpinning = true;
-    const selected = this.employeeSelected[0];
-
-    this.employeeService.getEmployeeById(selected.id).subscribe(employee => {
-      this.isSpinning = false;
-      const modal = this.modalService.create({
-        nzWidth: 980,
-        nzWrapClassName: 'employee-modal',
-        nzTitle: 'Chỉnh sửa thông tin người lao động',
-        nzContent: EmployeeFormComponent,
-        nzOnOk: (data) => console.log('Click ok', data),
-        nzComponentParams: {
-          employee
-        }
-      });
-
-      modal.afterClose.subscribe(result => {
-        this.employeeSubject.next({
-          type: 'edit',
-          status: 'success'
-        });
-      });
-    });
-  }
-
   private updateOrders(declarations) {
     const order: { index: 0, key: string } = { index: 0, key: '' };
 
@@ -322,7 +260,7 @@ export class IncreaseLaborComponent implements OnInit {
     });
   }
 
-  
+
 
   private getRegisterWardsByDistrictCode(instance, cell, c, r, source) {
     const value = instance.jexcel.getValueFromCoords(c - 1, r);

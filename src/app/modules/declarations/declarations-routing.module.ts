@@ -2,7 +2,12 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { LayoutComponent } from '@app/shared/layout';
-import { IncreaseLaborAddComponent, IncreaseLaborListComponent, IncreaseLaborEditComponent } from './pages';
+import {
+  IncreaseLaborAddComponent,
+  IncreaseLaborListComponent,
+  IncreaseLaborEditComponent,
+  RegimeApprovalListComponent
+} from './pages';
 
 const routes: Routes = [
   {
@@ -20,6 +25,10 @@ const routes: Routes = [
       {
         path: 'increase-labor',
         component: IncreaseLaborListComponent
+      },
+      {
+        path: 'regime-approval',
+        component: RegimeApprovalListComponent
       }
     ]
   }
