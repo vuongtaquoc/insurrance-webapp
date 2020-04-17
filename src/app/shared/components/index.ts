@@ -5,3 +5,5 @@ export * from './document-form/document-form.component';
 export * from './document-form/document-table.component';
 export * from './input-label/input-label.component';
 export * from './users-tree/users-tree.component';
+export * from './pagination/pagination.component';
+export * from './button-delete/button-delete.component';

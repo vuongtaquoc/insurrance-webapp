@@ -7,8 +7,12 @@ import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzPaginationModule } from 'ng-zorro-antd/pagination';
+import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
+import { NzGridModule } from 'ng-zorro-antd/grid';
+import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 
 import {
   AuthenticationService,
@@ -31,6 +35,8 @@ import {
 
 import {
   TableEditorComponent,
+  DocumentTableComponent,
+  DocumentListTableComponent,
   IncreaseLaborComponent
 } from './components';
 
@@ -43,8 +49,12 @@ import {
     NzFormModule,
     NzInputModule,
     NzIconModule,
+    NzPaginationModule,
+    NzSpinModule,
     NzTableModule,
     NzTabsModule,
+    NzGridModule,
+    NzCheckboxModule,
     DeclarationsRoutingModule,
     SharedModule,
   ],
@@ -53,6 +63,8 @@ import {
     IncreaseLaborAddComponent,
     IncreaseLaborEditComponent,
     TableEditorComponent,
+    DocumentTableComponent,
+    DocumentListTableComponent,
     IncreaseLaborComponent
   ],
   providers: [

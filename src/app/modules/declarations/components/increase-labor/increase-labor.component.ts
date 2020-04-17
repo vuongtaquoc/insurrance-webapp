@@ -35,6 +35,7 @@ export class IncreaseLaborComponent implements OnInit {
   @Output() onSubmit: EventEmitter<any> = new EventEmitter();
 
   form: FormGroup;
+  documentForm: FormGroup;
   declarations: Declaration[] = [];
   tableNestedHeaders: any[] = TABLE_NESTED_HEADERS;
   tableHeaderColumns: any[] = TABLE_HEADER_COLUMNS;
@@ -42,6 +43,7 @@ export class IncreaseLaborComponent implements OnInit {
   eventsSubject: Subject<string> = new Subject<string>();
   employeeSubject: Subject<any> = new Subject<any>();
   documentList: DocumentList[] = [];
+  isSpinning: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -74,6 +76,11 @@ export class IncreaseLaborComponent implements OnInit {
       year: [ date.getFullYear() ]
     });
 
+    this.documentForm = this.formBuilder.group({
+      userAction: ['Duclv'],
+      mobile:[''],
+      usedocumentDT01:[true],
+    });
     this.documentListService.getDocumentList('600').subscribe(documentList => {
       this.documentList = documentList;
     });
@@ -108,7 +115,7 @@ export class IncreaseLaborComponent implements OnInit {
         this.declarationService.getDeclarationInitials('600', this.tableHeaderColumns).subscribe(declarations => {
           this.declarations = declarations;
         });
-      }
+      }    
     });
   }
 
@@ -243,9 +250,11 @@ export class IncreaseLaborComponent implements OnInit {
       });
     }
 
+    this.isSpinning = true;
     const selected = this.employeeSelected[0];
 
     this.employeeService.getEmployeeById(selected.id).subscribe(employee => {
+      this.isSpinning = false;
       const modal = this.modalService.create({
         nzWidth: 980,
         nzWrapClassName: 'employee-modal',
@@ -313,6 +322,8 @@ export class IncreaseLaborComponent implements OnInit {
     });
   }
 
+  
+
   private getRegisterWardsByDistrictCode(instance, cell, c, r, source) {
     const value = instance.jexcel.getValueFromCoords(c - 1, r);
 
@@ -372,25 +383,29 @@ export class IncreaseLaborComponent implements OnInit {
     });
   }
 
-  viewDocument(documentCode: string) {
-    const documentsInfo =  {
-      userAction: 'Lê văn đức',
-      mobile: '097865',
-      usedocumentDT01: 1,
-      documentList: this.documentList
-    };
-    const modal = this.modalService.create({
-      nzWidth: 980,
-      nzWrapClassName: 'document-modal',
-      nzTitle: 'Danh mục tài liệu',
-      nzContent: DocumentFormComponent,
-      nzOnOk: (data) => console.log('Click ok', data),
-      nzComponentParams: {
-        documentsInfo
-      }
-    });
-
-    modal.afterClose.subscribe(result => {
-    });
+  get usedocumentDT01() {
+    return this.documentForm.get('usedocumentDT01').value;
   }
+
+  // viewDocument(documentCode: string) {
+  //   const documentsInfo =  {
+  //     userAction: 'Lê văn đức',
+  //     mobile: '097865',
+  //     usedocumentDT01: 1,
+  //     documentList: this.documentList
+  //   };
+  //   const modal = this.modalService.create({
+  //     nzWidth: 980,
+  //     nzWrapClassName: 'document-modal',
+  //     nzTitle: 'Danh mục tài liệu',
+  //     nzContent: DocumentFormComponent,
+  //     nzOnOk: (data) => console.log('Click ok', data),
+  //     nzComponentParams: {
+  //       documentsInfo
+  //     }
+  //   });
+
+  //   modal.afterClose.subscribe(result => {
+  //   });
+  // }
 }

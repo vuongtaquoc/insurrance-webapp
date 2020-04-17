@@ -4,6 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NzTableModule } from 'ng-zorro-antd/table';
 
 import { AuthenticationService, EmployeeService } from '@app/core/services';
@@ -19,6 +20,7 @@ import {
     ReactiveFormsModule,
     NzButtonModule,
     NzIconModule,
+    NzSpinModule,
     NzTableModule,
     SharedModule,
     EmployeesRoutingModule,

@@ -33,7 +33,7 @@ export class EmployeeService {
   }
 
   public getEmployees(filters = {}) {
-    return this.http.get('/employees', {
+    return this.http.getList('/employees', {
       params: {
         ...filters
       }
@@ -50,5 +50,9 @@ export class EmployeeService {
 
   public update(id, body, options = {}) {
     return this.http.post(`/employees/${ id }`, body, options);
+  }
+
+  public delete(id) {
+    return this.http.delete(`/employees/${ id }`);
   }
 }

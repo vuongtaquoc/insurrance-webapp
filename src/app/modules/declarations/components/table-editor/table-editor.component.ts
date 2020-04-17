@@ -46,7 +46,6 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
 
   ngAfterViewInit() {
     const containerSize = this.getContainerSize();
-
     this.spreadsheet = jexcel(this.spreadsheetEl.nativeElement, {
       data: [],
       nestedHeaders: this.nestedHeaders,
@@ -65,6 +64,7 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
         });
 
         const column = this.columns[c];
+        console.log(column);
 
         if (column.key === 'typeBirthday') {
           const nextColumn = jexcel.getColumnNameFromId([Number(c) + 1, r]);

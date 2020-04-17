@@ -15,6 +15,7 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
+import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
 import { NzTreeModule } from 'ng-zorro-antd/tree';
 
@@ -43,6 +44,8 @@ import {
   EmployeeFamilyTableComponent,
   DocumentFormComponent,
   DocumentTableComponent,
+  PaginationComponent,
+  ButtonDeleteComponent
 } from './components';
 
 import {
@@ -68,6 +71,7 @@ import {
     NzSelectModule,
     NzRadioModule,
     NzCheckboxModule,
+    NzPaginationModule,
     NzTabsModule,
     NzTreeModule
   ],
@@ -81,6 +85,8 @@ import {
     DocumentTableComponent,
     InputLabelComponent,
     UsersTreeComponent,
+    PaginationComponent,
+    ButtonDeleteComponent,
     CardFullHeightDirective,
     EditorAutoSizeDirective
   ],
@@ -92,6 +98,8 @@ import {
     DocumentFormComponent,
     InputLabelComponent,
     UsersTreeComponent,
+    PaginationComponent,
+    ButtonDeleteComponent,
     CardFullHeightDirective,
     EditorAutoSizeDirective
   ],
