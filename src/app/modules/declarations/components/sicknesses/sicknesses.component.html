@@ -1,0 +1,20 @@
+<div class="page-declarations__container">
+  <app-declaration-sidebar (onSelectEmployees)="handleSelectEmployees($event)"></app-declaration-sidebar>
+
+  <div class="page-declarations__content">
+    <div class="page-declarations__group-button">
+      <div class="page-declarations__buttons">
+        <button nz-button nzType="default" (click)="handleAddEmployee('I1')">
+          <i nz-icon nzType="arrow-up"></i>Phần I
+        </button>
+        <button nz-button nzType="default" (click)="handleAddEmployee('I2')">
+          <i nz-icon nzType="arrow-up"></i>Phần II
+        </button>
+      </div><!-- page-declarations__group-button -->
+
+      <h1>630 | Xét duyệt chế độ ốm đau, Thai sản và Dưỡng sức, phục hồi sức khỏe</h1>
+    </div><!-- page-declarations__group-button -->
+
+    <app-regime-approval-form></app-regime-approval-form>
+  </div><!-- page-declarations__content -->
+</div>

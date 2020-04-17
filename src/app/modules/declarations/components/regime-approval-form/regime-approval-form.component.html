@@ -1,0 +1,71 @@
+<form nz-form [formGroup]="form" [nzNoColon]="true" class="regime-approval-form">
+  <div nz-row [nzGutter]="6">
+    <div nz-col [nzSpan]="3">
+      <nz-form-item>
+        <nz-form-label [nzRequired]="true" [nzSpan]="10">Đợt</nz-form-label>
+        <nz-form-control [nzSpan]="14">
+          <input nz-input nzSize="small" formControlName="batch">
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div nz-col [nzSpan]="3">
+      <nz-form-item>
+        <nz-form-label [nzRequired]="true" [nzSpan]="13">Tháng</nz-form-label>
+        <nz-form-control [nzSpan]="11">
+          <input nz-input nzSize="small" formControlName="month">
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div nz-col [nzSpan]="3">
+      <nz-form-item>
+        <nz-form-label [nzRequired]="true" [nzSpan]="12">Năm</nz-form-label>
+        <nz-form-control [nzSpan]="12">
+          <input nz-input nzSize="small" formControlName="year">
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div nz-col [nzSpan]="8">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="14">Số hiệu tài khoản của đơn vị</nz-form-label>
+        <nz-form-control [nzSpan]="10">
+          <input nz-input nzSize="small" formControlName="accountNumberUnit">
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div nz-col [nzSpan]="7">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="12">Mở tại</nz-form-label>
+        <nz-form-control [nzSpan]="12">
+          <input nz-input nzSize="small" formControlName="openAddress">
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+
+  <div nz-row [nzGutter]="6">
+    <div nz-col [nzSpan]="17">
+      <nz-form-item>
+        <nz-form-label class="text-left" [nzSpan]="4">Chi nhánh</nz-form-label>
+        <nz-form-control [nzSpan]="20">
+          <input nz-input nzSize="small" formControlName="branch">
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div nz-col [nzSpan]="7">
+      <nz-form-item>
+        <nz-form-label [nzRequired]="true" [nzSpan]="12">Gửi kèm hồ sơ giấy</nz-form-label>
+        <nz-form-control [nzSpan]="12">
+          <nz-select formControlName="paperRecord" nzPlaceHolder="Chọn" nzSize="small">
+            <nz-option nzValue="1" nzLabel="Không gửi kèm hồ sơ giấy"></nz-option>
+            <nz-option nzValue="2" nzLabel="Gửi kèm hồ sơ giấy" nzDisabled></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+</form>

@@ -7,3 +7,4 @@ export * from './health-recovery/health-recovery.component';
 export * from './maternity/maternity.component';
 export * from './sicknesses/sicknesses.component';
 export * from './declaration-sidebar/declaration-sidebar.component';
+export * from './regime-approval-form/regime-approval-form.component';

@@ -8,6 +8,7 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzPaginationModule } from 'ng-zorro-antd/pagination';
+import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
@@ -31,7 +32,8 @@ import {
   IncreaseLaborListComponent,
   IncreaseLaborAddComponent,
   IncreaseLaborEditComponent,
-  RegimeApprovalListComponent
+  RegimeApprovalListComponent,
+  RegimeApprovalAddComponent
 } from './pages';
 
 import {
@@ -42,8 +44,9 @@ import {
   HealthRecoveryComponent,
   MaternityComponent,
   RegimeApprovalComponent,
+  RegimeApprovalFormComponent,
   SicknessesComponent,
-  DeclarationSidebarComponent
+  DeclarationSidebarComponent,
 } from './components';
 
 @NgModule({
@@ -56,6 +59,7 @@ import {
     NzInputModule,
     NzIconModule,
     NzPaginationModule,
+    NzSelectModule,
     NzSpinModule,
     NzTableModule,
     NzTabsModule,
@@ -73,9 +77,11 @@ import {
     DocumentListTableComponent,
     IncreaseLaborComponent,
     RegimeApprovalListComponent,
+    RegimeApprovalAddComponent,
     HealthRecoveryComponent,
     MaternityComponent,
     RegimeApprovalComponent,
+    RegimeApprovalFormComponent,
     SicknessesComponent,
     DeclarationSidebarComponent
   ],
