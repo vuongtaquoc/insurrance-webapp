@@ -8,3 +8,4 @@ export * from './maternity/maternity.component';
 export * from './sicknesses/sicknesses.component';
 export * from './declaration-sidebar/declaration-sidebar.component';
 export * from './regime-approval-form/regime-approval-form.component';
+export * from './table-editor/regime-approval-editor.component';

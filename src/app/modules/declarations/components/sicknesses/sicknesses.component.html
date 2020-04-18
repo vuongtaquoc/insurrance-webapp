@@ -1,20 +1,48 @@
-<div class="page-declarations__container">
+<div class="page-regime-approval__container">
   <app-declaration-sidebar (onSelectEmployees)="handleSelectEmployees($event)"></app-declaration-sidebar>
 
-  <div class="page-declarations__content">
-    <div class="page-declarations__group-button">
-      <div class="page-declarations__buttons">
+  <div class="page-regime-approval__content">
+    <div class="page-regime-approval__group-button">
+      <div class="page-regime-approval__buttons">
         <button nz-button nzType="default" (click)="handleAddEmployee('I1')">
           <i nz-icon nzType="arrow-up"></i>Phần I
         </button>
         <button nz-button nzType="default" (click)="handleAddEmployee('I2')">
           <i nz-icon nzType="arrow-up"></i>Phần II
         </button>
-      </div><!-- page-declarations__group-button -->
+      </div><!-- page-regime-approval__group-button -->
 
       <h1>630 | Xét duyệt chế độ ốm đau, Thai sản và Dưỡng sức, phục hồi sức khỏe</h1>
-    </div><!-- page-declarations__group-button -->
+    </div><!-- page-regime-approval__group-button -->
 
     <app-regime-approval-form></app-regime-approval-form>
-  </div><!-- page-declarations__content -->
+
+    <div class="page-regime-approval__editor">
+      <nz-collapse [nzBordered]="false" [ngClass]="{
+        'collapse-active-all': panel.part1.active && panel.part2.active,
+        'collapse-active-part1': panel.part1.active && !panel.part2.active,
+        'collapse-active-part2': !panel.part1.active && panel.part2.active
+      }">
+        <nz-collapse-panel class="collapse-part1" nzHeader="Phần 1: Danh sách hưởng chế độ mới phát sinh" [nzActive]="panel.part1.active" (nzActiveChange)="collapseChange($event, 'part1')">
+          <div class="page-regime-approval__part1">
+            <app-regime-approval-editor
+              [data]="sickesses.part1.table"
+              [nestedHeaders]="sickessesHeaders.part1.nested"
+              [columns]="sickessesHeaders.part1.columns"
+            ></app-regime-approval-editor>
+          </div>
+        </nz-collapse-panel>
+
+        <nz-collapse-panel class="collapse-part2" nzHeader="Phần 2: Danh sách đề nghị điều chỉnh số đã được quyết định" [nzActive]="panel.part2.active" (nzActiveChange)="collapseChange($event, 'part2')">
+          <div class="page-regime-approval__part2">
+            <app-regime-approval-editor
+              [data]="sickesses.part2.table"
+              [nestedHeaders]="sickessesHeaders.part2.nested"
+              [columns]="sickessesHeaders.part2.columns"
+            ></app-regime-approval-editor>
+          </div>
+        </nz-collapse-panel>
+      </nz-collapse>
+    </div><!-- page-regime-approval__editor -->
+  </div><!-- page-regime-approval__content -->
 </div>

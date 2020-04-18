@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzCollapseModule } from 'ng-zorro-antd/collapse';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
@@ -40,13 +41,14 @@ import {
   TableEditorComponent,
   DocumentTableComponent,
   DocumentListTableComponent,
+  DeclarationSidebarComponent,
   IncreaseLaborComponent,
   HealthRecoveryComponent,
   MaternityComponent,
   RegimeApprovalComponent,
   RegimeApprovalFormComponent,
   SicknessesComponent,
-  DeclarationSidebarComponent,
+  RegimeApprovalEditorComponent
 } from './components';
 
 @NgModule({
@@ -54,6 +56,7 @@ import {
     CommonModule,
     ReactiveFormsModule,
     NzButtonModule,
+    NzCollapseModule,
     NzDatePickerModule,
     NzFormModule,
     NzInputModule,
@@ -75,6 +78,7 @@ import {
     TableEditorComponent,
     DocumentTableComponent,
     DocumentListTableComponent,
+    DeclarationSidebarComponent,
     IncreaseLaborComponent,
     RegimeApprovalListComponent,
     RegimeApprovalAddComponent,
@@ -83,7 +87,7 @@ import {
     RegimeApprovalComponent,
     RegimeApprovalFormComponent,
     SicknessesComponent,
-    DeclarationSidebarComponent
+    RegimeApprovalEditorComponent
   ],
   providers: [
     AuthenticationService,

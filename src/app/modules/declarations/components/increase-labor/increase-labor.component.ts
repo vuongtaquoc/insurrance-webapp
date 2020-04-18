@@ -25,7 +25,7 @@ import { TABLE_NESTED_HEADERS, TABLE_HEADER_COLUMNS } from '@app/modules/declara
 @Component({
   selector: 'app-declaration-increase-labor',
   templateUrl: './increase-labor.component.html',
-  styleUrls: ['./increase-labor.component.less']
+  styleUrls: [ './increase-labor.component.less' ]
 })
 export class IncreaseLaborComponent implements OnInit {
   @Input() declarationId: string;

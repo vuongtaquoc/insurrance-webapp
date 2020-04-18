@@ -16,12 +16,13 @@ import {
   PeopleService,
   PlanService,
   PaymentStatusServiced,
-  RelationshipService,  
+  RelationshipService,
   BankService,
   DepartmentService,
   VillageService,
   DocumentListService,
-  DeclarationFileService
+  DeclarationFileService,
+  SicknessesService
 } from './services';
 
 @NgModule({
@@ -48,7 +49,8 @@ import {
     DepartmentService,
     VillageService,
     DocumentListService,
-    DeclarationFileService
+    DeclarationFileService,
+    SicknessesService
   ],
   declarations: []
 })

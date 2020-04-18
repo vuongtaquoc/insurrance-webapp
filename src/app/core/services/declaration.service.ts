@@ -19,7 +19,7 @@ export class DeclarationService {
         const data = [];
 
         declarations.forEach((d, index) => {
-          const hasFormula = d.code.indexOf('SUM') > -1;
+          const hasFormula = d.code.indexOf('SUM') > -1 || d.code.indexOf('Sum') > -1;
 
           data.push({
             readonly: !hasFormula,
