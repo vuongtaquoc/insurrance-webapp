@@ -35,6 +35,7 @@
                     <div class="document-form__process-table">
                         <app-document-table
                           [data]="documentList"
+                          [events]="eventsSubject.asObservable()"
                           (onChange)="handleChangeProcessTable($event)"
                           (onDelete)="handleDeleteProcessData($event)"
                         ></app-document-table>

@@ -1,5 +1,5 @@
 import { Component, Input, Output, OnInit, OnDestroy, OnChanges, AfterViewInit, ViewChild, EventEmitter, ViewEncapsulation, ElementRef } from '@angular/core';
-import { Subscription, Observable, forkJoin } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import * as jexcel from 'jstable-editor/dist/jexcel.js';
 import 'jsuites/dist/jsuites.js';
 
@@ -14,6 +14,7 @@ import { TABLE_HEADER_COLUMNS ,TABLE_NESTED_HEADERS } from '@app/modules/declara
 export class DocumentListTableComponent implements OnInit, OnDestroy, OnChanges, AfterViewInit {
   @ViewChild('spreadsheetDocumentList', { static: true }) spreadsheetEl;
   @Input() data: any[] = [];
+  @Input() events: Observable<void>;
   @Input() nestedHeaders: any[] = TABLE_NESTED_HEADERS;
   @Input() columns: any[] = TABLE_HEADER_COLUMNS;
   @Output() onChange: EventEmitter<any> = new EventEmitter();
@@ -21,12 +22,14 @@ export class DocumentListTableComponent implements OnInit, OnDestroy, OnChanges,
   @Output() onDelete: EventEmitter<any> = new EventEmitter();
 
   spreadsheet: any;
-  isInitialized = false;
+  private eventsSubscription: Subscription;
 
   constructor(private element: ElementRef) {}
 
   ngOnInit() {
+    this.eventsSubscription = this.events.subscribe((type) => this.handleEvent(type));
   }
+  
 
   ngOnDestroy() {
     jexcel.destroy(this.spreadsheetEl.nativeElement, true);
@@ -102,5 +105,54 @@ export class DocumentListTableComponent implements OnInit, OnDestroy, OnChanges,
       width: parent.offsetWidth,
       height: parent.offsetHeight
     };
+  }
+
+  //Get data form execl to Object Document list
+  private handleEvent(type) {
+    const data = this.spreadsheet.getJson();
+    const declarations = {};
+
+    data.forEach(d => {
+      if (!d.options.hasLeaf && !d.options.isLeaf) {
+        declarations[d.options.key] = { ...d.origin };
+      } else if (d.options.hasLeaf) {
+        declarations[d.options.key] = {
+          ...d.origin,
+          declarations: []
+        };
+      } else if (d.options.isLeaf) {
+        declarations[d.options.parentKey].declarations.push(this.arrayToProps(d, this.columns));
+      }
+    });
+
+    this.onSubmit.emit({
+      type,
+      data: Object.values(declarations)
+    });
+  }
+
+  private arrayToProps(array, columns) {
+    const object: any = Object.keys(array).reduce(
+      (combine, current) => {
+        const column = columns[current];
+
+        if (current === 'origin' || current === 'options' || !column.key) {
+          return { ...combine };
+        }
+
+        if (column.type === 'numberic') {
+          return { ...combine, [ column.key ]: array[current].toString().split(' ').join('') };
+        }
+
+        return { ...combine, [ column.key ]: column.key === 'gender' ? +array[current] : array[current] };
+      },
+      {}
+    );
+
+    if (array.origin.id) {
+      object.employeerId = array.origin.id;
+    }
+
+    return object;
   }
 }

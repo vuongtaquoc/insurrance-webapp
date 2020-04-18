@@ -16,7 +16,8 @@ import {
   WardsService,
   SalaryAreaService,
   PlanService,
-  DocumentListService
+  DocumentListService,
+  AuthenticationService
 } from '@app/core/services';
 
 import { TABLE_NESTED_HEADERS, TABLE_HEADER_COLUMNS } from '@app/modules/declarations/data/increase-labor';
@@ -50,7 +51,8 @@ export class IncreaseLaborComponent implements OnInit {
     private wardService: WardsService,
     private salaryAreaService: SalaryAreaService,
     private planService: PlanService,
-    private documentListService: DocumentListService
+    private documentListService: DocumentListService,
+    private authenticationService: AuthenticationService,
   ) {
     this.getRecipientsDistrictsByCityCode = this.getRecipientsDistrictsByCityCode.bind(this);
     this.getRecipientsWardsByDistrictCode = this.getRecipientsWardsByDistrictCode.bind(this);
@@ -61,7 +63,7 @@ export class IncreaseLaborComponent implements OnInit {
 
   ngOnInit() {
     const date = new Date();
-
+    const currentCredentials = this.authenticationService.currentCredentials;
     this.form = this.formBuilder.group({
       number: [ '1' ],
       month: [ date.getMonth() + 1 ],
@@ -69,8 +71,8 @@ export class IncreaseLaborComponent implements OnInit {
     });
 
     this.documentForm = this.formBuilder.group({
-      userAction: ['Duclv'],
-      mobile:[''],
+      userAction: [currentCredentials.companyInfo.delegate],
+      mobile:[currentCredentials.companyInfo.mobile],
       usedocumentDT01:[true],
     });
     this.documentListService.getDocumentList('600').subscribe(documentList => {
@@ -166,13 +168,15 @@ export class IncreaseLaborComponent implements OnInit {
     if (event.type === 'save') {
       const { number, month, year } = this.form.value;
 
+      //Doan nay anh muôn lây dữ liệu của thằng bảng kê vào object trước khi submit;
       this.onSubmit.emit({
         documentType: 600,
         documentNo: number,
         documentName: 'Báo tăng lao động',
-        createDate: `01/${ month }/${ year }`,
+        createDate: `01/0${ month }/${ year }`,
         documentStatus: 0,
-        documentDetail: event.data
+        documentDetail: event.data,
+        //infomations: [] là list dữ liệu lấy bên table document list
       });
     }
   }

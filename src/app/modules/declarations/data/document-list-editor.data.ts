@@ -38,45 +38,48 @@ export const TABLE_HEADER_COLUMNS = [{
   title: '(4)',
   key: 'isurranceNo'
 }, {
-  type: 'numberic',
+  type: 'text',
   width: 170,
   title: '(5)',
-  key: 'isurranceCode'
+  key: 'documentType'
 }, {
   type: 'text',
   width: 123,
   title: '(6)',
   align: 'left',
+  key: 'documentNo'
 }, {
-  type: 'text',
+  type: 'calendar',
+  options: { format:'DD/MM/YYYY' },
   width: 100,
   title: '(7)',
   align: 'left',
-  key: 'typeBirthday'
+  key: 'dateRelease'
 }, {
-  type: 'text',
+  type: 'calendar',
+  options: { format:'DD/MM/YYYY' },
   width:120,
   title: '(8)',
   align: 'left',
-  key: 'birthday'
+  key: 'dateEffective'
 }, {
   type: 'text',
   width: 155,
   title: '(9)',
   align: 'left',
-  key: 'gender'
+  key: 'companyRelease'
 }, {
   type: 'text',
   width: 220,
   title: '(10)',
-  source: [ 'Chọn' ],
   align: 'left',
-  key: 'peopleCode'
+  wordWrap: true,
+  key: 'documentNote'
 }, {
   type: 'text',
   width: 225,
   title: '(11)',
   wordWrap: true,
   align: 'left',
-  key: 'nationalityCode'
+  key: 'documentAppraisal'
 }];
