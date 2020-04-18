@@ -39,6 +39,8 @@ export class IncreaseLaborComponent implements OnInit {
   employeeSelected: any[] = [];
   eventsSubject: Subject<string> = new Subject<string>();
   documentList: DocumentList[] = [];
+  informationList: any;
+  declaration: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -164,6 +166,10 @@ export class IncreaseLaborComponent implements OnInit {
     this.eventsSubject.next(type);
   }
 
+  handleSubmitDocumentList(event) {
+
+  }
+
   handleSubmit(event) {
     if (event.type === 'save') {
       const { number, month, year } = this.form.value;
@@ -176,7 +182,7 @@ export class IncreaseLaborComponent implements OnInit {
         createDate: `01/0${ month }/${ year }`,
         documentStatus: 0,
         documentDetail: event.data,
-        //infomations: [] là list dữ liệu lấy bên table document list
+        infomations: this.informationList,
       });
     }
   }
@@ -329,12 +335,40 @@ export class IncreaseLaborComponent implements OnInit {
     return this.documentForm.get('usedocumentDT01').value;
   }
 
-  handleChangeProcessTableDocumentList({ instance, cell, c, r, records }) { 
+  
+  handleChangeDataDocumentList({ records, columns }) {
+    const informationList = [];
+    records.forEach(record => {
+      informationList.push(this.arrayToProps(record, columns));
+    });
+
+    this.informationList = informationList;
+    console.log(this.informationList);
   }
 
   handleDeleteProcessDataDocumentList({ rowNumber, numOfRows }){ 
   }
 
+  private arrayToProps(array, columns) {
+    const object: any = Object.keys(array).reduce(
+      (combine, current) => {
+        const column = columns[current];
+
+        if (current === 'origin' || current === 'options' || !column.key) {
+          return { ...combine };
+        }
+
+        if (column.type === 'numberic') {
+          return { ...combine, [ column.key ]: array[current].toString().split(' ').join('') };
+        }
+
+        return { ...combine, [ column.key ]: column.key === 'gender' ? +array[current] : array[current] };
+      },
+      {}
+    );
+
+    return object;
+  }
   // viewDocument(documentCode: string) {
   //   const documentsInfo =  {
   //     userAction: 'Lê văn đức',

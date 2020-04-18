@@ -138,9 +138,9 @@
 
                     <div class="document-form__process-table">
                         <app-document-list-table
-                          [data]="documentList"
+                          [data]="informationList"
                           [events]="eventsSubject.asObservable()"
-                          (onChange)="handleChangeProcessTableDocumentList($event)"
+                          (onChange)="handleChangeDataDocumentList($event)"
                           (onDelete)="handleDeleteProcessDataDocumentList($event)"
                         ></app-document-list-table>
                     </div>
