@@ -27,7 +27,7 @@ export class DocumentListTableComponent implements OnInit, OnDestroy, OnChanges,
   constructor(private element: ElementRef) {}
 
   ngOnInit() {
-    this.eventsSubscription = this.events.subscribe((type) => this.handleEvent(type));
+   this.eventsSubscription = this.events.subscribe((type) => this.handleEvent(type));
   }
   
 
@@ -110,24 +110,28 @@ export class DocumentListTableComponent implements OnInit, OnDestroy, OnChanges,
   //Get data form execl to Object Document list
   private handleEvent(type) {
     const data = this.spreadsheet.getJson();
-    const declarations = {};
+    const declarations = [];
 
-    data.forEach(d => {
-      if (!d.options.hasLeaf && !d.options.isLeaf) {
-        declarations[d.options.key] = { ...d.origin };
-      } else if (d.options.hasLeaf) {
-        declarations[d.options.key] = {
-          ...d.origin,
-          declarations: []
-        };
-      } else if (d.options.isLeaf) {
-        declarations[d.options.parentKey].declarations.push(this.arrayToProps(d, this.columns));
-      }
+    data.forEach(d => { 
+      declarations.push(this.arrayToProps(data, this.columns))
     });
+
+    // data.forEach(d => {
+    //   if (!d.options.hasLeaf && !d.options.isLeaf) {
+    //     declarations[d.options.key] = { ...d.origin };
+    //   } else if (d.options.hasLeaf) {
+    //     declarations[d.options.key] = {
+    //       ...d.origin,
+    //       declarations: []
+    //     };
+    //   } else if (d.options.isLeaf) {
+    //     declarations[d.options.parentKey].declarations.push(this.arrayToProps(d, this.columns));
+    //   }
+    // });
 
     this.onSubmit.emit({
       type,
-      data: Object.values(declarations)
+      data: declarations
     });
   }
 
@@ -149,9 +153,9 @@ export class DocumentListTableComponent implements OnInit, OnDestroy, OnChanges,
       {}
     );
 
-    if (array.origin.id) {
-      object.employeerId = array.origin.id;
-    }
+    // if (array.origin.id) {
+    //   object.employeerId = array.origin.id;
+    // }
 
     return object;
   }

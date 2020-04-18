@@ -329,6 +329,12 @@ export class IncreaseLaborComponent implements OnInit {
     return this.documentForm.get('usedocumentDT01').value;
   }
 
+  handleChangeProcessTableDocumentList({ instance, cell, c, r, records }) { 
+  }
+
+  handleDeleteProcessDataDocumentList({ rowNumber, numOfRows }){ 
+  }
+
   // viewDocument(documentCode: string) {
   //   const documentsInfo =  {
   //     userAction: 'Lê văn đức',
