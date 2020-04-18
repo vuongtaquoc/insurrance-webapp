@@ -35,7 +35,6 @@
                     <div class="document-form__process-table">
                         <app-document-table
                           [data]="documentList"
-                          [events]="eventsSubject.asObservable()"
                           (onChange)="handleChangeProcessTable($event)"
                           (onDelete)="handleDeleteProcessData($event)"
                         ></app-document-table>
@@ -140,8 +139,9 @@
                     <div class="document-form__process-table">
                         <app-document-list-table
                           [data]="documentList"
-                          (onChange)="handleChangeProcessTable($event)"
-                          (onDelete)="handleDeleteProcessData($event)"
+                          [events]="eventsSubject.asObservable()"
+                          (onChange)="handleChangeProcessTableDocumentList($event)"
+                          (onDelete)="handleDeleteProcessDataDocumentList($event)"
                         ></app-document-list-table>
                     </div>
                 </form>
