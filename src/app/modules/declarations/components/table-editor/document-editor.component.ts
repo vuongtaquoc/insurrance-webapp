@@ -34,7 +34,7 @@ export class DocumentTableComponent implements OnInit, OnDestroy, OnChanges, Aft
 
   ngOnChanges(changes) {
     if (changes.data && changes.data.currentValue.length) {
-      // this.updateTable();
+      this.updateTable();
     }
   }
 
@@ -73,7 +73,6 @@ export class DocumentTableComponent implements OnInit, OnDestroy, OnChanges, Aft
 
   private updateTable() {
     const data = [];
-    console.log(this.data);
     this.data.forEach((d, index) => {
       const documentRow = [];
       this.columns.forEach(column => {

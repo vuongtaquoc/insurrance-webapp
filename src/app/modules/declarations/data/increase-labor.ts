@@ -111,7 +111,6 @@ export const TABLE_HEADER_COLUMNS = [{
   width: 75,
   title: '(9)',
   source: [ 'Chọn' ],
-  align: 'center',
   key: 'peopleCode'
 }, {
   type: 'dropdown',
@@ -119,30 +118,34 @@ export const TABLE_HEADER_COLUMNS = [{
   width: 100,
   title: '(10)',
   source: [ 'Chọn' ],
-  align: 'center',
+  align: 'left',
   key: 'nationalityCode'
 }, {
   type: 'numberic',
   width: 135,
   title: '(11)',
-  align: 'center',
+  align: 'left',
   key: 'identityCar'
+  
 }, {
   type: 'numberic',
   width: 135,
   title: '(12)',
+  align: 'left',
   key: 'mobile'
 }, {
   type: 'numberic',
   autocomplete: true,
   width: 135,
   title: '(13)',
+  align: 'left',
   key: 'familyNo'
 }, {
   type: 'dropdown',
   width: 145,
   title: '(14.1)',
   source: [ 'Chọn' ],
+  align: 'left',
   key: 'registerCityCode'
 }, {
   type: 'dropdown',
@@ -150,6 +153,7 @@ export const TABLE_HEADER_COLUMNS = [{
   width: 145,
   source: [ ],
   title: '(14.2)',
+  align: 'left',
   key: 'registerDistrictCode',
   defaultLoad: true
 }, {
@@ -158,6 +162,7 @@ export const TABLE_HEADER_COLUMNS = [{
   width: 175,
   title: '(14.3)',
   source: [  ],
+  align: 'left',
   key: 'registerWardsCode',
   defaultLoad: true
 }, {
@@ -165,6 +170,7 @@ export const TABLE_HEADER_COLUMNS = [{
   autocomplete: true,
   width: 145,
   title: '(15.1)',
+  align: 'left',
   source: [ 'Chọn' ],
   key: 'recipientsCityCode'
 }, {
@@ -172,6 +178,7 @@ export const TABLE_HEADER_COLUMNS = [{
   autocomplete: true,
   width: 145,
   title: '(15.2)',
+  align: 'left',
   source: [ ],
   key: 'recipientsDistrictCode',
   defaultLoad: true
@@ -180,6 +187,7 @@ export const TABLE_HEADER_COLUMNS = [{
   autocomplete: true,
   width: 175,
   title: '(15.3)',
+  align: 'left',
   source: [ ],
   key: 'recipientsWardsCode',
   defaultLoad: true
@@ -187,6 +195,8 @@ export const TABLE_HEADER_COLUMNS = [{
   type: 'text',
   width: 165,
   title: '(15.4)',
+  align: 'left',
+  wordWrap: true,
   key: 'recipientsAddress'
 }, {
   type: 'dropdown',
@@ -207,6 +217,8 @@ export const TABLE_HEADER_COLUMNS = [{
   type: 'text',
   width: 300,
   title: '(17.2)',
+  align: 'left',
+  wordWrap: true,
   key: 'hospitalFirstRegistName'
 }, {
   type: 'text',
@@ -272,13 +284,13 @@ export const TABLE_HEADER_COLUMNS = [{
   sum: true,
   key: 'allowanceLevel'
 }, {
-  type: 'text',
+  type: 'numberic',
   width: 70,
   title: '(22.6)',
   key: 'allowanceSeniority',
   mask: '##%'
 }, {
-  type: 'text',
+  type: 'numberic',
   width: 70,
   title: '(22.7)',
   key: 'allowanceSeniorityJob',
