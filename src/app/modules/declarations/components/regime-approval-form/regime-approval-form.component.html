@@ -2,7 +2,7 @@
   <div nz-row [nzGutter]="6">
     <div nz-col [nzSpan]="3">
       <nz-form-item>
-        <nz-form-label [nzRequired]="true" [nzSpan]="10">Đợt</nz-form-label>
+        <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Đợt</nz-form-label>
         <nz-form-control [nzSpan]="14">
           <input nz-input nzSize="small" formControlName="batch">
         </nz-form-control>
@@ -11,7 +11,7 @@
 
     <div nz-col [nzSpan]="3">
       <nz-form-item>
-        <nz-form-label [nzRequired]="true" [nzSpan]="13">Tháng</nz-form-label>
+        <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="13">Tháng</nz-form-label>
         <nz-form-control [nzSpan]="11">
           <input nz-input nzSize="small" formControlName="month">
         </nz-form-control>
@@ -20,7 +20,7 @@
 
     <div nz-col [nzSpan]="3">
       <nz-form-item>
-        <nz-form-label [nzRequired]="true" [nzSpan]="12">Năm</nz-form-label>
+        <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="12">Năm</nz-form-label>
         <nz-form-control [nzSpan]="12">
           <input nz-input nzSize="small" formControlName="year">
         </nz-form-control>
@@ -29,7 +29,7 @@
 
     <div nz-col [nzSpan]="8">
       <nz-form-item>
-        <nz-form-label [nzSpan]="14">Số hiệu tài khoản của đơn vị</nz-form-label>
+        <nz-form-label class="text-left" [nzSpan]="14">Số hiệu tài khoản của đơn vị</nz-form-label>
         <nz-form-control [nzSpan]="10">
           <input nz-input nzSize="small" formControlName="accountNumberUnit">
         </nz-form-control>
@@ -49,8 +49,8 @@
   <div nz-row [nzGutter]="6">
     <div nz-col [nzSpan]="17">
       <nz-form-item>
-        <nz-form-label class="text-left" [nzSpan]="4">Chi nhánh</nz-form-label>
-        <nz-form-control [nzSpan]="20">
+        <nz-form-label class="text-left" [nzSpan]="3">Chi nhánh</nz-form-label>
+        <nz-form-control [nzSpan]="21">
           <input nz-input nzSize="small" formControlName="branch">
         </nz-form-control>
       </nz-form-item>
@@ -64,6 +64,17 @@
             <nz-option nzValue="1" nzLabel="Không gửi kèm hồ sơ giấy"></nz-option>
             <nz-option nzValue="2" nzLabel="Gửi kèm hồ sơ giấy" nzDisabled></nz-option>
           </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+
+  <div nz-row [nzGutter]="6">
+    <div nz-col [nzSpan]="24">
+      <nz-form-item>
+        <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="7">Lý do giải trình (Đối với hồ sơ chậm muộn)</nz-form-label>
+        <nz-form-control [nzSpan]="17">
+          <textarea rows="1" nz-input formControlName="reason"></textarea>
         </nz-form-control>
       </nz-form-item>
     </div>
