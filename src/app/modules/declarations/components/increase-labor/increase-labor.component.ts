@@ -78,6 +78,7 @@ export class IncreaseLaborComponent implements OnInit {
       mobile:[currentCredentials.companyInfo.mobile],
       usedocumentDT01:[true],
     });
+
     this.documentListService.getDocumentList('600').subscribe(documentList => {
       this.documentList = documentList;
     });
@@ -168,19 +169,18 @@ export class IncreaseLaborComponent implements OnInit {
   }
 
   handleSubmit(event) {
-    if (event.type === 'save') {
-      const { number, month, year } = this.form.value;
+    const { number, month, year } = this.form.value;
 
-      this.onSubmit.emit({
-        documentType: 600,
-        documentNo: number,
-        documentName: 'Báo tăng lao động',
-        createDate: `01/0${ month }/${ year }`,
-        documentStatus: 0,
-        documentDetail: event.data,
-        informations: this.reformatInformationList(),
-      });
-    }
+    this.onSubmit.emit({
+      type: event.type,
+      documentType: 600,
+      documentNo: number,
+      documentName: 'Báo tăng lao động',
+      createDate: `01/0${ month }/${ year }`,
+      documentStatus: 0,
+      documentDetail: event.data,
+      informations: this.reformatInformationList(),
+    });
   }
 
   handleChangeTable({ instance, cell, c, r, records }) {
@@ -234,6 +234,8 @@ export class IncreaseLaborComponent implements OnInit {
         declaration.data[0] = order.index;
       }
     });
+
+    
   }
 
   private updateSourceToColumn(key, sources) {
@@ -373,27 +375,8 @@ export class IncreaseLaborComponent implements OnInit {
         }
     });
 
+    console.log(informationList);
+
     return informationList;
   }
-  // viewDocument(documentCode: string) {
-  //   const documentsInfo =  {
-  //     userAction: 'Lê văn đức',
-  //     mobile: '097865',
-  //     usedocumentDT01: 1,
-  //     documentList: this.documentList
-  //   };
-  //   const modal = this.modalService.create({
-  //     nzWidth: 980,
-  //     nzWrapClassName: 'document-modal',
-  //     nzTitle: 'Danh mục tài liệu',
-  //     nzContent: DocumentFormComponent,
-  //     nzOnOk: (data) => console.log('Click ok', data),
-  //     nzComponentParams: {
-  //       documentsInfo
-  //     }
-  //   });
-
-  //   modal.afterClose.subscribe(result => {
-  //   });
-  // }
 }

@@ -15,6 +15,9 @@ export class IncreaseLaborAddComponent {
   ) {}
 
   handleSubmit(data) {
+    if (data.type === 'export') {
+      // display popup
+    }
     this.declarationService.create(data).subscribe(() => {
       this.router.navigate(['/declarations/increase-labor']);
     });

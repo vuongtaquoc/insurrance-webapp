@@ -87,6 +87,7 @@ export class DocumentTableComponent implements OnInit, OnDestroy, OnChanges, Aft
         data.push([ i ]);
       }
     }
+    data.forEach((d, i) => d[0] = i + 1);
     this.data = data;
     this.spreadsheet.setData(this.data);
   }
