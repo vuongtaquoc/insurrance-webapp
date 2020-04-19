@@ -15,16 +15,17 @@ export class DeclarationFileService {
     return this.http.get(`/declaration-file/declaration/${ declarationId }`, {
     });
   }
-  
+
   public getDetailById(id: string) {
     return this.http.get('/declaration-file/', {
-      params: { id }      
+      params: { id }
     });
   }
 
   public downloadDeclarationFile(declarationId: string ): Observable<any> {
-      return this.http.get(`/declaration-file/download/${ declarationId }`, {
+    return this.http.getFile(`/declaration-file/download/${ declarationId }`, {
+      responseType: 'arraybuffer'
     });
   }
-  
+
 }

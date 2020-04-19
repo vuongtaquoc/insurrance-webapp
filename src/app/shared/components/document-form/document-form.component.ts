@@ -9,6 +9,7 @@ import { DeclarationFileService } from '@app/core/services';
 import { DropdownItem } from '@app/core/interfaces';
 import { City, District, Wards } from '@app/core/models';
 
+import { download } from '@app/shared/utils/download-file';
 import { DATE_FORMAT } from '@app/shared/constant';
 
 @Component({
@@ -34,7 +35,7 @@ export class DocumentFormComponent implements OnInit {
 
   save(): void {
   }
-   
+
   dismiss(): void {
     this.modal.destroy();
   }
@@ -46,8 +47,9 @@ export class DocumentFormComponent implements OnInit {
   }
 
   downloadFile(declarationFileInfo: any) {
-    this.declarationFileService.downloadDeclarationFile(declarationFileInfo.id).subscribe(declarationFiles => {
-      console.log(declarationFiles)
+    this.declarationFileService.downloadDeclarationFile(declarationFileInfo.id).subscribe(response => {
+      // Thay filename -> tên file
+      download('filename', response.body);
     });
   }
 }

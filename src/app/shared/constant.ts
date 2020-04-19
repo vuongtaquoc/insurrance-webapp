@@ -5,3 +5,8 @@ export const DATE_FORMAT = {
 };
 
 export const PAGE_SIZE = 10;
+
+export const MIME_TYPE = {
+  XLSX: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  ZIP: 'application/zip',
+};

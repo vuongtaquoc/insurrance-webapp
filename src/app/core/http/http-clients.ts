@@ -52,6 +52,12 @@ export class ApplicationHttpClient {
       }));
   }
 
+  getFile<T>(endpoint: string, options: any = {}): Observable<any> {
+    options.observe = 'response';
+
+    return this.http.get<T>(endpoint, options);
+  }
+
   post<T>(endpoint: string, body: any | null, options?: RequestOptions): Observable<any> {
     return this.http.post<any>(endpoint, body, options)
       .pipe(map(data => this.handleResponse(data)));
