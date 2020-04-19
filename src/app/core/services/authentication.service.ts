@@ -57,10 +57,18 @@ export class AuthenticationService {
     });
   }
 
+  public getCredentialToken() {
+    const currentCredentials = this.currentCredentials;
+
+    if (currentCredentials && currentCredentials.token) {
+      return currentCredentials.token;
+    }
+  }
+
   private storeCredentials(data) {
     const credentials: Credential = {
-      token: data.token,      
-      username: data.username,  
+      token: data.token,
+      username: data.username,
       email: data.email,
       currentDate: data.currentDate,
       companyInfo: data.company,

@@ -8,5 +8,7 @@ export const PAGE_SIZE = 10;
 
 export const MIME_TYPE = {
   XLSX: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  DOCX: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
   ZIP: 'application/zip',
+  XML: 'application/xml'
 };

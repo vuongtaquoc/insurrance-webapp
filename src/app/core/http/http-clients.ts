@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+import { environment } from '@config';
+
 export interface RequestOptions {
   headers?: HttpHeaders | {
     [header: string]: string | string[];
@@ -52,10 +54,23 @@ export class ApplicationHttpClient {
       }));
   }
 
-  getFile<T>(endpoint: string, options: any = {}): Observable<any> {
-    options.observe = 'response';
+  getFile<T>(endpoint: string, options: any = {}) {
+    return new Promise((resolve, reject) => {
+      const url = `${environment.apiUrl}${environment.apiPrefix}${endpoint}`;
+      const xhr = new XMLHttpRequest();
+      xhr.responseType = 'arraybuffer';
 
-    return this.http.get<T>(endpoint, options);
+      xhr.addEventListener('readystatechange', function() {
+        if(this.readyState === 4) {
+          return resolve(xhr.response);
+        }
+      });
+
+      xhr.open('GET', url);
+      xhr.setRequestHeader('X-Authorization-Token', options.headers.token);
+
+      xhr.send();
+    });
   }
 
   post<T>(endpoint: string, body: any | null, options?: RequestOptions): Observable<any> {

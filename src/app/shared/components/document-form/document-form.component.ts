@@ -10,7 +10,7 @@ import { DropdownItem } from '@app/core/interfaces';
 import { City, District, Wards } from '@app/core/models';
 
 import { download } from '@app/shared/utils/download-file';
-import { DATE_FORMAT } from '@app/shared/constant';
+import { DATE_FORMAT, MIME_TYPE } from '@app/shared/constant';
 
 @Component({
   selector: 'app-document-form',
@@ -47,9 +47,9 @@ export class DocumentFormComponent implements OnInit {
   }
 
   downloadFile(declarationFileInfo: any) {
-    this.declarationFileService.downloadDeclarationFile(declarationFileInfo.id).subscribe(response => {
+    this.declarationFileService.downloadDeclarationFile(declarationFileInfo.id).toPromise().then(response => {
       // Thay filename -> tên file
-      download('filename', response.body);
+      download('filename', response, MIME_TYPE.XLSX);
     });
   }
 }
