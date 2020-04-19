@@ -179,7 +179,7 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
           return { ...combine };
         }
 
-        if (column.type === 'numberic') {
+        if (column.type === 'calendar') {
           return { ...combine, [ column.key ]: array[current].toString().split(' ').join('') };
         }
 

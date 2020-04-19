@@ -57,12 +57,12 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   type: 'text',
   width: 135,
   title: '(2)',
-  key: 'isurranceCode'
+  key: 'identity'
 }, {
   type: 'text',
   width: 100,
   title: '(3)',
-  key: 'isurranceCode'
+  key: 'code'
 }, {
   type: 'dropdown',
   width: 170,

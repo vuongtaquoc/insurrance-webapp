@@ -91,14 +91,17 @@
   }
 
   &__footer {
-    height: 37px;
     display: grid;
     grid-gap: 7px;
     justify-content: flex-end;
     grid-template-columns: repeat(5, max-content);
     align-items: flex-end;
+    margin-top: 3px;
   }
-
+  &__part1, &__part2 {
+    height: 100%;
+    width: 100%;
+  }
   .ant-tabs {
     height: 100%;
   }
@@ -113,5 +116,73 @@
 
   .ant-tabs .ant-tabs-small-bar .ant-tabs-tab {
     padding: 4px 10px;
+  }
+
+  .ant-collapse > .ant-collapse-item > .ant-collapse-header {
+    background: #f1f1f1;
+    padding: 2px 16px;
+    padding-left: 40px;
+    margin: 0 3px 0 1px;
+  }
+
+  .ant-collapse-content > .ant-collapse-content-box {
+    padding: 0;
+  }
+
+  .ant-collapse-borderless > .ant-collapse-item > .ant-collapse-content > .ant-collapse-content-box {
+    padding-top: 0;
+    width: 100%;
+  }
+
+  .nz-collapse-panel, nz-collapse-panel {
+    width: 100%;
+  }
+
+  .ant-collapse-content {
+    height: calc(100% - 26px);
+    width: 100%;
+  }
+
+  .ant-collapse-content-box {
+    height: 100%;
+  }
+
+  nz-collapse, .ant-collapse {
+    height: 100%;
+    width: 100%;
+  }
+
+  nz-collapse .ant-collapse {
+    display: flex;
+    flex-direction: column;
+  }
+
+  nz-collapse .ant-collapse > .ant-collapse-item {
+    height: 27px;
+    border-bottom: 0;
+  }
+
+  nz-collapse.collapse-active-all .ant-collapse > .ant-collapse-item {
+    height: 50%;
+  }
+
+  nz-collapse.collapse-active-part1 {
+    .collapse-part1 {
+      height: calc(100% - 27px);
+    }
+
+    .collapse-part2 {
+      height: 27px;
+    }
+  }
+
+  nz-collapse.collapse-active-part2 {
+    .collapse-part1 {
+      height: 27px;
+    }
+
+    .collapse-part2 {
+      height: calc(100% - 27px);
+    }
   }
 }

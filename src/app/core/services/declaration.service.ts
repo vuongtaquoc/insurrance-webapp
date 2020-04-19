@@ -51,11 +51,12 @@ export class DeclarationService {
   public getDeclarationsByDocumentId(id, tableHeaderColumns) {
     return this.http.get(`/declarations/${ id }`).pipe(
       map(detail => {
-        const documents = detail.documentDetail;
+        const declaration = detail;
+        const documentDetails = detail.documentDetail;
 
         const data = [];
 
-        documents.forEach((d, index) => {
+        documentDetails.forEach((d, index) => {
           const hasFormula = d.code.indexOf('SUM') > -1;
 
           data.push({
@@ -71,8 +72,8 @@ export class DeclarationService {
             d.declarations.forEach(employee => data.push(this.getLeaf(d, employee, tableHeaderColumns, !employee.employeeId)));
           }
         });
-
-        return this.updateFormula(data, tableHeaderColumns);
+        declaration.documentDetail = this.updateFormula(data, tableHeaderColumns)
+        return declaration;
       })
     );
   }

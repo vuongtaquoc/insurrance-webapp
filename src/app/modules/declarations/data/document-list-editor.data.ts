@@ -30,13 +30,12 @@ export const TABLE_HEADER_COLUMNS = [{
   type: 'text',
   width: 120,
   title: '(3)',
-  align: 'center',
   key: 'isurranceNo'
 }, {
   type: 'text',
   width: 120,
   title: '(4)',
-  key: 'isurranceNo'
+  key: 'isurranceCode'
 }, {
   type: 'text',
   width: 170,

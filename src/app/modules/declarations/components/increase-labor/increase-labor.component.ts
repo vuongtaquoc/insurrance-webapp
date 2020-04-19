@@ -4,8 +4,9 @@ import { Subject, forkJoin } from 'rxjs';
 import findLastIndex from 'lodash/findLastIndex';
 import findIndex from 'lodash/findIndex';
 import * as jexcel from 'jstable-editor/dist/jexcel.js';
-
+import * as moment from 'moment';
 import { Declaration, DocumentList } from '@app/core/models';
+import { DATE_FORMAT } from '@app/shared/constant';
 import {
   CityService,
   DistrictService,
@@ -39,7 +40,7 @@ export class IncreaseLaborComponent implements OnInit {
   employeeSelected: any[] = [];
   eventsSubject: Subject<string> = new Subject<string>();
   documentList: DocumentList[] = [];
-  informationList: any;
+  informationList: any[] = [];
   declaration: any;
 
   constructor(
@@ -103,9 +104,9 @@ export class IncreaseLaborComponent implements OnInit {
 
       if (this.declarationId) {
         this.declarationService.getDeclarationsByDocumentId(this.declarationId, this.tableHeaderColumns).subscribe(declarations => {
-          this.updateOrders(declarations);
-
-          this.declarations = declarations;
+          this.updateOrders(declarations.documentDetail);
+          this.declarations = declarations.documentDetail;
+          this.informationList = declarations.informations;
         });
       } else {
         this.declarationService.getDeclarationInitials('600', this.tableHeaderColumns).subscribe(declarations => {
@@ -166,15 +167,10 @@ export class IncreaseLaborComponent implements OnInit {
     this.eventsSubject.next(type);
   }
 
-  handleSubmitDocumentList(event) {
-
-  }
-
   handleSubmit(event) {
     if (event.type === 'save') {
       const { number, month, year } = this.form.value;
 
-      //Doan nay anh muôn lây dữ liệu của thằng bảng kê vào object trước khi submit;
       this.onSubmit.emit({
         documentType: 600,
         documentNo: number,
@@ -182,7 +178,7 @@ export class IncreaseLaborComponent implements OnInit {
         createDate: `01/0${ month }/${ year }`,
         documentStatus: 0,
         documentDetail: event.data,
-        infomations: this.informationList,
+        informations: this.reformatInformationList(),
       });
     }
   }
@@ -270,8 +266,6 @@ export class IncreaseLaborComponent implements OnInit {
     });
   }
 
-
-
   private getRegisterWardsByDistrictCode(instance, cell, c, r, source) {
     const value = instance.jexcel.getValueFromCoords(c - 1, r);
 
@@ -334,19 +328,17 @@ export class IncreaseLaborComponent implements OnInit {
   get usedocumentDT01() {
     return this.documentForm.get('usedocumentDT01').value;
   }
-
   
   handleChangeDataDocumentList({ records, columns }) {
     const informationList = [];
     records.forEach(record => {
       informationList.push(this.arrayToProps(record, columns));
     });
-
     this.informationList = informationList;
-    console.log(this.informationList);
   }
 
   handleDeleteProcessDataDocumentList({ rowNumber, numOfRows }){ 
+
   }
 
   private arrayToProps(array, columns) {
@@ -361,13 +353,27 @@ export class IncreaseLaborComponent implements OnInit {
         if (column.type === 'numberic') {
           return { ...combine, [ column.key ]: array[current].toString().split(' ').join('') };
         }
-
+        
         return { ...combine, [ column.key ]: column.key === 'gender' ? +array[current] : array[current] };
       },
       {}
     );
 
     return object;
+  }
+
+  reformatInformationList() {
+    const informationList = [];
+    let informationcopy = [ ...this.informationList ];
+    informationcopy.forEach(information => {
+        if(information.fullName) {
+          information.dateRelease = information.dateRelease ? moment(information.dateRelease).format(DATE_FORMAT.FULL) : '';
+          information.dateEffective = information.dateEffective ? moment(information.dateEffective).format(DATE_FORMAT.FULL) : '';
+          informationList.push(information);
+        }
+    });
+
+    return informationList;
   }
   // viewDocument(documentCode: string) {
   //   const documentsInfo =  {

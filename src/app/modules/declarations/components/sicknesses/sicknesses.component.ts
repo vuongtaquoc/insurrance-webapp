@@ -40,7 +40,7 @@ export class SicknessesComponent implements OnInit {
   constructor(private declarationService: DeclarationService) {}
 
   ngOnInit() {
-    this.declarationService.getDeclarationInitials('630a', this.sickessesHeaders.part1.columns).subscribe(sicknesses => {
+    this.declarationService.getDeclarationInitials('630b', this.sickessesHeaders.part1.columns).subscribe(sicknesses => {
       this.sickesses.part1.table = sicknesses;
       this.sickesses.part2.table = sicknesses;
     });

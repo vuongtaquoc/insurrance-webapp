@@ -27,7 +27,7 @@ export class DocumentListTableComponent implements OnInit, OnDestroy, OnChanges,
   constructor(private element: ElementRef) {}
 
   ngOnInit() {
-   this.eventsSubscription = this.events.subscribe((type) => this.handleEvent(type));
+  
   }
   
 
@@ -37,7 +37,7 @@ export class DocumentListTableComponent implements OnInit, OnDestroy, OnChanges,
 
   ngOnChanges(changes) {
     if (changes.data && changes.data.currentValue.length) {
-      // this.updateTable();
+      this.updateTable();
     }
   }
 
@@ -80,21 +80,30 @@ export class DocumentListTableComponent implements OnInit, OnDestroy, OnChanges,
 
   private updateTable() {
     const data = [];
-    if (!data.length) {
-      for (let i = 1; i <= 15; i++) {
-        data.push([ i ]);
+
+    this.data.forEach((d, index) => {
+      const documentList = [];
+
+      this.columns.forEach(column => {
+        documentList.push(d[column.key]);
+      });
+
+      data.push(documentList);
+    });
+
+    // init default data
+    if (data.length < 15) {
+      const length = 15 - data.length;
+
+      for (let i = 1; i <= length; i++) {
+        data.push([ ]);
       }
+
+      data.forEach((d, i) => d[0] = i + 1);
     }
+
     this.data = data;
     this.spreadsheet.setData(this.data);
-  }
-
-  private updateSourceToColumn(key, sources) {
-     
-  }
-
-  private updateFilterToColumn(key, filterCb) {
-    
   }
 
   private getContainerSize() {
@@ -105,58 +114,5 @@ export class DocumentListTableComponent implements OnInit, OnDestroy, OnChanges,
       width: parent.offsetWidth,
       height: parent.offsetHeight
     };
-  }
-
-  //Get data form execl to Object Document list
-  private handleEvent(type) {
-    const data = this.spreadsheet.getJson();
-    const declarations = [];
-
-    data.forEach(d => { 
-      declarations.push(this.arrayToProps(data, this.columns))
-    });
-
-    // data.forEach(d => {
-    //   if (!d.options.hasLeaf && !d.options.isLeaf) {
-    //     declarations[d.options.key] = { ...d.origin };
-    //   } else if (d.options.hasLeaf) {
-    //     declarations[d.options.key] = {
-    //       ...d.origin,
-    //       declarations: []
-    //     };
-    //   } else if (d.options.isLeaf) {
-    //     declarations[d.options.parentKey].declarations.push(this.arrayToProps(d, this.columns));
-    //   }
-    // });
-
-    this.onSubmit.emit({
-      type,
-      data: declarations
-    });
-  }
-
-  private arrayToProps(array, columns) {
-    const object: any = Object.keys(array).reduce(
-      (combine, current) => {
-        const column = columns[current];
-
-        if (current === 'origin' || current === 'options' || !column.key) {
-          return { ...combine };
-        }
-
-        if (column.type === 'numberic') {
-          return { ...combine, [ column.key ]: array[current].toString().split(' ').join('') };
-        }
-
-        return { ...combine, [ column.key ]: column.key === 'gender' ? +array[current] : array[current] };
-      },
-      {}
-    );
-
-    // if (array.origin.id) {
-    //   object.employeerId = array.origin.id;
-    // }
-
-    return object;
-  }
+  } 
 }

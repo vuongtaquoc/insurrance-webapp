@@ -40,7 +40,7 @@ export class HealthRecoveryComponent {
   constructor(private declarationService: DeclarationService) {}
 
   ngOnInit() {
-    this.declarationService.getDeclarationInitials('630a', this.healthRecoveryHeaders.part1.columns).subscribe(sicknesses => {
+    this.declarationService.getDeclarationInitials('630c', this.healthRecoveryHeaders.part1.columns).subscribe(sicknesses => {
       this.healthRecovery.part1.table = sicknesses;
       this.healthRecovery.part2.table = sicknesses;
     });
