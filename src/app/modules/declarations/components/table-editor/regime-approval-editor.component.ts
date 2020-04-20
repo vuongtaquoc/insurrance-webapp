@@ -34,7 +34,7 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
 
   ngOnDestroy() {
     jexcel.destroy(this.spreadsheetEl.nativeElement, true);
-    this.eventsSubscription.unsubscribe();
+    // this.eventsSubscription.unsubscribe();
   }
 
   ngOnChanges(changes) {
