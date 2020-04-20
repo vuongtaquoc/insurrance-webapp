@@ -5,13 +5,13 @@ import findLastIndex from 'lodash/findLastIndex';
 import * as jexcel from 'jstable-editor/dist/jexcel.js';
 
 import { ApplicationHttpClient } from '@app/core/http';
-import { AuthenticationService } from '@app/core/services';
+import { AuthenticationService } from '@app/core/services/authentication.service';
 
 @Injectable({ providedIn: 'root' })
 export class DeclarationFileService {
   constructor(
     private http: ApplicationHttpClient,
-    private authenticationService: AuthenticationService
+    private authService: AuthenticationService
   ) {
   }
 
@@ -29,7 +29,7 @@ export class DeclarationFileService {
   public downloadDeclarationFile(declarationId: string ) {
     return this.http.getFile(`/declaration-file/download/${ declarationId }`, {
       headers: {
-        token: this.authenticationService.getCredentialToken()
+        token: this.authService.getCredentialToken()
       }
     });
   }
