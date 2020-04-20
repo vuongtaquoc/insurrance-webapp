@@ -17,7 +17,7 @@
 
     <app-regime-approval-form></app-regime-approval-form>
 
-    <div class="page-regime-approval__editor" [ngStyle]="{ height: editorHeight + 'px'}">
+    <div class="page-regime-approval__editor">
       <nz-collapse [nzBordered]="false" [ngClass]="{
         'collapse-active-all': panel.part1.active && panel.part2.active,
         'collapse-active-part1': panel.part1.active && !panel.part2.active,

@@ -1,14 +1,16 @@
-<nz-input-group [nzSuffix]="suffixIcon">
-  <input type="text" nz-input placeholder="Search" [(ngModel)]="searchValue" />
-</nz-input-group>
-<ng-template #suffixIcon>
-  <i nz-icon nzType="search"></i>
-</ng-template>
-<nz-tree
-  nzCheckable
-  nzMultiple
-  [nzData]="employees"
-  [nzSearchValue]="searchValue"
-  (nzCheckBoxChange)="nzCheck($event)"
->
-</nz-tree>
+<div class="users-tree">
+  <nz-input-group [nzSuffix]="suffixIcon">
+    <input type="text" nz-input placeholder="Search" [(ngModel)]="searchValue" />
+  </nz-input-group>
+  <ng-template #suffixIcon>
+    <i nz-icon nzType="search"></i>
+  </ng-template>
+  <nz-tree
+    nzCheckable
+    nzMultiple
+    [nzData]="employees"
+    [nzSearchValue]="searchValue"
+    (nzCheckBoxChange)="nzCheck($event)"
+  >
+  </nz-tree>
+</div>

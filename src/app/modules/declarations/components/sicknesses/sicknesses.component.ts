@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core'
+import { Component, OnInit } from '@angular/core'
 
 import {
   DeclarationService
@@ -12,11 +12,9 @@ import { TABLE_NESTED_HEADERS_PART_1, TABLE_HEADER_COLUMNS_PART_1, TABLE_HEADER_
   styleUrls: ['./sicknesses.component.less']
 })
 export class SicknessesComponent implements OnInit {
-  @Input() editorHeight: number;
-
   panel: any = {
     part1: { active: true },
-    part2: { active: true }
+    part2: { active: false }
   };
   sickessesHeaders: any = {
     part1: {
@@ -51,9 +49,11 @@ export class SicknessesComponent implements OnInit {
   collapseChange(isActive, part) {
     if (part === 'part1') {
       this.panel.part1.active = isActive;
+      this.panel.part2.active = false;
     }
 
     if (part === 'part2') {
+      this.panel.part1.active = false;
       this.panel.part2.active = isActive;
     }
   }

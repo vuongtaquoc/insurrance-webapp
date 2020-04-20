@@ -47,9 +47,13 @@ export class DocumentFormComponent implements OnInit {
   }
 
   downloadFile(declarationFileInfo: any) {
+    declarationFileInfo.isDownloading = true;
+
     this.declarationFileService.downloadDeclarationFile(declarationFileInfo.id).then(response => {
       // Thay filename -> tên file
       download('filename', response, MIME_TYPE.XLSX);
+
+      declarationFileInfo.isDownloading = false;
     });
   }
 }

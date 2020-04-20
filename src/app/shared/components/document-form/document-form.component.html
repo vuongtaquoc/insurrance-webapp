@@ -3,7 +3,7 @@
   <h2><span>Hồ sơ</span> : 600a | Báo giảm lao động | 16/04/2020 08:52:15</h2>
   <h1>DANH SÁCH TỜ KHAI</h1>
   <nz-table
-      nzBordered 
+      nzBordered
       #ajaxTable
       nzShowSizeChanger
       [nzFrontPagination]="false"
@@ -23,17 +23,17 @@
       <tbody>
         <tr *ngFor="let data of ajaxTable.data">
           <td>{{ data.fileName }}</td>
-          <td style="text-align: center;">
-            <ng-container>
-                <a (click)="downloadFile(data)">
-                    <i nz-icon nzType="eye" nzTheme="outline"></i>
-                </a>               
-            </ng-container>
+          <td class="text-center">
+            <a (click)="downloadFile(data)" *ngIf="!data.isDownloading">
+              <i nz-icon nzType="eye" nzTheme="outline"></i>
+            </a>
+            <ng-template #indicatorTemplate><i nz-icon nzType="loading"></i></ng-template>
+            <nz-spin *ngIf="data.isDownloading" nzSimple [nzIndicator]="indicatorTemplate"> </nz-spin>
           </td>
         </tr>
       </tbody>
     </nz-table>
-        <!-- ROW START --> 
+        <!-- ROW START -->
   </div>
   <div class="document-form__footer" *nzModalFooter>
     <button nz-button nzType="primary" (click)="save()">

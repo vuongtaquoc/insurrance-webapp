@@ -1,18 +1,20 @@
 .users-tree {
-  background-color: transparent !important;
-  border: 0 !important;
-  padding: 0 !important;
-  width: 100%;
+  height: calc(100% - 42px);
 
-  .ui-tree-filter-container {
-    padding: 0;
+  nz-tree {
+    display: block;
+    height: calc(100% - 37px);
+    overflow-y: scroll;
+    overflow-x: auto;
+    margin-top: 5px;
   }
 
-  .ui-treenode-icon {
-    display: none !important;
+  .ant-tree li span.ant-tree-switcher, .ant-tree li span.ant-tree-iconEle {
+    width: 16px;
+    height: 16px;
   }
 
-  .users-tree-parent > .ui-treenode-content > .ui-treenode-label {
-    font-weight: 700;
+  .ant-tree li ul {
+    padding: 0 0 0 10px;
   }
 }

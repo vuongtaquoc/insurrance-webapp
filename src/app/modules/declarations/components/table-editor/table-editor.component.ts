@@ -25,7 +25,6 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
   private eventsSubscription: Subscription;
 
   constructor(private element: ElementRef) {
-    this.updateTableSize = this.updateTableSize.bind(this);
   }
 
   ngOnInit() {
@@ -34,7 +33,6 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
 
   ngOnDestroy() {
     jexcel.destroy(this.spreadsheetEl.nativeElement, true);
-    window.removeEventListener('resize', this.updateTableSize);
     this.eventsSubscription.unsubscribe();
   }
 
@@ -45,7 +43,6 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
   }
 
   ngAfterViewInit() {
-    const containerSize = this.getContainerSize();
     this.spreadsheet = jexcel(this.spreadsheetEl.nativeElement, {
       data: [],
       nestedHeaders: this.nestedHeaders,
@@ -53,8 +50,8 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
       allowInsertColumn: false,
       allowInsertRow: false,
       tableOverflow: true,
-      tableWidth: `${ containerSize.width }px`,
-      tableHeight: `${ containerSize.height }px`,
+      tableWidth: '100%',
+      tableHeight: '100%',
       columnSorting: false,
       defaultColAlign: 'left',
       onchange: (instance, cell, c, r, value) => {
@@ -90,8 +87,6 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
     this.spreadsheet.hideIndex();
 
     this.updateTable();
-
-    window.addEventListener('resize', this.updateTableSize);
   }
 
   private updateTable() {
@@ -143,8 +138,6 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
         }
       });
     });
-
-    this.updateTableSize();
   }
 
   private handleEvent(type) {
@@ -193,22 +186,6 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
     }
 
     return object;
-  }
-
-  private getContainerSize() {
-    const element = this.element.nativeElement;
-    const parent = element.parentNode;
-
-    return {
-      width: parent.offsetWidth,
-      height: parent.offsetHeight
-    };
-  }
-
-  private updateTableSize() {
-    const containerSize = this.getContainerSize();
-
-    this.spreadsheet.updateTableSize(`${ containerSize.width }px`, `${ containerSize.height }px`);
   }
 
   private updateEditorToColumn(key, type, isCustom = false) {

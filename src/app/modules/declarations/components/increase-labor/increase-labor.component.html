@@ -101,7 +101,7 @@
                 </form>
               </div><!-- page-declarations__title -->
 
-              <div class="page-declarations__editor" editorAutoSize>
+              <div class="page-declarations__editor">
                 <app-table-editor
                   [nestedHeaders]="tableNestedHeaders"
                   [columns]="tableHeaderColumns"
@@ -112,7 +112,7 @@
                   (onDelete)="handleDeleteData($event)"
                 ></app-table-editor>
               </div><!-- page-declarations__editor -->
- 
+
             </div><!-- page-declarations__content -->
           </div><!-- page-declarations__container -->
         </nz-tab><!-- tab 2 -->

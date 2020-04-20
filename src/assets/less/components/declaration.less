@@ -18,10 +18,11 @@
   &__container {
     height: 100%;
     display: grid;
-    grid-template-columns: 250px 1fr;
+    grid-template-columns: 220px 1fr;
     grid-gap: 5px;
     width: 100%;
     overflow: hidden;
+    grid-template-rows: 100%;
   }
 
   &__title {
@@ -49,9 +50,6 @@
   }
 
   &__sidebar {
-    overflow-y: scroll;
-    overflow-x: auto;
-    padding: 5px;
     height: 100%;
 
     .page-declarations__group-button {
@@ -64,12 +62,11 @@
     width: 100%;
     height: 100%;
     display: grid;
-    grid-template-rows: 42px 63px 1fr 37px;
+    grid-template-rows: 42px 63px 1fr;
     grid-gap: 10px;
   }
 
   &__group-button {
-    // margin-bottom: 10px;
     padding-bottom: 10px;
     border-bottom: 1px solid #ccc;
     display: flex;
@@ -84,8 +81,6 @@
   }
 
   &__editor {
-    // height: calc(100% - 200px);
-    // height: 100%;
     width: 100%;
     overflow: hidden;
   }

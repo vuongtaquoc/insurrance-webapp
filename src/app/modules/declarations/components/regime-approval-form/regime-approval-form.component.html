@@ -1,79 +1,81 @@
 <form nz-form [formGroup]="form" [nzNoColon]="true" class="regime-approval-form">
-  <div nz-row [nzGutter]="6">
-    <div nz-col [nzSpan]="3">
-      <nz-form-item>
-        <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Đợt</nz-form-label>
-        <nz-form-control [nzSpan]="14">
-          <input nz-input nzSize="small" formControlName="batch">
-        </nz-form-control>
-      </nz-form-item>
+  <div nz-row [nzGutter]="10">
+    <div nz-col [nzSpan]="18">
+      <div nz-row [nzGutter]="5">
+        <div nz-col [nzSpan]="3">
+          <nz-form-item>
+            <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10" [nzXXl]="8">Đợt</nz-form-label>
+            <nz-form-control [nzSpan]="14" [nzXXl]="16">
+              <input nz-input nzSize="small" formControlName="batch">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col [nzSpan]="3">
+          <nz-form-item>
+            <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="13" [nzXXl]="11">Tháng</nz-form-label>
+            <nz-form-control [nzSpan]="11" [nzXXl]="13">
+              <input nz-input nzSize="small" formControlName="month">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col [nzSpan]="3">
+          <nz-form-item>
+            <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="12" [nzXXl]="10">Năm</nz-form-label>
+            <nz-form-control [nzSpan]="12" [nzXXl]="14">
+              <input nz-input nzSize="small" formControlName="year">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col [nzSpan]="8">
+          <nz-form-item>
+            <nz-form-label class="text-left" [nzSpan]="15" [nzXXl]="12">Số hiệu tài khoản của đơn vị</nz-form-label>
+            <nz-form-control [nzSpan]="9" [nzXXl]="12">
+              <input nz-input nzSize="small" formControlName="accountNumberUnit">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col [nzSpan]="7">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="13">Mở tại</nz-form-label>
+            <nz-form-control [nzSpan]="11">
+              <input nz-input nzSize="small" formControlName="openAddress">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+
+      <div nz-row [nzGutter]="5">
+        <div nz-col [nzSpan]="17">
+          <nz-form-item>
+            <nz-form-label class="text-left" [nzSpan]="3" [nzXXl]="2">Chi nhánh</nz-form-label>
+            <nz-form-control [nzSpan]="21" [nzXXl]="22">
+              <input nz-input nzSize="small" formControlName="branch">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col [nzSpan]="7">
+          <nz-form-item>
+            <nz-form-label [nzRequired]="true" [nzSpan]="13">Gửi kèm hồ sơ giấy</nz-form-label>
+            <nz-form-control [nzSpan]="11">
+              <nz-select formControlName="paperRecord" nzPlaceHolder="Chọn" nzSize="small">
+                <nz-option nzValue="1" nzLabel="Không gửi kèm hồ sơ giấy"></nz-option>
+                <nz-option nzValue="2" nzLabel="Gửi kèm hồ sơ giấy" nzDisabled></nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
     </div>
 
-    <div nz-col [nzSpan]="3">
-      <nz-form-item>
-        <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="13">Tháng</nz-form-label>
-        <nz-form-control [nzSpan]="11">
-          <input nz-input nzSize="small" formControlName="month">
-        </nz-form-control>
-      </nz-form-item>
-    </div>
-
-    <div nz-col [nzSpan]="3">
-      <nz-form-item>
-        <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="12">Năm</nz-form-label>
-        <nz-form-control [nzSpan]="12">
-          <input nz-input nzSize="small" formControlName="year">
-        </nz-form-control>
-      </nz-form-item>
-    </div>
-
-    <div nz-col [nzSpan]="8">
-      <nz-form-item>
-        <nz-form-label class="text-left" [nzSpan]="14">Số hiệu tài khoản của đơn vị</nz-form-label>
-        <nz-form-control [nzSpan]="10">
-          <input nz-input nzSize="small" formControlName="accountNumberUnit">
-        </nz-form-control>
-      </nz-form-item>
-    </div>
-
-    <div nz-col [nzSpan]="7">
-      <nz-form-item>
-        <nz-form-label [nzSpan]="12">Mở tại</nz-form-label>
-        <nz-form-control [nzSpan]="12">
-          <input nz-input nzSize="small" formControlName="openAddress">
-        </nz-form-control>
-      </nz-form-item>
-    </div>
-  </div>
-
-  <div nz-row [nzGutter]="6">
-    <div nz-col [nzSpan]="17">
-      <nz-form-item>
-        <nz-form-label class="text-left" [nzSpan]="3">Chi nhánh</nz-form-label>
-        <nz-form-control [nzSpan]="21">
-          <input nz-input nzSize="small" formControlName="branch">
-        </nz-form-control>
-      </nz-form-item>
-    </div>
-
-    <div nz-col [nzSpan]="7">
-      <nz-form-item>
-        <nz-form-label [nzRequired]="true" [nzSpan]="12">Gửi kèm hồ sơ giấy</nz-form-label>
-        <nz-form-control [nzSpan]="12">
-          <nz-select formControlName="paperRecord" nzPlaceHolder="Chọn" nzSize="small">
-            <nz-option nzValue="1" nzLabel="Không gửi kèm hồ sơ giấy"></nz-option>
-            <nz-option nzValue="2" nzLabel="Gửi kèm hồ sơ giấy" nzDisabled></nz-option>
-          </nz-select>
-        </nz-form-control>
-      </nz-form-item>
-    </div>
-  </div>
-
-  <div nz-row [nzGutter]="6">
-    <div nz-col [nzSpan]="24">
-      <nz-form-item>
-        <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="7">Lý do giải trình (Đối với hồ sơ chậm muộn)</nz-form-label>
-        <nz-form-control [nzSpan]="17">
+    <div nz-col [nzSpan]="6">
+      <nz-form-item class="reason">
+        <nz-form-label class="text-left" [nzRequired]="true">Lý do giải trình (Đối với hồ sơ chậm muộn)</nz-form-label>
+        <nz-form-control>
           <textarea rows="1" nz-input formControlName="reason"></textarea>
         </nz-form-control>
       </nz-form-item>
