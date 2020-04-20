@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 
 import { DeclarationService } from '@app/core/services';
 import { Declaration } from '@app/core/interfaces';
-
+import { NzModalService } from 'ng-zorro-antd/modal';
 import { PAGE_SIZE } from '@app/shared/constant';
+import { DocumentFormComponent } from '@app/shared/components';
 
 @Component({
   selector: 'app-increase-labor-list',
@@ -22,7 +23,8 @@ export class IncreaseLaborListComponent implements OnInit {
   selectedPage: number = 1;
 
   constructor(
-    private declarationService: DeclarationService
+    private declarationService: DeclarationService,
+    private modalService: NzModalService,
   ) {}
 
   ngOnInit() {
@@ -73,6 +75,22 @@ export class IncreaseLaborListComponent implements OnInit {
   delete(id) {
     this.declarationService.delete(id).subscribe(() => {
       this.getDeclarations(this.skip);
+    });
+  }
+
+  viewDocument(declarationInfo: any) {
+    const modal = this.modalService.create({
+      nzWidth: 680,
+      nzWrapClassName: 'document-modal',
+      nzTitle: 'Thông tin biểu mẫu, tờ khai đã xuất',
+      nzContent: DocumentFormComponent,
+      nzOnOk: (data) => console.log('Click ok', data),
+      nzComponentParams: {
+        declarationInfo
+      }
+    });
+
+    modal.afterClose.subscribe(result => {
     });
   }
 }

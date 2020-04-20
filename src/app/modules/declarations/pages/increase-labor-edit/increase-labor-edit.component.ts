@@ -23,21 +23,26 @@ export class IncreaseLaborEditComponent implements OnInit {
   }
 
   handleSubmit(data) {
-    console.log('aaaa', data);
-    if (data.type === 'export') {
-      console.log('xxx', data);
+    if (data.type === 'saveAndView') {
+      this.saveAndViewDocument(data);
+    } else if(data.type === 'save') {
+      this.save(data);
+    }else {
+      this.router.navigate(['/declarations/increase-labor']);
     }
-    const declarationInfo = {
-      id: 4027,
-      fileName: 'Tờ khai tham gia điều chỉnh thông tin BHXH, BHYT(Mẫu TK1 - TS)',
-    };
-    this.viewDocument(declarationInfo);
-    // this.declarationService.update(this.declarationId, data).subscribe((declarationResult) => {
-    //   this.viewDocument(declarationResult);
-    //   //this.router.navigate(['/declarations/increase-labor']);
-    // });
   }
 
+  private save(data: any) {
+    this.declarationService.update(this.declarationId, data).subscribe((declarationResult) => {
+      this.router.navigate(['/declarations/increase-labor']);
+    });
+  }
+
+  private saveAndViewDocument(data: any) {
+    this.declarationService.update(this.declarationId, data).subscribe((declarationResult) => {
+      this.viewDocument(declarationResult);
+    });
+  }
 
   viewDocument(declarationInfo: any) {
     const modal = this.modalService.create({

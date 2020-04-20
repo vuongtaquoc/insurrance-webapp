@@ -47,7 +47,7 @@ export class DocumentFormComponent implements OnInit {
   }
 
   downloadFile(declarationFileInfo: any) {
-    this.declarationFileService.downloadDeclarationFile(declarationFileInfo.id).toPromise().then(response => {
+    this.declarationFileService.downloadDeclarationFile(declarationFileInfo.id).then(response => {
       // Thay filename -> tên file
       download('filename', response, MIME_TYPE.XLSX);
     });

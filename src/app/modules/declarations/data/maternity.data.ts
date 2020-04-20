@@ -72,217 +72,223 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   type: 'text',
   width: 135,
   title: '(2)',
-  key: 'isurranceCode'
+  key: 'identityCar'
 }, {
   type: 'text',
   width: 100,
   title: '(3)',
-  key: 'isurranceCode'
+  key: 'code'
 }, {
   type: 'dropdown',
   width: 190,
   title: '(4)',
-  key: 'isurranceCode',
+  key: 'holidayWeekly',
   source: [ ],
 }, {
-  type: 'text',
+  type: 'calendar',
+  options: { format:'DD/MM/YYYY' },
   width: 80,
   title: '(5)',
-  key: 'isurranceCode',
-  isCalendar: true
+  key: 'dateStartWork'
 }, {
-  type: 'dropdown',
+  type: 'text',
   width: 120,
   title: '(6.1)',
-  key: 'isurranceCode',
-  source: [ ],
+  key: 'SeriNo'
 }, {
-  type: 'text',
+  type: 'calendar',
+  options: { format:'DD/MM/YYYY' },
   width: 80,
   title: '(6.2)',
-  key: 'isurranceCode',
-  isCalendar: true
+  key: 'regimeFromDate'
 }, {
-  type: 'text',
+  type: 'calendar',
+  options: { format:'DD/MM/YYYY' },
   width: 80,
   title: '(6.3)',
-  key: 'isurranceCode',
-  isCalendar: true
+  key: 'regimeToDate' 
 }, {
-  type: 'text',
+  type: 'numberic',
   width: 60,
   title: '(6.4)',
-  key: 'isurranceCode'
+  key: 'regimeSum'
 }, {
-  type: 'text',
+  type: 'calendar',
+  options: { format:'DD/MM/YYYY' },
   width: 100,
   title: '(7)',
-  key: 'isurranceCode',
-  isCalendar: true
+  key: 'regimeRequestDate' 
 }, {
   type: 'dropdown',
   source: [],
   width: 170,
   title: '(8)',
-  key: 'isurranceCode'
+  key: 'conditionExamination'
 }, {
   type: 'dropdown',
   source: [],
   width: 230,
   title: '(9)',
-  key: 'isurranceCode'
+  key: 'conditionReproduction'
 }, {
   type: 'text',
   width: 120,
   title: '(10.1)',
-  key: 'isurranceCode'
+  key: 'childrenIsurranceCode'
 }, {
   type: 'text',
   width: 120,
   title: '(10.2)',
-  key: 'isurranceCode'
+  key: 'childrenHealthNo'
 }, {
-  type: 'text',
+  type: 'numberic',
   width: 50,
   title: '(10.3)',
-  key: 'isurranceCode',
+  key: 'childrenWeekOld',
 }, {
-  type: 'text',
+  type: 'calendar',
+  options: { format:'DD/MM/YYYY' },
   width: 80,
   title: '(10.4)',
-  key: 'isurranceCode',
-  isCalendar: true
+  key: 'childrenBirthday' 
 }, {
-  type: 'text',
+  type: 'numberic',
   width: 50,
   title: '(10.5)',
-  key: 'isurranceCode',
+  key: 'childrenNumber',
 }, {
-  type: 'text',
+  type: 'calendar',
+  options: { format:'DD/MM/YYYY' },
   width: 80,
   title: '(10.6)',
-  key: 'isurranceCode',
-  isCalendar: true
+  key: 'childrenDayDead' 
 }, {
-  type: 'text',
+  type: 'numberic',
   width: 65,
   title: '(10.7)',
-  key: 'isurranceCode',
+  key: 'childrenNumberSick',
 }, {
-  type: 'text',
+  type: 'calendar',
+  options: { format:'DD/MM/YYYY' },
   width: 80,
   title: '(10.8)',
-  key: 'isurranceCode',
-  isCalendar: true
+  key: 'childrenGodchilDreceptionDate'
 }, {
-  type: 'text',
+  type: 'calendar',
+  options: { format:'DD/MM/YYYY' },
   width: 90,
   title: '(10.9)',
-  key: 'isurranceCode',
-  isCalendar: true
+  key: 'childrenDreceptionDate'
 }, {
   type: 'text',
   width: 120,
   title: '(11.1)',
-  key: 'isurranceCode'
+  key: 'motherIsurranceCode'
 }, {
   type: 'text',
   width: 120,
   title: '(11.2)',
-  key: 'isurranceCode'
+  key: 'motherHealthNo'
 }, {
   type: 'text',
   width: 135,
   title: '(11.3)',
-  key: 'isurranceCode',
+  key: 'motherIdentityCar',
 }, {
   type: 'checkbox',
+  align: 'center',
   width: 60,
   title: '(11.4)',
-  key: 'isurranceCode'
+  key: 'maternityLeave'
 }, {
   type: 'text',
   width: 120,
   title: '(11.5)',
-  key: 'isurranceCode',
+  key: 'surrogacy',
 }, {
-  type: 'text',
+  type: 'checkbox',
   width: 65,
+  align: 'center',
   title: '(11..6)',
-  key: 'isurranceCode',
-  isCalendar: true
+  key: 'isSurgeryOrPremature'
 }, {
-  type: 'text',
+  type: 'calendar',
+  options: { format:'DD/MM/YYYY' },
   width: 80,
   title: '(11.7)',
-  key: 'isurranceCode',
+  key: 'motherDayDead',
   isCalendar: true
 }, {
-  type: 'text',
+  type: 'calendar',
+  options: { format:'DD/MM/YYYY' },
   width: 90,
   title: '(11.8)',
-  key: 'isurranceCode',
+  key: 'cotherConclusionDate',
   isCalendar: true
 }, {
   type: 'text',
   width: 100,
   title: '(11.9)',
-  key: 'isurranceCode',
-}, {
-  type: 'text',
-  width: 140,
-  title: '(12)',
-  key: 'isurranceCode',
+  key: 'sponsorIsurranceCode',
 }, {
   type: 'checkbox',
+  align: 'center',
+  width: 140,
+  title: '(12)',
+  key: 'parentsOffWork',
+}, {
+  type: 'numberic',
   width: 40,
   title: '(13)',
-  key: 'isurranceCode',
+  key: 'examinationCost',
 }, {
   type: 'dropdown',
   width: 55,
   title: '(14.1)',
-  key: 'isurranceCode',
+  key: 'recruitmentNumber',
   source: []
 }, {
-  type: 'text',
+  type: 'calendar',
+  options: { format:'DD/MM/YYYY' },
   width: 75,
   title: '(14.2)',
-  key: 'isurranceCode',
+  key: 'recruitmentDate',
   isCalendar: true
 }, {
   type: 'dropdown',
   width: 190,
   title: '(C.1)',
-  key: 'isurranceCode',
+  key: 'subsidizeReceipt',
   source: [ ],
 }, {
   type: 'text',
   width: 120,
   title: '(C.2)',
-  key: 'isurranceCode'
+  key: 'bankAccount'
 }, {
   type: 'text',
   width: 120,
   title: '(C.3)',
-  key: 'isurranceCode'
+  key: 'accountHolder'
 }, {
   type: 'dropdown',
   width: 280,
   title: '(C.4)',
-  key: 'isurranceCode',
+  key: 'bankId',
   source: [ ],
-}, {
+}, 
+{
   type: 'dropdown',
+  autocomplete: true,
   source: [ ],
   width: 180,
   title: '(D)',
-  key: 'isurranceCode'
+  key: 'planCode'
 }, {
   type: 'text',
   width: 180,
   title: '(E)',
-  key: 'isurranceCode'
+  key: 'note'
 }];
 
 export const TABLE_NESTED_HEADERS_PART_2 = [
@@ -334,77 +340,81 @@ export const TABLE_HEADER_COLUMNS_PART_2 = [{
   type: 'text',
   width: 135,
   title: '(2)',
-  key: 'isurranceCode'
+  key: 'identityCar'
 }, {
   type: 'text',
   width: 100,
   title: '(3)',
-  key: 'isurranceCode'
+  key: 'code'
 }, {
-  type: 'text',
+  type: 'calendar',
+  options: { format:'DD/MM/YYYY' },
   width: 95,
   title: '(4.1)',
-  key: 'isurranceCode',
+  key: 'regimeFromDate',
   isCalendar: true
 }, {
-  type: 'text',
+  type: 'calendar',
+  options: { format:'DD/MM/YYYY' },
   width: 95,
   title: '(4.2)',
-  key: 'isurranceCode',
+  key: 'regimeToDate',
   isCalendar: true
 }, {
-  type: 'text',
+  type: 'numberic',
   width: 60,
   title: '(4.3)',
-  key: 'isurranceCode'
+  key: 'regimeSum'
 }, {
   type: 'text',
   width: 85,
   title: '(5.1)',
-  key: 'isurranceCode',
+  key: 'recordSolvedFromDate',
   isCalendar: true
 }, {
   type: 'dropdown',
   source: [],
   width: 55,
   title: '(5.2)',
-  key: 'isurranceCode'
+  key: 'recordSolvedNumber'
 }, {
   type: 'text',
   width: 75,
   title: '(5.3)',
-  key: 'isurranceCode',
+  key: 'recordSolvedEndDate',
   isCalendar: true
 }, {
   type: 'text',
   width: 150,
   title: '(6)',
-  key: 'isurranceCode'
+  key: 'reasonAdjustment',
+  wordWrap: true  
 }, {
   type: 'dropdown',
   source: [],
   width: 130,
   title: '(C.1)',
-  key: 'isurranceCode'
+  key: 'subsidizeReceipt'
 }, {
   type: 'text',
   width: 145,
   title: '(C.2)',
-  key: 'isurranceCode'
+  key: 'bankAccount'
 }, {
   type: 'text',
   width: 145,
   title: '(C.3)',
-  key: 'isurranceCode'
+  key: 'accountHolder'
 }, {
   type: 'dropdown',
   source: [],
   width: 240,
   title: '(C.4)',
-  key: 'isurranceCode'
+  key: 'bankId'
 }, {
   type: 'text',
   width: 150,
   title: '(D)',
-  key: 'isurranceCode'
+  key: 'note',
+  wordWrap: true  
 }];

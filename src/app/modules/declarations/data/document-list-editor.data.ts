@@ -6,7 +6,7 @@ export const TABLE_NESTED_HEADERS = [
     { title: 'Mã sổ BHXH' },
     { title: 'Tên, loại văn bản'},
     { title: 'Số hiệu văn bản'},
-    { title: 'Ngày ban hàng'},
+    { title: 'Ngày ban hành'},
     { title: 'Ngày văn bản có hiệu lực' },
     { title: 'Cơ quan ban hành văn bản' },
     { title: 'Trích yêu văn bản'},
