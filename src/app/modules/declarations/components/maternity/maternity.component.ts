@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 import {
   DeclarationService
@@ -12,6 +12,8 @@ import { TABLE_NESTED_HEADERS_PART_1, TABLE_HEADER_COLUMNS_PART_1, TABLE_HEADER_
   styleUrls: ['./maternity.component.less']
 })
 export class MaternityComponent {
+  @Input() editorHeight: number;
+
   panel: any = {
     part1: { active: true },
     part2: { active: true }

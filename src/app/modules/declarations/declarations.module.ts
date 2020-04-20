@@ -51,6 +51,8 @@ import {
   RegimeApprovalEditorComponent
 } from './components';
 
+import { RegimeAutoSizeDirective } from './directives';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -87,7 +89,8 @@ import {
     RegimeApprovalComponent,
     RegimeApprovalFormComponent,
     SicknessesComponent,
-    RegimeApprovalEditorComponent
+    RegimeApprovalEditorComponent,
+    RegimeAutoSizeDirective
   ],
   providers: [
     AuthenticationService,
