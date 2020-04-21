@@ -1,7 +1,7 @@
 <div class="page-container">
   <nz-spin [nzSpinning]="isSpinning">
     <div class="page-regime-approval" cardFullHeight>
-      <nz-tabset nzSize="small" nzTabPosition="bottom" nzSelectedIndex="1" [nzTabBarExtraContent]="extraTemplate">
+      <nz-tabset nzSize="small" nzTabPosition="bottom" nzSelectedIndex="1" [nzTabBarExtraContent]="extraTemplate" (nzSelectChange)="handleSelectTab($event)">
         <nz-tab nzTitle="Danh mục tài liệu">
 
         </nz-tab>

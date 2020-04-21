@@ -3,6 +3,8 @@ import { Subscription, Observable } from 'rxjs';
 import * as jexcel from 'jstable-editor/dist/jexcel.js';
 import 'jsuites/dist/jsuites.js';
 
+import { eventEmitter } from '@app/shared/utils/event-emitter';
+
 @Component({
   selector: 'app-regime-approval-editor',
   templateUrl: './regime-approval-editor.component.html',
@@ -22,6 +24,8 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
   spreadsheet: any;
   isInitialized = false;
   private eventsSubscription: Subscription;
+  private handler;
+  private timer;
 
   constructor(
   ) {
@@ -30,11 +34,20 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
 
   ngOnInit() {
     // this.eventsSubscription = this.events.subscribe((type) => this.handleEvent(type));
+    this.handler = eventEmitter.on('regime-approval:tab:change', (index) => {
+      this.timer = setTimeout(() => {
+        this.spreadsheet.updateNestedHeaderPosition();
+        this.spreadsheet.updateFreezeColumn();
+      }, 1000);
+    });
   }
 
   ngOnDestroy() {
     jexcel.destroy(this.spreadsheetEl.nativeElement, true);
     // this.eventsSubscription.unsubscribe();
+    if (this.timer) clearTimeout(this.timer);
+
+    this.handler();
   }
 
   ngOnChanges(changes) {
