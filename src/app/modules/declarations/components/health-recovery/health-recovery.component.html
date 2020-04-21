@@ -4,12 +4,66 @@
   <div class="page-regime-approval__content">
     <div class="page-regime-approval__group-button">
       <div class="page-regime-approval__buttons">
-        <button nz-button nzType="default" (click)="handleAddEmployee('I1')">
+        <button nz-button nzType="default" nz-dropdown nzTrigger="click" [nzDropdownMenu]="menuPart1">
           <i nz-icon nzType="arrow-up"></i>Phần I
         </button>
-        <button nz-button nzType="default" (click)="handleAddEmployee('I2')">
+        <button nz-button nzType="default" nz-dropdown nzTrigger="click" [nzDropdownMenu]="menuPart2">
           <i nz-icon nzType="arrow-up"></i>Phần II
         </button>
+        <nz-dropdown-menu #menuPart1="nzDropdownMenu">
+          <ul nz-menu nzSelectable>
+            <li nz-menu-item nz-submenu nzTitle="Nghỉ DS sau ốm đau">
+              <ul>
+                <li nz-menu-item (click)="handleAddEmployee('part1', 'I1')">Dưỡng sức sau ốm</li>
+                <li nz-menu-item (click)="handleAddEmployee('part1', 'I2')">Dưỡng sức ốm dài ngày</li>
+                <li nz-menu-item (click)="handleAddEmployee('part1', 'I3')">Dưỡng sức sau phẫu thuật</li>
+                <li nz-menu-item (click)="handleAddEmployee('part1', 'I4')">Dưỡng sức sau ốm khác</li>
+              </ul>
+            </li>
+            <li nz-menu-item nz-submenu nzTitle="Nghỉ DS sau thai sản">
+              <ul>
+                <li nz-menu-item (click)="handleAddEmployee('part1', 'II1')">Dưỡng sức sau sinh từ 2 con trở lên</li>
+                <li nz-menu-item (click)="handleAddEmployee('part1', 'II2')">Dưỡng sức sau sinh phẫu thuật</li>
+                <li nz-menu-item (click)="handleAddEmployee('part1', 'II3')">Dưỡng sức sau sinh khác</li>
+                <li nz-menu-item (click)="handleAddEmployee('part1', 'II4')">Dưỡng sức sau sảy, nạo, hút thai</li>
+              </ul>
+            </li>
+            <li nz-menu-item nz-submenu nzTitle="Nghỉ DS sau TNLĐ-BNN">
+              <ul>
+                <li nz-menu-item (click)="handleAddEmployee('part1', 'III1')">Suy giảm khả năng lao động tỉ lệ >= 51%</li>
+                <li nz-menu-item (click)="handleAddEmployee('part1', 'III2')">Suy giảm khả năng lao động tỉ lệ từ 31% đến 50%</li>
+                <li nz-menu-item (click)="handleAddEmployee('part1', 'III3')">Suy giảm khả năng lao động tỉ lệ từ 15% đến 30%</li>
+              </ul>
+            </li>
+          </ul>
+        </nz-dropdown-menu>
+        <nz-dropdown-menu #menuPart2="nzDropdownMenu">
+          <ul nz-menu nzSelectable>
+            <li nz-menu-item nz-submenu nzTitle="Nghỉ DS sau ốm đau">
+              <ul>
+                <li nz-menu-item (click)="handleAddEmployee('part2', 'I1')">Dưỡng sức sau ốm</li>
+                <li nz-menu-item (click)="handleAddEmployee('part2', 'I2')">Dưỡng sức ốm dài ngày</li>
+                <li nz-menu-item (click)="handleAddEmployee('part2', 'I3')">Dưỡng sức sau phẫu thuật</li>
+                <li nz-menu-item (click)="handleAddEmployee('part2', 'I4')">Dưỡng sức sau ốm khác</li>
+              </ul>
+            </li>
+            <li nz-menu-item nz-submenu nzTitle="Nghỉ DS sau thai sản">
+              <ul>
+                <li nz-menu-item (click)="handleAddEmployee('part2', 'II1')">Dưỡng sức sau sinh từ 2 con trở lên</li>
+                <li nz-menu-item (click)="handleAddEmployee('part2', 'II2')">Dưỡng sức sau sinh phẫu thuật</li>
+                <li nz-menu-item (click)="handleAddEmployee('part2', 'II3')">Dưỡng sức sau sinh khác</li>
+                <li nz-menu-item (click)="handleAddEmployee('part2', 'II4')">Dưỡng sức sau sảy, nạo, hút thai</li>
+              </ul>
+            </li>
+            <li nz-menu-item nz-submenu nzTitle="Nghỉ DS sau TNLĐ-BNN">
+              <ul>
+                <li nz-menu-item (click)="handleAddEmployee('part2', 'III1')">Suy giảm khả năng lao động tỉ lệ >= 51%</li>
+                <li nz-menu-item (click)="handleAddEmployee('part2', 'III2')">Suy giảm khả năng lao động tỉ lệ từ 31% đến 50%</li>
+                <li nz-menu-item (click)="handleAddEmployee('part2', 'III3')">Suy giảm khả năng lao động tỉ lệ từ 15% đến 30%</li>
+              </ul>
+            </li>
+          </ul>
+        </nz-dropdown-menu>
       </div><!-- page-regime-approval__group-button -->
 
       <h1>630 | Xét duyệt chế độ ốm đau, Thai sản và Dưỡng sức, phục hồi sức khỏe</h1>
@@ -26,9 +80,9 @@
         <nz-collapse-panel class="collapse-part1" nzHeader="Phần 1: Danh sách hưởng chế độ mới phát sinh" [nzActive]="panel.part1.active" (nzActiveChange)="collapseChange($event, 'part1')">
           <div class="page-regime-approval__part1">
             <app-regime-approval-editor
-              [data]="healthRecovery.part1.table"
-              [nestedHeaders]="healthRecoveryHeaders.part1.nested"
-              [columns]="healthRecoveryHeaders.part1.columns"
+              [data]="declarations.part1.table"
+              [nestedHeaders]="headers.part1.nested"
+              [columns]="headers.part1.columns"
             ></app-regime-approval-editor>
           </div>
         </nz-collapse-panel>
@@ -36,9 +90,9 @@
         <nz-collapse-panel class="collapse-part2" nzHeader="Phần 2: Danh sách đề nghị điều chỉnh số đã được quyết định" [nzActive]="panel.part2.active" (nzActiveChange)="collapseChange($event, 'part2')">
           <div class="page-regime-approval__part2">
             <app-regime-approval-editor
-              [data]="healthRecovery.part2.table"
-              [nestedHeaders]="healthRecoveryHeaders.part2.nested"
-              [columns]="healthRecoveryHeaders.part2.columns"
+              [data]="declarations.part2.table"
+              [nestedHeaders]="headers.part2.nested"
+              [columns]="headers.part2.columns"
             ></app-regime-approval-editor>
           </div>
         </nz-collapse-panel>

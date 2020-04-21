@@ -112,6 +112,7 @@ export class IncreaseLaborComponent implements OnInit {
       } else {
         this.declarationService.getDeclarationInitials('600', this.tableHeaderColumns).subscribe(declarations => {
           this.declarations = declarations;
+          console.log(this.declarations)
         });
       }
     });
@@ -234,8 +235,6 @@ export class IncreaseLaborComponent implements OnInit {
         declaration.data[0] = order.index;
       }
     });
-
-    
   }
 
   private updateSourceToColumn(key, sources) {
@@ -330,7 +329,7 @@ export class IncreaseLaborComponent implements OnInit {
   get usedocumentDT01() {
     return this.documentForm.get('usedocumentDT01').value;
   }
-  
+
   handleChangeDataDocumentList({ records, columns }) {
     const informationList = [];
     records.forEach(record => {
@@ -339,7 +338,7 @@ export class IncreaseLaborComponent implements OnInit {
     this.informationList = informationList;
   }
 
-  handleDeleteProcessDataDocumentList({ rowNumber, numOfRows }){ 
+  handleDeleteProcessDataDocumentList({ rowNumber, numOfRows }){
 
   }
 
@@ -355,7 +354,7 @@ export class IncreaseLaborComponent implements OnInit {
         if (column.type === 'numberic') {
           return { ...combine, [ column.key ]: array[current].toString().split(' ').join('') };
         }
-        
+
         return { ...combine, [ column.key ]: column.key === 'gender' ? +array[current] : array[current] };
       },
       {}

@@ -4,12 +4,70 @@
   <div class="page-regime-approval__content">
     <div class="page-regime-approval__group-button">
       <div class="page-regime-approval__buttons">
-        <button nz-button nzType="default" (click)="handleAddEmployee('I1')">
+        <button nz-button nzType="default" nz-dropdown nzTrigger="click" [nzDropdownMenu]="menuPart1">
           <i nz-icon nzType="arrow-up"></i>Phần I
         </button>
-        <button nz-button nzType="default" (click)="handleAddEmployee('I2')">
+        <button nz-button nzType="default" nz-dropdown nzTrigger="click" [nzDropdownMenu]="menuPart2">
           <i nz-icon nzType="arrow-up"></i>Phần II
         </button>
+        <nz-dropdown-menu #menuPart1="nzDropdownMenu">
+          <ul nz-menu nzSelectable>
+            <li nz-menu-item (click)="handleAddEmployee('part1', 'I')">Khám thai</li>
+            <li nz-menu-item (click)="handleAddEmployee('part1', 'II')">Sẩy thai, nạo hút thai, thai chết lưu hoặc phá thai bệnh lý</li>
+            <li nz-menu-item nz-submenu nzTitle="Sinh con">
+              <ul>
+                <li nz-menu-item (click)="handleAddEmployee('part1', 'III1')">Trường hợp thông thường</li>
+                <li nz-menu-item (click)="handleAddEmployee('part1', 'III2')">Trường hợp con chết</li>
+                <li nz-menu-item (click)="handleAddEmployee('part1', 'III3')">Trường hợp mẹ chết sau khi sinh; Trường hợp mẹ gặp rủi ro sau khi (khoản 4 Điều 34, khoản 6 Điều 34)</li>
+              </ul>
+            </li>
+            <li nz-menu-item (click)="handleAddEmployee('part1', 'IV')">Nhận nuôi con nuôi</li>
+            <li nz-menu-item nz-submenu nzTitle="Lao động nữ mang thai hộ sinh con">
+              <ul>
+                <li nz-menu-item (click)="handleAddEmployee('part1', 'V1')">Trường hợp thông thường</li>
+                <li nz-menu-item (click)="handleAddEmployee('part1', 'V2')">Trường hợp đứa trẻ chết</li>
+              </ul>
+            </li>
+            <li nz-menu-item nz-submenu nzTitle="Người mẹ nhờ mang thai hộ nhận con">
+              <ul>
+                <li nz-menu-item (click)="handleAddEmployee('part1', 'VI1')">Trường hợp thông thường</li>
+                <li nz-menu-item (click)="handleAddEmployee('part1', 'VI2')">Trường hợp con chết</li>
+              </ul>
+            </li>
+            <li nz-menu-item (click)="handleAddEmployee('part1', 'VII')">Lao động nam, người chồng của lao động nữ mang thai hộ nghỉ việc khi vợ sinh</li>
+            <li nz-menu-item (click)="handleAddEmployee('part1', 'VIII')">Lao động nam, người chồng của người mẹ nhờ mang thai hộ hưởng trợ cấp một lần khi vợ sinh con</li>
+            <li nz-menu-item (click)="handleAddEmployee('part1', 'IX')">Thực hiện các biện pháp tránh thai</li>
+          </ul>
+        </nz-dropdown-menu>
+        <nz-dropdown-menu #menuPart2="nzDropdownMenu">
+          <ul nz-menu nzSelectable>
+            <li nz-menu-item (click)="handleAddEmployee('part2', 'I')">Khám thai</li>
+            <li nz-menu-item (click)="handleAddEmployee('part2', 'II')">Sẩy thai, nạo hút thai, thai chết lưu hoặc phá thai bệnh lý</li>
+            <li nz-menu-item nz-submenu nzTitle="Sinh con">
+              <ul>
+                <li nz-menu-item (click)="handleAddEmployee('part2', 'III1')">Trường hợp thông thường</li>
+                <li nz-menu-item (click)="handleAddEmployee('part2', 'III2')">Trường hợp con chết</li>
+                <li nz-menu-item (click)="handleAddEmployee('part2', 'III3')">Trường hợp mẹ chết sau khi sinh; Trường hợp mẹ gặp rủi ro sau khi (khoản 4 Điều 34, khoản 6 Điều 34)</li>
+              </ul>
+            </li>
+            <li nz-menu-item (click)="handleAddEmployee('part2', 'IV')">Nhận nuôi con nuôi</li>
+            <li nz-menu-item nz-submenu nzTitle="Lao động nữ mang thai hộ sinh con">
+              <ul>
+                <li nz-menu-item (click)="handleAddEmployee('part2', 'V1')">Trường hợp thông thường</li>
+                <li nz-menu-item (click)="handleAddEmployee('part2', 'V2')">Trường hợp đứa trẻ chết</li>
+              </ul>
+            </li>
+            <li nz-menu-item nz-submenu nzTitle="Người mẹ nhờ mang thai hộ nhận con">
+              <ul>
+                <li nz-menu-item (click)="handleAddEmployee('part2', 'VI1')">Trường hợp thông thường</li>
+                <li nz-menu-item (click)="handleAddEmployee('part2', 'VI2')">Trường hợp con chết</li>
+              </ul>
+            </li>
+            <li nz-menu-item (click)="handleAddEmployee('part2', 'VII')">Lao động nam, người chồng của lao động nữ mang thai hộ nghỉ việc khi vợ sinh</li>
+            <li nz-menu-item (click)="handleAddEmployee('part2', 'VIII')">Lao động nam, người chồng của người mẹ nhờ mang thai hộ hưởng trợ cấp một lần khi vợ sinh con</li>
+            <li nz-menu-item (click)="handleAddEmployee('part2', 'IX')">Thực hiện các biện pháp tránh thai</li>
+          </ul>
+        </nz-dropdown-menu>
       </div><!-- page-regime-approval__group-button -->
 
       <h1>630 | Xét duyệt chế độ ốm đau, Thai sản và Dưỡng sức, phục hồi sức khỏe</h1>
@@ -26,9 +84,9 @@
         <nz-collapse-panel class="collapse-part1" nzHeader="Phần 1: Danh sách hưởng chế độ mới phát sinh" [nzActive]="panel.part1.active" (nzActiveChange)="collapseChange($event, 'part1')">
           <div class="page-regime-approval__part1">
             <app-regime-approval-editor
-              [data]="maternity.part1.table"
-              [nestedHeaders]="maternityHeaders.part1.nested"
-              [columns]="maternityHeaders.part1.columns"
+              [data]="declarations.part1.table"
+              [nestedHeaders]="headers.part1.nested"
+              [columns]="headers.part1.columns"
             ></app-regime-approval-editor>
           </div>
         </nz-collapse-panel>
@@ -36,9 +94,9 @@
         <nz-collapse-panel class="collapse-part2" nzHeader="Phần 2: Danh sách đề nghị điều chỉnh số đã được quyết định" [nzActive]="panel.part2.active" (nzActiveChange)="collapseChange($event, 'part2')">
           <div class="page-regime-approval__part2">
             <app-regime-approval-editor
-              [data]="maternity.part2.table"
-              [nestedHeaders]="maternityHeaders.part2.nested"
-              [columns]="maternityHeaders.part2.columns"
+              [data]="declarations.part2.table"
+              [nestedHeaders]="headers.part2.nested"
+              [columns]="headers.part2.columns"
             ></app-regime-approval-editor>
           </div>
         </nz-collapse-panel>
