@@ -2,8 +2,16 @@
   height: 100%;
   padding: 5px 0 5px 5px;
 
+  &--hidden {
+    app-users-tree, .declaration-sidebar__group-button button {
+      display: none;
+    }
+  }
+
   &__group-button {
     margin-bottom: 10px;
+    position: relative;
+    height: 32px;
 
     button {
       margin-right: 5px;
@@ -12,5 +20,13 @@
         margin-right: 0;
       }
     }
+  }
+
+  &__toggle {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
   }
 }

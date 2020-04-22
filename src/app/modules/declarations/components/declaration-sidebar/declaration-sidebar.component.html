@@ -1,10 +1,15 @@
-<div class="declaration-sidebar">
+<div class="declaration-sidebar" [ngClass]="{'declaration-sidebar--hidden': isHiddenSidebar}">
   <div class="declaration-sidebar__group-button">
     <button nz-button nzType="default"><i nz-icon nzType="search"></i></button>
     <button nz-button nzType="default"><i nz-icon nzType="sync"></i></button>
     <button nz-button nzType="default" (click)="addEmployee()"><i nz-icon nzType="plus"></i></button>
     <button nz-button nzType="default" (click)="editEmployee()"><i nz-icon nzType="edit"></i></button>
     <button nz-button nzType="default"><i nz-icon nzType="close"></i></button>
+
+    <span class="declaration-sidebar__toggle" (click)="toggleSidebar()">
+      <i nz-icon nzType="caret-left" nzTheme="outline" *ngIf="!isHiddenSidebar"></i>
+      <i nz-icon nzType="caret-right" nzTheme="outline" *ngIf="isHiddenSidebar"></i>
+    </span>
   </div><!-- declaration-sidebar__group-button -->
 
   <app-users-tree [events]="employeeSubject.asObservable()" (onSelectEmployees)="handleSelectEmployees($event)"></app-users-tree>

@@ -1,5 +1,9 @@
-<div class="page-regime-approval__container">
-  <app-declaration-sidebar (onSelectEmployees)="handleSelectEmployees($event)"></app-declaration-sidebar>
+<div class="page-regime-approval__container" [ngClass]="{ 'page-regime-approval__container--hidden': isHiddenSidebar }">
+  <app-declaration-sidebar
+    [isHiddenSidebar]="isHiddenSidebar"
+    (onSelectEmployees)="handleSelectEmployees($event)"
+    (onToggleSidebar)="handleToggleSidebar()"
+  ></app-declaration-sidebar>
 
   <div class="page-regime-approval__content">
     <div class="page-regime-approval__group-button">

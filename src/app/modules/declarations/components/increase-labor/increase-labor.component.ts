@@ -42,6 +42,7 @@ export class IncreaseLaborComponent implements OnInit {
   documentList: DocumentList[] = [];
   informationList: any[] = [];
   declaration: any;
+  isHiddenSidebar = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -376,5 +377,9 @@ export class IncreaseLaborComponent implements OnInit {
     console.log(informationList);
 
     return informationList;
+  }
+
+  handleToggleSidebar() {
+    this.isHiddenSidebar = !this.isHiddenSidebar;
   }
 }

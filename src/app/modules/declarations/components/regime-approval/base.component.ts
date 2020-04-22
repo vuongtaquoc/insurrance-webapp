@@ -33,6 +33,7 @@ export class RegimeApprovalBaseComponent {
     }
   };
   employeeSelected: any[] = [];
+  isHiddenSidebar = false;
 
   constructor(protected declarationService: DeclarationService) {}
 
@@ -177,6 +178,10 @@ export class RegimeApprovalBaseComponent {
     }
 
     return object;
+  }
+
+  handleToggleSidebar() {
+    this.isHiddenSidebar = !this.isHiddenSidebar;
   }
 
   private updateOrigin(records, part) {

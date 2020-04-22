@@ -12,7 +12,9 @@ import { EmployeeFormComponent } from '@app/shared/components';
   styleUrls: ['./declaration-sidebar.component.less']
 })
 export class DeclarationSidebarComponent {
+  @Input() isHiddenSidebar = false;
   @Output() onSelectEmployees: EventEmitter<any> = new EventEmitter();
+  @Output() onToggleSidebar: EventEmitter<any> = new EventEmitter();
 
   isSpinning: boolean;
   employeeSelected: any[] = [];
@@ -81,5 +83,9 @@ export class DeclarationSidebarComponent {
         });
       });
     });
+  }
+
+  toggleSidebar() {
+    this.onToggleSidebar.emit(this.isHiddenSidebar);
   }
 }
