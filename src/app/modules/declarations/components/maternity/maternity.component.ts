@@ -24,7 +24,6 @@ export class MaternityComponent extends RegimeApprovalBaseComponent implements O
     this.declarationService.getDeclarationInitials('630b', this.headers.part1.columns).subscribe(maternity => {
       this.declarations.part1.table = maternity;
       this.declarations.part2.table = maternity;
-      console.log(this.declarations)
     });
   }
 }

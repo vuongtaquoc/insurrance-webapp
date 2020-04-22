@@ -73,42 +73,43 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   key: 'regimeFromDate',
   isCalendar: true
 }, {
-  type: 'numberic',
+  type: 'text',
   width: 80,
   title: '(6.2)',
-  key: 'regimeSum' 
-}, {
-  type: 'text',
-  width: 60,
-  title: '(6.3)',
-  key: 'regimeRequestDate'
+  key: 'regimeToDate',
+  isCalendar: true
 }, {
   type: 'numberic',
+  width: 60,
+  title: '(6.3)',
+  key: 'regimeSum'
+}, {
+  type: 'text',
   width: 80,
   title: '(7)',
+  key: 'regimeRequestDate',
+  isCalendar: true
+}, {
+  type: 'numberic',
+  width: 60,
+  title: '(8.1)',
   key: 'ratioReduction'
 }, {
   type: 'text',
-  width: 60,
-  title: '(8.1)',
+  width: 90,
+  title: '(8.2)',
   key: 'expertiseDate',
   isCalendar: true
 }, {
-  type: 'numberic',
-  width: 90,
-  title: '(8.2)',
+  type: 'text',
+  width: 55,
+  title: '(9.1)',
   key: 'recruitmentNumber'
 }, {
   type: 'text',
-  width: 55,
-  title: '(11.1)',
-  key: 'recruitmentDate',
-  isCalendar: true
-}, {
-  type: 'text',
   width: 75,
-  title: '(11.2)',
-  key: 'isurranceCode',
+  title: '(9.2)',
+  key: 'recruitmentDate',
   isCalendar: true
 }, {
   type: 'dropdown',
@@ -137,7 +138,7 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   width: 165,
   title: '(D)',
   key: 'note',
-  wordWrap: true  
+  wordWrap: true
 }];
 
 export const TABLE_NESTED_HEADERS_PART_2 = [
@@ -196,28 +197,28 @@ export const TABLE_HEADER_COLUMNS_PART_2 = [{
   title: '(3)',
   key: 'code'
 }, {
-  type: 'calendar',
-  options: { format:'DD/MM/YYYY' },
+  type: 'text',
   width: 95,
   title: '(4.1)',
-  key: 'regimeFromDate'
+  key: 'regimeFromDate',
+  isCalendar: true
 }, {
-  type: 'calendar',
-  options: { format:'DD/MM/YYYY' },
+  type: 'text',
   width: 95,
   title: '(4.2)',
-  key: 'regimeToDate'
+  key: 'regimeToDate',
+  isCalendar: true
 }, {
   type: 'numberic',
   width: 60,
   title: '(4.3)',
   key: 'regimeSum'
 }, {
-  type: 'calendar',
-  options: { format:'DD/MM/YYYY' },
+  type: 'text',
   width: 85,
   title: '(5.1)',
-  key: 'recordSolvedFromDate'
+  key: 'recordSolvedFromDate',
+  isCalendar: true
 }, {
   type: 'dropdown',
   source: [],
@@ -225,17 +226,17 @@ export const TABLE_HEADER_COLUMNS_PART_2 = [{
   title: '(5.2)',
   key: 'recordSolvedNumber'
 }, {
-  type: 'calendar',
-  options: { format:'MM/YYYY' },
+  type: 'text',
   width: 75,
   title: '(5.3)',
-  key: 'recordSolvedEndDate'
+  key: 'recordSolvedEndDate',
+  isCalendar: true
 }, {
   type: 'text',
   width: 150,
   title: '(6)',
   key: 'reasonAdjustment',
-  wordWrap: true  
+  wordWrap: true
 }, {
   type: 'dropdown',
   width: 190,
@@ -263,5 +264,5 @@ export const TABLE_HEADER_COLUMNS_PART_2 = [{
   width: 165,
   title: '(D)',
   key: 'note',
-  wordWrap: true  
+  wordWrap: true
 }];

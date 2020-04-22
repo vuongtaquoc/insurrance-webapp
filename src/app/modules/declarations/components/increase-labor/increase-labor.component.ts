@@ -112,7 +112,6 @@ export class IncreaseLaborComponent implements OnInit {
       } else {
         this.declarationService.getDeclarationInitials('600', this.tableHeaderColumns).subscribe(declarations => {
           this.declarations = declarations;
-          console.log(this.declarations)
         });
       }
     });

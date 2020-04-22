@@ -24,7 +24,6 @@ export class HealthRecoveryComponent extends RegimeApprovalBaseComponent {
     this.declarationService.getDeclarationInitials('630c', this.headers.part1.columns).subscribe(healthRecovery => {
       this.declarations.part1.table = healthRecovery;
       this.declarations.part2.table = healthRecovery;
-      console.log(this.declarations)
     });
   }
 }

@@ -7,15 +7,15 @@
         </nz-tab>
 
         <nz-tab nzTitle="Ốm đau">
-          <app-sicknesses></app-sicknesses>
+          <app-sicknesses (onChange)="handleTableChange($event, 'sicknesses')"></app-sicknesses>
         </nz-tab>
 
         <nz-tab nzTitle="Thai sản">
-          <app-maternity></app-maternity>
+          <app-maternity (onChange)="handleTableChange($event, 'maternity')"></app-maternity>
         </nz-tab>
 
         <nz-tab nzTitle="Sức khỏe">
-          <app-health-recovery></app-health-recovery>
+          <app-health-recovery (onChange)="handleTableChange($event, 'healthRecovery')"></app-health-recovery>
         </nz-tab>
       </nz-tabset>
       <ng-template #extraTemplate>

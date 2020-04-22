@@ -11,4 +11,8 @@ export class RegimeApprovalComponent {
   handleSelectTab({ index }) {
     eventEmitter.emit('regime-approval:tab:change', index);
   }
+
+  handleTableChange(data, type) {
+    console.log(data, type)
+  }
 }

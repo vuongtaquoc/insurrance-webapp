@@ -3,6 +3,7 @@ import { Subscription, Observable } from 'rxjs';
 import * as jexcel from 'jstable-editor/dist/jexcel.js';
 import 'jsuites/dist/jsuites.js';
 
+import { customPicker } from '@app/shared/utils/custom-editor';
 import { eventEmitter } from '@app/shared/utils/event-emitter';
 
 @Component({
@@ -82,10 +83,6 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
           const nextColumn = jexcel.getColumnNameFromId([Number(c) + 1, r]);
 
           instance.jexcel.setValue(nextColumn, '');
-
-          const type = value === '1' ? 'month' : (value === '2' ? 'year' : '');
-
-          // this.updateEditorToColumn('birthday', type);
         }
       },
       ondeleterow: (el, rowNumber, numOfRows) => {
@@ -97,6 +94,22 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
         });
       }
     });
+
+    this.updateEditorToColumn('recruitmentDate', 'month');
+    this.updateEditorToColumn('recordSolvedEndDate', 'month');
+    this.updateEditorToColumn('regimeFromDate');
+    this.updateEditorToColumn('regimeToDate');
+    this.updateEditorToColumn('regimeRequestDate');
+    this.updateEditorToColumn('childrenBirthday');
+    this.updateEditorToColumn('dateStartWork');
+    this.updateEditorToColumn('childrenDayDead');
+    this.updateEditorToColumn('childrenGodchilDreceptionDate');
+    this.updateEditorToColumn('childrenDreceptionDate');
+    this.updateEditorToColumn('motherDayDead');
+    this.updateEditorToColumn('cotherConclusionDate');
+    this.updateEditorToColumn('recordSolvedFromDate');
+    this.updateEditorToColumn('dateStartWork');
+    this.updateEditorToColumn('expertiseDate');
 
     this.spreadsheet.hideIndex();
 
@@ -168,5 +181,13 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
     if (column) {
       column.filter = filterCb;
     }
+  }
+
+  private updateEditorToColumn(key, type = 'date', isCustom = false) {
+    const column = this.columns.find(c => c.key === key);
+
+    if (!column) return;
+
+    column.editor = customPicker(this.spreadsheet, type, isCustom);
   }
 }

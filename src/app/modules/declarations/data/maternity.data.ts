@@ -85,39 +85,39 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   key: 'holidayWeekly',
   source: [ ],
 }, {
-  type: 'calendar',
-  options: { format:'DD/MM/YYYY' },
+  type: 'text',
   width: 80,
   title: '(5)',
-  key: 'dateStartWork'
+  key: 'dateStartWork',
+  isCalendar: true
 }, {
   type: 'text',
   width: 120,
   title: '(6.1)',
   key: 'SeriNo'
 }, {
-  type: 'calendar',
-  options: { format:'DD/MM/YYYY' },
+  type: 'text',
   width: 80,
   title: '(6.2)',
-  key: 'regimeFromDate'
+  key: 'regimeFromDate',
+  isCalendar: true
 }, {
-  type: 'calendar',
-  options: { format:'DD/MM/YYYY' },
+  type: 'text',
   width: 80,
   title: '(6.3)',
-  key: 'regimeToDate' 
+  key: 'regimeToDate',
+  isCalendar: true
 }, {
   type: 'numberic',
   width: 60,
   title: '(6.4)',
   key: 'regimeSum'
 }, {
-  type: 'calendar',
-  options: { format:'DD/MM/YYYY' },
+  type: 'text',
   width: 100,
   title: '(7)',
-  key: 'regimeRequestDate' 
+  key: 'regimeRequestDate',
+  isCalendar: true
 }, {
   type: 'dropdown',
   source: [],
@@ -146,39 +146,39 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   title: '(10.3)',
   key: 'childrenWeekOld',
 }, {
-  type: 'calendar',
-  options: { format:'DD/MM/YYYY' },
+  type: 'text',
   width: 80,
   title: '(10.4)',
-  key: 'childrenBirthday' 
+  key: 'childrenBirthday',
+  isCalendar: true
 }, {
   type: 'numberic',
   width: 50,
   title: '(10.5)',
   key: 'childrenNumber',
 }, {
-  type: 'calendar',
-  options: { format:'DD/MM/YYYY' },
+  type: 'text',
   width: 80,
   title: '(10.6)',
-  key: 'childrenDayDead' 
+  key: 'childrenDayDead',
+  isCalendar: true
 }, {
   type: 'numberic',
   width: 65,
   title: '(10.7)',
   key: 'childrenNumberSick',
 }, {
-  type: 'calendar',
-  options: { format:'DD/MM/YYYY' },
+  type: 'text',
   width: 80,
   title: '(10.8)',
-  key: 'childrenGodchilDreceptionDate'
+  key: 'childrenGodchilDreceptionDate',
+  isCalendar: true
 }, {
-  type: 'calendar',
-  options: { format:'DD/MM/YYYY' },
+  type: 'text',
   width: 90,
   title: '(10.9)',
-  key: 'childrenDreceptionDate'
+  key: 'childrenDreceptionDate',
+  isCalendar: true
 }, {
   type: 'text',
   width: 120,
@@ -212,15 +212,13 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   title: '(11..6)',
   key: 'isSurgeryOrPremature'
 }, {
-  type: 'calendar',
-  options: { format:'DD/MM/YYYY' },
+  type: 'text',
   width: 80,
   title: '(11.7)',
   key: 'motherDayDead',
   isCalendar: true
 }, {
-  type: 'calendar',
-  options: { format:'DD/MM/YYYY' },
+  type: 'text',
   width: 90,
   title: '(11.8)',
   key: 'cotherConclusionDate',
@@ -248,8 +246,7 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   key: 'recruitmentNumber',
   source: []
 }, {
-  type: 'calendar',
-  options: { format:'DD/MM/YYYY' },
+  type: 'text',
   width: 75,
   title: '(14.2)',
   key: 'recruitmentDate',
@@ -276,7 +273,7 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   title: '(C.4)',
   key: 'bankId',
   source: [ ],
-}, 
+},
 {
   type: 'dropdown',
   autocomplete: true,
@@ -347,15 +344,13 @@ export const TABLE_HEADER_COLUMNS_PART_2 = [{
   title: '(3)',
   key: 'code'
 }, {
-  type: 'calendar',
-  options: { format:'DD/MM/YYYY' },
+  type: 'text',
   width: 95,
   title: '(4.1)',
   key: 'regimeFromDate',
   isCalendar: true
 }, {
-  type: 'calendar',
-  options: { format:'DD/MM/YYYY' },
+  type: 'text',
   width: 95,
   title: '(4.2)',
   key: 'regimeToDate',
@@ -388,7 +383,7 @@ export const TABLE_HEADER_COLUMNS_PART_2 = [{
   width: 150,
   title: '(6)',
   key: 'reasonAdjustment',
-  wordWrap: true  
+  wordWrap: true
 }, {
   type: 'dropdown',
   source: [],
@@ -416,5 +411,5 @@ export const TABLE_HEADER_COLUMNS_PART_2 = [{
   width: 150,
   title: '(D)',
   key: 'note',
-  wordWrap: true  
+  wordWrap: true
 }];
