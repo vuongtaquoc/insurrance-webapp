@@ -1,4 +1,4 @@
-// import { Input, Output, EventEmitter } from '@angular/core';
+import { Input, Output, EventEmitter } from '@angular/core';
 import findLastIndex from 'lodash/findLastIndex';
 import findIndex from 'lodash/findIndex';
 
@@ -7,6 +7,7 @@ import {
 } from '@app/core/services';
 
 export class RegimeApprovalBaseComponent {
+  @Output() onChange: EventEmitter<any> = new EventEmitter();
   panel: any = {
     part1: { active: true },
     part2: { active: false }
@@ -87,6 +88,43 @@ export class RegimeApprovalBaseComponent {
     this.employeeSelected = employees;
   }
 
+  handleChangeTable({ instance, cell, c, r, records }, part) {
+    // update declarations
+    this.declarations[part].table.forEach((declaration, index) => {
+      const record = records[index];
+
+      Object.keys(record).forEach(index => {
+        declaration.data[index] = record[index];
+      });
+    });
+
+    // update origin data
+    this.declarations[part].origin = Object.values(this.updateOrigin(records, part));
+
+    this.onChange.emit({
+      part,
+      data: this.declarations[part].origin
+    });
+  }
+
+  handleDeleteTableData({ rowNumber, numOfRows, records }, part) {
+    const declarations = [ ...this.declarations[part].table ];
+
+    declarations.splice(rowNumber, numOfRows);
+
+    this.updateOrders(declarations);
+
+    this.declarations[part].table = this.declarationService.updateFormula(declarations, this.headers[part].columns);
+
+    // update origin data
+    this.declarations[part].origin = Object.values(this.updateOrigin(records, part));
+
+    this.onChange.emit({
+      part,
+      data: this.declarations[part].origin
+    });
+  }
+
   collapseChange(isActive, part) {
     if (part === 'part1') {
       this.panel.part1.active = isActive;
@@ -114,5 +152,49 @@ export class RegimeApprovalBaseComponent {
         declaration.data[0] = order.index;
       }
     });
+  }
+
+  arrayToProps(array, columns) {
+    const object: any = Object.keys(array).reduce(
+      (combine, current) => {
+        const column = columns[current];
+
+        if (current === 'origin' || current === 'options' || !column.key) {
+          return { ...combine };
+        }
+
+        if (column.type === 'calendar') {
+          return { ...combine, [ column.key ]: array[current].toString().split(' ').join('') };
+        }
+
+        return { ...combine, [ column.key ]: column.key === 'gender' ? +array[current] : array[current] };
+      },
+      {}
+    );
+
+    if (array.origin.id) {
+      object.employeerId = array.origin.id;
+    }
+
+    return object;
+  }
+
+  private updateOrigin(records, part) {
+    const declarations = {};
+
+    records.forEach(d => {
+      if (!d.options.hasLeaf && !d.options.isLeaf) {
+        declarations[d.options.key] = { ...d.origin };
+      } else if (d.options.hasLeaf) {
+        declarations[d.options.key] = {
+          ...d.origin,
+          declarations: []
+        };
+      } else if (d.options.isLeaf) {
+        declarations[d.options.parentKey].declarations.push(this.arrayToProps(d, this.headers[part].columns));
+      }
+    });
+
+    return declarations
   }
 }

@@ -83,6 +83,8 @@
               [data]="declarations.part1.table"
               [nestedHeaders]="headers.part1.nested"
               [columns]="headers.part1.columns"
+              (onChange)="handleChangeTable($event, 'part1')"
+              (onDelete)="handleDeleteTableData($event, 'part1')"
             ></app-regime-approval-editor>
           </div>
         </nz-collapse-panel>
@@ -93,6 +95,8 @@
               [data]="declarations.part2.table"
               [nestedHeaders]="headers.part2.nested"
               [columns]="headers.part2.columns"
+              (onChange)="handleChangeTable($event, 'part2')"
+              (onDelete)="handleDeleteTableData($event, 'part2')"
             ></app-regime-approval-editor>
           </div>
         </nz-collapse-panel>
