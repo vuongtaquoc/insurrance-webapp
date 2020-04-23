@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, Input, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
@@ -8,8 +8,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   encapsulation: ViewEncapsulation.None
 })
 export class RegimeApprovalFormComponent implements OnInit {
-  @Output() onChange: EventEmitter<any> = new EventEmitter();
-  form: FormGroup;
+  // @Input() initialForm: any;
+  @Input() form: FormGroup;
+  @Output() onFormValuesChanged: EventEmitter<any> = new EventEmitter();
 
   constructor(
     private formBuilder: FormBuilder
@@ -34,9 +35,9 @@ export class RegimeApprovalFormComponent implements OnInit {
 
   formChanges() {
     this.form.valueChanges.subscribe(value => {
-      this.onChange.emit(value);
+      this.onFormValuesChanged.emit(value);
     });
 
-    this.onChange.emit(this.form.value);
+    this.onFormValuesChanged.emit(this.form.value);
   }
 }
