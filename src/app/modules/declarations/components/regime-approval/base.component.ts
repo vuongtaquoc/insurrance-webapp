@@ -1,4 +1,5 @@
-import { Input, Output, EventEmitter } from '@angular/core';
+import { Input, Output, EventEmitter, TemplateRef } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import findLastIndex from 'lodash/findLastIndex';
 import findIndex from 'lodash/findIndex';
 
@@ -7,7 +8,10 @@ import {
 } from '@app/core/services';
 
 export class RegimeApprovalBaseComponent {
+  @Input() data: any;
+  @Input() formContent: TemplateRef<any>;
   @Output() onChange: EventEmitter<any> = new EventEmitter();
+  @Output() onHiddenSidebar: EventEmitter<any> = new EventEmitter();
   panel: any = {
     part1: { active: true },
     part2: { active: false }
@@ -182,6 +186,8 @@ export class RegimeApprovalBaseComponent {
 
   handleToggleSidebar() {
     this.isHiddenSidebar = !this.isHiddenSidebar;
+
+    this.onHiddenSidebar.emit(this.isHiddenSidebar);
   }
 
   private updateOrigin(records, part) {

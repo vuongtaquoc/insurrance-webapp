@@ -77,7 +77,8 @@
       <h1>630 | Xét duyệt chế độ ốm đau, Thai sản và Dưỡng sức, phục hồi sức khỏe</h1>
     </div><!-- page-regime-approval__group-button -->
 
-    <app-regime-approval-form></app-regime-approval-form>
+    <ng-container *ngIf="formContent" [ngTemplateOutlet]="formContent"></ng-container>
+    <div *ngIf="!formContent"></div>
 
     <div class="page-regime-approval__editor">
       <nz-collapse [nzBordered]="false" [ngClass]="{

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import findLastIndex from 'lodash/findLastIndex';
+import groupBy from 'lodash/groupBy';
 import * as jexcel from 'jstable-editor/dist/jexcel.js';
 
 import { ApplicationHttpClient } from '@app/core/http';
@@ -15,28 +16,13 @@ export class DeclarationService {
 
   public getDeclarationInitials(pageId, tableHeaderColumns) {
     return this.http.get(`/declarations/press-create/${ pageId }`).pipe(
-      map(declarations => {
-        const data = [];
+      map(declarations => this.updateDeclarations(declarations, tableHeaderColumns))
+    );
+  }
 
-        declarations.forEach((d, index) => {
-          const hasFormula = d.code.indexOf('SUM') > -1 || d.code.indexOf('Sum') > -1;
-
-          data.push({
-            readonly: !hasFormula,
-            formula: hasFormula,
-            origin: d,
-            key: d.code,
-            data: [ d.codeView, d.name ],
-            hasLeaf: d.hasChildren
-          });
-
-          if (d.hasChildren) {
-            d.declarations.forEach(employee => data.push(this.getLeaf(d, employee, tableHeaderColumns, true)));
-          }
-        });
-
-        return this.updateFormula(data, tableHeaderColumns);
-      })
+  public getDeclarationInitialsByGroup(pageId) {
+    return this.http.get(`/declarations/press-create/${ pageId }`).pipe(
+      map(declarations => groupBy(declarations, 'category'))
     );
   }
 
@@ -88,6 +74,29 @@ export class DeclarationService {
 
   public delete(id) {
     return this.http.delete(`/declarations/${ id }`);
+  }
+
+  public updateDeclarations(declarations, tableHeaderColumns) {
+    const data = [];
+
+    declarations.forEach((d, index) => {
+      const hasFormula = d.code.indexOf('SUM') > -1 || d.code.indexOf('Sum') > -1;
+
+      data.push({
+        readonly: !hasFormula,
+        formula: hasFormula,
+        origin: d,
+        key: d.code,
+        data: [ d.codeView, d.name ],
+        hasLeaf: d.hasChildren
+      });
+
+      if (d.hasChildren) {
+        d.declarations.forEach(employee => data.push(this.getLeaf(d, employee, tableHeaderColumns, true)));
+      }
+    });
+
+    return this.updateFormula(data, tableHeaderColumns);
   }
 
   public updateFormula(declarations, tableHeaderColumns) {

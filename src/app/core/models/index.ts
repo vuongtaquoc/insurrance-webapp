@@ -13,3 +13,4 @@ export * from './department';
 export * from './isurrance-department';
 export * from './plan';
 export * from './document-list';
+export * from './category';

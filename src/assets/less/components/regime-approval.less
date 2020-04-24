@@ -7,6 +7,14 @@
   padding: 10px;
   width: 100%;
   overflow: hidden;
+  position: relative;
+
+  &--hidden {
+    .page-regime-approval__form {
+      width: calc(100% - 60px);
+      left: 40px;
+    }
+  }
 
   h1 {
     font-size: 15px;
@@ -25,6 +33,17 @@
 
     &--hidden {
       grid-template-columns: 20px 1fr;
+    }
+  }
+
+  &__form {
+    position: absolute;
+    top: 62px;
+    width: calc(100% - 260px);
+    left: 240px;
+
+    &--hidden {
+      display: none;
     }
   }
 
@@ -185,5 +204,9 @@
     .collapse-part2 {
       height: calc(100% - 27px);
     }
+  }
+
+  .ant-tabs .ant-tabs-bottom-content > .ant-tabs-tabpane.ant-tabs-tabpane-active {
+    height: 100%;
   }
 }
