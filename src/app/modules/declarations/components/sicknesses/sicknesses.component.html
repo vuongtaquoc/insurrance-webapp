@@ -33,9 +33,10 @@
       <h1>630 | Xét duyệt chế độ ốm đau, Thai sản và Dưỡng sức, phục hồi sức khỏe</h1>
     </div><!-- page-regime-approval__group-button -->
 
-    <ng-container *ngIf="formContent" [ngTemplateOutlet]="formContent"></ng-container>
-    <!-- <app-regime-approval-form [(form)]="regimeApproval.form" (onFormValuesChanged)="handleFormValuesChanged($event)"></app-regime-approval-form> -->
-    <div *ngIf="!formContent"></div>
+    <ng-container *ngIf="hasForm">
+      <app-regime-approval-form (onFormValuesChanged)="handleFormValuesChanged($event)"></app-regime-approval-form>
+    </ng-container>
+    <div *ngIf="!hasForm"></div>
 
     <div class="page-regime-approval__editor">
       <nz-collapse [nzBordered]="false" [ngClass]="{

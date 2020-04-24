@@ -1,5 +1,4 @@
-import { Input, Output, EventEmitter, TemplateRef } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { Input, Output, EventEmitter } from '@angular/core';
 import findLastIndex from 'lodash/findLastIndex';
 import findIndex from 'lodash/findIndex';
 
@@ -9,7 +8,7 @@ import {
 
 export class RegimeApprovalBaseComponent {
   @Input() data: any;
-  @Input() formContent: TemplateRef<any>;
+  @Input() hasForm = false;
   @Output() onChange: EventEmitter<any> = new EventEmitter();
   @Output() onHiddenSidebar: EventEmitter<any> = new EventEmitter();
   panel: any = {
@@ -87,6 +86,32 @@ export class RegimeApprovalBaseComponent {
 
       this.declarations[part].table = this.declarationService.updateFormula(declarations, this.headers[part].columns);
     }
+
+    // update origin data
+    const records = [];
+
+    declarations.forEach((declaration, i) => {
+      const record = {
+        origin: declaration.origin,
+        options: {
+          hasLeaf: declaration.hasLeaf,
+          isLeaf: declaration.isLeaf,
+          parentKey: declaration.parentKey,
+          key: declaration.key
+        }
+      };
+
+      declaration.data.forEach((d, j) => record[j] = d);
+
+      records.push(record);
+    });
+
+    this.declarations[part].origin = Object.values(this.updateOrigin(records, part));
+
+    this.onChange.emit({
+      part,
+      data: this.declarations[part].origin
+    });
   }
 
   handleSelectEmployees(employees) {
@@ -159,7 +184,7 @@ export class RegimeApprovalBaseComponent {
     });
   }
 
-  arrayToProps(array, columns) {
+  arrayToProps(array, columns, part) {
     const object: any = Object.keys(array).reduce(
       (combine, current) => {
         const column = columns[current];
@@ -181,6 +206,8 @@ export class RegimeApprovalBaseComponent {
       object.employeerId = array.origin.id;
     }
 
+    object.part = part === 'part1' ? '1' : '2';
+
     return object;
   }
 
@@ -195,14 +222,15 @@ export class RegimeApprovalBaseComponent {
 
     records.forEach(d => {
       if (!d.options.hasLeaf && !d.options.isLeaf) {
-        declarations[d.options.key] = { ...d.origin };
+        declarations[d.options.key] = { ...d.origin, part: part === 'part1' ? '1' : '2' };
       } else if (d.options.hasLeaf) {
         declarations[d.options.key] = {
           ...d.origin,
+          part: part === 'part1' ? '1' : '2',
           declarations: []
         };
       } else if (d.options.isLeaf) {
-        declarations[d.options.parentKey].declarations.push(this.arrayToProps(d, this.headers[part].columns));
+        declarations[d.options.parentKey].declarations.push(this.arrayToProps(d, this.headers[part].columns, part));
       }
     });
 

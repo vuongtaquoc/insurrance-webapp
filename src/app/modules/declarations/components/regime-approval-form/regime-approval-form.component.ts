@@ -8,7 +8,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   encapsulation: ViewEncapsulation.None
 })
 export class RegimeApprovalFormComponent implements OnInit {
-  // @Input() initialForm: any;
   @Input() form: FormGroup;
   @Output() onFormValuesChanged: EventEmitter<any> = new EventEmitter();
 
