@@ -8,6 +8,9 @@ import { eventEmitter } from '@app/shared/utils/event-emitter';
   styleUrls: ['./regime-approval.component.less']
 })
 export class RegimeApprovalComponent {
+  ngOnInit() {
+    
+  }
   handleSelectTab({ index }) {
     eventEmitter.emit('regime-approval:tab:change', index);
   }
@@ -15,4 +18,6 @@ export class RegimeApprovalComponent {
   handleTableChange(data, type) {
     console.log(data, type)
   }
+
+  
 }

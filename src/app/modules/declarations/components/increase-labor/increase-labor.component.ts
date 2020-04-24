@@ -42,6 +42,7 @@ export class IncreaseLaborComponent implements OnInit {
   documentList: DocumentList[] = [];
   informationList: any[] = [];
   declaration: any;
+  partOfDeclaration: string;
   isHiddenSidebar = false;
 
   constructor(
@@ -66,6 +67,7 @@ export class IncreaseLaborComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.partOfDeclaration = "I"; // Là phần của tờ khai,
     const date = new Date();
     const currentCredentials = this.authenticationService.currentCredentials;
     this.form = this.formBuilder.group({
@@ -203,7 +205,7 @@ export class IncreaseLaborComponent implements OnInit {
     // update declarations
     this.declarations.forEach((declaration, index) => {
       const record = records[index];
-
+      console.log(declaration);
       Object.keys(record).forEach(index => {
         declaration.data[index] = record[index];
       });
@@ -373,8 +375,6 @@ export class IncreaseLaborComponent implements OnInit {
           informationList.push(information);
         }
     });
-
-    console.log(informationList);
 
     return informationList;
   }

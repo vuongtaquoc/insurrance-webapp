@@ -20,9 +20,6 @@
       </nz-tabset>
       <ng-template #extraTemplate>
         <div class="page-regime-approval__footer">
-          <button nz-button nzType="default" nzSize="small" (click)="viewDocument('save')">
-            <i nz-icon nzType="file"></i>Danh sách tài liệu
-          </button>
           <button nz-button nzType="default" nzSize="small" (click)="emitEventToChild('save')">
             <i nz-icon nzType="export"></i>Xuất tờ khai
           </button>
