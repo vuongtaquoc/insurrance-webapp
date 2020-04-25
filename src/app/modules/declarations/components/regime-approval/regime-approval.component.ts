@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DeclarationService, AuthenticationService, DocumentListService } from '@app/core/services';
@@ -11,6 +11,7 @@ import { DocumentList } from '@app/core/models';
   styleUrls: ['./regime-approval.component.less']
 })
 export class RegimeApprovalComponent implements OnInit {
+  @Input() declarationId: string;
   regimeApproval: any = {
     origin: {},
     form: {},
@@ -31,9 +32,15 @@ export class RegimeApprovalComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.declarationService.getDeclarationInitialsByGroup(this.declarationCode).subscribe(data => {
-      this.regimeApproval.origin = data;
-    });
+    if (this.declarationId) {
+      this.declarationService.getDeclarationsByDocumentIdByGroup(this.declarationId).subscribe(declarations => {
+        this.regimeApproval.origin = declarations.documentDetail;
+      });
+    } else {
+      this.declarationService.getDeclarationInitialsByGroup(this.declarationCode).subscribe(data => {
+        this.regimeApproval.origin = data;
+      });
+    }
 
     this.documentListService.getDocumentList(this.declarationCode).subscribe(documentList => {
       this.documentList = documentList;
@@ -47,16 +54,29 @@ export class RegimeApprovalComponent implements OnInit {
   }
 
   save(type) {
-    this.declarationService.create({
-      type: type,
-      documentType: this.declarationCode,
-      documentStatus: 0,
-      ...this.regimeApproval.form,
-      documentDetail: this.tablesToApi(this.regimeApproval.tables),
-      informations: []
-    }).subscribe(data => {
-      this.router.navigate(['/declarations/regime-approval']);
-    });
+    if (this.declarationId) {
+      this.declarationService.update(this.declarationId, {
+        type: type,
+        documentType: this.declarationCode,
+        documentStatus: 0,
+        ...this.regimeApproval.form,
+        documentDetail: this.tablesToApi(this.regimeApproval.tables),
+        informations: []
+      }).subscribe(data => {
+        this.router.navigate(['/declarations/regime-approval']);
+      });
+    } else {
+      this.declarationService.create({
+        type: type,
+        documentType: this.declarationCode,
+        documentStatus: 0,
+        ...this.regimeApproval.form,
+        documentDetail: this.tablesToApi(this.regimeApproval.tables),
+        informations: []
+      }).subscribe(data => {
+        this.router.navigate(['/declarations/regime-approval']);
+      });
+    }
   }
 
   handleSelectTab({ index }) {

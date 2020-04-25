@@ -42,7 +42,7 @@
           <td class="text-center">{{ data.documentStatusName }}</td>
           <td class="text-center"><button nz-button nzType="link" nzBlock>Xem</button></td>
           <td class="text-center">
-            <a [routerLink]="['/declarations/increase-labor/' + data.id + '/edit']" nz-button nzType="link">
+            <a [routerLink]="['/declarations/regime-approval/' + data.id + '/edit']" nz-button nzType="link">
               <i nz-icon nzType="edit" nzTheme="outline"></i>
             </a>
             <app-button-delete [id]="data.id" (delete)="delete($event)"></app-button-delete>

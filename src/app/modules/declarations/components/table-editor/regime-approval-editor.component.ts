@@ -24,6 +24,7 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
 
   spreadsheet: any;
   isInitialized = false;
+  isSpinning = false;
   private eventsSubscription: Subscription;
   private handler;
   private timer;
@@ -38,9 +39,12 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
     this.handler = eventEmitter.on('regime-approval:tab:change', (index) => {
       clearTimeout(this.timer);
 
+      this.isSpinning = true;
+
       this.timer = setTimeout(() => {
         this.spreadsheet.updateNestedHeaderPosition();
         this.spreadsheet.updateFreezeColumn();
+        this.isSpinning = false;
       }, 300);
     });
   }
