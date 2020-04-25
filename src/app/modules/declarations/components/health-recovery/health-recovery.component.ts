@@ -42,8 +42,13 @@ export class HealthRecoveryComponent extends RegimeApprovalBaseComponent impleme
 
   ngOnChanges(changes) {
     if (changes.data && changes.data.currentValue && changes.data.currentValue.length) {
-      this.declarations.part1.table = this.declarationService.updateDeclarations(changes.data.currentValue, this.headers.part1.columns, !this.declarationId);
-      this.declarations.part2.table = this.declarationService.updateDeclarations(changes.data.currentValue, this.headers.part2.columns, !this.declarationId);
+      const data = this.declarationService.updateDeclarationsGroupByPart(changes.data.currentValue, {
+        part1: this.headers.part1.columns,
+        part2: this.headers.part2.columns
+      }, !this.declarationId);
+
+      this.declarations.part1.table = data.part1;
+      this.declarations.part2.table = data.part2;
     }
   }
 

@@ -50,6 +50,7 @@ export class RegimeApprovalBaseComponent {
     if (!this.employeeSelected.length) {
       return;
     }
+    console.log(this.employeeSelected)
 
     const declarations = [ ...this.declarations[part].table ];
     const parentIndex = findIndex(declarations, d => d.key === type);

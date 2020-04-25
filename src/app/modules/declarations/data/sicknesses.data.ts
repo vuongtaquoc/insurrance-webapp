@@ -104,7 +104,8 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   type: 'numberic',
   width: 60,
   title: '(7.3)',
-  key: 'regimeSum'
+  key: 'regimeSum',
+  sum: true
 }, {
   type: 'text',
   width: 80,
@@ -258,7 +259,8 @@ export const TABLE_HEADER_COLUMNS_PART_2 = [{
   type: 'text',
   width: 60,
   title: '(4.3)',
-  key: 'regimeSum'
+  key: 'regimeSum',
+  sum: true
 }, {
   type: 'text',
   width: 85,

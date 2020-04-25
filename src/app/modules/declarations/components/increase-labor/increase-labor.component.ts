@@ -346,7 +346,7 @@ export class IncreaseLaborComponent implements OnInit {
     this.informationList = informationList;
   }
 
-  handleDeleteProcessDataDocumentList({ rowNumber, numOfRows }){
+  handleDeleteProcessDataDocumentList({ rowNumber, numOfRows }) {
 
   }
 

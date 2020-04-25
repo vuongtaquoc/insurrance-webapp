@@ -95,18 +95,67 @@ export class DeclarationService {
     return this.updateFormula(data, tableHeaderColumns);
   }
 
+  public updateDeclarationsGroupByPart(declarations, columns, hasEmployeeId = false) {
+    const parts = {
+      part1: [],
+      part2: []
+    };
+
+    declarations.forEach((d, index) => {
+      const hasFormula = d.code.indexOf('SUM') > -1 || d.code.indexOf('Sum') > -1;
+      const data = {
+        readonly: !hasFormula,
+        formula: hasFormula,
+        origin: d,
+        planType: d.planType,
+        key: d.code,
+        data: [ d.codeView, d.name ],
+        hasLeaf: d.hasChildren
+      };
+
+      parts.part1.push({ ...data });
+      parts.part2.push({ ...data });
+
+      if (d.hasChildren) {
+        const hasPart1 = d.declarations.findIndex(e => e.part === 'I') > -1;
+        const hasPart2 = d.declarations.findIndex(e => e.part === 'II') > -1;
+
+        d.declarations.forEach(employee => {
+          if (employee.part === 'I') {
+            parts.part1.push(this.getLeaf(d, employee, columns.part1, hasEmployeeId ? true : !employee.employeeId));
+          } else if (employee.part === 'II') {
+            parts.part2.push(this.getLeaf(d, employee, columns.part2, hasEmployeeId ? true : !employee.employeeId));
+          } else {
+            parts.part1.push(this.getLeaf(d, employee, columns.part1, hasEmployeeId ? true : !employee.employeeId));
+            parts.part2.push(this.getLeaf(d, employee, columns.part2, hasEmployeeId ? true : !employee.employeeId));
+          }
+        });
+
+        if (hasPart1 && !hasPart2) {
+          parts.part2.push(this.getLeaf(d, { id: 0 }, columns.part2, true));
+        } else if (!hasPart1 && hasPart2) {
+          parts.part1.push(this.getLeaf(d, { id: 0 }, columns.part1, true));
+        }
+      }
+    });
+
+    return {
+      part1: this.updateFormula(parts.part1, columns.part1),
+      part2: this.updateFormula(parts.part2, columns.part2),
+    }
+  }
+
   public updateFormula(declarations, tableHeaderColumns) {
     const sumColumnIndexes = this.getSumColumnIndexes(tableHeaderColumns);
 
     declarations.forEach((declaration, index) => {
       if (declaration.formula) {
-        const data = declaration.data;
         const lastFormulaIndex = findLastIndex(declarations, (d, i) => i < index && !!d.formula);
 
         sumColumnIndexes.forEach(i => {
           const columnName = jexcel.getColumnName(i);
 
-          data[i] = `=SUM(${ columnName }${ lastFormulaIndex + 2 }:${ columnName }${ index })`;
+          declaration.data[i] = `=SUM(${ columnName }${ lastFormulaIndex + 2 }:${ columnName }${ index })`;
         });
       }
     });
@@ -117,7 +166,7 @@ export class DeclarationService {
   public getLeaf(parent, employee, tableHeaderColumns, isInitialize = false) {
     return {
       origin: employee,
-      parent: parent,
+      parent,
       parentKey: parent.code || parent.key,
       isLeaf: true,
       isInitialize,
