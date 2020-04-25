@@ -81,6 +81,7 @@ export class DeclarationService {
         readonly: !hasFormula,
         formula: hasFormula,
         origin: d,
+        planType: d.planType,
         key: d.code,
         data: [ d.codeView, d.name ],
         hasLeaf: d.hasChildren

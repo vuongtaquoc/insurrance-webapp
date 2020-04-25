@@ -322,7 +322,7 @@ export class IncreaseLaborComponent implements OnInit {
 
   private getPlanByParent(instance, cell, c, r, source) {
     const row = instance.jexcel.getRowFromCoords(r);
-    console.log(row,'XXX',row.options);
+
     return source.filter(s => s.type === row.options.planType);
   }
 
