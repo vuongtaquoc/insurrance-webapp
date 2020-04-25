@@ -1,7 +1,7 @@
 <div class="page-container">
   <nz-spin [nzSpinning]="isSpinning">
     <div class="page-regime-approval" [ngClass]="{'page-regime-approval--hidden': isHiddenSidebar}" cardFullHeight>
-      <nz-tabset nzSize="small" nzTabPosition="bottom" [nzSelectedIndex]="selectedTabIndex" [nzAnimated]="false" [nzTabBarExtraContent]="extraTemplate" (nzSelectChange)="handleSelectTab($event)">
+      <nz-tabset nzSize="small" nzTabPosition="bottom" [nzSelectedIndex]="1" [nzAnimated]="false" [nzTabBarExtraContent]="extraTemplate" (nzSelectChange)="handleSelectTab($event)">
         <nz-tab nzTitle="Danh mục tài liệu">
           <div class="page-document-list__container">
             <form nz-form [formGroup]="documentForm">

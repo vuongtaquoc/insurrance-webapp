@@ -46,16 +46,8 @@ export class HealthRecoveryComponent extends RegimeApprovalBaseComponent impleme
       this.declarations.part2.table = this.declarationService.updateDeclarations(changes.data.currentValue, this.headers.part2.columns);
     }
   }
-  private getSourceDropDownByKey(key: string) 
-  {
+
+  private getSourceDropDownByKey(key: string) {
     return this.categoryService.getCategories(key);
-  }
-
-  private updateSourceToColumn(tableHeaderColumns: any, key: string, sources: any) {
-    const column = tableHeaderColumns.find(c => c.key === key);
-
-    if (column) {
-      column.source = sources;
-    }
   }
 }

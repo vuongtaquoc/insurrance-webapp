@@ -29,7 +29,6 @@ export class MaternityComponent extends RegimeApprovalBaseComponent implements O
     this.initializeTableColumns('part2', TABLE_NESTED_HEADERS_PART_2, TABLE_HEADER_COLUMNS_PART_2);
 
     forkJoin([
-      
       this.getSourceDropDownByKey('holidayWeekly'),
       this.getSourceDropDownByKey('conditionPrenatal'),
       this.getSourceDropDownByKey('conditionReproduction'),
@@ -45,7 +44,7 @@ export class MaternityComponent extends RegimeApprovalBaseComponent implements O
       this.updateSourceToColumn(TABLE_HEADER_COLUMNS_PART_1, 'recordSolvedNumber', recruitmentNumbers);
       this.updateSourceToColumn(TABLE_HEADER_COLUMNS_PART_1, 'subsidizeReceipt', subsidizeReceipts);
       this.updateSourceToColumn(TABLE_HEADER_COLUMNS_PART_1, 'bankId', banks);
-      this.updateSourceToColumn(TABLE_HEADER_COLUMNS_PART_1, 'planCode', plans);
+      // this.updateSourceToColumn(TABLE_HEADER_COLUMNS_PART_1, 'planCode', plans);
       this.updateSourceToColumn(TABLE_HEADER_COLUMNS_PART_2, 'bankId', banks);
       this.updateSourceToColumn(TABLE_HEADER_COLUMNS_PART_2, 'subsidizeReceipt', subsidizeReceipts);
       this.updateSourceToColumn(TABLE_HEADER_COLUMNS_PART_2, 'recordSolvedNumber', recruitmentNumbers);
@@ -59,16 +58,7 @@ export class MaternityComponent extends RegimeApprovalBaseComponent implements O
     }
   }
 
-  private getSourceDropDownByKey(key: string) 
-  {
+  private getSourceDropDownByKey(key: string) {
     return this.categoryService.getCategories(key);
-  }
-
-  private updateSourceToColumn(tableHeaderColumns: any, key: string, sources: any) {
-    const column = tableHeaderColumns.find(c => c.key === key);
-
-    if (column) {
-      column.source = sources;
-    }
   }
 }
