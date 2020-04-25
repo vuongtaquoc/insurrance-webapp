@@ -208,7 +208,7 @@ export class RegimeApprovalBaseComponent {
       object.employeerId = array.origin.id;
     }
 
-    object.part = part === 'part1' ? '1' : '2';
+    object.part = part === 'part1' ? 'I' : 'II';
 
     return object;
   }
@@ -232,11 +232,11 @@ export class RegimeApprovalBaseComponent {
 
     records.forEach(d => {
       if (!d.options.hasLeaf && !d.options.isLeaf) {
-        declarations[d.options.key] = { ...d.origin, part: part === 'part1' ? '1' : '2' };
+        declarations[d.options.key] = { ...d.origin, part: part === 'part1' ? 'I' : 'II' };
       } else if (d.options.hasLeaf) {
         declarations[d.options.key] = {
           ...d.origin,
-          part: part === 'part1' ? '1' : '2',
+          part: part === 'part1' ? 'I' : 'II',
           declarations: []
         };
       } else if (d.options.isLeaf) {
