@@ -49,25 +49,14 @@ export class SicknessesComponent extends RegimeApprovalBaseComponent implements 
     });
   }
 
-  private getSourceDropDownByKey(key: string) 
-  {
-    return this.categoryService.getCategories(key);
-  }
-
-
-
-  private updateSourceToColumn(tableHeaderColumns: any, key: string, sources: any) {
-    const column = tableHeaderColumns.find(c => c.key === key);
-
-    if (column) {
-      column.source = sources;
-    }
-  }
-
   ngOnChanges(changes) {
     if (changes.data && changes.data.currentValue && changes.data.currentValue.length) {
       this.declarations.part1.table = this.declarationService.updateDeclarations(changes.data.currentValue, this.headers.part1.columns);
       this.declarations.part2.table = this.declarationService.updateDeclarations(changes.data.currentValue, this.headers.part2.columns);
     }
+  }
+
+  private getSourceDropDownByKey(key: string) {
+    return this.categoryService.getCategories(key);
   }
 }

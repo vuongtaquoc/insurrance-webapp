@@ -36,10 +36,12 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
   ngOnInit() {
     // this.eventsSubscription = this.events.subscribe((type) => this.handleEvent(type));
     this.handler = eventEmitter.on('regime-approval:tab:change', (index) => {
+      clearTimeout(this.timer);
+
       this.timer = setTimeout(() => {
         this.spreadsheet.updateNestedHeaderPosition();
         this.spreadsheet.updateFreezeColumn();
-      }, 1000);
+      }, 300);
     });
   }
 

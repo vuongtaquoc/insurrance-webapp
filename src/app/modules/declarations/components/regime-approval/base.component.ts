@@ -217,6 +217,14 @@ export class RegimeApprovalBaseComponent {
     this.onHiddenSidebar.emit(this.isHiddenSidebar);
   }
 
+  updateSourceToColumn(tableHeaderColumns: any, key: string, sources: any) {
+    const column = tableHeaderColumns.find(c => c.key === key);
+
+    if (column) {
+      column.source = sources;
+    }
+  }
+
   private updateOrigin(records, part) {
     const declarations = {};
 
