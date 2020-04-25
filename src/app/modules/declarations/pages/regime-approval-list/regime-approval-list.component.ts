@@ -31,7 +31,7 @@ export class RegimeApprovalListComponent implements OnInit {
 
   getDeclarations(skip = 0, take = PAGE_SIZE) {
     this.declarationService.getDeclarations({
-      documentType: 600,
+      documentType: '630',
       skip,
       take
     }).subscribe(res => {

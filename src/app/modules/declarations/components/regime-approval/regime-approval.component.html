@@ -44,6 +44,7 @@
 
         <nz-tab nzTitle="Ốm đau">
           <app-sicknesses
+            [declarationId]="declarationId"
             [data]="regimeApproval.origin['630a']"
             (onChange)="handleTableChange($event, 'sicknesses')"
             (onHiddenSidebar)="handleHiddenSidebar($event)"
@@ -52,6 +53,7 @@
 
         <nz-tab nzTitle="Thai sản">
           <app-maternity
+            [declarationId]="declarationId"
             [data]="regimeApproval.origin['630b']"
             (onChange)="handleTableChange($event, 'maternity')"
             (onHiddenSidebar)="handleHiddenSidebar($event)"
@@ -60,6 +62,7 @@
 
         <nz-tab nzTitle="Sức khỏe">
           <app-health-recovery
+            [declarationId]="declarationId"
             [data]="regimeApproval.origin['630c']"
             (onChange)="handleTableChange($event, 'healthRecovery')"
             (onHiddenSidebar)="handleHiddenSidebar($event)"

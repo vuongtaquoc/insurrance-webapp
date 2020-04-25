@@ -16,7 +16,7 @@ export class DeclarationService {
 
   public getDeclarationInitials(pageId, tableHeaderColumns) {
     return this.http.get(`/declarations/press-create/${ pageId }`).pipe(
-      map(declarations => this.updateDeclarations(declarations, tableHeaderColumns))
+      map(declarations => this.updateDeclarations(declarations, tableHeaderColumns, true))
     );
   }
 
@@ -38,27 +38,22 @@ export class DeclarationService {
     return this.http.get(`/declarations/${ id }`).pipe(
       map(detail => {
         const declaration = detail;
-        const documentDetails = detail.documentDetail;
+        const documentDetails = this.updateDeclarations(detail.documentDetail, tableHeaderColumns);
 
-        const data = [];
+        declaration.documentDetail = documentDetails;
 
-        documentDetails.forEach((d, index) => {
-          const hasFormula = d.code.indexOf('SUM') > -1;
+        return declaration;
+      })
+    );
+  }
 
-          data.push({
-            readonly: !hasFormula,
-            formula: hasFormula,
-            origin: d,
-            key: d.code,
-            data: [ d.codeView, d.name ],
-            hasLeaf: d.hasChildren
-          });
+  public getDeclarationsByDocumentIdByGroup(id) {
+    return this.http.get(`/declarations/${ id }`).pipe(
+      map(detail => {
+        const declaration = detail;
 
-          if (d.hasChildren) {
-            d.declarations.forEach(employee => data.push(this.getLeaf(d, employee, tableHeaderColumns, !employee.employeeId)));
-          }
-        });
-        declaration.documentDetail = this.updateFormula(data, tableHeaderColumns)
+        declaration.documentDetail = groupBy(detail.documentDetail, 'category');
+
         return declaration;
       })
     );
@@ -76,7 +71,7 @@ export class DeclarationService {
     return this.http.delete(`/declarations/${ id }`);
   }
 
-  public updateDeclarations(declarations, tableHeaderColumns) {
+  public updateDeclarations(declarations, tableHeaderColumns, hasEmployeeId = false) {
     const data = [];
 
     declarations.forEach((d, index) => {
@@ -92,7 +87,7 @@ export class DeclarationService {
       });
 
       if (d.hasChildren) {
-        d.declarations.forEach(employee => data.push(this.getLeaf(d, employee, tableHeaderColumns, true)));
+        d.declarations.forEach(employee => data.push(this.getLeaf(d, employee, tableHeaderColumns, hasEmployeeId ? true : !employee.employeeId)));
       }
     });
 

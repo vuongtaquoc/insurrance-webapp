@@ -35,7 +35,8 @@ import {
   IncreaseLaborAddComponent,
   IncreaseLaborEditComponent,
   RegimeApprovalListComponent,
-  RegimeApprovalAddComponent
+  RegimeApprovalAddComponent,
+  RegimeApprovalEditComponent
 } from './pages';
 
 import {
@@ -86,6 +87,7 @@ import { RegimeAutoSizeDirective } from './directives';
     IncreaseLaborComponent,
     RegimeApprovalListComponent,
     RegimeApprovalAddComponent,
+    RegimeApprovalEditComponent,
     HealthRecoveryComponent,
     MaternityComponent,
     RegimeApprovalComponent,

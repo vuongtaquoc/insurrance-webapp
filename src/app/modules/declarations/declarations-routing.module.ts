@@ -7,7 +7,8 @@ import {
   IncreaseLaborListComponent,
   IncreaseLaborEditComponent,
   RegimeApprovalListComponent,
-  RegimeApprovalAddComponent
+  RegimeApprovalAddComponent,
+  RegimeApprovalEditComponent
 } from './pages';
 
 const routes: Routes = [
@@ -34,6 +35,10 @@ const routes: Routes = [
       {
         path: 'regime-approval/add',
         component: RegimeApprovalAddComponent
+      },
+      {
+        path: 'regime-approval/:id/edit',
+        component: RegimeApprovalEditComponent
       }
     ]
   }
