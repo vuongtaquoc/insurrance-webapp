@@ -42,7 +42,6 @@ export class IncreaseLaborComponent implements OnInit {
   documentList: DocumentList[] = [];
   informationList: any[] = [];
   declaration: any;
-  partOfDeclaration: string;
   isHiddenSidebar = false;
   declarationCode: string = '600';
 
@@ -65,10 +64,10 @@ export class IncreaseLaborComponent implements OnInit {
     this.getRegisterDistrictsByCityCode = this.getRegisterDistrictsByCityCode.bind(this);
     this.getRegisterWardsByDistrictCode = this.getRegisterWardsByDistrictCode.bind(this);
     this.getHospitalsByCityCode = this.getHospitalsByCityCode.bind(this);
+    this.getPlanByParent = this.getPlanByParent.bind(this);
   }
 
   ngOnInit() {
-    this.partOfDeclaration = "I"; // Là phần của tờ khai,
     const date = new Date();
     const currentCredentials = this.authenticationService.currentCredentials;
     this.form = this.formBuilder.group({
@@ -106,6 +105,7 @@ export class IncreaseLaborComponent implements OnInit {
       this.updateFilterToColumn('recipientsDistrictCode', this.getRecipientsDistrictsByCityCode);
       this.updateFilterToColumn('recipientsWardsCode', this.getRecipientsWardsByDistrictCode);
       this.updateFilterToColumn('hospitalFirstRegistCode', this.getHospitalsByCityCode);
+      this.updateFilterToColumn('planCode', this.getPlanByParent);
 
       if (this.declarationId) {
         this.declarationService.getDeclarationsByDocumentId(this.declarationId, this.tableHeaderColumns).subscribe(declarations => {
@@ -206,7 +206,6 @@ export class IncreaseLaborComponent implements OnInit {
     // update declarations
     this.declarations.forEach((declaration, index) => {
       const record = records[index];
-      console.log(declaration);
       Object.keys(record).forEach(index => {
         declaration.data[index] = record[index];
       });
@@ -319,6 +318,12 @@ export class IncreaseLaborComponent implements OnInit {
     }
 
     return this.hospitalService.getHospitals(value).toPromise();
+  }
+
+  private getPlanByParent(instance, cell, c, r, source) {
+    const row = instance.jexcel.getRowFromCoords(r);
+    console.log(row,'XXX',row.options);
+    return source.filter(s => s.type === row.options.planType);
   }
 
   private updateNextColumns(instance, r, value, nextColumns = []) {

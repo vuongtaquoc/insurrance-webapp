@@ -44,7 +44,7 @@ export class MaternityComponent extends RegimeApprovalBaseComponent implements O
       this.updateSourceToColumn(TABLE_HEADER_COLUMNS_PART_1, 'recordSolvedNumber', recruitmentNumbers);
       this.updateSourceToColumn(TABLE_HEADER_COLUMNS_PART_1, 'subsidizeReceipt', subsidizeReceipts);
       this.updateSourceToColumn(TABLE_HEADER_COLUMNS_PART_1, 'bankId', banks);
-      // this.updateSourceToColumn(TABLE_HEADER_COLUMNS_PART_1, 'planCode', plans);
+      this.updateSourceToColumn(TABLE_HEADER_COLUMNS_PART_1, 'planCode', plans);
       this.updateSourceToColumn(TABLE_HEADER_COLUMNS_PART_2, 'bankId', banks);
       this.updateSourceToColumn(TABLE_HEADER_COLUMNS_PART_2, 'subsidizeReceipt', subsidizeReceipts);
       this.updateSourceToColumn(TABLE_HEADER_COLUMNS_PART_2, 'recordSolvedNumber', recruitmentNumbers);

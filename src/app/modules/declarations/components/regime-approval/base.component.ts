@@ -97,7 +97,8 @@ export class RegimeApprovalBaseComponent {
           hasLeaf: declaration.hasLeaf,
           isLeaf: declaration.isLeaf,
           parentKey: declaration.parentKey,
-          key: declaration.key
+          key: declaration.key,
+          planType: declaration.planType,
         }
       };
 

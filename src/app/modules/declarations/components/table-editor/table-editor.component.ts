@@ -90,7 +90,6 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
     const formulaIndexes = [];
     let formulaIgnoreIndexes = [];
     const data = [];
-
     this.data.forEach((d, index) => {
       if (d.readonly) {
         readonlyIndexes.push(index);
@@ -116,7 +115,8 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
         hasLeaf: d.hasLeaf,
         isLeaf: d.isLeaf,
         parentKey: d.parentKey,
-        key: d.key
+        key: d.key,
+        planType: d.planType,
       };
 
       data.push(d.data);

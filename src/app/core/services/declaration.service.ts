@@ -125,6 +125,7 @@ export class DeclarationService {
       parentKey: parent.code || parent.key,
       isLeaf: true,
       isInitialize,
+      planType: parent.planType,
       data: tableHeaderColumns.map(column => {
         if (!column.key) return '';
 
