@@ -13,13 +13,13 @@ export class PlanService {
   constructor(private http: ApplicationHttpClient) {
   }
 
-  public getPlans(): Observable<any> {
-    return this.http.get('/plan', {
+  public getPlans(declarationCode: string): Observable<Plan> {
+    return this.http.get(`/plan/declaration-code/${ declarationCode }`, {
     });
   }
   
   public getDetailById(id: string) {
-    return this.http.get('/wards', {
+    return this.http.get('/plan', {
       params: { id }
     });
   }

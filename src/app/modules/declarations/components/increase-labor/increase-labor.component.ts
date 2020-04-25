@@ -44,6 +44,7 @@ export class IncreaseLaborComponent implements OnInit {
   declaration: any;
   partOfDeclaration: string;
   isHiddenSidebar = false;
+  declarationCode: string = '600';
 
   constructor(
     private formBuilder: FormBuilder,
@@ -82,7 +83,7 @@ export class IncreaseLaborComponent implements OnInit {
       usedocumentDT01:[true],
     });
 
-    this.documentListService.getDocumentList('600').subscribe(documentList => {
+    this.documentListService.getDocumentList(this.declarationCode).subscribe(documentList => {
       this.documentList = documentList;
     });
 
@@ -91,7 +92,7 @@ export class IncreaseLaborComponent implements OnInit {
       this.nationalityService.getNationalities(),
       this.peopleService.getPeoples(),
       this.salaryAreaService.getSalaryAreas(),
-      this.planService.getPlans()
+      this.planService.getPlans(this.declarationCode)
     ]).subscribe(([ cities, nationalities, peoples, salaryAreas, plans ]) => {
       this.updateSourceToColumn('peopleCode', peoples);
       this.updateSourceToColumn('nationalityCode', nationalities);
@@ -176,7 +177,7 @@ export class IncreaseLaborComponent implements OnInit {
 
     this.onSubmit.emit({
       type: event.type,
-      documentType: 600,
+      documentType: this.declarationCode,
       documentNo: number,
       documentName: 'Báo tăng lao động',
       createDate: `01/0${ month }/${ year }`,

@@ -36,7 +36,7 @@ export class EmployeeProcessTableComponent implements OnInit, OnDestroy, OnChang
   ngOnInit() {
     this.eventsSubscription = this.events.subscribe((type) => this.handleEvent(type));
 
-    this.planService.getPlans().subscribe(plans => {
+    this.planService.getPlans('').subscribe(plans => {
       this.updateSourceToColumn('planCode', plans);
     });
   }

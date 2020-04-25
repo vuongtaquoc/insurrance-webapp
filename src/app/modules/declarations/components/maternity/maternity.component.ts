@@ -13,6 +13,7 @@ import { Subject, forkJoin } from 'rxjs';
   styleUrls: ['./maternity.component.less']
 })
 export class MaternityComponent extends RegimeApprovalBaseComponent implements OnInit, OnChanges {
+  declarationCode: string = '630b';
   constructor(
     protected declarationService: DeclarationService,
     protected categoryService: CategoryService,
@@ -34,8 +35,8 @@ export class MaternityComponent extends RegimeApprovalBaseComponent implements O
       this.getSourceDropDownByKey('recruitmentNumber'),
       this.getSourceDropDownByKey('subsidizeReceipt'),
       this.bankService.getBanks(),
-      // this.planService.getPlans(),
-    ]).subscribe(([holidayWeeklies, conditionPrenatals, conditionReproductions, recruitmentNumbers, subsidizeReceipts, banks]) => {
+      this.planService.getPlans(this.declarationCode),
+    ]).subscribe(([holidayWeeklies, conditionPrenatals, conditionReproductions, recruitmentNumbers, subsidizeReceipts, banks, plans]) => {
       this.updateSourceToColumn(TABLE_HEADER_COLUMNS_PART_1, 'holidayWeekly', holidayWeeklies);
       this.updateSourceToColumn(TABLE_HEADER_COLUMNS_PART_1, 'conditionPrenatal', conditionPrenatals);
       this.updateSourceToColumn(TABLE_HEADER_COLUMNS_PART_1, 'conditionReproduction', conditionReproductions);
