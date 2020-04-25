@@ -80,6 +80,7 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   key: 'code'
 }, {
   type: 'dropdown',
+  autocomplete: true,
   width: 190,
   title: '(4)',
   key: 'holidayWeekly',
@@ -120,10 +121,11 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   isCalendar: true
 }, {
   type: 'dropdown',
+  autocomplete: true,
   source: [],
   width: 170,
   title: '(8)',
-  key: 'conditionExamination'
+  key: 'conditionPrenatal'
 }, {
   type: 'dropdown',
   source: [],
@@ -241,6 +243,7 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   key: 'examinationCost',
 }, {
   type: 'dropdown',
+  autocomplete: true,
   width: 55,
   title: '(14.1)',
   key: 'recruitmentNumber',
@@ -253,6 +256,7 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   isCalendar: true
 }, {
   type: 'dropdown',
+  autocomplete: true,
   width: 190,
   title: '(C.1)',
   key: 'subsidizeReceipt',
@@ -269,6 +273,7 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   key: 'accountHolder'
 }, {
   type: 'dropdown',
+  autocomplete: true,
   width: 280,
   title: '(C.4)',
   key: 'bankId',

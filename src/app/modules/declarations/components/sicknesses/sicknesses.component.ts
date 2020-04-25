@@ -1,10 +1,11 @@
 import { Component, OnInit, OnChanges, ViewEncapsulation } from '@angular/core';
 
-import { DeclarationService } from '@app/core/services';
+import { DeclarationService, CategoryService, BankService } from '@app/core/services';
 
 import { RegimeApprovalBaseComponent } from '@app/modules/declarations/components/regime-approval/base.component';
 
 import { TABLE_NESTED_HEADERS_PART_1, TABLE_HEADER_COLUMNS_PART_1, TABLE_HEADER_COLUMNS_PART_2, TABLE_NESTED_HEADERS_PART_2 } from '@app/modules/declarations/data/sicknesses.data';
+import { Subject, forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-sicknesses',
@@ -13,7 +14,11 @@ import { TABLE_NESTED_HEADERS_PART_1, TABLE_HEADER_COLUMNS_PART_1, TABLE_HEADER_
   encapsulation: ViewEncapsulation.None
 })
 export class SicknessesComponent extends RegimeApprovalBaseComponent implements OnInit, OnChanges {
-  constructor(protected declarationService: DeclarationService) {
+  constructor(
+    protected declarationService: DeclarationService,
+    protected categoryService: CategoryService,
+    protected bankService: BankService
+  ) {
     super(declarationService);
   }
 
@@ -22,10 +27,41 @@ export class SicknessesComponent extends RegimeApprovalBaseComponent implements 
     this.initializeTableColumns('part1', TABLE_NESTED_HEADERS_PART_1, TABLE_HEADER_COLUMNS_PART_1);
     this.initializeTableColumns('part2', TABLE_NESTED_HEADERS_PART_2, TABLE_HEADER_COLUMNS_PART_2);
 
-    // this.declarationService.getDeclarationInitials('630a', this.headers.part1.columns).subscribe(sicknesses => {
-    //   this.declarations.part1.table = sicknesses;
-    //   this.declarations.part2.table = sicknesses;
-    // });
+    forkJoin([
+      this.getSourceDropDownByKey('conditionWork'),
+      this.getSourceDropDownByKey('holidayWeekly'),
+      this.getSourceDropDownByKey('certificationHospital'),
+      this.getSourceDropDownByKey('recruitmentNumber'),
+      this.getSourceDropDownByKey('subsidizeReceipt'),
+      this.getSourceDropDownByKey('diagnosticCode'),
+      this.bankService.getBanks(),
+    ]).subscribe(([conditionWorks, holidayWeeklies, certificationHospitals, recruitmentNumbers,subsidizeReceipts,diagnosticCodes, banks]) => {
+      this.updateSourceToColumn(TABLE_HEADER_COLUMNS_PART_1, 'conditionWork', conditionWorks);
+      this.updateSourceToColumn(TABLE_HEADER_COLUMNS_PART_1, 'holidayWeekly', holidayWeeklies);
+      this.updateSourceToColumn(TABLE_HEADER_COLUMNS_PART_1, 'certificationHospital', certificationHospitals);
+      this.updateSourceToColumn(TABLE_HEADER_COLUMNS_PART_1, 'recruitmentNumber', recruitmentNumbers);
+      this.updateSourceToColumn(TABLE_HEADER_COLUMNS_PART_2, 'recordSolvedNumber', recruitmentNumbers);
+      this.updateSourceToColumn(TABLE_HEADER_COLUMNS_PART_1, 'subsidizeReceipt', subsidizeReceipts);
+      this.updateSourceToColumn(TABLE_HEADER_COLUMNS_PART_2, 'subsidizeReceipt', subsidizeReceipts);
+      this.updateSourceToColumn(TABLE_HEADER_COLUMNS_PART_1, 'diagnosticCode', diagnosticCodes);
+      this.updateSourceToColumn(TABLE_HEADER_COLUMNS_PART_1, 'bankId', banks);
+      this.updateSourceToColumn(TABLE_HEADER_COLUMNS_PART_2, 'bankId', banks);
+    });
+  }
+
+  private getSourceDropDownByKey(key: string) 
+  {
+    return this.categoryService.getCategories(key);
+  }
+
+
+
+  private updateSourceToColumn(tableHeaderColumns: any, key: string, sources: any) {
+    const column = tableHeaderColumns.find(c => c.key === key);
+
+    if (column) {
+      column.source = sources;
+    }
   }
 
   ngOnChanges(changes) {

@@ -101,7 +101,7 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   key: 'expertiseDate',
   isCalendar: true
 }, {
-  type: 'text',
+  type: 'dropdown',
   width: 55,
   title: '(9.1)',
   key: 'recruitmentNumber'
@@ -113,6 +113,7 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   isCalendar: true
 }, {
   type: 'dropdown',
+  autocomplete: true,
   width: 190,
   title: '(C.1)',
   key: 'subsidizeReceipt',
@@ -129,6 +130,7 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   key: 'accountHolder'
 }, {
   type: 'dropdown',
+  autocomplete: true,
   width: 280,
   title: '(C.4)',
   key: 'bankId',
@@ -221,6 +223,7 @@ export const TABLE_HEADER_COLUMNS_PART_2 = [{
   isCalendar: true
 }, {
   type: 'dropdown',
+  autocomplete: true,
   source: [],
   width: 55,
   title: '(5.2)',
@@ -239,6 +242,7 @@ export const TABLE_HEADER_COLUMNS_PART_2 = [{
   wordWrap: true
 }, {
   type: 'dropdown',
+  autocomplete: true,
   width: 190,
   title: '(C.1)',
   key: 'subsidizeReceipt',
@@ -255,6 +259,7 @@ export const TABLE_HEADER_COLUMNS_PART_2 = [{
   key: 'accountHolder'
 }, {
   type: 'dropdown',
+  autocomplete: true,
   width: 280,
   title: '(C.4)',
   key: 'bankId',
