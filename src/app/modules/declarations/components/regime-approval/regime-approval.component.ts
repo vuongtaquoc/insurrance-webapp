@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-
-import { DeclarationService } from '@app/core/services';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { DeclarationService, AuthenticationService, DocumentListService } from '@app/core/services';
 
 import { eventEmitter } from '@app/shared/utils/event-emitter';
-
+import { DocumentList } from '@app/core/models';
 @Component({
   selector: 'app-regime-approval',
   templateUrl: './regime-approval.component.html',
@@ -16,25 +16,40 @@ export class RegimeApprovalComponent implements OnInit {
     form: {},
     tables: {}
   };
+  declarationCode: string = '630';
   isHiddenSidebar: boolean;
   selectedTabIndex: number = 1;
-
+  documentList: DocumentList[] = [];
+  documentForm: FormGroup;
   constructor(
+    private formBuilder: FormBuilder,
     private router: Router,
-    private declarationService: DeclarationService
+    private declarationService: DeclarationService,
+    private authenticationService: AuthenticationService,
+    private documentListService: DocumentListService,
   ) {
   }
 
   ngOnInit() {
-    this.declarationService.getDeclarationInitialsByGroup('630').subscribe(data => {
+    this.declarationService.getDeclarationInitialsByGroup(this.declarationCode).subscribe(data => {
       this.regimeApproval.origin = data;
     });
+
+    this.documentListService.getDocumentList(this.declarationCode).subscribe(documentList => {
+      this.documentList = documentList;
+    });
+    const currentCredentials = this.authenticationService.currentCredentials;
+    this.documentForm = this.formBuilder.group({
+      userAction: [currentCredentials.companyInfo.delegate],
+      mobile:[currentCredentials.companyInfo.mobile],
+    });
+
   }
 
   save(type) {
     this.declarationService.create({
       type: type,
-      documentType: 630,
+      documentType: this.declarationCode,
       documentStatus: 0,
       ...this.regimeApproval.form,
       documentDetail: this.tablesToApi(this.regimeApproval.tables),

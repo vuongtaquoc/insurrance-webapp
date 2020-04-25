@@ -3,7 +3,43 @@
     <div class="page-regime-approval" [ngClass]="{'page-regime-approval--hidden': isHiddenSidebar}" cardFullHeight>
       <nz-tabset nzSize="small" nzTabPosition="bottom" [nzSelectedIndex]="selectedTabIndex" [nzAnimated]="false" [nzTabBarExtraContent]="extraTemplate" (nzSelectChange)="handleSelectTab($event)">
         <nz-tab nzTitle="Danh mục tài liệu">
-
+          <div class="page-document-list__container">
+            <form nz-form [formGroup]="documentForm">
+              <h1>600 | Báo tăng lao động</h1>
+              <div nz-row [nzGutter]="10">
+                  <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                      <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Người nộp</nz-form-label>
+                      <nz-form-control [nzSpan]="14">
+                        <input nz-input
+                          placeholder="Người nộp"
+                          formControlName="userAction"
+                        />
+                      </nz-form-control>
+                    </nz-form-item>
+                  </div>
+                  <div nz-col [nzSpan]="12">
+                      <nz-form-item>
+                        <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Số điện thoại</nz-form-label>
+                        <nz-form-control [nzSpan]="14">
+                          <input nz-input
+                            placeholder="Số điện thoại"
+                            formControlName="mobile"
+                          />
+                        </nz-form-control>
+                      </nz-form-item>
+                    </div>
+                </div>
+                <h1>Thành phần hồ sơ</h1>
+                <div class="document-form__process-table">
+                    <div class="document-form__process-table">
+                        <app-document-table
+                          [data]="documentList"
+                        ></app-document-table>
+                    </div>
+                </div>
+            </form>
+          </div><!-- page-declarations__container -->
         </nz-tab>
 
         <nz-tab nzTitle="Ốm đau">
