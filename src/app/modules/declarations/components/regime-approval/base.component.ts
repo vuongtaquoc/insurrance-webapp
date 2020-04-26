@@ -50,7 +50,6 @@ export class RegimeApprovalBaseComponent {
     if (!this.employeeSelected.length) {
       return;
     }
-    console.log(this.employeeSelected)
 
     const declarations = [ ...this.declarations[part].table ];
     const parentIndex = findIndex(declarations, d => d.key === type);
@@ -87,6 +86,15 @@ export class RegimeApprovalBaseComponent {
       });
 
       this.declarations[part].table = this.declarationService.updateFormula(declarations, this.headers[part].columns);
+    }
+
+    // active collapse
+    if (part === 'part1') {
+      this.panel.part1.active = true;
+      this.panel.part2.active = false;
+    } else if (part === 'part2') {
+      this.panel.part1.active = false;
+      this.panel.part2.active = true;
     }
 
     // update origin data

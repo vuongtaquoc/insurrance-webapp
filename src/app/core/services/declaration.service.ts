@@ -3,6 +3,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import findLastIndex from 'lodash/findLastIndex';
 import groupBy from 'lodash/groupBy';
+import cloneDeep from 'lodash/cloneDeep';
 import * as jexcel from 'jstable-editor/dist/jexcel.js';
 
 import { ApplicationHttpClient } from '@app/core/http';
@@ -146,11 +147,12 @@ export class DeclarationService {
   }
 
   public updateFormula(declarations, tableHeaderColumns) {
+    const clone = cloneDeep(declarations);
     const sumColumnIndexes = this.getSumColumnIndexes(tableHeaderColumns);
 
-    declarations.forEach((declaration, index) => {
+    clone.forEach((declaration, index) => {
       if (declaration.formula) {
-        const lastFormulaIndex = findLastIndex(declarations, (d, i) => i < index && !!d.formula);
+        const lastFormulaIndex = findLastIndex(clone, (d, i) => i < index && !!d.formula);
 
         sumColumnIndexes.forEach(i => {
           const columnName = jexcel.getColumnName(i);
@@ -160,7 +162,7 @@ export class DeclarationService {
       }
     });
 
-    return declarations;
+    return clone;
   }
 
   public getLeaf(parent, employee, tableHeaderColumns, isInitialize = false) {

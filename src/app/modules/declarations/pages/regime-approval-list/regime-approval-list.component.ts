@@ -39,7 +39,6 @@ export class RegimeApprovalListComponent implements OnInit {
       this.total = res.total;
       this.skip = skip;
 
-      // this.listOfDisplayData = [ ...declarations ];
       if (res.data.length === 0 && this.selectedPage > 1) {
         this.skip -= PAGE_SIZE;
         this.selectedPage -= 1;
@@ -53,21 +52,6 @@ export class RegimeApprovalListComponent implements OnInit {
     this.selectedPage = page;
 
     this.getDeclarations(skip);
-  }
-
-  refreshStatus(): void {
-    this.isAllDisplayDataChecked = this.listOfDisplayData.every(item => this.mapOfCheckedId[item.id]);
-    this.isIndeterminate =
-      this.listOfDisplayData.some(item => this.mapOfCheckedId[item.id]) && !this.isAllDisplayDataChecked;
-  }
-
-  checkAll(value: boolean): void {
-    this.listOfDisplayData.forEach(item => (this.mapOfCheckedId[item.id] = value));
-    this.refreshStatus();
-  }
-
-  onChange(value) {
-    console.log(value)
   }
 
   delete(id) {
