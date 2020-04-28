@@ -57,7 +57,11 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   type: 'text',
   width: 135,
   title: '(2)',
-  key: 'identityCar'
+  key: 'identityCar',
+  name: 'Số CMND/Hộ chiếu/Thẻ căn cước',
+  validations: {
+    cardId: true
+  }
 }, {
   type: 'text',
   width: 100,
@@ -93,25 +97,41 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   width: 80,
   title: '(7.1)',
   key: 'regimeFromDate',
-  isCalendar: true
+  isCalendar: true,
+  name: 'Từ ngày',
+  validations: {
+    required: true
+  }
 }, {
   type: 'text',
   width: 80,
   title: '(7.2)',
   key: 'regimeToDate',
-  isCalendar: true
+  isCalendar: true,
+  name: 'Đến ngày',
+  validations: {
+    required: true
+  }
 }, {
   type: 'numberic',
   width: 60,
   title: '(7.3)',
   key: 'regimeSum',
-  sum: true
+  sum: true,
+  name: 'Tổng số',
+  validations: {
+    required: true
+  }
 }, {
   type: 'text',
   width: 80,
   title: '(7.4)',
   key: 'regimeRequestDate',
-  isCalendar: true
+  isCalendar: true,
+  name: 'Từ ngày đơn vị đề nghị',
+  validations: {
+    required: true
+  }
 }, {
   type: 'text',
   width: 80,
