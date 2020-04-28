@@ -117,6 +117,7 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
         parentKey: d.parentKey,
         key: d.key,
         planType: d.planType,
+        formula: !!d.formula
       };
 
       data.push(d.data);
