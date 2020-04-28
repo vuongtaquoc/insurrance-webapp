@@ -257,7 +257,11 @@ export const TABLE_HEADER_COLUMNS_PART_2 = [{
   type: 'text',
   width: 135,
   title: '(2)',
-  key: 'identityCar'
+  key: 'identityCar',
+  fieldName: 'Số CMND/Hộ chiếu/Thẻ căn cước',
+  validations: {
+    cardId: true
+  }
 }, {
   type: 'text',
   width: 100,
@@ -286,26 +290,42 @@ export const TABLE_HEADER_COLUMNS_PART_2 = [{
   width: 85,
   title: '(5)',
   key: 'recordSolvedFromDate',
-  isCalendar: true
+  isCalendar: true,
+  fieldName: 'Từ ngày đã giải quyết',
+  validations: {
+    required: true
+  }
 }, {
   type: 'dropdown',
   autocomplete: true,
   source: [],
   width: 55,
   title: '(6.1)',
-  key: 'recordSolvedNumber'
+  key: 'recordSolvedNumber',
+  fieldName: 'Đợt đã giải quyết',
+  validations: {
+    required: true
+  }
 }, {
   type: 'text',
   width: 75,
   title: '(6.2)',
   key: 'recordSolvedEndDate',
-  isCalendar: true
+  isCalendar: true,
+  fieldName: 'Tháng duyệt đợt đã giải quyết',
+  validations: {
+    required: true
+  }
 }, {
   type: 'text',
   width: 150,
   title: '(7)',
   key: 'reasonAdjustment',
-  wordWrap: true
+  wordWrap: true,
+  fieldName: 'Lý do đề nghị điều chỉnh',
+  validations: {
+    required: true
+  }
 }, {
   type: 'dropdown',
   autocomplete: true,

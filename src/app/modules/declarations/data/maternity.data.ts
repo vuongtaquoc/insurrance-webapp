@@ -72,7 +72,11 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   type: 'text',
   width: 135,
   title: '(2)',
-  key: 'identityCar'
+  key: 'identityCar',
+  fieldName: 'Số CMND/Hộ chiếu/Thẻ căn cước',
+  validations: {
+    cardId: true
+  }
 }, {
   type: 'text',
   width: 100,
@@ -101,24 +105,40 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   width: 80,
   title: '(6.2)',
   key: 'regimeFromDate',
-  isCalendar: true
+  isCalendar: true,
+  fieldName: 'Ngày đầu tiên người lao động thực tế nghỉ việc hưởng chế độ theo quy định',
+  validations: {
+    required: true
+  }
 }, {
   type: 'text',
   width: 80,
   title: '(6.3)',
   key: 'regimeToDate',
-  isCalendar: true
+  isCalendar: true,
+  fieldName: 'Ngày cuối cùng người lao động thực tế nghỉ việc hưởng chế độ theo quy định',
+  validations: {
+    required: true
+  }
 }, {
   type: 'numberic',
   width: 60,
   title: '(6.4)',
-  key: 'regimeSum'
+  key: 'regimeSum',
+  fieldName: 'Tổng số ngày thực tế người lao động nghỉ việc trong kỳ đề nghị giải quyết',
+  validations: {
+    min: 1
+  }
 }, {
   type: 'text',
   width: 100,
   title: '(7)',
   key: 'regimeRequestDate',
-  isCalendar: true
+  isCalendar: true,
+  fieldName: 'Từ ngày đơn vị đề nghị hưởng',
+  validations: {
+    required: true
+  }
 }, {
   type: 'dropdown',
   autocomplete: true,
@@ -342,7 +362,11 @@ export const TABLE_HEADER_COLUMNS_PART_2 = [{
   type: 'text',
   width: 135,
   title: '(2)',
-  key: 'identityCar'
+  key: 'identityCar',
+  fieldName: 'Số CMND/Hộ chiếu/Thẻ căn cước',
+  validations: {
+    cardId: true
+  }
 }, {
   type: 'text',
   width: 100,
@@ -370,25 +394,41 @@ export const TABLE_HEADER_COLUMNS_PART_2 = [{
   width: 85,
   title: '(5.1)',
   key: 'recordSolvedFromDate',
-  isCalendar: true
+  isCalendar: true,
+  fieldName: 'Từ ngày đã giải quyết',
+  validations: {
+    rqeuired: true
+  }
 }, {
   type: 'dropdown',
   source: [],
   width: 55,
   title: '(5.2)',
-  key: 'recordSolvedNumber'
+  key: 'recordSolvedNumber',
+  fieldName: 'Đợt đã giải quyết',
+  validations: {
+    required: true
+  }
 }, {
   type: 'text',
   width: 75,
   title: '(5.3)',
   key: 'recordSolvedEndDate',
-  isCalendar: true
+  isCalendar: true,
+  fieldName: 'Tháng duyệt đợt đã giải quyết',
+  validations: {
+    required: true
+  }
 }, {
   type: 'text',
   width: 150,
   title: '(6)',
   key: 'reasonAdjustment',
-  wordWrap: true
+  wordWrap: true,
+  fieldName: 'Lý do đề nghị điều chỉnh',
+  validations: {
+    required: true
+  }
 }, {
   type: 'dropdown',
   source: [],

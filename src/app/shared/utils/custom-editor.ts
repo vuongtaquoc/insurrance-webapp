@@ -1,5 +1,6 @@
 import * as $ from 'jquery';
 import 'bootstrap-datepicker';
+import * as moment from 'moment';
 
 export const customPicker = (table, mode, checkPrevCol = false) => {
   return {
@@ -10,13 +11,6 @@ export const customPicker = (table, mode, checkPrevCol = false) => {
       return value;
     },
     openEditor : function(cell) {
-      // Create input
-      const element = document.createElement('input');
-      element.value = cell.innerHTML;
-      // Update cell
-      cell.classList.add('editor');
-      cell.innerHTML = '';
-      cell.appendChild(element);
       const options: any = {
         format: 'dd/mm/yyyy'
       };
@@ -49,12 +43,22 @@ export const customPicker = (table, mode, checkPrevCol = false) => {
         }
       }
 
-      $(element).datepicker(options).on('hiden', function(e) {
+      const isValid = moment(cell.innerHTML, options.format).isValid();
+
+      // Create input
+      const element = document.createElement('input');
+      element.value = isValid ? cell.innerHTML : '';
+      // Update cell
+      cell.classList.add('editor');
+      cell.innerHTML = '';
+      cell.appendChild(element);
+
+      $(element).datepicker(options).on('changeDate', function(e) {
         setTimeout(function() {
           // To avoid double call
           if (cell.children[0]) {
             table.closeEditor(cell, true);
-            $(element).destroy();
+            $(element).datepicker('destroy');
           }
         });
       });
@@ -63,9 +67,11 @@ export const customPicker = (table, mode, checkPrevCol = false) => {
       element.focus();
     },
     getValue : function(cell) {
+      console.log('getvalue')
       return cell.innerHTML;
     },
     setValue : function(cell, value) {
+      console.log('setValue',value)
       cell.innerHTML = value;
     }
   };
