@@ -154,6 +154,7 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
         isLeaf: d.isLeaf,
         parentKey: d.parentKey,
         key: d.key,
+        isParent: d.isParent,
         formula: !!d.formula
       };
 

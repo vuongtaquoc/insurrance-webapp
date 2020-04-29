@@ -85,7 +85,8 @@ export class DeclarationService {
         planType: d.planType,
         key: d.code,
         data: [ d.codeView, d.name ],
-        hasLeaf: d.hasChildren
+        hasLeaf: d.hasChildren,
+        isParent: true
       });
 
       if (d.hasChildren) {
@@ -111,7 +112,8 @@ export class DeclarationService {
         planType: d.planType,
         key: d.code,
         data: [ d.codeView, d.name ],
-        hasLeaf: d.hasChildren
+        hasLeaf: d.hasChildren,
+        isParent: true
       };
 
       parts.part1.push({ ...data });
