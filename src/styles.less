@@ -117,22 +117,41 @@ app-layout {
 }
 
 .page-card {
-  background-color: rgba(255, 255, 255, .92);
+  background-color: #F8FBFF;
   box-shadow: -3px 2px 2px rgba(13, 13, 13, .25);
   border-radius: 10px;
   padding: 20px;
   margin-bottom: 20px;
 
   h1 {
-    font-size: 20px;
-    font-weight: 900;
-    text-transform: uppercase;
+    font-size: 14px;
+    font-weight: 700;
     color: #3266D3;
     margin: 18px 0;
 
     &:first-child {
       margin-top: 0px;
       margin-bottom: 18px;
+    }
+  }
+
+  &__declaration-button {
+    background-color: #4964EE;
+    border-color: #D0D5EE;
+    color: #B7D3FF;
+
+    i {
+      color: #B7D3FF;
+    }
+
+    &:hover {
+      color: #fff;
+      background-color: #4964EE;
+      border-color: #D0D5EE;
+
+      i {
+        color: #fff;
+      }
     }
   }
 

@@ -17,7 +17,7 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
   @Input() data: any[] = [];
   @Input() columns: any[] = [];
   @Input() nestedHeaders: any[] = [];
-  @Input() events: Observable<void>;
+  // @Input() events: Observable<any>;
   @Output() onChange: EventEmitter<any> = new EventEmitter();
   @Output() onSubmit: EventEmitter<any> = new EventEmitter();
   @Output() onDelete: EventEmitter<any> = new EventEmitter();
@@ -25,7 +25,7 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
   spreadsheet: any;
   isInitialized = false;
   isSpinning = false;
-  private eventsSubscription: Subscription;
+  // private eventsSubscription: Subscription;
   private handler;
   private timer;
 
@@ -155,7 +155,8 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
         parentKey: d.parentKey,
         key: d.key,
         isParent: d.isParent,
-        formula: !!d.formula
+        formula: !!d.formula,
+        isInitialize: d.isInitialize
       };
 
       data.push(d.data);
