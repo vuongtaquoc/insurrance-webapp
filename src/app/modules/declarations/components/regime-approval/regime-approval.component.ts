@@ -34,22 +34,26 @@ export class RegimeApprovalComponent implements OnInit {
   ngOnInit() {
     if (this.declarationId) {
       this.declarationService.getDeclarationsByDocumentIdByGroup(this.declarationId).subscribe(declarations => {
+        this.documentForm = this.formBuilder.group({
+          submitter: declarations.submitter,
+          mobile:declarations.mobile,
+        });
         this.regimeApproval.origin = declarations.documentDetail;
       });
     } else {
       this.declarationService.getDeclarationInitialsByGroup(this.declarationCode).subscribe(data => {
         this.regimeApproval.origin = data;
       });
+      const currentCredentials = this.authenticationService.currentCredentials;
+      this.documentForm = this.formBuilder.group({
+        submitter: [currentCredentials.companyInfo.delegate],
+        mobile:[currentCredentials.companyInfo.mobile],
+      });
     }
 
     this.documentListService.getDocumentList(this.declarationCode).subscribe(documentList => {
       this.documentList = documentList;
-    });
-    const currentCredentials = this.authenticationService.currentCredentials;
-    this.documentForm = this.formBuilder.group({
-      userAction: [currentCredentials.companyInfo.delegate],
-      mobile:[currentCredentials.companyInfo.mobile],
-    });
+    });   
 
   }
 
@@ -59,6 +63,8 @@ export class RegimeApprovalComponent implements OnInit {
         type: type,
         documentType: this.declarationCode,
         documentStatus: 0,
+        submitter: this.submitter,
+        mobile: this.mobile,
         ...this.regimeApproval.form,
         documentDetail: this.tablesToApi(this.regimeApproval.tables),
         informations: []
@@ -111,5 +117,13 @@ export class RegimeApprovalComponent implements OnInit {
     });
 
     return data;
+  }
+
+  get submitter() {
+    return this.documentForm.get('submitter').value;
+  }
+
+  get mobile() {
+    return this.documentForm.get('mobile').value;
   }
 }

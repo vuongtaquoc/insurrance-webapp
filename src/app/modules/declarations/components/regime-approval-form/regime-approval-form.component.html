@@ -62,10 +62,9 @@
           <nz-form-item>
             <nz-form-label [nzRequired]="true" [nzSpan]="13">Gửi kèm hồ sơ giấy</nz-form-label>
             <nz-form-control [nzSpan]="11">
-              <nz-select formControlName="paperRecord" nzPlaceHolder="Chọn" nzSize="small">
-                <nz-option nzValue="1" nzLabel="Không gửi kèm hồ sơ giấy"></nz-option>
-                <nz-option nzValue="2" nzLabel="Gửi kèm hồ sơ giấy" nzDisabled></nz-option>
-              </nz-select>
+                <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="typeDocumentActtach">
+                    <nz-option *ngFor="let typeDocumentActtach of typeDocumentActtachs" [nzLabel]="typeDocumentActtach.name" [nzValue]="typeDocumentActtach.id"></nz-option>
+                </nz-select>
             </nz-form-control>
           </nz-form-item>
         </div>
