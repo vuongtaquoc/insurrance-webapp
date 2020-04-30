@@ -2,7 +2,8 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DeclarationService, AuthenticationService, DocumentListService } from '@app/core/services';
-
+import { NzModalService } from 'ng-zorro-antd/modal';
+import { DocumentFormComponent } from '@app/shared/components';
 import { eventEmitter } from '@app/shared/utils/event-emitter';
 import { DocumentList } from '@app/core/models';
 @Component({
@@ -28,6 +29,7 @@ export class RegimeApprovalComponent implements OnInit {
     private declarationService: DeclarationService,
     private authenticationService: AuthenticationService,
     private documentListService: DocumentListService,
+    private modalService: NzModalService,
   ) {
   }
 
@@ -58,31 +60,53 @@ export class RegimeApprovalComponent implements OnInit {
   }
 
   save(type) {
-    if (this.declarationId) {
-      this.declarationService.update(this.declarationId, {
-        type: type,
-        documentType: this.declarationCode,
-        documentStatus: 0,
-        submitter: this.submitter,
-        mobile: this.mobile,
-        ...this.regimeApproval.form,
-        documentDetail: this.tablesToApi(this.regimeApproval.tables),
-        informations: []
-      }).subscribe(data => {
-        this.router.navigate(['/declarations/regime-approval']);
-      });
-    } else {
-      this.declarationService.create({
-        type: type,
-        documentType: this.declarationCode,
-        documentStatus: 0,
-        ...this.regimeApproval.form,
-        documentDetail: this.tablesToApi(this.regimeApproval.tables),
-        informations: []
-      }).subscribe(data => {
-        this.router.navigate(['/declarations/regime-approval']);
-      });
+    if (type === 'rollback') { 
+      this.router.navigate(['/declarations/regime-approval']);
+    }else  {
+      if (this.declarationId) {
+        this.update(type);
+      } else {
+        this.create(type);
+      }
     }
+  }
+
+  private update(type: any) {
+    this.declarationService.update(this.declarationId, {
+      type: type,
+      documentType: this.declarationCode,
+      documentStatus: 0,
+      submitter: this.submitter,
+      mobile: this.mobile,
+      ...this.regimeApproval.form,
+      documentDetail: this.tablesToApi(this.regimeApproval.tables),
+      informations: []
+    }).subscribe(data => {
+      if (type === 'saveAndView') {
+        this.viewDocument(data);
+      } else {
+          this.router.navigate(['/declarations/regime-approval']);
+      }
+    });
+  }
+
+  private create(type: any) {
+    this.declarationService.create({
+      type: type,
+      documentType: this.declarationCode,
+      documentStatus: 0,
+      submitter: this.submitter,
+      mobile: this.mobile,
+      ...this.regimeApproval.form,
+      documentDetail: this.tablesToApi(this.regimeApproval.tables),
+      informations: []
+    }).subscribe(data => {
+      if (data.type === 'saveAndView') {
+        this.viewDocument(data);
+      } else if(data.type === 'save') {
+          this.router.navigate(['/declarations/regime-approval']);
+      }
+    });
   }
 
   handleSelectTab({ index }) {
@@ -125,5 +149,21 @@ export class RegimeApprovalComponent implements OnInit {
 
   get mobile() {
     return this.documentForm.get('mobile').value;
+  }
+
+  viewDocument(declarationInfo: any) {
+    const modal = this.modalService.create({
+      nzWidth: 680,
+      nzWrapClassName: 'document-modal',
+      nzTitle: 'Thông tin biểu mẫu, tờ khai đã xuất',
+      nzContent: DocumentFormComponent,
+      nzOnOk: (data) => console.log('Click ok', data),
+      nzComponentParams: {
+        declarationInfo
+      }
+    });
+
+    modal.afterClose.subscribe(result => {
+    });
   }
 }

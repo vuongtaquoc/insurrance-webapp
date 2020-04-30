@@ -4,6 +4,8 @@ import { DeclarationService } from '@app/core/services';
 import { Declaration } from '@app/core/interfaces';
 
 import { PAGE_SIZE } from '@app/shared/constant';
+import { NzModalService } from 'ng-zorro-antd/modal';
+import { DocumentFormComponent } from '@app/shared/components';
 
 @Component({
   selector: 'app-regime-approval-list',
@@ -22,7 +24,8 @@ export class RegimeApprovalListComponent implements OnInit {
   selectedPage: number = 1;
 
   constructor(
-    private declarationService: DeclarationService
+    private declarationService: DeclarationService,
+    private modalService: NzModalService,
   ) {}
 
   ngOnInit() {
@@ -57,6 +60,22 @@ export class RegimeApprovalListComponent implements OnInit {
   delete(id) {
     this.declarationService.delete(id).subscribe(() => {
       this.getDeclarations(this.skip);
+    });
+  }
+
+  viewDocument(declarationInfo: any) {
+    const modal = this.modalService.create({
+      nzWidth: 680,
+      nzWrapClassName: 'document-modal',
+      nzTitle: 'Thông tin biểu mẫu, tờ khai đã xuất',
+      nzContent: DocumentFormComponent,
+      nzOnOk: (data) => console.log('Click ok', data),
+      nzComponentParams: {
+        declarationInfo
+      }
+    });
+
+    modal.afterClose.subscribe(result => {
     });
   }
 }
