@@ -8,10 +8,10 @@
   <div class="page-regime-approval__content">
     <div class="page-regime-approval__group-button">
       <div class="page-regime-approval__buttons">
-        <button nz-button nzType="default" nz-dropdown nzTrigger="click" [nzDropdownMenu]="menuPart1">
+        <button nz-button class="page-regime-approval__button" nzType="default" nz-dropdown nzTrigger="click" [nzDropdownMenu]="menuPart1">
           <i nz-icon nzType="arrow-up"></i>Phần I
         </button>
-        <button nz-button nzType="default" nz-dropdown nzTrigger="click" [nzDropdownMenu]="menuPart2">
+        <button nz-button class="page-regime-approval__button" nzType="default" nz-dropdown nzTrigger="click" [nzDropdownMenu]="menuPart2">
           <i nz-icon nzType="arrow-up"></i>Phần II
         </button>
         <nz-dropdown-menu #menuPart1="nzDropdownMenu">
@@ -74,7 +74,7 @@
         </nz-dropdown-menu>
       </div><!-- page-regime-approval__group-button -->
 
-      <h1>630 | Xét duyệt chế độ ốm đau, Thai sản và Dưỡng sức, phục hồi sức khỏe</h1>
+      <h1><strong>630</strong> | Xét duyệt chế độ ốm đau, Thai sản và Dưỡng sức, phục hồi sức khỏe</h1>
     </div><!-- page-regime-approval__group-button -->
 
     <ng-container *ngIf="hasForm">

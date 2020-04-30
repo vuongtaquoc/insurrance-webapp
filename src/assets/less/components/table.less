@@ -1,28 +1,39 @@
 .ui-table-custom {
+
+  .ant-table table {
+    border: 0;
+  }
+
   .ant-table-thead > tr > th {
     border: 0;
-    background-color: #fff;
-    padding: 30px 0.857em;
-    font-size: 18px;
+    background-color: #EBF1F8;
+    padding: 20px 0.857em;
+    font-size: 13px;
     white-space: nowrap;
     font-weight: 700;
+    color: #4B5A67;
+    text-transform: uppercase;
 
     &:not(:last-child) {
       border: 0;
     }
   }
+  .ant-table-thead tr th {
+    border-bottom: 3px solid #B9D0E5 !important;
+  }
 
   .ant-table-tbody > tr {
-    background-color: #EAF1F8;
+    background-color: #fff;
 
-    &:nth-child(even) {
-      background-color: #fff;
-    }
+  //   &:nth-child(even) {
+  //     background-color: #fff;
+  //   }
   }
 
   .ant-table-tbody > tr > td {
     border: 0;
     padding: 20px 0.857em;
+    border-bottom: 1px solid #B9D0E5;
   }
 
   &--center {
