@@ -1,4 +1,5 @@
 import { Component, OnInit, OnChanges } from '@angular/core';
+import { NzModalService } from 'ng-zorro-antd/modal';
 
 import { DeclarationService, CategoryService, BankService, PlanService } from '@app/core/services';
 
@@ -16,11 +17,12 @@ export class MaternityComponent extends RegimeApprovalBaseComponent implements O
   declarationCode: string = '630b';
   constructor(
     protected declarationService: DeclarationService,
-    protected categoryService: CategoryService,
-    protected bankService: BankService,
-    protected planService: PlanService
+    private categoryService: CategoryService,
+    private bankService: BankService,
+    private planService: PlanService,
+    protected modalService: NzModalService
   ) {
-    super(declarationService);
+    super(declarationService, modalService);
   }
 
   ngOnInit() {

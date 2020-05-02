@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Subject, forkJoin } from 'rxjs';
+import { NzModalService } from 'ng-zorro-antd/modal';
 import findLastIndex from 'lodash/findLastIndex';
 import findIndex from 'lodash/findIndex';
 import * as jexcel from 'jstable-editor/dist/jexcel.js';
@@ -44,6 +45,7 @@ export class IncreaseLaborComponent implements OnInit {
   declaration: any;
   isHiddenSidebar = false;
   declarationCode: string = '600';
+  employeeSubject: Subject<any> = new Subject<any>();
 
   constructor(
     private formBuilder: FormBuilder,
@@ -58,6 +60,7 @@ export class IncreaseLaborComponent implements OnInit {
     private planService: PlanService,
     private documentListService: DocumentListService,
     private authenticationService: AuthenticationService,
+    private modalService: NzModalService
   ) {
     this.getRecipientsDistrictsByCityCode = this.getRecipientsDistrictsByCityCode.bind(this);
     this.getRecipientsWardsByDistrictCode = this.getRecipientsWardsByDistrictCode.bind(this);
@@ -123,7 +126,9 @@ export class IncreaseLaborComponent implements OnInit {
 
   handleAddEmployee(type) {
     if (!this.employeeSelected.length) {
-      return;
+      return this.modalService.warning({
+        nzTitle: 'Chưa có nhân viên nào được chọn',
+      });
     }
 
     const declarations = [ ...this.declarations ];
@@ -162,6 +167,11 @@ export class IncreaseLaborComponent implements OnInit {
 
       this.declarations = this.declarationService.updateFormula(declarations, this.tableHeaderColumns);
     }
+
+    this.employeeSubject.next({
+      type: 'clean'
+    });
+    this.employeeSelected.length = 0;
   }
 
   handleSelectEmployees(employees) {

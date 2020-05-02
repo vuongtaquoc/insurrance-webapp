@@ -1,5 +1,5 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Component, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
+import { Subject, Observable, Subscription } from 'rxjs';
 import { NzModalService } from 'ng-zorro-antd/modal';
 
 import { EmployeeService } from '@app/core/services';
@@ -11,19 +11,36 @@ import { EmployeeFormComponent } from '@app/shared/components';
   templateUrl: './declaration-sidebar.component.html',
   styleUrls: ['./declaration-sidebar.component.less']
 })
-export class DeclarationSidebarComponent {
+export class DeclarationSidebarComponent implements OnInit, OnDestroy {
   @Input() isHiddenSidebar = false;
+  @Input() events: Observable<any>;
   @Output() onSelectEmployees: EventEmitter<any> = new EventEmitter();
   @Output() onToggleSidebar: EventEmitter<any> = new EventEmitter();
 
   isSpinning: boolean;
   employeeSelected: any[] = [];
   employeeSubject: Subject<any> = new Subject<any>();
+  private eventsSubscription: Subscription;
 
   constructor(
     private modalService: NzModalService,
     private employeeService: EmployeeService
   ) {}
+
+  ngOnInit() {
+    this.eventsSubscription = this.events.subscribe(({ type }) => {
+      if (type === 'clean') {
+        this.employeeSubject.next({
+          type: 'clean'
+        });
+        this.employeeSelected.length = 0;
+      }
+    });
+  }
+
+  ngOnDestroy() {
+    this.eventsSubscription.unsubscribe();
+  }
 
   handleSelectEmployees(employees) {
     this.employeeSelected = employees;

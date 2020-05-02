@@ -1,4 +1,6 @@
 import { Input, Output, EventEmitter } from '@angular/core';
+import { NzModalService } from 'ng-zorro-antd/modal';
+import { Subject } from 'rxjs';
 import findLastIndex from 'lodash/findLastIndex';
 import findIndex from 'lodash/findIndex';
 
@@ -37,9 +39,13 @@ export class RegimeApprovalBaseComponent {
     }
   };
   employeeSelected: any[] = [];
+  employeeSubject: Subject<any> = new Subject<any>();
   isHiddenSidebar = false;
 
-  constructor(protected declarationService: DeclarationService) {}
+  constructor(
+    protected declarationService: DeclarationService,
+    protected modalService: NzModalService
+  ) {}
 
   initializeTableColumns(part, nested, columns) {
     this.headers[part].nested = nested;
@@ -48,7 +54,9 @@ export class RegimeApprovalBaseComponent {
 
   handleAddEmployee(part, type) {
     if (!this.employeeSelected.length) {
-      return;
+      return this.modalService.warning({
+        nzTitle: 'Chưa có nhân viên nào được chọn',
+      });
     }
 
     const declarations = [ ...this.declarations[part].table ];
@@ -123,6 +131,12 @@ export class RegimeApprovalBaseComponent {
       part,
       data: this.declarations[part].origin
     });
+
+    // clean employee
+    this.employeeSubject.next({
+      type: 'clean'
+    });
+    this.employeeSelected.length = 0;
   }
 
   handleSelectEmployees(employees) {

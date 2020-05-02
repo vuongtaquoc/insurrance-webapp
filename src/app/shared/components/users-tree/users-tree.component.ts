@@ -16,6 +16,10 @@ export class UsersTreeComponent implements OnInit, OnDestroy {
 
   employees: any[];
   searchValue = '';
+  defaultCheckedKeys = [];
+  defaultSelectedKeys = [];
+  defaultExpanded = [];
+  isLoading = false;
   private eventsSubscription: Subscription;
 
   constructor(private employeeService: EmployeeService) {}
@@ -27,6 +31,11 @@ export class UsersTreeComponent implements OnInit, OnDestroy {
       if (status === 'success') {
         this.getEmployeeTrees();
       }
+
+      if (type === 'clean') {
+        this.defaultCheckedKeys = [];
+        this.defaultSelectedKeys = [];
+      }
     });
   }
 
@@ -35,8 +44,13 @@ export class UsersTreeComponent implements OnInit, OnDestroy {
   }
 
   getEmployeeTrees() {
+    this.isLoading = true;
     this.employeeService.getEmployeeTrees().subscribe(employees => {
       this.employees = employees;
+
+      this.defaultExpanded = this.employees.map(e => e.key);
+
+      this.isLoading = false;
     });
   }
 
@@ -53,6 +67,9 @@ export class UsersTreeComponent implements OnInit, OnDestroy {
       },
       []
     );
+
+    this.defaultCheckedKeys = event.keys;
+    this.defaultSelectedKeys = event.keys;
 
     this.onSelectEmployees.emit(selected);
   }

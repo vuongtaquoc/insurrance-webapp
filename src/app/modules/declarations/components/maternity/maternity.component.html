@@ -1,6 +1,7 @@
 <div class="page-regime-approval__container" [ngClass]="{ 'page-regime-approval__container--hidden': isHiddenSidebar }">
   <app-declaration-sidebar
     [isHiddenSidebar]="isHiddenSidebar"
+    [events]="employeeSubject.asObservable()"
     (onSelectEmployees)="handleSelectEmployees($event)"
     (onToggleSidebar)="handleToggleSidebar()"
   ></app-declaration-sidebar>
