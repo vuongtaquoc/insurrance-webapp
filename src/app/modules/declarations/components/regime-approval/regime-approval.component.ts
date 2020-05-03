@@ -69,13 +69,12 @@ export class RegimeApprovalComponent implements OnInit {
     this.documentListService.getDocumentList(this.declarationCode).subscribe(documentList => {
       this.documentList = documentList;
     });
-
   }
 
   save(type) {
     if (type === 'rollback') {
       this.router.navigate(['/declarations/regime-approval']);
-    }else  {
+    } else  {
       if (this.declarationId) {
         this.update(type);
       } else {
@@ -98,7 +97,7 @@ export class RegimeApprovalComponent implements OnInit {
       if (type === 'saveAndView') {
         this.viewDocument(data);
       } else {
-          this.router.navigate(['/declarations/regime-approval']);
+        this.router.navigate(['/declarations/regime-approval']);
       }
     });
   }
@@ -117,7 +116,7 @@ export class RegimeApprovalComponent implements OnInit {
       if (data.type === 'saveAndView') {
         this.viewDocument(data);
       } else if(data.type === 'save') {
-          this.router.navigate(['/declarations/regime-approval']);
+        this.router.navigate(['/declarations/regime-approval']);
       }
     });
   }

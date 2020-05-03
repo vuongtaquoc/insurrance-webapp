@@ -107,24 +107,7 @@ export class RegimeApprovalBaseComponent {
     }
 
     // update origin data
-    const records = [];
-
-    declarations.forEach((declaration, i) => {
-      const record = {
-        origin: declaration.origin,
-        options: {
-          hasLeaf: declaration.hasLeaf,
-          isLeaf: declaration.isLeaf,
-          parentKey: declaration.parentKey,
-          key: declaration.key,
-          planType: declaration.planType,
-        }
-      };
-
-      declaration.data.forEach((d, j) => record[j] = d);
-
-      records.push(record);
-    });
+    const records = this.toTableRecords(declarations);
 
     this.declarations[part].origin = Object.values(this.updateOrigin(records, part));
 
@@ -269,5 +252,39 @@ export class RegimeApprovalBaseComponent {
     });
 
     return declarations
+  }
+
+  protected toTableRecords(data) {
+    const records = [];
+
+    data.forEach((declaration, i) => {
+      const record = {
+        origin: declaration.origin,
+        options: {
+          hasLeaf: declaration.hasLeaf,
+          isLeaf: declaration.isLeaf,
+          parentKey: declaration.parentKey,
+          key: declaration.key,
+          planType: declaration.planType,
+        }
+      };
+
+      declaration.data.forEach((d, j) => record[j] = d);
+
+      records.push(record);
+    });
+
+    return records;
+  }
+
+  protected updateOriginByPart(part) {
+    const records = this.toTableRecords([ ...this.declarations[part].table ]);
+
+    this.declarations[part].origin = Object.values(this.updateOrigin(records, part));
+
+    this.onChange.emit({
+      part,
+      data: this.declarations[part].origin
+    });
   }
 }
