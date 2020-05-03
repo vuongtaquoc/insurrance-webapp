@@ -1,4 +1,5 @@
 import { Component, OnInit, OnChanges } from '@angular/core';
+import { NzModalService } from 'ng-zorro-antd/modal';
 
 import { DeclarationService, BankService, CategoryService } from '@app/core/services';
 
@@ -15,10 +16,11 @@ import { Subject, forkJoin } from 'rxjs';
 export class HealthRecoveryComponent extends RegimeApprovalBaseComponent implements OnInit, OnChanges {
   constructor(
     protected declarationService: DeclarationService,
-    protected bankService: BankService,
-    protected categoryService: CategoryService
+    private bankService: BankService,
+    private categoryService: CategoryService,
+    protected modalService: NzModalService
   ) {
-    super(declarationService);
+    super(declarationService, modalService);
   }
 
   ngOnInit() {

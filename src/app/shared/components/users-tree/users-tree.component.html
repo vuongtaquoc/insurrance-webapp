@@ -9,7 +9,9 @@
     nzCheckable
     nzMultiple
     [nzData]="employees"
-    [nzAsyncData]="true"
+    [nzCheckedKeys]="defaultCheckedKeys"
+    [nzSelectedKeys]="defaultSelectedKeys"
+    [nzAsyncData]="false"
     [nzSearchValue]="searchValue"
     (nzCheckBoxChange)="nzCheck($event)"
   >

@@ -13,7 +13,7 @@ export class EmployeeService {
   public getEmployeeTrees() {
     return this.http.get('/employees/declarations').pipe(
       map(employees => {
-        return employees.map(employee => {
+        return employees.map((employee, index) => {
           const parentKey = uuid.v4();
 
           return {
@@ -23,7 +23,7 @@ export class EmployeeService {
             children: employee.employees.map(e => ({
               ...e,
               title: e.fullName,
-              key: e.id,
+              key: e.id.toString(),
               isLeaf: true
             }))
           };
