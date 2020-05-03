@@ -1,5 +1,7 @@
-import { Component, OnInit, ViewEncapsulation, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnChanges, ViewEncapsulation, Input, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import isEmpty from 'lodash/isEmpty';
+
 import { CategoryService, AuthenticationService } from '@app/core/services';
 import { Category } from '@app/core/models';
 
@@ -9,8 +11,9 @@ import { Category } from '@app/core/models';
   styleUrls: ['./regime-approval-form.component.less'],
   encapsulation: ViewEncapsulation.None
 })
-export class RegimeApprovalFormComponent implements OnInit {
+export class RegimeApprovalFormComponent implements OnInit, OnChanges {
   @Input() form: FormGroup;
+  @Input() data: any = {};
   @Output() onFormValuesChanged: EventEmitter<any> = new EventEmitter();
   typeDocumentActtachs: Category[] = [];
 
@@ -36,6 +39,17 @@ export class RegimeApprovalFormComponent implements OnInit {
     this.formChanges();
   }
 
+  ngOnChanges(changes) {
+    if (changes.data && !isEmpty(changes.data.currentValue) && this.form) {
+      this.form.patchValue({
+        openAddress: changes.data.currentValue.openAddress,
+        branch: changes.data.currentValue.branch,
+        typeDocumentActtach: changes.data.currentValue.typeDocumentActtach,
+        reason: changes.data.currentValue.reason
+      });
+    }
+  }
+
   formChanges() {
     this.form.valueChanges.subscribe(value => {
       this.onFormValuesChanged.emit(value);
@@ -45,10 +59,9 @@ export class RegimeApprovalFormComponent implements OnInit {
   }
 
   private loadTypeDocumentAttach() {
-      this.categoryService.getCategories("documentAttached").subscribe((data) => 
-      {
-        this.typeDocumentActtachs = data;
-      });
+    this.categoryService.getCategories('documentAttached').subscribe((data) => {
+      this.typeDocumentActtachs = data;
+    });
   }
 
 }

@@ -82,7 +82,7 @@
           </button>
         </div>
       </ng-template>
-      <app-regime-approval-form class="page-regime-approval__form" [ngClass]="{'page-regime-approval__form--hidden': selectedTabIndex == 0}" (onFormValuesChanged)="handleFormValuesChanged($event)"></app-regime-approval-form>
+      <app-regime-approval-form [data]="regimeApproval.formOrigin" class="page-regime-approval__form" [ngClass]="{'page-regime-approval__form--hidden': selectedTabIndex == 0}" (onFormValuesChanged)="handleFormValuesChanged($event)"></app-regime-approval-form>
     </div><!-- page-regime-approval -->
   </nz-spin>
 </div>

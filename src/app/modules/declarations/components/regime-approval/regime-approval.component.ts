@@ -16,6 +16,7 @@ export class RegimeApprovalComponent implements OnInit {
   regimeApproval: any = {
     origin: {},
     form: {},
+    formOrigin: {},
     tables: {}
   };
   declarationCode: string = '630';
@@ -34,33 +35,45 @@ export class RegimeApprovalComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.documentForm = this.formBuilder.group({
+      submitter: [''],
+      mobile: ['']
+    });
+
     if (this.declarationId) {
       this.declarationService.getDeclarationsByDocumentIdByGroup(this.declarationId).subscribe(declarations => {
-        this.documentForm = this.formBuilder.group({
+        this.documentForm.patchValue({
           submitter: declarations.submitter,
-          mobile:declarations.mobile,
+          mobile: declarations.mobile
         });
         this.regimeApproval.origin = declarations.documentDetail;
+        this.regimeApproval.formOrigin = {
+          batch: declarations.batch,
+          openAddress: declarations.openAddress,
+          branch: declarations.branch,
+          typeDocumentActtach: declarations.typeDocumentActtach,
+          reason: declarations.reason
+        };
       });
     } else {
       this.declarationService.getDeclarationInitialsByGroup(this.declarationCode).subscribe(data => {
         this.regimeApproval.origin = data;
       });
       const currentCredentials = this.authenticationService.currentCredentials;
-      this.documentForm = this.formBuilder.group({
-        submitter: [currentCredentials.companyInfo.delegate],
-        mobile:[currentCredentials.companyInfo.mobile],
+      this.documentForm.patchValue({
+        submitter: currentCredentials.companyInfo.delegate,
+        mobile: currentCredentials.companyInfo.mobile
       });
     }
 
     this.documentListService.getDocumentList(this.declarationCode).subscribe(documentList => {
       this.documentList = documentList;
-    });   
+    });
 
   }
 
   save(type) {
-    if (type === 'rollback') { 
+    if (type === 'rollback') {
       this.router.navigate(['/declarations/regime-approval']);
     }else  {
       if (this.declarationId) {
