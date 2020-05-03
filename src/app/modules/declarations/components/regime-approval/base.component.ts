@@ -41,6 +41,7 @@ export class RegimeApprovalBaseComponent {
   };
   employeeSelected: any[] = [];
   employeeSubject: Subject<any> = new Subject<any>();
+  tableSubject: Subject<any> = new Subject<any>();
   isHiddenSidebar = false;
 
   constructor(
@@ -121,6 +122,9 @@ export class RegimeApprovalBaseComponent {
       type: 'clean'
     });
     this.employeeSelected.length = 0;
+    this.tableSubject.next({
+      type: 'validate'
+    });
   }
 
   handleSelectEmployees(employees) {
@@ -144,6 +148,9 @@ export class RegimeApprovalBaseComponent {
       part,
       data: this.declarations[part].origin
     });
+    this.tableSubject.next({
+      type: 'validate'
+    });
   }
 
   handleDeleteTableData({ rowNumber, numOfRows, records }, part) {
@@ -161,6 +168,9 @@ export class RegimeApprovalBaseComponent {
     this.onChange.emit({
       part,
       data: this.declarations[part].origin
+    });
+    this.tableSubject.next({
+      type: 'validate'
     });
   }
 
@@ -285,6 +295,9 @@ export class RegimeApprovalBaseComponent {
     this.onChange.emit({
       part,
       data: this.declarations[part].origin
+    });
+    this.tableSubject.next({
+      type: 'validate'
     });
   }
 }

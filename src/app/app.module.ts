@@ -6,6 +6,7 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { LoadingBarModule } from '@ngx-loading-bar/core';
 import { NZ_I18N, en_US } from 'ng-zorro-antd';
+import { NzMessageModule } from 'ng-zorro-antd/message';
 
 import { AuthInterceptor, ApiPrefixInterceptor, ErrorInterceptor } from '@app/core/interceptors';
 import { ApplicationHttpClient, applicationHttpClientCreator } from '@app/core/http';
@@ -21,6 +22,7 @@ import { AppComponent } from './app.component';
     BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
+    NzMessageModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

@@ -67,11 +67,9 @@ export const customPicker = (table, mode, checkPrevCol = false) => {
       element.focus();
     },
     getValue : function(cell) {
-      console.log('getvalue')
       return cell.innerHTML;
     },
     setValue : function(cell, value) {
-      console.log('setValue',value)
       cell.innerHTML = value;
     }
   };
