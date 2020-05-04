@@ -4,6 +4,7 @@ import * as jexcel from 'jstable-editor/dist/jexcel.js';
 import 'jsuites/dist/jsuites.js';
 
 import { customPicker } from '@app/shared/utils/custom-editor';
+import { eventEmitter } from '@app/shared/utils/event-emitter';
 
 @Component({
   selector: 'app-table-editor',
@@ -16,6 +17,7 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
   @Input() data: any[] = [];
   @Input() columns: any[] = [];
   @Input() nestedHeaders: any[] = [];
+  @Input() tableName: string;
   @Input() events: Observable<void>;
   @Output() onChange: EventEmitter<any> = new EventEmitter();
   @Output() onSubmit: EventEmitter<any> = new EventEmitter();
@@ -140,6 +142,16 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
   }
 
   private handleEvent(type) {
+    if (type === 'validate') {
+      setTimeout(() => {
+        eventEmitter.emit('labor-table-editor:validate', {
+          name: this.tableName,
+          isValid: this.spreadsheet.isTableValid()
+        });
+      }, 10);
+      return;
+    }
+
     const data = this.spreadsheet.getJson();
     const declarations = {};
 
