@@ -26,7 +26,7 @@ export class RegimeApprovalFormComponent implements OnInit {
       batch: ['1'],
       month: [ date.getMonth() + 1, Validators.required ],
       year: [ date.getFullYear(), Validators.required ],
-      accountNumberUnit: [''],
+      bankAccount: [''],
       openAddress: [''],
       branch: [''],
       typeDocumentActtach: [''],
