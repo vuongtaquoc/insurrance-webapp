@@ -7,38 +7,38 @@
             <form nz-form [formGroup]="documentForm">
               <h1><strong>600</strong> | Báo tăng lao động</h1>
               <div nz-row [nzGutter]="10">
-                  <div nz-col [nzSpan]="12">
+                <div nz-col [nzSpan]="12">
+                  <nz-form-item>
+                    <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Người nộp</nz-form-label>
+                    <nz-form-control [nzSpan]="14">
+                      <input nz-input
+                        placeholder="Người nộp"
+                        formControlName="userAction"
+                      />
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="12">
                     <nz-form-item>
-                      <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Người nộp</nz-form-label>
+                      <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Số điện thoại</nz-form-label>
                       <nz-form-control [nzSpan]="14">
                         <input nz-input
-                          placeholder="Người nộp"
-                          formControlName="userAction"
+                          placeholder="Số điện thoại"
+                          formControlName="mobile"
                         />
                       </nz-form-control>
                     </nz-form-item>
                   </div>
-                  <div nz-col [nzSpan]="12">
-                      <nz-form-item>
-                        <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Số điện thoại</nz-form-label>
-                        <nz-form-control [nzSpan]="14">
-                          <input nz-input
-                            placeholder="Số điện thoại"
-                            formControlName="mobile"
-                          />
-                        </nz-form-control>
-                      </nz-form-item>
-                    </div>
                 </div>
                 <h1>Thành phần hồ sơ</h1>
                 <div class="document-form__process-table">
-                    <div class="document-form__process-table">
-                        <app-document-table
-                          [data]="documentList"
-                          (onChange)="handleChangeProcessTable($event)"
-                          (onDelete)="handleDeleteProcessData($event)"
-                        ></app-document-table>
-                    </div>
+                  <div class="document-form__process-table">
+                    <app-document-table
+                      [data]="documentList"
+                      (onChange)="handleChangeProcessTable($event)"
+                      (onDelete)="handleDeleteProcessData($event)"
+                    ></app-document-table>
+                  </div>
                 </div>
                 <div nz-row [nzGutter]="10">
                   <div nz-col [nzSpan]="12">
@@ -119,25 +119,40 @@
                 ></app-table-editor>
               </div><!-- page-declarations__editor -->
 
+              <nz-collapse [nzBordered]="false" [ngClass]="{
+                'collapse-active-all': panel.general.active && panel.attachment.active,
+                'collapse-active-general': panel.general.active && !panel.attachment.active,
+                'collapse-active-attachment': !panel.general.active && panel.attachment.active
+              }">
+                <nz-collapse-panel class="collapse-general" nzHeader="Phần tổng hợp" [nzActive]="panel.general.active" (nzActiveChange)="collapseChange($event, 'general')">
+                  <app-labor-general-form (onFormValuesChanged)="handleFormValuesChanged($event)"></app-labor-general-form>
+                </nz-collapse-panel>
+                <nz-collapse-panel class="collapse-attachment" [nzHeader]="attachmentHeader" [nzActive]="panel.attachment.active" (nzActiveChange)="collapseChange($event, 'attachment')">
+                  <app-labor-attachment></app-labor-attachment>
+                </nz-collapse-panel>
+              </nz-collapse>
+              <ng-template #attachmentHeader>
+                Tài liệu kèm theo <span class="collapse-attachment-note">(tổng dung lượng &lt; 20MB)</span>
+              </ng-template>
             </div><!-- page-declarations__content -->
           </div><!-- page-declarations__container -->
         </nz-tab><!-- tab 2 -->
         <nz-tab nzTitle="Bảng kê hồ sơ" *ngIf="(usedocumentDT01)">
-            <div class="page-document-list__container">
-              <form nz-form [formGroup]="documentForm">
-                    <h1>600 | Báo tăng lao động</h1>
-                    <h2>Bảng kê thôn tin</h2>
+          <div class="page-document-list__container">
+            <form nz-form [formGroup]="documentForm">
+              <h1>600 | Báo tăng lao động</h1>
+              <h2>Bảng kê thôn tin</h2>
 
-                    <div class="document-form__process-table">
-                        <app-document-list-table
-                          [data]="informationList"
-                          [events]="eventsSubject.asObservable()"
-                          (onChange)="handleChangeDataDocumentList($event)"
-                          (onDelete)="handleDeleteProcessDataDocumentList($event)"
-                        ></app-document-list-table>
-                    </div>
-                </form>
-            </div>
+              <div class="document-form__process-table">
+                <app-document-list-table
+                  [data]="informationList"
+                  [events]="eventsSubject.asObservable()"
+                  (onChange)="handleChangeDataDocumentList($event)"
+                  (onDelete)="handleDeleteProcessDataDocumentList($event)"
+                ></app-document-list-table>
+              </div>
+            </form>
+          </div>
         </nz-tab>
       </nz-tabset>
       <ng-template #extraTemplate>

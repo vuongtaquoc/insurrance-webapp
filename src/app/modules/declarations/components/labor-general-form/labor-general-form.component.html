@@ -1,0 +1,20 @@
+<form nz-form [formGroup]="form" [nzNoColon]="true" class="labor-general-form">
+  <nz-form-item>
+    <nz-form-label [nzSm]="5" [nzXs]="24">Tổng số Sổ BHXH đề nghị cấp</nz-form-label>
+    <nz-form-control [nzSm]="5" [nzXs]="24">
+      <input nz-input formControlName="insuranceBookNumber" nzSize="small" />
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSm]="5" [nzXs]="24">Tổng số Thẻ BHXH đề nghị cấp</nz-form-label>
+    <nz-form-control [nzSm]="5" [nzXs]="24">
+      <input nz-input formControlName="insuranceCardNumber" nzSize="small" />
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSm]="24" [nzXs]="24">
+      Tra cứu Mã số BHXH và Mã số Hộ gia đình:
+      <a class="labor-general-form__link" href="https://baohiemxahoi.gov.vn/tracuu/Pages/tra-cuu-ho-gia-dinh.aspx">Tại đây</a>
+    </nz-form-label>
+  </nz-form-item>
+</form>

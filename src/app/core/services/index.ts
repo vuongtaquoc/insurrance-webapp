@@ -24,3 +24,4 @@ export * from './document-list.service';
 export * from './declaration-file.service';
 export * from './sicknesses.service';
 export * from './category.service';
+export * from './file-upload.service';

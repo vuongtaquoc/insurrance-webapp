@@ -50,6 +50,10 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
   employeeSubject: Subject<any> = new Subject<any>();
   handler: any;
   isTableValid = false;
+  panel: any = {
+    general: { active: true },
+    attachment: { active: true }
+  };
 
   constructor(
     private formBuilder: FormBuilder,
@@ -247,6 +251,14 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
 
     this.declarations = this.declarationService.updateFormula(declarations, this.tableHeaderColumns);
     this.eventsSubject.next('validate');
+  }
+
+  collapseChange(isActive, type) {
+    this.panel[type].active = isActive;
+  }
+
+  handleFormValuesChanged(data) {
+    console.log(data)
   }
 
   private updateOrders(declarations) {
