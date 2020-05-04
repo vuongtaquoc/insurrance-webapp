@@ -88,9 +88,11 @@
         <nz-collapse-panel class="collapse-part1" nzHeader="Phần 1: Danh sách hưởng chế độ mới phát sinh" [nzActive]="panel.part1.active" (nzActiveChange)="collapseChange($event, 'part1')">
           <div class="page-regime-approval__part1">
             <app-regime-approval-editor
+              tableName="healthRecoveryPart1"
               [data]="declarations.part1.table"
               [nestedHeaders]="headers.part1.nested"
               [columns]="headers.part1.columns"
+              [events]="tableSubject.asObservable()"
               (onChange)="handleChangeTable($event, 'part1')"
               (onDelete)="handleDeleteTableData($event, 'part1')"
             ></app-regime-approval-editor>
@@ -100,9 +102,11 @@
         <nz-collapse-panel class="collapse-part2" nzHeader="Phần 2: Danh sách đề nghị điều chỉnh số đã được quyết định" [nzActive]="panel.part2.active" (nzActiveChange)="collapseChange($event, 'part2')">
           <div class="page-regime-approval__part2">
             <app-regime-approval-editor
+              tableName="healthRecoveryPart1"
               [data]="declarations.part2.table"
               [nestedHeaders]="headers.part2.nested"
               [columns]="headers.part2.columns"
+              [events]="tableSubject.asObservable()"
               (onChange)="handleChangeTable($event, 'part2')"
               (onDelete)="handleDeleteTableData($event, 'part2')"
             ></app-regime-approval-editor>

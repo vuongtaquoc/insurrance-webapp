@@ -3,9 +3,11 @@ import { Router } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DeclarationService, AuthenticationService, DocumentListService } from '@app/core/services';
 import { NzModalService } from 'ng-zorro-antd/modal';
+
 import { DocumentFormComponent } from '@app/shared/components';
 import { eventEmitter } from '@app/shared/utils/event-emitter';
 import { DocumentList } from '@app/core/models';
+
 @Component({
   selector: 'app-regime-approval',
   templateUrl: './regime-approval.component.html',
@@ -16,6 +18,7 @@ export class RegimeApprovalComponent implements OnInit {
   regimeApproval: any = {
     origin: {},
     form: {},
+    formOrigin: {},
     tables: {}
   };
   declarationCode: string = '630';
@@ -23,6 +26,10 @@ export class RegimeApprovalComponent implements OnInit {
   selectedTabIndex: number = 1;
   documentList: DocumentList[] = [];
   documentForm: FormGroup;
+  handler: any;
+  isTableValid = false;
+  isValid: any = {};
+
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
@@ -34,35 +41,51 @@ export class RegimeApprovalComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.documentForm = this.formBuilder.group({
+      submitter: [''],
+      mobile: ['']
+    });
+
     if (this.declarationId) {
       this.declarationService.getDeclarationsByDocumentIdByGroup(this.declarationId).subscribe(declarations => {
-        this.documentForm = this.formBuilder.group({
+        this.documentForm.patchValue({
           submitter: declarations.submitter,
-          mobile:declarations.mobile,
+          mobile: declarations.mobile
         });
         this.regimeApproval.origin = declarations.documentDetail;
+        this.regimeApproval.formOrigin = {
+          batch: declarations.batch,
+          openAddress: declarations.openAddress,
+          branch: declarations.branch,
+          typeDocumentActtach: declarations.typeDocumentActtach,
+          reason: declarations.reason
+        };
       });
     } else {
       this.declarationService.getDeclarationInitialsByGroup(this.declarationCode).subscribe(data => {
         this.regimeApproval.origin = data;
       });
       const currentCredentials = this.authenticationService.currentCredentials;
-      this.documentForm = this.formBuilder.group({
-        submitter: [currentCredentials.companyInfo.delegate],
-        mobile:[currentCredentials.companyInfo.mobile],
+      this.documentForm.patchValue({
+        submitter: currentCredentials.companyInfo.delegate,
+        mobile: currentCredentials.companyInfo.mobile
       });
     }
 
     this.documentListService.getDocumentList(this.declarationCode).subscribe(documentList => {
       this.documentList = documentList;
-    });   
+    });
 
+    this.handler = eventEmitter.on('regime-approval:validate', ({ name, isValid }) => {
+      this.isValid[name] = isValid;
+      this.isTableValid = Object.values(this.isValid).indexOf(false) === -1;
+    });
   }
 
   save(type) {
-    if (type === 'rollback') { 
+    if (type === 'rollback') {
       this.router.navigate(['/declarations/regime-approval']);
-    }else  {
+    } else  {
       if (this.declarationId) {
         this.update(type);
       } else {
@@ -85,7 +108,7 @@ export class RegimeApprovalComponent implements OnInit {
       if (type === 'saveAndView') {
         this.viewDocument(data);
       } else {
-          this.router.navigate(['/declarations/regime-approval']);
+        this.router.navigate(['/declarations/regime-approval']);
       }
     });
   }
@@ -104,7 +127,7 @@ export class RegimeApprovalComponent implements OnInit {
       if (data.type === 'saveAndView') {
         this.viewDocument(data);
       } else if(data.type === 'save') {
-          this.router.navigate(['/declarations/regime-approval']);
+        this.router.navigate(['/declarations/regime-approval']);
       }
     });
   }

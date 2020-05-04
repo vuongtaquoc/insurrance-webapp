@@ -12,6 +12,7 @@ export class RegimeApprovalBaseComponent {
   @Input() data: any;
   @Input() hasForm = false;
   @Input() declarationId: string;
+  @Input() form: any = {};
   @Output() onChange: EventEmitter<any> = new EventEmitter();
   @Output() onHiddenSidebar: EventEmitter<any> = new EventEmitter();
   panel: any = {
@@ -40,6 +41,7 @@ export class RegimeApprovalBaseComponent {
   };
   employeeSelected: any[] = [];
   employeeSubject: Subject<any> = new Subject<any>();
+  tableSubject: Subject<any> = new Subject<any>();
   isHiddenSidebar = false;
 
   constructor(
@@ -106,24 +108,7 @@ export class RegimeApprovalBaseComponent {
     }
 
     // update origin data
-    const records = [];
-
-    declarations.forEach((declaration, i) => {
-      const record = {
-        origin: declaration.origin,
-        options: {
-          hasLeaf: declaration.hasLeaf,
-          isLeaf: declaration.isLeaf,
-          parentKey: declaration.parentKey,
-          key: declaration.key,
-          planType: declaration.planType,
-        }
-      };
-
-      declaration.data.forEach((d, j) => record[j] = d);
-
-      records.push(record);
-    });
+    const records = this.toTableRecords(declarations);
 
     this.declarations[part].origin = Object.values(this.updateOrigin(records, part));
 
@@ -137,6 +122,9 @@ export class RegimeApprovalBaseComponent {
       type: 'clean'
     });
     this.employeeSelected.length = 0;
+    this.tableSubject.next({
+      type: 'validate'
+    });
   }
 
   handleSelectEmployees(employees) {
@@ -160,6 +148,9 @@ export class RegimeApprovalBaseComponent {
       part,
       data: this.declarations[part].origin
     });
+    this.tableSubject.next({
+      type: 'validate'
+    });
   }
 
   handleDeleteTableData({ rowNumber, numOfRows, records }, part) {
@@ -177,6 +168,9 @@ export class RegimeApprovalBaseComponent {
     this.onChange.emit({
       part,
       data: this.declarations[part].origin
+    });
+    this.tableSubject.next({
+      type: 'validate'
     });
   }
 
@@ -268,5 +262,42 @@ export class RegimeApprovalBaseComponent {
     });
 
     return declarations
+  }
+
+  protected toTableRecords(data) {
+    const records = [];
+
+    data.forEach((declaration, i) => {
+      const record = {
+        origin: declaration.origin,
+        options: {
+          hasLeaf: declaration.hasLeaf,
+          isLeaf: declaration.isLeaf,
+          parentKey: declaration.parentKey,
+          key: declaration.key,
+          planType: declaration.planType,
+        }
+      };
+
+      declaration.data.forEach((d, j) => record[j] = d);
+
+      records.push(record);
+    });
+
+    return records;
+  }
+
+  protected updateOriginByPart(part) {
+    const records = this.toTableRecords([ ...this.declarations[part].table ]);
+
+    this.declarations[part].origin = Object.values(this.updateOrigin(records, part));
+
+    this.onChange.emit({
+      part,
+      data: this.declarations[part].origin
+    });
+    this.tableSubject.next({
+      type: 'validate'
+    });
   }
 }

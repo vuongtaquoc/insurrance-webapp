@@ -17,7 +17,8 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
   @Input() data: any[] = [];
   @Input() columns: any[] = [];
   @Input() nestedHeaders: any[] = [];
-  // @Input() events: Observable<any>;
+  @Input() tableName: string;
+  @Input() events: Observable<any>;
   @Output() onChange: EventEmitter<any> = new EventEmitter();
   @Output() onSubmit: EventEmitter<any> = new EventEmitter();
   @Output() onDelete: EventEmitter<any> = new EventEmitter();
@@ -25,8 +26,8 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
   spreadsheet: any;
   isInitialized = false;
   isSpinning = false;
-  // private eventsSubscription: Subscription;
-  private handler;
+  private eventsSubscription: Subscription;
+  private handlers = [];
   private timer;
 
   constructor(
@@ -35,8 +36,8 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
   }
 
   ngOnInit() {
-    // this.eventsSubscription = this.events.subscribe((type) => this.handleEvent(type));
-    this.handler = eventEmitter.on('regime-approval:tab:change', (index) => {
+    this.eventsSubscription = this.events.subscribe((type) => this.handleEvent(type));
+    this.handlers.push(eventEmitter.on('regime-approval:tab:change', (index) => {
       clearTimeout(this.timer);
 
       this.isSpinning = true;
@@ -46,15 +47,15 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
         this.spreadsheet.updateFreezeColumn();
         this.isSpinning = false;
       }, 300);
-    });
+    }));
   }
 
   ngOnDestroy() {
     jexcel.destroy(this.spreadsheetEl.nativeElement, true);
-    // this.eventsSubscription.unsubscribe();
+    this.eventsSubscription.unsubscribe();
     if (this.timer) clearTimeout(this.timer);
 
-    this.handler();
+    eventEmitter.destroy(this.handlers);
   }
 
   ngOnChanges(changes) {
@@ -198,5 +199,16 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
     if (!column) return;
 
     column.editor = customPicker(this.spreadsheet, type, isCustom);
+  }
+
+  private handleEvent({ type }) {
+    if (type === 'validate') {
+      setTimeout(() => {
+        eventEmitter.emit('regime-approval:validate', {
+          name: this.tableName,
+          isValid: this.spreadsheet.isTableValid()
+        });
+      }, 10);
+    }
   }
 }

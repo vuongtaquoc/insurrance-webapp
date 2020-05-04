@@ -28,12 +28,20 @@ export class EventEmitter {
 		return !!handlers;
 	}
 
-	destroy() {
+	destroyAll() {
 		forEach(this.handlers, (value) => {
 			value.length = 0;
 		});
 
 		this.handlers = null;
+	}
+
+	destroy(handlers) {
+		while (handlers.length > 0) {
+			const handler = handlers.pop();
+
+			handler();
+		}
 	}
 
 	private createDehandler(event?, handler?) {
