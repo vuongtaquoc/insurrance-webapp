@@ -1,6 +1,6 @@
 import { MIME_TYPE } from '@app/shared/constant';
 
-export const download = (fileName, data: any, type: string = MIME_TYPE.XLSX) => {
+export const download = (fileName, data: any, type: string = MIME_TYPE[0].value) => {
   const blob = new Blob([ data ], { type });
   const url = window.URL.createObjectURL(blob);
   const link = document.createElement('a');
