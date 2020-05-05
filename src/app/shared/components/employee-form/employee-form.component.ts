@@ -130,7 +130,7 @@ export class EmployeeFormComponent implements OnInit {
     const dateSign = employee.dateSign ? moment(employee.dateSign, DATE_FORMAT.FULL) : '';
 
     this.employeeForm = this.formBuilder.group({
-      fullName: [employee.fullName],
+      fullName: [employee.fullName, Validators.required],
       birthday: [birthday ? new Date(birthday.valueOf()) : ''],
       typeBirthday: [employee.typeBirthday || '1'],
       gender: [employee.gender],
@@ -194,6 +194,15 @@ export class EmployeeFormComponent implements OnInit {
   }
 
   save(): void {
+    for (const i in this.employeeForm.controls) {
+      this.employeeForm.controls[i].markAsDirty();
+      this.employeeForm.controls[i].updateValueAndValidity();
+    }
+
+    if (this.employeeForm.invalid) {
+      return;
+    }
+
     const formData = this.getData();
 
     if (this.employee.id) {

@@ -9,7 +9,7 @@
             <div nz-col [nzSpan]="8">
               <nz-form-item>
                 <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Họ và tên</nz-form-label>
-                <nz-form-control [nzSpan]="14">
+                <nz-form-control [nzSpan]="14" nzErrorTip="Họ và tên không để trống">
                   <input nz-input
                     placeholder="Họ và tên"
                     formControlName="fullName"
@@ -628,7 +628,7 @@
               <nz-form-item>
                 <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Phường/xã</nz-form-label>
                 <nz-form-control [nzSpan]="14">
-                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" 
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn"
                   formControlName="relationshipWardsCode"
                   (ngModelChange)="changeRelationshipWards($event)"
                   >

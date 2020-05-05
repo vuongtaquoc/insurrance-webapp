@@ -244,6 +244,14 @@ export class RegimeApprovalBaseComponent {
     }
   }
 
+  updateFilterToColumn(tableHeaderColumns, key, filterCb) {
+    const column = tableHeaderColumns.find(c => c.key === key);
+
+    if (column) {
+      column.filter = filterCb;
+    }
+  }
+
   private updateOrigin(records, part) {
     const declarations = {};
 

@@ -51,8 +51,8 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
   handler: any;
   isTableValid = false;
   panel: any = {
-    general: { active: true },
-    attachment: { active: true }
+    general: { active: false },
+    attachment: { active: false }
   };
 
   constructor(

@@ -157,6 +157,7 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
         key: d.key,
         isParent: d.isParent,
         formula: !!d.formula,
+        planType: d.planType,
         isInitialize: d.isInitialize
       };
 
@@ -204,9 +205,15 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
   private handleEvent({ type }) {
     if (type === 'validate') {
       setTimeout(() => {
+        const data = Object.values(this.spreadsheet.getJson());
+        const leaf = data.filter((d: any) => d.options.isLeaf);
+        const initialize = leaf.filter((d: any) => d.options.isInitialize);
+
         eventEmitter.emit('regime-approval:validate', {
           name: this.tableName,
-          isValid: this.spreadsheet.isTableValid()
+          isValid: this.spreadsheet.isTableValid(),
+          leaf,
+          initialize
         });
       }, 10);
     }

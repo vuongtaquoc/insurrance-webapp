@@ -50,6 +50,9 @@ export class MaternityComponent extends RegimeApprovalBaseComponent implements O
       this.updateSourceToColumn(TABLE_HEADER_COLUMNS_PART_2, 'bankId', banks);
       this.updateSourceToColumn(TABLE_HEADER_COLUMNS_PART_2, 'subsidizeReceipt', subsidizeReceipts);
       this.updateSourceToColumn(TABLE_HEADER_COLUMNS_PART_2, 'recordSolvedNumber', recruitmentNumbers);
+
+      // add filter columns
+      this.updateFilterToColumn(TABLE_HEADER_COLUMNS_PART_1, 'planCode', this.getPlanByParent);
     });
   }
 
@@ -71,5 +74,11 @@ export class MaternityComponent extends RegimeApprovalBaseComponent implements O
 
   private getSourceDropDownByKey(key: string) {
     return this.categoryService.getCategories(key);
+  }
+
+  private getPlanByParent(instance, cell, c, r, source) {
+    const row = instance.jexcel.getRowFromCoords(r);
+
+    return source.filter(s => s.type === row.options.planType);
   }
 }

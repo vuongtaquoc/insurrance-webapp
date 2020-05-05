@@ -29,6 +29,7 @@ export class RegimeApprovalComponent implements OnInit, OnDestroy {
   handler: any;
   isTableValid = false;
   isValid: any = {};
+  allInitialize: any = {};
 
   constructor(
     private formBuilder: FormBuilder,
@@ -76,9 +77,10 @@ export class RegimeApprovalComponent implements OnInit, OnDestroy {
       this.documentList = documentList;
     });
 
-    this.handler = eventEmitter.on('regime-approval:validate', ({ name, isValid }) => {
+    this.handler = eventEmitter.on('regime-approval:validate', ({ name, isValid, leaf, initialize }) => {
+      this.allInitialize[name] = leaf.length === initialize.length;
       this.isValid[name] = isValid;
-      this.isTableValid = Object.values(this.isValid).indexOf(false) === -1;
+      this.isTableValid = Object.values(this.allInitialize).indexOf(false) === -1 ? false : Object.values(this.isValid).indexOf(false) === -1;
     });
   }
 

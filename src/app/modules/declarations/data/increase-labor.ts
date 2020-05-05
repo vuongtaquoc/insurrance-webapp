@@ -83,7 +83,11 @@ export const TABLE_HEADER_COLUMNS = [{
   type: 'numberic',
   width: 123,
   title: '(5.1)',
-  key: 'isurranceCode'
+  key: 'isurranceCode',
+  fieldName: 'Mã số BHXH',
+  validations: {
+    numberLength: 10
+  }
 }, {
   type: 'text',
   width: 123,
@@ -125,8 +129,11 @@ export const TABLE_HEADER_COLUMNS = [{
   width: 135,
   title: '(11)',
   align: 'left',
-  key: 'identityCar'
-  
+  key: 'identityCar',
+  fieldName: 'Số CMND/Hộ chiếu/Thẻ căn cước',
+  validations: {
+    cardId: true
+  }
 }, {
   type: 'numberic',
   width: 135,
@@ -308,7 +315,11 @@ export const TABLE_HEADER_COLUMNS = [{
   options: { format:'MM/YYYY' },
   width: 60,
   title: '(23)',
-  key: 'fromDate'
+  key: 'fromDate',
+  fieldName: 'Từ tháng, năm',
+  validations: {
+    required: true
+  }
 }, {
   type: 'calendar',
   options: { format:'MM/YYYY' },
@@ -321,7 +332,11 @@ export const TABLE_HEADER_COLUMNS = [{
   width: 50,
   title: '(25)',
   source: [ ],
-  key: 'planCode'
+  key: 'planCode',
+  fieldName: 'Phương án',
+  validations: {
+    required: true
+  }
 }, {
   type: 'numberic',
   mask: '# ##0',
