@@ -50,7 +50,9 @@ import {
   RegimeApprovalComponent,
   RegimeApprovalFormComponent,
   SicknessesComponent,
-  RegimeApprovalEditorComponent
+  RegimeApprovalEditorComponent,
+  LaborAttachmentComponent,
+  LaborGeneralFormComponent
 } from './components';
 
 import { RegimeAutoSizeDirective } from './directives';
@@ -94,6 +96,8 @@ import { RegimeAutoSizeDirective } from './directives';
     RegimeApprovalFormComponent,
     SicknessesComponent,
     RegimeApprovalEditorComponent,
+    LaborAttachmentComponent,
+    LaborGeneralFormComponent,
     RegimeAutoSizeDirective
   ],
   providers: [

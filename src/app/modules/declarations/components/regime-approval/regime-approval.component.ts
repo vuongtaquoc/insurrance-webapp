@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DeclarationService, AuthenticationService, DocumentListService } from '@app/core/services';
@@ -13,7 +13,7 @@ import { DocumentList } from '@app/core/models';
   templateUrl: './regime-approval.component.html',
   styleUrls: ['./regime-approval.component.less']
 })
-export class RegimeApprovalComponent implements OnInit {
+export class RegimeApprovalComponent implements OnInit, OnDestroy {
   @Input() declarationId: string;
   regimeApproval: any = {
     origin: {},
@@ -80,6 +80,10 @@ export class RegimeApprovalComponent implements OnInit {
       this.isValid[name] = isValid;
       this.isTableValid = Object.values(this.isValid).indexOf(false) === -1;
     });
+  }
+
+  ngOnDestroy() {
+    this.handler();
   }
 
   save(type) {

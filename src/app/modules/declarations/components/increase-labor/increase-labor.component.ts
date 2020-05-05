@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Subject, forkJoin } from 'rxjs';
 import { NzModalService } from 'ng-zorro-antd/modal';
@@ -6,8 +6,8 @@ import findLastIndex from 'lodash/findLastIndex';
 import findIndex from 'lodash/findIndex';
 import * as jexcel from 'jstable-editor/dist/jexcel.js';
 import * as moment from 'moment';
+
 import { Declaration, DocumentList } from '@app/core/models';
-import { DATE_FORMAT } from '@app/shared/constant';
 import {
   CityService,
   DistrictService,
@@ -21,6 +21,8 @@ import {
   DocumentListService,
   AuthenticationService
 } from '@app/core/services';
+import { DATE_FORMAT } from '@app/shared/constant';
+import { eventEmitter } from '@app/shared/utils/event-emitter';
 
 import { TABLE_NESTED_HEADERS, TABLE_HEADER_COLUMNS } from '@app/modules/declarations/data/increase-labor';
 
@@ -29,7 +31,7 @@ import { TABLE_NESTED_HEADERS, TABLE_HEADER_COLUMNS } from '@app/modules/declara
   templateUrl: './increase-labor.component.html',
   styleUrls: [ './increase-labor.component.less' ]
 })
-export class IncreaseLaborComponent implements OnInit {
+export class IncreaseLaborComponent implements OnInit, OnDestroy {
   @Input() declarationId: string;
   @Output() onSubmit: EventEmitter<any> = new EventEmitter();
 
@@ -46,6 +48,12 @@ export class IncreaseLaborComponent implements OnInit {
   isHiddenSidebar = false;
   declarationCode: string = '600';
   employeeSubject: Subject<any> = new Subject<any>();
+  handler: any;
+  isTableValid = false;
+  panel: any = {
+    general: { active: true },
+    attachment: { active: true }
+  };
 
   constructor(
     private formBuilder: FormBuilder,
@@ -122,6 +130,16 @@ export class IncreaseLaborComponent implements OnInit {
         });
       }
     });
+
+    this.handler = eventEmitter.on('labor-table-editor:validate', ({ name, isValid }) => {
+      if (name === 'increaseLabor') {
+        this.isTableValid = isValid;
+      }
+    });
+  }
+
+  ngOnDestroy() {
+    this.handler();
   }
 
   handleAddEmployee(type) {
@@ -172,6 +190,7 @@ export class IncreaseLaborComponent implements OnInit {
       type: 'clean'
     });
     this.employeeSelected.length = 0;
+    this.eventsSubject.next('validate');
   }
 
   handleSelectEmployees(employees) {
@@ -220,6 +239,7 @@ export class IncreaseLaborComponent implements OnInit {
         declaration.data[index] = record[index];
       });
     });
+    this.eventsSubject.next('validate');
   }
 
   handleDeleteData({ rowNumber, numOfRows }) {
@@ -230,6 +250,15 @@ export class IncreaseLaborComponent implements OnInit {
     this.updateOrders(declarations);
 
     this.declarations = this.declarationService.updateFormula(declarations, this.tableHeaderColumns);
+    this.eventsSubject.next('validate');
+  }
+
+  collapseChange(isActive, type) {
+    this.panel[type].active = isActive;
+  }
+
+  handleFormValuesChanged(data) {
+    console.log(data)
   }
 
   private updateOrders(declarations) {

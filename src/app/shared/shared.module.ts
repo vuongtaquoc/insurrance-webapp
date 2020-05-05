@@ -30,7 +30,8 @@ import {
   HospitalService,
   NationalityService,
   PeopleService,
-  WardsService
+  WardsService,
+  FileUploadEmitter
 } from '@app/core/services';
 
 import {
@@ -52,7 +53,8 @@ import {
 
 import {
   CardFullHeightDirective,
-  EditorAutoSizeDirective
+  EditorAutoSizeDirective,
+  PluploadDirective
 } from './directives';
 
 @NgModule({
@@ -92,7 +94,8 @@ import {
     PaginationComponent,
     ButtonDeleteComponent,
     CardFullHeightDirective,
-    EditorAutoSizeDirective
+    EditorAutoSizeDirective,
+    PluploadDirective
   ],
   exports: [
     FormsModule,
@@ -105,7 +108,8 @@ import {
     PaginationComponent,
     ButtonDeleteComponent,
     CardFullHeightDirective,
-    EditorAutoSizeDirective
+    EditorAutoSizeDirective,
+    PluploadDirective
   ],
   providers: [
     AuthenticationService,
@@ -116,7 +120,8 @@ import {
     HospitalService,
     NationalityService,
     PeopleService,
-    WardsService
+    WardsService,
+    FileUploadEmitter
   ],
   entryComponents: [
     EmployeeFormComponent,

@@ -70,7 +70,7 @@
     width: 100%;
     height: 100%;
     display: grid;
-    grid-template-rows: 42px 63px 1fr;
+    grid-template-rows: 42px 63px 1fr max-content;
     grid-gap: 10px;
   }
 
@@ -177,7 +177,7 @@
     background: #f1f1f1;
     padding: 2px 16px;
     padding-left: 40px;
-    margin: 0 3px 0 1px;
+    text-transform: uppercase;
   }
 
   .ant-collapse-content > .ant-collapse-content-box {
@@ -213,31 +213,36 @@
   }
 
   nz-collapse .ant-collapse > .ant-collapse-item {
-    height: 27px;
     border-bottom: 0;
   }
 
-  nz-collapse.collapse-active-all .ant-collapse > .ant-collapse-item {
-    height: 50%;
+  nz-collapse {
+    &.collapse-active-all {
+      height: calc(26px + 26px + 90px + 75px);
+    }
+
+    &.collapse-active-general {
+      height: calc(26px + 26px + 90px);
+    }
+
+    &.collapse-active-attachment {
+      height: calc(26px + 26px + 75px);
+    }
   }
 
-  nz-collapse.collapse-active-part1 {
-    .collapse-part1 {
-      height: calc(100% - 27px);
-    }
-
-    .collapse-part2 {
-      height: 27px;
-    }
+  nz-collapse .collapse-general .ant-collapse-content {
+    height: 90px;
   }
 
-  nz-collapse.collapse-active-part2 {
-    .collapse-part1 {
-      height: 27px;
+  nz-collapse .collapse-attachment {
+    .ant-collapse-content {
+      height: 75px;
     }
 
-    .collapse-part2 {
-      height: calc(100% - 27px);
+    .ant-collapse-header .collapse-attachment-note {
+      text-transform: lowercase;
+      color: #EF4D4D;
+      font-size: 13px;
     }
   }
 }

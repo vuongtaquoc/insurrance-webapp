@@ -22,7 +22,8 @@ import {
   VillageService,
   DocumentListService,
   DeclarationFileService,
-  SicknessesService
+  SicknessesService,
+  FileUploadEmitter
 } from './services';
 
 @NgModule({
@@ -50,7 +51,8 @@ import {
     VillageService,
     DocumentListService,
     DeclarationFileService,
-    SicknessesService
+    SicknessesService,
+    FileUploadEmitter
   ],
   declarations: []
 })
