@@ -1,13 +1,13 @@
 <div class="document-form">
   <div class="document-form__content">
-  <h2><span>Hồ sơ</span> : 600a | Báo giảm lao động | 16/04/2020 08:52:15</h2>
+  <h2><span>Hồ sơ</span> : {{declarationFiles.categoryCode}} | {{declarationFiles.categoryName}} | {{declarationFiles.createdDate}}</h2>
   <h1>DANH SÁCH TỜ KHAI</h1>
   <nz-table
       nzBordered
       #ajaxTable
       nzShowSizeChanger
       [nzFrontPagination]="false"
-      [nzData]="declarationFiles"
+      [nzData]="declarationFiles.fileDetail"
       [nzLoading]="loading"
       [nzTotal]="total"
       [(nzPageIndex)]="pageIndex"

@@ -21,6 +21,9 @@ import { DATE_FORMAT, MIME_TYPE } from '@app/shared/constant';
 export class DocumentFormComponent implements OnInit {
   @Input() declarationInfo: any;
   declarationFiles: any[] = [];
+  categoryCode?: string;
+  categoryName?: string;
+  createdDate?: string;
   documentForm: FormGroup;
 
   constructor(
@@ -50,10 +53,30 @@ export class DocumentFormComponent implements OnInit {
     declarationFileInfo.isDownloading = true;
 
     this.declarationFileService.downloadDeclarationFile(declarationFileInfo.id).then(response => {
-      // Thay filename -> tên file
-      download('filename', response, MIME_TYPE.XLSX);
+      const fileName = this.getItemInArray(declarationFileInfo.fullPathFile.split("."), 0);
+      const subfixFile = this.getItemInArray(declarationFileInfo.fullPathFile.split("."), 1);
+      const mimeType = this.getMimeType(subfixFile);
+      download(fileName, response, mimeType);
 
       declarationFileInfo.isDownloading = false;
     });
   }
+
+  getItemInArray(stringArray: any, index: number) {
+    const numberItem = stringArray.length;
+    if(numberItem > index) {
+      return stringArray[index];
+    }
+    return "";
+  }
+
+  getMimeType(subfixFile: string) {
+    const mimeType = _.find(MIME_TYPE, {
+        key: subfixFile,
+    });
+    if (mimeType) {
+      return mimeType.value;
+    }
+    return MIME_TYPE[0].value
+}
 }
