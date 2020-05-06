@@ -18,9 +18,10 @@ export class LaborGeneralFormComponent implements OnInit, OnChanges {
   ) {}
 
   ngOnInit() {
+    console.log(this.data,'XXX');
     this.form = this.formBuilder.group({
-      insuranceBookNumber: [''],
-      insuranceCardNumber: ['']
+      totalNumberInsurance: [''],
+      totalCardInsurance: ['']
     });
 
     this.formChanges();
@@ -29,8 +30,8 @@ export class LaborGeneralFormComponent implements OnInit, OnChanges {
   ngOnChanges(changes) {
     if (changes.data && !isEmpty(changes.data.currentValue) && this.form) {
       this.form.patchValue({
-        insuranceBookNumber: changes.data.currentValue.insuranceBookNumber,
-        insuranceCardNumber: changes.data.currentValue.insuranceCardNumber,
+        totalNumberInsurance: changes.data.currentValue.totalNumberInsurance,
+        totalCardInsurance: changes.data.currentValue.totalCardInsurance,
       });
     }
   }

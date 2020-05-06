@@ -11,7 +11,7 @@ export class EmployeeService {
   }
 
   public getEmployeeTrees() {
-    return this.http.get('/employees/declarations').pipe(
+    return this.http.get('/employees/group').pipe(
       map(employees => {
         return employees.map((employee, index) => {
           const parentKey = uuid.v4();

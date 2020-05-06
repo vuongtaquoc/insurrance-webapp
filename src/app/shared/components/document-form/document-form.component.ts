@@ -78,5 +78,5 @@ export class DocumentFormComponent implements OnInit {
       return mimeType.value;
     }
     return MIME_TYPE[0].value
-}
+  }
 }

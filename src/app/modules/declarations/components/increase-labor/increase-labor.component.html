@@ -125,7 +125,9 @@
                 'collapse-active-attachment': !panel.general.active && panel.attachment.active
               }">
                 <nz-collapse-panel class="collapse-general" nzHeader="Phần tổng hợp" [nzActive]="panel.general.active" (nzActiveChange)="collapseChange($event, 'general')">
-                  <app-labor-general-form (onFormValuesChanged)="handleFormValuesChanged($event)"></app-labor-general-form>
+                  <app-labor-general-form 
+                  [data]="declarationGeneral"
+                  (onFormValuesChanged)="handleFormValuesChanged($event)"></app-labor-general-form>
                 </nz-collapse-panel>
                 <nz-collapse-panel class="collapse-attachment" [nzHeader]="attachmentHeader" [nzActive]="panel.attachment.active" (nzActiveChange)="collapseChange($event, 'attachment')">
                   <app-labor-attachment></app-labor-attachment>

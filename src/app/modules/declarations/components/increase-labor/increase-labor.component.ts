@@ -6,6 +6,7 @@ import findLastIndex from 'lodash/findLastIndex';
 import findIndex from 'lodash/findIndex';
 import * as jexcel from 'jstable-editor/dist/jexcel.js';
 import * as moment from 'moment';
+import * as _ from 'lodash';
 
 import { Declaration, DocumentList } from '@app/core/models';
 import {
@@ -21,7 +22,7 @@ import {
   DocumentListService,
   AuthenticationService
 } from '@app/core/services';
-import { DATE_FORMAT } from '@app/shared/constant';
+import { DATE_FORMAT, DECLARATIONS } from '@app/shared/constant';
 import { eventEmitter } from '@app/shared/utils/event-emitter';
 
 import { TABLE_NESTED_HEADERS, TABLE_HEADER_COLUMNS } from '@app/modules/declarations/data/increase-labor';
@@ -45,6 +46,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
   documentList: DocumentList[] = [];
   informationList: any[] = [];
   declaration: any;
+  declarationGeneral: any;
   isHiddenSidebar = false;
   declarationCode: string = '600';
   employeeSubject: Subject<any> = new Subject<any>();
@@ -54,6 +56,8 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     general: { active: false },
     attachment: { active: false }
   };
+  totalNumberInsurance: any;
+  totalCardInsurance: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -123,11 +127,22 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
           this.updateOrders(declarations.documentDetail);
           this.declarations = declarations.documentDetail;
           this.informationList = declarations.informations;
+          
+          this.declarationGeneral = {
+            totalNumberInsurance: declarations.totalNumberInsurance,
+            totalCardInsurance: declarations.totalCardInsurance
+          };
+
         });
       } else {
         this.declarationService.getDeclarationInitials('600', this.tableHeaderColumns).subscribe(declarations => {
           this.declarations = declarations;
         });
+
+        this.declarationGeneral = {
+          totalNumberInsurance: '',
+          totalCardInsurance: ''
+        };
       }
     });
 
@@ -206,11 +221,13 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
 
     this.onSubmit.emit({
       type: event.type,
-      documentType: this.declarationCode,
+      declarationCode: this.declarationCode,
+      declarationName: this.getDeclaration(this.declarationCode).value,
       documentNo: number,
-      documentName: 'Báo tăng lao động',
       createDate: `01/0${ month }/${ year }`,
       documentStatus: 0,
+      totalNumberInsurance: this.totalNumberInsurance,
+      totalCardInsurance: this.totalNumberInsurance,
       documentDetail: event.data,
       informations: this.reformatInformationList(),
     });
@@ -258,7 +275,8 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
   }
 
   handleFormValuesChanged(data) {
-    console.log(data)
+    this.totalNumberInsurance = data.totalNumberInsurance;
+    this.totalCardInsurance = data.totalNumberInsurance;
   }
 
   private updateOrders(declarations) {
@@ -427,4 +445,12 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
   handleToggleSidebar() {
     this.isHiddenSidebar = !this.isHiddenSidebar;
   }
+
+  getDeclaration(declarationCode: string) {
+    const declarations = _.find(DECLARATIONS, {
+        key: declarationCode,
+    });
+
+    return declarations;
+}
 }

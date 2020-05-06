@@ -25,3 +25,23 @@ export const MIME_TYPE =
     value:'application/xml'
   }
 ];
+
+export const DECLARATIONS = 
+[
+  {
+  key: '600',
+  value:'Báo tăng lao động'
+  },
+  {
+    key: '630',
+    value:'Xét duyệt chế độ ốm đau, thai sản, phụ hồi sức khỏe'
+  },
+  {
+    key: '630a',
+    value:'Xét duyệt chế độ ốm đau'
+  },
+  {
+    key: '630b',
+    value:'Xét duyệt chế độ ốm đau'
+  }
+];
