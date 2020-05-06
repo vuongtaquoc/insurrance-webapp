@@ -96,6 +96,7 @@
               [data]="declarations.part1.table"
               [nestedHeaders]="headers.part1.nested"
               [columns]="headers.part1.columns"
+              [validationRules]="validationRules"
               [events]="tableSubject.asObservable()"
               (onChange)="handleChangeTable($event, 'part1')"
               (onDelete)="handleDeleteTableData($event, 'part1')"

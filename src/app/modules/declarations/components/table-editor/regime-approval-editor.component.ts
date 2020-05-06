@@ -17,6 +17,7 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
   @Input() data: any[] = [];
   @Input() columns: any[] = [];
   @Input() nestedHeaders: any[] = [];
+  @Input() validationRules: any = {};
   @Input() tableName: string;
   @Input() events: Observable<any>;
   @Output() onChange: EventEmitter<any> = new EventEmitter();
@@ -91,6 +92,8 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
 
           instance.jexcel.setValue(nextColumn, '');
         }
+
+        this.validationCellByOtherCell(value, column, r, instance);
       },
       ondeleterow: (el, rowNumber, numOfRows) => {
         this.onDelete.emit({
@@ -216,6 +219,32 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
           initialize
         });
       }, 10);
+    }
+  }
+
+  private validationCellByOtherCell(cellValue, column, y, instance) {
+    if (column.key === 'planCode') {
+      const rules = this.validationRules[cellValue];
+      const x = this.columns.findIndex(c => c.key === 'childrenNumber');
+      const cellSelected = column.source.find(s => s.id === cellValue);
+      const validationColumn = this.columns[x];
+
+      if (!rules) {
+        validationColumn.validations = undefined;
+        validationColumn.fieldName = undefined;
+        instance.jexcel.clearValidation(y, x);
+        return;
+      }
+
+      const fieldName = {
+        name: 'Số con',
+        otherField: `phương án ${ cellSelected.name }`
+      };
+
+      validationColumn.validations = rules;
+      validationColumn.fieldName = fieldName;
+
+      instance.jexcel.validationCell(y, x, fieldName, rules);
     }
   }
 }

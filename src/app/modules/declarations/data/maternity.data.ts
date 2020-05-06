@@ -298,14 +298,17 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   title: '(C.4)',
   key: 'bankId',
   source: [ ],
-},
-{
+}, {
   type: 'dropdown',
   autocomplete: true,
   source: [ ],
   width: 180,
   title: '(D)',
-  key: 'planCode'
+  key: 'planCode',
+  fieldName: 'Phương án',
+  validations: {
+    required: true
+  }
 }, {
   type: 'text',
   width: 180,
@@ -458,3 +461,15 @@ export const TABLE_HEADER_COLUMNS_PART_2 = [{
   key: 'note',
   wordWrap: true
 }];
+
+export const VALIDATION_RULES = {
+  SC1: {
+    numberLengthByOtherField: 1
+  },
+  SC2: {
+    numberLengthByOtherField: 2
+  },
+  SC3: {
+    minNumberLengthByOtherField: 3
+  }
+};

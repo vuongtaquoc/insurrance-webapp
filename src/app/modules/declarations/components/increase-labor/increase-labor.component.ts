@@ -127,7 +127,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
           this.updateOrders(declarations.documentDetail);
           this.declarations = declarations.documentDetail;
           this.informationList = declarations.informations;
-          
+
           this.declarationGeneral = {
             totalNumberInsurance: declarations.totalNumberInsurance,
             totalCardInsurance: declarations.totalCardInsurance

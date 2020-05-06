@@ -5,7 +5,7 @@ import { DeclarationService, CategoryService, BankService, PlanService } from '@
 
 import { RegimeApprovalBaseComponent } from '@app/modules/declarations/components/regime-approval/base.component';
 
-import { TABLE_NESTED_HEADERS_PART_1, TABLE_HEADER_COLUMNS_PART_1, TABLE_HEADER_COLUMNS_PART_2, TABLE_NESTED_HEADERS_PART_2 } from '@app/modules/declarations/data/maternity.data';
+import { TABLE_NESTED_HEADERS_PART_1, TABLE_HEADER_COLUMNS_PART_1, TABLE_HEADER_COLUMNS_PART_2, TABLE_NESTED_HEADERS_PART_2, VALIDATION_RULES } from '@app/modules/declarations/data/maternity.data';
 import { Subject, forkJoin } from 'rxjs';
 
 @Component({
@@ -15,6 +15,8 @@ import { Subject, forkJoin } from 'rxjs';
 })
 export class MaternityComponent extends RegimeApprovalBaseComponent implements OnInit, OnChanges {
   declarationCode: string = '630b';
+  validationRules: any = VALIDATION_RULES;
+
   constructor(
     protected declarationService: DeclarationService,
     private categoryService: CategoryService,
@@ -78,7 +80,8 @@ export class MaternityComponent extends RegimeApprovalBaseComponent implements O
 
   private getPlanByParent(instance, cell, c, r, source) {
     const row = instance.jexcel.getRowFromCoords(r);
+    const planTypes = (row.options.planType || '').split(',');
 
-    return source.filter(s => s.type === row.options.planType);
+    return source.filter(s => planTypes.indexOf(s.id) > -1);
   }
 }
