@@ -20,13 +20,12 @@
             <div nz-col [nzSpan]="8">
               <nz-form-item>
                 <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Ngày sinh</nz-form-label>
-                <nz-form-control [nzSpan]="14">
+                <nz-form-control [nzSpan]="14" nzErrorTip="Ngày sinh không để trống">
                   <nz-month-picker
                     formControlName="birthday"
                     nzPlaceHolder="Ngày sinh"
                     *ngIf="birthdayType == '1'"
                   ></nz-month-picker>
-
                   <nz-year-picker formControlName="birthday" nzPlaceHolder="Ngày sinh" *ngIf="birthdayType == '2'"></nz-year-picker>
                 </nz-form-control>
               </nz-form-item>
@@ -44,7 +43,7 @@
             <div nz-col [nzSpan]="8">
               <nz-form-item>
                 <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Giới tính</nz-form-label>
-                <nz-form-control [nzSpan]="14">
+                <nz-form-control [nzSpan]="14" nzErrorTip="Giới tính không để trống">
                   <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="gender">
                     <nz-option nzLabel="Nam" nzValue="0"></nz-option>
                     <nz-option nzLabel="Nữ" nzValue="1"></nz-option>
@@ -55,7 +54,7 @@
             <div nz-col [nzSpan]="8">
               <nz-form-item>
                 <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Quốc tịch</nz-form-label>
-                <nz-form-control [nzSpan]="14">
+                <nz-form-control [nzSpan]="14" nzErrorTip="Quốc tịch không để trống">
                   <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="nationalityCode">
                     <nz-option *ngFor="let national of nationalities" [nzLabel]="national.name" [nzValue]="national.id"></nz-option>
                   </nz-select>
@@ -65,7 +64,7 @@
             <div nz-col [nzSpan]="8">
               <nz-form-item>
                 <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Dân tộc</nz-form-label>
-                <nz-form-control [nzSpan]="14">
+                <nz-form-control [nzSpan]="14" nzErrorTip="Dân tộc không để trống">
                   <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="peopleCode">
                     <nz-option *ngFor="let people of peoples" [nzLabel]="people.name" [nzValue]="people.id"></nz-option>
                   </nz-select>
@@ -79,7 +78,7 @@
             <div nz-col [nzSpan]="8">
               <nz-form-item>
                 <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Mã nhân viên</nz-form-label>
-                <nz-form-control [nzSpan]="14">
+                <nz-form-control [nzSpan]="14" nzErrorTip="Mã nhân viên không để trống">
                   <input nz-input
                     placeholder="Mã nhân viên"
                     formControlName="code"
@@ -105,7 +104,7 @@
             <div nz-col [nzSpan]="8">
               <nz-form-item>
                 <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Tỉnh/TP</nz-form-label>
-                <nz-form-control [nzSpan]="14">
+                <nz-form-control [nzSpan]="14" nzErrorTip="Tỉnh/TP không để trống">
                   <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="registerCityCode" (ngModelChange)="changeRegisterCity($event)">
                     <nz-option *ngFor="let city of cities" [nzLabel]="city.name" [nzValue]="city.id"></nz-option>
                   </nz-select>
@@ -115,7 +114,7 @@
             <div nz-col [nzSpan]="8">
               <nz-form-item>
                 <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Quận/huyện</nz-form-label>
-                <nz-form-control [nzSpan]="14">
+                <nz-form-control [nzSpan]="14" nzErrorTip="Quận/huyện không để trống">
                   <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="registerDistrictCode" (ngModelChange)="changeRegisterDistrict($event)">
                     <nz-option *ngFor="let district of registerDistricts" [nzLabel]="district.name" [nzValue]="district.id"></nz-option>
                   </nz-select>
@@ -125,7 +124,7 @@
             <div nz-col [nzSpan]="8">
               <nz-form-item>
                 <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Phường/xã</nz-form-label>
-                <nz-form-control [nzSpan]="14">
+                <nz-form-control [nzSpan]="14" nzErrorTip="Phường/xã không để trống">
                   <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="registerWardsCode">
                     <nz-option *ngFor="let ward of registerWards" [nzLabel]="ward.name" [nzValue]="ward.id"></nz-option>
                   </nz-select>
@@ -140,7 +139,7 @@
             <div nz-col [nzSpan]="8">
               <nz-form-item>
                 <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Tỉnh/TP</nz-form-label>
-                <nz-form-control [nzSpan]="14">
+                <nz-form-control [nzSpan]="14" nzErrorTip="Tỉnh/TP không để trống">
                   <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="recipientsCityCode" (ngModelChange)="changeRecipientsCity($event)">
                     <nz-option *ngFor="let city of cities" [nzLabel]="city.name" [nzValue]="city.id"></nz-option>
                   </nz-select>
@@ -150,7 +149,7 @@
             <div nz-col [nzSpan]="8">
               <nz-form-item>
                 <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Quận/huyện</nz-form-label>
-                <nz-form-control [nzSpan]="14">
+                <nz-form-control [nzSpan]="14" nzErrorTip="Quận/huyện không để trống">
                   <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn"
                     formControlName="recipientsDistrictCode"
                     (ngModelChange)="changeRecipientsDistrict($event)"
@@ -163,7 +162,7 @@
             <div nz-col [nzSpan]="8">
               <nz-form-item>
                 <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Phường/xã</nz-form-label>
-                <nz-form-control [nzSpan]="14">
+                <nz-form-control [nzSpan]="14" nzErrorTip="Phường/xã không để trống">
                   <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn"
                     formControlName="recipientsWardsCode"
                   >
@@ -178,7 +177,7 @@
             <div nz-col [nzSpan]="24">
               <nz-form-item>
                 <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="5">Số nhà, đường phố, thôn xóm</nz-form-label>
-                <nz-form-control [nzSpan]="19">
+                <nz-form-control [nzSpan]="19" nzErrorTip="Số nhà, đường phố, thôn xóm không để trống">
                   <input nz-input
                     placeholder="Số nhà, đường phố, thôn xóm"
                     formControlName="recipientsAddress"
@@ -216,7 +215,7 @@
             <div nz-col [nzSpan]="8">
               <nz-form-item>
                 <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="15">Số CMT/HC/Thẻ căn cước</nz-form-label>
-                <nz-form-control [nzSpan]="9">
+                <nz-form-control [nzSpan]="9" nzErrorTip="Số CMT/HC/Thẻ căn cước không để trống">
                   <input nz-input
                     placeholder="Số CMT/HC/Thẻ căn cước"
                     formControlName="identityCar"
@@ -268,7 +267,7 @@
             <div nz-col [nzSpan]="8">
               <nz-form-item>
                 <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Số HĐLĐ/QĐ</nz-form-label>
-                <nz-form-control [nzSpan]="14">
+                <nz-form-control [nzSpan]="14" nzErrorTip="Số HĐLĐ/QĐ không để trống">
                   <input nz-input
                     placeholder="Số HĐLĐ/QĐ"
                     formControlName="contractNo"
@@ -279,7 +278,7 @@
             <div nz-col [nzSpan]="8">
               <nz-form-item>
                 <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Ngày ký</nz-form-label>
-                <nz-form-control [nzSpan]="14">
+                <nz-form-control [nzSpan]="14" nzErrorTip="Ngày ký không để trống">
                   <nz-date-picker placeholder="Ngày ký" formControlName="dateSign"></nz-date-picker>
                 </nz-form-control>
               </nz-form-item>
@@ -287,7 +286,7 @@
             <div nz-col [nzSpan]="8">
               <nz-form-item>
                 <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Cấp bậc, chức vụ</nz-form-label>
-                <nz-form-control [nzSpan]="14">
+                <nz-form-control [nzSpan]="14" nzErrorTip="Cấp bậc, chức vụ không để trống">
                   <input nz-input
                     placeholder="Cấp bậc, chức vụ"
                     formControlName="levelWork"
@@ -302,7 +301,7 @@
             <div nz-col [nzSpan]="8">
               <nz-form-item>
                 <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Tiền lương</nz-form-label>
-                <nz-form-control [nzSpan]="14">
+                <nz-form-control [nzSpan]="14" nzErrorTip="Tiền lương không để trống">
                   <input nz-input
                     placeholder="Tiền lương"
                     formControlName="salary"
@@ -313,7 +312,7 @@
             <div nz-col [nzSpan]="8">
               <nz-form-item>
                 <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Hệ số</nz-form-label>
-                <nz-form-control [nzSpan]="5">
+                <nz-form-control [nzSpan]="5" nzErrorTip="Hệ số không để trống">
                   <input nz-input
                     placeholder="Hệ số"
                     formControlName="ratio"
@@ -328,7 +327,7 @@
             <div nz-col [nzSpan]="8">
               <nz-form-item>
                 <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Vùng lương</nz-form-label>
-                <nz-form-control [nzSpan]="14">
+                <nz-form-control [nzSpan]="14" nzErrorTip="Vùng lương không để trống">
                   <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="salaryAreaCode">
                     <nz-option *ngFor="let salaryArea of salaryAreas" [nzLabel]="salaryArea.name" [nzValue]="salaryArea.id"></nz-option>
                   </nz-select>
@@ -338,7 +337,7 @@
             <div nz-col [nzSpan]="8">
               <nz-form-item>
                 <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Tỷ lệ đóng (%)</nz-form-label>
-                <nz-form-control [nzSpan]="14">
+                <nz-form-control [nzSpan]="14" nzErrorTip="Tỷ lệ đóng (%) không để trống">
                   <input nz-input
                     placeholder="Tỷ lệ"
                     formControlName="rate"
@@ -364,7 +363,7 @@
             <div nz-col [nzSpan]="8">
               <nz-form-item>
                 <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="12">Tỉnh/TP nơi KCBBĐ</nz-form-label>
-                <nz-form-control [nzSpan]="12">
+                <nz-form-control [nzSpan]="12" nzErrorTip="Tỉnh/TP nơi KCBBĐ không để trống">
                   <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="cityFirstRegistCode" (ngModelChange)="changeFirstRegisterCity($event)">
                     <nz-option *ngFor="let city of cities" [nzLabel]="city.name" [nzValue]="city.id"></nz-option>
                   </nz-select>
@@ -374,7 +373,7 @@
             <div nz-col [nzSpan]="8">
               <nz-form-item>
                 <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Nơi KCBBĐ</nz-form-label>
-                <nz-form-control [nzSpan]="14">
+                <nz-form-control [nzSpan]="14" nzErrorTip="Nơi KCBBĐ không để trống">
                   <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="hospitalFirstRegistCode">
                     <nz-option *ngFor="let hospital of hospitals" [nzLabel]="hospital.name" [nzValue]="hospital.id"></nz-option>
                   </nz-select>
@@ -565,7 +564,7 @@
             <div nz-col [nzSpan]="8">
               <nz-form-item>
                 <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Họ và tên chủ hộ</nz-form-label>
-                <nz-form-control [nzSpan]="14">
+                <nz-form-control [nzSpan]="14" nzErrorTip="Họ và tên chủ hộ không để trống">
                   <input nz-input
                     placeholder="Họ và tên chủ hộ"
                     formControlName="relationshipFullName"
@@ -603,7 +602,7 @@
             <div nz-col [nzSpan]="8">
               <nz-form-item>
                 <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Tỉnh/TP</nz-form-label>
-                <nz-form-control [nzSpan]="14">
+                <nz-form-control [nzSpan]="14" nzErrorTip="Tỉnh/TP không để trống">
                   <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="relationshipCityCode"
                   (ngModelChange)="changeRelationshipCities($event)">
                     <nz-option *ngFor="let city of cities" [nzLabel]="city.name" [nzValue]="city.id"></nz-option>
@@ -614,7 +613,7 @@
             <div nz-col [nzSpan]="8">
               <nz-form-item>
                 <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Quận/huyện</nz-form-label>
-                <nz-form-control [nzSpan]="14">
+                <nz-form-control [nzSpan]="14" nzErrorTip="Quận/huyện không để trống">
                   <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn"
                    formControlName="relationshipDistrictCode"
                    (ngModelChange)="changeRelationshipDistrict($event)"
@@ -627,7 +626,7 @@
             <div nz-col [nzSpan]="8">
               <nz-form-item>
                 <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Phường/xã</nz-form-label>
-                <nz-form-control [nzSpan]="14">
+                <nz-form-control [nzSpan]="14" nzErrorTip="Phường/xã không để trống">
                   <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn"
                   formControlName="relationshipWardsCode"
                   (ngModelChange)="changeRelationshipWards($event)"
