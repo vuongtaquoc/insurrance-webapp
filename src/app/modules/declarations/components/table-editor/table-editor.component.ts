@@ -50,7 +50,7 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
       nestedHeaders: this.nestedHeaders,
       columns: this.columns,
       allowInsertColumn: false,
-      allowInsertRow: false,
+      allowInsertRow: true,
       tableOverflow: true,
       tableWidth: '100%',
       tableHeight: '100%',

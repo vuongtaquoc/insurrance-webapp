@@ -71,7 +71,7 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
       nestedHeaders: this.nestedHeaders,
       columns: this.columns,
       allowInsertColumn: false,
-      allowInsertRow: false,
+      allowInsertRow: true,
       tableOverflow: true,
       tableWidth: '100%',
       tableHeight: '100%',

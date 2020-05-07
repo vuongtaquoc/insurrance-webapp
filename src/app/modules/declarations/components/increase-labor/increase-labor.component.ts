@@ -134,6 +134,8 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
           };
 
         });
+
+        this.isTableValid = true;
       } else {
         this.declarationService.getDeclarationInitials('600', this.tableHeaderColumns).subscribe(declarations => {
           this.declarations = declarations;
