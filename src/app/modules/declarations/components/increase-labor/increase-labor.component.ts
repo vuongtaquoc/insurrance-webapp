@@ -229,7 +229,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
       createDate: `01/0${ month }/${ year }`,
       documentStatus: 0,
       totalNumberInsurance: this.totalNumberInsurance,
-      totalCardInsurance: this.totalNumberInsurance,
+      totalCardInsurance: this.totalCardInsurance,
       documentDetail: event.data,
       informations: this.reformatInformationList(),
     });
@@ -454,5 +454,5 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     });
 
     return declarations;
-}
+  }
 }

@@ -7,6 +7,8 @@ import { NzModalService } from 'ng-zorro-antd/modal';
 import { DocumentFormComponent } from '@app/shared/components';
 import { eventEmitter } from '@app/shared/utils/event-emitter';
 import { DocumentList } from '@app/core/models';
+import { DATE_FORMAT, DECLARATIONS } from '@app/shared/constant';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-regime-approval',
@@ -103,7 +105,8 @@ export class RegimeApprovalComponent implements OnInit, OnDestroy {
   private update(type: any) {
     this.declarationService.update(this.declarationId, {
       type: type,
-      documentType: this.declarationCode,
+      declarationCode: this.declarationCode,
+      declarationName: this.getDeclaration(this.declarationCode).value,
       documentStatus: 0,
       submitter: this.submitter,
       mobile: this.mobile,
@@ -122,7 +125,8 @@ export class RegimeApprovalComponent implements OnInit, OnDestroy {
   private create(type: any) {
     this.declarationService.create({
       type: type,
-      documentType: this.declarationCode,
+      declarationCode: this.declarationCode,
+      declarationName: this.getDeclaration(this.declarationCode).value,
       documentStatus: 0,
       submitter: this.submitter,
       mobile: this.mobile,
@@ -141,6 +145,14 @@ export class RegimeApprovalComponent implements OnInit, OnDestroy {
   handleSelectTab({ index }) {
     this.selectedTabIndex = index;
     eventEmitter.emit('regime-approval:tab:change', index);
+  }
+
+  getDeclaration(declarationCode: string) {
+    const declarations = _.find(DECLARATIONS, {
+        key: declarationCode,
+    });
+
+    return declarations;
   }
 
   handleTableChange(data, type) {

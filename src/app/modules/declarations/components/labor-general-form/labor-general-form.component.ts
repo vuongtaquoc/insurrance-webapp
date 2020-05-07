@@ -18,7 +18,6 @@ export class LaborGeneralFormComponent implements OnInit, OnChanges {
   ) {}
 
   ngOnInit() {
-    console.log(this.data,'XXX');
     this.form = this.formBuilder.group({
       totalNumberInsurance: [''],
       totalCardInsurance: ['']

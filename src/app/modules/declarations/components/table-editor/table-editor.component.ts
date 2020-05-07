@@ -81,6 +81,8 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
 
     this.updateEditorToColumn('dateSign', 'date');
     this.updateEditorToColumn('birthday', 'month', true);
+    this.updateEditorToColumn('fromDate', 'month');
+    this.updateEditorToColumn('toDate', 'month');
 
     this.spreadsheet.hideIndex();
 
@@ -183,7 +185,7 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
           return { ...combine };
         }
 
-        if (column.type === 'calendar') {
+        if (column.type === 'numberic') {
           return { ...combine, [ column.key ]: array[current].toString().split(' ').join('') };
         }
 

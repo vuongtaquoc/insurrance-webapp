@@ -311,21 +311,21 @@ export const TABLE_HEADER_COLUMNS = [{
   sum: true,
   key: 'allowanceOther'
 }, {
-  type: 'calendar',
-  options: { format:'MM/YYYY' },
+  type: 'text',
   width: 60,
   title: '(23)',
   key: 'fromDate',
   fieldName: 'Từ tháng, năm',
   validations: {
     required: true
-  }
+  },
+  isCalendar: true
 }, {
-  type: 'calendar',
-  options: { format:'MM/YYYY' },
+  type: 'text',
   width: 60,
   title: '(24)',
-  key: 'toDate'
+  key: 'toDate',
+  isCalendar: true
 }, {
   type: 'dropdown',
   autocomplete: true,
