@@ -26,7 +26,7 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
 
   spreadsheet: any;
   isInitialized = false;
-  isSpinning = false;
+  isSpinning = true;
   private eventsSubscription: Subscription;
   private handlers = [];
   private timer;
@@ -124,6 +124,8 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
     this.spreadsheet.hideIndex();
 
     this.updateTable();
+
+    setTimeout(() => this.isSpinning = false, 200);
   }
 
   private updateTable() {
@@ -170,6 +172,7 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
     this.spreadsheet.setData(data);
     this.spreadsheet.setReadonlyRowsTitle(readonlyIndexes, [0, 1]);
     this.spreadsheet.setReadonlyRowsFormula(formulaIndexes, formulaIgnoreIndexes);
+    this.updateCellReadonly();
 
     // update dropdown data
     data.forEach((row, rowIndex) => {
@@ -178,6 +181,18 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
           this.spreadsheet.updateDropdownValue(colIndex, rowIndex);
         }
       });
+    });
+  }
+
+  private updateCellReadonly() {
+    const readonlyColumnIndex = this.columns.findIndex(c => !!c.checkReadonly);
+
+    this.data.forEach((d, rowIndex) => {
+      if (this.tableName === 'maternityPart1' && readonlyColumnIndex > -1) {
+        if (d.parentKey === 'III_1') {
+          this.spreadsheet.setReadonly(rowIndex, readonlyColumnIndex);
+        }
+      }
     });
   }
 

@@ -125,6 +125,11 @@ export class RegimeApprovalBaseComponent {
     this.tableSubject.next({
       type: 'validate'
     });
+    this.tableSubject.next({
+      type: 'readonly',
+      part,
+      data: this.declarations[part].table
+    });
   }
 
   handleSelectEmployees(employees) {

@@ -24,6 +24,7 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
   @Output() onDelete: EventEmitter<any> = new EventEmitter();
 
   spreadsheet: any;
+  isSpinning = true;
   private eventsSubscription: Subscription;
 
   constructor(private element: ElementRef) {
@@ -87,6 +88,8 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
     this.spreadsheet.hideIndex();
 
     this.updateTable();
+
+    setTimeout(() => this.isSpinning = false, 200);
   }
 
   private updateTable() {

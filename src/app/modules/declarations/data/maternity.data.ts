@@ -183,7 +183,8 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   width: 80,
   title: '(10.6)',
   key: 'childrenDayDead',
-  isCalendar: true
+  isCalendar: true,
+  checkReadonly: true
 }, {
   type: 'numberic',
   width: 65,
