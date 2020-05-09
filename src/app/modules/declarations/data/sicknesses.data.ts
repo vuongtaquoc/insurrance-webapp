@@ -262,7 +262,8 @@ export const TABLE_HEADER_COLUMNS_PART_2 = [{
   key: 'identityCar',
   fieldName: 'Số CMND/Hộ chiếu/Thẻ căn cước',
   validations: {
-    cardId: true
+    cardId: true,
+    duplicate: true
   }
 }, {
   type: 'text',
