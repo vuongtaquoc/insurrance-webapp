@@ -8,23 +8,34 @@
   &__group-title {
     font-weight: 700;
     margin-bottom: 5px;
-    font-size: 13px;
+    font-size: 12px;
+    color: #5084EF;
 
     &--disabled {
-      color: #999;
+      // color: #999;
+      color: #5084EF;
     }
   }
 
   &__info {
-    background-color: #f1f1f1;
+    // background-color: #f1f1f1;
     margin-bottom: 10px;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    grid-gap: 10px;
+    grid-gap: 25px;
   }
 
   &__info-col {
-    padding: 5px 10px;
+    padding: 5px 23px 5px 10px;
+    background-color: #E8EFFA;
+    position: relative;
+  }
+
+  &__info-col-icon {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
   }
 
   &__process-table {
@@ -33,6 +44,28 @@
 
   &__family-table {
     height: calc(100% - 192px);
+  }
+
+  &__button-export {
+    background-color: #E8EFFA;
+    // font-size: 12px;
+    font-weight: 700;
+    color: #4964EE;
+    border-color: transparent;
+  }
+
+  &__button-save {
+    background-color: #4964EE;
+    color: #fff;
+    font-weight: 700;
+    // font-size: 12px;
+  }
+
+  &__button-back {
+    border-color: #4C61EE;
+    color: #4C61EE;
+    font-weight: 700;
+    // font-size: 12px;
   }
 
   form, .ant-tabs {
@@ -74,6 +107,13 @@
     height: calc(100% - 40px);
     bottom: 20px;
     padding-bottom: 0;
+  }
+
+  .ant-modal-title {
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #4964EE;
   }
 
   .ant-modal-content {

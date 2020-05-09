@@ -8,9 +8,43 @@
     font-weight: 700;
     vertical-align: middle;
     text-align: center !important;
+    background-color: #ECF1F8;
+    color: #4B5A67;
+  }
+
+  .jexcel tbody tr:nth-of-type(even) {
+    background-color: #E9EFFA;
+  }
+
+  .jexcel > tbody > tr > td {
+    border-top-color: transparent;
+    border-bottom-color: transparent;
+  }
+
+  .jexcel > tbody > tr > td.highlight-top,
+  .jexcel > tbody > tr > td.highlight-bottom {
+    border-top-color: #000;
+    border-bottom-color: #000;
+  }
+
+  .jexcel > tbody > tr:first-child > td {
+    border-top-color: #ccc;
+  }
+
+  .jexcel > tbody > tr:first-child > td.highlight-top,
+  .jexcel > tbody > tr:first-child > td.highlight-bottom {
+    border-top-color: #000;
   }
 
   .jexcel > tbody > tr > td.readonly {
     color: #333;
+  }
+
+  .jexcel thead .jexcel_freezed {
+    background-color: #ECF1F8 !important;
+  }
+
+  .jexcel tbody tr:nth-of-type(even) .jexcel_freezed {
+    background-color: #E9EFFA;
   }
 }

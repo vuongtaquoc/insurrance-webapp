@@ -537,12 +537,21 @@
           <div class="employee-form__info">
             <div class="employee-form__info-col">
               Họ và tên: {{ fullName }}
+              <span class="employee-form__info-col-icon">
+                <i nz-icon nzType="user" nzTheme="outline"></i>
+              </span>
             </div>
             <div class="employee-form__info-col">
               Ngày sinh: {{ birthday }}
+              <span class="employee-form__info-col-icon">
+                <i nz-icon nzType="calendar" nzTheme="outline"></i>
+              </span>
             </div>
             <div class="employee-form__info-col">
               Mã số BHXH: {{ insurranceCode }}
+              <span class="employee-form__info-col-icon">
+                <i nz-icon nzType="file-text" nzTheme="outline"></i>
+              </span>
             </div>
           </div><!-- END ROW -->
 
@@ -678,10 +687,10 @@
   </div>
 
   <div class="employee-form__footer" *nzModalFooter>
-    <button nz-button nzType="primary" (click)="save()">
+    <button class="employee-form__button-export" nz-button nzType="primary" (click)="save()">
        Xuất KT1-TS
     </button>
-    <button nz-button nzType="primary" (click)="save()">Lưu</button>
-    <button nz-button nzType="default" (click)="dismiss()">Quay lại</button>
+    <button class="employee-form__button-save" nz-button nzType="primary" (click)="save()">Lưu</button>
+    <button class="employee-form__button-back" nz-button nzType="default" (click)="dismiss()">Quay lại</button>
   </div>
 </div>
