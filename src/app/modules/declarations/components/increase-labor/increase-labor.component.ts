@@ -178,12 +178,12 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
 
         // replace
         employee.gender = !employee.gender;
-
+        console.log(employee);
         if (accepted) {
           if (declarations[childLastIndex].isInitialize) {
             // remove initialize data
             declarations.splice(childLastIndex, 1);
-
+          
             declarations.splice(childLastIndex, 0, this.declarationService.getLeaf(declarations[parentIndex], employee, this.tableHeaderColumns));
           } else {
             declarations.splice(childLastIndex + 1, 0, this.declarationService.getLeaf(declarations[parentIndex], employee, this.tableHeaderColumns));

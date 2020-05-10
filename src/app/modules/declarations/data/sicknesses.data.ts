@@ -80,6 +80,7 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   width: 190,
   title: '(5)',
   key: 'holidayWeekly',
+  autocomplete: true,
   multiple:true,
   source: [ ],
 }, {
