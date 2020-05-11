@@ -52,7 +52,8 @@ import {
   SicknessesComponent,
   RegimeApprovalEditorComponent,
   LaborAttachmentComponent,
-  LaborGeneralFormComponent
+  LaborGeneralFormComponent,
+  FamiliesListTableComponent
 } from './components';
 
 import { RegimeAutoSizeDirective } from './directives';
@@ -98,7 +99,8 @@ import { RegimeAutoSizeDirective } from './directives';
     RegimeApprovalEditorComponent,
     LaborAttachmentComponent,
     LaborGeneralFormComponent,
-    RegimeAutoSizeDirective
+    RegimeAutoSizeDirective,
+    FamiliesListTableComponent
   ],
   providers: [
     AuthenticationService,

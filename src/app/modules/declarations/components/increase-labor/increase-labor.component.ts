@@ -20,7 +20,9 @@ import {
   SalaryAreaService,
   PlanService,
   DocumentListService,
-  AuthenticationService
+  AuthenticationService,
+  DepartmentService,
+  EmployeeService
 } from '@app/core/services';
 import { DATE_FORMAT, DECLARATIONS } from '@app/shared/constant';
 import { eventEmitter } from '@app/shared/utils/event-emitter';
@@ -37,6 +39,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
   @Output() onSubmit: EventEmitter<any> = new EventEmitter();
 
   form: FormGroup;
+  currentCredentials: any;
   documentForm: FormGroup;
   declarations: Declaration[] = [];
   tableNestedHeaders: any[] = TABLE_NESTED_HEADERS;
@@ -44,6 +47,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
   employeeSelected: any[] = [];
   eventsSubject: Subject<string> = new Subject<string>();
   documentList: DocumentList[] = [];
+  familiesList: any[] = [];
   informationList: any[] = [];
   declaration: any;
   declarationGeneral: any;
@@ -70,7 +74,9 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     private wardService: WardsService,
     private salaryAreaService: SalaryAreaService,
     private planService: PlanService,
+    private departmentService: DepartmentService,
     private documentListService: DocumentListService,
+    private employeeService: EmployeeService,
     private authenticationService: AuthenticationService,
     private modalService: NzModalService
   ) {
@@ -84,7 +90,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     const date = new Date();
-    const currentCredentials = this.authenticationService.currentCredentials;
+    this.currentCredentials = this.authenticationService.currentCredentials;
     this.form = this.formBuilder.group({
       number: [ '1' ],
       month: [ date.getMonth() + 1 ],
@@ -92,8 +98,8 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     });
 
     this.documentForm = this.formBuilder.group({
-      userAction: [currentCredentials.companyInfo.delegate],
-      mobile:[currentCredentials.companyInfo.mobile],
+      userAction: [this.currentCredentials.companyInfo.delegate],
+      mobile:[this.currentCredentials.companyInfo.mobile],
       usedocumentDT01:[true],
     });
 
@@ -106,14 +112,16 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
       this.nationalityService.getNationalities(),
       this.peopleService.getPeoples(),
       this.salaryAreaService.getSalaryAreas(),
-      this.planService.getPlans(this.declarationCode)
-    ]).subscribe(([ cities, nationalities, peoples, salaryAreas, plans ]) => {
+      this.planService.getPlans(this.declarationCode),
+      this.departmentService.getDepartments()
+    ]).subscribe(([ cities, nationalities, peoples, salaryAreas, plans, departments ]) => {
       this.updateSourceToColumn('peopleCode', peoples);
       this.updateSourceToColumn('nationalityCode', nationalities);
       this.updateSourceToColumn('registerCityCode', cities);
       this.updateSourceToColumn('recipientsCityCode', cities);
       this.updateSourceToColumn('salaryAreaCode', salaryAreas);
       this.updateSourceToColumn('planCode', plans);
+      this.updateSourceToColumn('departmentId', departments);
       // get filter columns
       this.updateFilterToColumn('registerDistrictCode', this.getRegisterDistrictsByCityCode);
       this.updateFilterToColumn('registerWardsCode', this.getRegisterWardsByDistrictCode);
@@ -178,7 +186,8 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
 
         // replace
         employee.gender = !employee.gender;
-        console.log(employee);
+        employee.workAddress = this.currentCredentials.companyInfo.address;
+        //
         if (accepted) {
           if (declarations[childLastIndex].isInitialize) {
             // remove initialize data
@@ -234,7 +243,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
       informations: this.reformatInformationList(),
     });
   }
-
+  
   handleChangeTable({ instance, cell, c, r, records }) {
     if (c !== null && c !== undefined) {
       c = Number(c);
@@ -249,8 +258,8 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
       } else if (column.key === 'recipientsCityCode') {
         this.updateNextColumns(instance, r, '', [ c + 1, c + 2, c + 5, c + 6 ]);
       }
+      
     }
-
     // update declarations
     this.declarations.forEach((declaration, index) => {
       const record = records[index];
@@ -258,6 +267,8 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
         declaration.data[index] = record[index];
       });
     });
+
+    this.setDataToFamilies(records);
     this.eventsSubject.next('validate');
   }
 
@@ -426,7 +437,33 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
       },
       {}
     );
+    return object;
+  }
 
+  private arrayEmployeeToProps(array, columns) {
+    if(!array.options.isLeaf) {
+      return null;
+    }
+    const object: any = Object.keys(array).reduce(
+      (combine, current) => {
+        const column = columns[current];
+
+        if (current === 'origin' || current === 'options' || !column.key) {
+          return { ...combine };
+        }
+
+        if (column.type === 'numberic') {
+          return { ...combine, [ column.key ]: array[current].toString().split(' ').join('') };
+        }
+
+        return { ...combine, [ column.key ]: column.key === 'gender' ? +array[current] : array[current] };
+      },
+      {}
+    );
+
+    if (array.origin.id) {
+      object.employeeId = array.origin.id;
+    }
     return object;
   }
 
@@ -444,6 +481,53 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     return informationList;
   }
 
+ 
+  private setDataToFamilies(records: any)
+  {
+    const familiesList = [];
+    const employeesInDeclaration = this.getEmployeeInDeclaration(records);
+    employeesInDeclaration.forEach(emp => {
+        //Tìm kiếm nhân viên trong bảng thông tin gia đình
+        const currentEmpl = this.familiesList.find(c => c.id === emp.employeeId);
+        //Nếu đã tồn tại nhân viên trong bảng gia đình thì bỏ qua
+        if (currentEmpl) { 
+          return;        
+        }
+        // Lấy thông tin danh sách nhân viên
+        this.employeeService.getEmployeeById(emp.employeeId).subscribe(employee => {
+          if(employee.isMaster) {
+            familiesList.push({
+              isMaster: employee.isMaster,
+              fullName: employee.fullName,
+              relationshipFullName: employee.relationshipFullName,
+              relationshipBookNo: employee.relationshipBookNo,
+              relationshipDocumentType: employee.relationshipDocumentType,
+              relationshipMobile: employee.relationshipMobile,
+            });         
+          }
+          employee.families.forEach(ep => {
+            ep.isMaster = false;
+            familiesList.push(ep);
+          });
+
+        });
+    });
+    this.familiesList = familiesList;
+    console.log(this.familiesList);
+  }
+
+  private getEmployeeInDeclaration(records: any) {
+    const employeesInDeclaration = [];
+    records.forEach(record => {
+      const employee = this.arrayEmployeeToProps(record, this.tableHeaderColumns);
+      if(employee && employee.employeeId) {
+        employeesInDeclaration.push(employee);
+      }
+    });
+    return employeesInDeclaration;
+  }
+
+ 
   handleToggleSidebar() {
     this.isHiddenSidebar = !this.isHiddenSidebar;
   }

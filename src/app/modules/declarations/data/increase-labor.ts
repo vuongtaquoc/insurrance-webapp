@@ -236,11 +236,16 @@ export const TABLE_HEADER_COLUMNS = [{
 }, {
   type: 'text',
   width: 135,
-  title: '(19)'
+  wordWrap: true,
+  title: '(19)',
+  key: 'workAddress'
 }, {
-  type: 'text',
+  type: 'dropdown',
+  autocomplete: true,
+  source: [ ],
   width: 135,
-  title: '(20)'
+  title: '(20)',
+  key: 'departmentId'
 }, {
   type: 'numberic',
   width: 100,
