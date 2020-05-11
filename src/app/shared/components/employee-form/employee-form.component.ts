@@ -22,7 +22,8 @@ import {
   BankService,
   EmployeeService,
   DepartmentService,
-  VillageService
+  VillageService,
+  CategoryService
 } from '@app/core/services';
 
 import { DATE_FORMAT } from '@app/shared/constant';
@@ -50,6 +51,7 @@ export class EmployeeFormComponent implements OnInit {
   relationships: DropdownItem[] = [];
   banks: DropdownItem[] = [];
   hospitals: DropdownItem[] = [];
+  relationshipDocumentTypies: DropdownItem[] = [];
   families: any[] = [];
   evolutionIsurrances: any[] = [];
   relationshipCities: District[] = [];
@@ -77,6 +79,7 @@ export class EmployeeFormComponent implements OnInit {
     private employeeService: EmployeeService,
     private departmentService: DepartmentService,
     private villageService: VillageService,
+    private categoryService: CategoryService
   ) {}
 
   ngOnInit() {
@@ -91,6 +94,7 @@ export class EmployeeFormComponent implements OnInit {
       this.relationshipService.getRelationships(),
       this.bankService.getBanks(),
       this.departmentService.getDepartments(),
+      this.categoryService.getCategories('relationshipDocumentType'),
     ];
 
     if (employee.registerCityCode) jobs.push(this.districtService.getDistrict(employee.registerCityCode));
@@ -104,7 +108,7 @@ export class EmployeeFormComponent implements OnInit {
 
     forkJoin(jobs).subscribe(([ cities, nationalities, peoples, salaryAreas, paymentStatus,
        paymentMethods, relationships, banks, departments,
-       registerDistricts, registerWards, recipientsDistricts, recipientsWards, hospitals, relationshipDistricts, relationshipWards, relationshipVillages ]) => {
+       registerDistricts, registerWards, recipientsDistricts, recipientsWards, hospitals, relationshipDistricts, relationshipWards, relationshipVillages,relationshipDocumentTypies ]) => {
       this.nationalities = nationalities;
       this.peoples = peoples;
       this.salaryAreas = salaryAreas;
@@ -114,6 +118,7 @@ export class EmployeeFormComponent implements OnInit {
       this.relationships = relationships;
       this.banks = banks;
       this.departments = departments;
+      this.relationshipDocumentTypies = relationshipDocumentTypies;
 
       if (registerDistricts) this.registerDistricts = registerDistricts;
       if (registerWards) this.registerWards = registerWards;
@@ -174,7 +179,7 @@ export class EmployeeFormComponent implements OnInit {
       paymentStatusCode: [employee.paymentStatusCode],
       orders: [employee.orders],
       relationshipFullName: [employee.relationshipFullName, Validators.required],
-      relationshipDocumentType:[employee.relationshipDocumentType ? Number(employee.relationshipDocumentType) : ''],
+      relationshipDocumentType:[employee.relationshipDocumentType],
       relationshipBookNo: [employee.relationshipBookNo],
       relationshipCityCode: [employee.relationshipCityCode, Validators.required],
       relationshipDistrictCode: [employee.relationshipDistrictCode, Validators.required],

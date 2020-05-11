@@ -22,12 +22,14 @@ import {
   DocumentListService,
   AuthenticationService,
   DepartmentService,
-  EmployeeService
+  EmployeeService,
+  CategoryService,
 } from '@app/core/services';
 import { DATE_FORMAT, DECLARATIONS } from '@app/shared/constant';
 import { eventEmitter } from '@app/shared/utils/event-emitter';
 
 import { TABLE_NESTED_HEADERS, TABLE_HEADER_COLUMNS } from '@app/modules/declarations/data/increase-labor';
+import { TABLE_FAMILIES_NESTED_HEADERS, TABLE_FAMILIES_HEADER_COLUMNS } from '@app/modules/declarations/data/families-editor.data';
 
 @Component({
   selector: 'app-declaration-increase-labor',
@@ -44,6 +46,8 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
   declarations: Declaration[] = [];
   tableNestedHeaders: any[] = TABLE_NESTED_HEADERS;
   tableHeaderColumns: any[] = TABLE_HEADER_COLUMNS;
+  tableNestedHeadersFamilies: any[] = TABLE_FAMILIES_NESTED_HEADERS;
+  tableHeaderColumnsFamilies: any[] = TABLE_FAMILIES_HEADER_COLUMNS;  
   employeeSelected: any[] = [];
   eventsSubject: Subject<string> = new Subject<string>();
   documentList: DocumentList[] = [];
@@ -78,6 +82,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     private documentListService: DocumentListService,
     private employeeService: EmployeeService,
     private authenticationService: AuthenticationService,
+    private categoryService: CategoryService,
     private modalService: NzModalService
   ) {
     this.getRecipientsDistrictsByCityCode = this.getRecipientsDistrictsByCityCode.bind(this);
@@ -113,22 +118,29 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
       this.peopleService.getPeoples(),
       this.salaryAreaService.getSalaryAreas(),
       this.planService.getPlans(this.declarationCode),
-      this.departmentService.getDepartments()
-    ]).subscribe(([ cities, nationalities, peoples, salaryAreas, plans, departments ]) => {
-      this.updateSourceToColumn('peopleCode', peoples);
-      this.updateSourceToColumn('nationalityCode', nationalities);
-      this.updateSourceToColumn('registerCityCode', cities);
-      this.updateSourceToColumn('recipientsCityCode', cities);
-      this.updateSourceToColumn('salaryAreaCode', salaryAreas);
-      this.updateSourceToColumn('planCode', plans);
-      this.updateSourceToColumn('departmentId', departments);
+      this.departmentService.getDepartments(),
+      this.categoryService.getCategories('relationshipDocumentType')
+    ]).subscribe(([ cities, nationalities, peoples, salaryAreas, plans, departments,relationshipDocumentTypies ]) => {
+      this.updateSourceToColumn(this.tableHeaderColumns, 'peopleCode', peoples);
+      this.updateSourceToColumn(this.tableHeaderColumns, 'nationalityCode', nationalities);
+      this.updateSourceToColumn(this.tableHeaderColumns, 'registerCityCode', cities);
+      this.updateSourceToColumn(this.tableHeaderColumns, 'recipientsCityCode', cities);
+      this.updateSourceToColumn(this.tableHeaderColumns, 'salaryAreaCode', salaryAreas);
+      this.updateSourceToColumn(this.tableHeaderColumns, 'planCode', plans);
+      this.updateSourceToColumn(this.tableHeaderColumns, 'departmentId', departments);
       // get filter columns
-      this.updateFilterToColumn('registerDistrictCode', this.getRegisterDistrictsByCityCode);
-      this.updateFilterToColumn('registerWardsCode', this.getRegisterWardsByDistrictCode);
-      this.updateFilterToColumn('recipientsDistrictCode', this.getRecipientsDistrictsByCityCode);
-      this.updateFilterToColumn('recipientsWardsCode', this.getRecipientsWardsByDistrictCode);
-      this.updateFilterToColumn('hospitalFirstRegistCode', this.getHospitalsByCityCode);
-      this.updateFilterToColumn('planCode', this.getPlanByParent);
+      this.updateFilterToColumn(this.tableHeaderColumns, 'registerDistrictCode', this.getRegisterDistrictsByCityCode);
+      this.updateFilterToColumn(this.tableHeaderColumns, 'registerWardsCode', this.getRegisterWardsByDistrictCode);
+      this.updateFilterToColumn(this.tableHeaderColumns, 'recipientsDistrictCode', this.getRecipientsDistrictsByCityCode);
+      this.updateFilterToColumn(this.tableHeaderColumns, 'recipientsWardsCode', this.getRecipientsWardsByDistrictCode);
+      this.updateFilterToColumn(this.tableHeaderColumns, 'hospitalFirstRegistCode', this.getHospitalsByCityCode);
+      this.updateFilterToColumn(this.tableHeaderColumns, 'planCode', this.getPlanByParent);
+
+      this.updateSourceToColumn(this.tableHeaderColumnsFamilies, 'relationshipCityCode', cities);
+      this.updateSourceToColumn(this.tableHeaderColumnsFamilies, 'cityCode', cities);
+      this.updateFilterToColumn(this.tableHeaderColumnsFamilies, 'relationshipDistrictCode', this.getRegisterDistrictsByCityCode);
+      this.updateFilterToColumn(this.tableHeaderColumnsFamilies, 'relationshipDistrictCode', this.getRegisterDistrictsByCityCode);
+      
 
       if (this.declarationId) {
         this.declarationService.getDeclarationsByDocumentId(this.declarationId, this.tableHeaderColumns).subscribe(declarations => {
@@ -309,16 +321,16 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     });
   }
 
-  private updateSourceToColumn(key, sources) {
-    const column = this.tableHeaderColumns.find(c => c.key === key);
+  private updateSourceToColumn(tableHeaderColumns, key, sources) {
+    const column = tableHeaderColumns.find(c => c.key === key);
 
     if (column) {
       column.source = sources;
     }
   }
 
-  private updateFilterToColumn(key, filterCb) {
-    const column = this.tableHeaderColumns.find(c => c.key === key);
+  private updateFilterToColumn(tableHeaderColumns,key, filterCb) {
+    const column = tableHeaderColumns.find(c => c.key === key);
 
     if (column) {
       column.filter = filterCb;
@@ -333,7 +345,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     }
 
     return this.districtService.getDistrict(value).toPromise().then(districts => {
-      this.updateSourceToColumn('registerDistrictCode', districts);
+      this.updateSourceToColumn(this.tableHeaderColumns,'registerDistrictCode', districts);
 
       return districts;
     });
@@ -347,7 +359,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     }
 
     return this.wardService.getWards(value).toPromise().then(wards => {
-      this.updateSourceToColumn('registerWardsCode', wards);
+      this.updateSourceToColumn(this.tableHeaderColumns,'registerWardsCode', wards);
       return wards;
     });
   }
@@ -360,7 +372,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     }
 
     return this.districtService.getDistrict(value).toPromise().then(districts => {
-      this.updateSourceToColumn('recipientsDistrictCode', districts);
+      this.updateSourceToColumn(this.tableHeaderColumns, 'recipientsDistrictCode', districts);
 
       return districts;
     });
@@ -374,7 +386,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     }
 
     return this.wardService.getWards(value).toPromise().then(wards => {
-      this.updateSourceToColumn('recipientsWardsCode', wards);
+      this.updateSourceToColumn(this.tableHeaderColumns, 'recipientsWardsCode', wards);
 
       return wards;
     });

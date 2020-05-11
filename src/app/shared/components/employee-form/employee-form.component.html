@@ -585,11 +585,9 @@
               <nz-form-item>
                 <nz-form-label class="text-left" [nzSpan]="10">Loại giấy tờ</nz-form-label>
                 <nz-form-control [nzSpan]="14">
-                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="relationshipDocumentType" >
-                    <nz-option [nzLabel]="'Sổ hộ khẩu'" [nzValue]="1"></nz-option>
-                    <nz-option [nzLabel]="'Sổ tạm trú'" [nzValue]="2"></nz-option>
-                    <nz-option [nzLabel]="'Giấy tạm trú'" [nzValue]="3"></nz-option>
-                  </nz-select>
+                    <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="relationshipDocumentType">
+                        <nz-option *ngFor="let relationshipDocumentType of relationshipDocumentTypies" [nzLabel]="relationshipDocumentType.name" [nzValue]="relationshipDocumentType.id"></nz-option>
+                    </nz-select>                   
                 </nz-form-control>
               </nz-form-item>
             </div><!-- col -->

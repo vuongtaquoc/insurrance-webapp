@@ -146,6 +146,8 @@
                   <div class="document-form__process-table">
                     <app-families-list-table
                       [data]="familiesList"
+                      [nestedHeaders]="tableNestedHeadersFamilies"
+                      [columns]="tableHeaderColumnsFamilies"
                       [events]="eventsSubject.asObservable()"
                       (onChange)="handleChangeDataDocumentList($event)"
                       (onDelete)="handleDeleteProcessDataDocumentList($event)"

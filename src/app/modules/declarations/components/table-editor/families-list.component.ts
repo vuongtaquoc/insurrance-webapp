@@ -3,8 +3,6 @@ import { Subscription, Observable } from 'rxjs';
 import * as jexcel from 'jstable-editor/dist/jexcel.js';
 import 'jsuites/dist/jsuites.js';
 
-import { TABLE_HEADER_COLUMNS ,TABLE_NESTED_HEADERS } from '@app/modules/declarations/data/families-editor.data';
-
 @Component({
   selector: 'app-families-list-table',
   templateUrl: './families-list.component.html',
@@ -15,8 +13,8 @@ export class FamiliesListTableComponent implements OnInit, OnDestroy, OnChanges,
   @ViewChild('spreadsheetFamiliesList', { static: true }) spreadsheetEl;
   @Input() data: any[] = [];
   @Input() events: Observable<void>;
-  @Input() nestedHeaders: any[] = TABLE_NESTED_HEADERS;
-  @Input() columns: any[] = TABLE_HEADER_COLUMNS;
+  @Input() columns: any[] = [];
+  @Input() nestedHeaders: any[] = [];
   @Output() onChange: EventEmitter<any> = new EventEmitter();
   @Output() onSubmit: EventEmitter<any> = new EventEmitter();
   @Output() onDelete: EventEmitter<any> = new EventEmitter();

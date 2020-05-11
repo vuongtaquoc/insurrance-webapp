@@ -1,4 +1,4 @@
-export const TABLE_NESTED_HEADERS = [
+export const TABLE_FAMILIES_NESTED_HEADERS = [
   [
     { title: 'STT', rowspan: '3' },
     { title: 'Người tham gia', subtitle: 'Nhập chữ thường', rowspan: '3' },
@@ -35,7 +35,7 @@ export const TABLE_NESTED_HEADERS = [
   ],
 ];
 
-export const TABLE_HEADER_COLUMNS = [{
+export const TABLE_FAMILIES_HEADER_COLUMNS = [{
   type: 'text',
   width: 35,
   title: '(1)',
@@ -57,7 +57,7 @@ export const TABLE_HEADER_COLUMNS = [{
   type: 'text',
   width: 150,
   title: '(4)',
-  key: 'relationshipName'
+  key: 'relationshipFullName'
 }, {
   type: 'text',
   width: 80,
