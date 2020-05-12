@@ -116,7 +116,7 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
     required: true
   }
 }, {
-  type: 'numberic',
+  type: 'numeric',
   width: 60,
   title: '(7.3)',
   key: 'regimeSum',
@@ -142,12 +142,12 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   key: 'childrenBirthday',
   isCalendar: true
 }, {
-  type: 'numberic',
+  type: 'numeric',
   width: 130,
   title: '(8.2)',
   key: 'childrenHealthNo'
 }, {
-  type: 'numberic',
+  type: 'numeric',
   width: 80,
   title: '(8.3)',
   key: 'childrenNumberSick'

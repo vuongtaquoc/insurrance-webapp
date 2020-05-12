@@ -123,7 +123,7 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
     required: true
   }
 }, {
-  type: 'numberic',
+  type: 'numeric',
   width: 60,
   title: '(6.4)',
   key: 'regimeSum',
@@ -165,7 +165,7 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   title: '(10.2)',
   key: 'childrenHealthNo'
 }, {
-  type: 'numberic',
+  type: 'numeric',
   width: 50,
   title: '(10.3)',
   key: 'childrenWeekOld',
@@ -176,7 +176,7 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   key: 'childrenBirthday',
   isCalendar: true
 }, {
-  type: 'numberic',
+  type: 'numeric',
   width: 50,
   title: '(10.5)',
   key: 'childrenNumber',
@@ -188,7 +188,7 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   isCalendar: true,
   checkReadonly: true
 }, {
-  type: 'numberic',
+  type: 'numeric',
   width: 65,
   title: '(10.7)',
   key: 'childrenNumberSick',
@@ -260,7 +260,7 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   title: '(12)',
   key: 'parentsOffWork',
 }, {
-  type: 'numberic',
+  type: 'numeric',
   width: 40,
   title: '(13)',
   key: 'examinationCost',
@@ -392,7 +392,7 @@ export const TABLE_HEADER_COLUMNS_PART_2 = [{
   key: 'regimeToDate',
   isCalendar: true
 }, {
-  type: 'numberic',
+  type: 'numeric',
   width: 60,
   title: '(4.3)',
   key: 'regimeSum'

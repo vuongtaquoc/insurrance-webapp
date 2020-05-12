@@ -92,7 +92,7 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
     required: true
   }
 }, {
-  type: 'numberic',
+  type: 'numeric',
   width: 60,
   title: '(6.3)',
   key: 'regimeSum',
@@ -112,10 +112,11 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
     required: true
   }
 }, {
-  type: 'numberic',
+  type: 'numeric',
   width: 60,
   title: '(8.1)',
-  key: 'ratioReduction'
+  key: 'ratioReduction',
+  suffix: '%'
 }, {
   type: 'text',
   width: 90,
@@ -238,7 +239,7 @@ export const TABLE_HEADER_COLUMNS_PART_2 = [{
   key: 'regimeToDate',
   isCalendar: true
 }, {
-  type: 'numberic',
+  type: 'numeric',
   width: 60,
   title: '(4.3)',
   key: 'regimeSum',

@@ -125,7 +125,7 @@
               <nz-form-item>
                 <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Phường/xã</nz-form-label>
                 <nz-form-control [nzSpan]="14" nzErrorTip="Phường/xã không để trống">
-                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="registerWardsCode">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="registerWardsCode" (ngModelChange)="changeRegisterWardsCode($event)">
                     <nz-option *ngFor="let ward of registerWards" [nzLabel]="ward.name" [nzValue]="ward.id"></nz-option>
                   </nz-select>
                 </nz-form-control>
@@ -133,7 +133,10 @@
             </div><!-- col -->
           </div><!-- END ROW -->
 
-          <h3 class="employee-form__group-title employee-form__group-title--disabled">Địa chỉ nhận hồ sơ (nơi sinh sống)</h3>
+          <h3 class="employee-form__group-title employee-form__group-title--disabled">
+            Địa chỉ nhận hồ sơ (nơi sinh sống)
+            <label style="margin-left: 20px;" nz-checkbox formControlName="isDuplicateAddress">Trùng với địa chỉ trên</label>
+          </h3>
           <!-- ROW START -->
           <div nz-row [nzGutter]="10">
             <div nz-col [nzSpan]="8">
@@ -338,10 +341,12 @@
               <nz-form-item>
                 <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Tỷ lệ đóng (%)</nz-form-label>
                 <nz-form-control [nzSpan]="14" nzErrorTip="Tỷ lệ đóng (%) không để trống">
-                  <input nz-input
-                    placeholder="Tỷ lệ"
-                    formControlName="rate"
-                  />
+                  <nz-input-group nzSuffix="%">
+                    <input nz-input
+                      placeholder="Tỷ lệ"
+                      formControlName="rate"
+                    />
+                  </nz-input-group>
                 </nz-form-control>
               </nz-form-item>
             </div><!-- col -->
@@ -400,10 +405,13 @@
               <nz-form-item>
                 <nz-form-label class="text-left" [nzSpan]="10">TN VK (%)</nz-form-label>
                 <nz-form-control [nzSpan]="14">
-                  <input nz-input
-                    placeholder="TN VK (%)"
-                    formControlName="allowanceSeniority"
-                  />
+                  <nz-input-group nzSuffix="%">
+                    <input nz-input
+                      type="text"
+                      placeholder="TN VK (%)"
+                      formControlName="allowanceSeniority"
+                    />
+                  </nz-input-group>
                 </nz-form-control>
               </nz-form-item>
             </div><!-- col -->
@@ -411,10 +419,12 @@
               <nz-form-item>
                 <nz-form-label class="text-left" [nzSpan]="10">TN nghề (%)</nz-form-label>
                 <nz-form-control [nzSpan]="14">
-                  <input nz-input
-                    placeholder="TN nghề (%)"
-                    formControlName="allowanceSeniorityJob"
-                  />
+                  <nz-input-group nzSuffix="%">
+                    <input nz-input
+                      placeholder="TN nghề (%)"
+                      formControlName="allowanceSeniorityJob"
+                    />
+                  </nz-input-group>
                 </nz-form-control>
               </nz-form-item>
             </div><!-- col -->
@@ -567,7 +577,10 @@
         </nz-tab><!-- Tab 2 -->
 
         <nz-tab nzTitle="Thành viên hộ gia đình">
-          <h3 class="employee-form__group-title">Phụ lục: Thành viên hộ gia đình của NLĐ</h3>
+          <h3 class="employee-form__group-title">
+            Phụ lục: Thành viên hộ gia đình của NLĐ
+            <label class="employee-form__group-title--right" nz-checkbox formControlName="isMaster">NLĐ là chủ hộ</label>
+          </h3>
           <!-- ROW START -->
           <div nz-row [nzGutter]="10">
             <div nz-col [nzSpan]="8">
@@ -577,6 +590,7 @@
                   <input nz-input
                     placeholder="Họ và tên chủ hộ"
                     formControlName="relationshipFullName"
+                    (ngModelChange)="changeRelationshipFullName($event)"
                   />
                 </nz-form-control>
               </nz-form-item>
@@ -585,9 +599,9 @@
               <nz-form-item>
                 <nz-form-label class="text-left" [nzSpan]="10">Loại giấy tờ</nz-form-label>
                 <nz-form-control [nzSpan]="14">
-                    <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="relationshipDocumentType">
-                        <nz-option *ngFor="let relationshipDocumentType of relationshipDocumentTypies" [nzLabel]="relationshipDocumentType.name" [nzValue]="relationshipDocumentType.id"></nz-option>
-                    </nz-select>                   
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="relationshipDocumentType">
+                    <nz-option *ngFor="let relationshipDocumentType of relationshipDocumentTypies" [nzLabel]="relationshipDocumentType.name" [nzValue]="relationshipDocumentType.id"></nz-option>
+                  </nz-select>
                 </nz-form-control>
               </nz-form-item>
             </div><!-- col -->
