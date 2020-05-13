@@ -1,12 +1,13 @@
 import { Component, OnInit, ViewEncapsulation, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { forkJoin, Subject } from 'rxjs';
-import { NzModalRef } from 'ng-zorro-antd/modal';
+import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import * as moment from 'moment';
 import * as _ from 'lodash';
 
 import { DropdownItem } from '@app/core/interfaces';
 import { City, District, Wards } from '@app/core/models';
+import { EmployeeHospitalRegisterFormComponent } from './hospital-register-form.component';
 
 import {
   CityService,
@@ -65,6 +66,7 @@ export class EmployeeFormComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private modal: NzModalRef,
+    private modalService: NzModalService,
     private cityService: CityService,
     private districtService: DistrictService,
     private hospitalService: HospitalService,
@@ -390,6 +392,19 @@ export class EmployeeFormComponent implements OnInit {
     }
 
     this.families = families;
+  }
+
+  addHospitalFirstRegistCode() {
+    const modal = this.modalService.create({
+      nzWidth: 500,
+      nzWrapClassName: 'add-hospital-modal',
+      nzTitle: 'Thông tin đơn vị KCB',
+      nzContent: EmployeeHospitalRegisterFormComponent,
+    });
+
+    modal.afterClose.subscribe(result => {
+      // this.getEmployees();
+    });
   }
 
   private arrayToProps(array, columns) {

@@ -91,7 +91,8 @@ export const TABLE_HEADER_COLUMNS = [{
 }, {
   type: 'text',
   width: 123,
-  title: '(5.2)'
+  title: '(5.2)',
+  wordWrap: true,
 }, {
   type: 'dropdown',
   width: 70,

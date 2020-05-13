@@ -45,6 +45,7 @@ import {
   EmployeeFormComponent,
   EmployeeProcessTableComponent,
   EmployeeFamilyTableComponent,
+  EmployeeHospitalRegisterFormComponent,
   DocumentFormComponent,
   DocumentTableComponent,
   PaginationComponent,
@@ -87,6 +88,7 @@ import {
     EmployeeFormComponent,
     EmployeeProcessTableComponent,
     EmployeeFamilyTableComponent,
+    EmployeeHospitalRegisterFormComponent,
     DocumentFormComponent,
     DocumentTableComponent,
     InputLabelComponent,
@@ -125,6 +127,7 @@ import {
   ],
   entryComponents: [
     EmployeeFormComponent,
+    EmployeeHospitalRegisterFormComponent,
     DocumentFormComponent
   ]
 })
