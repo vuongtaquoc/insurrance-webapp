@@ -1,12 +1,13 @@
 import { Component, OnInit, ViewEncapsulation, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { forkJoin, Subject } from 'rxjs';
-import { NzModalRef } from 'ng-zorro-antd/modal';
+import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import * as moment from 'moment';
 import * as _ from 'lodash';
 
 import { DropdownItem } from '@app/core/interfaces';
 import { City, District, Wards } from '@app/core/models';
+import { EmployeeHospitalRegisterFormComponent } from './hospital-register-form.component';
 
 import {
   CityService,
@@ -65,6 +66,7 @@ export class EmployeeFormComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private modal: NzModalRef,
+    private modalService: NzModalService,
     private cityService: CityService,
     private districtService: DistrictService,
     private hospitalService: HospitalService,
@@ -185,7 +187,9 @@ export class EmployeeFormComponent implements OnInit {
       relationshipDistrictCode: [employee.relationshipDistrictCode, Validators.required],
       relationshipWardsCode: [employee.relationshipWardsCode, Validators.required],
       relationshipVillageCode: [employee.relationshipVillageCode],
-      relationshipMobile: [employee.relationshipMobile]
+      relationshipMobile: [employee.relationshipMobile],
+      isMaster: [employee.isMaster],
+      isDuplicateAddress: [false]
     });
 
     // update table data
@@ -306,34 +310,101 @@ export class EmployeeFormComponent implements OnInit {
 
   changeRegisterCity(value) {
     this.districtService.getDistrict(value).subscribe(data => this.registerDistricts = data);
+
+    this.employeeForm.patchValue({
+      recipientsCityCode: value
+    });
   }
 
   changeRegisterDistrict(value) {
     this.wardService.getWards(value).subscribe(data => this.registerWards = data);
+
+    this.employeeForm.patchValue({
+      recipientsDistrictCode: value
+    });
+  }
+
+  changeRegisterWardsCode(value) {
+    this.employeeForm.patchValue({
+      recipientsWardsCode: value
+    });
   }
 
   changeRecipientsCity(value) {
     this.districtService.getDistrict(value).subscribe(data => this.recipientsDistricts = data);
+    this.employeeForm.patchValue({
+      recipientsDistrictCode: null,
+      recipientsWardsCode: null
+    });
   }
 
   changeRecipientsDistrict(value) {
     this.wardService.getWards(value).subscribe(data => this.recipientsWards = data);
+    this.employeeForm.patchValue({
+      recipientsWardsCode: null
+    });
   }
 
   changeRelationshipWards(value) {
     this.villageService.getVillage(value).subscribe(data => this.relationshipVillages = data);
+    this.changeRelationshipFamily(value, 'wardsCode');
   }
 
   changeRelationshipCities(value) {
     this.districtService.getDistrict(value).subscribe(data => this.relationshipDistricts = data);
+    this.changeRelationshipFamily(value, 'cityCode');
   }
 
   changeRelationshipDistrict(value) {
     this.wardService.getWards(value).subscribe(data => this.relationshipWards = data);
+    this.changeRelationshipFamily(value, 'districtCode');
   }
 
   changeFirstRegisterCity(value) {
     this.hospitalService.getHospitals(value).subscribe(data => this.hospitals = data);
+  }
+
+  changeRelationshipFullName(value) {
+    const families = [ ...this.families ];
+    const master = families.find(f => f.relationshipCode === '00');
+
+    if (master) {
+      master.fullName = value;
+    } else {
+      const index = families.findIndex(f => !f.fullName);
+
+      families[index > -1 ? index : 0] = {
+        orders: index > -1 ? index + 1 : 1,
+        relationshipCode: '00',
+        fullName: value
+      };
+    }
+
+    this.families = families;
+  }
+
+  changeRelationshipFamily(value, field) {
+    const families = [ ...this.families ];
+    const master = families.find(f => f.relationshipCode === '00');
+
+    if (master) {
+      master[field] = value;
+    }
+
+    this.families = families;
+  }
+
+  addHospitalFirstRegistCode() {
+    const modal = this.modalService.create({
+      nzWidth: 500,
+      nzWrapClassName: 'add-hospital-modal',
+      nzTitle: 'Thông tin đơn vị KCB',
+      nzContent: EmployeeHospitalRegisterFormComponent,
+    });
+
+    modal.afterClose.subscribe(result => {
+      // this.getEmployees();
+    });
   }
 
   private arrayToProps(array, columns) {

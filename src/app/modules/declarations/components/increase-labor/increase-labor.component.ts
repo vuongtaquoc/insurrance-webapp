@@ -47,9 +47,10 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
   tableNestedHeaders: any[] = TABLE_NESTED_HEADERS;
   tableHeaderColumns: any[] = TABLE_HEADER_COLUMNS;
   tableNestedHeadersFamilies: any[] = TABLE_FAMILIES_NESTED_HEADERS;
-  tableHeaderColumnsFamilies: any[] = TABLE_FAMILIES_HEADER_COLUMNS;  
+  tableHeaderColumnsFamilies: any[] = TABLE_FAMILIES_HEADER_COLUMNS;
   employeeSelected: any[] = [];
   eventsSubject: Subject<string> = new Subject<string>();
+  validateSubject: Subject<any> = new Subject<any>();
   documentList: DocumentList[] = [];
   familiesList: any[] = [];
   informationList: any[] = [];
@@ -140,7 +141,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
       this.updateSourceToColumn(this.tableHeaderColumnsFamilies, 'cityCode', cities);
       this.updateFilterToColumn(this.tableHeaderColumnsFamilies, 'relationshipDistrictCode', this.getRegisterDistrictsByCityCode);
       this.updateFilterToColumn(this.tableHeaderColumnsFamilies, 'relationshipDistrictCode', this.getRegisterDistrictsByCityCode);
-      
+
 
       if (this.declarationId) {
         this.declarationService.getDeclarationsByDocumentId(this.declarationId, this.tableHeaderColumns).subscribe(declarations => {
@@ -204,7 +205,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
           if (declarations[childLastIndex].isInitialize) {
             // remove initialize data
             declarations.splice(childLastIndex, 1);
-          
+
             declarations.splice(childLastIndex, 0, this.declarationService.getLeaf(declarations[parentIndex], employee, this.tableHeaderColumns));
           } else {
             declarations.splice(childLastIndex + 1, 0, this.declarationService.getLeaf(declarations[parentIndex], employee, this.tableHeaderColumns));
@@ -255,7 +256,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
       informations: this.reformatInformationList(),
     });
   }
-  
+
   handleChangeTable({ instance, cell, c, r, records }) {
     if (c !== null && c !== undefined) {
       c = Number(c);
@@ -270,7 +271,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
       } else if (column.key === 'recipientsCityCode') {
         this.updateNextColumns(instance, r, '', [ c + 1, c + 2, c + 5, c + 6 ]);
       }
-      
+
     }
     // update declarations
     this.declarations.forEach((declaration, index) => {
@@ -303,6 +304,39 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
   handleFormValuesChanged(data) {
     this.totalNumberInsurance = data.totalNumberInsurance;
     this.totalCardInsurance = data.totalNumberInsurance;
+  }
+
+  checkInsurranceCode() {
+    console.log(this.declarations)
+    const declarations = [...this.declarations];
+    const INSURRANCE_CODE_INDEX = 4;
+    const INSURRANCE_STATUS_INDEX = 5;
+    // const leafs = declarations.filter(d => !!d.isLeaf);
+    // const insurranceCodes = leafs.map(l => l.data[INSURRANCE_CODE_INDEX]);
+    const errors = {};
+
+    declarations.forEach((declaration, rowIndex) => {
+      const code = declaration.data[INSURRANCE_CODE_INDEX];
+
+      if (code && declaration.isLeaf) {
+        declaration.data[INSURRANCE_STATUS_INDEX] = `Không tìm thấy Mã số ${ declaration.data[INSURRANCE_CODE_INDEX] }`;
+
+        errors[rowIndex] = {
+          col: INSURRANCE_CODE_INDEX,
+          value: code,
+          valid: false
+        };
+      }
+    });
+
+    this.declarations = declarations;
+
+    setTimeout(() => {
+      this.validateSubject.next({
+        field: 'isurranceCode',
+        errors
+      });
+    }, 20);
   }
 
   private updateOrders(declarations) {
@@ -494,7 +528,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     return informationList;
   }
 
- 
+
   private setDataToFamilies(employeesInDeclaration: any)
   {
     const familiesList = [];  
@@ -584,7 +618,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     return employeesInDeclaration;
   }
 
- 
+
   handleToggleSidebar() {
     this.isHiddenSidebar = !this.isHiddenSidebar;
   }

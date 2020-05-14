@@ -25,7 +25,7 @@ export class FamiliesListTableComponent implements OnInit, OnDestroy, OnChanges,
   constructor(private element: ElementRef) {}
 
   ngOnInit() {
-  
+
   }
 
   ngOnDestroy() {
@@ -52,7 +52,7 @@ export class FamiliesListTableComponent implements OnInit, OnDestroy, OnChanges,
       tableHeight: '100%',
       columnSorting: false,
       defaultColAlign: 'left',
-      freezeColumns: 3,
+      freezeColumns: 2,
       onchange: (instance, cell, c, r, value) => {
         this.onChange.emit({
           instance, cell, c, r, value,
@@ -111,5 +111,5 @@ export class FamiliesListTableComponent implements OnInit, OnDestroy, OnChanges,
       width: parent.offsetWidth,
       height: parent.offsetHeight
     };
-  } 
+  }
 }

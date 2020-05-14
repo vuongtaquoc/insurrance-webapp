@@ -106,6 +106,11 @@
                 </form>
               </div><!-- page-declarations__title -->
 
+              <div class="page-declarations__check-code">
+                <button nz-button nzType="default" (click)="checkInsurranceCode($event)">Kiểm tra mã số BHXH</button>
+                <span class="page-declarations__check-code-note">Vui lòng kiểm tra Mã số BHXH của Người tham gia trước khi kê khai Phụ lục Thành viên Hộ gia đình</span>
+              </div><!-- page-declarations__check-code -->
+
               <div class="page-declarations__editor">
                 <app-table-editor
                   tableName="increaseLabor"
@@ -113,6 +118,7 @@
                   [columns]="tableHeaderColumns"
                   [data]="declarations"
                   [events]="eventsSubject.asObservable()"
+                  [validate]="validateSubject.asObservable()"
                   (onSubmit)="handleSubmit($event)"
                   (onChange)="handleChangeTable($event)"
                   (onDelete)="handleDeleteData($event)"
@@ -125,7 +131,7 @@
                 'collapse-active-attachment': !panel.general.active && panel.attachment.active
               }">
                 <nz-collapse-panel class="collapse-general" nzHeader="Phần tổng hợp" [nzActive]="panel.general.active" (nzActiveChange)="collapseChange($event, 'general')">
-                  <app-labor-general-form 
+                  <app-labor-general-form
                   [data]="declarationGeneral"
                   (onFormValuesChanged)="handleFormValuesChanged($event)"></app-labor-general-form>
                 </nz-collapse-panel>
@@ -140,21 +146,21 @@
           </div><!-- page-declarations__container -->
         </nz-tab><!-- tab 2 -->
         <nz-tab nzTitle="PL TVHGD-NLD">
-            <div class="page-document-list__container">
-                  <h1>600 | Báo tăng lao động</h1>
-                  <h2>PHỤ LỤC THÀNH VIÊN GIA ĐÌNH</h2>
-                  <div class="document-form__process-table">
-                    <app-families-list-table
-                      [data]="familiesList"
-                      [nestedHeaders]="tableNestedHeadersFamilies"
-                      [columns]="tableHeaderColumnsFamilies"
-                      [events]="eventsSubject.asObservable()"
-                      (onChange)="handleChangeDataDocumentList($event)"
-                      (onDelete)="handleDeleteProcessDataDocumentList($event)"
-                    ></app-families-list-table>
-                  </div>
-              </div>
-        </nz-tab>   
+          <div class="page-document-list__container page-document-list__container--note">
+            <h1>600 | Báo tăng lao động</h1>
+            <h2>PHỤ LỤC THÀNH VIÊN GIA ĐÌNH</h2>
+            <div class="document-form__process-table">
+              <app-families-list-table
+                [data]="familiesList"
+                [nestedHeaders]="tableNestedHeadersFamilies"
+                [columns]="tableHeaderColumnsFamilies"
+                [events]="eventsSubject.asObservable()"
+                (onChange)="handleChangeDataDocumentList($event)"
+                (onDelete)="handleDeleteProcessDataDocumentList($event)"
+              ></app-families-list-table>
+            </div>
+          </div>
+        </nz-tab>
         <nz-tab nzTitle="Bảng kê hồ sơ">
           <div class="page-document-list__container">
             <form nz-form [formGroup]="documentForm">
@@ -171,8 +177,8 @@
               </div>
             </form>
           </div>
-        </nz-tab>   
-            
+        </nz-tab>
+
       </nz-tabset>
       <ng-template #extraTemplate>
         <div class="page-declarations__footer">

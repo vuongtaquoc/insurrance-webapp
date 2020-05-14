@@ -10,10 +10,17 @@
     margin-bottom: 5px;
     font-size: 12px;
     color: #5084EF;
+    position: relative;
 
     &--disabled {
       // color: #999;
       color: #5084EF;
+    }
+
+    &--right {
+      position: absolute;
+      right: 0;
+      font-weight: 400;
     }
   }
 
@@ -67,6 +74,19 @@
     color: #4C61EE;
     font-weight: 700;
     // font-size: 12px;
+  }
+
+  &__add-btn {
+    height: 45px;
+    line-height: 43px;
+
+    button {
+      line-height: 32px;
+    }
+
+    i {
+      font-size: 16px;
+    }
   }
 
   form, .ant-tabs {

@@ -19,6 +19,7 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
   @Input() nestedHeaders: any[] = [];
   @Input() tableName: string;
   @Input() events: Observable<void>;
+  @Input() validate: Observable<any>;
   @Output() onChange: EventEmitter<any> = new EventEmitter();
   @Output() onSubmit: EventEmitter<any> = new EventEmitter();
   @Output() onDelete: EventEmitter<any> = new EventEmitter();
@@ -26,17 +27,20 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
   spreadsheet: any;
   isSpinning = true;
   private eventsSubscription: Subscription;
+  private validateSubscription: Subscription;
 
   constructor(private element: ElementRef) {
   }
 
   ngOnInit() {
     this.eventsSubscription = this.events.subscribe((type) => this.handleEvent(type));
+    this.validateSubscription = this.validate.subscribe((result) => this.handleValidate(result));
   }
 
   ngOnDestroy() {
     jexcel.destroy(this.spreadsheetEl.nativeElement, true);
     this.eventsSubscription.unsubscribe();
+    this.validateSubscription.unsubscribe();
   }
 
   ngOnChanges(changes) {
@@ -176,6 +180,18 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
     this.onSubmit.emit({
       type,
       data: Object.values(declarations)
+    });
+  }
+
+  handleValidate({ field, errors }) {
+    Object.keys(errors).forEach(row => {
+      const error = errors[row];
+
+      this.spreadsheet.validationCell(row, error.col, {
+        name: `Mã số ${ error.value }`
+      }, {
+        fieldNotFound: true
+      }, !!error.valid);
     });
   }
 

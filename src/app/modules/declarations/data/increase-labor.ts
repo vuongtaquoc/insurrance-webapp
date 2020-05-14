@@ -80,7 +80,7 @@ export const TABLE_HEADER_COLUMNS = [{
   title: '(4)',
   key: 'isurranceNo'
 }, {
-  type: 'numberic',
+  type: 'numeric',
   width: 123,
   title: '(5.1)',
   key: 'isurranceCode',
@@ -91,7 +91,8 @@ export const TABLE_HEADER_COLUMNS = [{
 }, {
   type: 'text',
   width: 123,
-  title: '(5.2)'
+  title: '(5.2)',
+  wordWrap: true,
 }, {
   type: 'dropdown',
   width: 70,
@@ -125,7 +126,7 @@ export const TABLE_HEADER_COLUMNS = [{
   align: 'left',
   key: 'nationalityCode'
 }, {
-  type: 'numberic',
+  type: 'numeric',
   width: 135,
   title: '(11)',
   align: 'left',
@@ -136,13 +137,13 @@ export const TABLE_HEADER_COLUMNS = [{
     duplicate: true
   }
 }, {
-  type: 'numberic',
+  type: 'numeric',
   width: 135,
   title: '(12)',
   align: 'left',
   key: 'mobile'
 }, {
-  type: 'numberic',
+  type: 'numeric',
   autocomplete: true,
   width: 135,
   title: '(13)',
@@ -247,7 +248,7 @@ export const TABLE_HEADER_COLUMNS = [{
   title: '(20)',
   key: 'departmentId'
 }, {
-  type: 'numberic',
+  type: 'numeric',
   width: 100,
   title: '(21.1)',
   key: 'contractNo'
@@ -257,7 +258,7 @@ export const TABLE_HEADER_COLUMNS = [{
   title: '(21.2)',
   key: 'dateSign'
 }, {
-  type: 'numberic',
+  type: 'numeric',
   width: 80,
   title: '(22.1)',
   mask: '# ##0',
@@ -265,7 +266,7 @@ export const TABLE_HEADER_COLUMNS = [{
   sum: true,
   key: 'salary'
 }, {
-  type: 'numberic',
+  type: 'numeric',
   width: 80,
   title: '(22.2)',
   mask: '# ##0',
@@ -273,7 +274,7 @@ export const TABLE_HEADER_COLUMNS = [{
   sum: true,
   key: 'ratio'
 }, {
-  type: 'numberic',
+  type: 'numeric',
   width: 80,
   title: '(22.3)',
   mask: '# ##0',
@@ -281,7 +282,7 @@ export const TABLE_HEADER_COLUMNS = [{
   sum: true,
   key: 'allowanceSalary'
 }, {
-  type: 'numberic',
+  type: 'numeric',
   width: 80,
   title: '(22.4)',
   mask: '# ##0',
@@ -289,7 +290,7 @@ export const TABLE_HEADER_COLUMNS = [{
   sum: true,
   key: 'allowanceAdditional'
 }, {
-  type: 'numberic',
+  type: 'numeric',
   width: 80,
   title: '(22.5)',
   mask: '# ##0',
@@ -297,19 +298,19 @@ export const TABLE_HEADER_COLUMNS = [{
   sum: true,
   key: 'allowanceLevel'
 }, {
-  type: 'numberic',
+  type: 'numeric',
   width: 70,
   title: '(22.6)',
   key: 'allowanceSeniority',
-  mask: '##%'
+  suffix: '%'
 }, {
-  type: 'numberic',
+  type: 'numeric',
   width: 70,
   title: '(22.7)',
   key: 'allowanceSeniorityJob',
-  mask: '##%'
+  suffix: '%'
 }, {
-  type: 'numberic',
+  type: 'numeric',
   width: 80,
   title: '(22.8)',
   mask: '# ##0',
@@ -344,7 +345,7 @@ export const TABLE_HEADER_COLUMNS = [{
     required: true
   }
 }, {
-  type: 'numberic',
+  type: 'numeric',
   mask: '# ##0',
   decimal: ',',
   width: 50,

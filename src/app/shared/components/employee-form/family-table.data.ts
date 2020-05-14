@@ -47,7 +47,10 @@ export const TABLE_HEADER_COLUMNS = [{
   width: 80,
   title: '(5)',
   key: 'birthday',
-  isCalendar: true
+  isCalendar: true,
+  // validations: {
+  //   required: true
+  // }
 }, {
   type: 'checkbox',
   width: 30,
@@ -60,7 +63,10 @@ export const TABLE_HEADER_COLUMNS = [{
   width: 130,
   title: '(7)',
   key: 'cityCode',
-  source: []
+  source: [],
+  // validations: {
+  //   required: true
+  // }
 }, {
   type: 'dropdown',
   autocomplete: true,
@@ -68,7 +74,10 @@ export const TABLE_HEADER_COLUMNS = [{
   title: '(8)',
   key: 'districtCode',
   defaultLoad: true,
-  source: [ ]
+  source: [ ],
+  // validations: {
+  //   required: true
+  // }
 }, {
   type: 'dropdown',
   autocomplete: true,
@@ -76,7 +85,10 @@ export const TABLE_HEADER_COLUMNS = [{
   title: '(9)',
   key: 'wardsCode',
   defaultLoad: true,
-  source: [ ]
+  source: [ ],
+  // validations: {
+  //   required: true
+  // }
 }, {
   type: 'dropdown',
   autocomplete: true,

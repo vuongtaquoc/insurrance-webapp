@@ -67,7 +67,7 @@ export class EmployeeFamilyTableComponent implements OnInit, OnDestroy, OnChange
 
   ngOnChanges(changes) {
     if (changes.data && changes.data.currentValue && changes.data.currentValue.length) {
-      // this.updateTable();
+      this.updateTable();
     }
   }
 
