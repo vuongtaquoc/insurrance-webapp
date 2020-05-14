@@ -25,7 +25,7 @@ import {
   EmployeeService,
   CategoryService,
 } from '@app/core/services';
-import { DATE_FORMAT, DECLARATIONS } from '@app/shared/constant';
+import { DATE_FORMAT, DECLARATIONS, DOCUMENTBYPLANCODE } from '@app/shared/constant';
 import { eventEmitter } from '@app/shared/utils/event-emitter';
 
 import { TABLE_NESTED_HEADERS, TABLE_HEADER_COLUMNS } from '@app/modules/declarations/data/increase-labor';
@@ -279,8 +279,9 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
         declaration.data[index] = record[index];
       });
     });
-
-    this.setDataToFamilies(records);
+    const employeesInDeclaration = this.getEmployeeInDeclaration(records);
+    this.setDataToFamilies(employeesInDeclaration);
+    this.setDateToInformationList(employeesInDeclaration);
     this.eventsSubject.next('validate');
   }
 
@@ -473,8 +474,8 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
       {}
     );
 
-    if (array.origin.id) {
-      object.employeeId = array.origin.id;
+    if (array.origin.employeeId) {
+      object.employeeId = array.origin.employeeId;
     }
     return object;
   }
@@ -494,38 +495,82 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
   }
 
  
-  private setDataToFamilies(records: any)
+  private setDataToFamilies(employeesInDeclaration: any)
   {
-    const familiesList = [];
-    const employeesInDeclaration = this.getEmployeeInDeclaration(records);
-    employeesInDeclaration.forEach(emp => {
-        //Tìm kiếm nhân viên trong bảng thông tin gia đình
-        const currentEmpl = this.familiesList.find(c => c.id === emp.employeeId);
-        //Nếu đã tồn tại nhân viên trong bảng gia đình thì bỏ qua
-        if (currentEmpl) { 
-          return;        
-        }
-        // Lấy thông tin danh sách nhân viên
-        this.employeeService.getEmployeeById(emp.employeeId).subscribe(employee => {
-          if(employee.isMaster) {
-            familiesList.push({
-              isMaster: employee.isMaster,
-              fullName: employee.fullName,
-              relationshipFullName: employee.relationshipFullName,
-              relationshipBookNo: employee.relationshipBookNo,
-              relationshipDocumentType: employee.relationshipDocumentType,
-              relationshipMobile: employee.relationshipMobile,
-            });         
-          }
-          employee.families.forEach(ep => {
-            ep.isMaster = false;
-            familiesList.push(ep);
-          });
+    const familiesList = [];  
+    const employees = [];
 
-        });
+    employeesInDeclaration.forEach(emp => {
+      const currentEmpl = this.informationList.find(c => c.id === emp.employeeId);
+        //Nếu đã tồn tại nhân viên trong bảng gia đình thì bỏ qua
+        if (!currentEmpl) { 
+          employees.push(emp);        
+        }
     });
-    this.familiesList = familiesList;
-    console.log(this.familiesList);
+
+    forkJoin(
+      employees.map(emp => {
+        return this.employeeService.getEmployeeById(emp.employeeId)
+      })
+    ).subscribe(emps => {
+
+      emps.forEach(ep => { 
+
+        if(ep.isMaster) {
+          familiesList.push({
+            isMaster: ep.isMaster,
+            fullName: ep.fullName,
+            relationshipFullName: ep.relationshipFullName,
+            relationshipBookNo: ep.relationshipBookNo,
+            relationshipDocumentType: ep.relationshipDocumentType,
+            relationshipMobile: ep.relationshipMobile,
+          });         
+        }
+
+        if(ep.families) {
+          ep.families.forEach(fa => {
+            fa.isMaster = false;
+            familiesList.push(fa);
+          });
+        }
+        
+      });
+      this.familiesList = familiesList;
+    });
+  }
+
+  private setDateToInformationList(employeesInDeclaration: any) 
+  {
+    const informationList = [];
+    employeesInDeclaration.forEach(emp => {
+      const documentlist = this.getDocumentByPlancode(emp.planCode);
+
+      if(!documentlist) {
+        return;
+      }
+
+      documentlist.forEach(element => {
+        let item = {
+          fullName: emp.fullName,
+          isurranceNo: emp.isurranceNo,
+          documentNo: '',
+          dateRelease: '',
+          isurranceCode: emp.isurranceCode,
+          documentType: element.documentName,         
+          companyRelease: this.currentCredentials.companyInfo.name,
+          documentNote: element.documentNote,
+          documentAppraisal: ('Truy tăng ' + emp.fullName + ' từ' + emp.fromDate)
+        };
+        if(element.isContract) {
+          item.documentNo = emp.contractNo;
+          item.dateRelease =  emp.dateSign;
+        }else {
+          item.documentNo = emp.fromDate;
+        }
+        informationList.push(item);     
+      });
+    });
+    this.informationList = informationList;
   }
 
   private getEmployeeInDeclaration(records: any) {
@@ -551,4 +596,19 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
 
     return declarations;
   }
+
+  getDocumentByPlancode(planCode: string) {
+    if(!planCode) {
+      return null;
+    }
+    console.log(planCode,'planCode');
+    const document = DOCUMENTBYPLANCODE.find(c => c.key === planCode);
+    console.log(document,'document');
+    if(document) {
+      return document.value;
+    }else {
+      return null;
+    }
+  }
+
 }

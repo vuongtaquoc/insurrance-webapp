@@ -197,8 +197,8 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
       {}
     );
 
-    if (array.origin.id) {
-      object.employeeId = array.origin.id;
+    if (array.origin.employeeId) {
+      object.employeeId = array.origin.employeeId;
     }
 
     return object;

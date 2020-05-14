@@ -45,3 +45,73 @@ export const DECLARATIONS =
     value:'Xét duyệt chế độ ốm đau'
   }
 ];
+
+export const DOCUMENTBYPLANCODE = 
+[
+  {
+  key: 'TLD',
+  value: [
+    {
+      documentName: 'Bản chính hợp đồng lao động',
+      documentNote: 'Hợp đồng lao động',
+      isContract: true,
+    },
+    {
+      documentName: 'Bảng chỉnh lương',
+      documentNote: 'Bảng lương nhân viên',
+      isContract: false,
+    }
+  ]},
+  {
+    key: 'TNTG',
+    value: [
+      {
+        documentName: 'Bản chính hợp đồng lao động',
+        documentNote: 'Hợp đồng lao động',
+        isContract: true,
+      },
+      {
+        documentName: 'Bảng chỉnh lương',
+        documentNote: 'Bảng lương nhân viên',
+        isContract: false,
+      }
+    ]},
+    {
+      key: 'TD',
+      value: [
+        {
+          documentName: 'Bản chính hợp đồng lao động',
+          documentNote: 'Hợp đồng lao động',
+          isContract: true,
+        },
+        {
+          documentName: 'Bảng chỉnh lương',
+          documentNote: 'Bảng lương nhân viên',
+          isContract: false,
+        }
+      ]},
+      {
+        key: 'TH',
+        value: [
+          {
+            documentName: 'Bản chính hợp đồng lao động',
+            documentNote: 'Hợp đồng lao động',
+            isContract: true,
+          },
+          {
+            documentName: 'Bảng chỉnh lương',
+            documentNote: 'Bảng lương nhân viên',
+            isContract: false,
+          }
+        ]},
+        ,
+      {
+        key: 'AD',
+        value: [
+          {
+            documentName: 'Bảng chỉnh lương',
+            documentNote: 'Bảng lương nhân viên',
+            isContract: false,
+          }
+        ]},
+];

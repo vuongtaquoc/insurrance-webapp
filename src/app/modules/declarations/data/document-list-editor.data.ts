@@ -40,6 +40,7 @@ export const TABLE_HEADER_COLUMNS = [{
   type: 'text',
   width: 170,
   title: '(5)',
+  wordWrap: true,
   key: 'documentType'
 }, {
   type: 'text',
@@ -64,6 +65,7 @@ export const TABLE_HEADER_COLUMNS = [{
 }, {
   type: 'text',
   width: 155,
+  wordWrap: true,
   title: '(9)',
   align: 'left',
   key: 'companyRelease'

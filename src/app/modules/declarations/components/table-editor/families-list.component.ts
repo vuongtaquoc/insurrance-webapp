@@ -34,6 +34,7 @@ export class FamiliesListTableComponent implements OnInit, OnDestroy, OnChanges,
 
   ngOnChanges(changes) {
     if (changes.data && changes.data.currentValue.length) {
+
       this.updateTable();
     }
   }
@@ -99,7 +100,7 @@ export class FamiliesListTableComponent implements OnInit, OnDestroy, OnChanges,
     }
 
     this.data = data;
-    this.spreadsheet.setData(this.data);
+    this.spreadsheet.setData(data);
   }
 
   private getContainerSize() {
