@@ -67,7 +67,7 @@ export class EmployeeFamilyTableComponent implements OnInit, OnDestroy, OnChange
 
   ngOnChanges(changes) {
     if (changes.data && changes.data.currentValue && changes.data.currentValue.length) {
-      this.updateTable();
+      //   this.updateTable();
     }
   }
 
@@ -177,7 +177,6 @@ export class EmployeeFamilyTableComponent implements OnInit, OnDestroy, OnChange
   private updateEditorToColumn(key, type, isCustom = false) {
     const column = this.columns.find(c => c.key === key);
 
-    console.log(column, isCustom)
     if (!column) return;
 
     if (isCustom) {
