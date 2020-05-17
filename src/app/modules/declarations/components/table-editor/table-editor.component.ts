@@ -139,7 +139,6 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
     this.spreadsheet.setData(data);
     this.spreadsheet.setReadonlyRowsTitle(readonlyIndexes, [0, 1]);
     this.spreadsheet.setReadonlyRowsFormula(formulaIndexes, formulaIgnoreIndexes);
-
     // update dropdown data
     data.forEach((row, rowIndex) => {
       this.columns.forEach((column, colIndex) => {

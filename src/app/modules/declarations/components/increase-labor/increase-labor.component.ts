@@ -24,6 +24,7 @@ import {
   DepartmentService,
   EmployeeService,
   CategoryService,
+  RelationshipService,
 } from '@app/core/services';
 import { DATE_FORMAT, DECLARATIONS, DOCUMENTBYPLANCODE } from '@app/shared/constant';
 import { eventEmitter } from '@app/shared/utils/event-emitter';
@@ -84,7 +85,8 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     private employeeService: EmployeeService,
     private authenticationService: AuthenticationService,
     private categoryService: CategoryService,
-    private modalService: NzModalService
+    private modalService: NzModalService,
+    private relationshipService: RelationshipService
   ) {
     this.getRecipientsDistrictsByCityCode = this.getRecipientsDistrictsByCityCode.bind(this);
     this.getRecipientsWardsByDistrictCode = this.getRecipientsWardsByDistrictCode.bind(this);
@@ -92,6 +94,12 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     this.getRegisterWardsByDistrictCode = this.getRegisterWardsByDistrictCode.bind(this);
     this.getHospitalsByCityCode = this.getHospitalsByCityCode.bind(this);
     this.getPlanByParent = this.getPlanByParent.bind(this);
+    this.getRegisterDistrictsByCityCode = this.getRegisterDistrictsByCityCode.bind(this);
+    this.getRelationshipDistrictsByCityCode = this.getRelationshipDistrictsByCityCode.bind(this);
+    this.getRelationshipWardsByDistrictCode = this.getRelationshipWardsByDistrictCode.bind(this);
+    this.getRecipientsVillageCodeByWarssCode = this.getRecipientsVillageCodeByWarssCode.bind(this);
+    this.getDistrictsByCityCode = this.getDistrictsByCityCode.bind(this);
+    this.getWardsByDistrictCode = this.getWardsByDistrictCode.bind(this);    
   }
 
   ngOnInit() {
@@ -120,8 +128,9 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
       this.salaryAreaService.getSalaryAreas(),
       this.planService.getPlans(this.declarationCode),
       this.departmentService.getDepartments(),
-      this.categoryService.getCategories('relationshipDocumentType')
-    ]).subscribe(([ cities, nationalities, peoples, salaryAreas, plans, departments,relationshipDocumentTypies ]) => {
+      this.categoryService.getCategories('relationshipDocumentType'),
+      this.relationshipService.getRelationships()
+    ]).subscribe(([ cities, nationalities, peoples, salaryAreas, plans, departments,relationshipDocumentTypies, relationShips ]) => {
       this.updateSourceToColumn(this.tableHeaderColumns, 'peopleCode', peoples);
       this.updateSourceToColumn(this.tableHeaderColumns, 'nationalityCode', nationalities);
       this.updateSourceToColumn(this.tableHeaderColumns, 'registerCityCode', cities);
@@ -129,6 +138,13 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
       this.updateSourceToColumn(this.tableHeaderColumns, 'salaryAreaCode', salaryAreas);
       this.updateSourceToColumn(this.tableHeaderColumns, 'planCode', plans);
       this.updateSourceToColumn(this.tableHeaderColumns, 'departmentId', departments);
+
+      //families table 
+      this.updateSourceToColumn(this.tableHeaderColumnsFamilies, 'relationshipCityCode', cities);
+      this.updateSourceToColumn(this.tableHeaderColumnsFamilies, 'cityCode', cities);
+      this.updateSourceToColumn(this.tableHeaderColumnsFamilies, 'relationshipDocumentType', relationshipDocumentTypies);
+      this.updateSourceToColumn(this.tableHeaderColumnsFamilies, 'relationshipCode', relationShips);
+      
       // get filter columns
       this.updateFilterToColumn(this.tableHeaderColumns, 'registerDistrictCode', this.getRegisterDistrictsByCityCode);
       this.updateFilterToColumn(this.tableHeaderColumns, 'registerWardsCode', this.getRegisterWardsByDistrictCode);
@@ -136,12 +152,13 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
       this.updateFilterToColumn(this.tableHeaderColumns, 'recipientsWardsCode', this.getRecipientsWardsByDistrictCode);
       this.updateFilterToColumn(this.tableHeaderColumns, 'hospitalFirstRegistCode', this.getHospitalsByCityCode);
       this.updateFilterToColumn(this.tableHeaderColumns, 'planCode', this.getPlanByParent);
+      //families filter columns
 
-      this.updateSourceToColumn(this.tableHeaderColumnsFamilies, 'relationshipCityCode', cities);
-      this.updateSourceToColumn(this.tableHeaderColumnsFamilies, 'cityCode', cities);
-      this.updateFilterToColumn(this.tableHeaderColumnsFamilies, 'relationshipDistrictCode', this.getRegisterDistrictsByCityCode);
-      this.updateFilterToColumn(this.tableHeaderColumnsFamilies, 'relationshipDistrictCode', this.getRegisterDistrictsByCityCode);
-
+      this.updateFilterToColumn(this.tableHeaderColumnsFamilies, 'relationshipDistrictCode', this.getRelationshipDistrictsByCityCode);
+      this.updateFilterToColumn(this.tableHeaderColumnsFamilies, 'relationshipWardsCode', this.getRelationshipWardsByDistrictCode);
+      this.updateFilterToColumn(this.tableHeaderColumnsFamilies, 'relationshipVillageCode', this.getRecipientsVillageCodeByWarssCode);
+      this.updateFilterToColumn(this.tableHeaderColumnsFamilies, 'districtCode', this.getDistrictsByCityCode);
+      this.updateFilterToColumn(this.tableHeaderColumnsFamilies, 'wardsCode', this.getWardsByDistrictCode);
 
       if (this.declarationId) {
         this.declarationService.getDeclarationsByDocumentId(this.declarationId, this.tableHeaderColumns).subscribe(declarations => {
@@ -257,7 +274,45 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     });
   }
 
-  handleChangeTable({ instance, cell, c, r, records }) {
+  handleChangeDataFamilies({ instance, cell, c, r, records }) {
+    if (c !== null && c !== undefined) {
+      c = Number(c);
+      const column = this.tableHeaderColumnsFamilies[c];
+      if (column.key === 'isMaster') { 
+        const employeeIsMaster = instance.jexcel.getValueFromCoords(c, r);
+
+        if(employeeIsMaster === true) {
+         
+          this.employeeService.getEmployeeById(records[r].options.employeeId).subscribe(emp => {
+            this.updateNextColumns(instance, r, emp.fullName, [ c + 1]);
+            this.updateNextColumns(instance, r, emp.relationshipMobile, [ c + 2]);
+            this.updateNextColumns(instance, r, emp.relationshipDocumentType, [ c + 3]);
+            this.updateNextColumns(instance, r, emp.relationshipBookNo, [ c + 4]);
+            this.updateNextColumns(instance, r, emp.recipientsCityCode, [ c + 5]);
+            this.updateNextColumns(instance, r, emp.recipientsDistrictCode, [ c + 6]);
+            this.updateNextColumns(instance, r, emp.recipientsWardsCode, [ c + 7]);
+            this.updateNextColumns(instance, r, emp.fullName, [ c + 10]);
+            this.updateNextColumns(instance, r, emp.isurranceCode, [ c + 11]);
+            this.updateNextColumns(instance, r, emp.typeBirthday, [ c + 12]);
+            this.updateNextColumns(instance, r, emp.birthday, [ c + 13]);
+            this.updateNextColumns(instance, r, emp.gender, [ c + 14]);
+            this.updateNextColumns(instance, r, emp.recipientsCityCode, [ c + 15]);
+            this.updateNextColumns(instance, r, emp.relationshipDistrictCode, [ c + 16]);
+            this.updateNextColumns(instance, r, emp.relationshipWardsCode, [ c + 17]);
+            this.updateNextColumns(instance, r, '00', [21]);
+            this.updateNextColumns(instance, r, emp.identityCar, [c + 20]);            
+          });
+
+        }else {
+          this.updateNextColumns(instance, r, '', [ c + 1 , c + 2, c + 3, c + 4, c + 5, c + 6, c + 7, c + 8,
+          c + 9, c + 10, c + 11, c + 11,c + 12,c + 13,c + 14,c + 15,c + 16,c + 17]);
+        }
+
+      }
+    }
+  }
+
+  handleChangeTable({ instance, cell, c, r, records }) {    
     if (c !== null && c !== undefined) {
       c = Number(c);
       const column = this.tableHeaderColumns[c];
@@ -307,7 +362,6 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
   }
 
   checkInsurranceCode() {
-    console.log(this.declarations)
     const declarations = [...this.declarations];
     const INSURRANCE_CODE_INDEX = 4;
     const INSURRANCE_STATUS_INDEX = 5;
@@ -386,6 +440,34 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     });
   }
 
+  private getRecipientsWardsByDistrictCode(instance, cell, c, r, source) {
+    const value = instance.jexcel.getValueFromCoords(c - 1, r);
+
+    if (!value) {
+      return [];
+    }
+
+    return this.districtService.getDistrict(value).toPromise().then(districts => {
+      this.updateSourceToColumn(this.tableHeaderColumns,'recipientsWardsCode', districts);
+
+      return districts;
+    });
+  }
+
+  private getRelationshipDistrictsByCityCode(instance, cell, c, r, source) {
+    const value = instance.jexcel.getValueFromCoords(c - 1, r);
+
+    if (!value) {
+      return [];
+    }
+
+    return this.districtService.getDistrict(value).toPromise().then(districts => {
+      this.updateSourceToColumn(this.tableHeaderColumnsFamilies,'relationshipDistrictCode', districts);
+
+      return districts;
+    });
+  }
+
   private getRegisterWardsByDistrictCode(instance, cell, c, r, source) {
     const value = instance.jexcel.getValueFromCoords(c - 1, r);
 
@@ -413,7 +495,21 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     });
   }
 
-  private getRecipientsWardsByDistrictCode(instance, cell, c, r, source) {
+  private getDistrictsByCityCode(instance, cell, c, r, source) {
+    const value = instance.jexcel.getValueFromCoords(c - 1, r);
+
+    if (!value) {
+      return [];
+    }
+
+    return this.districtService.getDistrict(value).toPromise().then(districts => {
+      this.updateSourceToColumn(this.tableHeaderColumnsFamilies, 'districtCode', districts);
+
+      return districts;
+    });
+  }
+
+  private getWardsByDistrictCode(instance, cell, c, r, source) {
     const value = instance.jexcel.getValueFromCoords(c - 1, r);
 
     if (!value) {
@@ -421,7 +517,33 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     }
 
     return this.wardService.getWards(value).toPromise().then(wards => {
-      this.updateSourceToColumn(this.tableHeaderColumns, 'recipientsWardsCode', wards);
+      this.updateSourceToColumn(this.tableHeaderColumnsFamilies,'wardsCode', wards);
+      return wards;
+    });
+  }
+
+  private getRelationshipWardsByDistrictCode(instance, cell, c, r, source) {
+    const value = instance.jexcel.getValueFromCoords(c - 1, r);
+
+    if (!value) {
+      return [];
+    }
+
+    return this.wardService.getWards(value).toPromise().then(wards => {
+      this.updateSourceToColumn(this.tableHeaderColumnsFamilies,'relationshipWardsCode', wards);
+      return wards;
+    });
+  }
+  
+  private getRecipientsVillageCodeByWarssCode(instance, cell, c, r, source) {
+    const value = instance.jexcel.getValueFromCoords(c - 1, r);
+
+    if (!value) {
+      return [];
+    }
+
+    return this.wardService.getWards(value).toPromise().then(wards => {
+      this.updateSourceToColumn(this.tableHeaderColumnsFamilies, 'relationshipVillageCode', wards);
 
       return wards;
     });
@@ -499,7 +621,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
           return { ...combine };
         }
 
-        if (column.type === 'numberic') {
+        if (column.type === 'numeric') {
           return { ...combine, [ column.key ]: array[current].toString().split(' ').join('') };
         }
 
@@ -533,15 +655,23 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
   {
     const familiesList = [];  
     const employees = [];
-
+   
     employeesInDeclaration.forEach(emp => {
-      const currentEmpl = this.informationList.find(c => c.id === emp.employeeId);
+      const currentEmpl = this.familiesList.find(c => c.employeeId === emp.employeeId);
         //Nếu đã tồn tại nhân viên trong bảng gia đình thì bỏ qua
         if (!currentEmpl) { 
           employees.push(emp);        
+        }else {
+         
+          const currentFamilies = this.familiesList.filter(fm => fm.employeeId === emp.employeeId);
+          if(currentFamilies){
+            currentFamilies.forEach(oldemp => {
+              familiesList.push(oldemp);
+            });
+          }
+         
         }
     });
-
     forkJoin(
       employees.map(emp => {
         return this.employeeService.getEmployeeById(emp.employeeId)
@@ -549,23 +679,41 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     ).subscribe(emps => {
 
       emps.forEach(ep => { 
+       
+        let master = this.getMaster(ep.families);
+        master.isMaster = ep.isMaster;
+        master.employeeName = ep.fullName;
+        master.employeeId = ep.employeeId;
+        master.relationshipFullName = ep.relationshipFullName;
+        master.relationshipBookNo = ep.relationshipBookNo;
+        master.relationshipDocumentType =  ep.relationshipDocumentType;
+        master.relationshipCityCode = ep.relationshipCityCode;
+        master.relationshipDistrictCode = ep.relationshipDistrictCode;
+        master.relationshipWardsCode = ep.relationshipWardsCode;
+        master.relationshipVillageCode = ep.relationshipVillageCode;
+        master.relationshipCode = '00';
+        familiesList.push(master);          
 
-        if(ep.isMaster) {
-          familiesList.push({
-            isMaster: ep.isMaster,
-            fullName: ep.fullName,
-            relationshipFullName: ep.relationshipFullName,
-            relationshipBookNo: ep.relationshipBookNo,
-            relationshipDocumentType: ep.relationshipDocumentType,
-            relationshipMobile: ep.relationshipMobile,
-          });         
-        }
-
-        if(ep.families) {
+        if(ep.families.length > 0) {
           ep.families.forEach(fa => {
+            if(fa.relationshipCode === '00') {
+              return;
+            }
+
             fa.isMaster = false;
+            fa.employeeId = ep.employeeId;
             familiesList.push(fa);
           });
+        }else {
+          // nếu chưa có thông tin của gia đình thì add dòng trống
+          familiesList.push({
+              isMaster:false,
+              employeeId: ep.employeeId,
+          });
+          familiesList.push({
+            isMaster:false,
+            employeeId: ep.employeeId,
+        });
         }
         
       });
@@ -578,11 +726,11 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     const informationList = [];
     employeesInDeclaration.forEach(emp => {
       const documentlist = this.getDocumentByPlancode(emp.planCode);
-
+      
       if(!documentlist) {
         return;
       }
-
+      
       documentlist.forEach(element => {
         let item = {
           fullName: emp.fullName,
@@ -606,7 +754,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     });
     this.informationList = informationList;
   }
-
+  
   private getEmployeeInDeclaration(records: any) {
     const employeesInDeclaration = [];
     records.forEach(record => {
@@ -635,14 +783,26 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     if(!planCode) {
       return null;
     }
-    console.log(planCode,'planCode');
-    const document = DOCUMENTBYPLANCODE.find(c => c.key === planCode);
-    console.log(document,'document');
+    const document = _.find(DOCUMENTBYPLANCODE, {
+      key: planCode,
+    });
+    
     if(document) {
       return document.value;
     }else {
       return null;
     }
+  }
+
+
+  getMaster(families: any) {
+    const master = _.find(families, {
+      relationshipCode: '00',
+    });
+    if(master) {
+      return master;
+    }
+    return {};
   }
 
 }

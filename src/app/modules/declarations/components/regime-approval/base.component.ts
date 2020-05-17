@@ -226,8 +226,8 @@ export class RegimeApprovalBaseComponent {
       {}
     );
 
-    if (array.origin.id) {
-      object.employeeId = array.origin.id;
+    if (array.origin.employeeId) {
+      object.employeeId = array.origin.employeeId;
     }
 
     object.part = part === 'part1' ? 'I' : 'II';

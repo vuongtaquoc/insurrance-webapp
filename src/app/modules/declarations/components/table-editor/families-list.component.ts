@@ -34,7 +34,6 @@ export class FamiliesListTableComponent implements OnInit, OnDestroy, OnChanges,
 
   ngOnChanges(changes) {
     if (changes.data && changes.data.currentValue.length) {
-
       this.updateTable();
     }
   }
@@ -79,28 +78,55 @@ export class FamiliesListTableComponent implements OnInit, OnDestroy, OnChanges,
     const data = [];
 
     this.data.forEach((d, index) => {
-      const families = [];
-
-      this.columns.forEach(column => {
-        families.push(d[column.key]);
+      const family: any = [];
+      this.columns.forEach((column, colIndex) => {
+        family.push(d[column.key]);
       });
 
-      data.push(families);
+      family.options = {
+        employeeId: d.employeeId,
+      }
+      data.push(family);
     });
 
-    // init default data
-    if (data.length < 15) {
-      const length = 15 - data.length;
-
-      for (let i = 1; i <= length; i++) {
-        data.push([ ]);
+    //update order 
+    let i = 1;
+    let numberOfMember = 1;
+    data.forEach(d => {
+      if(d[2] === true) {
+        d[0] = i;
+        i++;
+        numberOfMember = 1;
+      }else {
+        d[11] = numberOfMember;
+        numberOfMember++;
       }
-
-      data.forEach((d, i) => d[0] = i + 1);
-    }
+    });
 
     this.data = data;
     this.spreadsheet.setData(data);
+    this.data.forEach((d, index) => {
+      
+      this.columns.forEach((column, colIndex) => {
+        if (d[2] !== true && colIndex < 11) {
+          this.spreadsheet.setReadonlyCellAndClear(index, colIndex);
+        }
+        console.log(d[21]);
+        if(d[21] === '00') {
+          this.spreadsheet.setReadonly(index, 21);
+        }
+        
+        if (d[2] === true) {
+          this.spreadsheet.setCellClass(index, colIndex, 'families-cell');
+        }
+
+        // update dropdown data
+        if (column.defaultLoad) {
+          this.spreadsheet.updateDropdownValue(colIndex, index);
+        }
+
+      });
+    });
   }
 
   private getContainerSize() {
