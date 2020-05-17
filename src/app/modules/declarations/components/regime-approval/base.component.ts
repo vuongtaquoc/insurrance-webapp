@@ -69,7 +69,7 @@ export class RegimeApprovalBaseComponent {
       const employeeExists = declarations.filter(d => d.parentKey === type);
 
       this.employeeSelected.forEach(employee => {
-        const accepted = employeeExists.findIndex(e => e.origin.id === employee.id) === -1;
+        const accepted = employeeExists.findIndex(e => (e.origin.employeeId || e.origin.id) === employee.id) === -1;
 
         // replace
         employee.gender = !employee.gender;

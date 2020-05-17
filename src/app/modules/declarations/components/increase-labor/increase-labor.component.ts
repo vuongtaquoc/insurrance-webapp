@@ -171,6 +171,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
             totalCardInsurance: declarations.totalCardInsurance
           };
 
+          console.log(this.declarations)
         });
 
         this.isTableValid = true;
@@ -212,7 +213,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
       const employeeExists = declarations.filter(d => d.parentKey === type);
 
       this.employeeSelected.forEach(employee => {
-        const accepted = employeeExists.findIndex(e => e.origin.id === employee.id) === -1;
+        const accepted = employeeExists.findIndex(e => (e.origin.employeeId || e.origin.id) === employee.id) === -1;
 
         // replace
         employee.gender = !employee.gender;
@@ -653,14 +654,14 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
 
   private setDataToFamilies(employeesInDeclaration: any)
   {
-    const familiesList = [];  
+    const familiesList = [];
     const employees = [];
    
     employeesInDeclaration.forEach(emp => {
       const currentEmpl = this.familiesList.find(c => c.employeeId === emp.employeeId);
         //Nếu đã tồn tại nhân viên trong bảng gia đình thì bỏ qua
-        if (!currentEmpl) { 
-          employees.push(emp);        
+        if (!currentEmpl) {
+          employees.push(emp);
         }else {
          
           const currentFamilies = this.familiesList.filter(fm => fm.employeeId === emp.employeeId);
@@ -678,7 +679,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
       })
     ).subscribe(emps => {
 
-      emps.forEach(ep => { 
+      emps.forEach(ep => {
        
         let master = this.getMaster(ep.families);
         master.isMaster = ep.isMaster;
@@ -715,13 +716,13 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
             employeeId: ep.employeeId,
         });
         }
-        
+
       });
       this.familiesList = familiesList;
     });
   }
 
-  private setDateToInformationList(employeesInDeclaration: any) 
+  private setDateToInformationList(employeesInDeclaration: any)
   {
     const informationList = [];
     employeesInDeclaration.forEach(emp => {
@@ -738,7 +739,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
           documentNo: '',
           dateRelease: '',
           isurranceCode: emp.isurranceCode,
-          documentType: element.documentName,         
+          documentType: element.documentName,
           companyRelease: this.currentCredentials.companyInfo.name,
           documentNote: element.documentNote,
           documentAppraisal: ('Truy tăng ' + emp.fullName + ' từ' + emp.fromDate)
@@ -749,7 +750,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
         }else {
           item.documentNo = emp.fromDate;
         }
-        informationList.push(item);     
+        informationList.push(item);
       });
     });
     this.informationList = informationList;
