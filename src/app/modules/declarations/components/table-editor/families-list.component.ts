@@ -69,7 +69,7 @@ export class FamiliesListTableComponent implements OnInit, OnDestroy, OnChanges,
 
           instance.jexcel.setValue(nextColumn, '');
         }
-        
+
         this.validationCellByOtherCell(value, column, r, instance, records);
       },
       ondeleterow: (el, rowNumber, numOfRows) => {
@@ -102,7 +102,7 @@ export class FamiliesListTableComponent implements OnInit, OnDestroy, OnChanges,
       data.push(family);
     });
 
-    //update order 
+    //update order
     let i = 1;
     let numberOfMember = 1;
     data.forEach(d => {
@@ -121,7 +121,7 @@ export class FamiliesListTableComponent implements OnInit, OnDestroy, OnChanges,
     this.data = data;
     this.spreadsheet.setData(data);
     this.data.forEach((d, index) => {
-      
+
       this.columns.forEach((column, colIndex) => {
         if (d[2] !== true && colIndex < 11) {
           this.spreadsheet.setReadonlyCellAndClear(index, colIndex);
@@ -132,7 +132,7 @@ export class FamiliesListTableComponent implements OnInit, OnDestroy, OnChanges,
         }else {
           this.spreadsheet.setReadonlyCellAndClear(index, 17);
         }
-        
+
         if (d[2] === true) {
           this.spreadsheet.setCellClass(index, colIndex, 'families-cell');
         }
@@ -165,60 +165,29 @@ export class FamiliesListTableComponent implements OnInit, OnDestroy, OnChanges,
   }
 
   private validationCellByOtherCell(cellValue, column, y, instance, records) {
-    //relationshipFullName
     let x;
-    console.log(records)
+    let otherX;
 
     if (column.key === 'relationshipFullName') {
-      x = this.columns.findIndex(c => c.key === 'fullName');
-    } else if (column.key === 'fullName') {
       x = this.columns.findIndex(c => c.key === 'relationshipFullName');
+      otherX = this.columns.findIndex(c => c.key === 'fullName');
+    } else if (column.key === 'fullName') {
+      x = this.columns.findIndex(c => c.key === 'fullName');
+      otherX = this.columns.findIndex(c => c.key === 'relationshipFullName');
     }
 
-    // const cellSelected = column.source.find(s => s.id === cellValue);
     const validationColumn = this.columns[x];
 
     const fieldName = {
       name: column.key === 'relationshipFullName' ? 'Chủ hộ' : 'Họ và tên',
-      otherField: column.key === 'relationshipFullName' ? 'Họ và tên' : 'Chủ hộ'
+      otherName: column.key === 'relationshipFullName' ? 'Họ và tên' : 'Chủ hộ'
     };
 
     validationColumn.validations = {
-      duplicateOtherField: records[y][x] 
+      duplicateOtherField: records[y][otherX]
     };
     validationColumn.fieldName = fieldName;
 
     instance.jexcel.validationCell(y, x, fieldName, validationColumn.validations);
-
-    // if (!rules) {
-    //   validationColumn.validations = undefined;
-    //   validationColumn.fieldName = undefined;
-    //   instance.jexcel.clearValidation(y, x);
-    //   return;
-    // }
-
-
-    // if (column.key === 'fullName') {
-    //   const x = this.columns.findIndex(c => c.key === 'fullName');
-    //   const cellSelected = column.source.find(s => s.id === cellValue);
-    //   const validationColumn = this.columns[x];
-
-    //   if (!rules) {
-    //     validationColumn.validations = undefined;
-    //     validationColumn.fieldName = undefined;
-    //     instance.jexcel.clearValidation(y, x);
-    //     return;
-    //   }
-
-    //   const fieldName = {
-    //     name: 'Số con',
-    //     otherField: `phương án ${ cellSelected.name }`
-    //   };
-
-    //   validationColumn.validations = rules;
-    //   validationColumn.fieldName = fieldName;
-
-    //   instance.jexcel.validationCell(y, x, fieldName, rules);
-    // }
   }
 }

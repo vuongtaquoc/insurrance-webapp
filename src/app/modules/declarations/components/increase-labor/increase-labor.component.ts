@@ -101,7 +101,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     this.getRelationshipWardsByDistrictCode = this.getRelationshipWardsByDistrictCode.bind(this);
     this.getRecipientsVillageCodeByWarssCode = this.getRecipientsVillageCodeByWarssCode.bind(this);
     this.getDistrictsByCityCode = this.getDistrictsByCityCode.bind(this);
-    this.getWardsByDistrictCode = this.getWardsByDistrictCode.bind(this);    
+    this.getWardsByDistrictCode = this.getWardsByDistrictCode.bind(this);
     this.getRelationShips = this.getRelationShips.bind(this);
   }
 
@@ -142,12 +142,12 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
       this.updateSourceToColumn(this.tableHeaderColumns, 'planCode', plans);
       this.updateSourceToColumn(this.tableHeaderColumns, 'departmentId', departments);
 
-      //families table 
+      //families table
       this.updateSourceToColumn(this.tableHeaderColumnsFamilies, 'relationshipCityCode', cities);
       this.updateSourceToColumn(this.tableHeaderColumnsFamilies, 'cityCode', cities);
       this.updateSourceToColumn(this.tableHeaderColumnsFamilies, 'relationshipDocumentType', relationshipDocumentTypies);
       this.updateSourceToColumn(this.tableHeaderColumnsFamilies, 'relationshipCode', relationShips);
-      
+
       // get filter columns
       this.updateFilterToColumn(this.tableHeaderColumns, 'registerDistrictCode', this.getRegisterDistrictsByCityCode);
       this.updateFilterToColumn(this.tableHeaderColumns, 'registerWardsCode', this.getRegisterWardsByDistrictCode);
@@ -163,7 +163,6 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
       this.updateFilterToColumn(this.tableHeaderColumnsFamilies, 'districtCode', this.getDistrictsByCityCode);
       this.updateFilterToColumn(this.tableHeaderColumnsFamilies, 'wardsCode', this.getWardsByDistrictCode);
       this.updateFilterToColumn(this.tableHeaderColumnsFamilies, 'relationshipCode', this.getRelationShips);
-      console.log(this.tableHeaderColumnsFamilies)
 
       if (this.declarationId) {
         this.declarationService.getDeclarationsByDocumentId(this.declarationId, this.tableHeaderColumns).subscribe(declarations => {
@@ -283,11 +282,11 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     if (c !== null && c !== undefined) {
       c = Number(c);
       const column = this.tableHeaderColumnsFamilies[c];
-      if (column.key === 'isMaster') { 
+      if (column.key === 'isMaster') {
         const employeeIsMaster = instance.jexcel.getValueFromCoords(c, r);
 
         if(employeeIsMaster === true) {
-         
+
           this.employeeService.getEmployeeById(records[r].options.employeeId).subscribe(emp => {
             this.updateNextColumns(instance, r, emp.fullName, [ c + 1]);
             this.updateNextColumns(instance, r, emp.relationshipMobile, [ c + 2]);
@@ -305,7 +304,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
             this.updateNextColumns(instance, r, emp.relationshipDistrictCode, [ c + 17]);
             this.updateNextColumns(instance, r, emp.relationshipWardsCode, [ c + 18]);
             this.updateNextColumns(instance, r, '00', [21]);
-            this.updateNextColumns(instance, r, emp.identityCar, [c + 20]);            
+            this.updateNextColumns(instance, r, emp.identityCar, [c + 20]);
           });
 
         }else {
@@ -317,7 +316,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     }
   }
 
-  handleChangeTable({ instance, cell, c, r, records }) {    
+  handleChangeTable({ instance, cell, c, r, records }) {
     if (c !== null && c !== undefined) {
       c = Number(c);
       const column = this.tableHeaderColumns[c];
@@ -347,7 +346,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
   }
 
   handleDeleteData({ rowNumber, numOfRows, records }) {
-     
+
     const declarations = [ ...this.declarations ];
 
     const declarationsDeleted = declarations.splice(rowNumber, numOfRows);
@@ -363,8 +362,8 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     const employeeIdDeleted = [];
     declarationsDeleted.forEach(itemDeleted => {
       const item = this.declarations.find(d => d.origin.employeeId === itemDeleted.origin.employeeId);
-     
-      if(item){      
+
+      if(item){
         return;
       }
       employeeIdDeleted.push(itemDeleted.origin.employeeId);
@@ -373,7 +372,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     employeeIdDeleted.forEach(id => {
       familiesList = familiesList.filter(fa => fa.employeeId !== id);
     });
-   
+
     if(familiesList.length === 0) {
       familiesList.push({
         isMaster: false,
@@ -450,8 +449,6 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
 
   private updateFilterToColumn(tableHeaderColumns,key, filterCb) {
     const column = tableHeaderColumns.find(c => c.key === key);
-
-    console.log(column, key)
 
     if (column) {
       column.filter = filterCb;
@@ -566,7 +563,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
       return wards;
     });
   }
-  
+
   private getRecipientsVillageCodeByWarssCode(instance, cell, c, r, source) {
     const value = instance.jexcel.getValueFromCoords(c - 1, r);
 
@@ -599,7 +596,6 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
 
   private getRelationShips(instance, cell, c, r, source) {
     const row = instance.jexcel.getRowFromCoords(r);
-    console.log(row,'getRelationShips');
     return source;
   }
 
@@ -695,7 +691,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     const employees = [];
     const employeesId = [];
     employeesInDeclaration.forEach(emp => {
-      
+
       const employeeId = employeesId.find(c => c === emp.employeeId);
       if(employeeId) {
         return;
@@ -708,14 +704,14 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
         if (!currentEmpl) {
           employees.push(emp);
         }else {
-         
+
           const currentFamilies = this.familiesList.filter(fm => fm.employeeId === emp.employeeId);
           if(currentFamilies){
             currentFamilies.forEach(oldEmp => {
               familiesList.push(oldEmp);
             });
           }
-         
+
         }
     });
 
@@ -727,7 +723,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     ).subscribe(emps => {
 
       emps.forEach(ep => {
-       
+
         let master = this.getMaster(ep.families);
         master.isMaster = ep.isMaster;
         master.employeeName = ep.fullName;
@@ -740,7 +736,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
         master.relationshipWardsCode = ep.relationshipWardsCode;
         master.relationshipVillageCode = ep.relationshipVillageCode;
         master.relationshipCode = '00';
-        familiesList.push(master);          
+        familiesList.push(master);
 
         if(ep.families.length > 0) {
           ep.families.forEach(fa => {
@@ -774,11 +770,11 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     const informationList = [];
     employeesInDeclaration.forEach(emp => {
       const documentlist = this.getDocumentByPlancode(emp.planCode);
-      
+
       if(!documentlist) {
         return;
       }
-      
+
       documentlist.forEach(element => {
         let item = {
           fullName: emp.fullName,
@@ -802,7 +798,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     });
     this.informationList = informationList;
   }
-  
+
   private getEmployeeInDeclaration(records: any) {
     const employeesInDeclaration = [];
     records.forEach(record => {
@@ -834,7 +830,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     const document = _.find(DOCUMENTBYPLANCODE, {
       key: planCode,
     });
-    
+
     if(document) {
       return document.value;
     }else {
