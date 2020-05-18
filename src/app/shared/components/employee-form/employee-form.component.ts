@@ -59,6 +59,7 @@ export class EmployeeFormComponent implements OnInit {
   relationshipDistricts: District[] = [];
   relationshipWards: Wards[] = [];
   departments: DropdownItem[] = [];
+  typeBirthdays: DropdownItem[] = [];
   relationshipVillages: DropdownItem[] = [];
   processSubject: Subject<string> = new Subject<string>();
   familySubject: Subject<string> = new Subject<string>();
@@ -97,6 +98,7 @@ export class EmployeeFormComponent implements OnInit {
       this.bankService.getBanks(),
       this.departmentService.getDepartments(),
       this.categoryService.getCategories('relationshipDocumentType'),
+      this.categoryService.getCategories('typeBirthday')
     ];
 
     if (employee.registerCityCode) jobs.push(this.districtService.getDistrict(employee.registerCityCode));
@@ -109,8 +111,10 @@ export class EmployeeFormComponent implements OnInit {
     if (employee.relationshipWardsCode) jobs.push(this.villageService.getVillage(employee.relationshipWardsCode));
 
     forkJoin(jobs).subscribe(([ cities, nationalities, peoples, salaryAreas, paymentStatus,
-       paymentMethods, relationships, banks, departments,
-       registerDistricts, registerWards, recipientsDistricts, recipientsWards, hospitals, relationshipDistricts, relationshipWards, relationshipVillages,relationshipDocumentTypies ]) => {
+       paymentMethods, relationships, banks, departments,relationshipDocumentTypies, typeBirthdays,
+       registerDistricts, registerWards, recipientsDistricts, recipientsWards, hospitals, relationshipDistricts, relationshipWards, relationshipVillages ]) => {
+
+      console.log(relationshipDocumentTypies);
       this.nationalities = nationalities;
       this.peoples = peoples;
       this.salaryAreas = salaryAreas;
@@ -121,6 +125,7 @@ export class EmployeeFormComponent implements OnInit {
       this.banks = banks;
       this.departments = departments;
       this.relationshipDocumentTypies = relationshipDocumentTypies;
+      this.typeBirthdays = typeBirthdays;
 
       if (registerDistricts) this.registerDistricts = registerDistricts;
       if (registerWards) this.registerWards = registerWards;
@@ -132,7 +137,7 @@ export class EmployeeFormComponent implements OnInit {
       if (relationshipVillages) this.relationshipVillages = relationshipVillages;
     });
 
-    const dateFormat = employee.typeBirthday === '1' ? DATE_FORMAT.ONLY_MONTH_YEAR : DATE_FORMAT.ONLY_YEAR;
+    const dateFormat = employee.typeBirthday === '01' ? DATE_FORMAT.ONLY_MONTH_YEAR : DATE_FORMAT.ONLY_YEAR;
     const birthday = employee.birthday ? moment(employee.birthday, dateFormat) : '';
     const dateSign = employee.dateSign ? moment(employee.dateSign, DATE_FORMAT.FULL) : '';
 

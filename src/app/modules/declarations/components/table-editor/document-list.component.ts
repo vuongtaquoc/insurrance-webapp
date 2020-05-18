@@ -91,16 +91,7 @@ export class DocumentListTableComponent implements OnInit, OnDestroy, OnChanges,
       data.push(documentList);
     });
 
-    // init default data
-    if (data.length < 15) {
-      const length = 15 - data.length;
-
-      for (let i = 1; i <= length; i++) {
-        data.push([ ]);
-      }
-
-      data.forEach((d, i) => d[0] = i + 1);
-    }
+    data.forEach((d, i) => d[0] = i + 1);
 
     this.data = data;
     this.spreadsheet.setData(this.data);

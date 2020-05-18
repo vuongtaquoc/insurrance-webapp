@@ -1,6 +1,7 @@
 import { Component, Input, Output, OnInit, OnDestroy, OnChanges, AfterViewInit, ViewChild, EventEmitter, ViewEncapsulation, ElementRef } from '@angular/core';
 import { Subscription, Observable } from 'rxjs';
 import * as jexcel from 'jstable-editor/dist/jexcel.js';
+import { customPicker } from '@app/shared/utils/custom-editor';
 import 'jsuites/dist/jsuites.js';
 
 @Component({
@@ -45,7 +46,7 @@ export class FamiliesListTableComponent implements OnInit, OnDestroy, OnChanges,
       nestedHeaders: this.nestedHeaders,
       columns: this.columns,
       allowInsertColumn: false,
-      allowInsertRow: false,
+      allowInsertRow: true,
       tableOverflow: true,
       tableWidth: '100%',
       tableHeight: '100%',
@@ -53,11 +54,23 @@ export class FamiliesListTableComponent implements OnInit, OnDestroy, OnChanges,
       defaultColAlign: 'left',
       freezeColumns: 2,
       onchange: (instance, cell, c, r, value) => {
+        const records = this.spreadsheet.getJson();
+
         this.onChange.emit({
           instance, cell, c, r, value,
           records: this.spreadsheet.getJson(),
           columns: this.columns
         });
+
+        const column = this.columns[c];
+
+        if (column.key === 'typeBirthday') {
+          const nextColumn = jexcel.getColumnNameFromId([Number(c) + 1, r]);
+
+          instance.jexcel.setValue(nextColumn, '');
+        }
+        
+        this.validationCellByOtherCell(value, column, r, instance, records);
       },
       ondeleterow: (el, rowNumber, numOfRows) => {
         this.onDelete.emit({
@@ -68,6 +81,7 @@ export class FamiliesListTableComponent implements OnInit, OnDestroy, OnChanges,
         });
       }
     });
+    this.updateEditorToColumn('birthday', 'month', true);
 
     this.spreadsheet.hideIndex();
 
@@ -76,7 +90,6 @@ export class FamiliesListTableComponent implements OnInit, OnDestroy, OnChanges,
 
   private updateTable() {
     const data = [];
-
     this.data.forEach((d, index) => {
       const family: any = [];
       this.columns.forEach((column, colIndex) => {
@@ -97,6 +110,8 @@ export class FamiliesListTableComponent implements OnInit, OnDestroy, OnChanges,
         d[0] = i;
         i++;
         numberOfMember = 1;
+        d[11] = numberOfMember;
+        numberOfMember++;
       }else {
         d[11] = numberOfMember;
         numberOfMember++;
@@ -111,9 +126,11 @@ export class FamiliesListTableComponent implements OnInit, OnDestroy, OnChanges,
         if (d[2] !== true && colIndex < 11) {
           this.spreadsheet.setReadonlyCellAndClear(index, colIndex);
         }
-        console.log(d[21]);
+
         if(d[21] === '00') {
           this.spreadsheet.setReadonly(index, 21);
+        }else {
+          this.spreadsheet.setReadonlyCellAndClear(index, 17);
         }
         
         if (d[2] === true) {
@@ -137,5 +154,71 @@ export class FamiliesListTableComponent implements OnInit, OnDestroy, OnChanges,
       width: parent.offsetWidth,
       height: parent.offsetHeight
     };
+  }
+
+  private updateEditorToColumn(key, type, isCustom = false) {
+    const column = this.columns.find(c => c.key === key);
+
+    if (!column) return;
+
+    column.editor = customPicker(this.spreadsheet, type, isCustom);
+  }
+
+  private validationCellByOtherCell(cellValue, column, y, instance, records) {
+    //relationshipFullName
+    let x;
+    console.log(records)
+
+    if (column.key === 'relationshipFullName') {
+      x = this.columns.findIndex(c => c.key === 'fullName');
+    } else if (column.key === 'fullName') {
+      x = this.columns.findIndex(c => c.key === 'relationshipFullName');
+    }
+
+    // const cellSelected = column.source.find(s => s.id === cellValue);
+    const validationColumn = this.columns[x];
+
+    const fieldName = {
+      name: column.key === 'relationshipFullName' ? 'Chủ hộ' : 'Họ và tên',
+      otherField: column.key === 'relationshipFullName' ? 'Họ và tên' : 'Chủ hộ'
+    };
+
+    validationColumn.validations = {
+      duplicateOtherField: records[y][x] 
+    };
+    validationColumn.fieldName = fieldName;
+
+    instance.jexcel.validationCell(y, x, fieldName, validationColumn.validations);
+
+    // if (!rules) {
+    //   validationColumn.validations = undefined;
+    //   validationColumn.fieldName = undefined;
+    //   instance.jexcel.clearValidation(y, x);
+    //   return;
+    // }
+
+
+    // if (column.key === 'fullName') {
+    //   const x = this.columns.findIndex(c => c.key === 'fullName');
+    //   const cellSelected = column.source.find(s => s.id === cellValue);
+    //   const validationColumn = this.columns[x];
+
+    //   if (!rules) {
+    //     validationColumn.validations = undefined;
+    //     validationColumn.fieldName = undefined;
+    //     instance.jexcel.clearValidation(y, x);
+    //     return;
+    //   }
+
+    //   const fieldName = {
+    //     name: 'Số con',
+    //     otherField: `phương án ${ cellSelected.name }`
+    //   };
+
+    //   validationColumn.validations = rules;
+    //   validationColumn.fieldName = fieldName;
+
+    //   instance.jexcel.validationCell(y, x, fieldName, rules);
+    // }
   }
 }

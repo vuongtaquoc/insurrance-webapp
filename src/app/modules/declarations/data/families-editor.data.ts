@@ -44,19 +44,19 @@ export const TABLE_FAMILIES_HEADER_COLUMNS = [{
   align: 'center'
 }, {
   type: 'text',
-  width: 170,
+  width: 150,
   title: '(2)',
   readOnly: true,
   key: 'employeeName'
 }, {
   type: 'checkbox',
-  width: 45,
+  width: 40,
   title: '(3)',
   align: 'center',
   key: 'isMaster'
 }, {
   type: 'text',
-  width: 150,
+  width: 130,
   title: '(4)',
   key: 'relationshipFullName',
   fieldName: 'Chủ hộ',

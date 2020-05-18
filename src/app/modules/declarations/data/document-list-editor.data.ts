@@ -30,38 +30,64 @@ export const TABLE_HEADER_COLUMNS = [{
   type: 'text',
   width: 120,
   title: '(3)',
-  key: 'isurranceNo'
+  key: 'isurranceNo',
+  fieldName: 'Số sổ bảo hiểm',
+  validations: {
+    required: true
+  }
 }, {
   type: 'text',
   width: 120,
   title: '(4)',
-  key: 'isurranceCode'
+  key: 'isurranceCode',
+  fieldName: 'Mã số bảo hiểm',
+  validations: {
+    required: true
+  }
+
 }, {
   type: 'text',
   width: 170,
   title: '(5)',
   wordWrap: true,
-  key: 'documentType'
+  key: 'documentType',
+  fieldName: 'Loại văn bản',
+  validations: {
+    required: true
+  }
+
 }, {
   type: 'text',
   width: 123,
   title: '(6)',
   align: 'left',
-  key: 'documentNo'
+  key: 'documentNo',
+  fieldName: 'Số hiểu văn bản',
+  validations: {
+    required: true
+  }
 }, {
   type: 'calendar',
   options: { format:'DD/MM/YYYY' },
   width: 100,
   title: '(7)',
   align: 'left',
-  key: 'dateRelease'
+  key: 'dateRelease',
+  fieldName: 'Ngày ban hành',
+  validations: {
+    required: true
+  }
 }, {
   type: 'calendar',
   options: { format:'DD/MM/YYYY' },
   width:120,
   title: '(8)',
   align: 'left',
-  key: 'dateEffective'
+  key: 'dateEffective',
+  fieldName: 'Ngày văn bản có hiệu lực',
+  validations: {
+    required: true
+  }
 }, {
   type: 'text',
   width: 155,
