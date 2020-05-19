@@ -104,12 +104,11 @@
                     </nz-form-control>
                   </nz-form-item>
                 </form>
-              </div><!-- page-declarations__title -->
 
-              <div class="page-declarations__check-code">
-                <button nz-button nzType="default" (click)="checkInsurranceCode($event)">Kiểm tra mã số BHXH</button>
-                <span class="page-declarations__check-code-note">Vui lòng kiểm tra Mã số BHXH của Người tham gia trước khi kê khai Phụ lục Thành viên Hộ gia đình</span>
-              </div><!-- page-declarations__check-code -->
+                <div class="page-declarations__check-code">
+                  <button nz-button nzType="default" (click)="checkInsurranceCode($event)">Kiểm tra mã số BHXH</button>
+                </div><!-- page-declarations__check-code -->
+              </div><!-- page-declarations__title -->
 
               <div class="page-declarations__editor">
                 <app-table-editor
@@ -122,6 +121,7 @@
                   (onSubmit)="handleSubmit($event)"
                   (onChange)="handleChangeTable($event)"
                   (onDelete)="handleDeleteData($event)"
+                  (onAddRow)="handleAddRow($event)"
                 ></app-table-editor>
               </div><!-- page-declarations__editor -->
 

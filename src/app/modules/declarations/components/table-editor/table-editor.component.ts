@@ -23,6 +23,7 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
   @Output() onChange: EventEmitter<any> = new EventEmitter();
   @Output() onSubmit: EventEmitter<any> = new EventEmitter();
   @Output() onDelete: EventEmitter<any> = new EventEmitter();
+  @Output() onAddRow: EventEmitter<any> = new EventEmitter();
 
   spreadsheet: any;
   isSpinning = true;
@@ -75,10 +76,50 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
           instance.jexcel.setValue(nextColumn, '');
         }
       },
+      onbeforedeleterow: (el, rowNumber, numOfRows) => {
+        const records = this.spreadsheet.getJson();
+        const beforeRow = records[rowNumber - 1];
+        const afterRow = records[rowNumber + 1];
+
+        if (!((beforeRow.options && beforeRow.options.isLeaf) || (afterRow.options && afterRow.options.isLeaf))) {
+          return false;
+        }
+
+        return true;
+      },
       ondeleterow: (el, rowNumber, numOfRows) => {
         this.onDelete.emit({
           rowNumber,
           numOfRows,
+          records: this.spreadsheet.getJson()
+        });
+      },
+      oninsertrow: (instance, rowNumber, numOfRows, rowRecords, insertBefore) => {
+        this.spreadsheet.updateFreezeColumn();
+
+        const records = this.spreadsheet.getJson();
+        const beforeRow = records[rowNumber - 1];
+        const afterRow = records[rowNumber + 1];
+
+        let options;
+        let origin;
+
+        if (beforeRow.options && beforeRow.options.isLeaf) {
+          options = { ...beforeRow.options };
+          origin = { ...beforeRow.origin };
+        } else if (afterRow.options && afterRow.options.isLeaf) {
+          options = { ...afterRow.options };
+          origin = { ...afterRow.origin };
+        }
+
+        this.onAddRow.emit({
+          rowNumber,
+          numOfRows,
+          afterRowIndex: rowNumber,
+          beforeRowIndex: rowNumber,
+          insertBefore,
+          options,
+          origin,
           records: this.spreadsheet.getJson()
         });
       }
@@ -93,7 +134,7 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
 
     this.updateTable();
 
-    setTimeout(() => this.isSpinning = false, 200);
+    setTimeout(() => this.isSpinning = false, 400);
   }
 
   private updateTable() {
