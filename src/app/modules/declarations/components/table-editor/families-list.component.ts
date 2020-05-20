@@ -167,27 +167,31 @@ export class FamiliesListTableComponent implements OnInit, OnDestroy, OnChanges,
   private validationCellByOtherCell(cellValue, column, y, instance, records) {
     let x;
     let otherX;
+    if (column.key === 'relationshipFullName' || column.key === 'fullName') {
 
-    if (column.key === 'relationshipFullName') {
-      x = this.columns.findIndex(c => c.key === 'relationshipFullName');
-      otherX = this.columns.findIndex(c => c.key === 'fullName');
-    } else if (column.key === 'fullName') {
-      x = this.columns.findIndex(c => c.key === 'fullName');
-      otherX = this.columns.findIndex(c => c.key === 'relationshipFullName');
+      if (column.key === 'relationshipFullName') {
+        x = this.columns.findIndex(c => c.key === 'relationshipFullName');
+        otherX = this.columns.findIndex(c => c.key === 'fullName');
+      } else if (column.key === 'fullName') {
+        x = this.columns.findIndex(c => c.key === 'fullName');
+        otherX = this.columns.findIndex(c => c.key === 'relationshipFullName');
+      }
+      
+      const validationColumn = this.columns[x];
+
+      const fieldName = {
+        name: column.key === 'relationshipFullName' ? 'Chủ hộ' : 'Họ và tên',
+        otherName: column.key === 'relationshipFullName' ? 'Họ và tên' : 'Chủ hộ'
+      };
+
+      validationColumn.validations = {
+        duplicateOtherField: records[y][otherX]
+      };
+      validationColumn.fieldName = fieldName;
+
+      instance.jexcel.validationCell(y, x, fieldName, validationColumn.validations);
+
     }
-
-    const validationColumn = this.columns[x];
-
-    const fieldName = {
-      name: column.key === 'relationshipFullName' ? 'Chủ hộ' : 'Họ và tên',
-      otherName: column.key === 'relationshipFullName' ? 'Họ và tên' : 'Chủ hộ'
-    };
-
-    validationColumn.validations = {
-      duplicateOtherField: records[y][otherX]
-    };
-    validationColumn.fieldName = fieldName;
-
-    instance.jexcel.validationCell(y, x, fieldName, validationColumn.validations);
+    
   }
 }

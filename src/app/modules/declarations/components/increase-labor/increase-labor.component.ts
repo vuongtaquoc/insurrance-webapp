@@ -275,6 +275,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
       totalCardInsurance: this.totalCardInsurance,
       documentDetail: event.data,
       informations: this.reformatInformationList(),
+      families: this.reformatFamilies(),
     });
   }
 
@@ -309,7 +310,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
 
         }else {
           this.updateNextColumns(instance, r, '', [ c + 1 , c + 2, c + 3, c + 4, c + 5, c + 6, c + 7, c + 8,
-          c + 9, c + 10, c + 11, c + 11,c + 12,c + 13,c + 14,c + 15,c + 16,c + 17]);
+          c + 10, c + 11, c + 11,c + 12,c + 13,c + 14,c + 15,c + 16,c + 17]);
         }
 
       }
@@ -596,7 +597,12 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
 
   private getRelationShips(instance, cell, c, r, source) {
     const row = instance.jexcel.getRowFromCoords(r);
-    return source;
+    
+    if (row[1]) {
+      return source;
+    }
+
+    return source.filter(s => s.id !== '00');;
   }
 
   private updateNextColumns(instance, r, value, nextColumns = []) {
@@ -682,6 +688,18 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     });
 
     return informationList;
+  }
+
+  reformatFamilies() {
+    const familiesList = [];
+    let familiesListcopy = [ ...this.familiesList ];
+    familiesListcopy.forEach(family => {
+        if(family.fullName) {
+          familiesList.push(family);
+        }
+    });
+
+    return familiesList;
   }
 
 
