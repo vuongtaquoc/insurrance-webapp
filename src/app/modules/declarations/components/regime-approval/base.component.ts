@@ -144,11 +144,63 @@ export class RegimeApprovalBaseComponent {
       Object.keys(record).forEach(index => {
         declaration.data[index] = record[index];
       });
+
+      declaration.data.options.isInitialize = false;
+      declaration.isInitialize = false;
     });
 
     // update origin data
     this.declarations[part].origin = Object.values(this.updateOrigin(records, part));
 
+    this.onChange.emit({
+      part,
+      data: this.declarations[part].origin
+    });
+    this.tableSubject.next({
+      type: 'validate'
+    });
+  }
+
+  handleAddRow({ rowNumber, numOfRows, beforeRowIndex, afterRowIndex, options, origin, insertBefore }, part) {
+    const declarations = [ ...this.declarations[part].table ];
+    let row: any = {};
+
+    const beforeRow: any = declarations[insertBefore ? beforeRowIndex - 1 : beforeRowIndex];
+    const afterRow: any = declarations[afterRowIndex];
+
+    const data: any = [];
+
+    row.data = data;
+    row.isInitialize = false;
+    row.isLeaf = true;
+    row.origin = origin;
+
+    if (beforeRow.isLeaf) {
+      row.parent = beforeRow.parent;
+      row.parentKey = beforeRow.parentKey;
+      row.planType = beforeRow.planType;
+    } else if (afterRow.isLeaf) {
+      row.parent = afterRow.parent;
+      row.parentKey = afterRow.parentKey;
+      row.planType = afterRow.planType;
+    }
+
+    if (beforeRow.isInitialize) {
+      beforeRow.isInitialize = false;
+    }
+
+    if (afterRow.isInitialize) {
+      afterRow.isInitialize = false;
+    }
+
+    declarations.splice(insertBefore ? rowNumber : rowNumber + 1, 0, row);
+
+    this.updateOrders(declarations);
+
+    this.declarations[part].table = this.declarationService.updateFormula(declarations, this.headers[part].columns);
+
+    const records = this.toTableRecords(declarations);
+    this.declarations[part].origin = Object.values(this.updateOrigin(records, part));
     this.onChange.emit({
       part,
       data: this.declarations[part].origin
@@ -226,7 +278,7 @@ export class RegimeApprovalBaseComponent {
       {}
     );
 
-    if (array.origin.employeeId) {
+    if (array.origin && array.origin.employeeId) {
       object.employeeId = array.origin.employeeId;
     }
 

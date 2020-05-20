@@ -23,6 +23,7 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
   @Output() onChange: EventEmitter<any> = new EventEmitter();
   @Output() onSubmit: EventEmitter<any> = new EventEmitter();
   @Output() onDelete: EventEmitter<any> = new EventEmitter();
+  @Output() onAddRow: EventEmitter<any> = new EventEmitter();
 
   spreadsheet: any;
   isInitialized = false;
@@ -95,12 +96,52 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
 
         this.validationCellByOtherCell(value, column, r, instance);
       },
+      onbeforedeleterow: (el, rowNumber, numOfRows) => {
+        const records = this.spreadsheet.getJson();
+        const beforeRow = records[rowNumber - 1];
+        const afterRow = records[rowNumber + 1];
+
+        if (!((beforeRow.options && beforeRow.options.isLeaf) || (afterRow.options && afterRow.options.isLeaf))) {
+          return false;
+        }
+
+        return true;
+      },
       ondeleterow: (el, rowNumber, numOfRows) => {
         this.onDelete.emit({
           rowNumber,
           numOfRows,
           records: this.spreadsheet.getJson(),
           columns: this.columns
+        });
+      },
+      oninsertrow: (instance, rowNumber, numOfRows, rowRecords, insertBefore) => {
+        this.spreadsheet.updateFreezeColumn();
+
+        const records = this.spreadsheet.getJson();
+        const beforeRow = records[rowNumber - 1];
+        const afterRow = records[rowNumber + 1];
+
+        let options;
+        let origin;
+
+        if (beforeRow.options && beforeRow.options.isLeaf) {
+          options = { ...beforeRow.options };
+          origin = { ...beforeRow.origin };
+        } else if (afterRow.options && afterRow.options.isLeaf) {
+          options = { ...afterRow.options };
+          origin = { ...afterRow.origin };
+        }
+
+        this.onAddRow.emit({
+          rowNumber,
+          numOfRows,
+          afterRowIndex: rowNumber,
+          beforeRowIndex: rowNumber,
+          insertBefore,
+          options,
+          origin,
+          records: this.spreadsheet.getJson()
         });
       }
     });

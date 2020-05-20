@@ -334,11 +334,14 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
 
     }
     // update declarations
-    this.declarations.forEach((declaration, index) => {
+    this.declarations.forEach((declaration: any, index) => {
       const record = records[index];
       Object.keys(record).forEach(index => {
         declaration.data[index] = record[index];
       });
+
+      declaration.data.options.isInitialize = false;
+      declaration.isInitialize = false;
     });
     const employeesInDeclaration = this.getEmployeeInDeclaration(records);
     this.setDataToFamilies(employeesInDeclaration);
@@ -346,8 +349,47 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     this.eventsSubject.next('validate');
   }
 
-  handleDeleteData({ rowNumber, numOfRows, records }) {
+  handleAddRow({ rowNumber, numOfRows, beforeRowIndex, afterRowIndex, options, origin, insertBefore }) {
+    const declarations = [ ...this.declarations ];
+    let row: any = {};
 
+    const beforeRow: any = declarations[insertBefore ? beforeRowIndex - 1 : beforeRowIndex];
+    const afterRow: any = declarations[afterRowIndex];
+
+    const data: any = [];
+
+    row.data = data;
+    row.isInitialize = false;
+    row.isLeaf = true;
+    row.origin = origin;
+
+    if (beforeRow.isLeaf) {
+      row.parent = beforeRow.parent;
+      row.parentKey = beforeRow.parentKey;
+      row.planType = beforeRow.planType;
+    } else if (afterRow.isLeaf) {
+      row.parent = afterRow.parent;
+      row.parentKey = afterRow.parentKey;
+      row.planType = afterRow.planType;
+    }
+
+    if (beforeRow.isInitialize) {
+      beforeRow.isInitialize = false;
+    }
+
+    if (afterRow.isInitialize) {
+      afterRow.isInitialize = false;
+    }
+
+    declarations.splice(insertBefore ? rowNumber : rowNumber + 1, 0, row);
+
+    this.updateOrders(declarations);
+
+    this.declarations = this.declarationService.updateFormula(declarations, this.tableHeaderColumns);
+    this.eventsSubject.next('validate');
+  }
+
+  handleDeleteData({ rowNumber, numOfRows, records }) {
     const declarations = [ ...this.declarations ];
 
     const declarationsDeleted = declarations.splice(rowNumber, numOfRows);
@@ -362,7 +404,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
   deleteEmployeeInFamilies(declarationsDeleted: any) {
     const employeeIdDeleted = [];
     declarationsDeleted.forEach(itemDeleted => {
-      const item = this.declarations.find(d => d.origin.employeeId === itemDeleted.origin.employeeId);
+      const item = this.declarations.find(d => d.origin.employeeId === (itemDeleted.origin && itemDeleted.origin.employeeId));
 
       if(item){
         return;
@@ -670,7 +712,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
       {}
     );
 
-    if (array.origin.employeeId) {
+    if (array.origin && array.origin.employeeId) {
       object.employeeId = array.origin.employeeId;
     }
     return object;
