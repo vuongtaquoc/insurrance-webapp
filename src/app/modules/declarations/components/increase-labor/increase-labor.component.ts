@@ -339,8 +339,8 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
         declaration.data[index] = record[index];
       });
 
-      declaration.data.options.isInitialize = false;
-      declaration.isInitialize = false;
+      // declaration.data.options.isInitialize = false;
+      // declaration.isInitialize = false;
     });
     const employeesInDeclaration = this.getEmployeeInDeclaration(records);
     this.setDataToFamilies(employeesInDeclaration);
@@ -358,7 +358,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     const data: any = [];
 
     row.data = data;
-    row.isInitialize = false;
+    row.isInitialize = true;
     row.isLeaf = true;
     row.origin = origin;
 
@@ -372,13 +372,13 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
       row.planType = afterRow.planType;
     }
 
-    if (beforeRow.isInitialize) {
-      beforeRow.isInitialize = false;
-    }
+    // if (beforeRow.isInitialize) {
+    //   beforeRow.isInitialize = false;
+    // }
 
-    if (afterRow.isInitialize) {
-      afterRow.isInitialize = false;
-    }
+    // if (afterRow.isInitialize) {
+    //   afterRow.isInitialize = false;
+    // }
 
     declarations.splice(insertBefore ? rowNumber : rowNumber + 1, 0, row);
 
@@ -473,7 +473,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
         order.key = declaration.key;
       }
 
-      if (declaration.isLeaf && declaration.parentKey === order.key && !declaration.isInitialize) {
+      if (declaration.isLeaf && declaration.parentKey === order.key) {
         order.index += 1;
 
         declaration.data[0] = order.index;
