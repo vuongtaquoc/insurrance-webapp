@@ -69,7 +69,7 @@ export class RegimeApprovalBaseComponent {
       const employeeExists = declarations.filter(d => d.parentKey === type);
 
       this.employeeSelected.forEach(employee => {
-        const accepted = employeeExists.findIndex(e => (e.origin.employeeId || e.origin.id) === employee.id) === -1;
+        const accepted = employeeExists.findIndex(e => (e.origin && (e.origin.employeeId || e.origin.id)) === employee.id) === -1;
 
         // replace
         employee.gender = !employee.gender;
@@ -145,9 +145,14 @@ export class RegimeApprovalBaseComponent {
         declaration.data[index] = record[index];
       });
 
-      declaration.data.options.isInitialize = false;
-      declaration.isInitialize = false;
+      // declaration.data.options.isInitialize = false;
+      // declaration.isInitialize = false;
     });
+
+    const rowChange: any = this.declarations[part][r];
+
+    rowChange.data.options.isInitialize = false;
+    rowChange.isInitialize = false;
 
     // update origin data
     this.declarations[part].origin = Object.values(this.updateOrigin(records, part));
@@ -161,37 +166,38 @@ export class RegimeApprovalBaseComponent {
     });
   }
 
-  handleAddRow({ rowNumber, numOfRows, beforeRowIndex, afterRowIndex, options, origin, insertBefore }, part) {
+  handleAddRow({ rowNumber, options, origin, insertBefore }, part) {
     const declarations = [ ...this.declarations[part].table ];
     let row: any = {};
 
-    const beforeRow: any = declarations[insertBefore ? beforeRowIndex - 1 : beforeRowIndex];
-    const afterRow: any = declarations[afterRowIndex];
+    const beforeRow: any = declarations[insertBefore ? rowNumber - 1 : rowNumber];
+    const afterRow: any = declarations[insertBefore ? rowNumber : rowNumber + 1];
 
     const data: any = [];
 
     row.data = data;
-    row.isInitialize = false;
+    row.isInitialize = true;
     row.isLeaf = true;
     row.origin = origin;
+    row.options = options;
 
-    if (beforeRow.isLeaf) {
+    if (beforeRow.isLeaf && !afterRow.isLeaf) {
       row.parent = beforeRow.parent;
       row.parentKey = beforeRow.parentKey;
       row.planType = beforeRow.planType;
-    } else if (afterRow.isLeaf) {
+    } else if (!beforeRow.isLeaf && afterRow.isLeaf) {
       row.parent = afterRow.parent;
       row.parentKey = afterRow.parentKey;
       row.planType = afterRow.planType;
     }
 
-    if (beforeRow.isInitialize) {
-      beforeRow.isInitialize = false;
-    }
+    // if (beforeRow.isInitialize) {
+    //   beforeRow.isInitialize = false;
+    // }
 
-    if (afterRow.isInitialize) {
-      afterRow.isInitialize = false;
-    }
+    // if (afterRow.isInitialize) {
+    //   afterRow.isInitialize = false;
+    // }
 
     declarations.splice(insertBefore ? rowNumber : rowNumber + 1, 0, row);
 
@@ -252,7 +258,7 @@ export class RegimeApprovalBaseComponent {
         order.key = declaration.key;
       }
 
-      if (declaration.isLeaf && declaration.parentKey === order.key && !declaration.isInitialize) {
+      if (declaration.isLeaf && declaration.parentKey === order.key) {
         order.index += 1;
 
         declaration.data[0] = order.index;

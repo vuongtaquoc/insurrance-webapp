@@ -1,7 +1,7 @@
 <div class="page-container">
   <nz-spin [nzSpinning]="isSpinning">
     <div class="page-declarations" [ngClass]="{'page-declarations-hide-last-tab': !usedocumentDT01}" cardFullHeight>
-      <nz-tabset nzSize="small" nzTabPosition="bottom" nzSelectedIndex="1" [nzTabBarExtraContent]="extraTemplate">
+      <nz-tabset nzSize="small" nzTabPosition="bottom" nzSelectedIndex="1" [nzTabBarExtraContent]="extraTemplate" (nzSelectChange)="handleSelectTab($event)">
         <nz-tab nzTitle="Danh mục tài liệu">
           <div class="page-document-list__container">
             <form nz-form [formGroup]="documentForm">
@@ -145,7 +145,7 @@
             </div><!-- page-declarations__content -->
           </div><!-- page-declarations__container -->
         </nz-tab><!-- tab 2 -->
-        <nz-tab nzTitle="PL TVHGD-NLD">
+        <nz-tab nzTitle="PL TVHGD-NLD" [nzDisabled]="!familiesList.length">
           <div class="page-document-list__container page-document-list__container--note">
             <h1>600 | Báo tăng lao động</h1>
             <h2>PHỤ LỤC THÀNH VIÊN GIA ĐÌNH</h2>
@@ -161,7 +161,7 @@
             </div>
           </div>
         </nz-tab>
-        <nz-tab nzTitle="Bảng kê hồ sơ">
+        <nz-tab nzTitle="Bảng kê hồ sơ" [nzDisabled]="!informationList.length">
           <div class="page-document-list__container">
             <form nz-form [formGroup]="documentForm">
               <h1>600 | Báo tăng lao động</h1>

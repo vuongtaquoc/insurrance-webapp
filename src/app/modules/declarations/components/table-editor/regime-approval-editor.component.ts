@@ -96,17 +96,6 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
 
         this.validationCellByOtherCell(value, column, r, instance);
       },
-      onbeforedeleterow: (el, rowNumber, numOfRows) => {
-        const records = this.spreadsheet.getJson();
-        const beforeRow = records[rowNumber - 1];
-        const afterRow = records[rowNumber + 1];
-
-        if (!((beforeRow.options && beforeRow.options.isLeaf) || (afterRow.options && afterRow.options.isLeaf))) {
-          return false;
-        }
-
-        return true;
-      },
       ondeleterow: (el, rowNumber, numOfRows) => {
         this.onDelete.emit({
           rowNumber,
@@ -119,18 +108,18 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
         this.spreadsheet.updateFreezeColumn();
 
         const records = this.spreadsheet.getJson();
-        const beforeRow = records[rowNumber - 1];
-        const afterRow = records[rowNumber + 1];
+        const beforeRow = records[insertBefore ? rowNumber - 1 : rowNumber];
+        const afterRow = records[insertBefore ? rowNumber + 1 : rowNumber + 2];
 
         let options;
-        let origin;
+        let origin = { id: 0 };
+        const beforeRowIsLeaf = beforeRow.options && beforeRow.options.isLeaf;
+        const afterRowIsLeaf = afterRow.options && afterRow.options.isLeaf;
 
-        if (beforeRow.options && beforeRow.options.isLeaf) {
+        if (beforeRowIsLeaf && !afterRowIsLeaf) {
           options = { ...beforeRow.options };
-          origin = { ...beforeRow.origin };
-        } else if (afterRow.options && afterRow.options.isLeaf) {
+        } else if (!beforeRowIsLeaf && afterRowIsLeaf) {
           options = { ...afterRow.options };
-          origin = { ...afterRow.origin };
         }
 
         this.onAddRow.emit({

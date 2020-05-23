@@ -4,7 +4,7 @@ export const TABLE_FAMILIES_NESTED_HEADERS = [
     { title: 'Người tham gia', subtitle: 'Nhập chữ thường', rowspan: '3' },
     { title: 'Người tham gia là chủ hộ', rowspan: '3' },
     { title: 'THÔNG TIN HỘ GIA ĐÌNH CỦA NGƯỜI THAM GIA', colspan: '8' },
-    { title: 'THÔNG TIN THÀNH VIÊN HỘ GIA ĐÌNH', colspan: '13' },     
+    { title: 'THÔNG TIN THÀNH VIÊN HỘ GIA ĐÌNH', colspan: '13' },
   ],
   [
     { title: 'Chủ hộ', rowspan: '2' },
@@ -47,7 +47,8 @@ export const TABLE_FAMILIES_HEADER_COLUMNS = [{
   width: 150,
   title: '(2)',
   readOnly: true,
-  key: 'employeeName'
+  key: 'employeeName',
+  isMasterKey: true
 }, {
   type: 'checkbox',
   width: 40,
@@ -67,7 +68,7 @@ export const TABLE_FAMILIES_HEADER_COLUMNS = [{
   type: 'text',
   width: 80,
   title: '(5)',
-  key: 'relationshipMobile'  
+  key: 'relationshipMobile'
 }, {
   type: 'dropdown',
   width: 80,
@@ -128,7 +129,7 @@ export const TABLE_FAMILIES_HEADER_COLUMNS = [{
   width: 35,
   title: '(9)',
   key: 'orders',
-  align: 'left'  
+  align: 'left'
 }, {
   type: 'text',
   width: 135,
