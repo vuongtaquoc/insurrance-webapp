@@ -72,7 +72,7 @@
                   <button class="page-declarations__button" nz-button nzType="default" (click)="handleAddEmployee('I_3')">
                     <i nz-icon nzType="arrow-up"></i>Tăng BHTN
                   </button>
-                  <button class="page-declarations__button" nz-button nzType="default" (click)="handleAddEmployee('III')">
+                  <button class="page-declarations__button" nz-button nzType="default" (click)="handleAddEmployee('II_2')">
                     <i nz-icon nzType="arrow-up"></i>Tăng BHTNLĐ, BNN
                   </button>
                   <button class="page-declarations__button" nz-button nzType="default" (click)="handleAddEmployee('II_1')">
@@ -151,12 +151,13 @@
             <h2>PHỤ LỤC THÀNH VIÊN GIA ĐÌNH</h2>
             <div class="document-form__process-table">
               <app-families-list-table
-                [data]="familiesList"
+                [data]="families"
                 [nestedHeaders]="tableNestedHeadersFamilies"
                 [columns]="tableHeaderColumnsFamilies"
                 [events]="eventsSubject.asObservable()"
                 (onChange)="handleChangeDataFamilies($event)"
-                (onDelete)="handleDeleteProcessDataDocumentList($event)"
+                (onDelete)="handleDeleteMember($event)"
+                (onAddRow)="handleAddMember($event)"
               ></app-families-list-table>
             </div>
           </div>
@@ -169,10 +170,12 @@
 
               <div class="document-form__process-table">
                 <app-document-list-table
-                  [data]="informationList"
+                  [data]="informations"
+                  [nestedHeaders]="tableNestedHeadersDocuments"
+                  [columns]="tableHeaderColumnsDocuments"
                   [events]="eventsSubject.asObservable()"
-                  (onChange)="handleChangeDataDocumentList($event)"
-                  (onDelete)="handleDeleteProcessDataDocumentList($event)"
+                  (onChange)="handleChangeDocumentList($event)"
+                  (onDelete)="handleDeleteDocumentList($event)"
                 ></app-document-list-table>
               </div>
             </form>

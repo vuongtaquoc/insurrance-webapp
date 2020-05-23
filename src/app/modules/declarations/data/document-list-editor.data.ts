@@ -1,4 +1,4 @@
-export const TABLE_NESTED_HEADERS = [
+export const TABLE_DOCUMENT_NESTED_HEADERS = [
   [
     { title: 'STT'},
     { title: 'Họ và tên' },
@@ -14,7 +14,7 @@ export const TABLE_NESTED_HEADERS = [
   ]
 ];
 
-export const TABLE_HEADER_COLUMNS = [{
+export const TABLE_DOCUMENT_HEADER_COLUMNS = [{
   type: 'text',
   width: 35,
   title: '(1)',

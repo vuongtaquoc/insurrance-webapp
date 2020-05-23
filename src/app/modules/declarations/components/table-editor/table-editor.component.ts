@@ -176,7 +176,6 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
 
       data.push(d.data);
     });
-
     this.spreadsheet.setData(data);
     this.spreadsheet.setReadonlyRowsTitle(readonlyIndexes, [0, 1]);
     this.spreadsheet.setReadonlyRowsFormula(formulaIndexes, formulaIgnoreIndexes);
