@@ -21,6 +21,7 @@ export class FamiliesListTableComponent implements OnInit, OnDestroy, OnChanges,
   @Output() onChange: EventEmitter<any> = new EventEmitter();
   @Output() onSubmit: EventEmitter<any> = new EventEmitter();
   @Output() onDelete: EventEmitter<any> = new EventEmitter();
+  @Output() onAddRow: EventEmitter<any> = new EventEmitter();
 
   spreadsheet: any;
   isSpinning = true;
@@ -96,6 +97,42 @@ export class FamiliesListTableComponent implements OnInit, OnDestroy, OnChanges,
           records: this.spreadsheet.getJson(),
           columns: this.columns
         });
+      },
+      onbeforeinsertrow: (el, rowNumber, numOfRows, insertBefore) => {
+        const records = this.spreadsheet.getJson();
+        const currentRecord = records[rowNumber];
+        if(insertBefore && currentRecord.origin.isMaster) {
+          return false;
+        }
+        return true;
+      },
+      oninsertrow: (instance, rowNumber, numOfRows, rowRecords, insertBefore) => {
+        this.spreadsheet.updateFreezeColumn();
+
+        const records = this.spreadsheet.getJson();
+        const beforeRow = records[rowNumber - 1];
+        const afterRow = records[rowNumber + 1];
+         
+        let options;
+        let origin;
+        if (beforeRow.origin) {
+          options = { ...beforeRow.options };
+          origin = { ...beforeRow.origin };
+        } else if (afterRow.origin) {
+          options = { ...afterRow.options };
+          origin = { ...afterRow.origin };
+        }
+
+        this.onAddRow.emit({
+          rowNumber,
+          numOfRows,
+          afterRowIndex: rowNumber,
+          beforeRowIndex: rowNumber,
+          insertBefore,
+          options,
+          origin,
+          records: this.spreadsheet.getJson()
+        });
       }
     });
     this.updateEditorToColumn('birthday', 'month', true);
@@ -108,22 +145,15 @@ export class FamiliesListTableComponent implements OnInit, OnDestroy, OnChanges,
   private updateTable() {
     const data = [];
     this.data.forEach((d, index) => {
-      const family: any = [];
-      this.columns.forEach((column, colIndex) => {
-        family.push(d[column.key]);
-      });
-
-      family.options = {
-        employeeId: d.employeeId,
-      }
-      data.push(family);
+      d.data.origin  = d.origin;
+      data.push(d.data);
     });
 
-    //update order
+    this.data = data;
     let i = 1;
     let numberOfMember = 1;
     data.forEach(d => {
-      if(d[2] === true) {
+      if(d.origin.isMaster) {
         d[0] = i;
         i++;
         numberOfMember = 1;
@@ -140,7 +170,7 @@ export class FamiliesListTableComponent implements OnInit, OnDestroy, OnChanges,
     this.data.forEach((d, index) => {
 
       this.columns.forEach((column, colIndex) => {
-        if (d[2] !== true && colIndex < 11) {
+        if (!d.origin.isMaster  && colIndex < 11) {
           this.spreadsheet.setReadonlyCellAndClear(index, colIndex);
         }
 
@@ -150,7 +180,7 @@ export class FamiliesListTableComponent implements OnInit, OnDestroy, OnChanges,
           this.spreadsheet.setReadonlyCellAndClear(index, 17);
         }
 
-        if (d[2] === true) {
+        if (d.origin.isMaster) {
           this.spreadsheet.setCellClass(index, colIndex, 'families-cell');
         }
 
@@ -184,27 +214,31 @@ export class FamiliesListTableComponent implements OnInit, OnDestroy, OnChanges,
   private validationCellByOtherCell(cellValue, column, y, instance, records) {
     let x;
     let otherX;
+    if (column.key === 'relationshipFullName' || column.key === 'fullName') {
 
-    if (column.key === 'relationshipFullName') {
-      x = this.columns.findIndex(c => c.key === 'relationshipFullName');
-      otherX = this.columns.findIndex(c => c.key === 'fullName');
-    } else if (column.key === 'fullName') {
-      x = this.columns.findIndex(c => c.key === 'fullName');
-      otherX = this.columns.findIndex(c => c.key === 'relationshipFullName');
+      if (column.key === 'relationshipFullName') {
+        x = this.columns.findIndex(c => c.key === 'relationshipFullName');
+        otherX = this.columns.findIndex(c => c.key === 'fullName');
+      } else if (column.key === 'fullName') {
+        x = this.columns.findIndex(c => c.key === 'fullName');
+        otherX = this.columns.findIndex(c => c.key === 'relationshipFullName');
+      }
+      
+      const validationColumn = this.columns[x];
+
+      const fieldName = {
+        name: column.key === 'relationshipFullName' ? 'Chủ hộ' : 'Họ và tên',
+        otherName: column.key === 'relationshipFullName' ? 'Họ và tên' : 'Chủ hộ'
+      };
+
+      validationColumn.validations = {
+        duplicateOtherField: records[y][otherX]
+      };
+      validationColumn.fieldName = fieldName;
+
+      instance.jexcel.validationCell(y, x, fieldName, validationColumn.validations);
+
     }
-
-    const validationColumn = this.columns[x];
-
-    const fieldName = {
-      name: column.key === 'relationshipFullName' ? 'Chủ hộ' : 'Họ và tên',
-      otherName: column.key === 'relationshipFullName' ? 'Họ và tên' : 'Chủ hộ'
-    };
-
-    validationColumn.validations = {
-      duplicateOtherField: records[y][otherX]
-    };
-    validationColumn.fieldName = fieldName;
-
-    instance.jexcel.validationCell(y, x, fieldName, validationColumn.validations);
+    
   }
 }

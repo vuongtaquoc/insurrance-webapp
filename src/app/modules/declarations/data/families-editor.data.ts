@@ -44,20 +44,20 @@ export const TABLE_FAMILIES_HEADER_COLUMNS = [{
   align: 'center'
 }, {
   type: 'text',
-  width: 150,
+  width: 140,
   title: '(2)',
   readOnly: true,
   key: 'employeeName',
   isMasterKey: true
 }, {
   type: 'checkbox',
-  width: 40,
+  width: 45,
   title: '(3)',
   align: 'center',
   key: 'isMaster'
 }, {
   type: 'text',
-  width: 130,
+  width: 140,
   title: '(4)',
   key: 'relationshipFullName',
   fieldName: 'Chủ hộ',
@@ -161,8 +161,7 @@ export const TABLE_FAMILIES_HEADER_COLUMNS = [{
   type: 'text',
   width: 80,
   title: '(13)',
-  key: 'birthday',
-  isCalendar: true
+  key: 'birthday'
 }, {
   type: 'checkbox',
   width: 30,
@@ -204,21 +203,23 @@ export const TABLE_FAMILIES_HEADER_COLUMNS = [{
   autocomplete: true,
   width: 100,
   title: '(18)',
-  key: 'wardsCode',
   defaultLoad: true,
-  source: [ ],
-  fieldName: 'Phường xã',
+  source: [],
+  key: 'wardsCode',
+  fieldName: 'Xã phường',
   validations: {
     required: true
   }
-}, {
+}
+
+, {
   type: 'dropdown',
   autocomplete: true,
   defaultLoad: true,
   width: 100,
   title: '(19)',
   key: 'relationshipCode',
-  source: [ ]
+  source: []
 },{
   type: 'text',
   width: 120,
