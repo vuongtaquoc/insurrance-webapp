@@ -114,7 +114,6 @@ export class EmployeeFormComponent implements OnInit {
        paymentMethods, relationships, banks, departments,relationshipDocumentTypies, typeBirthdays,
        registerDistricts, registerWards, recipientsDistricts, recipientsWards, hospitals, relationshipDistricts, relationshipWards, relationshipVillages ]) => {
 
-      console.log(relationshipDocumentTypies);
       this.nationalities = nationalities;
       this.peoples = peoples;
       this.salaryAreas = salaryAreas;
@@ -314,6 +313,9 @@ export class EmployeeFormComponent implements OnInit {
   }
 
   changeRegisterCity(value) {
+    if(!value) {
+      return;
+    }
     this.districtService.getDistrict(value).subscribe(data => this.registerDistricts = data);
 
     this.employeeForm.patchValue({
@@ -322,6 +324,9 @@ export class EmployeeFormComponent implements OnInit {
   }
 
   changeRegisterDistrict(value) {
+    if(!value) {
+      return;
+    }
     this.wardService.getWards(value).subscribe(data => this.registerWards = data);
 
     this.employeeForm.patchValue({
@@ -344,10 +349,15 @@ export class EmployeeFormComponent implements OnInit {
   }
 
   changeRecipientsDistrict(value) {
-    this.wardService.getWards(value).subscribe(data => this.recipientsWards = data);
     this.employeeForm.patchValue({
       recipientsWardsCode: null
     });
+    
+    if(!value) {
+      return;
+    }
+    this.wardService.getWards(value).subscribe(data => this.recipientsWards = data);
+    
   }
 
   changeRelationshipWards(value) {

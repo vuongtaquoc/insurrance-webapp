@@ -1,6 +1,7 @@
 import { Component, Input, Output, OnInit, OnDestroy, OnChanges, AfterViewInit, ViewChild, EventEmitter, ViewEncapsulation, ElementRef } from '@angular/core';
 import { Subscription, Observable } from 'rxjs';
 import * as jexcel from 'jstable-editor/dist/jexcel.js';
+import { customPicker } from '@app/shared/utils/custom-editor';
 import 'jsuites/dist/jsuites.js';
 
 @Component({
@@ -70,7 +71,8 @@ export class DocumentListTableComponent implements OnInit, OnDestroy, OnChanges,
         });
       }
     });
-
+    this.updateEditorToColumn('dateRelease', 'date');
+    this.updateEditorToColumn('dateEffective', 'date');
     this.spreadsheet.hideIndex();
 
     this.updateTable();
@@ -78,7 +80,6 @@ export class DocumentListTableComponent implements OnInit, OnDestroy, OnChanges,
 
   private updateTable() {
     const data = [];
-
     this.data.forEach((d, index) => {
       d.data.origin  = d.origin;
       data.push(d.data);
@@ -99,5 +100,14 @@ export class DocumentListTableComponent implements OnInit, OnDestroy, OnChanges,
       width: parent.offsetWidth,
       height: parent.offsetHeight
     };
-  } 
+  }
+
+  private updateEditorToColumn(key, type, isCustom = false) {
+    const column = this.columns.find(c => c.key === key);
+
+    if (!column) return;
+
+    column.editor = customPicker(this.spreadsheet, type, isCustom);
+  }
+
 }

@@ -167,6 +167,7 @@ export class FamiliesListTableComponent implements OnInit, OnDestroy, OnChanges,
     });
 
     this.data = data;
+    console.log(data);
     this.spreadsheet.setData(data);
     this.data.forEach((d, index) => {
 

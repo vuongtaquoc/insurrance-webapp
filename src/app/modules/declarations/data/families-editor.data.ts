@@ -21,7 +21,7 @@ export const TABLE_FAMILIES_NESTED_HEADERS = [
     { title: 'Nơi cấp giấy khai sinh', colspan: '4'},
     { title: 'Mối quan hệ với chủ hộ', rowspan: '2'},
     { title: 'Số CMND/ thẻ căn cước/ Hộ chiếu', rowspan: '2'},
-    { title: 'Ghi chú', rowspan: '2'},
+    { title: 'Ghi chú', rowspan: '2'},    
   ],
   [
     { title: 'Tỉnh/TP' },
@@ -42,14 +42,16 @@ export const TABLE_FAMILIES_HEADER_COLUMNS = [{
   key: 'orders',
   readOnly: true,
   align: 'center'
-}, {
+},
+ {
   type: 'text',
   width: 140,
   title: '(2)',
   readOnly: true,
   key: 'employeeName',
-  isMasterKey: true
-}, {
+  willBeValid: true
+}, 
+ {
   type: 'checkbox',
   width: 45,
   title: '(3)',
@@ -134,6 +136,7 @@ export const TABLE_FAMILIES_HEADER_COLUMNS = [{
   type: 'text',
   width: 135,
   title: '(10)',
+  willBeValid: true,
   align: 'left',
   key: 'fullName',
   fieldName: 'Tên thành viên',
@@ -144,7 +147,10 @@ export const TABLE_FAMILIES_HEADER_COLUMNS = [{
   type: 'text',
   width: 100,
   title: '(11',
-  key: 'isurranceCode'
+  key: 'isurranceCode',
+  validations: {
+    required: true
+  }
 }, {
   type: 'dropdown',
   autocomplete: true,
@@ -211,7 +217,6 @@ export const TABLE_FAMILIES_HEADER_COLUMNS = [{
     required: true
   }
 }
-
 , {
   type: 'dropdown',
   autocomplete: true,
@@ -230,4 +235,10 @@ export const TABLE_FAMILIES_HEADER_COLUMNS = [{
   width: 150,
   title: '(21)',
   key: 'note'
+},{
+  type: 'hidden',
+  width: 140,
+  title: 'key',
+  isMasterKey: true,
+  key: 'conditionValid'  
 }];

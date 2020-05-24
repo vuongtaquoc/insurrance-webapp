@@ -163,7 +163,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
       this.updateFilterToColumn(this.tableHeaderColumnsFamilies, 'relationshipDistrictCode', this.getRelationshipDistrictsByCityCode);
       this.updateFilterToColumn(this.tableHeaderColumnsFamilies, 'relationshipWardsCode', this.getRelationshipWardsByDistrictCode);
 
-      // this.updateFilterToColumn(this.tableHeaderColumnsFamilies, 'relationshipVillageCode', this.getRecipientsVillageCodeByWarssCode);
+      this.updateFilterToColumn(this.tableHeaderColumnsFamilies, 'relationshipVillageCode', this.getRecipientsVillageCodeByWarssCode);
       this.updateFilterToColumn(this.tableHeaderColumnsFamilies, 'districtCode', this.getDistrictsByCityCode);
       this.updateFilterToColumn(this.tableHeaderColumnsFamilies, 'wardsCode', this.getWardsByDistrictCode);
       this.updateFilterToColumn(this.tableHeaderColumnsFamilies, 'relationshipCode', this.getRelationShips);
@@ -172,7 +172,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
         this.declarationService.getDeclarationsByDocumentId(this.declarationId, this.tableHeaderColumns).subscribe(declarations => {
           this.updateOrders(declarations.documentDetail);
           this.declarations = declarations.documentDetail;
-          this.informations = declarations.informations;
+          this.informations = this.fomatInfomation(declarations.informations);
 
           this.declarationGeneral = {
             totalNumberInsurance: declarations.totalNumberInsurance,
@@ -277,7 +277,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
       totalNumberInsurance: this.totalNumberInsurance,
       totalCardInsurance: this.totalCardInsurance,
       documentDetail: event.data,
-      informations: this.reformatInformationList(),
+      informations: this.reformatInformations(),
       families: this.reformatFamilies(),
     });
   }
@@ -304,7 +304,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
             this.updateNextColumns(instance, r, emp.typeBirthday, [ c + 12]);
             this.updateNextColumns(instance, r, emp.birthday, [ c + 13]);
             this.updateNextColumns(instance, r, emp.gender, [ c + 14]);
-            this.updateNextColumns(instance, r, emp.recipientsCityCode, [ c + 16]);
+            this.updateNextColumns(instance, r, emp.relationshipCityCode, [ c + 16]);
             this.updateNextColumns(instance, r, emp.relationshipDistrictCode, [ c + 17]);
             this.updateNextColumns(instance, r, emp.relationshipWardsCode, [ c + 18]);
             this.updateNextColumns(instance, r, '00', [21]);
@@ -315,6 +315,10 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
         }else {
           this.updateNextColumns(instance, r, '', [ c + 1 , c + 2, c + 3, c + 4, c + 5, c + 6, c + 7, c + 8,
           c + 10, c + 11, c + 11,c + 12,c + 13,c + 14,c + 15,c + 16,c + 17]);
+
+          const value = instance.jexcel.getValueFromCoords(1, r);
+          const numberColumn = this.tableHeaderColumnsFamilies.length;
+          this.updateNextColumns(instance, r,value, [(numberColumn -1)]);
         }
 
       }
@@ -335,9 +339,14 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
           this.updateNextColumns(instance, r, '', [ c + 3]);
         }
       }
-    }
 
-    //update families
+      if (column.willBeValid) {
+        const value = instance.jexcel.getValueFromCoords(c, r);
+        const numberColumn = this.tableHeaderColumnsFamilies.length;
+        this.updateNextColumns(instance, r,value, [(numberColumn -1)]);
+      }
+    }
+    //update families 
     this.families.forEach((family: any, index) => {
       const record = records[index];
       //update data on Jexcel
@@ -452,7 +461,6 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
       const row: any = declarations[rowNumber];
       const origin = { ...row.data.origin };
       const options = { ...row.data.options };
-
       row.data = [];
       row.origin = origin;
       row.options = options;
@@ -464,7 +472,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     this.updateOrders(declarations);
 
     this.declarations = this.declarationService.updateFormula(declarations, this.tableHeaderColumns);
-    this.deleteEmployeeInFamilies(declarationsDeleted);
+    //this.deleteEmployeeInFamilies(declarationsDeleted);
     this.eventsSubject.next('validate');
   }
 
@@ -754,16 +762,31 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     return this.documentForm.get('usedocumentDT01').value;
   }
 
-  handleChangeDocumentList({ records, columns }) {
-    const informations = [];
-    records.forEach(record => {
-      informations.push(this.arrayToProps(record, columns));
+  handleChangeInfomation({ records, columns }) {
+      
+    //update families 
+    this.informations.forEach((d: any, index) => {
+      const record = records[index];
+      //update data on Jexcel
+      Object.keys(record).forEach(index => {
+        d.data[index] = record[index];
+      });
+      //update data object source
+      columns.map((column, index) => {
+        d[column.key] = record[index];
+      });
+
     });
-    this.informations = informations;
+    
+    this.eventsSubject.next('validate');
   }
 
-  handleDeleteDocumentList({ rowNumber, numOfRows }) {
+  handleDeleteInfomation({ rowNumber, numOfRows }) {
+    const infomations = [ ...this.informations ];
 
+    const infomaionDeleted = infomations.splice(rowNumber, numOfRows);
+    this.informations = infomations;
+    this.eventsSubject.next('validate');
   }
 
   private arrayToProps(array, columns) {
@@ -793,7 +816,6 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     const object: any = Object.keys(array).reduce(
       (combine, current) => {
         const column = columns[current];
-
         if (current === 'origin' || current === 'options' || !column.key) {
           return { ...combine };
         }
@@ -819,13 +841,11 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     return object;
   }
 
-  reformatInformationList() {
+  reformatInformations() {
     const informations = [];
     let informationcopy = [ ...this.informations];
     informationcopy.forEach(information => {
         if(information.fullName) {
-          information.dateRelease = information.dateRelease ? moment(information.dateRelease).format(DATE_FORMAT.FULL) : '';
-          information.dateEffective = information.dateEffective ? moment(information.dateEffective).format(DATE_FORMAT.FULL) : '';
           informations.push(information);
         }
     });
@@ -833,11 +853,33 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     return informations;
   }
 
+  fomatInfomation(infomations) {
+    if(!infomations) {
+      return [];
+    }
+    let infomationscopy = [ ...infomations ];
+    infomationscopy.forEach(p => {
+      p.data = this.tableHeaderColumnsDocuments.map(column => {
+        if (!column.key || !p[column.key]) return '';
+        return p[column.key];
+      });
+      p.data.origin = {
+        employeeId: p.employeeId,
+        isLeaf: true,
+      }  
+    });
+    return infomationscopy;
+  }
+
   reformatFamilies() {
     const families = [];
     let familiescopy = [ ...this.families ];
     familiescopy.forEach(family => {
         if(family.fullName) {
+          family.isMaster = family.origin.isMaster
+          family.id = family.id ? family.id : 0;
+          family.gender = family.gender ? 1: 0;
+
           families.push(family);
         }
     });
@@ -864,8 +906,8 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
 
         if (!family) {
 
-          const isContensEmployee = employees.find(p => p.employeeId === emp.employeeId);
-          if(!isContensEmployee)
+          const isContainsEmployee = employees.find(p => p.employeeId === emp.employeeId);
+          if(!isContainsEmployee)
           {
             employees.push(emp);
           }
@@ -894,6 +936,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
         master.isMaster = ep.isMaster;
         master.employeeName = ep.fullName;
         master.employeeId = ep.employeeId;
+        master.relationshipMobile = ep.relationshipMobile;
         master.relationshipFullName = ep.relationshipFullName;
         master.relationshipBookNo = ep.relationshipBookNo;
         master.relationshipDocumentType =  ep.relationshipDocumentType;
@@ -902,6 +945,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
         master.relationshipWardsCode = ep.relationshipWardsCode;
         master.relationshipVillageCode = ep.relationshipVillageCode;
         master.relationshipCode = '00';
+        master.conditionValid = ep.relationshipFullName ? ep.relationshipFullName : ep.fullName;
         master.origin = {
           employeeId: ep.employeeId,
           isLeaf: true,
@@ -917,6 +961,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
 
             fa.isMaster = false;
             fa.employeeId = ep.employeeId;
+            fa.conditionValid = ep.relationshipFullName;
             fa.origin = {
               employeeId: ep.employeeId,
               isLeaf: true,
@@ -926,8 +971,8 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
           });
         }else {
           // nếu chưa có thông tin của gia đình thì add dòng trống
-          families.push(this.fakeEmployeeInFamilies(ep.employeeId));
-          families.push(this.fakeEmployeeInFamilies(ep.employeeId));
+          families.push(this.fakeEmployeeInFamilies(ep));
+          families.push(this.fakeEmployeeInFamilies(ep));
         }
 
       });
@@ -943,13 +988,14 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     });
   }
 
-  fakeEmployeeInFamilies(employeeId) {
+  fakeEmployeeInFamilies(employee) {
 
     return {
       isMaster:false,
-      employeeId: employeeId,
+      conditionValid: employee.relationshipFullName,
+      employeeId: employee.employeeId,
       origin: {
-        employeeId: employeeId,
+        employeeId: employee.employeeId,
         isLeaf: true,
         isMaster: false,
       }
@@ -977,7 +1023,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
           documentType: doc.documentName,
           companyRelease: this.currentCredentials.companyInfo.name,
           documentNote: doc.documentNote,
-          documentAppraisal: ('Truy tăng ' + emp.fullName + ' từ' + emp.fromDate),
+          documentAppraisal: ('Truy tăng ' + emp.fullName + ' từ ' + emp.fromDate),
           origin: {
             employeeId: emp.employeeId,
             isLeaf: true,
@@ -1017,6 +1063,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
           isMaster: false,
         };
 
+        employee.conditionValid = employee.relationshipFullName; 
         employeesInDeclaration.push(employee);
       }
 

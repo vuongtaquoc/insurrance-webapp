@@ -44,7 +44,6 @@ export class EmployeeHospitalRegisterFormComponent implements OnInit {
       return;
     }
 
-    console.log(this.form)
     this.modal.destroy();
   }
 

@@ -68,8 +68,7 @@ export const TABLE_DOCUMENT_HEADER_COLUMNS = [{
     required: true
   }
 }, {
-  type: 'calendar',
-  options: { format:'DD/MM/YYYY' },
+  type: 'text',
   width: 100,
   title: '(7)',
   align: 'left',
@@ -79,8 +78,7 @@ export const TABLE_DOCUMENT_HEADER_COLUMNS = [{
     required: true
   }
 }, {
-  type: 'calendar',
-  options: { format:'DD/MM/YYYY' },
+  type: 'text',  
   width:120,
   title: '(8)',
   align: 'left',
