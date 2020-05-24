@@ -219,7 +219,23 @@ export class RegimeApprovalBaseComponent {
   handleDeleteTableData({ rowNumber, numOfRows, records }, part) {
     const declarations = [ ...this.declarations[part].table ];
 
-    declarations.splice(rowNumber, numOfRows);
+    const beforeRow = records[rowNumber - 1];
+    const afterRow = records[rowNumber];
+
+    if (!((beforeRow.options && beforeRow.options.isLeaf) || (afterRow.options && afterRow.options.isLeaf))) {
+      const row: any = declarations[rowNumber];
+      const origin = { ...row.data.origin };
+      const options = { ...row.data.options };
+
+      row.data = [];
+      row.origin = origin;
+      row.options = options;
+      row.isInitialize = true;
+    } else {
+      declarations.splice(rowNumber, numOfRows);
+    }
+
+    // declarations.splice(rowNumber, numOfRows);
 
     this.updateOrders(declarations);
 

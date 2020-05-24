@@ -5,6 +5,7 @@ import { Title } from '@angular/platform-browser';
 import { Subscription } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 import { AuthenticationService } from '@app/core/services';
 
@@ -24,6 +25,7 @@ export class AuthLoginComponent implements OnInit, OnDestroy {
     private authService: AuthenticationService,
     private titleService: Title,
     private translateService: TranslateService,
+    private messageService: NzMessageService
   ) {
     if (this.authService.currentCredentials) {
       this.router.navigate(['/']);
@@ -64,6 +66,7 @@ export class AuthLoginComponent implements OnInit, OnDestroy {
         },
         (error) => {
           console.error(error)
+          this.messageService.create('error', 'Sai Tên đăng nhập hoặc Mật khẩu. Vui lòng thử lại!')
         }
       );
   }

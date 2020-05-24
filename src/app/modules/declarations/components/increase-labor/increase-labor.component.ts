@@ -186,12 +186,12 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
         this.declarationService.getDeclarationInitials('600', this.tableHeaderColumns).subscribe(declarations => {
           this.declarations = declarations;
         });
-      
+
         this.declarationGeneral = {
           totalNumberInsurance: '',
           totalCardInsurance: ''
         };
-      }    
+      }
     });
     this.handler = eventEmitter.on('labor-table-editor:validate', ({ name, isValid }) => {
       if (name === 'increaseLabor') {
@@ -321,14 +321,14 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
 
       if (column.key === 'sameAddress') {
         const isSameAddress = instance.jexcel.getValueFromCoords(c, r);
-       
+
         if(isSameAddress === true)
         {
           this.updateNextColumns(instance, r, instance.jexcel.getValueFromCoords(7, r), [ c + 1]);
           this.updateNextColumns(instance, r, instance.jexcel.getValueFromCoords(8, r), [ c + 2]);
           this.updateNextColumns(instance, r, instance.jexcel.getValueFromCoords(9, r), [ c + 3]);
           this.updateSelectedValueDropDow(columns, instance, r);
-          
+
         } else {
           this.updateNextColumns(instance, r, '', [ c + 1]);
           this.updateNextColumns(instance, r, '', [ c + 2]);
@@ -336,8 +336,8 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
         }
       }
     }
-    
-    //update families 
+
+    //update families
     this.families.forEach((family: any, index) => {
       const record = records[index];
       //update data on Jexcel
@@ -350,7 +350,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
       });
 
     });
-    
+
     this.eventsSubject.next('validate');
   }
 
@@ -449,12 +449,18 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     let declarationsDeleted = [];
 
     if (!((beforeRow.options && beforeRow.options.isLeaf) || (afterRow.options && afterRow.options.isLeaf))) {
-      const row = declarations[rowNumber];
+      const row: any = declarations[rowNumber];
+      const origin = { ...row.data.origin };
+      const options = { ...row.data.options };
 
       row.data = [];
+      row.origin = origin;
+      row.options = options;
+      row.isInitialize = true;
     } else {
       declarationsDeleted = declarations.splice(rowNumber, numOfRows);
     }
+
     this.updateOrders(declarations);
 
     this.declarations = this.declarationService.updateFormula(declarations, this.tableHeaderColumns);
@@ -471,7 +477,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     const data: any = [];
     row.data = data;
     row.isMaster = false;
-    
+
     row.origin = {
       employeeId: beforeRow.origin.employeeId,
       isLeaf: true,
@@ -729,7 +735,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
 
   private getRelationShips(instance, cell, c, r, source) {
     const row = instance.jexcel.getRowFromCoords(r);
-    if (row.origin.isMaster) {
+    if (row.origin && row.origin.isMaster) {
       return source;
     }
 
@@ -802,7 +808,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     );
 
     if (!array.origin) {
-      return object;           
+      return object;
     }
 
     object.origin = array.origin;
@@ -857,13 +863,13 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
       const family = this.families.find(p => p.employeeId === emp.employeeId);
 
         if (!family) {
-          
+
           const isContensEmployee = employees.find(p => p.employeeId === emp.employeeId);
           if(!isContensEmployee)
           {
             employees.push(emp);
           }
-          
+
         }else {
 
           const currentFamilies = this.families.filter(fm => fm.employeeId === emp.employeeId);
@@ -925,7 +931,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
         }
 
       });
-      
+
       families.forEach(p => {
         p.data = this.tableHeaderColumnsFamilies.map(column => {
           if (!column.key || !p[column.key]) return '';
@@ -938,7 +944,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
   }
 
   fakeEmployeeInFamilies(employeeId) {
-    
+
     return {
       isMaster:false,
       employeeId: employeeId,
@@ -1004,7 +1010,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     records.forEach(record => {
       const employee = this.arrayEmployeeToProps(record, this.tableHeaderColumns, true);
       if(employee && employee.employeeId) {
-       
+
         employee.origin = {
           employeeId: employee.employeeId,
           isLeaf:true,

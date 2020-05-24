@@ -142,14 +142,17 @@ export const TABLE_HEADER_COLUMNS = [{
   width: 135,
   title: '(12)',
   align: 'left',
-  key: 'mobile'
+  key: 'mobile',
+  validations: {
+    number: true
+  }
 }, {
   type: 'numeric',
   autocomplete: true,
   width: 135,
   title: '(13)',
   align: 'left',
-  key: 'familyNo'
+  key: 'familyNo',
 }, {
   type: 'dropdown',
   width: 145,
@@ -303,13 +306,19 @@ export const TABLE_HEADER_COLUMNS = [{
   width: 70,
   title: '(22.6)',
   key: 'allowanceSeniority',
-  suffix: '%'
+  suffix: '%',
+  validations: {
+    number: true
+  }
 }, {
   type: 'numeric',
   width: 70,
   title: '(22.7)',
   key: 'allowanceSeniorityJob',
-  suffix: '%'
+  suffix: '%',
+  validations: {
+    number: true
+  }
 }, {
   type: 'numeric',
   width: 80,
@@ -317,7 +326,10 @@ export const TABLE_HEADER_COLUMNS = [{
   mask: '# ##0',
   decimal: ',',
   sum: true,
-  key: 'allowanceOther'
+  key: 'allowanceOther',
+  validations: {
+    number: true
+  }
 }, {
   type: 'text',
   width: 60,

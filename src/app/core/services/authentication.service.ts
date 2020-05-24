@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 
 import { ApplicationHttpClient } from '@app/core/http';
 
@@ -22,11 +22,12 @@ export class AuthenticationService {
     return JSON.parse(localStorage.getItem(CREDENTIAL_STORAGE));
   }
 
-  public login(userId: string, password: string): Observable<Credential> {
+  public login(userId: string, password: string): Observable<any> {
     return this.http.post('/session/login', {
       userId,
       password
-    }).pipe(
+    })
+    .pipe(
       map(data => {
         return this.storeCredentials(data);
       })

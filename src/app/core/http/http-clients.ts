@@ -97,6 +97,10 @@ export class ApplicationHttpClient {
       return data.data;
     }
 
+    if (data.code === 2001) {
+      throw new Error(data.code);
+    }
+
     return throwError({
       code: data.code,
       message: data.message

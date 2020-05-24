@@ -145,7 +145,7 @@
             </div><!-- page-declarations__content -->
           </div><!-- page-declarations__container -->
         </nz-tab><!-- tab 2 -->
-        <nz-tab nzTitle="PL TVHGD-NLD" [nzDisabled]="!familiesList.length">
+        <nz-tab nzTitle="PL TVHGD-NLD" [nzDisabled]="!families || !families.length">
           <div class="page-document-list__container page-document-list__container--note">
             <h1>600 | Báo tăng lao động</h1>
             <h2>PHỤ LỤC THÀNH VIÊN GIA ĐÌNH</h2>
@@ -162,7 +162,7 @@
             </div>
           </div>
         </nz-tab>
-        <nz-tab nzTitle="Bảng kê hồ sơ" [nzDisabled]="!informationList.length">
+        <nz-tab nzTitle="Bảng kê hồ sơ" [nzDisabled]="!informations || !informations.length">
           <div class="page-document-list__container">
             <form nz-form [formGroup]="documentForm">
               <h1>600 | Báo tăng lao động</h1>
