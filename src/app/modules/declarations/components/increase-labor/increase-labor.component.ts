@@ -733,16 +733,31 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     return this.documentForm.get('usedocumentDT01').value;
   }
 
-  handleChangeDocumentList({ records, columns }) {
-    const informations = [];
-    records.forEach(record => {
-      informations.push(this.arrayToProps(record, columns));
+  handleChangeInfomation({ records, columns }) {
+      
+    //update families 
+    this.informations.forEach((d: any, index) => {
+      const record = records[index];
+      //update data on Jexcel
+      Object.keys(record).forEach(index => {
+        d.data[index] = record[index];
+      });
+      //update data object source
+      columns.map((column, index) => {
+        d[column.key] = record[index];
+      });
+
     });
-    this.informations = informations;
+    
+    this.eventsSubject.next('validate');
   }
 
-  handleDeleteDocumentList({ rowNumber, numOfRows }) {
+  handleDeleteInfomation({ rowNumber, numOfRows }) {
+    const infomations = [ ...this.informations ];
 
+    const infomaionDeleted = infomations.splice(rowNumber, numOfRows);
+    this.informations = infomations;
+    this.eventsSubject.next('validate');
   }
 
   private arrayToProps(array, columns) {
