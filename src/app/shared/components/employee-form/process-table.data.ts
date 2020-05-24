@@ -53,7 +53,8 @@ export const TABLE_HEADER_COLUMNS = [{
   type: 'text',
   width: 210,
   title: '(5)',
-  key: 'companyName'
+  key: 'companyName',
+  isMasterKey: true
 }, {
   type: 'text',
   width: 120,

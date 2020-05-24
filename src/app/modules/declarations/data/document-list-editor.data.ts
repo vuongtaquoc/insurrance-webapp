@@ -25,7 +25,8 @@ export const TABLE_DOCUMENT_HEADER_COLUMNS = [{
   type: 'text',
   width: 170,
   title: '(2)',
-  key: 'fullName'
+  key: 'fullName',
+  isMasterKey: true
 }, {
   type: 'text',
   width: 120,

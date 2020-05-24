@@ -1,8 +1,10 @@
 import { Component, Input, Output, OnInit, OnDestroy, OnChanges, AfterViewInit, ViewChild, EventEmitter, ViewEncapsulation, ElementRef } from '@angular/core';
 import { Subscription, Observable } from 'rxjs';
 import * as jexcel from 'jstable-editor/dist/jexcel.js';
-import { customPicker } from '@app/shared/utils/custom-editor';
 import 'jsuites/dist/jsuites.js';
+
+import { customPicker } from '@app/shared/utils/custom-editor';
+import { eventEmitter } from '@app/shared/utils/event-emitter';
 
 @Component({
   selector: 'app-families-list-table',
@@ -22,16 +24,32 @@ export class FamiliesListTableComponent implements OnInit, OnDestroy, OnChanges,
   @Output() onAddRow: EventEmitter<any> = new EventEmitter();
 
   spreadsheet: any;
+  isSpinning = true;
   private eventsSubscription: Subscription;
+  private handlers = [];
+  private timer;
 
   constructor(private element: ElementRef) {}
 
   ngOnInit() {
+    this.handlers.push(eventEmitter.on('increase-labor:tab:change', (index) => {
+      clearTimeout(this.timer);
 
+      this.isSpinning = true;
+
+      this.timer = setTimeout(() => {
+        this.spreadsheet.updateNestedHeaderPosition();
+        this.spreadsheet.updateFreezeColumn();
+        this.isSpinning = false;
+      }, 300);
+    }));
   }
 
   ngOnDestroy() {
     jexcel.destroy(this.spreadsheetEl.nativeElement, true);
+    if (this.timer) clearTimeout(this.timer);
+
+    eventEmitter.destroy(this.handlers);
   }
 
   ngOnChanges(changes) {
@@ -41,7 +59,6 @@ export class FamiliesListTableComponent implements OnInit, OnDestroy, OnChanges,
   }
 
   ngAfterViewInit() {
-    const containerSize = this.getContainerSize();
     this.spreadsheet = jexcel(this.spreadsheetEl.nativeElement, {
       data: [],
       nestedHeaders: this.nestedHeaders,

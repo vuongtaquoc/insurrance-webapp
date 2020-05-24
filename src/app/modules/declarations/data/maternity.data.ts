@@ -62,7 +62,8 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   type: 'text',
   width: 180,
   title: '(B)',
-  key: 'fullName'
+  key: 'fullName',
+  isMasterKey: true
 }, {
   type: 'text',
   width: 120,
@@ -358,7 +359,8 @@ export const TABLE_HEADER_COLUMNS_PART_2 = [{
   type: 'text',
   width: 180,
   title: '(B)',
-  key: 'fullName'
+  key: 'fullName',
+  isMasterKey: true
 }, {
   type: 'text',
   width: 120,
