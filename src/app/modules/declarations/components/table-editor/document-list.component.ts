@@ -80,7 +80,6 @@ export class DocumentListTableComponent implements OnInit, OnDestroy, OnChanges,
 
   private updateTable() {
     const data = [];
-
     this.data.forEach((d, index) => {
       d.data.origin  = d.origin;
       data.push(d.data);
