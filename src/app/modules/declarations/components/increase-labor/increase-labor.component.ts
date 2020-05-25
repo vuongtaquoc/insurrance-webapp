@@ -346,7 +346,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
         this.updateNextColumns(instance, r,value, [(numberColumn -1)]);
       }
     }
-    //update families 
+    //update families
     this.families.forEach((family: any, index) => {
       const record = records[index];
       //update data on Jexcel
@@ -461,6 +461,8 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
       const row: any = declarations[rowNumber];
       const origin = { ...row.data.origin };
       const options = { ...row.data.options };
+      origin.employeeId = 0;
+      origin.id = 0;
       row.data = [];
       row.origin = origin;
       row.options = options;
@@ -763,8 +765,8 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
   }
 
   handleChangeInfomation({ records, columns }) {
-      
-    //update families 
+
+    //update families
     this.informations.forEach((d: any, index) => {
       const record = records[index];
       //update data on Jexcel
@@ -777,7 +779,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
       });
 
     });
-    
+
     this.eventsSubject.next('validate');
   }
 
@@ -866,7 +868,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
       p.data.origin = {
         employeeId: p.employeeId,
         isLeaf: true,
-      }  
+      }
     });
     return infomationscopy;
   }
@@ -1063,7 +1065,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
           isMaster: false,
         };
 
-        employee.conditionValid = employee.relationshipFullName; 
+        employee.conditionValid = employee.relationshipFullName;
         employeesInDeclaration.push(employee);
       }
 
