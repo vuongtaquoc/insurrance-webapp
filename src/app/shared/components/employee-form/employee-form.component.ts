@@ -270,7 +270,7 @@ export class EmployeeFormComponent implements OnInit {
     records.forEach(record => {
       families.push(this.arrayToProps(record, columns));
     });
-
+    console.log(families ,'handleChangeFamilyTable');
     this.families = families;
   }
 
@@ -317,10 +317,13 @@ export class EmployeeFormComponent implements OnInit {
       return;
     }
     this.districtService.getDistrict(value).subscribe(data => this.registerDistricts = data);
-
-    this.employeeForm.patchValue({
-      recipientsCityCode: value
-    });
+    
+    if(this.isDuplicateAddress) {
+      this.employeeForm.patchValue({
+        recipientsCityCode: value
+      });
+    }
+    
   }
 
   changeRegisterDistrict(value) {
@@ -328,16 +331,37 @@ export class EmployeeFormComponent implements OnInit {
       return;
     }
     this.wardService.getWards(value).subscribe(data => this.registerWards = data);
-
-    this.employeeForm.patchValue({
-      recipientsDistrictCode: value
-    });
+    if(this.isDuplicateAddress) {
+      this.employeeForm.patchValue({
+        recipientsDistrictCode: value
+      });
+    }
   }
 
   changeRegisterWardsCode(value) {
-    this.employeeForm.patchValue({
-      recipientsWardsCode: value
-    });
+
+    if(this.isDuplicateAddress) {
+      this.employeeForm.patchValue({
+        recipientsWardsCode: value
+      });
+    }
+
+  }
+
+  isSameAddress(value) {
+    if(!value) {
+      this.employeeForm.patchValue({
+        recipientsCityCode: null,
+        recipientsDistrictCode: null,
+        recipientsWardsCode: null
+      });
+    }else {
+      this.employeeForm.patchValue({
+        recipientsCityCode: this.registerCityCode,
+        recipientsDistrictCode: this.registerDistrictCode,
+        recipientsWardsCode: this.registerWardsCode
+      });
+    }
   }
 
   changeRecipientsCity(value) {
@@ -360,10 +384,7 @@ export class EmployeeFormComponent implements OnInit {
     
   }
 
-  changeRelationshipWards(value) {
-    this.villageService.getVillage(value).subscribe(data => this.relationshipVillages = data);
-    this.changeRelationshipFamily(value, 'wardsCode');
-  }
+  
 
   changeRelationshipCities(value) {
     this.districtService.getDistrict(value).subscribe(data => this.relationshipDistricts = data);
@@ -373,6 +394,11 @@ export class EmployeeFormComponent implements OnInit {
   changeRelationshipDistrict(value) {
     this.wardService.getWards(value).subscribe(data => this.relationshipWards = data);
     this.changeRelationshipFamily(value, 'districtCode');
+  }
+
+  changeRelationshipWards(value) {
+    this.villageService.getVillage(value).subscribe(data => this.relationshipVillages = data);
+    this.changeRelationshipFamily(value, 'wardsCode');
   }
 
   changeFirstRegisterCity(value) {
@@ -394,7 +420,6 @@ export class EmployeeFormComponent implements OnInit {
         fullName: value
       };
     }
-
     this.families = families;
   }
 
@@ -420,6 +445,24 @@ export class EmployeeFormComponent implements OnInit {
     modal.afterClose.subscribe(result => {
       // this.getEmployees();
     });
+  }
+
+  changeMaster(value) {
+    if(value) {
+      this.employeeForm.patchValue({
+        relationshipFullName: this.fullName,
+        relationshipCityCode: this.registerCityCode,
+        relationshipDistrictCode: this.registerDistrictCode,
+        relationshipWardsCode: this.registerWardsCode
+      });
+    } else {
+      this.employeeForm.patchValue({
+        relationshipFullName: null,
+        relationshipCityCode: null,
+        relationshipDistrictCode: null,
+        relationshipWardsCode: null
+      });
+    }
   }
 
   private arrayToProps(array, columns) {
@@ -481,6 +524,23 @@ export class EmployeeFormComponent implements OnInit {
     if (!dateSign) return '';
 
     return moment(dateSign).format(DATE_FORMAT.FULL);
+  }
+
+
+  get registerCityCode() {
+    return this.employeeForm.get('registerCityCode').value;
+  }
+
+  get registerDistrictCode() {
+    return this.employeeForm.get('registerDistrictCode').value;
+  }
+
+  get registerWardsCode() {
+    return this.employeeForm.get('registerWardsCode').value;
+  }
+
+  get isDuplicateAddress() {
+    return this.employeeForm.get('isDuplicateAddress').value;
   }
 
   getNameOfDropdown(sourceOfDropdown: any, id: string) {
