@@ -63,6 +63,7 @@ export class EmployeeFormComponent implements OnInit {
   relationshipVillages: DropdownItem[] = [];
   processSubject: Subject<string> = new Subject<string>();
   familySubject: Subject<string> = new Subject<string>();
+  private timer;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -317,13 +318,13 @@ export class EmployeeFormComponent implements OnInit {
       return;
     }
     this.districtService.getDistrict(value).subscribe(data => this.registerDistricts = data);
-    
+
     if(this.isDuplicateAddress) {
       this.employeeForm.patchValue({
         recipientsCityCode: value
       });
     }
-    
+
   }
 
   changeRegisterDistrict(value) {
@@ -376,15 +377,15 @@ export class EmployeeFormComponent implements OnInit {
     this.employeeForm.patchValue({
       recipientsWardsCode: null
     });
-    
+
     if(!value) {
       return;
     }
     this.wardService.getWards(value).subscribe(data => this.recipientsWards = data);
-    
+
   }
 
-  
+
 
   changeRelationshipCities(value) {
     this.districtService.getDistrict(value).subscribe(data => this.relationshipDistricts = data);
@@ -402,7 +403,7 @@ export class EmployeeFormComponent implements OnInit {
   }
 
   changeFirstRegisterCity(value) {
-    this.hospitalService.getHospitals(value).subscribe(data => this.hospitals = data);
+    // this.hospitalService.getHospitals(value).subscribe(data => this.hospitals = data);
   }
 
   changeRelationshipFullName(value) {
@@ -553,6 +554,10 @@ export class EmployeeFormComponent implements OnInit {
     return this.employeeForm.get('isDuplicateAddress').value;
   }
 
+  get cityFirstRegistCode() {
+    return this.employeeForm.get('cityFirstRegistCode').value;
+  }
+
   getNameOfDropdown(sourceOfDropdown: any, id: string) {
     let name = '';
     const item = _.find(sourceOfDropdown, {
@@ -565,4 +570,17 @@ export class EmployeeFormComponent implements OnInit {
     return name;
   }
 
+  searchHospitalFirstRegistCode(value: string): void {
+    clearTimeout(this.timer);
+
+    if (!this.cityFirstRegistCode || !value) {
+      return;
+    }
+
+    this.timer = setTimeout(() => {
+      this.hospitalService.searchHospital(this.cityFirstRegistCode, value).subscribe(data => {
+        this.hospitals = data;
+      });
+    }, 200);
+  }
 }
