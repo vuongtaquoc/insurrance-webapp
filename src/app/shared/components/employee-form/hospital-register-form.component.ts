@@ -2,7 +2,8 @@ import { Component, OnInit, ViewEncapsulation, Input, Output, EventEmitter } fro
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 
-import { CityService } from '@app/core/services';
+import { CityService, HospitalService } from '@app/core/services';
+
 import { City } from '@app/core/models';
 
 @Component({
@@ -21,14 +22,15 @@ export class EmployeeHospitalRegisterFormComponent implements OnInit {
   constructor(
     private modal: NzModalRef,
     private formBuilder: FormBuilder,
-    private cityService: CityService
+    private cityService: CityService,
+    private hospitalService: HospitalService
   ) {}
 
   ngOnInit() {
     this.getCities();
-
+    console.log(this.data,'XXXXX');
     this.form = this.formBuilder.group({
-      cityId: ['', Validators.required],
+      cityCode: [this.data.cityCode, Validators.required],
       name: [ '', Validators.required ],
       id: [ '', Validators.required ]
     });
@@ -43,8 +45,10 @@ export class EmployeeHospitalRegisterFormComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
-
-    this.modal.destroy();
+    
+    this.hospitalService.create(this.form.value).subscribe(() => {
+      this.modal.destroy(this.form.value);
+    });
   }
 
   dismiss() {
