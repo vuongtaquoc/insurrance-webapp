@@ -51,7 +51,7 @@ export const customPicker = (table, mode, checkPrevCol = false) => {
       }
 
       const value = cell.children[0].value;
-      const isValid = moment(value, options.format).isValid();
+      const isValid = moment(value, options.format.toUpperCase(), true).isValid();
       cell.innerHTML = isValid ? value : '';
       return isValid ? value : '';
     },
@@ -89,7 +89,7 @@ export const customPicker = (table, mode, checkPrevCol = false) => {
         }
       }
 
-      const isValid = moment(cell.innerHTML, options.format).isValid();
+      const isValid = moment(cell.innerHTML, options.format.toUpperCase(), true).isValid();
 
       // Create input
       const element = document.createElement('input');
@@ -98,7 +98,6 @@ export const customPicker = (table, mode, checkPrevCol = false) => {
       cell.classList.add('editor');
       cell.innerHTML = '';
       cell.appendChild(element);
-      console.log(checkPrevCol, element.value)
 
       $(element).datepicker(options).on('changeDate', function(e) {
         setTimeout(function() {
