@@ -48,7 +48,7 @@ export class EmployeeProcessTableComponent implements OnInit, OnDestroy, OnChang
 
   ngOnChanges(changes) {
     if (changes.data && changes.data.currentValue && changes.data.currentValue.length) {
-      // this.updateTable();
+      this.updateTable();
     }
   }
 
@@ -96,6 +96,10 @@ export class EmployeeProcessTableComponent implements OnInit, OnDestroy, OnChang
   }
 
   private updateTable() {
+    if (!this.spreadsheet) {
+      return;
+    }
+
     const data = [];
 
     this.data.forEach((d, index) => {
