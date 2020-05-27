@@ -435,11 +435,17 @@ export class EmployeeFormComponent implements OnInit {
   }
 
   addHospitalFirstRegistCode() {
+	const data = {
+		cityCode: this.hospitalFirstRegistCode,
+	};
     const modal = this.modalService.create({
       nzWidth: 500,
       nzWrapClassName: 'add-hospital-modal',
       nzTitle: 'Thông tin đơn vị KCB',
       nzContent: EmployeeHospitalRegisterFormComponent,
+	  nzComponentParams: {
+        data
+      }
     });
 
     modal.afterClose.subscribe(result => {
@@ -537,6 +543,10 @@ export class EmployeeFormComponent implements OnInit {
 
   get registerWardsCode() {
     return this.employeeForm.get('registerWardsCode').value;
+  }
+  
+  get cityFirstRegistCode() {
+	return this.employeeForm.get('cityFirstRegistCode').value;
   }
 
   get isDuplicateAddress() {

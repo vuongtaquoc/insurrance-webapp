@@ -22,4 +22,8 @@ export class HospitalService {
       })
     );
   }
+
+  public create(body, options = {}) {
+    return this.http.post('/hospital', body, options);
+  }
 }

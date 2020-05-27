@@ -3,7 +3,7 @@
     <nz-form-item>
       <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="8">Tỉnh/Thành phố</nz-form-label>
       <nz-form-control [nzSpan]="16" nzErrorTip="Tỉnh/Thành phố không để trống">
-        <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="cityId">
+        <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="cityCode">
           <nz-option *ngFor="let city of cities" [nzLabel]="city.name" [nzValue]="city.id"></nz-option>
         </nz-select>
       </nz-form-control>
