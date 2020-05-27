@@ -121,8 +121,10 @@ export class EmployeeFamilyTableComponent implements OnInit, OnDestroy, OnChange
   }
 
   private updateTable() {
+    if (!this.spreadsheet) {
+      return;
+    }
     const data = [];
-    console.log(this.data,'updateTable');
     this.data.forEach((d, index) => {
       const familyRow = [];
 
@@ -145,7 +147,6 @@ export class EmployeeFamilyTableComponent implements OnInit, OnDestroy, OnChange
     }
 
     this.data = data;
-    console.log(data,'data');
     this.spreadsheet.setData(this.data);
 
     // update dropdown data

@@ -379,7 +379,14 @@
               <nz-form-item>
                 <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="6">Nơi KCBBĐ</nz-form-label>
                 <nz-form-control [nzSpan]="18" nzErrorTip="Nơi KCBBĐ không để trống">
-                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="hospitalFirstRegistCode">
+                  <nz-select
+                    nzShowSearch
+                    nzServerSearch
+                    nzAllowClear
+                    nzPlaceHolder="Chọn"
+                    formControlName="hospitalFirstRegistCode"
+                    (nzOnSearch)="searchHospitalFirstRegistCode($event)"
+                  >
                     <nz-option *ngFor="let hospital of hospitals" [nzLabel]="hospital.name" [nzValue]="hospital.id"></nz-option>
                   </nz-select>
                 </nz-form-control>

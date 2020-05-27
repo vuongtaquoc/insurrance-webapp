@@ -22,4 +22,20 @@ export class HospitalService {
       })
     );
   }
+
+  public searchHospital(cityCode, name): Observable<any> {
+    return this.http.get('/hospital', {
+      params: {
+        cityCode,
+        name
+      }
+    }).pipe(
+      map(hospitals => {
+        return hospitals.map(hospital => ({
+          ...hospital,
+          name: `${ hospital.id } - ${ hospital.name }`
+        }));
+      })
+    );
+  }
 }
