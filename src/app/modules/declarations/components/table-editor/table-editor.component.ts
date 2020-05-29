@@ -183,7 +183,8 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
       setTimeout(() => {
         eventEmitter.emit('labor-table-editor:validate', {
           name: this.tableName,
-          isValid: this.spreadsheet.isTableValid()
+          isValid: this.spreadsheet.isTableValid(),
+          errors: this.spreadsheet.getTableErrors()
         });
       }, 10);
       return;

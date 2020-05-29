@@ -49,7 +49,8 @@ import {
   DocumentFormComponent,
   DocumentTableComponent,
   PaginationComponent,
-  ButtonDeleteComponent
+  ButtonDeleteComponent,
+  TableEditorErrorsComponent
 } from './components';
 
 import {
@@ -95,6 +96,7 @@ import {
     UsersTreeComponent,
     PaginationComponent,
     ButtonDeleteComponent,
+    TableEditorErrorsComponent,
     CardFullHeightDirective,
     EditorAutoSizeDirective,
     PluploadDirective
@@ -109,6 +111,7 @@ import {
     UsersTreeComponent,
     PaginationComponent,
     ButtonDeleteComponent,
+    TableEditorErrorsComponent,
     CardFullHeightDirective,
     EditorAutoSizeDirective,
     PluploadDirective
@@ -128,7 +131,8 @@ import {
   entryComponents: [
     EmployeeFormComponent,
     EmployeeHospitalRegisterFormComponent,
-    DocumentFormComponent
+    DocumentFormComponent,
+    TableEditorErrorsComponent
   ]
 })
 export class SharedModule {}

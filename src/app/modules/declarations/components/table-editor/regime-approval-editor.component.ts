@@ -260,6 +260,7 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
         eventEmitter.emit('regime-approval:validate', {
           name: this.tableName,
           isValid: this.spreadsheet.isTableValid(),
+          errors: this.spreadsheet.getTableErrors(),
           leaf,
           initialize
         });

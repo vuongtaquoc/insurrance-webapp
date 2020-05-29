@@ -1,0 +1,6 @@
+<div *ngFor="let error of keys()" class="table-editors-error">
+  <div class="table-editors-error__title">Bảng <strong>{{ getTableName(error) }}</strong></div>
+  <div class="table-editors-error__item" *ngFor="let item of errors[error]">
+    - Dòng {{ item.y }}, cột {{ item.x }}
+  </div>
+</div>

@@ -8,3 +8,4 @@ export * from './input-label/input-label.component';
 export * from './users-tree/users-tree.component';
 export * from './pagination/pagination.component';
 export * from './button-delete/button-delete.component';
+export * from './table-editor-errors/table-editor-errors.component';

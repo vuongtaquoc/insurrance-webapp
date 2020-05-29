@@ -23,7 +23,7 @@ export class HospitalService {
     );
   }
 
-  public searchHospital(cityCode, name): Observable<any> {
+  public searchHospital(cityCode, name = ''): Observable<any> {
     return this.http.get('/hospital', {
       params: {
         cityCode,

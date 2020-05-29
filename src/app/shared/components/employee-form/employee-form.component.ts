@@ -106,7 +106,8 @@ export class EmployeeFormComponent implements OnInit {
     if (employee.registerDistrictCode) jobs.push(this.wardService.getWards(employee.registerDistrictCode));
     if (employee.recipientsCityCode) jobs.push(this.districtService.getDistrict(employee.recipientsCityCode));
     if (employee.recipientsDistrictCode) jobs.push(this.wardService.getWards(employee.recipientsDistrictCode));
-    if (employee.cityFirstRegistCode) jobs.push(this.hospitalService.getHospitals(employee.cityFirstRegistCode));
+    if (employee.cityFirstRegistCode) jobs.push(this.hospitalService.searchHospital(employee.cityFirstRegistCode));
+    // if (employee.cityFirstRegistCode) jobs.push(this.hospitalService.getHospitals(employee.cityFirstRegistCode));
     if (employee.relationshipCityCode) jobs.push(this.districtService.getDistrict(employee.relationshipCityCode));
     if (employee.relationshipDistrictCode) jobs.push(this.wardService.getWards(employee.relationshipDistrictCode));
     if (employee.relationshipWardsCode) jobs.push(this.villageService.getVillage(employee.relationshipWardsCode));
@@ -436,9 +437,9 @@ export class EmployeeFormComponent implements OnInit {
   }
 
   addHospitalFirstRegistCode() {
-	const data = {
-		cityCode: this.hospitalFirstRegistCode,
-	};
+    const data = {
+      // cityCode: this.hospitalFirstRegistCode,
+    };
     const modal = this.modalService.create({
       nzWidth: 500,
       nzWrapClassName: 'add-hospital-modal',
@@ -545,17 +546,13 @@ export class EmployeeFormComponent implements OnInit {
   get registerWardsCode() {
     return this.employeeForm.get('registerWardsCode').value;
   }
-  
+
   get cityFirstRegistCode() {
 	return this.employeeForm.get('cityFirstRegistCode').value;
   }
 
   get isDuplicateAddress() {
     return this.employeeForm.get('isDuplicateAddress').value;
-  }
-
-  get cityFirstRegistCode() {
-    return this.employeeForm.get('cityFirstRegistCode').value;
   }
 
   getNameOfDropdown(sourceOfDropdown: any, id: string) {

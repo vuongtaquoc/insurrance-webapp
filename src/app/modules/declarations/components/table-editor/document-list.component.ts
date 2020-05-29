@@ -4,6 +4,8 @@ import * as jexcel from 'jstable-editor/dist/jexcel.js';
 import { customPicker } from '@app/shared/utils/custom-editor';
 import 'jsuites/dist/jsuites.js';
 
+import { eventEmitter } from '@app/shared/utils/event-emitter';
+
 @Component({
   selector: 'app-document-list-table',
   templateUrl: './document-list.component.html',
@@ -16,6 +18,7 @@ export class DocumentListTableComponent implements OnInit, OnDestroy, OnChanges,
   @Input() events: Observable<void>;
   @Input() columns: any[] = [];
   @Input() nestedHeaders: any[] = [];
+  @Input() tableName: string;
   @Output() onChange: EventEmitter<any> = new EventEmitter();
   @Output() onSubmit: EventEmitter<any> = new EventEmitter();
   @Output() onDelete: EventEmitter<any> = new EventEmitter();
@@ -26,12 +29,13 @@ export class DocumentListTableComponent implements OnInit, OnDestroy, OnChanges,
   constructor(private element: ElementRef) {}
 
   ngOnInit() {
-  
+    this.eventsSubscription = this.events.subscribe((type) => this.handleEvent(type));
   }
-  
+
 
   ngOnDestroy() {
     jexcel.destroy(this.spreadsheetEl.nativeElement, true);
+    this.eventsSubscription.unsubscribe();
   }
 
   ngOnChanges(changes) {
@@ -41,7 +45,6 @@ export class DocumentListTableComponent implements OnInit, OnDestroy, OnChanges,
   }
 
   ngAfterViewInit() {
-    const containerSize = this.getContainerSize();
     this.spreadsheet = jexcel(this.spreadsheetEl.nativeElement, {
       data: [],
       nestedHeaders: this.nestedHeaders,
@@ -92,14 +95,17 @@ export class DocumentListTableComponent implements OnInit, OnDestroy, OnChanges,
     this.spreadsheet.setData(this.data);
   }
 
-  private getContainerSize() {
-    const element = this.element.nativeElement;
-    const parent = element.parentNode;
-
-    return {
-      width: parent.offsetWidth,
-      height: parent.offsetHeight
-    };
+  private handleEvent(type) {
+    if (type === 'validate') {
+      setTimeout(() => {
+        eventEmitter.emit('labor-table-editor:validate', {
+          name: this.tableName,
+          isValid: this.spreadsheet.isTableValid(),
+          errors: this.spreadsheet.getTableErrors()
+        });
+      }, 10);
+      return;
+    }
   }
 
   private updateEditorToColumn(key, type, isCustom = false) {
