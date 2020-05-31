@@ -308,7 +308,9 @@ export const TABLE_HEADER_COLUMNS = [{
   key: 'allowanceSeniority',
   suffix: '%',
   validations: {
-    number: true
+    // number: true,
+    min: 0,
+    max: 100
   }
 }, {
   type: 'numeric',
@@ -317,7 +319,8 @@ export const TABLE_HEADER_COLUMNS = [{
   key: 'allowanceSeniorityJob',
   suffix: '%',
   validations: {
-    number: true
+    min: 0,
+    max: 100
   }
 }, {
   type: 'numeric',
