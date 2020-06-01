@@ -668,10 +668,6 @@ export class EmployeeFormComponent implements OnInit {
     return this.employeeForm.get('isDuplicateAddress').value;
   }
 
-  get cityFirstRegistCode() {
-    return this.employeeForm.get('cityFirstRegistCode').value;
-  }
-
   get isMaster() {
     return this.employeeForm.get('isMaster').value;
   }

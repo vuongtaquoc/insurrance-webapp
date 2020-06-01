@@ -33,6 +33,7 @@ import { eventEmitter } from '@app/shared/utils/event-emitter';
 import { TABLE_NESTED_HEADERS, TABLE_HEADER_COLUMNS } from '@app/modules/declarations/data/increase-labor';
 import { TABLE_FAMILIES_NESTED_HEADERS, TABLE_FAMILIES_HEADER_COLUMNS } from '@app/modules/declarations/data/families-editor.data';
 import { TABLE_DOCUMENT_NESTED_HEADERS, TABLE_DOCUMENT_HEADER_COLUMNS } from '@app/modules/declarations/data/document-list-editor.data';
+import { TableEditorErrorsComponent } from '@app/shared/components';
 
 @Component({
   selector: 'app-declaration-increase-labor',
@@ -55,6 +56,8 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
   tableHeaderColumnsDocuments: any[] = TABLE_DOCUMENT_HEADER_COLUMNS;
   employeeSelected: any[] = [];
   eventsSubject: Subject<string> = new Subject<string>();
+  familiesSubject: Subject<string> = new Subject<string>();
+  documentsSubject: Subject<string> = new Subject<string>();
   validateSubject: Subject<any> = new Subject<any>();
   documentList: DocumentList[] = [];
   families: any[] = [];
@@ -66,6 +69,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
   employeeSubject: Subject<any> = new Subject<any>();
   handler: any;
   isTableValid = false;
+  tableErrors = {};
   panel: any = {
     general: { active: false },
     attachment: { active: false }
@@ -193,9 +197,9 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
         };
       }
     });
-    this.handler = eventEmitter.on('labor-table-editor:validate', ({ name, isValid }) => {
-      if (name === 'increaseLabor') {
-        this.isTableValid = isValid;
+    this.handler = eventEmitter.on('labor-table-editor:validate', ({ name, isValid, errors }) => {
+      if (name === 'increaseLabor' || name === 'families' || name === 'informations') {
+        this.tableErrors[name] = errors;
       }
     });
 
@@ -260,6 +264,8 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     });
     this.employeeSelected.length = 0;
     this.eventsSubject.next('validate');
+    this.familiesSubject.next('validate');
+    this.documentsSubject.next('validate');
   }
 
   handleSelectEmployees(employees) {
@@ -267,6 +273,34 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
   }
 
   emitEventToChild(type) {
+    let count = Object.keys(this.tableErrors).reduce(
+      (total, key) => {
+        const data = this.tableErrors[key];
+
+        return total + data.length;
+      },
+      0
+    );
+
+    if (count > 0) {
+      return this.modalService.error({
+        nzTitle: 'Lỗi dữ liệu. Vui lòng sửa!',
+        nzContent: TableEditorErrorsComponent,
+        nzComponentParams: {
+          errors: Object.keys(this.tableErrors).reduce(
+            (combine, key) => {
+              if (this.tableErrors[key].length) {
+                return { ...combine, [key]: this.tableErrors[key] };
+              }
+
+              return { ...combine };
+            },
+            {}
+          )
+        }
+      });
+    }
+
     this.eventsSubject.next(type);
   }
 
@@ -367,6 +401,8 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     });
 
     this.eventsSubject.next('validate');
+    this.familiesSubject.next('validate');
+    this.documentsSubject.next('validate');
   }
 
   private updateSelectedValueDropDow(columns, instance, r) {
@@ -413,6 +449,8 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     this.setDataToFamilies(employeesInDeclaration);
     this.setDateToInformationList(employeesInDeclaration);
     this.eventsSubject.next('validate');
+    this.familiesSubject.next('validate');
+    this.documentsSubject.next('validate');
   }
 
   handleAddRow({ rowNumber, options, origin, insertBefore }) {
@@ -454,6 +492,8 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
 
     this.declarations = this.declarationService.updateFormula(declarations, this.tableHeaderColumns);
     this.eventsSubject.next('validate');
+    this.familiesSubject.next('validate');
+    this.documentsSubject.next('validate');
   }
 
   handleDeleteData({ rowNumber, numOfRows, records }) {
@@ -482,6 +522,8 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     this.declarations = this.declarationService.updateFormula(declarations, this.tableHeaderColumns);
     //this.deleteEmployeeInFamilies(declarationsDeleted);
     this.eventsSubject.next('validate');
+    this.familiesSubject.next('validate');
+    this.documentsSubject.next('validate');
   }
 
   handleAddMember({ rowNumber, numOfRows, beforeRowIndex, afterRowIndex, options, origin, insertBefore }) {
@@ -503,6 +545,9 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     families.splice(insertBefore ? rowNumber : rowNumber + 1, 0, row);
 
     this.families = families;
+    this.eventsSubject.next('validate');
+    this.familiesSubject.next('validate');
+    this.documentsSubject.next('validate');
   }
 
   handleDeleteMember({ rowNumber, numOfRows, records }) {
@@ -511,6 +556,8 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     const familyDeleted = families.splice(rowNumber, numOfRows);
     this.families = families;
     this.eventsSubject.next('validate');
+    this.familiesSubject.next('validate');
+    this.documentsSubject.next('validate');
   }
 
 
@@ -786,6 +833,8 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     });
 
     this.eventsSubject.next('validate');
+    this.familiesSubject.next('validate');
+    this.documentsSubject.next('validate');
   }
 
   handleDeleteInfomation({ rowNumber, numOfRows }) {
@@ -794,6 +843,8 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     const infomaionDeleted = infomations.splice(rowNumber, numOfRows);
     this.informations = infomations;
     this.eventsSubject.next('validate');
+    this.familiesSubject.next('validate');
+    this.documentsSubject.next('validate');
   }
 
   private arrayToProps(array, columns) {

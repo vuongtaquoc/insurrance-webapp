@@ -19,6 +19,7 @@ export class FamiliesListTableComponent implements OnInit, OnDestroy, OnChanges,
   @Input() columns: any[] = [];
   @Input() tableName: string;
   @Input() nestedHeaders: any[] = [];
+  @Input() tableName: string;
   @Output() onChange: EventEmitter<any> = new EventEmitter();
   @Output() onSubmit: EventEmitter<any> = new EventEmitter();
   @Output() onDelete: EventEmitter<any> = new EventEmitter();
@@ -50,6 +51,7 @@ export class FamiliesListTableComponent implements OnInit, OnDestroy, OnChanges,
   ngOnDestroy() {
     this.eventsSubscription.unsubscribe();
     jexcel.destroy(this.spreadsheetEl.nativeElement, true);
+    this.eventsSubscription.unsubscribe();
     if (this.timer) clearTimeout(this.timer);
 
     eventEmitter.destroy(this.handlers);
@@ -201,23 +203,14 @@ export class FamiliesListTableComponent implements OnInit, OnDestroy, OnChanges,
   private handleEvent(type) {
     if (type === 'validate') {
       setTimeout(() => {
-        eventEmitter.emit('labor-family-editor:validate', {
+        eventEmitter.emit('labor-table-editor:validate', {
           name: this.tableName,
-          isValid: this.spreadsheet.isTableValid()
+          isValid: this.spreadsheet.isTableValid(),
+          errors: this.spreadsheet.getTableErrors()
         });
       }, 10);
       return;
     }
-  }
-
-  private getContainerSize() {
-    const element = this.element.nativeElement;
-    const parent = element.parentNode;
-
-    return {
-      width: parent.offsetWidth,
-      height: parent.offsetHeight
-    };
   }
 
   private updateEditorToColumn(key, type, isCustom = false) {

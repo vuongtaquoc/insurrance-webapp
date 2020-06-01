@@ -3,12 +3,14 @@ import { Router } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DeclarationService, AuthenticationService, DocumentListService } from '@app/core/services';
 import { NzModalService } from 'ng-zorro-antd/modal';
+import * as _ from 'lodash';
 
 import { DocumentFormComponent } from '@app/shared/components';
 import { eventEmitter } from '@app/shared/utils/event-emitter';
 import { DocumentList } from '@app/core/models';
 import { DATE_FORMAT, DECLARATIONS } from '@app/shared/constant';
-import * as _ from 'lodash';
+
+import { TableEditorErrorsComponent } from '@app/shared/components';
 
 @Component({
   selector: 'app-regime-approval',
@@ -30,6 +32,7 @@ export class RegimeApprovalComponent implements OnInit, OnDestroy {
   documentForm: FormGroup;
   handler: any;
   isTableValid = false;
+  tableErrors = {};
   isValid: any = {};
   allInitialize: any = {};
 
@@ -79,10 +82,11 @@ export class RegimeApprovalComponent implements OnInit, OnDestroy {
       this.documentList = documentList;
     });
 
-    this.handler = eventEmitter.on('regime-approval:validate', ({ name, isValid, leaf, initialize }) => {
+    this.handler = eventEmitter.on('regime-approval:validate', ({ name, isValid, leaf, initialize, errors }) => {
       this.allInitialize[name] = leaf.length === initialize.length;
-      this.isValid[name] = isValid;
-      this.isTableValid = Object.values(this.allInitialize).indexOf(false) === -1 ? false : Object.values(this.isValid).indexOf(false) === -1;
+      // this.isValid[name] = isValid;
+      this.isTableValid = Object.values(this.allInitialize).indexOf(false) === -1 ? false : true;
+      this.tableErrors[name] = errors;
     });
   }
 
@@ -91,6 +95,34 @@ export class RegimeApprovalComponent implements OnInit, OnDestroy {
   }
 
   save(type) {
+    let count = Object.keys(this.tableErrors).reduce(
+      (total, key) => {
+        const data = this.tableErrors[key];
+
+        return total + data.length;
+      },
+      0
+    );
+
+    if (count > 0) {
+      return this.modalService.error({
+        nzTitle: 'Lỗi dữ liệu. Vui lòng sửa!',
+        nzContent: TableEditorErrorsComponent,
+        nzComponentParams: {
+          errors: Object.keys(this.tableErrors).reduce(
+            (combine, key) => {
+              if (this.tableErrors[key].length) {
+                return { ...combine, [key]: this.tableErrors[key] };
+              }
+
+              return { ...combine };
+            },
+            {}
+          )
+        }
+      });
+    }
+
     if (type === 'rollback') {
       this.router.navigate(['/declarations/regime-approval']);
     } else  {
