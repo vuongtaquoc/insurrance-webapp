@@ -663,6 +663,9 @@ export class EmployeeFormComponent implements OnInit {
     return this.employeeForm.get('relationshipWardsCode').value;
   }  
   
+  get cityFirstRegistCode() {
+    return this.employeeForm.get('cityFirstRegistCode').value;
+  }
 
   get isDuplicateAddress() {
     return this.employeeForm.get('isDuplicateAddress').value;

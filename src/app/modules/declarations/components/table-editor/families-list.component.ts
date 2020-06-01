@@ -19,7 +19,6 @@ export class FamiliesListTableComponent implements OnInit, OnDestroy, OnChanges,
   @Input() columns: any[] = [];
   @Input() tableName: string;
   @Input() nestedHeaders: any[] = [];
-  @Input() tableName: string;
   @Output() onChange: EventEmitter<any> = new EventEmitter();
   @Output() onSubmit: EventEmitter<any> = new EventEmitter();
   @Output() onDelete: EventEmitter<any> = new EventEmitter();
