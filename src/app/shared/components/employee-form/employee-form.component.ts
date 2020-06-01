@@ -175,12 +175,12 @@ export class EmployeeFormComponent implements OnInit {
       ratio: [employee.ratio, Validators.required],
       salaryAreaCode: [employee.salaryAreaCode, Validators.required],
       paymentMethodCode: [employee.paymentMethodCode],
-      rate: [employee.rate, Validators.required],
+      rate: [employee.rate, [Validators.required, Validators.min(0), Validators.max(100)]],
       cityFirstRegistCode: [employee.cityFirstRegistCode, Validators.required],
       hospitalFirstRegistCode: [employee.hospitalFirstRegistCode, Validators.required],
       allowanceLevel: [employee.allowanceLevel],
-      allowanceSeniority: [employee.allowanceSeniority],
-      allowanceSeniorityJob: [employee.allowanceSeniorityJob],
+      allowanceSeniority: [employee.allowanceSeniority, [Validators.min(0), Validators.max(100)]],
+      allowanceSeniorityJob: [employee.allowanceSeniorityJob, [Validators.min(0), Validators.max(100)]],
       allowanceSalary: [employee.allowanceSalary],
       allowanceAdditional: [employee.allowanceAdditional],
       allowanceOther: [employee.allowanceOther],
@@ -490,9 +490,9 @@ export class EmployeeFormComponent implements OnInit {
     if(!value) {
       return '';
     }
-    this.villageService.getVillage(value).subscribe(data => this.relationshipVillages = data);   
+    this.villageService.getVillage(value).subscribe(data => this.relationshipVillages = data);
     this.bindingDataToGirdFamilies('wardsCode');
-  }   
+  }
 
   changeRelationshipFullName(value) {
     this.bindingDataToGirdFamilies('fullName');
@@ -505,14 +505,14 @@ export class EmployeeFormComponent implements OnInit {
 
     const familiescopy = [... this.families];
     let master = familiescopy.find(f => f.relationshipCode === '00');
-    if (!master)  
+    if (!master)
     {
       const index = familiescopy.findIndex(f => f.relationshipCode === '00');
       const indexOf = index > -1 ? index : 0;
       master = familiescopy[indexOf];
       master.relationshipCode = '00';
     }
-      
+
     master.cityCode = this.relationshipCityCode;
     master.districtCode = this.relationshipDistrictCode;
     master.wardsCode = this.relationshipWardsCode;
@@ -645,7 +645,7 @@ export class EmployeeFormComponent implements OnInit {
 
   get registerWardsCode() {
     return this.employeeForm.get('registerWardsCode').value;
-  }  
+  }
 
   get relationshipFullName() {
     return this.employeeForm.get('relationshipFullName').value;
@@ -661,8 +661,8 @@ export class EmployeeFormComponent implements OnInit {
 
   get relationshipWardsCode() {
     return this.employeeForm.get('relationshipWardsCode').value;
-  }  
-  
+  }
+
   get cityFirstRegistCode() {
     return this.employeeForm.get('cityFirstRegistCode').value;
   }

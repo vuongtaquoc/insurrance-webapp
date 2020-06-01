@@ -43,7 +43,7 @@
             <td class="text-center">{{ data.isurranceNo }}</td>
             <td class="text-center">{{ data.identityCar }}</td>
             <td class="text-center">{{ data.birthday }}</td>
-            <td class="text-center">{{ data.gender }}</td>
+            <td class="text-center">{{ gender[data.gender] | translate }}</td>
             <td class="text-center">{{ data.hospitalFirstRegistName }}</td>
             <td class="text-center">
               <button nz-button nzType="link" (click)="edit(data.id)">

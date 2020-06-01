@@ -340,12 +340,23 @@
             <div nz-col [nzSpan]="8">
               <nz-form-item>
                 <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Tỷ lệ đóng (%)</nz-form-label>
-                <nz-form-control [nzSpan]="14" nzErrorTip="Tỷ lệ đóng (%) không để trống">
+                <nz-form-control [nzSpan]="14" [nzErrorTip]="errorTpl">
                   <nz-input-group nzSuffix="%">
                     <input nz-input
                       placeholder="Tỷ lệ"
                       formControlName="rate"
                     />
+                    <ng-template #errorTpl let-control>
+                      <ng-container *ngIf="control.hasError('required')">
+                        Tỷ lệ đóng (%) không để trống
+                      </ng-container>
+                      <ng-container *ngIf="control.hasError('min')">
+                        Tỷ lệ đóng (%) phải lớn hơn 0
+                      </ng-container>
+                      <ng-container *ngIf="control.hasError('max')">
+                        Tỷ lệ đóng (%) phải nhỏ hơn 100
+                      </ng-container>
+                    </ng-template>
                   </nz-input-group>
                 </nz-form-control>
               </nz-form-item>
@@ -417,13 +428,24 @@
             <div nz-col [nzSpan]="8">
               <nz-form-item>
                 <nz-form-label class="text-left" [nzSpan]="10">TN VK (%)</nz-form-label>
-                <nz-form-control [nzSpan]="14">
+                <nz-form-control [nzSpan]="14" [nzErrorTip]="errorTpl">
                   <nz-input-group nzSuffix="%">
                     <input nz-input
                       type="text"
                       placeholder="TN VK (%)"
                       formControlName="allowanceSeniority"
                     />
+                    <ng-template #errorTpl let-control>
+                      <ng-container *ngIf="control.hasError('required')">
+                        Tỷ lệ đóng (%) không để trống
+                      </ng-container>
+                      <ng-container *ngIf="control.hasError('min')">
+                        Tỷ lệ đóng (%) phải lớn hơn 0
+                      </ng-container>
+                      <ng-container *ngIf="control.hasError('max')">
+                        Tỷ lệ đóng (%) phải nhỏ hơn 100
+                      </ng-container>
+                    </ng-template>
                   </nz-input-group>
                 </nz-form-control>
               </nz-form-item>
@@ -431,12 +453,23 @@
             <div nz-col [nzSpan]="8">
               <nz-form-item>
                 <nz-form-label class="text-left" [nzSpan]="10">TN nghề (%)</nz-form-label>
-                <nz-form-control [nzSpan]="14">
+                <nz-form-control [nzSpan]="14" [nzErrorTip]="errorTpl">
                   <nz-input-group nzSuffix="%">
                     <input nz-input
                       placeholder="TN nghề (%)"
                       formControlName="allowanceSeniorityJob"
                     />
+                    <ng-template #errorTpl let-control>
+                      <ng-container *ngIf="control.hasError('required')">
+                        Tỷ lệ đóng (%) không để trống
+                      </ng-container>
+                      <ng-container *ngIf="control.hasError('min')">
+                        Tỷ lệ đóng (%) phải lớn hơn 0
+                      </ng-container>
+                      <ng-container *ngIf="control.hasError('max')">
+                        Tỷ lệ đóng (%) phải nhỏ hơn 100
+                      </ng-container>
+                    </ng-template>
                   </nz-input-group>
                 </nz-form-control>
               </nz-form-item>
@@ -583,7 +616,7 @@
             <app-employee-process-table
               [data]="evolutionIsurrances"
               [nestedHeaders]="tableNestedHeadersProcess"
-              [columns]="tableHeaderColumnsProcess"              
+              [columns]="tableHeaderColumnsProcess"
               [events]="processSubject.asObservable()"
               (onChange)="handleChangeProcessTable($event)"
               (onDelete)="handleDeleteProcessData($event)"

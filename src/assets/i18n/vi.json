@@ -12,7 +12,11 @@
     "headerMenu": {
       "setting": "Cài đặt",
       "logout": "Đăng xuất"
-    }
+		},
+		"gender": {
+			"male": "Nam",
+			"female": "Nữ"
+		}
   },
   "auth": {
     "login": {
@@ -44,7 +48,7 @@
 	   "subject": "Kính gửi",
 	   "city": "Tỉnh thành phố",
 	   "area": "Vùng",
-	   "insurranceManagement": "Cơ quan BHXH quản lý",	   
+	   "insurranceManagement": "Cơ quan BHXH quản lý",
        "name": "Tên đơn vị",
 	   "companyCode": "Mã số đơn vị",
 	   "taxCode": "Mã số thuế/ mã ngân sách",
@@ -52,13 +56,13 @@
 	   "address": "Địa chỉ giao dịch hoặc liên hệ",
 	   "companyType": "Loại hình đơn vị",
 	   "mobile": "Điện thoại di động",
-	   "regency": "Chức danh",	   
-	   "traders": "Người giao dịch BHX",	   
+	   "regency": "Chức danh",
+	   "traders": "Người giao dịch BHX",
 	   "tel": "Điện thoại cố định",
 	   "delegate": "Người đại diện",
 	   "email": "Email đơn vị",
 	   "emailContract": "Email liên hệ",
-	   "responseResults": "Nhận kết quả",	   
+	   "responseResults": "Nhận kết quả",
 	   "license": "QĐ thành lập/Giấy phép ĐKKD số",
 	   "issued": "Nơi cấp",
 	   "methodPay": "Phương thức đóng",
@@ -74,12 +78,12 @@
 	   "wards": "Phường xã",
 	   "object": "Đôi tượng cấp thẻ",
 	   "studentLevelOne": "Học sinh(Lớp 1->12)",
-	   "studentLevelTwo": "Sinh viên(Đại học, Cao đẳng, Trung học chuyên nghiệp, Nghề...)"	   
+	   "studentLevelTwo": "Sinh viên(Đại học, Cao đẳng, Trung học chuyên nghiệp, Nghề...)"
 	}
-  },  
+  },
   "contract": {
     "contract-list": {
-      "title": "Danh sách hợp đồng"	,  
+      "title": "Danh sách hợp đồng"	,
 	  "dateFrom": "Từ ngày",
 	  "dateTo": "Đến ngày",
 	  "companyType": "Loại hợp đồng",
@@ -99,7 +103,7 @@
 	   "subject": "Kính gửi",
 	   "city": "Tỉnh thành phố",
 	   "area": "Vùng",
-	   "insurranceManagement": "Cơ quan BHXH quản lý",	   
+	   "insurranceManagement": "Cơ quan BHXH quản lý",
        "name": "Tên đơn vị",
 	   "companyCode": "Mã số đơn vị",
 	   "taxCode": "Mã số thuế/ mã ngân sách",
@@ -107,13 +111,13 @@
 	   "address": "Địa chỉ giao dịch hoặc liên hệ",
 	   "companyType": "Loại hình đơn vị",
 	   "mobile": "Điện thoại di động",
-	   "regency": "Chức danh",	   
-	   "traders": "Người giao dịch BHX",	   
+	   "regency": "Chức danh",
+	   "traders": "Người giao dịch BHX",
 	   "tel": "Điện thoại cố định",
 	   "delegate": "Người đại diện",
 	   "email": "Email đơn vị",
 	   "emailContract": "Email liên hệ",
-	   "responseResults": "Nhận kết quả",	   
+	   "responseResults": "Nhận kết quả",
 	   "license": "QĐ thành lập/Giấy phép ĐKKD số",
 	   "issued": "Nơi cấp",
 	   "methodPay": "Phương thức đóng",
@@ -129,7 +133,7 @@
 	   "wards": "Phường xã",
 	   "object": "Đôi tượng cấp thẻ",
 	   "studentLevelOne": "Học sinh(Lớp 1->12)",
-	   "studentLevelTwo": "Sinh viên(Đại học, Cao đẳng, Trung học chuyên nghiệp, Nghề...)"	   
+	   "studentLevelTwo": "Sinh viên(Đại học, Cao đẳng, Trung học chuyên nghiệp, Nghề...)"
 	}
   }
 }
