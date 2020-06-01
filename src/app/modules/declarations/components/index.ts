@@ -12,3 +12,6 @@ export * from './table-editor/regime-approval-editor.component';
 export * from './labor-attachment/labor-attachment.component';
 export * from './labor-general-form/labor-general-form.component';
 export * from './table-editor/families-list.component';
+export * from './reduction-labor/reduction-labor.component';
+export * from './adjust/adjust.component';
+export * from './arrears/arrears.component';

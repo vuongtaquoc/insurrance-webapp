@@ -1,4 +1,4 @@
-export const TABLE_NESTED_HEADERS = [
+export const TABLE_FAMILIES_NESTED_HEADERS = [
   [
     { title: 'STT', rowspan: 2 },
     { title: 'Họ và tên', rowspan: 2 },
@@ -18,7 +18,7 @@ export const TABLE_NESTED_HEADERS = [
   ]
 ];
 
-export const TABLE_HEADER_COLUMNS = [{
+export const TABLE_FAMILIES_HEADER_COLUMNS = [{
   type: 'text',
   width: 35,
   title: '(1)',
@@ -75,7 +75,7 @@ export const TABLE_HEADER_COLUMNS = [{
   title: '(8)',
   key: 'districtCode',
   defaultLoad: true,
-  source: [ ],
+  source: [],
   // validations: {
   //   required: true
   // }
@@ -86,17 +86,18 @@ export const TABLE_HEADER_COLUMNS = [{
   title: '(9)',
   key: 'wardsCode',
   defaultLoad: true,
-  source: [ ],
+  source: [],
   // validations: {
   //   required: true
   // }
 }, {
   type: 'dropdown',
   autocomplete: true,
+  defaultLoad: true,
   width: 65,
   title: '(10)',
   key: 'relationshipCode',
-  source: [ ]
+  source: []
 }, {
   type: 'text',
   width: 120,

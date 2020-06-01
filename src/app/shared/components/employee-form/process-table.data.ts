@@ -1,4 +1,4 @@
-export const TABLE_NESTED_HEADERS = [
+export const TABLE_PROCESS_NESTED_HEADERS = [
   [
     { title: 'STT', rowspan: 2 },
     { title: 'Từ tháng/năm', rowspan: 2 },
@@ -25,7 +25,7 @@ export const TABLE_NESTED_HEADERS = [
   ]
 ];
 
-export const TABLE_HEADER_COLUMNS = [{
+export const TABLE_PROCESS_HEADER_COLUMNS = [{
   type: 'text',
   width: 35,
   title: '(1)',

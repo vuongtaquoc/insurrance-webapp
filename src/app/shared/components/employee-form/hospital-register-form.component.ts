@@ -28,7 +28,6 @@ export class EmployeeHospitalRegisterFormComponent implements OnInit {
 
   ngOnInit() {
     this.getCities();
-    console.log(this.data,'XXXXX');
     this.form = this.formBuilder.group({
       cityCode: [this.data.cityCode, Validators.required],
       name: [ '', Validators.required ],

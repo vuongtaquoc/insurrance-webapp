@@ -71,7 +71,6 @@ export class EmployeeListComponent implements OnInit {
 
     this.employeeService.getEmployeeById(employeeId).subscribe(employee => {
       this.isSpinning = false;
-
       const modal = this.modalService.create({
         nzWidth: 980,
         nzWrapClassName: 'employee-modal',

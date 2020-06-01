@@ -10,7 +10,7 @@ import {
   RelationshipService
 } from '@app/core/services';
 
-import { TABLE_HEADER_COLUMNS, TABLE_NESTED_HEADERS } from './family-table.data';
+
 import { customPicker } from '@app/shared/utils/custom-editor';
 
 @Component({
@@ -22,8 +22,9 @@ import { customPicker } from '@app/shared/utils/custom-editor';
 export class EmployeeFamilyTableComponent implements OnInit, OnDestroy, OnChanges {
   @ViewChild('spreadsheet', { static: true }) spreadsheetEl;
   @Input() data: any[] = [];
-  @Input() columns: any[] = TABLE_HEADER_COLUMNS;
-  @Input() nestedHeaders: any[] = TABLE_NESTED_HEADERS;
+  @Input() columns: any[] = [];
+  @Input() tableName: string;
+  @Input() nestedHeaders: any[] = [];
   @Input() events: Observable<void>;
   @Output() onChange: EventEmitter<any> = new EventEmitter();
   @Output() onSubmit: EventEmitter<any> = new EventEmitter();
@@ -67,12 +68,12 @@ export class EmployeeFamilyTableComponent implements OnInit, OnDestroy, OnChange
 
   ngOnChanges(changes) {
     if (changes.data && changes.data.currentValue && changes.data.currentValue.length) {
-      //   this.updateTable();
+       this.updateTable();
     }
   }
 
-  handleEvent(type) {
-    if (type === 'ready' && !this.isInitialized) {
+  handleEvent(event) {
+    if (event.type === 'ready' && !this.isInitialized) {
       this.isInitialized = true;
 
       this.spreadsheet = jexcel(this.spreadsheetEl.nativeElement, {
@@ -117,6 +118,29 @@ export class EmployeeFamilyTableComponent implements OnInit, OnDestroy, OnChange
       this.updateEditorToColumn('birthday', 'month', true);
 
       this.updateTable();
+    }else {
+      if(!event.data) {
+        return '';
+      }
+      if(event.columName === 'fullName') {
+        const columnFullName = jexcel.getColumnNameFromId([1,event.index]);
+        this.spreadsheet.setValue(columnFullName, event.data.fullName);
+      }
+
+      if(event.columName === 'cityCode') {
+        const columnCityCode = jexcel.getColumnNameFromId([6,event.index]);
+        this.spreadsheet.setValue(columnCityCode, event.data.cityCode);
+      }
+      
+      if(event.columName === 'districtCode') {
+        const columnDistrictCode = jexcel.getColumnNameFromId([7,event.index]);
+        this.spreadsheet.setValue(columnDistrictCode, event.data.districtCode);
+      }
+      
+      if(event.columName === 'wardsCode') {
+        const columnWardsCode = jexcel.getColumnNameFromId([8,event.index]);
+        this.spreadsheet.setValue(columnWardsCode, event.data.wardsCode);
+      }
     }
   }
 
@@ -124,31 +148,18 @@ export class EmployeeFamilyTableComponent implements OnInit, OnDestroy, OnChange
     if (!this.spreadsheet) {
       return;
     }
+
     const data = [];
     this.data.forEach((d, index) => {
-      const familyRow = [];
-
-      this.columns.forEach(column => {
-        familyRow.push(d[column.key]);
-      });
-
-      data.push(familyRow);
+      d.data = d.data || [];
+      d.data.origin  = d.origin;
+      data.push(d.data);
     });
-
+   
     // init default data
-    if (data.length < 15) {
-      const length = 15 - data.length;
-
-      for (let i = 1; i <= length; i++) {
-        data.push([ ]);
-      }
-
-      data.forEach((d, i) => d[0] = i + 1);
-    }
-
+    data.forEach((d, i) => d[0] = i + 1);
     this.data = data;
     this.spreadsheet.setData(this.data);
-
     // update dropdown data
     data.forEach((row, rowIndex) => {
       this.columns.forEach((column, colIndex) => {

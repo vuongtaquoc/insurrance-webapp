@@ -8,7 +8,16 @@ import {
   IncreaseLaborEditComponent,
   RegimeApprovalListComponent,
   RegimeApprovalAddComponent,
-  RegimeApprovalEditComponent
+  RegimeApprovalEditComponent,
+  ReductionLaborListComponent,
+  ReductionLaborAddComponent,
+  ReductionLaborEditComponent,
+  AdjustListComponent,
+  AdjustAddComponent,
+  AdjustEditComponent,
+  ArrearsEditComponent,
+  ArrearsAddComponent,
+  ArrearsListComponent,
 } from './pages';
 
 const routes: Routes = [
@@ -29,6 +38,18 @@ const routes: Routes = [
         component: IncreaseLaborListComponent
       },
       {
+        path: 'reduction-labor',
+        component: ReductionLaborListComponent
+      },
+      {
+        path: 'reduction-labor/add',
+        component: ReductionLaborAddComponent
+      },
+      {
+        path: 'reduction-labor/:id/edit',
+        component: ReductionLaborEditComponent
+      },
+      {
         path: 'regime-approval',
         component: RegimeApprovalListComponent
       },
@@ -39,6 +60,29 @@ const routes: Routes = [
       {
         path: 'regime-approval/:id/edit',
         component: RegimeApprovalEditComponent
+      },
+      {
+        path: 'arrears',
+        component: ArrearsListComponent
+      },
+      {
+        path: 'arrears/add',
+        component: ArrearsAddComponent
+      },
+      {
+        path: 'arrears/:id/edit',
+        component: ArrearsEditComponent
+      },{
+        path: 'adjust',
+        component: AdjustListComponent
+      },
+      {
+        path: 'adjust/add',
+        component: AdjustAddComponent
+      },
+      {
+        path: 'adjust/:id/edit',
+        component: AdjustEditComponent
       }
     ]
   }

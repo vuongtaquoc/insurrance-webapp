@@ -198,6 +198,12 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
         this.isTableValid = isValid;
       }
     });
+
+    this.handler = eventEmitter.on('labor-family-editor:validate', ({ name, isValid }) => {
+      if (name === 'family') {
+        this.isTableValid = isValid;
+      }
+    });
   }
 
   ngOnDestroy() {
@@ -755,7 +761,6 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
   private updateNextColumns(instance, r, value, nextColumns = []) {
     nextColumns.forEach(columnIndex => {
       const columnName = jexcel.getColumnNameFromId([columnIndex, r]);
-
       instance.jexcel.setValue(columnName, value);
     });
   }
@@ -933,7 +938,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     ).subscribe(emps => {
 
       emps.forEach(ep => {
-
+        console.log(ep);
         const master = this.getMaster(ep.families);
         master.isMaster = ep.isMaster;
         master.employeeName = ep.fullName;
@@ -955,7 +960,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
         };
         families.push(master);
 
-        if(ep.families.length > 0) {
+        if(ep.families.length > 1) {
           ep.families.forEach(fa => {
             if(fa.relationshipCode === '00') {
               return;
@@ -994,7 +999,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
 
     return {
       isMaster:false,
-      conditionValid: employee.relationshipFullName,
+      conditionValid: null, //employee.relationshipFullName,
       employeeId: employee.employeeId,
       origin: {
         employeeId: employee.employeeId,

@@ -17,6 +17,7 @@ export class FamiliesListTableComponent implements OnInit, OnDestroy, OnChanges,
   @Input() data: any[] = [];
   @Input() events: Observable<void>;
   @Input() columns: any[] = [];
+  @Input() tableName: string;
   @Input() nestedHeaders: any[] = [];
   @Output() onChange: EventEmitter<any> = new EventEmitter();
   @Output() onSubmit: EventEmitter<any> = new EventEmitter();
@@ -32,6 +33,7 @@ export class FamiliesListTableComponent implements OnInit, OnDestroy, OnChanges,
   constructor(private element: ElementRef) {}
 
   ngOnInit() {
+    this.eventsSubscription = this.events.subscribe((type) => this.handleEvent(type));
     this.handlers.push(eventEmitter.on('increase-labor:tab:change', (index) => {
       clearTimeout(this.timer);
 
@@ -46,6 +48,7 @@ export class FamiliesListTableComponent implements OnInit, OnDestroy, OnChanges,
   }
 
   ngOnDestroy() {
+    this.eventsSubscription.unsubscribe();
     jexcel.destroy(this.spreadsheetEl.nativeElement, true);
     if (this.timer) clearTimeout(this.timer);
 
@@ -144,6 +147,7 @@ export class FamiliesListTableComponent implements OnInit, OnDestroy, OnChanges,
 
   private updateTable() {
     const data = [];
+    console.log(this.data,'xxxx data');
     this.data.forEach((d, index) => {
       d.data = d.data || [];
       d.data.origin  = d.origin;
@@ -192,6 +196,18 @@ export class FamiliesListTableComponent implements OnInit, OnDestroy, OnChanges,
 
       });
     });
+  }
+
+  private handleEvent(type) {
+    if (type === 'validate') {
+      setTimeout(() => {
+        eventEmitter.emit('labor-family-editor:validate', {
+          name: this.tableName,
+          isValid: this.spreadsheet.isTableValid()
+        });
+      }, 10);
+      return;
+    }
   }
 
   private getContainerSize() {

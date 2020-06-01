@@ -1,0 +1,59 @@
+<div class="page-container">
+  <div class="page-card page-increase-labor">
+    <h1>600a | Báo giảm lao động</h1>
+
+    <div class="page-increase-labor__menu-bar">
+      <div class="page-increase-labor__filter">
+        <nz-year-picker [(ngModel)]="year" (ngModelChange)="onChange($event)" nzPlaceHolder="Chọn năm"></nz-year-picker>
+      </div>
+
+      <div class="page-increase-labor__group-button">
+        <a [routerLink]="['/declarations/reduction-labor/add']" class="page-card__declaration-button" nz-button nzType="default">
+          Lập tờ khai<i nz-icon nzType="container"></i>
+        </a>
+        <!-- <a nz-button nzType="default"><i nz-icon nzType="edit"></i>Sửa</a>
+        <button nz-button nzType="default"><i nz-icon nzType="delete"></i>Xóa</button> -->
+      </div>
+    </div><!-- page-increase-labor__menu-bar -->
+
+    <nz-table
+      #rowSelectionTable
+      nzBordered
+      [nzData]="declarations"
+      [nzPageSize]="declarations.length"
+      [nzShowPagination]="false"
+      class="table ui-table-custom ui-table-custom--center"
+    >
+      <thead>
+        <tr>
+          <th>Ngày lập</th>
+          <th>Số hồ sơ</th>
+          <th>Giấy tờ, biểu mẫu</th>
+          <th>Ngày nộp</th>
+          <th>Kết quả giải quyết</th>
+          <th>Tờ khai</th>
+          <th>Thao tác</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of rowSelectionTable.data">
+          <td class="text-center">{{ data.createDate }}</td>
+          <td class="text-center">{{ data.documentNo }}</td>
+          <td class="text-wrap">{{ data.declarationName }}</td>
+          <td class="text-center">{{ data.sendDate }}</td>
+          <td class="text-center">{{ data.documentStatusName }}</td>
+          <td class="text-center">
+            <button nz-button nzType="link" nzBlock (click)="viewDocument(data)" >Xem</button>
+          </td>
+          <td class="text-center">
+            <a [routerLink]="['/declarations/reduction-labor/' + data.id + '/edit']" nz-button nzType="link">
+              <i nz-icon nzType="edit" nzTheme="outline"></i>
+            </a>
+            <app-button-delete [id]="data.id" (delete)="delete($event)"></app-button-delete>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+    <app-pagination [total]="total" [selected]="selectedPage" (onPageChange)="pageChange($event)"></app-pagination>
+  </div>
+</div>

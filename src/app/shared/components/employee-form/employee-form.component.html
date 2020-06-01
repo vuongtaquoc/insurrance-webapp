@@ -282,7 +282,7 @@
               <nz-form-item>
                 <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Ngày ký</nz-form-label>
                 <nz-form-control [nzSpan]="14" nzErrorTip="Ngày ký không để trống">
-                  <nz-date-picker placeholder="Ngày ký" formControlName="dateSign"></nz-date-picker>
+                  <nz-date-picker nzPlaceHolder ="Ngày ký" formControlName="dateSign"></nz-date-picker>
                 </nz-form-control>
               </nz-form-item>
             </div><!-- col -->
@@ -369,7 +369,7 @@
               <nz-form-item>
                 <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="12">Tỉnh/TP nơi KCBBĐ</nz-form-label>
                 <nz-form-control [nzSpan]="12" nzErrorTip="Tỉnh/TP nơi KCBBĐ không để trống">
-                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="cityFirstRegistCode" (ngModelChange)="changeFirstRegisterCity($event)">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="cityFirstRegistCode">
                     <nz-option *ngFor="let city of cities" [nzLabel]="city.name" [nzValue]="city.id"></nz-option>
                   </nz-select>
                 </nz-form-control>
@@ -534,7 +534,7 @@
               <nz-form-item>
                 <nz-form-label class="text-left" [nzSpan]="10">Tình trạng</nz-form-label>
                 <nz-form-control [nzSpan]="14">
-                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="paymentStatusCode">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="status">
                     <nz-option *ngFor="let payment of paymentStatus" [nzLabel]="payment.name" [nzValue]="payment.id"></nz-option>
                   </nz-select>
                 </nz-form-control>
@@ -582,6 +582,8 @@
           <div class="employee-form__process-table">
             <app-employee-process-table
               [data]="evolutionIsurrances"
+              [nestedHeaders]="tableNestedHeadersProcess"
+              [columns]="tableHeaderColumnsProcess"              
               [events]="processSubject.asObservable()"
               (onChange)="handleChangeProcessTable($event)"
               (onDelete)="handleDeleteProcessData($event)"
@@ -701,6 +703,8 @@
           <div class="employee-form__family-table">
             <app-employee-family-table
               [data]="families"
+              [nestedHeaders]="tableNestedHeadersFamilies"
+              [columns]="tableHeaderColumnsFamilies"
               [events]="familySubject.asObservable()"
               (onChange)="handleChangeFamilyTable($event)"
               (onDelete)="handleDeleteFamilyData($event)"

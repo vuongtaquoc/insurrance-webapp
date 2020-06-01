@@ -34,9 +34,18 @@ import {
   IncreaseLaborListComponent,
   IncreaseLaborAddComponent,
   IncreaseLaborEditComponent,
+  ReductionLaborListComponent,
+  ReductionLaborAddComponent,
+  ReductionLaborEditComponent,
   RegimeApprovalListComponent,
   RegimeApprovalAddComponent,
-  RegimeApprovalEditComponent
+  RegimeApprovalEditComponent,
+  AdjustAddComponent,
+  AdjustEditComponent,
+  AdjustListComponent,
+  ArrearsAddComponent,
+  ArrearsEditComponent,
+  ArrearsListComponent,
 } from './pages';
 
 import {
@@ -45,6 +54,7 @@ import {
   DocumentListTableComponent,
   DeclarationSidebarComponent,
   IncreaseLaborComponent,
+  ReducingLaborComponent,
   HealthRecoveryComponent,
   MaternityComponent,
   RegimeApprovalComponent,
@@ -53,7 +63,10 @@ import {
   RegimeApprovalEditorComponent,
   LaborAttachmentComponent,
   LaborGeneralFormComponent,
-  FamiliesListTableComponent
+  FamiliesListTableComponent,
+  AdjustComponent,
+  ArrearsComponent,
+
 } from './components';
 
 import { RegimeAutoSizeDirective } from './directives';
@@ -83,11 +96,15 @@ import { RegimeAutoSizeDirective } from './directives';
     IncreaseLaborListComponent,
     IncreaseLaborAddComponent,
     IncreaseLaborEditComponent,
+    ReductionLaborListComponent,
+    ReductionLaborAddComponent,
+    ReductionLaborEditComponent,
     TableEditorComponent,
     DocumentTableComponent,
     DocumentListTableComponent,
     DeclarationSidebarComponent,
     IncreaseLaborComponent,
+    ReducingLaborComponent,
     RegimeApprovalListComponent,
     RegimeApprovalAddComponent,
     RegimeApprovalEditComponent,
@@ -100,7 +117,15 @@ import { RegimeAutoSizeDirective } from './directives';
     LaborAttachmentComponent,
     LaborGeneralFormComponent,
     RegimeAutoSizeDirective,
-    FamiliesListTableComponent
+    FamiliesListTableComponent,
+    AdjustAddComponent,
+    AdjustEditComponent,
+    AdjustListComponent,
+    ArrearsAddComponent,
+    ArrearsEditComponent,
+    ArrearsListComponent,
+    AdjustComponent,
+    ArrearsComponent,
   ],
   providers: [
     AuthenticationService,

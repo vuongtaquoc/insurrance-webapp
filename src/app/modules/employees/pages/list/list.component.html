@@ -24,8 +24,8 @@
       >
         <thead>
           <tr>
-            <th>Họ và tên</th>
-            <th>Mã nhân viên</th>
+            <th class="text-left">Họ và tên</th>
+            <th class="text-left">Mã nhân viên</th>
             <th>Mã số BHXH</th>
             <th>Số sổ BHXH</th>
             <th>CMND/HC/TCC</th>
@@ -37,8 +37,8 @@
         </thead>
         <tbody>
           <tr *ngFor="let data of rowSelectionTable.data">
-            <td class="text-center">{{ data.fullName }}</td>
-            <td class="text-center">{{ data.code }}</td>
+            <td>{{ data.fullName }}</td>
+            <td>{{ data.code }}</td>
             <td>{{ data.isurranceCode }}</td>
             <td class="text-center">{{ data.isurranceNo }}</td>
             <td class="text-center">{{ data.identityCar }}</td>

@@ -8,7 +8,8 @@ import * as _ from 'lodash';
 import { DropdownItem } from '@app/core/interfaces';
 import { City, District, Wards } from '@app/core/models';
 import { EmployeeHospitalRegisterFormComponent } from './hospital-register-form.component';
-
+import { TABLE_FAMILIES_NESTED_HEADERS, TABLE_FAMILIES_HEADER_COLUMNS } from './family-table.data';
+import { TABLE_PROCESS_NESTED_HEADERS, TABLE_PROCESS_HEADER_COLUMNS } from './process-table.data';
 import {
   CityService,
   DistrictService,
@@ -37,7 +38,10 @@ import { DATE_FORMAT } from '@app/shared/constant';
 })
 export class EmployeeFormComponent implements OnInit {
   @Input() employee: any = {};
-
+  tableNestedHeadersFamilies: any[] = TABLE_FAMILIES_NESTED_HEADERS;
+  tableHeaderColumnsFamilies: any[] = TABLE_FAMILIES_HEADER_COLUMNS;
+  tableNestedHeadersProcess: any[] = TABLE_PROCESS_NESTED_HEADERS;
+  tableHeaderColumnsProcess: any[] = TABLE_PROCESS_HEADER_COLUMNS;
   employeeForm: FormGroup;
   cities: City[] = [];
   nationalities: DropdownItem[] = [];
@@ -62,7 +66,8 @@ export class EmployeeFormComponent implements OnInit {
   typeBirthdays: DropdownItem[] = [];
   relationshipVillages: DropdownItem[] = [];
   processSubject: Subject<string> = new Subject<string>();
-  familySubject: Subject<string> = new Subject<string>();
+  familySubject: Subject<any> = new Subject<any>();
+  flagChangeMaster: boolean = false;
   private timer;
 
   constructor(
@@ -106,7 +111,7 @@ export class EmployeeFormComponent implements OnInit {
     if (employee.registerDistrictCode) jobs.push(this.wardService.getWards(employee.registerDistrictCode));
     if (employee.recipientsCityCode) jobs.push(this.districtService.getDistrict(employee.recipientsCityCode));
     if (employee.recipientsDistrictCode) jobs.push(this.wardService.getWards(employee.recipientsDistrictCode));
-    if (employee.cityFirstRegistCode) jobs.push(this.hospitalService.getHospitals(employee.cityFirstRegistCode));
+    if (employee.cityFirstRegistCode) jobs.push(this.hospitalService.searchHospital(employee.cityFirstRegistCode,''));
     if (employee.relationshipCityCode) jobs.push(this.districtService.getDistrict(employee.relationshipCityCode));
     if (employee.relationshipDistrictCode) jobs.push(this.wardService.getWards(employee.relationshipDistrictCode));
     if (employee.relationshipWardsCode) jobs.push(this.villageService.getVillage(employee.relationshipWardsCode));
@@ -183,7 +188,7 @@ export class EmployeeFormComponent implements OnInit {
       bankAccount: [employee.bankAccount],
       bankId: [employee.bankId ? employee.bankId.toString() : ''],
       accountHolder: [employee.accountHolder],
-      paymentStatusCode: [employee.paymentStatusCode],
+      status: [employee.status],
       orders: [employee.orders],
       relationshipFullName: [employee.relationshipFullName, Validators.required],
       relationshipDocumentType:[employee.relationshipDocumentType],
@@ -197,14 +202,68 @@ export class EmployeeFormComponent implements OnInit {
       isDuplicateAddress: [false]
     });
 
-    // update table data
-    if (employee.families) {
-      this.families = employee.families;
+    this.families = this.formatFamilies(employee.families);
+    this.evolutionIsurrances = this.formatEvolutionIsurrances(employee.evolutionIsurrances);
+  }
+
+  formatFamilies(families) {
+    if(!families) {
+      families = this.createObjectsBlank([], this.tableHeaderColumnsFamilies, 15);
     }
 
-    if (employee.evolutionIsurrances) {
-      this.evolutionIsurrances = employee.evolutionIsurrances;
+    let familiescopy = [ ...families ];
+    familiescopy = this.createObjectsBlank(familiescopy, this.tableHeaderColumnsFamilies, 15);
+    // fomat dữ liệu cho jexcel;
+    familiescopy.forEach(p => {
+      p.data = this.tableHeaderColumnsFamilies.map(column => {
+        if (!column.key || !p[column.key]) return '';
+        return p[column.key];
+      });
+      p.data.origin = {
+        employeeId: p.employeeId,
+      }
+    });
+
+    return familiescopy;
+  }
+
+  createObjectsBlank(objects, tableHeaderColumns, numberItem) {
+    if (objects.length < numberItem) {
+      const length = numberItem - objects.length;
+      for (let i = 1; i <= length; i++) {
+        const item = {};
+        tableHeaderColumns.map(column => {
+          if(length === numberItem && column.key === 'relationshipCode' && i === 1) {
+            item[column.key] =  '00';
+          }else {
+            item[column.key] =  null;
+          }
+        });
+        objects.push(item);
+      }
     }
+
+    return objects;
+  }
+
+  formatEvolutionIsurrances(evolutionIsurrances) {
+    if(!evolutionIsurrances) {
+      return this.createObjectsBlank([], this.tableHeaderColumnsProcess, 15);
+    }
+
+    let evolutionIsurrancesCopy = [ ...evolutionIsurrances ];
+    //Tạo dữ liệu trống
+    evolutionIsurrancesCopy = this.createObjectsBlank(evolutionIsurrancesCopy, this.tableHeaderColumnsProcess, 15);
+    evolutionIsurrancesCopy.forEach(p => {
+      p.data = this.tableHeaderColumnsProcess.map(column => {
+        if (!column.key || !p[column.key]) return '';
+        return p[column.key];
+      });
+      p.data.origin = {
+        employeeId: p.employeeId,
+      }
+    });
+    return evolutionIsurrancesCopy;
   }
 
   save(): void {
@@ -240,6 +299,7 @@ export class EmployeeFormComponent implements OnInit {
       families: this.families.reduce(
         (combine, current) => {
           if (current.fullName) {
+            current.gender = current.gender ? 1 : 0;
             return [ ...combine, current ];
           }
 
@@ -265,15 +325,33 @@ export class EmployeeFormComponent implements OnInit {
     this.modal.destroy();
   }
 
-  handleChangeFamilyTable({ records, columns }) {
-    const families = [];
+  handleChangeFamilyTable({ instance, cell, c, r, records, columns  }) {
+    if (c !== null && c !== undefined) {
+      this.updateSelectedValueDropDown(columns, instance, r);
+    }
+    // update families
+    this.families.forEach((family: any, index) => {
+      const record = records[index];
+      //update data on Jexcel
+      Object.keys(record).forEach(index => {
+        family.data[index] = record[index];
+      });
+      //update data object source
+      columns.map((column, index) => {
+          family[column.key] = record[index];
+      });
 
-    records.forEach(record => {
-      families.push(this.arrayToProps(record, columns));
     });
-    console.log(families ,'handleChangeFamilyTable');
-    this.families = families;
   }
+
+  private updateSelectedValueDropDown(columns, instance, r) {
+
+    columns.forEach((column, colIndex) => {
+      if (column.defaultLoad) {
+        instance.jexcel.updateDropdownValue(colIndex, r);
+      }
+    });
+}
 
   handleDeleteFamilyData({ rowNumber, numOfRows }) {
     const families = [ ...this.families ];
@@ -285,14 +363,20 @@ export class EmployeeFormComponent implements OnInit {
     this.families = families;
   }
 
-  handleChangeProcessTable({ records, columns }) {
-    const evolutionIsurrances = [];
+  handleChangeProcessTable({ instance, cell, c, r, records, columns  }) {
+    //update evolutionIsurrances
+    this.evolutionIsurrances.forEach((evolutionIsurrance: any, index) => {
+      const record = records[index];
+      //update data on Jexcel
+      Object.keys(record).forEach(dindex => {
+        evolutionIsurrance.data[dindex] = record[dindex];
+      });
+      //update data object source
+      columns.map((column, cIndex) => {
+        evolutionIsurrance[column.key] = record[cIndex];
+      });
 
-    records.forEach(record => {
-      evolutionIsurrances.push(this.arrayToProps(record, columns));
     });
-
-    this.evolutionIsurrances = evolutionIsurrances;
   }
 
   handleDeleteProcessData({ rowNumber, numOfRows }) {
@@ -309,7 +393,9 @@ export class EmployeeFormComponent implements OnInit {
     if (index === 1) {
       this.processSubject.next('ready');
     } else if (index === 2) {
-      this.familySubject.next('ready');
+      this.familySubject.next({
+        type: 'ready',
+      });
     }
   }
 
@@ -382,63 +468,73 @@ export class EmployeeFormComponent implements OnInit {
       return;
     }
     this.wardService.getWards(value).subscribe(data => this.recipientsWards = data);
-
   }
 
-
-
   changeRelationshipCities(value) {
+    if(!value) {
+      return '';
+    }
     this.districtService.getDistrict(value).subscribe(data => this.relationshipDistricts = data);
-    this.changeRelationshipFamily(value, 'cityCode');
+    this.bindingDataToGirdFamilies('cityCode');
   }
 
   changeRelationshipDistrict(value) {
+    if(!value) {
+      return '';
+    }
     this.wardService.getWards(value).subscribe(data => this.relationshipWards = data);
-    this.changeRelationshipFamily(value, 'districtCode');
+    this.bindingDataToGirdFamilies('districtCode');
   }
 
   changeRelationshipWards(value) {
-    this.villageService.getVillage(value).subscribe(data => this.relationshipVillages = data);
-    this.changeRelationshipFamily(value, 'wardsCode');
-  }
-
-  changeFirstRegisterCity(value) {
-    // this.hospitalService.getHospitals(value).subscribe(data => this.hospitals = data);
-  }
+    if(!value) {
+      return '';
+    }
+    this.villageService.getVillage(value).subscribe(data => this.relationshipVillages = data);   
+    this.bindingDataToGirdFamilies('wardsCode');
+  }   
 
   changeRelationshipFullName(value) {
-    const families = [ ...this.families ];
-    const master = families.find(f => f.relationshipCode === '00');
-
-    if (master) {
-      master.fullName = value;
-    } else {
-      const index = families.findIndex(f => !f.fullName);
-
-      families[index > -1 ? index : 0] = {
-        orders: index > -1 ? index + 1 : 1,
-        relationshipCode: '00',
-        fullName: value
-      };
-    }
-    this.families = families;
+    this.bindingDataToGirdFamilies('fullName');
   }
 
-  changeRelationshipFamily(value, field) {
-    const families = [ ...this.families ];
-    const master = families.find(f => f.relationshipCode === '00');
-
-    if (master) {
-      master[field] = value;
+  bindingDataToGirdFamilies(columnName) {
+    if(!this.isMaster) {
+      return '';
     }
 
-    this.families = families;
+    const familiescopy = [... this.families];
+    let master = familiescopy.find(f => f.relationshipCode === '00');
+    if (!master)  
+    {
+      const index = familiescopy.findIndex(f => f.relationshipCode === '00');
+      const indexOf = index > -1 ? index : 0;
+      master = familiescopy[indexOf];
+      master.relationshipCode = '00';
+    }
+      
+    master.cityCode = this.relationshipCityCode;
+    master.districtCode = this.relationshipDistrictCode;
+    master.wardsCode = this.relationshipWardsCode;
+    master.fullName = this.relationshipFullName;
+    master.data = this.tableHeaderColumnsFamilies.map(column => {
+        if (!column.key || !master[column.key]) return '';
+        return master[column.key];
+    });
+
+   const index = familiescopy.findIndex(f => f.relationshipCode === '00');
+   this.familySubject.next({
+      type:"familyMaster",
+      data: master,
+      columName: columnName,
+      index: index,
+    });
   }
 
   addHospitalFirstRegistCode() {
-	const data = {
-		cityCode: this.hospitalFirstRegistCode,
-	};
+    const data = {
+      cityCode: this.cityFirstRegistCode,
+    };
     const modal = this.modalService.create({
       nzWidth: 500,
       nzWrapClassName: 'add-hospital-modal',
@@ -450,7 +546,12 @@ export class EmployeeFormComponent implements OnInit {
     });
 
     modal.afterClose.subscribe(result => {
-      // this.getEmployees();
+      this.hospitalService.searchHospital(this.cityFirstRegistCode, result.id).subscribe(data => {
+        this.hospitals = data;
+        this.employeeForm.patchValue({
+          hospitalFirstRegistCode: result.id,
+        });
+      });
     });
   }
 
@@ -544,11 +645,24 @@ export class EmployeeFormComponent implements OnInit {
 
   get registerWardsCode() {
     return this.employeeForm.get('registerWardsCode').value;
+  }  
+
+  get relationshipFullName() {
+    return this.employeeForm.get('relationshipFullName').value;
   }
+
+  get relationshipCityCode() {
+    return this.employeeForm.get('relationshipCityCode').value;
+  }
+
+  get relationshipDistrictCode() {
+    return this.employeeForm.get('relationshipDistrictCode').value;
+  }
+
+  get relationshipWardsCode() {
+    return this.employeeForm.get('relationshipWardsCode').value;
+  }  
   
-  get cityFirstRegistCode() {
-	return this.employeeForm.get('cityFirstRegistCode').value;
-  }
 
   get isDuplicateAddress() {
     return this.employeeForm.get('isDuplicateAddress').value;
@@ -556,6 +670,10 @@ export class EmployeeFormComponent implements OnInit {
 
   get cityFirstRegistCode() {
     return this.employeeForm.get('cityFirstRegistCode').value;
+  }
+
+  get isMaster() {
+    return this.employeeForm.get('isMaster').value;
   }
 
   getNameOfDropdown(sourceOfDropdown: any, id: string) {

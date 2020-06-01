@@ -120,7 +120,7 @@ export const TABLE_FAMILIES_HEADER_COLUMNS = [{
   autocomplete: true,
   width: 100,
   title: '(8.4)',
-  source: [ 'Chọn' ],
+  source: [],
   key: 'relationshipVillageCode',
   fieldName: 'Tỉnh thành phố',
   validations: {
