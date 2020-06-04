@@ -6,7 +6,12 @@ export const DATE_FORMAT = {
 
 export const PAGE_SIZE = 10;
 
-export const MIME_TYPE = 
+export const GENDER = {
+  0: 'common.gender.male',
+  1: 'common.gender.female',
+};
+
+export const MIME_TYPE =
 [
   {
   key: 'xlsx',
@@ -26,7 +31,7 @@ export const MIME_TYPE =
   }
 ];
 
-export const DECLARATIONS = 
+export const DECLARATIONS =
 [
   {
   key: '600',
@@ -46,7 +51,7 @@ export const DECLARATIONS =
   }
 ];
 
-export const DOCUMENTBYPLANCODE = 
+export const DOCUMENTBYPLANCODE =
 [
   {
   key: 'TLD',

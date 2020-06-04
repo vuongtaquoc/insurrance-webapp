@@ -149,7 +149,7 @@ export class RegimeApprovalBaseComponent {
       // declaration.isInitialize = false;
     });
 
-    const rowChange: any = this.declarations[part][r];
+    const rowChange: any = this.declarations[part].table[r];
 
     rowChange.data.options.isInitialize = false;
     rowChange.isInitialize = false;

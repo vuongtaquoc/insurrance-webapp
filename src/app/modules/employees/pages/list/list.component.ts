@@ -4,7 +4,7 @@ import { NzModalService } from 'ng-zorro-antd/modal';
 import { EmployeeService } from '@app/core/services';
 import { EmployeeFormComponent } from '@app/shared/components';
 
-import { PAGE_SIZE } from '@app/shared/constant';
+import { PAGE_SIZE, GENDER } from '@app/shared/constant';
 
 @Component({
   selector: 'app-employees-list',
@@ -17,6 +17,7 @@ export class EmployeeListComponent implements OnInit {
   skip: number;
   selectedPage: number = 1;
   isSpinning: boolean;
+  gender: any = GENDER;
 
   constructor(
     private modalService: NzModalService,
