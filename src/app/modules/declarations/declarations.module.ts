@@ -46,6 +46,9 @@ import {
   ArrearsAddComponent,
   ArrearsEditComponent,
   ArrearsListComponent,
+  AdjustGeneralListComponent,
+  AdjustGeneralAddComponent,
+  AdjustGeneralEditComponent,
 } from './pages';
 
 import {
@@ -66,7 +69,10 @@ import {
   FamiliesListTableComponent,
   AdjustComponent,
   ArrearsComponent,
-
+  AdjustGeneralComponent,
+  IncreaseComponent,
+  IncreaseFormComponent,
+  IncreaseEditorComponent,
 } from './components';
 
 import { RegimeAutoSizeDirective } from './directives';
@@ -126,6 +132,13 @@ import { RegimeAutoSizeDirective } from './directives';
     ArrearsListComponent,
     AdjustComponent,
     ArrearsComponent,
+    AdjustGeneralComponent,
+    AdjustGeneralListComponent,
+    AdjustGeneralAddComponent,
+    AdjustGeneralEditComponent,
+    IncreaseComponent,
+    IncreaseFormComponent,
+    IncreaseEditorComponent,
   ],
   providers: [
     AuthenticationService,

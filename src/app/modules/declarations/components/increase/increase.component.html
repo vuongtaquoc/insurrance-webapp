@@ -1,0 +1,73 @@
+<div class="page-declarations__container" [ngClass]="{ 'page-declarations__container--hidden': isHiddenSidebar }">
+  <app-declaration-sidebar
+    [isHiddenSidebar]="isHiddenSidebar"
+    [events]="employeeSubject.asObservable()"
+    (onSelectEmployees)="handleSelectEmployees($event)"
+    (onToggleSidebar)="handleToggleSidebar()"
+  ></app-declaration-sidebar>
+
+  <div class="page-declarations__content">
+    <div class="page-declarations__group-button">
+      <div class="page-declarations__buttons">
+        <button class="page-declarations__button" nz-button nzType="default" (click)="handleAddEmployee('I_1')">
+          <i nz-icon nzType="arrow-up"></i>Tăng lao động
+        </button>
+        <button class="page-declarations__button" nz-button nzType="default" (click)="handleAddEmployee('I_2')">
+          <i nz-icon nzType="arrow-up"></i>Tăng BHYT
+        </button>
+        <button class="page-declarations__button" nz-button nzType="default" (click)="handleAddEmployee('I_3')">
+          <i nz-icon nzType="arrow-up"></i>Tăng BHTN
+        </button>
+        <button class="page-declarations__button" nz-button nzType="default" (click)="handleAddEmployee('II_2')">
+          <i nz-icon nzType="arrow-up"></i>Tăng BHTNLĐ, BNN
+        </button>
+        <button class="page-declarations__button" nz-button nzType="default" (click)="handleAddEmployee('II_1')">
+          <i nz-icon nzType="arrow-down"></i>Giảm BHYT
+        </button>
+      </div>
+      <h1><strong>600</strong> | Báo tăng lao động</h1>
+    </div><!-- page-declarations__group-button -->
+
+    <div class="page-declarations__title">
+      <ng-container *ngIf="hasForm">
+        <app-increase-form (onFormValuesChanged)="handleFormValuesChanged($event)"></app-increase-form>
+      </ng-container>
+      <div *ngIf="!hasForm"></div>
+
+      <div class="page-declarations__check-code">
+        <button nz-button nzType="default" (click)="checkInsurranceCode($event)">Kiểm tra mã số BHXH</button>
+      </div><!-- page-declarations__check-code -->
+    </div><!-- page-declarations__title -->
+
+    <div class="page-declarations__editor">
+      <app-increase-editor
+      tableName="sicknessesPart1"
+      [data]="declarations.table"
+      [nestedHeaders]="nested"
+      [columns]="columns"
+      [events]="tableSubject.asObservable()"
+      (onChange)="handleChangeTable($event)"
+      (onDelete)="handleDeleteTableData($event)"
+      (onAddRow)="handleAddRow($event)"
+    ></app-increase-editor>
+    </div><!-- page-declarations__editor -->
+
+    <nz-collapse [nzBordered]="false" [ngClass]="{
+      'collapse-active-all': panel.general.active && panel.attachment.active,
+      'collapse-active-general': panel.general.active && !panel.attachment.active,
+      'collapse-active-attachment': !panel.general.active && panel.attachment.active
+    }">
+      <nz-collapse-panel class="collapse-general" nzHeader="Phần tổng hợp" [nzActive]="panel.general.active" (nzActiveChange)="collapseChange($event, 'general')">
+        <app-labor-general-form
+        [data]="declarationGeneral"
+        (onFormValuesChanged)="handleFormValuesChanged($event)"></app-labor-general-form>
+      </nz-collapse-panel>
+      <nz-collapse-panel class="collapse-attachment" [nzHeader]="attachmentHeader" [nzActive]="panel.attachment.active" (nzActiveChange)="collapseChange($event, 'attachment')">
+        <app-labor-attachment></app-labor-attachment>
+      </nz-collapse-panel>
+    </nz-collapse>
+    <ng-template #attachmentHeader>
+      Tài liệu kèm theo <span class="collapse-attachment-note">(tổng dung lượng &lt; 20MB)</span>
+    </ng-template>
+  </div><!-- page-declarations__content -->
+</div><!-- page-declarations__container -->

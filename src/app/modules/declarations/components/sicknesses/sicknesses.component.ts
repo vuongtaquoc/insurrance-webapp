@@ -57,7 +57,6 @@ export class SicknessesComponent extends RegimeApprovalBaseComponent implements 
         part1: this.headers.part1.columns,
         part2: this.headers.part2.columns
       }, !this.declarationId);
-
       this.declarations.part1.table = data.part1;
       this.declarations.part2.table = data.part2;
 

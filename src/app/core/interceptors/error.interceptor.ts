@@ -38,7 +38,7 @@ export class ErrorInterceptor implements HttpInterceptor {
 
       const error = err.error;
       const messageService = this.injector.get(NzMessageService);
-
+      console.log(err);
       if (error && error.message) {
         messageService.create('error', error.message);
       } else {

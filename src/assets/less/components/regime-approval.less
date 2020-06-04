@@ -47,9 +47,26 @@
     width: calc(100% - 260px);
     left: 240px;
 
+    h2 {
+      text-align: center;
+      text-transform: uppercase;
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+
     &--hidden {
       display: none;
     }
+  }
+
+  &__search {
+    display: grid;
+    grid-template-columns: 80px 110px 110px;
+    grid-gap: 10px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
   }
 
   &__title {

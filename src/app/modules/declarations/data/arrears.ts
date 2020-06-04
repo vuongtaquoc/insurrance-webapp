@@ -16,8 +16,8 @@ export const TABLE_ARREARS_NESTED_HEADERS = [
     { title: 'Cấp bập, chức vụ, chức danh nghề', rowspan: '3' },
     { title: 'Nơi làm việc', rowspan: '3' },
     { title: 'Phòng ban', rowspan: '3' },
-    { title: 'Ngày chết', rowspan: '3' },    
-    { title: 'Tiền lương', colspan: '8' },
+    { title: 'Tiền lương mức đóng cũ', colspan: '8' },
+    { title: 'Tiền lương mức đóng mới', colspan: '8' },
     { title: 'Từ tháng, năm', rowspan: '3' },
     { title: 'Đến tháng, năm', rowspan: '3' },
     { title: 'Phương án', rowspan: '3' },
@@ -28,6 +28,9 @@ export const TABLE_ARREARS_NESTED_HEADERS = [
   [
     { title: 'Mã số BHXH', rowspan: '2' },
     { title: 'Trạng thái', rowspan: '2' },
+    { title: 'Mức lương', rowspan: '2' },
+    { title: 'Hệ số', rowspan: '2' },
+    { title: 'Phụ cấp', colspan: '6' },
     { title: 'Mức lương', rowspan: '2' },
     { title: 'Hệ số', rowspan: '2' },
     { title: 'Phụ cấp', colspan: '6' }
@@ -46,6 +49,12 @@ export const TABLE_ARREARS_NESTED_HEADERS = [
     { title: 'Thâm niên VK (%)' },
     { title: 'Thâm niên nghề (%)' },
     { title: 'Chênh lệch bảo lưu' },
+    { title: 'Phụ cấp lương' },
+    { title: 'Các khoản bổ sung' },
+    { title: 'Chức vụ' },
+    { title: 'Thâm niên VK (%)' },
+    { title: 'Thâm niên nghề (%)' },
+    { title: 'Chênh lệch bảo lưu' },
     { title: 'Số' },
     { title: 'Ngày ký' },
   ],
@@ -57,7 +66,7 @@ export const TABLE_ARREARS_HEADER_COLUMNS = [{
   title: '(1)',
   key: 'orders',
   readOnly: true,
-  align: 'center'
+  align: 'left'
 }, {
   type: 'text',
   width: 170,
@@ -140,7 +149,7 @@ export const TABLE_ARREARS_HEADER_COLUMNS = [{
 }, {
   type: 'dropdown',
   autocomplete: true,
-  width: 175,
+  width: 145,
   title: '(11.3)',
   source: [],
   align: 'left',
@@ -166,7 +175,7 @@ export const TABLE_ARREARS_HEADER_COLUMNS = [{
 }, {
   type: 'dropdown',
   autocomplete: true,
-  width: 175,
+  width: 145,
   title: '(12.3)',
   align: 'left',
   source: [ ],
@@ -174,7 +183,7 @@ export const TABLE_ARREARS_HEADER_COLUMNS = [{
   defaultLoad: true
 }, {
   type: 'text',
-  width: 165,
+  width: 145,
   title: '(12.4)',
   align: 'left',
   wordWrap: true,
@@ -205,19 +214,9 @@ export const TABLE_ARREARS_HEADER_COLUMNS = [{
   title: '(16)',
   key: 'departmentId'
 }, {
-  type: 'text',
-  width: 70,
-  title: '(17)',
-  key: 'motherDayDead',
-  fieldName: 'Ngày chết',
-  validations: {
-    required: true
-  },
-  isCalendar: true
-}, {
   type: 'numeric',
   width: 80,
-  title: '(18.1)',
+  title: '(17.1)',
   mask: '# ##0',
   decimal: ',',
   sum: true,
@@ -225,7 +224,7 @@ export const TABLE_ARREARS_HEADER_COLUMNS = [{
 }, {
   type: 'numeric',
   width: 80,
-  title: '(18.2)',
+  title: '(17.2)',
   mask: '# ##0',
   decimal: ',',
   sum: true,
@@ -233,7 +232,7 @@ export const TABLE_ARREARS_HEADER_COLUMNS = [{
 }, {
   type: 'numeric',
   width: 80,
-  title: '(18.3)',
+  title: '(17.3)',
   mask: '# ##0',
   decimal: ',',
   sum: true,
@@ -241,7 +240,7 @@ export const TABLE_ARREARS_HEADER_COLUMNS = [{
 }, {
   type: 'numeric',
   width: 80,
-  title: '(18.4)',
+  title: '(17.4)',
   mask: '# ##0',
   decimal: ',',
   sum: true,
@@ -249,7 +248,7 @@ export const TABLE_ARREARS_HEADER_COLUMNS = [{
 }, {
   type: 'numeric',
   width: 80,
-  title: '(18.5)',
+  title: '(17.5)',
   mask: '# ##0',
   decimal: ',',
   sum: true,
@@ -257,7 +256,7 @@ export const TABLE_ARREARS_HEADER_COLUMNS = [{
 }, {
   type: 'numeric',
   width: 70,
-  title: '(18.6)',
+  title: '(17.6)',
   key: 'allowanceSeniority',
   suffix: '%',
   validations: {
@@ -266,8 +265,77 @@ export const TABLE_ARREARS_HEADER_COLUMNS = [{
 }, {
   type: 'numeric',
   width: 70,
-  title: '(18.7)',
+  title: '(17.7)',
   key: 'allowanceSeniorityJob',
+  suffix: '%',
+  validations: {
+    number: true
+  }
+}, {
+  type: 'numeric',
+  width: 80,
+  title: '(17.8)',
+  mask: '# ##0',
+  decimal: ',',
+  sum: true,
+  key: 'allowanceOther',
+  validations: {
+    number: true
+  }
+},{
+  type: 'numeric',
+  width: 80,
+  title: '(18.1)',
+  mask: '# ##0',
+  decimal: ',',
+  sum: true,
+  key: 'salaryNew'
+}, {
+  type: 'numeric',
+  width: 80,
+  title: '(18.2)',
+  mask: '# ##0',
+  decimal: ',',
+  sum: true,
+  key: 'ratioNew'
+}, {
+  type: 'numeric',
+  width: 80,
+  title: '(18.3)',
+  mask: '# ##0',
+  decimal: ',',
+  sum: true,
+  key: 'allowanceSalaryNew'
+}, {
+  type: 'numeric',
+  width: 80,
+  title: '(18.4)',
+  mask: '# ##0',
+  decimal: ',',
+  sum: true,
+  key: 'allowanceAdditionalNew'
+}, {
+  type: 'numeric',
+  width: 80,
+  title: '(18.5)',
+  mask: '# ##0',
+  decimal: ',',
+  sum: true,
+  key: 'allowanceLevelNew'
+}, {
+  type: 'numeric',
+  width: 70,
+  title: '(18.6)',
+  key: 'allowanceSeniorityNew',
+  suffix: '%',
+  validations: {
+    number: true
+  }
+}, {
+  type: 'numeric',
+  width: 70,
+  title: '(18.7)',
+  key: 'allowanceSeniorityJobNew',
   suffix: '%',
   validations: {
     number: true
@@ -279,7 +347,7 @@ export const TABLE_ARREARS_HEADER_COLUMNS = [{
   mask: '# ##0',
   decimal: ',',
   sum: true,
-  key: 'allowanceOther',
+  key: 'allowanceOtherNew',
   validations: {
     number: true
   }

@@ -18,6 +18,9 @@ import {
   ArrearsEditComponent,
   ArrearsAddComponent,
   ArrearsListComponent,
+  AdjustGeneralListComponent,
+  AdjustGeneralAddComponent,
+  AdjustGeneralEditComponent,
 } from './pages';
 
 const routes: Routes = [
@@ -83,6 +86,17 @@ const routes: Routes = [
       {
         path: 'adjust/:id/edit',
         component: AdjustEditComponent
+      },{
+        path: 'adjust-general',
+        component: AdjustGeneralListComponent
+      },
+      {
+        path: 'adjust-general/add',
+        component: AdjustGeneralAddComponent
+      },
+      {
+        path: 'adjust-general/:id/edit',
+        component: AdjustGeneralEditComponent
       }
     ]
   }

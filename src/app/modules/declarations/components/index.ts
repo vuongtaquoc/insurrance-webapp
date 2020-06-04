@@ -15,3 +15,7 @@ export * from './table-editor/families-list.component';
 export * from './reduction-labor/reduction-labor.component';
 export * from './adjust/adjust.component';
 export * from './arrears/arrears.component';
+export * from './adjust-general/adjust-general.component';
+export * from './increase/increase.component';
+export * from './increase-form/increase-form.component';
+export * from './table-editor/increase-editor.component';

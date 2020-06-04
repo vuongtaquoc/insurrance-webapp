@@ -13,3 +13,6 @@ export * from './adjust-edit/adjust-edit.component';
 export * from './arrears-add/arrears-add.component';
 export * from './arrears-list/arrears-list.component';
 export * from './arrears-edit/arrears-edit.component';
+export * from './adjust-general-add/adjust-general-add.component';
+export * from './adjust-general-list/adjust-general-list.component';
+export * from './adjust-general-edit/adjust-general-edit.component';

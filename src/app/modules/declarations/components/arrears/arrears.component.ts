@@ -30,7 +30,7 @@ import {
 import { DATE_FORMAT, DECLARATIONS, DOCUMENTBYPLANCODE } from '@app/shared/constant';
 import { eventEmitter } from '@app/shared/utils/event-emitter';
 
-import { TABLE_REDUCTION_NESTED_HEADERS, TABLE_REDUCTION_HEADER_COLUMNS } from '@app/modules/declarations/data/reduction-labor';
+import { TABLE_ARREARS_NESTED_HEADERS, TABLE_ARREARS_HEADER_COLUMNS } from '@app/modules/declarations/data/arrears';
 
 
 
@@ -47,8 +47,8 @@ export class ArrearsComponent implements OnInit, OnDestroy {
   currentCredentials: any;
   documentForm: FormGroup;
   declarations: Declaration[] = [];
-  tableNestedHeaders: any[] = TABLE_REDUCTION_NESTED_HEADERS;
-  tableHeaderColumns: any[] = TABLE_REDUCTION_HEADER_COLUMNS;
+  tableNestedHeaders: any[] = TABLE_ARREARS_NESTED_HEADERS;
+  tableHeaderColumns: any[] = TABLE_ARREARS_HEADER_COLUMNS;
   employeeSelected: any[] = [];
   eventsSubject: Subject<string> = new Subject<string>();
   validateSubject: Subject<any> = new Subject<any>();
