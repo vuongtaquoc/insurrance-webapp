@@ -1,6 +1,6 @@
 <div class="declaration-sidebar" [ngClass]="{'declaration-sidebar--hidden': isHiddenSidebar}">
   <div class="declaration-sidebar__group-button">
-    <button nz-button nzType="default" class="declaration-sidebar__button declaration-sidebar__button--search" title="Tìm kiếm"><i nz-icon nzType="search"></i></button>
+    <button nz-button nzType="default" class="declaration-sidebar__button declaration-sidebar__button--search" title="Tìm kiếm" (click)="search()"><i nz-icon nzType="search"></i></button>
     <button nz-button nzType="default" class="declaration-sidebar__button declaration-sidebar__button--refresh" title="Làm mới"><i nz-icon nzType="sync"></i></button>
     <button nz-button nzType="default" class="declaration-sidebar__button declaration-sidebar__button--add" title="" (click)="addEmployee()"><i nz-icon nzType="plus"></i></button>
     <button nz-button nzType="default" class="declaration-sidebar__button declaration-sidebar__button--edit" (click)="editEmployee()"><i nz-icon nzType="edit"></i></button>

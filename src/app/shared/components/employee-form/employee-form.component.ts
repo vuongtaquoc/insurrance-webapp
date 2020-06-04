@@ -68,6 +68,7 @@ export class EmployeeFormComponent implements OnInit {
   processSubject: Subject<string> = new Subject<string>();
   familySubject: Subject<any> = new Subject<any>();
   flagChangeMaster: boolean = false;
+  formatterCurrency = (value: number) => typeof value === 'number' ? `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',') : '';
   private timer;
 
   constructor(
@@ -199,7 +200,9 @@ export class EmployeeFormComponent implements OnInit {
       relationshipVillageCode: [employee.relationshipVillageCode],
       relationshipMobile: [employee.relationshipMobile],
       isMaster: [employee.isMaster],
-      isDuplicateAddress: [false]
+      isDuplicateAddress: [false],
+      birthTypeOnlyYearMonth: [employee.typeBirthday === '1'],
+      birthTypeOnlyYear: [employee.typeBirthday === '2']
     });
 
     this.families = this.formatFamilies(employee.families);
@@ -318,7 +321,36 @@ export class EmployeeFormComponent implements OnInit {
         []
       )
     };
+
+    if (this.employeeForm.get('birthTypeOnlyYearMonth')) {
+      formData.typeBirthday = '1';
+    } else if (this.employeeForm.get('birthTypeOnlyYear')) {
+      formData.typeBirthday = '2';
+    } else {
+      formData.typeBirthday = '3';
+    }
+
+    if (formData.allowanceSalary) {
+      formData.allowanceSalary = formData.allowanceSalary.split(',').join('');
+    }
+
+    if (formData.allowanceOther) {
+      formData.allowanceOther = formData.allowanceOther.split(',').join('');
+    }
+
     return formData;
+  }
+
+  changeBirthType(value, type) {
+    if (value && type === 'birthTypeOnlyYearMonth') {
+      this.employeeForm.patchValue({
+        'birthTypeOnlyYear': false
+      });
+    } else if (value && type === 'birthTypeOnlyYear') {
+      this.employeeForm.patchValue({
+        'birthTypeOnlyYearMonth': false
+      });
+    }
   }
 
   dismiss(): void {
@@ -673,6 +705,14 @@ export class EmployeeFormComponent implements OnInit {
 
   get isMaster() {
     return this.employeeForm.get('isMaster').value;
+  }
+
+  get birthTypeOnlyYearMonth() {
+    return this.employeeForm.get('birthTypeOnlyYearMonth').value;
+  }
+
+  get birthTypeOnlyYear() {
+    return this.employeeForm.get('birthTypeOnlyYear').value;
   }
 
   getNameOfDropdown(sourceOfDropdown: any, id: string) {

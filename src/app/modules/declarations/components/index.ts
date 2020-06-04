@@ -20,3 +20,4 @@ export * from './increase/increase.component';
 export * from './increase-form/increase-form.component';
 export * from './table-editor/increase-editor.component';
 export * from './reduction/reduction.component';
+export * from './declaration-sidebar/search.component';

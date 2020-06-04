@@ -16,6 +16,7 @@ import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
+import { NzRadioModule } from 'ng-zorro-antd/radio';
 
 import {
   AuthenticationService,
@@ -74,6 +75,7 @@ import {
   IncreaseFormComponent,
   IncreaseEditorComponent,
   ReductionComponent,
+  DeclarationSidebarSearchComponent
 } from './components';
 
 import { RegimeAutoSizeDirective } from './directives';
@@ -96,6 +98,7 @@ import { RegimeAutoSizeDirective } from './directives';
     NzTabsModule,
     NzGridModule,
     NzCheckboxModule,
+    NzRadioModule,
     DeclarationsRoutingModule,
     SharedModule,
   ],
@@ -141,6 +144,7 @@ import { RegimeAutoSizeDirective } from './directives';
     IncreaseFormComponent,
     IncreaseEditorComponent,
     ReductionComponent,
+    DeclarationSidebarSearchComponent
   ],
   providers: [
     AuthenticationService,
@@ -152,6 +156,8 @@ import { RegimeAutoSizeDirective } from './directives';
     PeopleService,
     WardsService
   ],
-  entryComponents: []
+  entryComponents: [
+    DeclarationSidebarSearchComponent
+  ]
 })
 export class DeclarationsModule { }

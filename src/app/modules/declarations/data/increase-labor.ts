@@ -340,7 +340,8 @@ export const TABLE_HEADER_COLUMNS = [{
   key: 'fromDate',
   fieldName: 'Từ tháng, năm',
   validations: {
-    required: true
+    required: true,
+    lessThanNow: true
   },
   isCalendar: true
 }, {
