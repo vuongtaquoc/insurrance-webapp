@@ -9,19 +9,19 @@
   <div class="page-declarations__content">
     <div class="page-declarations__group-button">
       <div class="page-declarations__buttons">
-        <button class="page-declarations__button" nz-button nzType="default" (click)="handleAddEmployee('I_1')">
+        <button class="page-declarations__button" nz-button nzType="default" (click)="handleAddEmployee('I_1', 'increaselabor')">
           <i nz-icon nzType="arrow-up"></i>Tăng lao động
         </button>
-        <button class="page-declarations__button" nz-button nzType="default" (click)="handleAddEmployee('I_2')">
+        <button class="page-declarations__button" nz-button nzType="default" (click)="handleAddEmployee('I_2','increaselabor')">
           <i nz-icon nzType="arrow-up"></i>Tăng BHYT
         </button>
-        <button class="page-declarations__button" nz-button nzType="default" (click)="handleAddEmployee('I_3')">
+        <button class="page-declarations__button" nz-button nzType="default" (click)="handleAddEmployee('I_3','increaselabor')">
           <i nz-icon nzType="arrow-up"></i>Tăng BHTN
         </button>
-        <button class="page-declarations__button" nz-button nzType="default" (click)="handleAddEmployee('II_2')">
+        <button class="page-declarations__button" nz-button nzType="default" (click)="handleAddEmployee('II_2','increaselabor')">
           <i nz-icon nzType="arrow-up"></i>Tăng BHTNLĐ, BNN
         </button>
-        <button class="page-declarations__button" nz-button nzType="default" (click)="handleAddEmployee('II_1')">
+        <button class="page-declarations__button" nz-button nzType="default" (click)="handleAddEmployee('II_1','increaselabor')">
           <i nz-icon nzType="arrow-down"></i>Giảm BHYT
         </button>
       </div>
@@ -41,12 +41,12 @@
 
     <div class="page-declarations__editor">
       <app-increase-editor
-      tableName="sicknessesPart1"
-      [data]="declarations.table"
-      [nestedHeaders]="nested"
-      [columns]="columns"
+      tableName="increaselabor"
+      [data]="declarations.increaselabor.table"
+      [nestedHeaders]="headers.increaselabor.nested"
+      [columns]="headers.increaselabor.columns"
       [events]="tableSubject.asObservable()"
-      (onChange)="handleChangeTable($event)"
+      (onChange)="handleChangeTable($event,'increaselabor')"
       (onDelete)="handleDeleteTableData($event)"
       (onAddRow)="handleAddRow($event)"
     ></app-increase-editor>

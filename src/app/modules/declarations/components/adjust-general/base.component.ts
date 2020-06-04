@@ -16,15 +16,21 @@ export class GeneralBaseComponent {
   @Output() onChange: EventEmitter<any> = new EventEmitter();
   @Output() onHiddenSidebar: EventEmitter<any> = new EventEmitter();
   headers: any = {
-    tableName: {
+    increaselabor: {
+      nested: [],
+      columns: []
+    },
+    reductionlabor: {
       nested: [],
       columns: []
     } 
-  };
-  nested: any[] = [];
-  columns: any[] = [];
+  };  
   declarations: any = {
-    tableName: {
+    increaselabor: {
+      origin: [],
+      table: []
+    },
+    reductionlabor: {
       origin: [],
       table: []
     }
@@ -40,19 +46,17 @@ export class GeneralBaseComponent {
   ) {}
 
   initializeTableColumns(nested, columns, tableName) {
-    this.nested = nested;
-    this.columns = columns;
+    this.headers[tableName].nested = nested;
+    this.headers[tableName].columns = columns;
   }
 
-  handleAddEmployee(type) {
+  handleAddEmployee(type, tableName) {
     if (!this.employeeSelected.length) {
       return this.modalService.warning({
         nzTitle: 'Chưa có nhân viên nào được chọn',
       });
     }
-    
-    console.log(this.declarations)
-    const declarations = [ ...this.declarations.table];
+    const declarations = [ ...this.declarations[tableName].table];
     
     const parentIndex = findIndex(declarations, d => d.key === type);
     const childLastIndex = findLastIndex(declarations, d => d.isLeaf && d.parentKey === type);
@@ -72,9 +76,9 @@ export class GeneralBaseComponent {
             // remove initialize data
             declarations.splice(childLastIndex, 1);
 
-            declarations.splice(childLastIndex, 0, this.declarationService.getLeaf(declarations[parentIndex], employee, this.columns));
+            declarations.splice(childLastIndex, 0, this.declarationService.getLeaf(declarations[parentIndex], employee, this.headers[tableName].columns));
           } else {
-            declarations.splice(childLastIndex + 1, 0, this.declarationService.getLeaf(declarations[parentIndex], employee, this.columns));
+            declarations.splice(childLastIndex + 1, 0, this.declarationService.getLeaf(declarations[parentIndex], employee, this.headers[tableName].columns));
           }
         }
         
@@ -83,29 +87,31 @@ export class GeneralBaseComponent {
       // update orders
       this.updateOrders(declarations);
 
-      this.declarations.table = this.declarationService.updateFormula(declarations, this.columns);
+      this.declarations[tableName].table = this.declarationService.updateFormula(declarations, this.headers[tableName].columns);
     } else {
       this.employeeSelected.forEach(employee => {
-        declarations.splice(parentIndex + 1, 0, this.declarationService.getLeaf(declarations[parentIndex], employee, this.columns));
+        declarations.splice(parentIndex + 1, 0, this.declarationService.getLeaf(declarations[parentIndex], employee, this.headers[tableName].columns));
       });
 
-      this.declarations.table = this.declarationService.updateFormula(declarations, this.columns);
+      this.declarations[tableName].table = this.declarationService.updateFormula(declarations, this.headers[tableName].columns);
     }
-
-    console.log(this.declarations,'this.declarations')
     // update origin data
     const records = this.toTableRecords(declarations);
 
-    this.onChange.emit({     
-      data: this.declarations.table
+    this.onChange.emit({    
+      tableName, 
+      data: this.declarations[tableName].table
     });
 
     // clean employee
     this.employeeSubject.next({
+      tableName, 
       type: 'clean'
     });
+
     this.employeeSelected.length = 0;
     this.tableSubject.next({
+      tableName, 
       type: 'validate'
     });
     this.tableSubject.next({
@@ -118,8 +124,34 @@ export class GeneralBaseComponent {
     this.employeeSelected = employees;
   }
 
-  handleChangeTable({ instance, cell, c, r, records }) {
+  handleChangeTable({ instance, cell, c, r, records }, tableName) {
     // update declarations
+    console.log(this.declarations,tableName);
+    console.log(this.declarations[tableName]);
+    this.declarations[tableName].table.forEach((declaration, index) => {
+      const record = records[index];
+
+      Object.keys(record).forEach(index => {
+        declaration.data[index] = record[index];
+      });
+    });
+
+    const rowChange: any = this.declarations[tableName].table[r];
+    console.log(rowChange);
+    rowChange.data.options.isInitialize = false;
+    rowChange.isInitialize = false;
+
+    // update origin data
+    this.declarations[tableName].origin = Object.values(this.updateOrigin(records, tableName));
+
+    this.onChange.emit({
+      tableName,
+      data: this.declarations[tableName].origin
+    });
+    this.tableSubject.next({
+      type: 'validate'
+    });
+
     this.tableSubject.next({
       type: 'validate'
     });

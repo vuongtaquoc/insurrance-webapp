@@ -47,7 +47,8 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
   documentForm: FormGroup;
   documentList: DocumentList[] = [];
   isHiddenSidebar = false;
-  declarationCode: string = '601';   
+  declarationCode: string = '601';  
+  selectedTabIndex: number = 1; 
   handler: any;
   isTableValid = false;
   tableErrors = {};
@@ -57,6 +58,7 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
   };
   totalNumberInsurance: any;
   totalCardInsurance: any;
+  allInitialize: any = {};
   declarations: any = {
     origin: {},
     form: {},
@@ -106,15 +108,24 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
         mobile: currentCredentials.companyInfo.mobile
       });
     }
+
+    this.handler = eventEmitter.on('regime-approval:validate', ({ name, isValid, leaf, initialize, errors }) => {
+      this.allInitialize[name] = leaf.length === initialize.length;
+      // this.isValid[name] = isValid;
+      this.isTableValid = Object.values(this.allInitialize).indexOf(false) === -1 ? false : true;
+      this.tableErrors[name] = errors;
+    });
   }
 
   ngOnDestroy() {
     this.handler();
   }
 
-  handleTableChange(data, type) {
-    this.declarations.tables[type] = this.declarations.tables[type] || {};
-    this.declarations.tables[type][data.part] = data.data;
+  handleChangeTable(data, tableName) {
+    console.log(this.declarations,'ddđd');
+     this.declarations[tableName] = this.declarations[tableName] || {};
+     this.declarations[tableName] = data.data;
+     console.log(this.declarations[tableName]);
   }
    
   handleSubmit(event) {
@@ -138,7 +149,11 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
   }
 
   handleSelectTab({ index }) {
-    // this.selectedTabIndex = index;
-    // eventEmitter.emit('regime-approval:tab:change', index);
+    this.selectedTabIndex = index;
+    eventEmitter.emit('adjust-general:tab:change', index);
+  }
+
+  handleHiddenSidebar(isHidden) {
+    this.isHiddenSidebar = isHidden;
   }
 }

@@ -8,17 +8,17 @@ import { DeclarationService, CategoryService, BankService,
 
 import { GeneralBaseComponent } from '@app/modules/declarations/components/adjust-general/base.component';
 
-import { TABLE_HEADER_COLUMNS, TABLE_NESTED_HEADERS } from '@app/modules/declarations/data/increase-labor';
+import { TABLE_REDUCTION_HEADER_COLUMNS, TABLE_REDUCTION_NESTED_HEADERS } from '@app/modules/declarations/data/reduction-labor';
 import { Subject, forkJoin } from 'rxjs';
 import { eventEmitter } from '@app/shared/utils/event-emitter';
 
 @Component({
-  selector: 'app-increase',
-  templateUrl: './increase.component.html',
-  styleUrls: ['./increase.component.less'],
+  selector: 'app-reduction',
+  templateUrl: './reduction.component.html',
+  styleUrls: ['./reduction.component.less'],
   encapsulation: ViewEncapsulation.None
 })
-export class IncreaseComponent extends GeneralBaseComponent implements OnInit, OnChanges {
+export class ReductionComponent extends GeneralBaseComponent implements OnInit, OnChanges {
   panel: any = {
     general: { active: false },
     attachment: { active: false }
@@ -56,7 +56,7 @@ export class IncreaseComponent extends GeneralBaseComponent implements OnInit, O
 
   ngOnInit() {
     // initialize table columns
-    this.initializeTableColumns(TABLE_NESTED_HEADERS, TABLE_HEADER_COLUMNS, 'increaselabor');
+    this.initializeTableColumns(TABLE_REDUCTION_NESTED_HEADERS, TABLE_REDUCTION_HEADER_COLUMNS, 'reductionlabor');
 
     forkJoin([
       this.cityService.getCities(),
@@ -68,35 +68,32 @@ export class IncreaseComponent extends GeneralBaseComponent implements OnInit, O
       this.categoryService.getCategories('relationshipDocumentType'),
       this.relationshipService.getRelationships()
     ]).subscribe(([ cities, nationalities, peoples, salaryAreas, plans, departments, relationshipDocumentTypies, relationShips ]) => {
-      this.updateSourceToColumn(TABLE_HEADER_COLUMNS, 'peopleCode', peoples);
-      this.updateSourceToColumn(TABLE_HEADER_COLUMNS, 'nationalityCode', nationalities);
-      this.updateSourceToColumn(TABLE_HEADER_COLUMNS, 'registerCityCode', cities);
-      this.updateSourceToColumn(TABLE_HEADER_COLUMNS, 'recipientsCityCode', cities);
-      this.updateSourceToColumn(TABLE_HEADER_COLUMNS, 'salaryAreaCode', salaryAreas);
-      this.updateSourceToColumn(TABLE_HEADER_COLUMNS, 'planCode', plans);
-      this.updateSourceToColumn(TABLE_HEADER_COLUMNS, 'departmentId', departments);
+      this.updateSourceToColumn(TABLE_REDUCTION_HEADER_COLUMNS, 'peopleCode', peoples);
+      this.updateSourceToColumn(TABLE_REDUCTION_HEADER_COLUMNS, 'nationalityCode', nationalities);
+      this.updateSourceToColumn(TABLE_REDUCTION_HEADER_COLUMNS, 'registerCityCode', cities);
+      this.updateSourceToColumn(TABLE_REDUCTION_HEADER_COLUMNS, 'recipientsCityCode', cities);
+      this.updateSourceToColumn(TABLE_REDUCTION_HEADER_COLUMNS, 'salaryAreaCode', salaryAreas);
+      this.updateSourceToColumn(TABLE_REDUCTION_HEADER_COLUMNS, 'planCode', plans);
+      this.updateSourceToColumn(TABLE_REDUCTION_HEADER_COLUMNS, 'departmentId', departments);
 
       // // get filter columns
-      this.updateFilterToColumn(TABLE_HEADER_COLUMNS, 'registerDistrictCode', this.getRegisterDistrictsByCityCode);
-      this.updateFilterToColumn(TABLE_HEADER_COLUMNS, 'registerWardsCode', this.getRegisterWardsByDistrictCode);
-      this.updateFilterToColumn(TABLE_HEADER_COLUMNS, 'recipientsDistrictCode', this.getRecipientsDistrictsByCityCode);
-      this.updateFilterToColumn(TABLE_HEADER_COLUMNS, 'recipientsWardsCode', this.getRecipientsWardsByDistrictCode);
-      this.updateFilterToColumn(TABLE_HEADER_COLUMNS, 'hospitalFirstRegistCode', this.getHospitalsByCityCode);
-      this.updateFilterToColumn(TABLE_HEADER_COLUMNS, 'planCode', this.getPlanByParent);
+      this.updateFilterToColumn(TABLE_REDUCTION_HEADER_COLUMNS, 'registerDistrictCode', this.getRegisterDistrictsByCityCode);
+      this.updateFilterToColumn(TABLE_REDUCTION_HEADER_COLUMNS, 'registerWardsCode', this.getRegisterWardsByDistrictCode);
+      this.updateFilterToColumn(TABLE_REDUCTION_HEADER_COLUMNS, 'recipientsDistrictCode', this.getRecipientsDistrictsByCityCode);
+      this.updateFilterToColumn(TABLE_REDUCTION_HEADER_COLUMNS, 'recipientsWardsCode', this.getRecipientsWardsByDistrictCode);
+      this.updateFilterToColumn(TABLE_REDUCTION_HEADER_COLUMNS, 'hospitalFirstRegistCode', this.getHospitalsByCityCode);
+      this.updateFilterToColumn(TABLE_REDUCTION_HEADER_COLUMNS, 'planCode', this.getPlanByParent);
     });
 
   }
 
   ngOnChanges(changes) {
      if (changes.data && changes.data.currentValue && changes.data.currentValue.length) {
-      const data = this.declarationService.updateDeclarations(changes.data.currentValue, TABLE_HEADER_COLUMNS, !this.declarationId);
-      this.declarations.increaselabor.table = data;
+      const data = this.declarationService.updateDeclarations(changes.data.currentValue, TABLE_REDUCTION_HEADER_COLUMNS, !this.declarationId);
+      this.declarations.reductionlabor.table = data;
     }
   }
-
-  checkInsurranceCode() {
-
-  }
+  
 
   private getRegisterDistrictsByCityCode(instance, cell, c, r, source) {
     const value = instance.jexcel.getValueFromCoords(c - 1, r);
@@ -106,7 +103,7 @@ export class IncreaseComponent extends GeneralBaseComponent implements OnInit, O
     }
 
     return this.districtService.getDistrict(value).toPromise().then(districts => {
-      this.updateSourceToColumn(TABLE_HEADER_COLUMNS,'registerDistrictCode', districts);
+      this.updateSourceToColumn(TABLE_REDUCTION_HEADER_COLUMNS,'registerDistrictCode', districts);
 
       return districts;
     });
@@ -120,7 +117,7 @@ export class IncreaseComponent extends GeneralBaseComponent implements OnInit, O
     }
 
     return this.wardService.getWards(value).toPromise().then(districts => {
-      this.updateSourceToColumn(TABLE_HEADER_COLUMNS,'recipientsWardsCode', districts);
+      this.updateSourceToColumn(TABLE_REDUCTION_HEADER_COLUMNS,'recipientsWardsCode', districts);
 
       return districts;
     });
@@ -134,7 +131,7 @@ export class IncreaseComponent extends GeneralBaseComponent implements OnInit, O
     }
 
     return this.wardService.getWards(value).toPromise().then(wards => {
-      this.updateSourceToColumn(TABLE_HEADER_COLUMNS,'registerWardsCode', wards);
+      this.updateSourceToColumn(TABLE_REDUCTION_HEADER_COLUMNS,'registerWardsCode', wards);
       return wards;
     });
   }
@@ -147,7 +144,7 @@ export class IncreaseComponent extends GeneralBaseComponent implements OnInit, O
     }
 
     return this.districtService.getDistrict(value).toPromise().then(districts => {
-      this.updateSourceToColumn(TABLE_HEADER_COLUMNS, 'recipientsDistrictCode', districts);
+      this.updateSourceToColumn(TABLE_REDUCTION_HEADER_COLUMNS, 'recipientsDistrictCode', districts);
 
       return districts;
     });
@@ -168,8 +165,6 @@ export class IncreaseComponent extends GeneralBaseComponent implements OnInit, O
     const row = instance.jexcel.getRowFromCoords(r);
     return source.filter(s => s.type === row.options.planType);
   }
-
-  
 
   private updateNextColumns(instance, r, value, nextColumns = []) {
     nextColumns.forEach(columnIndex => {

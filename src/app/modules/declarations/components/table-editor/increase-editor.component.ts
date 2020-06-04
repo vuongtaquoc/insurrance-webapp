@@ -39,7 +39,7 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
 
   ngOnInit() {
     this.eventsSubscription = this.events.subscribe((type) => this.handleEvent(type));
-    this.handlers.push(eventEmitter.on('regime-approval:tab:change', (index) => {
+    this.handlers.push(eventEmitter.on('adjust-general:tab:change', (index) => {
       clearTimeout(this.timer);
 
       this.isSpinning = true;
@@ -149,7 +149,6 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
     const formulaIndexes = [];
     let formulaIgnoreIndexes = [];
     const data = [];
-    console.log(this.data,'this.data');
     this.data.forEach((d, index) => {
       if (d.readonly) {
         readonlyIndexes.push(index);
@@ -235,7 +234,7 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
         const leaf = data.filter((d: any) => d.options.isLeaf);
         const initialize = leaf.filter((d: any) => d.options.isInitialize);
 
-        eventEmitter.emit('regime-approval:validate', {
+        eventEmitter.emit('adjust-general:validate', {
           name: this.tableName,
           isValid: this.spreadsheet.isTableValid(),
           errors: this.spreadsheet.getTableErrors(),
