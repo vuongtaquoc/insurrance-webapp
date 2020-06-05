@@ -21,20 +21,25 @@
               <nz-form-item>
                 <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Ngày sinh</nz-form-label>
                 <nz-form-control [nzSpan]="14" nzErrorTip="Ngày sinh không để trống">
+                  <nz-date-picker formControlName="birthday" nzPlaceHolder="Ngày sinh" *ngIf="!birthTypeOnlyYearMonth && !birthTypeOnlyYear"></nz-date-picker>
                   <nz-month-picker
                     formControlName="birthday"
                     nzPlaceHolder="Ngày sinh"
-                    *ngIf="birthdayType == '1'"
+                    *ngIf="birthTypeOnlyYearMonth && !birthTypeOnlyYear"
                   ></nz-month-picker>
-                  <nz-year-picker formControlName="birthday" nzPlaceHolder="Ngày sinh" *ngIf="birthdayType == '2'"></nz-year-picker>
+                  <nz-year-picker formControlName="birthday" nzPlaceHolder="Ngày sinh" *ngIf="!birthTypeOnlyYearMonth && birthTypeOnlyYear"></nz-year-picker>
                 </nz-form-control>
               </nz-form-item>
             </div><!-- col -->
             <div nz-col [nzSpan]="8">
-              <nz-radio-group formControlName="typeBirthday">
+              <nz-checkbox-wrapper>
+                <label nz-checkbox (ngModelChange)="changeBirthType($event, 'birthTypeOnlyYearMonth')" formControlName="birthTypeOnlyYearMonth">Chỉ có tháng/năm sinh</label>
+                <label nz-checkbox (ngModelChange)="changeBirthType($event, 'birthTypeOnlyYear')" formControlName="birthTypeOnlyYear">Chỉ có năm sinh</label>
+              </nz-checkbox-wrapper>
+              <!-- <nz-radio-group formControlName="typeBirthday">
                 <label nz-radio nzValue="1">Chỉ có tháng/năm sinh</label>
                 <label nz-radio nzValue="2">Chỉ có năm sinh</label>
-              </nz-radio-group>
+              </nz-radio-group> -->
             </div><!-- col -->
           </div><!-- END ROW -->
 
@@ -482,10 +487,11 @@
               <nz-form-item>
                 <nz-form-label class="text-left" [nzSpan]="10">PC lương</nz-form-label>
                 <nz-form-control [nzSpan]="14">
-                  <input nz-input
+                  <nz-input-number
                     placeholder="PC lương"
                     formControlName="allowanceSalary"
-                  />
+                    [nzFormatter]="formatterCurrency"
+                  ></nz-input-number>
                 </nz-form-control>
               </nz-form-item>
             </div><!-- col -->
@@ -504,10 +510,11 @@
               <nz-form-item>
                 <nz-form-label class="text-left" [nzSpan]="10">PC CLBL</nz-form-label>
                 <nz-form-control [nzSpan]="14">
-                  <input nz-input
+                  <nz-input-number
                     placeholder="PC CLBL"
                     formControlName="allowanceOther"
-                  />
+                    [nzFormatter]="formatterCurrency"
+                  ></nz-input-number>
                 </nz-form-control>
               </nz-form-item>
             </div><!-- col -->

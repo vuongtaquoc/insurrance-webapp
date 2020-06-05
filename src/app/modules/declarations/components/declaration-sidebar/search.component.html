@@ -1,0 +1,13 @@
+<div class="declaration-sidebar-search">
+  <nz-radio-group [(ngModel)]="searchType" class="declaration-sidebar-search__item">
+    <label nz-radio nzValue="1">Số sổ BHXH</label>
+    <label nz-radio nzValue="2">Số CMND</label>
+    <label nz-radio nzValue="3">Mã nhân viên</label>
+  </nz-radio-group>
+  <textarea nz-input [(ngModel)]="text" placeholder="Nhập đầy đủ hoặc copy số sổ BHXH" [nzAutosize]="{ minRows: 3, maxRows: 5 }"></textarea>
+</div>
+
+<div class="declaration-sidebar-search__footer" *nzModalFooter>
+  <button class="declaration-sidebar-search__button" nz-button nzType="primary" (click)="search()">Tìm</button>
+  <button class="declaration-sidebar-search__button" nz-button nzType="default" (click)="dismiss()">Đóng</button>
+</div>

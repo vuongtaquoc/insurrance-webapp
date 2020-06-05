@@ -5,6 +5,7 @@ import { NzModalService } from 'ng-zorro-antd/modal';
 import { EmployeeService } from '@app/core/services';
 
 import { EmployeeFormComponent } from '@app/shared/components';
+import { DeclarationSidebarSearchComponent } from './search.component';
 
 @Component({
   selector: 'app-declaration-sidebar',
@@ -104,5 +105,23 @@ export class DeclarationSidebarComponent implements OnInit, OnDestroy {
 
   toggleSidebar() {
     this.onToggleSidebar.emit(this.isHiddenSidebar);
+  }
+
+  search() {
+    const modal = this.modalService.create({
+      nzWidth: 600,
+      nzWrapClassName: 'declaration-search-modal',
+      nzTitle: 'Tìm kiếm mở rộng',
+      nzOnOk: (data) => {
+        console.log(data)
+      },
+      nzOkText: 'Tìm',
+      nzCancelText: 'Đóng',
+      nzContent: DeclarationSidebarSearchComponent
+    });
+
+    modal.afterClose.subscribe(result => {
+
+    });
   }
 }

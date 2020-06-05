@@ -73,4 +73,8 @@ export class UsersTreeComponent implements OnInit, OnDestroy {
 
     this.onSelectEmployees.emit(selected);
   }
+
+  doubleClick(value) {
+    console.log(value)
+  }
 }
