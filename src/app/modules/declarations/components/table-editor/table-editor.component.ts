@@ -24,6 +24,7 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
   @Output() onSubmit: EventEmitter<any> = new EventEmitter();
   @Output() onDelete: EventEmitter<any> = new EventEmitter();
   @Output() onAddRow: EventEmitter<any> = new EventEmitter();
+  @Output() onFocus: EventEmitter<any> = new EventEmitter();
 
   spreadsheet: any;
   isSpinning = true;
@@ -62,6 +63,9 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
       tableHeight: '100%',
       columnSorting: false,
       defaultColAlign: 'left',
+      onfocus: () => {
+        this.onFocus.emit();
+      },
       onchange: (instance, cell, c, r, value) => {
         this.onChange.emit({
           instance, cell, c, r, value,
@@ -118,7 +122,7 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
     this.updateEditorToColumn('birthday', 'month', true);
     this.updateEditorToColumn('fromDate', 'month');
     this.updateEditorToColumn('toDate', 'month');
-    
+
 
     this.spreadsheet.hideIndex();
 

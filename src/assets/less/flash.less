@@ -1,0 +1,36 @@
+.flash-button {
+  animation-name: flashColor;
+	animation-duration: 1s;
+	animation-timing-function: linear;
+	animation-iteration-count: 5;
+
+	//Firefox 1+
+	-webkit-animation-name: flashColor;
+	-webkit-animation-duration: 1s;
+	-webkit-animation-timing-function: linear;
+	-webkit-animation-iteration-count: 5;
+
+	//Safari 3-4
+	-moz-animation-name: flashColor;
+	-moz-animation-duration: 1s;
+	-moz-animation-timing-function: linear;
+	-moz-animation-iteration-count: 5;
+}
+
+
+@keyframes flashColor {
+  0% { background-color: #fff; }
+  100% { background-color: rgba(248, 239, 162, 1); }
+}
+
+//Firefox 1+
+@-webkit-keyframes flashColor {
+  0% { background-color: #fff; }
+  100% { background-color: rgba(248, 239, 162, 1); }
+}
+
+//Safari 3-4
+@-moz-keyframes flashColor {
+  0% { background-color: #fff; }
+  100% { background-color: rgba(248, 239, 162, 1); }
+}

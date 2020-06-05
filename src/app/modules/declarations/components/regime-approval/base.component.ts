@@ -43,6 +43,7 @@ export class RegimeApprovalBaseComponent {
   employeeSubject: Subject<any> = new Subject<any>();
   tableSubject: Subject<any> = new Subject<any>();
   isHiddenSidebar = false;
+  isBlinking = false;
 
   constructor(
     protected declarationService: DeclarationService,
@@ -251,6 +252,14 @@ export class RegimeApprovalBaseComponent {
     this.tableSubject.next({
       type: 'validate'
     });
+  }
+
+  handleFocus() {
+    if (!this.employeeSelected.length) return;
+
+    this.isBlinking = true;
+
+    setTimeout(() => this.isBlinking = false, 5000);
   }
 
   collapseChange(isActive, part) {

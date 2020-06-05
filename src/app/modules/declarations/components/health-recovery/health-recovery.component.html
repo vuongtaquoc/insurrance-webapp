@@ -9,10 +9,10 @@
   <div class="page-regime-approval__content">
     <div class="page-regime-approval__group-button">
       <div class="page-regime-approval__buttons">
-        <button nz-button class="page-regime-approval__button" nzType="default" nz-dropdown nzTrigger="click" [nzDropdownMenu]="menuPart1">
+        <button nz-button class="page-regime-approval__button" [ngClass]="{'flash-button': isBlinking}" nzType="default" nz-dropdown nzTrigger="click" [nzDropdownMenu]="menuPart1">
           <i nz-icon nzType="arrow-up"></i>Phần I
         </button>
-        <button nz-button class="page-regime-approval__button" nzType="default" nz-dropdown nzTrigger="click" [nzDropdownMenu]="menuPart2">
+        <button nz-button class="page-regime-approval__button" [ngClass]="{'flash-button': isBlinking}" nzType="default" nz-dropdown nzTrigger="click" [nzDropdownMenu]="menuPart2">
           <i nz-icon nzType="arrow-up"></i>Phần II
         </button>
         <nz-dropdown-menu #menuPart1="nzDropdownMenu">
@@ -96,6 +96,7 @@
               (onChange)="handleChangeTable($event, 'part1')"
               (onDelete)="handleDeleteTableData($event, 'part1')"
               (onAddRow)="handleAddRow($event, 'part1')"
+              (onFocus)="handleFocus($event)"
             ></app-regime-approval-editor>
           </div>
         </nz-collapse-panel>
@@ -111,6 +112,7 @@
               (onChange)="handleChangeTable($event, 'part2')"
               (onDelete)="handleDeleteTableData($event, 'part2')"
               (onAddRow)="handleAddRow($event, 'part2')"
+              (onFocus)="handleFocus($event)"
             ></app-regime-approval-editor>
           </div>
         </nz-collapse-panel>

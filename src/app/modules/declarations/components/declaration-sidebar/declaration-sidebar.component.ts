@@ -103,6 +103,36 @@ export class DeclarationSidebarComponent implements OnInit, OnDestroy {
     });
   }
 
+  deleteEmployee() {
+    if (!this.employeeSelected.length) {
+      return;
+    }
+
+    if (this.employeeSelected.length > 1) {
+      return this.modalService.error({
+        nzTitle: 'Có lỗi xảy ra',
+        nzContent: 'Bạn chỉ có thể xóa 1 nhân viên'
+      });
+    }
+
+    const selected = this.employeeSelected[0];
+
+    this.modalService.confirm({
+      nzTitle: 'Xóa hồ sơ',
+      nzContent: `Bạn có chắc chắn xóa hồ sơ: ${selected.fullName}?`,
+      nzOkText: 'Tiếp tục',
+      nzCancelText: 'Hủy',
+      nzOnOk: () => {
+        this.employeeService.delete(selected.employeeId || selected.id).subscribe(() => {
+          this.employeeSubject.next({
+            type: 'delete',
+            status: 'success'
+          });
+        });
+      }
+    });
+  }
+
   toggleSidebar() {
     this.onToggleSidebar.emit(this.isHiddenSidebar);
   }

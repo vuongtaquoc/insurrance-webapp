@@ -24,6 +24,7 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
   @Output() onSubmit: EventEmitter<any> = new EventEmitter();
   @Output() onDelete: EventEmitter<any> = new EventEmitter();
   @Output() onAddRow: EventEmitter<any> = new EventEmitter();
+  @Output() onFocus: EventEmitter<any> = new EventEmitter();
 
   spreadsheet: any;
   isInitialized = false;
@@ -79,6 +80,9 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
       columnSorting: false,
       freezeColumns: 1,
       defaultColAlign: 'left',
+      onfocus: () => {
+        this.onFocus.emit();
+      },
       onchange: (instance, cell, c, r, value) => {
         this.onChange.emit({
           instance, cell, c, r, value,
