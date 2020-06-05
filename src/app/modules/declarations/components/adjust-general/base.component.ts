@@ -23,7 +23,11 @@ export class GeneralBaseComponent {
     reductionlabor: {
       nested: [],
       columns: []
-    } 
+    },
+    adjustment: {
+      nested: [],
+      columns: []
+    }  
   };  
   declarations: any = {
     increaselabor: {
@@ -31,6 +35,10 @@ export class GeneralBaseComponent {
       table: []
     },
     reductionlabor: {
+      origin: [],
+      table: []
+    },
+    adjustment: {
       origin: [],
       table: []
     }
@@ -126,8 +134,6 @@ export class GeneralBaseComponent {
 
   handleChangeTable({ instance, cell, c, r, records }, tableName) {
     // update declarations
-    console.log(this.declarations,tableName);
-    console.log(this.declarations[tableName]);
     this.declarations[tableName].table.forEach((declaration, index) => {
       const record = records[index];
 
@@ -137,7 +143,6 @@ export class GeneralBaseComponent {
     });
 
     const rowChange: any = this.declarations[tableName].table[r];
-    console.log(rowChange);
     rowChange.data.options.isInitialize = false;
     rowChange.isInitialize = false;
 
@@ -148,6 +153,7 @@ export class GeneralBaseComponent {
       tableName,
       data: this.declarations[tableName].origin
     });
+    
     this.tableSubject.next({
       type: 'validate'
     });

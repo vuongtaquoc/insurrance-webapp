@@ -9,23 +9,21 @@
   <div class="page-declarations__content">
     <div class="page-declarations__group-button">
       <div class="page-declarations__buttons">
-        <button class="page-declarations__button" nz-button nzType="default" (click)="handleAddEmployee('II_1','reductionlabor')">
-          <i nz-icon nzType="arrow-down"></i>Giảm lao động
+        <button class="page-declarations__button" nz-button nzType="default" (click)="handleAddEmployee('I_1','adjustment')">
+          <i nz-icon nzType="arrow-up"></i>Tăng mức đóng
         </button>
-        <button class="page-declarations__button" nz-button nzType="default" (click)="handleAddEmployee('II_2','reductionlabor')">
-          <i nz-icon nzType="arrow-down"></i>Giảm BHYT
+        <button class="page-declarations__button" nz-button nzType="default" (click)="handleAddEmployee('II_1','adjustment')">
+          <i nz-icon nzType="arrow-down"></i>Giảm mức đóng
         </button>
-        <button class="page-declarations__button" nz-button nzType="default" (click)="handleAddEmployee('II_3','reductionlabor')">
-          <i nz-icon nzType="arrow-down"></i>Giảm BHTN
+        <button class="page-declarations__button" nz-button nzType="default" (click)="handleAddEmployee('I_1','adjustment')">
+          <i nz-icon nzType="arrow-up"></i>Thay đổi chức danh
         </button>
-        <button class="page-declarations__button" nz-button nzType="default" (click)="handleAddEmployee('III','reductionlabor')">
-          <i nz-icon nzType="arrow-down"></i>Giảm BHTNLĐ, BNN
+        <button class="page-declarations__button" nz-button nzType="default" (click)="handleAddEmployee('II_2','adjustment')">
+          <i nz-icon nzType="arrow-up"></i>Điều chỉnh tham gia BHTNLD,BNN
         </button>
-        <button class="page-declarations__button" nz-button nzType="default" (click)="handleAddEmployee('I_1','reductionlabor')">
-          <i nz-icon nzType="arrow-up"></i>Tăng BHYT
-        </button>
+        
       </div>
-      <h1><strong>600a</strong> | Báo giảm lao động</h1>
+      <h1><strong>600b</strong>| Điều chỉnh chức danh mức đóng</h1>
     </div><!-- page-declarations__group-button -->
 
     <div class="page-declarations__title">
@@ -37,12 +35,12 @@
 
     <div class="page-declarations__editor">
       <app-increase-editor
-      tableName="reductionlabor"
-      [data]="declarations.reductionlabor.table"
-      [nestedHeaders]="headers.reductionlabor.nested"
-      [columns]="headers.reductionlabor.columns"
+      tableName="adjustment"
+      [data]="declarations.adjustment.table"
+      [nestedHeaders]="headers.adjustment.nested"
+      [columns]="headers.adjustment.columns"
       [events]="tableSubject.asObservable()"
-      (onChange)="handleChangeTable($event,'reductionlabor')"
+      (onChange)="handleChangeTable($event,'adjustment')"
       (onDelete)="handleDeleteTableData($event)"
       (onAddRow)="handleAddRow($event)"
     ></app-increase-editor>

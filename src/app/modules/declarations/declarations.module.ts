@@ -74,6 +74,7 @@ import {
   IncreaseFormComponent,
   IncreaseEditorComponent,
   ReductionComponent,
+  AdjustmentComponent,
 } from './components';
 
 import { RegimeAutoSizeDirective } from './directives';
@@ -141,6 +142,7 @@ import { RegimeAutoSizeDirective } from './directives';
     IncreaseFormComponent,
     IncreaseEditorComponent,
     ReductionComponent,
+    AdjustmentComponent,
   ],
   providers: [
     AuthenticationService,

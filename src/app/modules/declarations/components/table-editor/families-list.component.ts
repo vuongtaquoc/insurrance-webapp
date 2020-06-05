@@ -148,7 +148,6 @@ export class FamiliesListTableComponent implements OnInit, OnDestroy, OnChanges,
 
   private updateTable() {
     const data = [];
-    console.log(this.data,'xxxx data');
     this.data.forEach((d, index) => {
       d.data = d.data || [];
       d.data.origin  = d.origin;

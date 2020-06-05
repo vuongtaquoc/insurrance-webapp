@@ -66,6 +66,28 @@
             (onHiddenSidebar)="handleHiddenSidebar($event)"
           ></app-reduction>
         </nz-tab>
+
+        <nz-tab nzTitle="D02-TS Điều chỉnh">
+          <app-adjustment
+            [declarationId]="declarationId"
+            [data]="declarations.origin['600b']"
+            (onChange)="handleChangeTable($event, 'adjustment')"
+            (onHiddenSidebar)="handleHiddenSidebar($event)"
+          ></app-adjustment>
+        </nz-tab>
+        <nz-tab nzTitle="PL TVHGD-NLD"> <!-- [nzDisabled]="!families || !families.length"> -->
+          <div class="page-document-list__container page-document-list__container--note">
+            <h1>600 | Báo tăng lao động</h1>
+            <h2>PHỤ LỤC THÀNH VIÊN GIA ĐÌNH</h2>
+            <div class="document-form__process-table">
+              <app-document-table
+              [data]="documentList"
+              (onChange)="handleChangeProcessTable($event)"
+              (onDelete)="handleDeleteProcessData($event)"
+            ></app-document-table>
+            </div>
+          </div>
+        </nz-tab>
       </nz-tabset>
       <ng-template #extraTemplate>
         <div class="page-declarations__footer">
