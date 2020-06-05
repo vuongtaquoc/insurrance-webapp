@@ -55,8 +55,9 @@ export class ReductionComponent extends GeneralBaseComponent implements OnInit, 
   } 
 
   ngOnInit() {
+    const currentCredentials = this.authenticationService.currentCredentials;
     // initialize table columns
-    this.initializeTableColumns(TABLE_REDUCTION_NESTED_HEADERS, TABLE_REDUCTION_HEADER_COLUMNS, 'reductionlabor');
+    this.initializeTableColumns(TABLE_REDUCTION_NESTED_HEADERS, TABLE_REDUCTION_HEADER_COLUMNS, 'reductionlabor',currentCredentials);
 
     forkJoin([
       this.cityService.getCities(),

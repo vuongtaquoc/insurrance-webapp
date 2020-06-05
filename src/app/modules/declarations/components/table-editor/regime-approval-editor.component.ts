@@ -163,7 +163,6 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
     const formulaIndexes = [];
     let formulaIgnoreIndexes = [];
     const data = [];
-    console.log(this.data, 'DDDĐ');
     this.data.forEach((d, index) => {
       if (d.readonly) {
         readonlyIndexes.push(index);

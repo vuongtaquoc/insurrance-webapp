@@ -94,7 +94,6 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
           instance.jexcel.setValue(nextColumn, '');
         }
 
-        this.validationCellByOtherCell(value, column, r, instance);
       },
       ondeleterow: (el, rowNumber, numOfRows) => {
         this.onDelete.emit({
@@ -135,7 +134,11 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
       }
     });
 
-    this.updateEditorToColumn('expertiseDate');
+    this.updateEditorToColumn('dateSign');
+    this.updateEditorToColumn('birthday', 'month', true);
+    this.updateEditorToColumn('fromDate', 'month');
+    this.updateEditorToColumn('toDate', 'month');
+    this.updateEditorToColumn('motherDayDead', 'date');
 
     this.spreadsheet.hideIndex();
 
@@ -243,31 +246,5 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
         });
       }, 10);
     }
-  }
-
-  private validationCellByOtherCell(cellValue, column, y, instance) {
-    if (column.key === 'planCode') {
-      const rules = this.validationRules[cellValue];
-      const x = this.columns.findIndex(c => c.key === 'childrenNumber');
-      const cellSelected = column.source.find(s => s.id === cellValue);
-      const validationColumn = this.columns[x];
-
-      if (!rules) {
-        validationColumn.validations = undefined;
-        validationColumn.fieldName = undefined;
-        instance.jexcel.clearValidation(y, x);
-        return;
-      }
-
-      const fieldName = {
-        name: 'Số con',
-        otherField: `phương án ${ cellSelected.name }`
-      };
-
-      validationColumn.validations = rules;
-      validationColumn.fieldName = fieldName;
-
-      instance.jexcel.validationCell(y, x, fieldName, rules);
-    }
-  }
+  }   
 }

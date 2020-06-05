@@ -91,6 +91,7 @@ export const TABLE_HEADER_COLUMNS = [{
   }
 }, {
   type: 'text',
+  key: 'isurranceCodeStatus',
   width: 123,
   title: '(5.2)',
   wordWrap: true,

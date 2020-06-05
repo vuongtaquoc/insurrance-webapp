@@ -118,7 +118,7 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
     this.updateEditorToColumn('birthday', 'month', true);
     this.updateEditorToColumn('fromDate', 'month');
     this.updateEditorToColumn('toDate', 'month');
-    this.updateEditorToColumn('motherDayDead', 'date');
+    
 
     this.spreadsheet.hideIndex();
 

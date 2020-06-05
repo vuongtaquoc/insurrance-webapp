@@ -41,8 +41,8 @@
       [columns]="headers.adjustment.columns"
       [events]="tableSubject.asObservable()"
       (onChange)="handleChangeTable($event,'adjustment')"
-      (onDelete)="handleDeleteTableData($event)"
-      (onAddRow)="handleAddRow($event)"
+      (onDelete)="handleDeleteTableData($event,'adjustment')"
+      (onAddRow)="handleAddRow($event,'adjustment')"
     ></app-increase-editor>
     </div><!-- page-declarations__editor -->
 

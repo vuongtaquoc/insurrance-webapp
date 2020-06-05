@@ -56,18 +56,17 @@ export class IncreaseComponent extends GeneralBaseComponent implements OnInit, O
 
   ngOnInit() {
     // initialize table columns
-    this.initializeTableColumns(TABLE_NESTED_HEADERS, TABLE_HEADER_COLUMNS, 'increaselabor');
+    const currentCredentials = this.authenticationService.currentCredentials;
+    this.initializeTableColumns(TABLE_NESTED_HEADERS, TABLE_HEADER_COLUMNS, 'increaselabor', currentCredentials);
 
     forkJoin([
-      this.cityService.getCities(),
-      this.nationalityService.getNationalities(),
       this.peopleService.getPeoples(),
+      this.nationalityService.getNationalities(),
+      this.cityService.getCities(),
       this.salaryAreaService.getSalaryAreas(),
-      this.planService.getPlans('601'),
       this.departmentService.getDepartments(),
-      this.categoryService.getCategories('relationshipDocumentType'),
-      this.relationshipService.getRelationships()
-    ]).subscribe(([ cities, nationalities, peoples, salaryAreas, plans, departments, relationshipDocumentTypies, relationShips ]) => {
+      this.planService.getPlans('600'),
+    ]).subscribe(([ peoples,nationalities, cities, salaryAreas,departments, plans ]) => {
       this.updateSourceToColumn(TABLE_HEADER_COLUMNS, 'peopleCode', peoples);
       this.updateSourceToColumn(TABLE_HEADER_COLUMNS, 'nationalityCode', nationalities);
       this.updateSourceToColumn(TABLE_HEADER_COLUMNS, 'registerCityCode', cities);
@@ -95,7 +94,35 @@ export class IncreaseComponent extends GeneralBaseComponent implements OnInit, O
   }
 
   checkInsurranceCode() {
+    const declarations = [...this.declarations.increaselabor.table];
+    const INSURRANCE_CODE_INDEX = 4;
+    const INSURRANCE_STATUS_INDEX = 5;
+    // const leafs = declarations.filter(d => !!d.isLeaf);
+    // const insurranceCodes = leafs.map(l => l.data[INSURRANCE_CODE_INDEX]);
+    const errors = {};
 
+    declarations.forEach((declaration, rowIndex) => {
+      const code = declaration.data[INSURRANCE_CODE_INDEX];
+
+      if (code && declaration.isLeaf) {
+        declaration.data[INSURRANCE_STATUS_INDEX] = `Không tìm thấy Mã số ${ declaration.data[INSURRANCE_CODE_INDEX] }`;
+
+        errors[rowIndex] = {
+          col: INSURRANCE_CODE_INDEX,
+          value: code,
+          valid: false
+        };
+      }
+    });
+
+    this.declarations.increaselabor.table = declarations;
+
+    setTimeout(() => {
+      this.validateSubject.next({
+        field: 'isurranceCode',
+        errors
+      });
+    }, 20);
   }
 
   private getRegisterDistrictsByCityCode(instance, cell, c, r, source) {
@@ -164,9 +191,9 @@ export class IncreaseComponent extends GeneralBaseComponent implements OnInit, O
   }
 
   private getPlanByParent(instance, cell, c, r, source) {
-
     const row = instance.jexcel.getRowFromCoords(r);
-    return source.filter(s => s.type === row.options.planType);
+    const planTypes = (row.options.planType || '').split(',');
+    return source.filter(s => planTypes.indexOf(s.type) > -1);
   }
 
   

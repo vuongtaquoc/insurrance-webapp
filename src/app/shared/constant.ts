@@ -48,6 +48,10 @@ export const DECLARATIONS =
   {
     key: '630b',
     value:'Xét duyệt chế độ ốm đau'
+  },
+  {
+    key: '601',
+    value:'Truy thu (Trường hợp vi phạm quy định của pháp luật vè đóng BHXH,BHYT,BHTN, BHTNLD,BNN)'
   }
 ];
 

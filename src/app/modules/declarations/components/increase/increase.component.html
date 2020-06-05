@@ -47,8 +47,8 @@
       [columns]="headers.increaselabor.columns"
       [events]="tableSubject.asObservable()"
       (onChange)="handleChangeTable($event,'increaselabor')"
-      (onDelete)="handleDeleteTableData($event)"
-      (onAddRow)="handleAddRow($event)"
+      (onDelete)="handleDeleteTableData($event,'increaselabor')"
+      (onAddRow)="handleAddRow($event,'increaselabor')"
     ></app-increase-editor>
     </div><!-- page-declarations__editor -->
 

@@ -55,8 +55,9 @@ export class AdjustmentComponent extends GeneralBaseComponent implements OnInit,
   } 
 
   ngOnInit() {
+    const currentCredentials = this.authenticationService.currentCredentials;
     // initialize table columns
-    this.initializeTableColumns(TABLE_ADJUST_NESTED_HEADERS, TABLE_ADJUST_HEADER_COLUMNS, 'adjustment');
+    this.initializeTableColumns(TABLE_ADJUST_NESTED_HEADERS, TABLE_ADJUST_HEADER_COLUMNS, 'adjustment',currentCredentials);
 
     forkJoin([
       this.cityService.getCities(),

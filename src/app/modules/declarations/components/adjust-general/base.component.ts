@@ -46,16 +46,20 @@ export class GeneralBaseComponent {
   employeeSelected: any[] = [];
   employeeSubject: Subject<any> = new Subject<any>();
   tableSubject: Subject<any> = new Subject<any>();
+  validateSubject: Subject<any> = new Subject<any>();
   isHiddenSidebar = false;
+  currentCredentials: any = {};
 
   constructor(
     protected declarationService: DeclarationService,
-    protected modalService: NzModalService
+    protected modalService: NzModalService,
+    
   ) {}
 
-  initializeTableColumns(nested, columns, tableName) {
+  initializeTableColumns(nested, columns, tableName, currentCredentials) {
     this.headers[tableName].nested = nested;
     this.headers[tableName].columns = columns;
+    this.currentCredentials = currentCredentials;
   }
 
   handleAddEmployee(type, tableName) {
@@ -77,7 +81,7 @@ export class GeneralBaseComponent {
 
         // replace
         employee.gender = !employee.gender;
-        //employee.workAddress = this.currentCredentials.companyInfo.address;
+        employee.workAddress = this.currentCredentials.companyInfo.address;
         //
         if (accepted) {
           if (declarations[childLastIndex].isInitialize) {
@@ -122,7 +126,9 @@ export class GeneralBaseComponent {
       tableName, 
       type: 'validate'
     });
+
     this.tableSubject.next({
+      tableName,
       type: 'readonly',
       data: this.declarations.table
     });
@@ -157,22 +163,97 @@ export class GeneralBaseComponent {
     this.tableSubject.next({
       type: 'validate'
     });
+  }
+
+  handleAddRow({ rowNumber, options, origin, insertBefore }, tableName) {
+    const declarations = [ ...this.declarations[tableName].table ];
+    let row: any = {};
+
+    const beforeRow: any = declarations[insertBefore ? rowNumber - 1 : rowNumber];
+    const afterRow: any = declarations[insertBefore ? rowNumber : rowNumber + 1];
+
+    const data: any = [];
+
+    row.data = data;
+    row.isInitialize = true;
+    row.isLeaf = true;
+    row.origin = origin;
+    row.options = options;
+
+    if (beforeRow.isLeaf && !afterRow.isLeaf) {
+      row.parent = beforeRow.parent;
+      row.parentKey = beforeRow.parentKey;
+      row.planType = beforeRow.planType;
+    } else if (!beforeRow.isLeaf && afterRow.isLeaf) {
+      row.parent = afterRow.parent;
+      row.parentKey = afterRow.parentKey;
+      row.planType = afterRow.planType;
+    }
+
+    // if (beforeRow.isInitialize) {
+    //   beforeRow.isInitialize = false;
+    // }
+
+    // if (afterRow.isInitialize) {
+    //   afterRow.isInitialize = false;
+    // }
+
+    declarations.splice(insertBefore ? rowNumber : rowNumber + 1, 0, row);
+
+    this.updateOrders(declarations);
+
+    this.declarations[tableName].table = this.declarationService.updateFormula(declarations, this.headers[tableName].columns);
+
+    const records = this.toTableRecords(declarations);
+    this.declarations[tableName].origin = Object.values(this.updateOrigin(records, tableName));
+   
+    this.onChange.emit({
+      tableName,
+      data: this.declarations[tableName].origin
+    });
 
     this.tableSubject.next({
       type: 'validate'
     });
   }
 
-  handleAddRow({ rowNumber, options, origin, insertBefore }) {
-     
-  }
+  handleDeleteTableData({ rowNumber, numOfRows, records }, tableName) {
+    const declarations = [ ...this.declarations[tableName].table ];
 
-  handleDeleteTableData({ rowNumber, numOfRows, records }) {
+    const beforeRow = records[rowNumber - 1];
+    const afterRow = records[rowNumber];
+
+    if (!((beforeRow.options && beforeRow.options.isLeaf) || (afterRow.options && afterRow.options.isLeaf))) {
+      const row: any = declarations[rowNumber];
+      const origin = { ...row.data.origin };
+      const options = { ...row.data.options };
+
+      row.data = [];
+      row.origin = origin;
+      row.options = options;
+      row.isInitialize = true;
+    } else {
+      declarations.splice(rowNumber, numOfRows);
+    }
+
+    // declarations.splice(rowNumber, numOfRows);
+
+    this.updateOrders(declarations);
+
+    this.declarations[tableName].table = this.declarationService.updateFormula(declarations, this.headers[tableName].columns);
+
+    // update origin data
+    this.declarations[tableName].origin = Object.values(this.updateOrigin(records, tableName));
+
+    this.onChange.emit({
+      tableName,
+      data: this.declarations[tableName].origin
+    });
+    
     this.tableSubject.next({
       type: 'validate'
     });
   }
-
 
   updateOrders(declarations) {
     const order: { index: 0, key: string } = { index: 0, key: '' };
@@ -238,12 +319,21 @@ export class GeneralBaseComponent {
     }
   }
 
-  private updateOrigin(records, part) {
+  private updateOrigin(records, tableName) {
     const declarations = {};
-
+    
     records.forEach(d => {
+      if (!d.options.hasLeaf && !d.options.isLeaf) {
+        declarations[d.options.key] = { ...d.origin};
+      } else if (d.options.hasLeaf) {
+        declarations[d.options.key] = {
+          ...d.origin,
+          declarations: []
+        };
+      } else if (d.options.isLeaf) {
+        declarations[d.options.parentKey].declarations.push(this.arrayToProps(d, this.headers[tableName].columns));
+      }
     });
-
     return declarations
   }
 
@@ -270,9 +360,14 @@ export class GeneralBaseComponent {
     return records;
   }
 
-  protected updateOriginByPart() {
+  protected updateOriginByTableName(tableName) {
+    const records = this.toTableRecords([ ...this.declarations[tableName].table ]);
+
+    this.declarations[tableName].origin = Object.values(this.updateOrigin(records, tableName));
+
     this.onChange.emit({
-      data: this.declarations.origin
+      tableName,
+      data: this.declarations[tableName].origin
     });
     this.tableSubject.next({
       type: 'validate'
