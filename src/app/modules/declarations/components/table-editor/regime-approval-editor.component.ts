@@ -99,6 +99,7 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
         }
 
         this.validationCellByOtherCell(value, column, r, instance);
+        this.updateCellValidation();
       },
       ondeleterow: (el, rowNumber, numOfRows) => {
         this.onDelete.emit({
@@ -215,6 +216,125 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
         }
       });
     });
+
+    this.updateCellValidation();
+  }
+
+  private updateCellValidation() {
+    if (['maternityPart1', 'maternityPart2'].indexOf(this.tableName) === -1) {
+      return;
+    }
+
+    const parentKeys = ['II', 'III_1', 'III_2', 'III_3', 'IV', 'V_1', 'V_2', 'VI_1', 'VI_2', 'VII', 'VIII', 'IX'];
+
+    const childrenWeekOld = {
+      required: true,
+      number: true,
+      min: 0,
+    };
+    const validationColumns: any = {
+      'II': {
+        childrenWeekOld
+      },
+      'III_1': {
+        childrenWeekOld,
+        childrenBirthday: {
+          required: true
+        }
+      },
+      'III_2': {
+        childrenWeekOld,
+        childrenDayDead: {
+          required: true
+        }
+      },
+      'III_3': {
+        childrenWeekOld,
+        motherDayDead: {
+          required: true
+        }
+      },
+      'IV': {
+        childrenWeekOld
+      },
+      'V_1': {
+        childrenWeekOld,
+        childrenBirthday: {
+          required: true
+        }
+      },
+      'V_2': {
+        childrenWeekOld,
+        childrenDayDead: {
+          required: true
+        }
+      },
+      'VI_1': {
+        childrenWeekOld,
+        childrenBirthday: {
+          required: true
+        }
+      },
+      'VI_2': {
+        childrenWeekOld,
+        childrenDayDead: {
+          required: true
+        }
+      },
+      'VII': {
+        childrenWeekOld
+      },
+      'VIII': {
+        childrenWeekOld
+      },
+      'IX': {
+        childrenWeekOld
+      }
+    };
+    const readonlyColumns = {
+      'II': ['childrenDayDead', 'surrogacy', 'motherDayDead'],
+      'III_1': ['childrenDayDead', 'surrogacy', 'motherDayDead'],
+      'III_2': ['surrogacy', 'motherDayDead'],
+      'III_3': ['childrenDayDead', 'surrogacy'],
+      'IV': ['childrenDayDead', 'surrogacy', 'motherDayDead'],
+      'V_1': ['childrenDayDead', 'surrogacy', 'motherDayDead'],
+      'V_2': ['surrogacy', 'motherDayDead'],
+      'VI_1': ['childrenDayDead', 'surrogacy', 'motherDayDead'],
+      'VI_2': ['surrogacy', 'motherDayDead'],
+      'VII': ['childrenDayDead', 'motherDayDead'],
+      'VIII': ['childrenDayDead', 'motherDayDead'],
+      'IX': ['childrenDayDead', 'surrogacy', 'motherDayDead']
+    };
+
+    setTimeout(() => {
+      parentKeys.forEach(parentKey => {
+        const columnIndexes = [];
+
+        Object.keys(validationColumns[parentKey] || {}).forEach(column => {
+          const x = this.columns.findIndex(c => c.key === column);
+
+          if (x > -1) {
+            columnIndexes.push(x);
+          }
+        });
+
+        this.data.forEach((d, y) => {
+          if (d.parentKey === parentKey) {
+            columnIndexes.forEach(x => {
+              const column = this.columns[x];
+              this.spreadsheet.validationCell(y, x, column.fieldName, validationColumns[parentKey][column.key]);
+            });
+
+            // set readonly column
+            readonlyColumns[parentKey].forEach(column => {
+              const x = this.columns.findIndex(c => c.key === column);
+
+              this.spreadsheet.setReadonly(y, x);
+            });
+          }
+        });
+      });
+    }, 50);
   }
 
   private updateCellReadonly() {
@@ -253,7 +373,7 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
     column.editor = customPicker(this.spreadsheet, type, isCustom);
   }
 
-  private handleEvent({ type }) {
+  private handleEvent({ type, parentKey }) {
     if (type === 'validate') {
       setTimeout(() => {
         const data = Object.values(this.spreadsheet.getJson());

@@ -17,6 +17,7 @@ export class DeclarationSidebarComponent implements OnInit, OnDestroy {
   @Input() events: Observable<any>;
   @Output() onSelectEmployees: EventEmitter<any> = new EventEmitter();
   @Output() onToggleSidebar: EventEmitter<any> = new EventEmitter();
+  @Output() onUserUpdated: EventEmitter<any> = new EventEmitter();
 
   isSpinning: boolean;
   employeeSelected: any[] = [];
@@ -98,6 +99,13 @@ export class DeclarationSidebarComponent implements OnInit, OnDestroy {
         this.employeeSubject.next({
           type: 'edit',
           status: 'success'
+        });
+
+        this.modalService.confirm({
+          nzTitle: 'Bạn muốn cập nhật thông tin NLĐ trong hồ sơ?',
+          nzOkText: 'Cập nhật',
+          nzCancelText: 'Hủy',
+          nzOnOk: () => this.onUserUpdated.emit(result)
         });
       });
     });

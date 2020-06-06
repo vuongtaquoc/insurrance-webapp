@@ -58,6 +58,7 @@
               [events]="employeeSubject.asObservable()"
               (onSelectEmployees)="handleSelectEmployees($event)"
               (onToggleSidebar)="handleToggleSidebar()"
+              (onUserUpdated)="handleUserUpdated($event)"
             ></app-declaration-sidebar>
 
             <div class="page-declarations__content">

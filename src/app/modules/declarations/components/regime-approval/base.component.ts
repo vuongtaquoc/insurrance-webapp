@@ -133,6 +133,47 @@ export class RegimeApprovalBaseComponent {
     });
   }
 
+  handleUserUpdateTables(user) {
+    this.handleUserUpdated(user, 'part1');
+    this.handleUserUpdated(user, 'part2');
+  }
+
+  handleUserUpdated(user, part) {
+    const declarations = [ ...this.declarations[part].table ];
+    const declarationUsers = declarations.filter(d => {
+      return d.isLeaf && d.origin && (d.origin.employeeId || d.origin.id) === user.id;
+    });
+    declarationUsers.forEach(declaration => {
+      declaration.origin = {
+        ...declaration.origin,
+        ...user
+      };
+
+      this.headers[part].columns.forEach((column, index) => {
+        if (user[column.key] !== null && typeof user[column.key] !== 'undefined') {
+          declaration.data[index] = user[column.key];
+        }
+      });
+    });
+
+    // update orders
+    this.updateOrders(declarations);
+
+    this.declarations[part].table = this.declarationService.updateFormula(declarations, this.headers[part].columns);
+
+    this.employeeSubject.next({
+      type: 'clean'
+    });
+    this.tableSubject.next({
+      type: 'validate'
+    });
+    this.tableSubject.next({
+      type: 'readonly',
+      part,
+      data: this.declarations[part].table
+    });
+  }
+
   handleSelectEmployees(employees) {
     this.employeeSelected = employees;
   }

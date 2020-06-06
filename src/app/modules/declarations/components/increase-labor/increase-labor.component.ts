@@ -288,6 +288,37 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     this.documentsSubject.next('validate');
   }
 
+  handleUserUpdated(user) {
+    const declarations = [ ...this.declarations ];
+    const declarationUsers = declarations.filter(d => {
+      return d.isLeaf && d.origin && (d.origin.employeeId || d.origin.id) === user.id;
+    });
+    declarationUsers.forEach(declaration => {
+      declaration.origin = {
+        ...declaration.origin,
+        ...user
+      };
+
+      this.tableHeaderColumns.forEach((column, index) => {
+        if (user[column.key] !== null && typeof user[column.key] !== 'undefined') {
+          declaration.data[index] = user[column.key];
+        }
+      });
+    });
+
+    // update orders
+    this.updateOrders(declarations);
+
+    this.declarations = this.declarationService.updateFormula(declarations, this.tableHeaderColumns);
+
+    this.employeeSubject.next({
+      type: 'clean'
+    });
+    this.eventsSubject.next('validate');
+    this.familiesSubject.next('validate');
+    this.documentsSubject.next('validate');
+  }
+
   handleSelectEmployees(employees) {
     this.employeeSelected = employees;
   }

@@ -4,6 +4,7 @@
     [events]="employeeSubject.asObservable()"
     (onSelectEmployees)="handleSelectEmployees($event)"
     (onToggleSidebar)="handleToggleSidebar()"
+    (onUserUpdated)="handleUserUpdateTables($event)"
   ></app-declaration-sidebar>
 
   <div class="page-regime-approval__content">

@@ -338,6 +338,10 @@ export class EmployeeFormComponent implements OnInit {
       formData.allowanceOther = formData.allowanceOther.split(',').join('');
     }
 
+    if (this.employee) {
+      formData.id = this.employee.employeeId || this.employee.id;
+    }
+
     return formData;
   }
 
