@@ -227,7 +227,6 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
     );
     console.log(this.declarationGeneral);
     return '';
-    console.log('ok');
     if (count > 0) {
       return this.modalService.error({
         nzTitle: 'Lỗi dữ liệu. Vui lòng sửa!',
@@ -246,7 +245,6 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
         }
       });
     }
-    console.log('ok 1');
     if (this.declarationId) {
       this.update(type);
     } else {

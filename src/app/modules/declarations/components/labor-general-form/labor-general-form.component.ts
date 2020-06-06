@@ -42,4 +42,5 @@ export class LaborGeneralFormComponent implements OnInit, OnChanges {
 
     this.onFormValuesChanged.emit(this.form.value);
   }
+  
 }
