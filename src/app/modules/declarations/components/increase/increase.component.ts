@@ -3,7 +3,7 @@ import { NzModalService } from 'ng-zorro-antd/modal';
 
 import { DeclarationService, CategoryService, BankService,
   CityService,DistrictService,HospitalService,NationalityService,PeopleService,WardsService,
-  SalaryAreaService,PlanService,DepartmentService,EmployeeService,AuthenticationService,DocumentListService,
+  SalaryAreaService,PlanService,DepartmentService,EmployeeService,AuthenticationService,
   RelationshipService,VillageService } from '@app/core/services';
 
 import { GeneralBaseComponent } from '@app/modules/declarations/components/adjust-general/base.component';
@@ -38,7 +38,6 @@ export class IncreaseComponent extends GeneralBaseComponent implements OnInit, O
     private salaryAreaService: SalaryAreaService,
     private planService: PlanService,
     private departmentService: DepartmentService,
-    private documentListService: DocumentListService,
     private employeeService: EmployeeService,
     private authenticationService: AuthenticationService,
     private relationshipService: RelationshipService,
@@ -122,7 +121,7 @@ export class IncreaseComponent extends GeneralBaseComponent implements OnInit, O
         field: 'isurranceCode',
         errors
       });
-    }, 20);
+    }, 100);
   }
 
   private getRegisterDistrictsByCityCode(instance, cell, c, r, source) {
@@ -196,8 +195,6 @@ export class IncreaseComponent extends GeneralBaseComponent implements OnInit, O
     return source.filter(s => planTypes.indexOf(s.type) > -1);
   }
 
-  
-
   private updateNextColumns(instance, r, value, nextColumns = []) {
     nextColumns.forEach(columnIndex => {
       const columnName = instance.jexcel.getColumnNameFromId([columnIndex, r]);
@@ -213,7 +210,8 @@ export class IncreaseComponent extends GeneralBaseComponent implements OnInit, O
     this.panel[type].active = isActive;
   }
 
-  handleFormValuesChanged(value) {
-    console.log(value);
+  handleFormValuesChanged(data) {
+    eventEmitter.emit('labor-general-form:change', data);
   }
+
 }

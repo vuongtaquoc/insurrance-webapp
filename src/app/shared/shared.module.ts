@@ -109,6 +109,7 @@ import {
     TranslateModule,
     EmployeeFormComponent,
     DocumentFormComponent,
+    DocumentTableComponent,
     InputLabelComponent,
     UsersTreeComponent,
     PaginationComponent,

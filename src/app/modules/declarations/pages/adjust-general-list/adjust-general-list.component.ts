@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { DeclarationService } from '@app/core/services';
 import { Declaration } from '@app/core/interfaces';
 
-import { PAGE_SIZE } from '@app/shared/constant';
+import { PAGE_SIZE, DECLARATIONS } from '@app/shared/constant';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { DocumentFormComponent } from '@app/shared/components';
 
@@ -22,6 +22,8 @@ export class AdjustGeneralListComponent implements OnInit {
   total: number;
   skip: number;
   selectedPage: number = 1;
+  declarationCode: string = '601';
+  declarationName: string;
 
   constructor(
     private declarationService: DeclarationService,
@@ -29,12 +31,13 @@ export class AdjustGeneralListComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.declarationName = this.getDeclaration(this.declarationCode).value;
     this.getDeclarations();
   }
 
   getDeclarations(skip = 0, take = PAGE_SIZE) {
     this.declarationService.getDeclarations({
-      documentType: '630',
+      documentType: this.declarationCode,
       skip,
       take
     }).subscribe(res => {
@@ -78,4 +81,10 @@ export class AdjustGeneralListComponent implements OnInit {
     modal.afterClose.subscribe(result => {
     });
   }
+
+  getDeclaration(declarationCode: string) {
+    const declarations = DECLARATIONS.find(d => d.key === declarationCode);
+    return declarations;
+  }
+
 }

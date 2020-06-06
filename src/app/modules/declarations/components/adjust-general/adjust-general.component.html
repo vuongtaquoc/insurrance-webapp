@@ -5,12 +5,12 @@
         <nz-tab nzTitle="Danh mục tài liệu">
           <div class="page-document-list__container">
             <form nz-form [formGroup]="documentForm">
-              <h1><strong>600</strong> | Báo tăng lao động</h1>
+              <h1><strong>{{declarationCode}}</strong> | {{declarationName}}</h1>
               <div nz-row [nzGutter]="10">
                 <div nz-col [nzSpan]="12">
                   <nz-form-item>
                     <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Người nộp</nz-form-label>
-                    <nz-form-control [nzSpan]="14">
+                    <nz-form-control [nzSpan]="14" nzErrorTip="Người nộp không được để trống">
                       <input nz-input
                         placeholder="Người nộp"
                         formControlName="submitter"
@@ -21,7 +21,7 @@
                 <div nz-col [nzSpan]="12">
                     <nz-form-item>
                       <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Số điện thoại</nz-form-label>
-                      <nz-form-control [nzSpan]="14">
+                      <nz-form-control [nzSpan]="14" nzErrorTip="Số điện thoại không được để trống">
                         <input nz-input
                           placeholder="Số điện thoại"
                           formControlName="mobile"
@@ -30,21 +30,12 @@
                     </nz-form-item>
                   </div>
                 </div>
-                <h1>Thành phần hồ sơ</h1>
+                <h1>THÀNH PHẦN HỒ SƠ</h1>
                 <div class="document-form__process-table">
                   <div class="document-form__process-table">
                     <app-document-table
                       [data]="documentList"
-                      (onChange)="handleChangeProcessTable($event)"
-                      (onDelete)="handleDeleteProcessData($event)"
                     ></app-document-table>
-                  </div>
-                </div>
-                <div nz-row [nzGutter]="10">
-                  <div nz-col [nzSpan]="12">
-                    <nz-form-item>
-                      <label nz-checkbox  formControlName="usedocumentDT01">Phát sinh kê khai Mẫu D01T-TS Bảng kê thông tin</label>
-                    </nz-form-item>
                   </div>
                 </div>
             </form>
@@ -53,6 +44,9 @@
         <nz-tab nzTitle="D02-TS Tăng">
           <app-increase
             [declarationId]="declarationId"
+            [pageName]="declarationName"
+            [pageCode]="declarationCode"
+            [declarationGeneral] = "declarationGeneral"
             [data]="declarations.origin['600']"
             (onChange)="handleChangeTable($event, 'increaselabor')"
             (onHiddenSidebar)="handleHiddenSidebar($event)"
@@ -61,21 +55,41 @@
         <nz-tab nzTitle="D02-TS Giảm">
           <app-reduction
             [declarationId]="declarationId"
+            [pageName]="declarationName"
+            [pageCode]="declarationCode"
             [data]="declarations.origin['600a']"
             (onChange)="handleChangeTable($event, 'reductionlabor')"
             (onHiddenSidebar)="handleHiddenSidebar($event)"
           ></app-reduction>
         </nz-tab>
-
         <nz-tab nzTitle="D02-TS Điều chỉnh">
           <app-adjustment
             [declarationId]="declarationId"
+            [pageName]="declarationName"
+            [pageCode]="declarationCode"
             [data]="declarations.origin['600b']"
             (onChange)="handleChangeTable($event, 'adjustment')"
             (onHiddenSidebar)="handleHiddenSidebar($event)"
           ></app-adjustment>
         </nz-tab>
-         
+        <nz-tab nzTitle="PL TVHD-NLD" [nzDisabled]="!families || !families.length">
+          <div class="page-document-list__container page-document-list__container--note">
+            <h1>{{declarationCode}} | {{declarationName}}</h1>
+            <h2>PHỤ LỤC THÀNH VIÊN GIA ĐÌNH</h2>
+            <div class="document-form__process-table">
+              <app-families-list-table
+                tableName="family"
+                [data]="families"
+                [nestedHeaders]="tableNestedHeadersFamilies"
+                [columns]="tableHeaderColumnsFamilies"
+                [events]="tableSubject.asObservable()"
+                (onChange)="handleChangeDataFamilies($event)"
+                (onDelete)="handleDeleteMember($event)"
+                (onAddRow)="handleAddMember($event)"
+              ></app-families-list-table>
+            </div>
+          </div>
+        </nz-tab><!-- tab 1-->
       </nz-tabset>
       <ng-template #extraTemplate>
         <div class="page-declarations__footer">
@@ -90,7 +104,7 @@
           </button>
         </div>
       </ng-template>
-      <app-increase-form [data]="declarations.formOrigin" class="page-regime-approval__form" [ngClass]="{'page-regime-approval__form--hidden': selectedTabIndex == 0}" (onFormValuesChanged)="handleFormValuesChanged($event)"></app-increase-form>
+      <app-increase-form [data]="declarations.formOrigin" class="page-regime-approval__form" [ngClass]="{'page-regime-approval__form--hidden': (selectedTabIndex == 0 || selectedTabIndex == 4)}" (onFormValuesChanged)="handleFormValuesChanged($event)"></app-increase-form>
     </div>
   </nz-spin>
 </div>

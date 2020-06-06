@@ -34,11 +34,10 @@ export class FamiliesListTableComponent implements OnInit, OnDestroy, OnChanges,
 
   ngOnInit() {
     this.eventsSubscription = this.events.subscribe((type) => this.handleEvent(type));
-    this.handlers.push(eventEmitter.on('increase-labor:tab:change', (index) => {
+    this.handlers.push(eventEmitter.on('adjust-general:tab:change', (index) => {
       clearTimeout(this.timer);
-
       this.isSpinning = true;
-
+      
       this.timer = setTimeout(() => {
         this.spreadsheet.updateNestedHeaderPosition();
         this.spreadsheet.updateFreezeColumn();
@@ -198,13 +197,18 @@ export class FamiliesListTableComponent implements OnInit, OnDestroy, OnChanges,
     });
   }
 
-  private handleEvent(type) {
-    if (type === 'validate') {
+  private handleEvent(eventData) {
+    if (eventData.type === 'validate') {
       setTimeout(() => {
-        eventEmitter.emit('labor-table-editor:validate', {
+        const data = Object.values(this.spreadsheet.getJson());
+        const leaf = true;
+        const initialize = true;
+        eventEmitter.emit(eventData.tableEvent, {
           name: this.tableName,
           isValid: this.spreadsheet.isTableValid(),
-          errors: this.spreadsheet.getTableErrors()
+          errors: this.spreadsheet.getTableErrors(),
+          leaf,
+          initialize
         });
       }, 10);
       return;
