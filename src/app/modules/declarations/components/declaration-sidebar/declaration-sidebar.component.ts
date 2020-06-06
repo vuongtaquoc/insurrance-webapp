@@ -17,6 +17,7 @@ export class DeclarationSidebarComponent implements OnInit, OnDestroy {
   @Input() events: Observable<any>;
   @Output() onSelectEmployees: EventEmitter<any> = new EventEmitter();
   @Output() onToggleSidebar: EventEmitter<any> = new EventEmitter();
+  @Output() onUserUpdated: EventEmitter<any> = new EventEmitter();
 
   isSpinning: boolean;
   employeeSelected: any[] = [];
@@ -99,7 +100,44 @@ export class DeclarationSidebarComponent implements OnInit, OnDestroy {
           type: 'edit',
           status: 'success'
         });
+
+        this.modalService.confirm({
+          nzTitle: 'Bạn muốn cập nhật thông tin NLĐ trong hồ sơ?',
+          nzOkText: 'Cập nhật',
+          nzCancelText: 'Hủy',
+          nzOnOk: () => this.onUserUpdated.emit(result)
+        });
       });
+    });
+  }
+
+  deleteEmployee() {
+    if (!this.employeeSelected.length) {
+      return;
+    }
+
+    if (this.employeeSelected.length > 1) {
+      return this.modalService.error({
+        nzTitle: 'Có lỗi xảy ra',
+        nzContent: 'Bạn chỉ có thể xóa 1 nhân viên'
+      });
+    }
+
+    const selected = this.employeeSelected[0];
+
+    this.modalService.confirm({
+      nzTitle: 'Xóa hồ sơ',
+      nzContent: `Bạn có chắc chắn xóa hồ sơ: ${selected.fullName}?`,
+      nzOkText: 'Tiếp tục',
+      nzCancelText: 'Hủy',
+      nzOnOk: () => {
+        this.employeeService.delete(selected.employeeId || selected.id).subscribe(() => {
+          this.employeeSubject.next({
+            type: 'delete',
+            status: 'success'
+          });
+        });
+      }
     });
   }
 

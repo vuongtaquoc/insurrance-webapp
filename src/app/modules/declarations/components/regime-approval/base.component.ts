@@ -43,6 +43,7 @@ export class RegimeApprovalBaseComponent {
   employeeSubject: Subject<any> = new Subject<any>();
   tableSubject: Subject<any> = new Subject<any>();
   isHiddenSidebar = false;
+  isBlinking = false;
 
   constructor(
     protected declarationService: DeclarationService,
@@ -122,6 +123,47 @@ export class RegimeApprovalBaseComponent {
       type: 'clean'
     });
     this.employeeSelected.length = 0;
+    this.tableSubject.next({
+      type: 'validate'
+    });
+    this.tableSubject.next({
+      type: 'readonly',
+      part,
+      data: this.declarations[part].table
+    });
+  }
+
+  handleUserUpdateTables(user) {
+    this.handleUserUpdated(user, 'part1');
+    this.handleUserUpdated(user, 'part2');
+  }
+
+  handleUserUpdated(user, part) {
+    const declarations = [ ...this.declarations[part].table ];
+    const declarationUsers = declarations.filter(d => {
+      return d.isLeaf && d.origin && (d.origin.employeeId || d.origin.id) === user.id;
+    });
+    declarationUsers.forEach(declaration => {
+      declaration.origin = {
+        ...declaration.origin,
+        ...user
+      };
+
+      this.headers[part].columns.forEach((column, index) => {
+        if (user[column.key] !== null && typeof user[column.key] !== 'undefined') {
+          declaration.data[index] = user[column.key];
+        }
+      });
+    });
+
+    // update orders
+    this.updateOrders(declarations);
+
+    this.declarations[part].table = this.declarationService.updateFormula(declarations, this.headers[part].columns);
+
+    this.employeeSubject.next({
+      type: 'clean'
+    });
     this.tableSubject.next({
       type: 'validate'
     });
@@ -251,6 +293,14 @@ export class RegimeApprovalBaseComponent {
     this.tableSubject.next({
       type: 'validate'
     });
+  }
+
+  handleFocus() {
+    if (!this.employeeSelected.length) return;
+
+    this.isBlinking = true;
+
+    setTimeout(() => this.isBlinking = false, 5000);
   }
 
   collapseChange(isActive, part) {

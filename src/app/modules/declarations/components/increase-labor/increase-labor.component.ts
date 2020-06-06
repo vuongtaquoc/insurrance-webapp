@@ -35,6 +35,14 @@ import { TABLE_FAMILIES_NESTED_HEADERS, TABLE_FAMILIES_HEADER_COLUMNS } from '@a
 import { TABLE_DOCUMENT_NESTED_HEADERS, TABLE_DOCUMENT_HEADER_COLUMNS } from '@app/modules/declarations/data/document-list-editor.data';
 import { TableEditorErrorsComponent } from '@app/shared/components';
 
+const TYPES = {
+  'I_1': 'Tăng lao động',
+  'I_2': 'Tăng BHYT',
+  'I_3': 'Tăng BHTN',
+  'II_1': 'Giảm BHYT',
+  'II_2': 'Tăng BHTNLĐ, BNN'
+};
+
 @Component({
   selector: 'app-declaration-increase-labor',
   templateUrl: './increase-labor.component.html',
@@ -76,6 +84,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
   };
   totalNumberInsurance: any;
   totalCardInsurance: any;
+  isBlinking = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -224,6 +233,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     const declarations = [ ...this.declarations ];
     const parentIndex = findIndex(declarations, d => d.key === type);
     const childLastIndex = findLastIndex(declarations, d => d.isLeaf && d.parentKey === type);
+    let isExist = false;
 
     if (childLastIndex > -1) {
       const employeeExists = declarations.filter(d => d.parentKey === type);
@@ -244,8 +254,18 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
           } else {
             declarations.splice(childLastIndex + 1, 0, this.declarationService.getLeaf(declarations[parentIndex], employee, this.tableHeaderColumns));
           }
+        } else {
+          if (!isExist) {
+            isExist = true;
+          }
         }
       });
+
+      if (isExist) {
+        this.modalService.warning({
+          nzTitle: `Nhân viên đã có trong danh sách ${TYPES[type]}`,
+        });
+      }
 
       // update orders
       this.updateOrders(declarations);
@@ -263,6 +283,37 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
       type: 'clean'
     });
     this.employeeSelected.length = 0;
+    this.eventsSubject.next('validate');
+    this.familiesSubject.next('validate');
+    this.documentsSubject.next('validate');
+  }
+
+  handleUserUpdated(user) {
+    const declarations = [ ...this.declarations ];
+    const declarationUsers = declarations.filter(d => {
+      return d.isLeaf && d.origin && (d.origin.employeeId || d.origin.id) === user.id;
+    });
+    declarationUsers.forEach(declaration => {
+      declaration.origin = {
+        ...declaration.origin,
+        ...user
+      };
+
+      this.tableHeaderColumns.forEach((column, index) => {
+        if (user[column.key] !== null && typeof user[column.key] !== 'undefined') {
+          declaration.data[index] = user[column.key];
+        }
+      });
+    });
+
+    // update orders
+    this.updateOrders(declarations);
+
+    this.declarations = this.declarationService.updateFormula(declarations, this.tableHeaderColumns);
+
+    this.employeeSubject.next({
+      type: 'clean'
+    });
     this.eventsSubject.next('validate');
     this.familiesSubject.next('validate');
     this.documentsSubject.next('validate');
@@ -548,6 +599,14 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     this.eventsSubject.next('validate');
     this.familiesSubject.next('validate');
     this.documentsSubject.next('validate');
+  }
+
+  handleFocus() {
+    if (!this.employeeSelected.length) return;
+
+    this.isBlinking = true;
+
+    setTimeout(() => this.isBlinking = false, 5000);
   }
 
   handleDeleteMember({ rowNumber, numOfRows, records }) {
