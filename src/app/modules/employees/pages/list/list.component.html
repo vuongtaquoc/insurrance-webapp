@@ -2,8 +2,6 @@
   <nz-spin [nzSpinning]="isSpinning">
     <div class="page-card page-employees">
       <h1>Thông tin người lao động</h1>
-
-      <nz-demo-date-picker-format></nz-demo-date-picker-format>
       <div class="page-employees__menu-bar">
         <div class="page-employees__filter">
         </div>
@@ -17,7 +15,6 @@
 
       <nz-table
         #rowSelectionTable
-        nzBordered
         [nzData]="employees"
         [nzPageSize]="employees.length"
         [nzShowPagination]="false"
@@ -25,7 +22,7 @@
       >
         <thead>
           <tr>
-            <th class="text-left">Họ và tên</th>
+            <th class="text-left" >Họ và tên</th>
             <th class="text-left">Mã nhân viên</th>
             <th>Mã số BHXH</th>
             <th>Số sổ BHXH</th>
@@ -37,6 +34,17 @@
           </tr>
         </thead>
         <tbody>
+          <tr class="ui-table-custom-filter">
+            <td><input nz-input placeholder="Tìm kiếm..." nzSize="small" [(ngModel)]="filter.fullName" (ngModelChange)="handleFilter('fullName')" /></td>
+            <td><input nz-input placeholder="Tìm kiếm..." nzSize="small" [(ngModel)]="filter.code" (ngModelChange)="handleFilter('code')" /></td>
+            <td><input nz-input placeholder="Tìm kiếm..." nzSize="small" [(ngModel)]="filter.isurranceCode" (ngModelChange)="handleFilter('isurranceCode')" /></td>
+            <td><input nz-input placeholder="Tìm kiếm..." nzSize="small" [(ngModel)]="filter.isurranceNo" (ngModelChange)="handleFilter('isurranceNo')" /></td>
+            <td><input nz-input placeholder="Tìm kiếm..." nzSize="small" [(ngModel)]="filter.identityCar" (ngModelChange)="handleFilter('identityCar')" /></td>
+            <td><input nz-input placeholder="Tìm kiếm..." nzSize="small" [(ngModel)]="filter.birthday" (ngModelChange)="handleFilter('birthday')" /></td>
+            <td><input nz-input placeholder="Tìm kiếm..." nzSize="small" [(ngModel)]="filter.gender" (ngModelChange)="handleFilter('gender')" /></td>
+            <td><input nz-input placeholder="Tìm kiếm..." nzSize="small" [(ngModel)]="filter.hospitalFirstRegistName" (ngModelChange)="handleFilter('hospitalFirstRegistName')" /></td>
+            <td></td>
+          </tr>
           <tr *ngFor="let data of rowSelectionTable.data">
             <td>{{ data.fullName }}</td>
             <td>{{ data.code }}</td>

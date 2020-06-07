@@ -37,13 +37,19 @@ export const TABLE_PROCESS_HEADER_COLUMNS = [{
   width: 70,
   title: '(2)',
   key: 'fromDate',
-  isCalendar: true
+  isCalendar: true,
+  validations: {
+    lessThanNow: true
+  }
 }, {
   type: 'text',
   width: 70,
   title: '(3)',
   key: 'toDate',
-  isCalendar: true
+  isCalendar: true,
+  validations: {
+    lessThanNow: true
+  }
 }, {
   type: 'text',
   width: 75,

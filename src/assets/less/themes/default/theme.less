@@ -13,7 +13,10 @@
 }
 
 .ant-tree {
-  .ant-tree-title {
+  .ant-tree-treenode .ant-tree-indent[ng-reflect-nz-tree-level="0"] {
+    color: #f00 !important;
+  }
+  .ant-tree-treenode .ant-tree-indent[ng-reflect-nz-tree-level="0"] ~ .ant-tree-treenode .ant-tree-node-content-wrapper {
     font-weight: 700;
   }
 

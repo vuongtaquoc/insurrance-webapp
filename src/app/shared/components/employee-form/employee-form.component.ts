@@ -29,6 +29,7 @@ import {
 } from '@app/core/services';
 
 import { DATE_FORMAT, REGEX } from '@app/shared/constant';
+import { validateLessThanEqualNow } from '@app/shared/utils/custom-validation';
 
 @Component({
   selector: 'app-employees-form',
@@ -149,7 +150,7 @@ export class EmployeeFormComponent implements OnInit {
 
     this.employeeForm = this.formBuilder.group({
       fullName: [employee.fullName, Validators.required],
-      birthday: [birthday ? new Date(birthday.valueOf()) : '', Validators.required],
+      birthday: [birthday ? new Date(birthday.valueOf()) : '', [Validators.required, validateLessThanEqualNow]],
       typeBirthday: [employee.typeBirthday || '1'],
       gender: [employee.gender, Validators.required],
       nationalityCode: [employee.nationalityCode, Validators.required],
@@ -170,7 +171,7 @@ export class EmployeeFormComponent implements OnInit {
       isurranceNo: [employee.isurranceNo, [ Validators.maxLength(15), Validators.pattern(REGEX.ONLY_CHARACTER_NUMBER) ]],
       healthNo: [employee.healthNo, [ Validators.maxLength(15), Validators.pattern(REGEX.ONLY_CHARACTER_NUMBER) ]],
       contractNo: [employee.contractNo, [Validators.required, Validators.maxLength(50), Validators.pattern(REGEX.ONLY_CHARACTER_NUMBER)]],
-      dateSign: [employee.dateSign ? new Date(dateSign.valueOf()) : '', Validators.required],
+      dateSign: [employee.dateSign ? new Date(dateSign.valueOf()) : '', [Validators.required, validateLessThanEqualNow]],
       levelWork: [employee.levelWork, Validators.required],
       salary: [employee.salary, [Validators.required, Validators.pattern(REGEX.ONLY_NUMBER)]],
       ratio: [employee.ratio, [Validators.required, Validators.pattern(REGEX.ONLY_NUMBER)]],
@@ -583,6 +584,8 @@ export class EmployeeFormComponent implements OnInit {
     });
 
     modal.afterClose.subscribe(result => {
+      if (!result) return;
+
       this.hospitalService.searchHospital(this.cityFirstRegistCode, result.id).subscribe(data => {
         this.hospitals = data;
         this.employeeForm.patchValue({

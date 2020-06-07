@@ -18,7 +18,17 @@ export class EmployeeListComponent implements OnInit {
   selectedPage: number = 1;
   isSpinning: boolean;
   gender: any = GENDER;
-  date = null;
+  filter: any = {
+    fullName: '',
+    code: '',
+    isurranceCode: '',
+    isurranceNo: '',
+    identityCar: '',
+    birthday: '',
+    gender: '',
+    hospitalFirstRegistName: ''
+  };
+  keyword: string = '';
 
   constructor(
     private modalService: NzModalService,
@@ -29,13 +39,9 @@ export class EmployeeListComponent implements OnInit {
     this.getEmployees();
   }
 
-  onChange() {
-
-  }
-
   getEmployees(skip = 0, take = PAGE_SIZE) {
     this.employeeService.getEmployees({
-      keyWord: '',
+      keyWord: this.keyword,
       skip,
       take
     }).subscribe(res => {
@@ -52,10 +58,16 @@ export class EmployeeListComponent implements OnInit {
     });
   }
 
+  handleFilter(key) {
+    this.keyword = this.filter[key];
+
+    this.getEmployees();
+  }
+
   pageChange({ skip, page }) {
     this.selectedPage = page;
 
-    this.getEmployees(skip);
+    this.getEmployees(skip, PAGE_SIZE);
   }
 
   add() {

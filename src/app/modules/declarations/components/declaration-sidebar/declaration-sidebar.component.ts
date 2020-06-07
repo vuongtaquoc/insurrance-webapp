@@ -162,4 +162,11 @@ export class DeclarationSidebarComponent implements OnInit, OnDestroy {
 
     });
   }
+
+  refresh() {
+    this.employeeSubject.next({
+      type: 'refesh',
+      status: 'success'
+    });
+  }
 }

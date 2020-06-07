@@ -5,16 +5,24 @@
   <ng-template #suffixIcon>
     <i nz-icon nzType="search"></i>
   </ng-template>
-  <nz-tree
-    nzCheckable
-    nzMultiple
-    [nzData]="employees"
-    [nzCheckedKeys]="defaultCheckedKeys"
-    [nzSelectedKeys]="defaultSelectedKeys"
-    [nzAsyncData]="false"
-    [nzSearchValue]="searchValue"
-    (nzCheckBoxChange)="nzCheck($event)"
-    (nzDblClick)="doubleClick($event)"
-  >
-  </nz-tree>
+  <nz-spin [nzSpinning]="isLoading">
+    <nz-tree
+      nzCheckable
+      nzMultiple
+      [nzData]="employees"
+      [nzCheckedKeys]="defaultCheckedKeys"
+      [nzSelectedKeys]="defaultSelectedKeys"
+      [nzAsyncData]="false"
+      [nzSearchValue]="searchValue"
+      [nzTreeTemplate]="nzTreeTemplate"
+      (nzCheckBoxChange)="nzCheck($event)"
+      (nzDblClick)="doubleClick($event)"
+    >
+    </nz-tree>
+    <ng-template #nzTreeTemplate let-node let-origin="origin">
+      <span [ngStyle]="{'font-weight': !origin.isLeaf ? '700' : '400'}">
+        <span class="folder-name">{{ node.title }}</span>
+      </span>
+    </ng-template>
+  </nz-spin>
 </div>

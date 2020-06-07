@@ -1,6 +1,5 @@
 import { Component, Input, OnInit, OnDestroy, ViewEncapsulation, Output, EventEmitter } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
-import { NzFormatEmitEvent } from 'ng-zorro-antd/core';
 
 import { EmployeeService } from '@app/core/services';
 
@@ -54,7 +53,7 @@ export class UsersTreeComponent implements OnInit, OnDestroy {
     });
   }
 
-  nzCheck(event: NzFormatEmitEvent) {
+  nzCheck(event) {
     const selected = event.checkedKeys.reduce(
       (combine, current, index): any => {
         if (current.level === 0 && current.isChecked) {

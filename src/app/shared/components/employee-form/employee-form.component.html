@@ -20,15 +20,24 @@
             <div nz-col [nzSpan]="8">
               <nz-form-item>
                 <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Ngày sinh</nz-form-label>
-                <nz-form-control [nzSpan]="14" nzErrorTip="Ngày sinh không để trống">
+                <nz-form-control [nzSpan]="14" nzErrorTip="Ngày sinh không để trống" [nzErrorTip]="birthdayTpl">
                   <nz-date-picker formControlName="birthday" nzPlaceHolder="Ngày sinh" *ngIf="!birthTypeOnlyYearMonth && !birthTypeOnlyYear"></nz-date-picker>
                   <nz-month-picker
                     formControlName="birthday"
                     nzPlaceHolder="Ngày sinh"
                     nzFormat="yyyy/MM"
+                    [nzAutoFocus]="true"
                     *ngIf="birthTypeOnlyYearMonth && !birthTypeOnlyYear"
                   ></nz-month-picker>
                   <nz-year-picker nzFormat="yyyy" formControlName="birthday" nzPlaceHolder="Ngày sinh" *ngIf="!birthTypeOnlyYearMonth && birthTypeOnlyYear"></nz-year-picker>
+                  <ng-template #birthdayTpl let-control>
+                    <ng-container *ngIf="control.hasError('required')">
+                      Ngày sinh không để trống
+                    </ng-container>
+                    <ng-container *ngIf="control.hasError('lessThanEqualNow')">
+                      Ngày sinh phải nhỏ hơn hoặc bằng ngày hiện tại
+                    </ng-container>
+                  </ng-template>
                 </nz-form-control>
               </nz-form-item>
             </div><!-- col -->
@@ -352,8 +361,16 @@
             <div nz-col [nzSpan]="8">
               <nz-form-item>
                 <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Ngày ký</nz-form-label>
-                <nz-form-control [nzSpan]="14" nzErrorTip="Ngày ký không để trống">
+                <nz-form-control [nzSpan]="14" [nzErrorTip]="dateSignTpl">
                   <nz-date-picker nzPlaceHolder ="Ngày ký" formControlName="dateSign"></nz-date-picker>
+                  <ng-template #dateSignTpl let-control>
+                    <ng-container *ngIf="control.hasError('required')">
+                      Ngày ký không để trống
+                    </ng-container>
+                    <ng-container *ngIf="control.hasError('lessThanEqualNow')">
+                      Ngày ký phải nhỏ hơn hoặc bằng ngày hiện tại
+                    </ng-container>
+                  </ng-template>
                 </nz-form-control>
               </nz-form-item>
             </div><!-- col -->
@@ -495,7 +512,7 @@
             </div><!-- col -->
 
             <div nz-col [nzSpan]="2" class="employee-form__add-btn">
-              <button nz-button nzType="default" (click)="addHospitalFirstRegistCode($event)">
+              <button nz-button type="button" nzType="default" (click)="addHospitalFirstRegistCode($event)">
                 <i nz-icon nzType="plus" nzTheme="outline"></i>
               </button>
             </div>
