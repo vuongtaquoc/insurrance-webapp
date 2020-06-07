@@ -164,7 +164,7 @@ export class EmployeeFormComponent implements OnInit {
       recipientsDistrictCode: [employee.recipientsDistrictCode, Validators.required],
       recipientsWardsCode: [employee.recipientsWardsCode, Validators.required],
       recipientsAddress: [employee.recipientsAddress, Validators.required],
-      isurranceCode: [employee.isurranceCode, Validators.pattern(REGEX.ONLY_CHARACTER_NUMBER)],
+      isurranceCode: [employee.isurranceCode, [Validators.maxLength(50), Validators.pattern(REGEX.ONLY_CHARACTER_NUMBER)]],
       mobile: [employee.mobile, [ Validators.maxLength(15), Validators.pattern(REGEX.ONLY_NUMBER) ]],
       identityCar: [employee.identityCar, [Validators.required, Validators.maxLength(15), Validators.pattern(REGEX.ONLY_CHARACTER_NUMBER)]],
       familyNo: [employee.familyNo],
