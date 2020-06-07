@@ -71,16 +71,32 @@ export class EmployeeListComponent implements OnInit {
   }
 
   add() {
-    const modal = this.modalService.create({
-      nzWidth: 980,
-      nzWrapClassName: 'employee-modal',
-      nzTitle: 'Cập nhật thông tin người lao động',
-      nzContent: EmployeeFormComponent,
-      nzOnOk: (data) => console.log('Click ok', data)
-    });
 
-    modal.afterClose.subscribe(result => {
-      this.getEmployees();
+    this.isSpinning = true;
+    this.employeeService.getPressCreate().subscribe(data => {
+      const employee = 
+      {
+        ratio: data.ratioInsurrance.ratio,
+        rate: data.ratioInsurrance.bhxh,
+        paymentMethodCode: data.ratioInsurrance.month,
+        orders: data.order
+      }
+      
+      this.isSpinning = false;
+      const modal = this.modalService.create({
+        nzWidth: 980,
+        nzWrapClassName: 'employee-modal',
+        nzTitle: 'Cập nhật thông tin người lao động',
+        nzContent: EmployeeFormComponent,
+        nzOnOk: (data) => console.log('Click ok', data),
+        nzComponentParams: {
+          employee
+        }
+      });
+
+      modal.afterClose.subscribe(result => {
+        this.getEmployees();
+      });
     });
   }
 

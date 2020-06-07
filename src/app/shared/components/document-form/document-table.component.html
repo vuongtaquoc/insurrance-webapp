@@ -1,4 +1,28 @@
-<div
-  #spreadsheet
-  class="document-table"
-></div>
+  <div class="document-table">
+    <nz-table
+    nzBordered 
+    #ajaxTable
+    nzShowSizeChanger
+    [nzFrontPagination]="false"
+    [nzData]="data"
+    [nzLoading]="loading"
+    [nzTotal]="total"
+    [(nzPageIndex)]="pageIndex"
+    [(nzPageSize)]="pageSize"
+    class="table-editor "
+  >
+  <thead>
+    <tr>
+      <th style="width: 50px;">{{'documentTable.list.stt' | translate}}</th>
+      <th>{{'documentTable.list.documentName' | translate}}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of ajaxTable.data">
+      <td>1</td>
+      <td>{{ data.documentName }}</td>
+    </tr>
+  </tbody>
+  </nz-table>
+  </div>
+  

@@ -54,7 +54,6 @@ import {
 
 import {
   TableEditorComponent,
-  DocumentTableComponent,
   DocumentListTableComponent,
   DeclarationSidebarComponent,
   IncreaseLaborComponent,
@@ -111,7 +110,6 @@ import { RegimeAutoSizeDirective } from './directives';
     ReductionLaborAddComponent,
     ReductionLaborEditComponent,
     TableEditorComponent,
-    DocumentTableComponent,
     DocumentListTableComponent,
     DeclarationSidebarComponent,
     IncreaseLaborComponent,

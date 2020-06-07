@@ -44,6 +44,10 @@ export class EmployeeService {
     return this.http.get(`/employees/${ id }`);
   }
 
+  public getPressCreate() {
+    return this.http.get('/employees/press-create');
+  }
+
   public create(body, options = {}) {
     return this.http.post('/employees', body, options);
   }

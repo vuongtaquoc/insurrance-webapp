@@ -7,12 +7,16 @@ import findIndex from 'lodash/findIndex';
 import {
   DeclarationService
 } from '@app/core/services';
-
+import { ACTION } from '@app/shared/constant';
 export class GeneralBaseComponent {
   @Input() data: any;
+  @Input() NzPageHeaderContentDirective: string;
   @Input() hasForm = false;
   @Input() declarationId: string;
+  @Input() pageName: string;
+  @Input() pageCode: string;
   @Input() form: any = {};
+  @Input() declarationGeneral: any = {};
   @Output() onChange: EventEmitter<any> = new EventEmitter();
   @Output() onHiddenSidebar: EventEmitter<any> = new EventEmitter();
   headers: any = {
@@ -109,10 +113,13 @@ export class GeneralBaseComponent {
     }
     // update origin data
     const records = this.toTableRecords(declarations);
+    this.declarations[tableName].origin = Object.values(this.updateOrigin(records, tableName));
 
-    this.onChange.emit({    
-      tableName, 
-      data: this.declarations[tableName].table
+    this.onChange.emit({
+      action: ACTION.MUNTILEADD,
+      tableName,
+      data: this.declarations[tableName].origin,
+      dataChange : []
     });
 
     // clean employee
@@ -156,8 +163,10 @@ export class GeneralBaseComponent {
     this.declarations[tableName].origin = Object.values(this.updateOrigin(records, tableName));
 
     this.onChange.emit({
+      action: ACTION.EDIT,
       tableName,
-      data: this.declarations[tableName].origin
+      data: this.declarations[tableName].origin,
+      dataChange : [],
     });
     
     this.tableSubject.next({
@@ -208,8 +217,10 @@ export class GeneralBaseComponent {
     this.declarations[tableName].origin = Object.values(this.updateOrigin(records, tableName));
    
     this.onChange.emit({
+      action: ACTION.ADD,
       tableName,
-      data: this.declarations[tableName].origin
+      data: this.declarations[tableName].origin,
+      dataChange : [],
     });
 
     this.tableSubject.next({
@@ -219,12 +230,13 @@ export class GeneralBaseComponent {
 
   handleDeleteTableData({ rowNumber, numOfRows, records }, tableName) {
     const declarations = [ ...this.declarations[tableName].table ];
-
+    let declarationsDeleted = [];
     const beforeRow = records[rowNumber - 1];
     const afterRow = records[rowNumber];
 
     if (!((beforeRow.options && beforeRow.options.isLeaf) || (afterRow.options && afterRow.options.isLeaf))) {
       const row: any = declarations[rowNumber];
+      declarationsDeleted.push(row);
       const origin = { ...row.data.origin };
       const options = { ...row.data.options };
 
@@ -233,7 +245,7 @@ export class GeneralBaseComponent {
       row.options = options;
       row.isInitialize = true;
     } else {
-      declarations.splice(rowNumber, numOfRows);
+      declarationsDeleted = declarations.splice(rowNumber, numOfRows);
     }
 
     // declarations.splice(rowNumber, numOfRows);
@@ -246,8 +258,10 @@ export class GeneralBaseComponent {
     this.declarations[tableName].origin = Object.values(this.updateOrigin(records, tableName));
 
     this.onChange.emit({
+      action: ACTION.DELETE,
       tableName,
-      data: this.declarations[tableName].origin
+      data: this.declarations[tableName].origin,
+      dataChange : declarationsDeleted,
     });
     
     this.tableSubject.next({
@@ -366,8 +380,10 @@ export class GeneralBaseComponent {
     this.declarations[tableName].origin = Object.values(this.updateOrigin(records, tableName));
 
     this.onChange.emit({
+      action: ACTION.MUNTILEUPDATE,
       tableName,
-      data: this.declarations[tableName].origin
+      data: this.declarations[tableName].origin,
+      dataChange : [],
     });
     this.tableSubject.next({
       type: 'validate'

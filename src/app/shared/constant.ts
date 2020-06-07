@@ -11,6 +11,14 @@ export const GENDER = {
   1: 'common.gender.female',
 };
 
+export const ACTION = {
+  ADD: 'Add',
+  EDIT: 'Edit',
+  MUNTILEADD: 'MultipleAdd',
+  MUNTILEUPDATE: 'MultipleUpdate',
+  DELETE: 'Delete'
+};
+
 export const MIME_TYPE =
 [
   {
