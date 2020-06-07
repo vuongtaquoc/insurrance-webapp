@@ -18,6 +18,7 @@ export class EmployeeListComponent implements OnInit {
   selectedPage: number = 1;
   isSpinning: boolean;
   gender: any = GENDER;
+  date = null;
 
   constructor(
     private modalService: NzModalService,
@@ -26,6 +27,10 @@ export class EmployeeListComponent implements OnInit {
 
   ngOnInit() {
     this.getEmployees();
+  }
+
+  onChange() {
+
   }
 
   getEmployees(skip = 0, take = PAGE_SIZE) {

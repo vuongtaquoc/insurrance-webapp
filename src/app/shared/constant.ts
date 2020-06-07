@@ -31,6 +31,12 @@ export const MIME_TYPE =
   }
 ];
 
+export const REGEX = {
+  ONLY_CHARACTER_NUMBER: '^[a-zA-Z0-9]+$',
+  ONLY_NUMBER: '^[0-9]*$',
+  ONLY_NUMBER_INCLUDE_DECIMAL: '^(\d*\.)?\d+$'
+};
+
 export const DECLARATIONS =
 [
   {

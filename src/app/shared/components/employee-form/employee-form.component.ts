@@ -28,7 +28,7 @@ import {
   CategoryService
 } from '@app/core/services';
 
-import { DATE_FORMAT } from '@app/shared/constant';
+import { DATE_FORMAT, REGEX } from '@app/shared/constant';
 
 @Component({
   selector: 'app-employees-form',
@@ -154,7 +154,7 @@ export class EmployeeFormComponent implements OnInit {
       gender: [employee.gender, Validators.required],
       nationalityCode: [employee.nationalityCode, Validators.required],
       peopleCode: [employee.peopleCode, Validators.required],
-      code: [employee.code, Validators.required],
+      code: [employee.code, [ Validators.required, Validators.maxLength(50), Validators.pattern(REGEX.ONLY_CHARACTER_NUMBER) ]],
       departmentId: [employee.departmentId ? Number(employee.departmentId) : ''],
       registerCityCode: [employee.registerCityCode, Validators.required],
       registerDistrictCode: [employee.registerDistrictCode, Validators.required],
@@ -163,42 +163,42 @@ export class EmployeeFormComponent implements OnInit {
       recipientsDistrictCode: [employee.recipientsDistrictCode, Validators.required],
       recipientsWardsCode: [employee.recipientsWardsCode, Validators.required],
       recipientsAddress: [employee.recipientsAddress, Validators.required],
-      isurranceCode: [employee.isurranceCode],
-      mobile: [employee.mobile],
-      identityCar: [employee.identityCar, Validators.required],
+      isurranceCode: [employee.isurranceCode, Validators.pattern(REGEX.ONLY_CHARACTER_NUMBER)],
+      mobile: [employee.mobile, [ Validators.maxLength(15), Validators.pattern(REGEX.ONLY_NUMBER) ]],
+      identityCar: [employee.identityCar, [Validators.required, Validators.maxLength(15), Validators.pattern(REGEX.ONLY_CHARACTER_NUMBER)]],
       familyNo: [employee.familyNo],
-      isurranceNo: [employee.isurranceNo],
-      healthNo: [employee.healthNo],
-      contractNo: [employee.contractNo, Validators.required],
+      isurranceNo: [employee.isurranceNo, [ Validators.maxLength(15), Validators.pattern(REGEX.ONLY_CHARACTER_NUMBER) ]],
+      healthNo: [employee.healthNo, [ Validators.maxLength(15), Validators.pattern(REGEX.ONLY_CHARACTER_NUMBER) ]],
+      contractNo: [employee.contractNo, [Validators.required, Validators.maxLength(50), Validators.pattern(REGEX.ONLY_CHARACTER_NUMBER)]],
       dateSign: [employee.dateSign ? new Date(dateSign.valueOf()) : '', Validators.required],
       levelWork: [employee.levelWork, Validators.required],
-      salary: [employee.salary, Validators.required],
-      ratio: [employee.ratio, Validators.required],
+      salary: [employee.salary, [Validators.required, Validators.pattern(REGEX.ONLY_NUMBER)]],
+      ratio: [employee.ratio, [Validators.required, Validators.pattern(REGEX.ONLY_NUMBER)]],
       salaryAreaCode: [employee.salaryAreaCode, Validators.required],
       paymentMethodCode: [employee.paymentMethodCode],
-      rate: [employee.rate, [Validators.required, Validators.min(0), Validators.max(100)]],
+      rate: [employee.rate, [Validators.required, Validators.min(0), Validators.max(100), Validators.pattern(REGEX.ONLY_NUMBER_INCLUDE_DECIMAL)]],
       cityFirstRegistCode: [employee.cityFirstRegistCode, Validators.required],
       hospitalFirstRegistCode: [employee.hospitalFirstRegistCode, Validators.required],
       allowanceLevel: [employee.allowanceLevel],
-      allowanceSeniority: [employee.allowanceSeniority, [Validators.min(0), Validators.max(100)]],
-      allowanceSeniorityJob: [employee.allowanceSeniorityJob, [Validators.min(0), Validators.max(100)]],
-      allowanceSalary: [employee.allowanceSalary],
+      allowanceSeniority: [employee.allowanceSeniority, [Validators.min(0), Validators.max(100), Validators.pattern(REGEX.ONLY_NUMBER_INCLUDE_DECIMAL)]],
+      allowanceSeniorityJob: [employee.allowanceSeniorityJob, [Validators.min(0), Validators.max(100), Validators.pattern(REGEX.ONLY_NUMBER_INCLUDE_DECIMAL)]],
+      allowanceSalary: [employee.allowanceSalary, [Validators.pattern(REGEX.ONLY_NUMBER)]],
       allowanceAdditional: [employee.allowanceAdditional],
-      allowanceOther: [employee.allowanceOther],
-      mstncn: [employee.mstncn],
-      bankAccount: [employee.bankAccount],
+      allowanceOther: [employee.allowanceOther, [Validators.pattern(REGEX.ONLY_NUMBER)]],
+      mstncn: [employee.mstncn, [Validators.pattern(REGEX.ONLY_NUMBER)]],
+      bankAccount: [employee.bankAccount, [Validators.pattern(REGEX.ONLY_NUMBER)]],
       bankId: [employee.bankId ? employee.bankId.toString() : ''],
       accountHolder: [employee.accountHolder],
       status: [employee.status],
-      orders: [employee.orders],
+      orders: [employee.orders, [Validators.pattern(REGEX.ONLY_NUMBER)]],
       relationshipFullName: [employee.relationshipFullName, Validators.required],
       relationshipDocumentType:[employee.relationshipDocumentType],
-      relationshipBookNo: [employee.relationshipBookNo],
+      relationshipBookNo: [employee.relationshipBookNo, [Validators.maxLength(50), Validators.pattern(REGEX.ONLY_CHARACTER_NUMBER)]],
       relationshipCityCode: [employee.relationshipCityCode, Validators.required],
       relationshipDistrictCode: [employee.relationshipDistrictCode, Validators.required],
       relationshipWardsCode: [employee.relationshipWardsCode, Validators.required],
       relationshipVillageCode: [employee.relationshipVillageCode],
-      relationshipMobile: [employee.relationshipMobile],
+      relationshipMobile: [employee.relationshipMobile, [ Validators.maxLength(15), Validators.pattern(REGEX.ONLY_NUMBER) ]],
       isMaster: [employee.isMaster],
       isDuplicateAddress: [false],
       birthTypeOnlyYearMonth: [employee.typeBirthday === '1'],
@@ -270,6 +270,7 @@ export class EmployeeFormComponent implements OnInit {
   }
 
   save(): void {
+    console.log(this.employeeForm)
     for (const i in this.employeeForm.controls) {
       this.employeeForm.controls[i].markAsDirty();
       this.employeeForm.controls[i].updateValueAndValidity();

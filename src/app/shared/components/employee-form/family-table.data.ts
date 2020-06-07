@@ -35,7 +35,11 @@ export const TABLE_FAMILIES_HEADER_COLUMNS = [{
   type: 'text',
   width: 110,
   title: '(3)',
-  key: 'isurranceCode'
+  key: 'isurranceCode',
+  validations: {
+    maxLength: 50,
+    onlyCharacterNumber: true
+  }
 }, {
   type: 'dropdown',
   autocomplete: true,
@@ -52,6 +56,9 @@ export const TABLE_FAMILIES_HEADER_COLUMNS = [{
   // validations: {
   //   required: true
   // }
+  validations: {
+    lessThanNow: true
+  }
 }, {
   type: 'checkbox',
   width: 30,
@@ -102,7 +109,11 @@ export const TABLE_FAMILIES_HEADER_COLUMNS = [{
   type: 'text',
   width: 120,
   title: '(11)',
-  key: 'identityCar'
+  key: 'identityCar',
+  validations: {
+    onlyCharacterNumber: true,
+    maxLength: 15
+  }
 }, {
   type: 'text',
   width: 120,

@@ -48,7 +48,12 @@ export const TABLE_PROCESS_HEADER_COLUMNS = [{
   type: 'text',
   width: 75,
   title: '(4)',
-  key: 'companyCode'
+  key: 'companyCode',
+  isMasterKey: true,
+  validations: {
+    maxLength: 50,
+    onlyCharacterNumber: true
+  }
 }, {
   type: 'text',
   width: 210,
@@ -64,32 +69,50 @@ export const TABLE_PROCESS_HEADER_COLUMNS = [{
   type: 'numberic',
   width: 90,
   title: '(7)',
-  key: 'salary'
+  key: 'salary',
+  validations: {
+    onlyNumber: true
+  }
 }, {
   type: 'numberic',
   width: 55,
   title: '(8)',
-  key: 'allowanceLevel'
+  key: 'allowanceLevel',
+  validations: {
+    onlyNumber: true
+  }
 }, {
   type: 'numberic',
   width: 65,
   title: '(9)',
-  key: 'allowanceSeniority'
+  key: 'allowanceSeniority',
+  validations: {
+    onlyDecimalNumber: true
+  }
 }, {
   type: 'numberic',
   width: 65,
   title: '(10)',
-  key: 'allowanceSeniorityJob'
+  key: 'allowanceSeniorityJob',
+  validations: {
+    onlyDecimalNumber: true
+  }
 }, {
   type: 'numberic',
   width: 65,
   title: '(11)',
-  key: 'allowanceOther'
+  key: 'allowanceOther',
+  validations: {
+    onlyNumber: true
+  }
 }, {
   type: 'numberic',
   width: 90,
   title: '(12)',
-  key: 'allowanceSalary'
+  key: 'allowanceSalary',
+  validations: {
+    onlyNumber: true
+  }
 }, {
   type: 'numberic',
   width: 90,
