@@ -21,6 +21,14 @@ export class IncreaseLaborListComponent implements OnInit {
   total: number;
   skip: number;
   selectedPage: number = 1;
+  filter: any = {
+    createDate: '',
+    documentNo: '',
+    declarationName: '',
+    sendDate: '',
+    documentStatusName: ''
+  };
+  keyword: string = '';
 
   constructor(
     private declarationService: DeclarationService,
@@ -55,6 +63,12 @@ export class IncreaseLaborListComponent implements OnInit {
     this.selectedPage = page;
 
     this.getDeclarations(skip);
+  }
+
+  handleFilter(key) {
+    this.keyword = this.filter[key];
+
+    this.getDeclarations();
   }
 
   refreshStatus(): void {

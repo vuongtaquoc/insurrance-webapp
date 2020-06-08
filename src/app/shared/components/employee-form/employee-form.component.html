@@ -20,14 +20,24 @@
             <div nz-col [nzSpan]="8">
               <nz-form-item>
                 <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Ngày sinh</nz-form-label>
-                <nz-form-control [nzSpan]="14" nzErrorTip="Ngày sinh không để trống">
+                <nz-form-control [nzSpan]="14" nzErrorTip="Ngày sinh không để trống" [nzErrorTip]="birthdayTpl">
                   <nz-date-picker formControlName="birthday" nzPlaceHolder="Ngày sinh" *ngIf="!birthTypeOnlyYearMonth && !birthTypeOnlyYear"></nz-date-picker>
                   <nz-month-picker
                     formControlName="birthday"
                     nzPlaceHolder="Ngày sinh"
+                    nzFormat="yyyy/MM"
+                    [nzAutoFocus]="true"
                     *ngIf="birthTypeOnlyYearMonth && !birthTypeOnlyYear"
                   ></nz-month-picker>
-                  <nz-year-picker formControlName="birthday" nzPlaceHolder="Ngày sinh" *ngIf="!birthTypeOnlyYearMonth && birthTypeOnlyYear"></nz-year-picker>
+                  <nz-year-picker nzFormat="yyyy" formControlName="birthday" nzPlaceHolder="Ngày sinh" *ngIf="!birthTypeOnlyYearMonth && birthTypeOnlyYear"></nz-year-picker>
+                  <ng-template #birthdayTpl let-control>
+                    <ng-container *ngIf="control.hasError('required')">
+                      Ngày sinh không để trống
+                    </ng-container>
+                    <ng-container *ngIf="control.hasError('lessThanEqualNow')">
+                      Ngày sinh phải nhỏ hơn hoặc bằng ngày hiện tại
+                    </ng-container>
+                  </ng-template>
                 </nz-form-control>
               </nz-form-item>
             </div><!-- col -->
@@ -83,11 +93,22 @@
             <div nz-col [nzSpan]="8">
               <nz-form-item>
                 <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Mã nhân viên</nz-form-label>
-                <nz-form-control [nzSpan]="14" nzErrorTip="Mã nhân viên không để trống">
+                <nz-form-control [nzSpan]="14" [nzErrorTip]="errorTplCode" >
                   <input nz-input
                     placeholder="Mã nhân viên"
                     formControlName="code"
                   />
+                  <ng-template #errorTplCode let-control>
+                    <ng-container *ngIf="control.hasError('required')">
+                      Mã nhân viên không để trống
+                    </ng-container>
+                    <ng-container *ngIf="control.hasError('maxlength')">
+                      Mã nhân viên chỉ được tối đa 50 ký tự
+                    </ng-container>
+                    <ng-container *ngIf="control.hasError('pattern')">
+                      Mã nhân viên chỉ được chữ hoặc số
+                    </ng-container>
+                  </ng-template>
                 </nz-form-control>
               </nz-form-item>
             </div><!-- col -->
@@ -201,33 +222,60 @@
             <div nz-col [nzSpan]="8">
               <nz-form-item>
                 <nz-form-label class="text-left" [nzSpan]="10">Mã số BHXH</nz-form-label>
-                <nz-form-control [nzSpan]="14">
+                <nz-form-control [nzSpan]="14" [nzErrorTip]="errorTplInsurranceCode">
                   <input nz-input
                     placeholder="Mã số BHXH"
                     formControlName="isurranceCode"
                   />
+                  <ng-template #errorTplInsurranceCode let-control>
+                    <ng-container *ngIf="control.hasError('maxlength')">
+                      Mã số BHXH chỉ được tối đa 50 ký tự
+                    </ng-container>
+                    <ng-container *ngIf="control.hasError('pattern')">
+                      Mã số BHXH chỉ được chữ hoặc số
+                    </ng-container>
+                  </ng-template>
                 </nz-form-control>
               </nz-form-item>
             </div><!-- col -->
             <div nz-col [nzSpan]="8">
               <nz-form-item>
                 <nz-form-label class="text-left" [nzSpan]="10">Điện thoại liên hệ</nz-form-label>
-                <nz-form-control [nzSpan]="14">
+                <nz-form-control [nzSpan]="14" [nzErrorTip]="errorTplMobile13">
                   <input nz-input
                     placeholder="Điện thoại liên hệ"
                     formControlName="mobile"
                   />
+                  <ng-template #errorTplMobile13 let-control>
+                    <ng-container *ngIf="control.hasError('maxlength')">
+                      Điện thoại chỉ được tối đa 15 ký tự
+                    </ng-container>
+                    <ng-container *ngIf="control.hasError('pattern')">
+                      Điện thoại liên hệ phải là số
+                    </ng-container>
+                  </ng-template>
                 </nz-form-control>
               </nz-form-item>
             </div><!-- col -->
             <div nz-col [nzSpan]="8">
               <nz-form-item>
                 <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="15">Số CMT/HC/Thẻ căn cước</nz-form-label>
-                <nz-form-control [nzSpan]="9" nzErrorTip="Số CMT/HC/Thẻ căn cước không để trống">
+                <nz-form-control [nzSpan]="9" [nzErrorTip]="identityCarTpl">
                   <input nz-input
                     placeholder="Số CMT/HC/Thẻ căn cước"
                     formControlName="identityCar"
                   />
+                  <ng-template #identityCarTpl let-control>
+                    <ng-container *ngIf="control.hasError('required')">
+                      Số CMT/HC/Thẻ căn cước không để trống
+                    </ng-container>
+                    <ng-container *ngIf="control.hasError('maxlength')">
+                      Số CMT/HC/Thẻ căn cước chỉ được tối đa 15 ký tự
+                    </ng-container>
+                    <ng-container *ngIf="control.hasError('pattern')">
+                      Số CMT/HC/Thẻ căn cước phải là ký tự hoặc số
+                    </ng-container>
+                  </ng-template>
                 </nz-form-control>
               </nz-form-item>
             </div><!-- col -->
@@ -249,22 +297,38 @@
             <div nz-col [nzSpan]="8">
               <nz-form-item>
                 <nz-form-label class="text-left" [nzSpan]="10">Số sổ BHXH</nz-form-label>
-                <nz-form-control [nzSpan]="14">
+                <nz-form-control [nzSpan]="14" [nzErrorTip]="isurranceNoTpl">
                   <input nz-input
                     placeholder="Số sổ BHXH"
                     formControlName="isurranceNo"
                   />
+                  <ng-template #isurranceNoTpl let-control>
+                    <ng-container *ngIf="control.hasError('maxlength')">
+                      Số sổ BHXH chỉ được tối đa 15 ký tự
+                    </ng-container>
+                    <ng-container *ngIf="control.hasError('pattern')">
+                      Số sổ BHXH liên hệ phải là ký tự hoặc số
+                    </ng-container>
+                  </ng-template>
                 </nz-form-control>
               </nz-form-item>
             </div><!-- col -->
             <div nz-col [nzSpan]="8">
               <nz-form-item>
                 <nz-form-label class="text-left" [nzSpan]="10">Số thẻ BHYT</nz-form-label>
-                <nz-form-control [nzSpan]="14">
+                <nz-form-control [nzSpan]="14" [nzErrorTip]="healthNoTpl">
                   <input nz-input
                     placeholder="Số thẻ BHYT"
                     formControlName="healthNo"
                   />
+                  <ng-template #healthNoTpl let-control>
+                    <ng-container *ngIf="control.hasError('maxlength')">
+                      Số thẻ BHYT chỉ được tối đa 15 ký tự
+                    </ng-container>
+                    <ng-container *ngIf="control.hasError('pattern')">
+                      Số thẻ BHYT liên hệ phải là ký tự hoặc số
+                    </ng-container>
+                  </ng-template>
                 </nz-form-control>
               </nz-form-item>
             </div><!-- col -->
@@ -275,19 +339,38 @@
             <div nz-col [nzSpan]="8">
               <nz-form-item>
                 <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Số HĐLĐ/QĐ</nz-form-label>
-                <nz-form-control [nzSpan]="14" nzErrorTip="Số HĐLĐ/QĐ không để trống">
+                <nz-form-control [nzSpan]="14"  [nzErrorTip]="contractNoTpl">
                   <input nz-input
                     placeholder="Số HĐLĐ/QĐ"
                     formControlName="contractNo"
                   />
+                  <ng-template #contractNoTpl let-control>
+                    <ng-container *ngIf="control.hasError('required')">
+                      Số HĐLĐ/QĐ căn cước không để trống
+                    </ng-container>
+                    <ng-container *ngIf="control.hasError('maxlength')">
+                      Số HĐLĐ/QĐ căn cước chỉ được tối đa 15 ký tự
+                    </ng-container>
+                    <ng-container *ngIf="control.hasError('pattern')">
+                      Số HĐLĐ/QĐ căn cước liên hệ phải là chữ hoặc số
+                    </ng-container>
+                  </ng-template>
                 </nz-form-control>
               </nz-form-item>
             </div><!-- col -->
             <div nz-col [nzSpan]="8">
               <nz-form-item>
                 <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Ngày ký</nz-form-label>
-                <nz-form-control [nzSpan]="14" nzErrorTip="Ngày ký không để trống">
+                <nz-form-control [nzSpan]="14" [nzErrorTip]="dateSignTpl">
                   <nz-date-picker nzPlaceHolder ="Ngày ký" formControlName="dateSign"></nz-date-picker>
+                  <ng-template #dateSignTpl let-control>
+                    <ng-container *ngIf="control.hasError('required')">
+                      Ngày ký không để trống
+                    </ng-container>
+                    <ng-container *ngIf="control.hasError('lessThanEqualNow')">
+                      Ngày ký phải nhỏ hơn hoặc bằng ngày hiện tại
+                    </ng-container>
+                  </ng-template>
                 </nz-form-control>
               </nz-form-item>
             </div><!-- col -->
@@ -309,22 +392,38 @@
             <div nz-col [nzSpan]="8">
               <nz-form-item>
                 <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Tiền lương</nz-form-label>
-                <nz-form-control [nzSpan]="14" nzErrorTip="Tiền lương không để trống">
+                <nz-form-control [nzSpan]="14" [nzErrorTip]="salaryTpl">
                   <input nz-input
                     placeholder="Tiền lương"
                     formControlName="salary"
                   />
+                  <ng-template #salaryTpl let-control>
+                    <ng-container *ngIf="control.hasError('required')">
+                      Tiền lương không để trống
+                    </ng-container>
+                    <ng-container *ngIf="control.hasError('pattern')">
+                      Tiền lương phải số
+                    </ng-container>
+                  </ng-template>
                 </nz-form-control>
               </nz-form-item>
             </div><!-- col -->
             <div nz-col [nzSpan]="8">
               <nz-form-item>
                 <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Hệ số</nz-form-label>
-                <nz-form-control [nzSpan]="5" nzErrorTip="Hệ số không để trống">
+                <nz-form-control [nzSpan]="5" [nzErrorTip]="ratioTpl">
                   <input nz-input
                     placeholder="Hệ số"
                     formControlName="ratio"
                   />
+                  <ng-template #ratioTpl let-control>
+                    <ng-container *ngIf="control.hasError('required')">
+                      Hệ số không để trống
+                    </ng-container>
+                    <ng-container *ngIf="control.hasError('pattern')">
+                      Hệ số phải số
+                    </ng-container>
+                  </ng-template>
                 </nz-form-control>
               </nz-form-item>
             </div><!-- col -->
@@ -345,13 +444,13 @@
             <div nz-col [nzSpan]="8">
               <nz-form-item>
                 <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Tỷ lệ đóng (%)</nz-form-label>
-                <nz-form-control [nzSpan]="14" [nzErrorTip]="errorTpl">
+                <nz-form-control [nzSpan]="14" [nzErrorTip]="errorTplRate">
                   <nz-input-group nzSuffix="%">
                     <input nz-input
                       placeholder="Tỷ lệ"
                       formControlName="rate"
                     />
-                    <ng-template #errorTpl let-control>
+                    <ng-template #errorTplRate let-control>
                       <ng-container *ngIf="control.hasError('required')">
                         Tỷ lệ đóng (%) không để trống
                       </ng-container>
@@ -360,6 +459,9 @@
                       </ng-container>
                       <ng-container *ngIf="control.hasError('max')">
                         Tỷ lệ đóng (%) phải nhỏ hơn 100
+                      </ng-container>
+                      <ng-container *ngIf="control.hasError('pattern')">
+                        Tỷ lệ đóng (%) phải là số
                       </ng-container>
                     </ng-template>
                   </nz-input-group>
@@ -410,7 +512,7 @@
             </div><!-- col -->
 
             <div nz-col [nzSpan]="2" class="employee-form__add-btn">
-              <button nz-button nzType="default" (click)="addHospitalFirstRegistCode($event)">
+              <button nz-button type="button" nzType="default" (click)="addHospitalFirstRegistCode($event)">
                 <i nz-icon nzType="plus" nzTheme="outline"></i>
               </button>
             </div>
@@ -433,22 +535,25 @@
             <div nz-col [nzSpan]="8">
               <nz-form-item>
                 <nz-form-label class="text-left" [nzSpan]="10">TN VK (%)</nz-form-label>
-                <nz-form-control [nzSpan]="14" [nzErrorTip]="errorTpl">
+                <nz-form-control [nzSpan]="14" [nzErrorTip]="errorTplAllowanceSeniority">
                   <nz-input-group nzSuffix="%">
                     <input nz-input
                       type="text"
                       placeholder="TN VK (%)"
                       formControlName="allowanceSeniority"
                     />
-                    <ng-template #errorTpl let-control>
+                    <ng-template #errorTplAllowanceSeniority let-control>
                       <ng-container *ngIf="control.hasError('required')">
-                        Tỷ lệ đóng (%) không để trống
+                        TN VK (%) không để trống
                       </ng-container>
                       <ng-container *ngIf="control.hasError('min')">
-                        Tỷ lệ đóng (%) phải lớn hơn 0
+                        TN VK (%) phải lớn hơn 0
                       </ng-container>
                       <ng-container *ngIf="control.hasError('max')">
-                        Tỷ lệ đóng (%) phải nhỏ hơn 100
+                        TN VK (%) phải nhỏ hơn 100
+                      </ng-container>
+                      <ng-container *ngIf="control.hasError('pattern')">
+                        TN VK (%) phải là số
                       </ng-container>
                     </ng-template>
                   </nz-input-group>
@@ -458,21 +563,24 @@
             <div nz-col [nzSpan]="8">
               <nz-form-item>
                 <nz-form-label class="text-left" [nzSpan]="10">TN nghề (%)</nz-form-label>
-                <nz-form-control [nzSpan]="14" [nzErrorTip]="errorTpl">
+                <nz-form-control [nzSpan]="14" [nzErrorTip]="errorTplAllowanceSeniorityJob">
                   <nz-input-group nzSuffix="%">
                     <input nz-input
                       placeholder="TN nghề (%)"
                       formControlName="allowanceSeniorityJob"
                     />
-                    <ng-template #errorTpl let-control>
+                    <ng-template #errorTplAllowanceSeniorityJob let-control>
                       <ng-container *ngIf="control.hasError('required')">
-                        Tỷ lệ đóng (%) không để trống
+                        TN nghề (%) không để trống
                       </ng-container>
                       <ng-container *ngIf="control.hasError('min')">
-                        Tỷ lệ đóng (%) phải lớn hơn 0
+                        TN nghề (%) phải lớn hơn 0
                       </ng-container>
                       <ng-container *ngIf="control.hasError('max')">
-                        Tỷ lệ đóng (%) phải nhỏ hơn 100
+                        TN nghề (%) phải nhỏ hơn 100
+                      </ng-container>
+                      <ng-container *ngIf="control.hasError('pattern')">
+                        TN nghề (%) phải là số
                       </ng-container>
                     </ng-template>
                   </nz-input-group>
@@ -486,12 +594,17 @@
             <div nz-col [nzSpan]="8">
               <nz-form-item>
                 <nz-form-label class="text-left" [nzSpan]="10">PC lương</nz-form-label>
-                <nz-form-control [nzSpan]="14">
+                <nz-form-control [nzSpan]="14" [nzErrorTip]="allowanceSalary">
                   <nz-input-number
                     placeholder="PC lương"
                     formControlName="allowanceSalary"
                     [nzFormatter]="formatterCurrency"
                   ></nz-input-number>
+                  <ng-template #allowanceSalaryTpl let-control>
+                    <ng-container *ngIf="control.hasError('pattern')">
+                      PC lương phải là số
+                    </ng-container>
+                  </ng-template>
                 </nz-form-control>
               </nz-form-item>
             </div><!-- col -->
@@ -509,12 +622,17 @@
             <div nz-col [nzSpan]="8">
               <nz-form-item>
                 <nz-form-label class="text-left" [nzSpan]="10">PC CLBL</nz-form-label>
-                <nz-form-control [nzSpan]="14">
+                <nz-form-control [nzSpan]="14" [nzErrorTip]="allowanceOther">
                   <nz-input-number
                     placeholder="PC CLBL"
                     formControlName="allowanceOther"
                     [nzFormatter]="formatterCurrency"
                   ></nz-input-number>
+                  <ng-template #allowanceOtherTpl let-control>
+                    <ng-container *ngIf="control.hasError('pattern')">
+                      PC CLBL phải là số
+                    </ng-container>
+                  </ng-template>
                 </nz-form-control>
               </nz-form-item>
             </div><!-- col -->
@@ -526,22 +644,32 @@
             <div nz-col [nzSpan]="8">
               <nz-form-item>
                 <nz-form-label class="text-left" [nzSpan]="10">Mã số thuế TNCN</nz-form-label>
-                <nz-form-control [nzSpan]="14">
+                <nz-form-control [nzSpan]="14" [nzErrorTip]="mstncn">
                   <input nz-input
                     placeholder="Mã số thuế TNCN"
                     formControlName="mstncn"
                   />
+                  <ng-template #mstncnTpl let-control>
+                    <ng-container *ngIf="control.hasError('pattern')">
+                      Mã số thuế TNCN phải là số
+                    </ng-container>
+                  </ng-template>
                 </nz-form-control>
               </nz-form-item>
             </div><!-- col -->
             <div nz-col [nzSpan]="8">
               <nz-form-item>
                 <nz-form-label class="text-left" [nzSpan]="10">Số tài khoản</nz-form-label>
-                <nz-form-control [nzSpan]="14">
+                <nz-form-control [nzSpan]="14" [nzErrorTip]="bankAccount">
                   <input nz-input
                     placeholder="Số tài khoản"
                     formControlName="bankAccount"
                   />
+                  <ng-template #bankAccountTpl let-control>
+                    <ng-container *ngIf="control.hasError('pattern')">
+                      Số tài khoản phải là số
+                    </ng-container>
+                  </ng-template>
                 </nz-form-control>
               </nz-form-item>
             </div><!-- col -->
@@ -583,11 +711,16 @@
             <div nz-col [nzSpan]="8">
               <nz-form-item>
                 <nz-form-label class="text-left" [nzSpan]="10">Thứ tự</nz-form-label>
-                <nz-form-control [nzSpan]="14">
+                <nz-form-control [nzSpan]="14" [nzErrorTip]="orders">
                   <input nz-input
                     placeholder="Thứ tự"
                     formControlName="orders"
                   />
+                  <ng-template #ordersTpl let-control>
+                    <ng-container *ngIf="control.hasError('pattern')">
+                      Số tài khoản phải là số
+                    </ng-container>
+                  </ng-template>
                 </nz-form-control>
               </nz-form-item>
             </div><!-- col -->
@@ -663,11 +796,19 @@
             <div nz-col [nzSpan]="8">
               <nz-form-item>
                 <nz-form-label class="text-left" [nzSpan]="10">Số sổ hộ khẩu</nz-form-label>
-                <nz-form-control [nzSpan]="14">
+                <nz-form-control [nzSpan]="14" [nzErrorTip]="relationshipBookNoTpl">
                   <input nz-input
                     placeholder="Số sổ hộ khẩu"
                     formControlName="relationshipBookNo"
                   />
+                  <ng-template #relationshipBookNoTpl let-control>
+                    <ng-container *ngIf="control.hasError('maxlength')">
+                      Số sổ hộ khẩu chỉ được tối đa 50 ký tự
+                    </ng-container>
+                    <ng-container *ngIf="control.hasError('pattern')">
+                      Số sổ hộ khẩu liên hệ phải là ký tự hoặc số
+                    </ng-container>
+                  </ng-template>
                 </nz-form-control>
               </nz-form-item>
             </div><!-- col -->
@@ -729,11 +870,19 @@
             <div nz-col [nzSpan]="8">
               <nz-form-item>
                 <nz-form-label class="text-left" [nzSpan]="10">Số điện thoại</nz-form-label>
-                <nz-form-control [nzSpan]="14">
+                <nz-form-control [nzSpan]="14" [nzErrorTip]="relationshipMobileTpl">
                   <input nz-input
                     placeholder="Số điện thoại"
                     formControlName="relationshipMobile"
                   />
+                  <ng-template #relationshipMobileTpl let-control>
+                    <ng-container *ngIf="control.hasError('maxlength')">
+                      Số điện thoại chỉ được tối đa 15 ký tự
+                    </ng-container>
+                    <ng-container *ngIf="control.hasError('pattern')">
+                      Số điện thoại phải là số
+                    </ng-container>
+                  </ng-template>
                 </nz-form-control>
               </nz-form-item>
             </div><!-- col -->

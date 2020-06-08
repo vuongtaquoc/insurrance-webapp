@@ -140,5 +140,8 @@
       }
     }
   },
-  "defaultProject": "insurrance-webapp"
+  "defaultProject": "insurrance-webapp",
+  "cli": {
+    "analytics": "5adfa6e8-0a2d-4d83-8ffd-41090ff8ecdd"
+  }
 }
