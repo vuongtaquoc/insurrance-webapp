@@ -9,7 +9,7 @@ const getDateNow = () => {
 }
 
 export function validateLessThanEqualNow(c: FormControl) {
-  if (!c.value) return null;
+  if (!c.value || !c.parent) return null;
 
   const now = getDateNow();
   const select = new Date(c.value);
