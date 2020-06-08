@@ -81,7 +81,6 @@ export class MaternityComponent extends RegimeApprovalBaseComponent implements O
   private getPlanByParent(instance, cell, c, r, source) {
     const row = instance.jexcel.getRowFromCoords(r);
     const planTypes = (row.options.planType || '').split(',');
-    console.log(source);
     return source.filter(s => planTypes.indexOf(s.id) > -1);
   }
 }

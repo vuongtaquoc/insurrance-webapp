@@ -162,9 +162,9 @@ export class AdjustmentComponent extends GeneralBaseComponent implements OnInit,
   }
 
   private getPlanByParent(instance, cell, c, r, source) {
-
     const row = instance.jexcel.getRowFromCoords(r);
-    return source.filter(s => s.type === row.options.planType);
+    const planTypes = (row.options.planType || '').split(',');
+    return source.filter(s => planTypes.indexOf(s.id) > -1);
   }
 
   private updateNextColumns(instance, r, value, nextColumns = []) {

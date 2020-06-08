@@ -295,8 +295,6 @@ export class AdjustComponent implements OnInit, OnDestroy {
 
     rowChange.data.options.isInitialize = false;
     rowChange.isInitialize = false;
-
-    this.eventsSubject.next('validate');
   }
 
   handleAddRow({ rowNumber, options, origin, insertBefore }) {
@@ -547,9 +545,11 @@ export class AdjustComponent implements OnInit, OnDestroy {
   }
 
   private getPlanByParent(instance, cell, c, r, source) {
-
     const row = instance.jexcel.getRowFromCoords(r);
-    return source.filter(s => s.type === row.options.planType);
+    const planTypes = (row.options.planType || '').split(',');
+    console.log(planTypes);
+    console.log(source,'source');
+    return source.filter(s => planTypes.indexOf(s.id) > -1);
   }
 
   private getRelationShips(instance, cell, c, r, source) {

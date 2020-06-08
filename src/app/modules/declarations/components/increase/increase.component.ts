@@ -192,7 +192,7 @@ export class IncreaseComponent extends GeneralBaseComponent implements OnInit, O
   private getPlanByParent(instance, cell, c, r, source) {
     const row = instance.jexcel.getRowFromCoords(r);
     const planTypes = (row.options.planType || '').split(',');
-    return source.filter(s => planTypes.indexOf(s.type) > -1);
+    return source.filter(s => planTypes.indexOf(s.id) > -1);
   }
 
   private updateNextColumns(instance, r, value, nextColumns = []) {

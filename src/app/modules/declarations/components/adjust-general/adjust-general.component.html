@@ -89,7 +89,26 @@
               ></app-families-list-table>
             </div>
           </div>
-        </nz-tab><!-- tab 1-->
+        </nz-tab><!-- tab 4-->
+        <nz-tab nzTitle="Bảng kê hồ sơ">
+          <div class="page-document-list__container">
+            <form nz-form [formGroup]="documentForm">
+              <h1>{{declarationCode}} | {{declarationName}}</h1>
+              <h2>Bảng kê thông tin</h2>
+              <div class="document-form__process-table">
+                <app-document-list-table
+                  tableName="documentList"
+                  [data]="informations"
+                  [events]="tableSubject.asObservable()"
+                  [nestedHeaders]="tableNestedHeadersDocuments"
+                  [columns]="tableHeaderColumnsDocuments"
+                  (onChange)="handleChangeInfomation($event)"
+                  (onDelete)="handleDeleteInfomation($event)"
+                ></app-document-list-table>
+              </div>
+            </form>
+          </div>
+        </nz-tab><!-- tab 5-->
       </nz-tabset>
       <ng-template #extraTemplate>
         <div class="page-declarations__footer">
@@ -104,7 +123,7 @@
           </button>
         </div>
       </ng-template>
-      <app-increase-form [data]="declarations.formOrigin" class="page-regime-approval__form" [ngClass]="{'page-regime-approval__form--hidden': (selectedTabIndex == 0 || selectedTabIndex == 4)}" (onFormValuesChanged)="handleFormValuesChanged($event)"></app-increase-form>
+      <app-increase-form [data]="declarations.formOrigin" class="page-regime-approval__form" [ngClass]="{'page-regime-approval__form--hidden': (selectedTabIndex == 0 || selectedTabIndex == 4 || selectedTabIndex == 5)}" (onFormValuesChanged)="handleFormValuesChanged($event)"></app-increase-form>
     </div>
   </nz-spin>
 </div>

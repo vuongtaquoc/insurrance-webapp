@@ -27,6 +27,7 @@ import { eventEmitter } from '@app/shared/utils/event-emitter';
 
 import { TableEditorErrorsComponent } from '@app/shared/components';
 import { TABLE_FAMILIES_NESTED_HEADERS, TABLE_FAMILIES_HEADER_COLUMNS } from '@app/modules/declarations/data/families-editor.data';
+import { TABLE_DOCUMENT_NESTED_HEADERS, TABLE_DOCUMENT_HEADER_COLUMNS } from '@app/modules/declarations/data/document-list-editor.data';
 
 import { Router } from '@angular/router';
 @Component({
@@ -64,8 +65,11 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
   };
 
   families: any[] = [];
+  informations: any[] = [];
   tableNestedHeadersFamilies: any[] = TABLE_FAMILIES_NESTED_HEADERS;
   tableHeaderColumnsFamilies: any[] = TABLE_FAMILIES_HEADER_COLUMNS;
+  tableNestedHeadersDocuments: any[] = TABLE_DOCUMENT_NESTED_HEADERS;
+  tableHeaderColumnsDocuments: any[] = TABLE_DOCUMENT_HEADER_COLUMNS;
   tableSubject: Subject<any> = new Subject<any>();
 
 
@@ -100,7 +104,7 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
       submitter: ['', Validators.required],
       mobile: ['', Validators.required],
     });
-    
+    console.log(moment("01/01/2001").format("DD MMM YYYY"));
     this.declarationName = this.getDeclaration(this.declarationCode).value;
     //Init data families table editor
     forkJoin([
@@ -196,6 +200,10 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
       this.setDataToFamilyEditor(data.data);
     }
 
+    if (data.action === ACTION.EDIT) {
+      this.setDateToInformationList(data.data);
+    }
+
     this.notificeEventValidData();
   }
    
@@ -225,8 +233,6 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
       },
       0
     );
-    console.log(this.declarationGeneral);
-    return '';
     if (count > 0) {
       return this.modalService.error({
         nzTitle: 'Lỗi dữ liệu. Vui lòng sửa!',
@@ -758,4 +764,73 @@ private setDataToFamilyEditor(records: any)
   }
 
 // End Families tab
+
+// Document list tab 
+
+getDocumentByPlancode(planCode: string) {
+  if(!planCode) {
+    return null;
+  }
+  const document = _.find(DOCUMENTBYPLANCODE, {
+    key: planCode,
+  });
+
+  if(document) {
+    return document.value;
+  }else {
+    return null;
+  }
+}
+
+
+private setDateToInformationList(records: any)
+{
+  const employeesInDeclaration = this.getEmployeeInDeclarations(records);
+  console.log(employeesInDeclaration);
+  const informations = [];
+  records.forEach(emp => {
+    const documents = this.getDocumentByPlancode(emp.planCode);
+
+    if(!documents) {
+      return;
+    }
+
+    documents.forEach(doc => {
+      let item = {
+        fullName: emp.fullName,
+        isurranceNo: emp.isurranceNo,
+        documentNo: '',
+        dateRelease: '',
+        isurranceCode: emp.isurranceCode,
+        documentType: doc.documentName,
+        companyRelease: this.currentCredentials.companyInfo.name,
+        documentNote: doc.documentNote,
+        documentAppraisal: ('Truy tăng ' + emp.fullName + ' từ ' + emp.fromDate),
+        origin: {
+          employeeId: emp.employeeId,
+          isLeaf: true,
+        }
+      };
+      if(doc.isContract) {
+        item.documentNo = emp.contractNo;
+        item.dateRelease =  emp.dateSign;
+      }else {
+        item.documentNo = emp.fromDate;
+      }
+      informations.push(item);
+    });
+
+    informations.forEach(p => {
+      p.data = this.tableHeaderColumnsDocuments.map(column => {
+        if (!column.key || !p[column.key]) return '';
+        return p[column.key];
+      });
+      p.data.origin = p.origin;
+    });
+
+  });
+
+  this.informations = informations;
+  }
+// End Document list Tab
 }
