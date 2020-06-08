@@ -13,9 +13,18 @@ export class LaborAttachmentComponent implements OnInit {
     for (let i = 1; i <= 10; i++) {
       this.rows.push({
         no: i,
+        id: i,
         title: '',
         file: {}
       });
     }
+  }
+
+  handleFileSelected(file, id) {
+    const row = this.rows.find(r => r.id === id);
+
+    if (!row) return;
+
+    row.file = file;
   }
 }

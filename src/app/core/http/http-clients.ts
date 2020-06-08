@@ -2,6 +2,7 @@ import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 import { environment } from '@config';
 
@@ -25,7 +26,7 @@ export function applicationHttpClientCreator(http: HttpClient) {
 
 @Injectable()
 export class ApplicationHttpClient {
-  constructor(public http: HttpClient) {}
+  constructor(public http: HttpClient ) {}
 
   get<T>(endpoint: string, options?: RequestOptions): Observable<any> {
     return this.http.get<any>(endpoint, options)
@@ -84,7 +85,8 @@ export class ApplicationHttpClient {
   }
 
   delete<T>(endpoint: string, options?: RequestOptions): Observable<any> {
-    return this.http.delete<any>(endpoint, options);
+    return this.http.delete<any>(endpoint, options)
+      .pipe(map(data => this.handleResponse(data)));
   }
 
   patch<T>(endpoint: string, body: any | null, options?: RequestOptions): Observable<any> {
@@ -97,13 +99,17 @@ export class ApplicationHttpClient {
       return data.data;
     }
 
-    if (data.code === 2001) {
-      throw new Error(data.code);
-    }
+    // if (data.code === 2001) {
+    //   throw new Error(data.code);
+    // }
 
-    return throwError({
+    // return throwError({
+    //   code: data.code,
+    //   message: data.message
+    // });
+    throw {
       code: data.code,
       message: data.message
-    });
+    };
   }
 }

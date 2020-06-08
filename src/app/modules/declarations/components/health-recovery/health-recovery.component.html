@@ -17,7 +17,7 @@
           <i nz-icon nzType="arrow-up"></i>Phần II
         </button>
         <nz-dropdown-menu #menuPart1="nzDropdownMenu">
-          <ul nz-menu nzSelectable>
+          <ul nz-menu nzSelectable class="regime-dropdown">
             <li nz-menu-item nz-submenu nzTitle="Nghỉ DS sau ốm đau">
               <ul>
                 <li nz-menu-item (click)="handleAddEmployee('part1', 'I_1')">Dưỡng sức sau ốm</li>
@@ -44,7 +44,7 @@
           </ul>
         </nz-dropdown-menu>
         <nz-dropdown-menu #menuPart2="nzDropdownMenu">
-          <ul nz-menu nzSelectable>
+          <ul nz-menu nzSelectable class="regime-dropdown">
             <li nz-menu-item nz-submenu nzTitle="Nghỉ DS sau ốm đau">
               <ul>
                 <li nz-menu-item (click)="handleAddEmployee('part2', 'I_1')">Dưỡng sức sau ốm</li>

@@ -17,7 +17,7 @@
           <i nz-icon nzType="arrow-up"></i>Phần II
         </button>
         <nz-dropdown-menu #menuPart1="nzDropdownMenu">
-          <ul nz-menu nzSelectable>
+          <ul nz-menu nzSelectable class="regime-dropdown">
             <li nz-menu-item (click)="handleAddEmployee('part1', 'I')">Khám thai</li>
             <li nz-menu-item (click)="handleAddEmployee('part1', 'II')">Sẩy thai, nạo hút thai, thai chết lưu hoặc phá thai bệnh lý</li>
             <li nz-menu-item nz-submenu nzTitle="Sinh con">
@@ -46,7 +46,7 @@
           </ul>
         </nz-dropdown-menu>
         <nz-dropdown-menu #menuPart2="nzDropdownMenu">
-          <ul nz-menu nzSelectable>
+          <ul nz-menu nzSelectable class="regime-dropdown">
             <li nz-menu-item (click)="handleAddEmployee('part2', 'I')">Khám thai</li>
             <li nz-menu-item (click)="handleAddEmployee('part2', 'II')">Sẩy thai, nạo hút thai, thai chết lưu hoặc phá thai bệnh lý</li>
             <li nz-menu-item nz-submenu nzTitle="Sinh con">
