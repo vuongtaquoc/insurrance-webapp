@@ -49,6 +49,7 @@
             [declarationGeneral] = "declarationGeneral"
             [data]="declarations.origin['600']"
             (onChange)="handleChangeTable($event, 'increaselabor')"
+            (onFormChange)="handleFormChange($event)"
             (onHiddenSidebar)="handleHiddenSidebar($event)"
           ></app-increase>
         </nz-tab>

@@ -29,6 +29,7 @@ export class FamiliesListTableComponent implements OnInit, OnDestroy, OnChanges,
   private eventsSubscription: Subscription;
   private handlers = [];
   private timer;
+  private validateTimer;
 
   constructor(private element: ElementRef) {}
 
@@ -51,6 +52,7 @@ export class FamiliesListTableComponent implements OnInit, OnDestroy, OnChanges,
     jexcel.destroy(this.spreadsheetEl.nativeElement, true);
     this.eventsSubscription.unsubscribe();
     if (this.timer) clearTimeout(this.timer);
+    clearTimeout(this.validateTimer);
 
     eventEmitter.destroy(this.handlers);
   }
@@ -224,7 +226,13 @@ export class FamiliesListTableComponent implements OnInit, OnDestroy, OnChanges,
   }
 
   private validationCellByOtherCell(cellValue, column, y, instance, records) {
-    setTimeout(() => {
+    clearTimeout(this.validateTimer);
+
+    this.validateTimer = setTimeout(() => {
+      const row = records[y];
+
+      if (!(row.origin && row.origin.isMaster)) return;
+
       let x;
       let otherX;
       if (column.key === 'relationshipFullName' || column.key === 'fullName') {
@@ -243,7 +251,7 @@ export class FamiliesListTableComponent implements OnInit, OnDestroy, OnChanges,
 
         const xValue = records[y][x];
         const otherXValue = records[y][otherX];
-
+        console.log(records, y, xValue, otherXValue, 'XXXXX');
         if (xValue !== otherXValue) {
           instance.jexcel.setCellError(fieldName, x, y, { duplicateOtherField: otherXValue }, { duplicateOtherField: false }, true);
           instance.jexcel.setCellError(fieldName, otherX, y, { duplicateOtherField: xValue }, { duplicateOtherField: false }, true);

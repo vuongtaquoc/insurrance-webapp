@@ -88,8 +88,8 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let data of ajaxTable.data">
-          <td>1</td>
+        <tr *ngFor="let data of ajaxTable.data;index as i">
+          <td>{{i + 1}}</td>
           <td>{{ data.company }}</td>
           <td>{{ data.contractNo }}</td>
           <td>{{ data.numberMonth }}</td>

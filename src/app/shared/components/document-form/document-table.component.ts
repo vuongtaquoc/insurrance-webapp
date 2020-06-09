@@ -18,7 +18,6 @@ export class DocumentTableComponent implements OnInit, OnDestroy, OnChanges {
   ) {}
 
   ngOnInit() {
-    console.log(this.data);
   }
 
   ngOnDestroy() {

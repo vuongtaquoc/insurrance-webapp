@@ -95,13 +95,18 @@ export class DocumentListTableComponent implements OnInit, OnDestroy, OnChanges,
     this.spreadsheet.setData(this.data);
   }
 
-  private handleEvent(type) {
-    if (type === 'validate') {
+  private handleEvent(eventData) {
+    if (eventData.type === 'validate') {
       setTimeout(() => {
-        eventEmitter.emit('labor-table-editor:validate', {
+        const data = Object.values(this.spreadsheet.getJson());
+        const leaf = true;
+        const initialize = true;
+        eventEmitter.emit(eventData.tableEvent, {
           name: this.tableName,
           isValid: this.spreadsheet.isTableValid(),
-          errors: this.spreadsheet.getTableErrors()
+          errors: this.spreadsheet.getTableErrors(),
+          leaf,
+          initialize
         });
       }, 10);
       return;

@@ -104,7 +104,7 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
       submitter: ['', Validators.required],
       mobile: ['', Validators.required],
     });
-    console.log(moment("01/01/2001").format("DD MMM YYYY"));
+    
     this.declarationName = this.getDeclaration(this.declarationCode).value;
     //Init data families table editor
     forkJoin([
@@ -128,6 +128,8 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
       this.updateFilterToColumn(this.tableHeaderColumnsFamilies, 'relationshipCode', this.getRelationShips);
     
     //End Init data families table editor
+      this.currentCredentials = this.authenticationService.currentCredentials;
+
       if (this.declarationId) {
         this.declarationService.getDeclarationsByDocumentIdByGroup(this.declarationId).subscribe(declarations => {
           this.documentForm.patchValue({
@@ -153,10 +155,10 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
         this.declarationService.getDeclarationInitialsByGroup(this.declarationCode).subscribe(data => {
           this.declarations.origin = data;
         });
-        const currentCredentials = this.authenticationService.currentCredentials;
+        
         this.documentForm.patchValue({
-          submitter: currentCredentials.companyInfo.delegate,
-          mobile: currentCredentials.companyInfo.mobile
+          submitter: this.currentCredentials.companyInfo.delegate,
+          mobile: this.currentCredentials.companyInfo.mobile
         });
 
         this.declarationGeneral = {
@@ -184,9 +186,16 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
   handleChangeTable(data, tableName) {
     this.declarations.tables[tableName] = this.declarations[tableName] || {};
     this.declarations.tables[data.tableName]= data.data;
+
+    if (data.action === ACTION.EDIT) {
+      this.setDateToInformationList(this.declarations.tables);
+    }
+
+    this.notificeEventValidData('documentList');
+
     if(tableName !== 'increaselabor') {
       return '';     
-    }
+    }  
 
     if (data.action === ACTION.DELETE) {
       this.deleteEmployeeInFamilies(data.data, data.dataChange);
@@ -198,13 +207,9 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
 
     if (data.action === ACTION.MUNTILEADD) {
       this.setDataToFamilyEditor(data.data);
-    }
+    }    
 
-    if (data.action === ACTION.EDIT) {
-      this.setDateToInformationList(data.data);
-    }
-
-    this.notificeEventValidData();
+    this.notificeEventValidData('family');
   }
    
   handleFormValuesChanged(data) {
@@ -233,6 +238,7 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
       },
       0
     );
+    console.log(this.tableErrors);
     if (count > 0) {
       return this.modalService.error({
         nzTitle: 'Lỗi dữ liệu. Vui lòng sửa!',
@@ -251,11 +257,11 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
         }
       });
     }
-    if (this.declarationId) {
-      this.update(type);
-    } else {
-      this.create(type);
-    }
+    // if (this.declarationId) {
+    //   this.update(type);
+    // } else {
+    //   this.create(type);
+    // }
 
   }
 
@@ -436,7 +442,7 @@ handleChangeDataFamilies({ instance, cell, c, r, records, columns }) {
 
   });
   
-  this.notificeEventValidData();
+  this.notificeEventValidData('family');
 
 }
 
@@ -483,13 +489,12 @@ handleAddMember({ rowNumber, numOfRows, beforeRowIndex, afterRowIndex, options, 
   families.splice(insertBefore ? rowNumber : rowNumber + 1, 0, row);
 
   this.families = families;
-  this.notificeEventValidData();
+  this.notificeEventValidData('family');
 }
 
 
 private getEmployeeInDeclarations(records: any) {
   const employeesInDeclaration = [];
-  
   records.forEach(record => {
     const declarations = record.declarations;
     declarations.forEach(declaration => {
@@ -499,6 +504,8 @@ private getEmployeeInDeclarations(records: any) {
           employeeId: declaration.employeeId,
           isLeaf:true,
           isMaster: false,
+          declarationCode: record.code,
+          category: record.category,
         };
 
         declaration.conditionValid = declaration.relationshipFullName;
@@ -737,10 +744,10 @@ private setDataToFamilyEditor(records: any)
     this.families = families;
   }
 
-  private notificeEventValidData() {
+  private notificeEventValidData(tableName) {
 
     this.tableSubject.next({
-      tableName: 'families', 
+      tableName: tableName, 
       type: 'validate',
       tableEvent: this.eventValidData
     });
@@ -761,6 +768,10 @@ private setDataToFamilyEditor(records: any)
     });
 
     return families;
+  }
+
+  handleFormChange(data) {
+    console.log(data,'FORM');
   }
 
 // End Families tab
@@ -785,40 +796,71 @@ getDocumentByPlancode(planCode: string) {
 
 private setDateToInformationList(records: any)
 {
-  const employeesInDeclaration = this.getEmployeeInDeclarations(records);
-  console.log(employeesInDeclaration);
+  const declarations = this.tablesToApi(records);
+  const employeesInDeclaration = this.getEmployeeInDeclarations(declarations);
   const informations = [];
-  records.forEach(emp => {
-    const documents = this.getDocumentByPlancode(emp.planCode);
 
-    if(!documents) {
+  employeesInDeclaration.forEach(emp => {
+    
+    const fromDate = this.getFromDate(emp.fromDate);
+    const curentDate = new Date();
+    const  numberFromDate = (fromDate.getMonth() + 1 + fromDate.getFullYear());
+    const  numberCurentDate = (curentDate.getMonth() + 1 + curentDate.getFullYear());
+    if(numberFromDate >= numberCurentDate) 
+    {
       return;
     }
 
-    documents.forEach(doc => {
+    const documents = this.getDocumentByPlancode(emp.planCode);
+    console.log(documents,'ssssssss');
+
+    if(!documents) {
+
       let item = {
         fullName: emp.fullName,
         isurranceNo: emp.isurranceNo,
         documentNo: '',
         dateRelease: '',
         isurranceCode: emp.isurranceCode,
-        documentType: doc.documentName,
+        documentType: '',
         companyRelease: this.currentCredentials.companyInfo.name,
-        documentNote: doc.documentNote,
-        documentAppraisal: ('Truy tăng ' + emp.fullName + ' từ ' + emp.fromDate),
+        documentNote: '',
+        //documentAppraisal: ('Truy tăng ' + emp.fullName + ' từ ' + emp.fromDate),
         origin: {
           employeeId: emp.employeeId,
           isLeaf: true,
         }
       };
-      if(doc.isContract) {
-        item.documentNo = emp.contractNo;
-        item.dateRelease =  emp.dateSign;
-      }else {
-        item.documentNo = emp.fromDate;
-      }
       informations.push(item);
-    });
+
+    }else {
+
+      documents.forEach(doc => {
+        let item = {
+          fullName: emp.fullName,
+          isurranceNo: emp.isurranceNo,
+          documentNo: '',
+          dateRelease: '',
+          isurranceCode: emp.isurranceCode,
+          documentType: doc.documentName,
+          companyRelease: this.currentCredentials.companyInfo.name,
+          documentNote: doc.documentNote,
+          documentAppraisal: ('Truy tăng ' + emp.fullName + ' từ ' + emp.fromDate),
+          origin: {
+            employeeId: emp.employeeId,
+            isLeaf: true,
+          }
+        };
+        if(doc.isContract) {
+          item.documentNo = emp.contractNo;
+          item.dateRelease =  emp.dateSign;
+        }else {
+          item.documentNo = emp.fromDate;
+        }
+        informations.push(item);
+      });
+
+    }
 
     informations.forEach(p => {
       p.data = this.tableHeaderColumnsDocuments.map(column => {
@@ -831,6 +873,34 @@ private setDateToInformationList(records: any)
   });
 
   this.informations = informations;
+  }
+
+  handleChangeInfomation({ records, columns }) {
+
+    //update families
+    this.informations.forEach((d: any, index) => {
+      const record = records[index];
+      //update data on Jexcel
+      Object.keys(record).forEach(index => {
+        d.data[index] = record[index];
+      });
+      //update data object source
+      columns.map((column, index) => {
+        d[column.key] = record[index];
+      });
+
+    });
+
+    this.notificeEventValidData('documentList');
+  }
+
+
+  private getFromDate(dateOf) {
+    const fullDate = '01/' + dateOf;
+    if(!moment(fullDate,"DD/MM/YYYY")) {
+      return new Date();
+    }
+    return moment(fullDate,"DD/MM/YYYY").toDate();
   }
 // End Document list Tab
 }

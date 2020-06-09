@@ -19,6 +19,7 @@ export class GeneralBaseComponent {
   @Input() declarationGeneral: any = {};
   @Output() onChange: EventEmitter<any> = new EventEmitter();
   @Output() onHiddenSidebar: EventEmitter<any> = new EventEmitter();
+  @Output() onFormChange: EventEmitter<any> = new EventEmitter();
   headers: any = {
     increaselabor: {
       nested: [],
@@ -53,7 +54,7 @@ export class GeneralBaseComponent {
   validateSubject: Subject<any> = new Subject<any>();
   isHiddenSidebar = false;
   currentCredentials: any = {};
-
+  isBlinking = false;
   constructor(
     protected declarationService: DeclarationService,
     protected modalService: NzModalService,
@@ -86,7 +87,19 @@ export class GeneralBaseComponent {
         // replace
         employee.gender = !employee.gender;
         employee.workAddress = this.currentCredentials.companyInfo.address;
-        //
+
+        //copy salary
+        if(tableName === 'adjustment') {
+          employee.allowanceAdditionalNew = employee.allowanceAdditional;
+          employee.allowanceLevelNew = employee.allowanceLevel;
+          employee.allowanceOtherNew = employee.allowanceOther;
+          employee.allowanceSalaryNew = employee.allowanceSalary;
+          employee.allowanceSeniorityNew = employee.allowanceSeniority;
+          employee.allowanceSeniorityJobNew = employee.allowanceSeniorityJob;
+          employee.salaryNew = employee.salary;
+          employee.ratioNew = employee.ratio;
+        }
+
         if (accepted) {
           if (declarations[childLastIndex].isInitialize) {
             // remove initialize data
@@ -139,6 +152,14 @@ export class GeneralBaseComponent {
       type: 'readonly',
       data: this.declarations.table
     });
+  }
+
+  handleFocus() {
+    if (!this.employeeSelected.length) return;
+
+    this.isBlinking = true;
+    console.log('OK');
+    setTimeout(() => this.isBlinking = false, 5000);
   }
 
   handleSelectEmployees(employees) {

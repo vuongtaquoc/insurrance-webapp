@@ -19,6 +19,7 @@ import { eventEmitter } from '@app/shared/utils/event-emitter';
   encapsulation: ViewEncapsulation.None
 })
 export class IncreaseComponent extends GeneralBaseComponent implements OnInit, OnChanges {
+  
   panel: any = {
     general: { active: false },
     attachment: { active: false }
@@ -211,7 +212,7 @@ export class IncreaseComponent extends GeneralBaseComponent implements OnInit, O
   }
 
   handleFormValuesChanged(data) {
-    eventEmitter.emit('labor-general-form:change', data);
+    this.onFormChange.emit(data);
   }
 
 }

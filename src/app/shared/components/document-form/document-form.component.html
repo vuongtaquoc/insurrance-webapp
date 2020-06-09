@@ -21,7 +21,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let data of ajaxTable.data">
+        <tr *ngFor="let data of ajaxTable.data;">
           <td>{{ data.declaretionName }}</td>
           <td class="text-center">
             <a (click)="downloadFile(data)" *ngIf="!data.isDownloading">

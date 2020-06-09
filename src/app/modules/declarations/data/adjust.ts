@@ -390,12 +390,18 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   type: 'numeric',
   width: 100,
   title: '(23.1)',
-  key: 'contractNo'
+  key: 'contractNo',
+  validations: {
+    required: true
+  }
 }, {
   type: 'text',
   width: 100,
   title: '(23.2)',
-  key: 'dateSign'
+  key: 'dateSign',
+  validations: {
+    required: true
+  }
 },
 {
   type: 'text',
