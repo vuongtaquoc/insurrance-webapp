@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NzModalService } from 'ng-zorro-antd/modal';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 import { EmployeeService } from '@app/core/services';
 import { EmployeeFormComponent } from '@app/shared/components';
@@ -32,6 +33,7 @@ export class EmployeeListComponent implements OnInit {
 
   constructor(
     private modalService: NzModalService,
+    private messageService: NzMessageService,
     private employeeService: EmployeeService
   ) {}
 
@@ -74,14 +76,14 @@ export class EmployeeListComponent implements OnInit {
 
     this.isSpinning = true;
     this.employeeService.getPressCreate().subscribe(data => {
-      const employee = 
+      const employee =
       {
         ratio: data.ratioInsurrance.ratio,
         rate: data.ratioInsurrance.bhxh,
         paymentMethodCode: data.ratioInsurrance.month,
         orders: data.order
       }
-      
+
       this.isSpinning = false;
       const modal = this.modalService.create({
         nzWidth: 980,
@@ -125,6 +127,9 @@ export class EmployeeListComponent implements OnInit {
   delete(employeeId) {
     this.employeeService.delete(employeeId).subscribe(() => {
       this.getEmployees(this.skip);
+    },
+    (err) => {
+      this.messageService.create('error', err.message)
     });
   }
 }

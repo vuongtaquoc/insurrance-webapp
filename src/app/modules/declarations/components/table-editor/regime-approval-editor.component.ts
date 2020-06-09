@@ -232,63 +232,78 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
       number: true,
       min: 0,
     };
+    const planCode = {
+      required: true
+    };
     const validationColumns: any = {
       'II': {
-        childrenWeekOld
+        childrenWeekOld,
+        planCode
       },
       'III_1': {
         childrenWeekOld,
+        planCode,
         childrenBirthday: {
           required: true
         }
       },
       'III_2': {
         childrenWeekOld,
+        planCode,
         childrenDayDead: {
           required: true
         }
       },
       'III_3': {
         childrenWeekOld,
+        planCode,
         motherDayDead: {
           required: true
         }
       },
       'IV': {
-        childrenWeekOld
+        childrenWeekOld,
+        planCode,
       },
       'V_1': {
         childrenWeekOld,
+        planCode,
         childrenBirthday: {
           required: true
         }
       },
       'V_2': {
         childrenWeekOld,
+        planCode,
         childrenDayDead: {
           required: true
         }
       },
       'VI_1': {
         childrenWeekOld,
+        planCode,
         childrenBirthday: {
           required: true
         }
       },
       'VI_2': {
         childrenWeekOld,
+        planCode,
         childrenDayDead: {
           required: true
         }
       },
       'VII': {
-        childrenWeekOld
+        childrenWeekOld,
+        planCode,
       },
       'VIII': {
-        childrenWeekOld
+        childrenWeekOld,
+        planCode,
       },
       'IX': {
-        childrenWeekOld
+        childrenWeekOld,
+        planCode,
       }
     };
     const readonlyColumns = {

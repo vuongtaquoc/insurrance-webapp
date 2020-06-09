@@ -65,6 +65,7 @@ export class PluploadDirective {
         uploader.removeFile(file);
       }
     });
+    this.onSelectedFileChanged.emit(files[0]);
   }
 
   private fileUploaded(uploader, file, result) {

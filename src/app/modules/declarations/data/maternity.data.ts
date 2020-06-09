@@ -310,9 +310,9 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   title: '(D)',
   key: 'planCode',
   fieldName: 'Phương án',
-  validations: {
-    required: true
-  }
+  // validations: {
+  //   required: true
+  // }
 }, {
   type: 'text',
   width: 180,
