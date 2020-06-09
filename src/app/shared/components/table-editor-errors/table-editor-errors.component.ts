@@ -9,7 +9,12 @@ const TABLES = {
   sicknessesPart1: 'Ốm đau - Phần 1',
   sicknessesPart2: 'Ốm đau - Phần 2',
   healthRecoveryPart1: 'Sức khỏe - Phần 1',
-  healthRecoveryPart2: 'Sức khỏe - Phần 2'
+  healthRecoveryPart2: 'Sức khỏe - Phần 2',
+  increaselabor601: 'D02-TS Tăng',
+  reductionlabor601: 'D02-TS Giảm',
+  adjustment601: 'D02-TS Điều chỉnh',
+  family601: 'PL TVHGD-NLD',
+  documentList601: 'Bảng kê hồ sơ',
 };
 
 @Component({

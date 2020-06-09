@@ -9,19 +9,19 @@
   <div class="page-declarations__content">
     <div class="page-declarations__group-button">
       <div class="page-declarations__buttons">
-        <button class="page-declarations__button" nz-button nzType="default" (click)="handleAddEmployee('II_1','reductionlabor')">
+        <button class="page-declarations__button" [ngClass]="{'flash-button': isBlinking}" nz-button nzType="default" (click)="handleAddEmployee('II_1','reductionlabor')">
           <i nz-icon nzType="arrow-down"></i>Giảm lao động
         </button>
-        <button class="page-declarations__button" nz-button nzType="default" (click)="handleAddEmployee('II_2','reductionlabor')">
+        <button class="page-declarations__button" [ngClass]="{'flash-button': isBlinking}" nz-button nzType="default" (click)="handleAddEmployee('II_2','reductionlabor')">
           <i nz-icon nzType="arrow-down"></i>Giảm BHYT
         </button>
-        <button class="page-declarations__button" nz-button nzType="default" (click)="handleAddEmployee('II_3','reductionlabor')">
+        <button class="page-declarations__button" [ngClass]="{'flash-button': isBlinking}" nz-button nzType="default" (click)="handleAddEmployee('II_3','reductionlabor')">
           <i nz-icon nzType="arrow-down"></i>Giảm BHTN
         </button>
-        <button class="page-declarations__button" nz-button nzType="default" (click)="handleAddEmployee('III','reductionlabor')">
+        <button class="page-declarations__button" [ngClass]="{'flash-button': isBlinking}" nz-button nzType="default" (click)="handleAddEmployee('III','reductionlabor')">
           <i nz-icon nzType="arrow-down"></i>Giảm BHTNLĐ, BNN
         </button>
-        <button class="page-declarations__button" nz-button nzType="default" (click)="handleAddEmployee('I_1','reductionlabor')">
+        <button class="page-declarations__button" [ngClass]="{'flash-button': isBlinking}" nz-button nzType="default" (click)="handleAddEmployee('I_1','reductionlabor')">
           <i nz-icon nzType="arrow-up"></i>Tăng BHYT
         </button>
       </div>

@@ -9,19 +9,19 @@
   <div class="page-declarations__content">
     <div class="page-declarations__group-button">
       <div class="page-declarations__buttons">
-        <button class="page-declarations__button" nz-button nzType="default" (click)="handleAddEmployee('I_1', 'increaselabor')">
+        <button class="page-declarations__button" [ngClass]="{'flash-button': isBlinking}" nz-button nzType="default" (click)="handleAddEmployee('I_1', 'increaselabor')">
           <i nz-icon nzType="arrow-up"></i>Tăng lao động
         </button>
-        <button class="page-declarations__button" nz-button nzType="default" (click)="handleAddEmployee('I_2','increaselabor')">
+        <button class="page-declarations__button" [ngClass]="{'flash-button': isBlinking}" nz-button nzType="default" (click)="handleAddEmployee('I_2','increaselabor')">
           <i nz-icon nzType="arrow-up"></i>Tăng BHYT
         </button>
-        <button class="page-declarations__button" nz-button nzType="default" (click)="handleAddEmployee('I_3','increaselabor')">
+        <button class="page-declarations__button" [ngClass]="{'flash-button': isBlinking}" nz-button nzType="default" (click)="handleAddEmployee('I_3','increaselabor')">
           <i nz-icon nzType="arrow-up"></i>Tăng BHTN
         </button>
-        <button class="page-declarations__button" nz-button nzType="default" (click)="handleAddEmployee('II_2','increaselabor')">
+        <button class="page-declarations__button" [ngClass]="{'flash-button': isBlinking}" nz-button nzType="default" (click)="handleAddEmployee('II_2','increaselabor')">
           <i nz-icon nzType="arrow-up"></i>Tăng BHTNLĐ, BNN
         </button>
-        <button class="page-declarations__button" nz-button nzType="default" (click)="handleAddEmployee('II_1','increaselabor')">
+        <button class="page-declarations__button" [ngClass]="{'flash-button': isBlinking}" nz-button nzType="default" (click)="handleAddEmployee('II_1','increaselabor')">
           <i nz-icon nzType="arrow-down"></i>Giảm BHYT
         </button>
       </div>

@@ -285,7 +285,11 @@ export const TABLE_HEADER_COLUMNS = [{
   mask: '# ##0',
   decimal: ',',
   sum: true,
-  key: 'allowanceSalary'
+  key: 'allowanceSalary',
+  fieldName: 'Phụ cấp lương',
+  validations: {
+    number: true
+  }
 }, {
   type: 'numeric',
   width: 80,
@@ -293,7 +297,11 @@ export const TABLE_HEADER_COLUMNS = [{
   mask: '# ##0',
   decimal: ',',
   sum: true,
-  key: 'allowanceAdditional'
+  key: 'allowanceAdditional',
+  fieldName: 'Các khoản bổ sung',
+  validations: {
+    number: true
+  }
 }, {
   type: 'numeric',
   width: 80,
@@ -301,7 +309,11 @@ export const TABLE_HEADER_COLUMNS = [{
   mask: '# ##0',
   decimal: ',',
   sum: true,
-  key: 'allowanceLevel'
+  key: 'allowanceLevel',
+  fieldName: 'Chức vụ',
+  validations: {
+    number: true
+  }
 }, {
   type: 'numeric',
   width: 70,
@@ -341,8 +353,7 @@ export const TABLE_HEADER_COLUMNS = [{
   key: 'fromDate',
   fieldName: 'Từ tháng, năm',
   validations: {
-    required: true,
-    lessThanNow: true
+    required: true
   },
   isCalendar: true
 }, {

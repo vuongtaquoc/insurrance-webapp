@@ -24,6 +24,7 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
   @Output() onSubmit: EventEmitter<any> = new EventEmitter();
   @Output() onDelete: EventEmitter<any> = new EventEmitter();
   @Output() onAddRow: EventEmitter<any> = new EventEmitter();
+  @Output() onFocus: EventEmitter<any> = new EventEmitter();
 
   spreadsheet: any;
   isInitialized = false;
@@ -31,7 +32,7 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
   private eventsSubscription: Subscription;
   private handlers = [];
   private timer;
-
+  private validateTimer;
   constructor(
   ) {
 
@@ -56,7 +57,7 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
     jexcel.destroy(this.spreadsheetEl.nativeElement, true);
     this.eventsSubscription.unsubscribe();
     if (this.timer) clearTimeout(this.timer);
-
+    clearTimeout(this.validateTimer);
     eventEmitter.destroy(this.handlers);
   }
 
@@ -79,6 +80,9 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
       columnSorting: false,
       freezeColumns: 1,
       defaultColAlign: 'left',
+      onfocus: () => {
+        this.onFocus.emit();
+      },
       onchange: (instance, cell, c, r, value) => {
         this.onChange.emit({
           instance, cell, c, r, value,
@@ -93,6 +97,7 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
 
           instance.jexcel.setValue(nextColumn, '');
         }
+        console.log(this.tableName);
 
       },
       ondeleterow: (el, rowNumber, numOfRows) => {
@@ -246,5 +251,43 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
         });
       }, 10);
     }
-  }   
+  }
+  
+  private validationCellByOtherCell(cellValue, column, y, instance, records) {
+    clearTimeout(this.validateTimer);
+
+    this.validateTimer = setTimeout(() => {
+      const row = records[y];
+
+      if (!(row.origin && row.origin.isMaster)) return;
+
+      let x;
+      let otherX;
+      if (column.key === 'relationshipFullName' || column.key === 'fullName') {
+        if (column.key === 'relationshipFullName') {
+          x = this.columns.findIndex(c => c.key === 'relationshipFullName');
+          otherX = this.columns.findIndex(c => c.key === 'fullName');
+        } else if (column.key === 'fullName') {
+          x = this.columns.findIndex(c => c.key === 'fullName');
+          otherX = this.columns.findIndex(c => c.key === 'relationshipFullName');
+        }
+
+        const fieldName = {
+          name: column.key === 'relationshipFullName' ? 'Chủ hộ' : 'Họ và tên',
+          otherName: column.key === 'relationshipFullName' ? 'Họ và tên' : 'Chủ hộ'
+        };
+
+        const xValue = records[y][x];
+        const otherXValue = records[y][otherX];
+        if (xValue !== otherXValue) {
+          instance.jexcel.setCellError(fieldName, x, y, { duplicateOtherField: otherXValue }, { duplicateOtherField: false }, true);
+          instance.jexcel.setCellError(fieldName, otherX, y, { duplicateOtherField: xValue }, { duplicateOtherField: false }, true);
+        } else {
+          instance.jexcel.setCellError(fieldName, x, y, { duplicateOtherField: otherXValue }, { duplicateOtherField: true }, false);
+          instance.jexcel.setCellError(fieldName, otherX, y, { duplicateOtherField: xValue }, { duplicateOtherField: true }, false);
+        }
+      }
+    }, 10)
+
+  }
 }

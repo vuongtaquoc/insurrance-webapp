@@ -118,6 +118,7 @@ export const TABLE_FAMILIES_HEADER_COLUMNS = [{
 }, {
   type: 'dropdown',
   autocomplete: true,
+  defaultLoad: true,
   width: 100,
   title: '(8.4)',
   source: [],

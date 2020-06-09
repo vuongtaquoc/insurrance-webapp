@@ -176,6 +176,9 @@ export class RegimeApprovalBaseComponent {
 
   handleSelectEmployees(employees) {
     this.employeeSelected = employees;
+    if (!this.employeeSelected.length) return;
+   
+    this.isBlinking = true;
   }
 
   handleChangeTable({ instance, cell, c, r, records }, part) {
@@ -298,7 +301,7 @@ export class RegimeApprovalBaseComponent {
 
   handleFocus() {
     if (!this.employeeSelected.length) return;
-    console.log('OK');
+   
     this.isBlinking = true;
 
     setTimeout(() => this.isBlinking = false, 5000);

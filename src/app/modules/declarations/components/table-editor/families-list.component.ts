@@ -251,7 +251,6 @@ export class FamiliesListTableComponent implements OnInit, OnDestroy, OnChanges,
 
         const xValue = records[y][x];
         const otherXValue = records[y][otherX];
-        console.log(records, y, xValue, otherXValue, 'XXXXX');
         if (xValue !== otherXValue) {
           instance.jexcel.setCellError(fieldName, x, y, { duplicateOtherField: otherXValue }, { duplicateOtherField: false }, true);
           instance.jexcel.setCellError(fieldName, otherX, y, { duplicateOtherField: xValue }, { duplicateOtherField: false }, true);

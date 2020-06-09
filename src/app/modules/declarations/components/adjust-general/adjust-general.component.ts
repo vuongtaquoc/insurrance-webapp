@@ -174,7 +174,7 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
       this.handler = eventEmitter.on(this.eventValidData, ({ name, isValid, leaf, initialize, errors }) => {
         this.allInitialize[name] = leaf.length === initialize.length;
         this.isTableValid = Object.values(this.allInitialize).indexOf(false) === -1 ? false : true;
-        this.tableErrors[name] = errors;
+        this.tableErrors[name + this.declarationCode] = errors;
       });
     });
   }
@@ -238,7 +238,6 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
       },
       0
     );
-    console.log(this.tableErrors);
     if (count > 0) {
       return this.modalService.error({
         nzTitle: 'Lỗi dữ liệu. Vui lòng sửa!',

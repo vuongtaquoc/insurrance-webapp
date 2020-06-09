@@ -155,15 +155,21 @@ export class GeneralBaseComponent {
   }
 
   handleFocus() {
-    if (!this.employeeSelected.length) return;
 
+    if (!this.employeeSelected.length) return;
     this.isBlinking = true;
-    console.log('OK');
+    
     setTimeout(() => this.isBlinking = false, 5000);
   }
 
   handleSelectEmployees(employees) {
+  
     this.employeeSelected = employees;
+    
+    if (!this.employeeSelected.length) return;
+    this.isBlinking = true;
+    
+    setTimeout(() => this.isBlinking = false, 5000);
   }
 
   handleChangeTable({ instance, cell, c, r, records }, tableName) {
@@ -219,14 +225,6 @@ export class GeneralBaseComponent {
       row.parentKey = afterRow.parentKey;
       row.planType = afterRow.planType;
     }
-
-    // if (beforeRow.isInitialize) {
-    //   beforeRow.isInitialize = false;
-    // }
-
-    // if (afterRow.isInitialize) {
-    //   afterRow.isInitialize = false;
-    // }
 
     declarations.splice(insertBefore ? rowNumber : rowNumber + 1, 0, row);
 

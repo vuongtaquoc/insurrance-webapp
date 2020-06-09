@@ -220,7 +220,11 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   mask: '# ##0',
   decimal: ',',
   sum: true,
-  key: 'salary'
+  key: 'salary',
+  fieldName: 'Mức lương',
+  validations: {
+    number: true
+  }
 }, {
   type: 'numeric',
   width: 80,
@@ -228,7 +232,11 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   mask: '# ##0',
   decimal: ',',
   sum: true,
-  key: 'ratio'
+  key: 'ratio',
+  fieldName: 'Hệ số',
+  validations: {
+    number: true
+  }
 }, {
   type: 'numeric',
   width: 80,
@@ -236,7 +244,11 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   mask: '# ##0',
   decimal: ',',
   sum: true,
-  key: 'allowanceSalary'
+  key: 'allowanceSalary',
+  fieldName: 'Các khoản bổ sung',
+  validations: {
+    number: true
+  }
 }, {
   type: 'numeric',
   width: 80,
@@ -276,6 +288,7 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   width: 80,
   title: '(17.8)',
   mask: '# ##0',
+  fieldName: 'Chênh lệch bảo lưu',
   decimal: ',',
   sum: true,
   key: 'allowanceOther',
@@ -321,7 +334,10 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   mask: '# ##0',
   decimal: ',',
   sum: true,
-  key: 'allowanceLevelNew'
+  key: 'allowanceLevelNew',
+  validations: {
+    number: true
+  }
 }, {
   type: 'numeric',
   width: 70,
