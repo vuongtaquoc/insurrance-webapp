@@ -52,7 +52,7 @@ export class ReductionComponent extends GeneralBaseComponent implements OnInit, 
     this.getHospitalsByCityCode = this.getHospitalsByCityCode.bind(this);
     this.getPlanByParent = this.getPlanByParent.bind(this);
     this.getRegisterDistrictsByCityCode = this.getRegisterDistrictsByCityCode.bind(this);
-  } 
+  }
 
   ngOnInit() {
     const currentCredentials = this.authenticationService.currentCredentials;
@@ -86,6 +86,7 @@ export class ReductionComponent extends GeneralBaseComponent implements OnInit, 
       this.updateFilterToColumn(TABLE_REDUCTION_HEADER_COLUMNS, 'planCode', this.getPlanByParent);
     });
 
+    this.tabSubscription = this.tabEvents.subscribe((data) => this.handleTabChanged(data));
   }
 
   ngOnChanges(changes) {
@@ -94,7 +95,10 @@ export class ReductionComponent extends GeneralBaseComponent implements OnInit, 
       this.declarations.reductionlabor.table = data;
     }
   }
-  
+
+  ngOnDestroy() {
+    this.tabSubscription.unsubscribe();
+  }
 
   private getRegisterDistrictsByCityCode(instance, cell, c, r, source) {
     const value = instance.jexcel.getValueFromCoords(c - 1, r);
@@ -149,7 +153,7 @@ export class ReductionComponent extends GeneralBaseComponent implements OnInit, 
 
       return districts;
     });
-  }   
+  }
 
   private getHospitalsByCityCode(instance, cell, c, r, source) {
     const value = instance.jexcel.getValueFromCoords(c - 5, r);

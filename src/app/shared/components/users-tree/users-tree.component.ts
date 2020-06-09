@@ -12,6 +12,7 @@ import { EmployeeService } from '@app/core/services';
 export class UsersTreeComponent implements OnInit, OnDestroy {
   @Input() events: Observable<any>;
   @Output() onSelectEmployees = new EventEmitter();
+  @Output() onEditEmployee = new EventEmitter();
 
   employees: any[];
   searchValue = '';
@@ -73,7 +74,7 @@ export class UsersTreeComponent implements OnInit, OnDestroy {
     this.onSelectEmployees.emit(selected);
   }
 
-  doubleClick(value) {
-    console.log(value)
+  editUser(origin) {
+    this.onEditEmployee.emit(origin);
   }
 }

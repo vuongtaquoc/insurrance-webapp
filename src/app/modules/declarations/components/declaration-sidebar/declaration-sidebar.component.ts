@@ -79,36 +79,13 @@ export class DeclarationSidebarComponent implements OnInit, OnDestroy {
       });
     }
 
-    this.isSpinning = true;
     const selected = this.employeeSelected[0];
 
-    this.employeeService.getEmployeeById(selected.id).subscribe(employee => {
-      this.isSpinning = false;
-      const modal = this.modalService.create({
-        nzWidth: 980,
-        nzWrapClassName: 'employee-modal',
-        nzTitle: 'Chỉnh sửa thông tin người lao động',
-        nzContent: EmployeeFormComponent,
-        nzOnOk: (data) => console.log('Click ok', data),
-        nzComponentParams: {
-          employee
-        }
-      });
+    this.edit(selected);
+  }
 
-      modal.afterClose.subscribe(result => {
-        this.employeeSubject.next({
-          type: 'edit',
-          status: 'success'
-        });
-
-        this.modalService.confirm({
-          nzTitle: 'Bạn muốn cập nhật thông tin NLĐ trong hồ sơ?',
-          nzOkText: 'Cập nhật',
-          nzCancelText: 'Hủy',
-          nzOnOk: () => this.onUserUpdated.emit(result)
-        });
-      });
-    });
+  handleEditEmployee(selected) {
+    this.edit(selected);
   }
 
   deleteEmployee() {
@@ -167,6 +144,40 @@ export class DeclarationSidebarComponent implements OnInit, OnDestroy {
     this.employeeSubject.next({
       type: 'refesh',
       status: 'success'
+    });
+  }
+
+  private edit(selected) {
+    this.isSpinning = true;
+
+    this.employeeService.getEmployeeById(selected.id).subscribe(employee => {
+      this.isSpinning = false;
+      const modal = this.modalService.create({
+        nzWidth: 980,
+        nzWrapClassName: 'employee-modal',
+        nzTitle: 'Chỉnh sửa thông tin người lao động',
+        nzContent: EmployeeFormComponent,
+        nzOnOk: (data) => console.log('Click ok', data),
+        nzComponentParams: {
+          employee
+        }
+      });
+
+      modal.afterClose.subscribe(result => {
+        if (!result) return;
+
+        this.employeeSubject.next({
+          type: 'edit',
+          status: 'success'
+        });
+
+        this.modalService.confirm({
+          nzTitle: 'Bạn muốn cập nhật thông tin NLĐ trong hồ sơ?',
+          nzOkText: 'Cập nhật',
+          nzCancelText: 'Hủy',
+          nzOnOk: () => this.onUserUpdated.emit(result)
+        });
+      });
     });
   }
 }

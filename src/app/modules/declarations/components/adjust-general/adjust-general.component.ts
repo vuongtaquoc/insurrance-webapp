@@ -30,6 +30,13 @@ import { TABLE_FAMILIES_NESTED_HEADERS, TABLE_FAMILIES_HEADER_COLUMNS } from '@a
 import { TABLE_DOCUMENT_NESTED_HEADERS, TABLE_DOCUMENT_HEADER_COLUMNS } from '@app/modules/declarations/data/document-list-editor.data';
 
 import { Router } from '@angular/router';
+
+const TAB_NAMES = {
+  1: 'increase',
+  2: 'reduction',
+  3: 'adjustment'
+};
+
 @Component({
   selector: 'app-adjust-general',
   templateUrl: './adjust-general.component.html',
@@ -44,9 +51,9 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
   documentForm: FormGroup;
   documentList: DocumentList[] = [];
   isHiddenSidebar = false;
-  declarationCode: string = '601';  
-  declarationName: string;  
-  selectedTabIndex: number = 1; 
+  declarationCode: string = '601';
+  declarationName: string;
+  selectedTabIndex: number = 1;
   eventValidData = 'adjust-general:validate';
   handler: any;
   isTableValid = false;
@@ -71,7 +78,7 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
   tableNestedHeadersDocuments: any[] = TABLE_DOCUMENT_NESTED_HEADERS;
   tableHeaderColumnsDocuments: any[] = TABLE_DOCUMENT_HEADER_COLUMNS;
   tableSubject: Subject<any> = new Subject<any>();
-
+  tabSubject: Subject<any> = new Subject<any>();
 
   constructor(
     private formBuilder: FormBuilder,
@@ -88,7 +95,7 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
     private wardService: WardsService,
     private villageService: VillageService
   ) {
-    
+
     this.getRelationshipDistrictsByCityCode = this.getRelationshipDistrictsByCityCode.bind(this);
     this.getRelationshipWardsByDistrictCode = this.getRelationshipWardsByDistrictCode.bind(this);
     this.getRecipientsVillageCodeByWarssCode = this.getRecipientsVillageCodeByWarssCode.bind(this);
@@ -104,7 +111,7 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
       submitter: ['', Validators.required],
       mobile: ['', Validators.required],
     });
-    
+
     this.declarationName = this.getDeclaration(this.declarationCode).value;
     //Init data families table editor
     forkJoin([
@@ -126,7 +133,7 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
       this.updateFilterToColumn(this.tableHeaderColumnsFamilies, 'districtCode', this.getDistrictsByCityCode);
       this.updateFilterToColumn(this.tableHeaderColumnsFamilies, 'wardsCode', this.getWardsByDistrictCode);
       this.updateFilterToColumn(this.tableHeaderColumnsFamilies, 'relationshipCode', this.getRelationShips);
-    
+
     //End Init data families table editor
       this.currentCredentials = this.authenticationService.currentCredentials;
 
@@ -149,13 +156,13 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
             totalNumberInsurance: declarations.totalNumberInsurance,
             totalCardInsurance: declarations.totalCardInsurance
           };
-          
+
         });
       } else {
         this.declarationService.getDeclarationInitialsByGroup(this.declarationCode).subscribe(data => {
           this.declarations.origin = data;
         });
-        
+
         this.documentForm.patchValue({
           submitter: this.currentCredentials.companyInfo.delegate,
           mobile: this.currentCredentials.companyInfo.mobile
@@ -176,6 +183,11 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
         this.isTableValid = Object.values(this.allInitialize).indexOf(false) === -1 ? false : true;
         this.tableErrors[name + this.declarationCode] = errors;
       });
+
+      this.tabSubject.next({
+        type: 'change',
+        selected: TAB_NAMES[1]
+      });
     });
   }
 
@@ -194,8 +206,8 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
     this.notificeEventValidData('documentList');
 
     if(tableName !== 'increaselabor') {
-      return '';     
-    }  
+      return '';
+    }
 
     if (data.action === ACTION.DELETE) {
       this.deleteEmployeeInFamilies(data.data, data.dataChange);
@@ -207,11 +219,11 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
 
     if (data.action === ACTION.MUNTILEADD) {
       this.setDataToFamilyEditor(data.data);
-    }    
+    }
 
     this.notificeEventValidData('family');
   }
-   
+
   handleFormValuesChanged(data) {
     this.declarations.form = data;
   }
@@ -219,6 +231,10 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
   handleSelectTab({ index }) {
     this.selectedTabIndex = index;
     eventEmitter.emit('adjust-general:tab:change', index);
+    this.tabSubject.next({
+      type: 'change',
+      selected: TAB_NAMES[index]
+    });
   }
 
   handleHiddenSidebar(isHidden) {
@@ -440,7 +456,7 @@ handleChangeDataFamilies({ instance, cell, c, r, records, columns }) {
     });
 
   });
-  
+
   this.notificeEventValidData('family');
 
 }
@@ -498,7 +514,7 @@ private getEmployeeInDeclarations(records: any) {
     const declarations = record.declarations;
     declarations.forEach(declaration => {
       if(declaration && declaration.employeeId) {
-        
+
         declaration.origin = {
           employeeId: declaration.employeeId,
           isLeaf:true,
@@ -746,7 +762,7 @@ private setDataToFamilyEditor(records: any)
   private notificeEventValidData(tableName) {
 
     this.tableSubject.next({
-      tableName: tableName, 
+      tableName: tableName,
       type: 'validate',
       tableEvent: this.eventValidData
     });
@@ -775,7 +791,7 @@ private setDataToFamilyEditor(records: any)
 
 // End Families tab
 
-// Document list tab 
+// Document list tab
 
 getDocumentByPlancode(planCode: string) {
   if(!planCode) {
@@ -800,12 +816,12 @@ private setDateToInformationList(records: any)
   const informations = [];
 
   employeesInDeclaration.forEach(emp => {
-    
+
     const fromDate = this.getFromDate(emp.fromDate);
     const curentDate = new Date();
     const  numberFromDate = (fromDate.getMonth() + 1 + fromDate.getFullYear());
     const  numberCurentDate = (curentDate.getMonth() + 1 + curentDate.getFullYear());
-    if(numberFromDate >= numberCurentDate) 
+    if(numberFromDate >= numberCurentDate)
     {
       return;
     }

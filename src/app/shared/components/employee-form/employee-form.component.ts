@@ -333,11 +333,11 @@ export class EmployeeFormComponent implements OnInit {
     }
 
     if (formData.allowanceSalary) {
-      formData.allowanceSalary = formData.allowanceSalary.split(',').join('');
+      formData.allowanceSalary = formData.allowanceSalary.toString().split(',').join('');
     }
 
     if (formData.allowanceOther) {
-      formData.allowanceOther = formData.allowanceOther.split(',').join('');
+      formData.allowanceOther = formData.allowanceOther.toString().split(',').join('');
     }
 
     if (this.employee) {

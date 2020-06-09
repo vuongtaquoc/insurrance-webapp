@@ -16,13 +16,13 @@
       [nzSearchValue]="searchValue"
       [nzTreeTemplate]="nzTreeTemplate"
       (nzCheckBoxChange)="nzCheck($event)"
-      (nzDblClick)="doubleClick($event)"
     >
     </nz-tree>
     <ng-template #nzTreeTemplate let-node let-origin="origin">
-      <span [ngStyle]="{'font-weight': !origin.isLeaf ? '700' : '400'}">
+      <div [ngStyle]="{'font-weight': !origin.isLeaf ? '700' : '400'}" class="users-tree-item">
         <span class="folder-name">{{ node.title }}</span>
-      </span>
+        <i nz-icon nzType="edit" *ngIf="origin.isLeaf" nzTheme="outline" class="users-tree-item__icon" (click)="editUser(origin)"></i>
+      </div>
     </ng-template>
   </nz-spin>
 </div>

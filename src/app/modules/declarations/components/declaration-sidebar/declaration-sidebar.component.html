@@ -12,5 +12,9 @@
     </span>
   </div><!-- declaration-sidebar__group-button -->
 
-  <app-users-tree [events]="employeeSubject.asObservable()" (onSelectEmployees)="handleSelectEmployees($event)"></app-users-tree>
+  <app-users-tree
+    [events]="employeeSubject.asObservable()"
+    (onSelectEmployees)="handleSelectEmployees($event)"
+    (onEditEmployee)="handleEditEmployee($event)"
+  ></app-users-tree>
 </div><!-- declaration-sidebar -->

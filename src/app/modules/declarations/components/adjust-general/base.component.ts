@@ -1,6 +1,6 @@
 import { Input, Output, EventEmitter } from '@angular/core';
 import { NzModalService } from 'ng-zorro-antd/modal';
-import { Subject } from 'rxjs';
+import { Subject, Subscription, Observable } from 'rxjs';
 import findLastIndex from 'lodash/findLastIndex';
 import findIndex from 'lodash/findIndex';
 
@@ -17,6 +17,7 @@ export class GeneralBaseComponent {
   @Input() pageCode: string;
   @Input() form: any = {};
   @Input() declarationGeneral: any = {};
+  @Input() tabEvents: Observable<any>;
   @Output() onChange: EventEmitter<any> = new EventEmitter();
   @Output() onHiddenSidebar: EventEmitter<any> = new EventEmitter();
   @Output() onFormChange: EventEmitter<any> = new EventEmitter();
@@ -32,8 +33,8 @@ export class GeneralBaseComponent {
     adjustment: {
       nested: [],
       columns: []
-    }  
-  };  
+    }
+  };
   declarations: any = {
     increaselabor: {
       origin: [],
@@ -55,10 +56,13 @@ export class GeneralBaseComponent {
   isHiddenSidebar = false;
   currentCredentials: any = {};
   isBlinking = false;
+  tabSubscription: Subscription;
+  selectedTab: number;
+
   constructor(
     protected declarationService: DeclarationService,
     protected modalService: NzModalService,
-    
+
   ) {}
 
   initializeTableColumns(nested, columns, tableName, currentCredentials) {
@@ -74,10 +78,10 @@ export class GeneralBaseComponent {
       });
     }
     const declarations = [ ...this.declarations[tableName].table];
-    
+
     const parentIndex = findIndex(declarations, d => d.key === type);
     const childLastIndex = findLastIndex(declarations, d => d.isLeaf && d.parentKey === type);
-    
+
     if (childLastIndex > -1) {
       const employeeExists = declarations.filter(d => d.parentKey === type);
 
@@ -110,9 +114,9 @@ export class GeneralBaseComponent {
             declarations.splice(childLastIndex + 1, 0, this.declarationService.getLeaf(declarations[parentIndex], employee, this.headers[tableName].columns));
           }
         }
-        
+
       });
-      
+
       // update orders
       this.updateOrders(declarations);
 
@@ -137,13 +141,13 @@ export class GeneralBaseComponent {
 
     // clean employee
     this.employeeSubject.next({
-      tableName, 
+      tableName,
       type: 'clean'
     });
 
     this.employeeSelected.length = 0;
     this.tableSubject.next({
-      tableName, 
+      tableName,
       type: 'validate'
     });
 
@@ -152,6 +156,10 @@ export class GeneralBaseComponent {
       type: 'readonly',
       data: this.declarations.table
     });
+  }
+
+  handleTabChanged({ selected }) {
+    this.selectedTab = selected;
   }
 
   handleFocus() {
@@ -195,7 +203,7 @@ export class GeneralBaseComponent {
       data: this.declarations[tableName].origin,
       dataChange : [],
     });
-    
+
     this.tableSubject.next({
       type: 'validate'
     });
@@ -234,7 +242,7 @@ export class GeneralBaseComponent {
 
     const records = this.toTableRecords(declarations);
     this.declarations[tableName].origin = Object.values(this.updateOrigin(records, tableName));
-   
+
     this.onChange.emit({
       action: ACTION.ADD,
       tableName,
@@ -282,7 +290,7 @@ export class GeneralBaseComponent {
       data: this.declarations[tableName].origin,
       dataChange : declarationsDeleted,
     });
-    
+
     this.tableSubject.next({
       type: 'validate'
     });
@@ -354,7 +362,7 @@ export class GeneralBaseComponent {
 
   private updateOrigin(records, tableName) {
     const declarations = {};
-    
+
     records.forEach(d => {
       if (!d.options.hasLeaf && !d.options.isLeaf) {
         declarations[d.options.key] = { ...d.origin};

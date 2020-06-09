@@ -1,6 +1,24 @@
 .users-tree {
   height: calc(100% - 42px);
 
+  .users-tree-item {
+    &__icon {
+      display: none;
+      margin-left: 5px;
+      cursor: pointer;
+
+      &:hover {
+        color: #2E68D3;
+      }
+    }
+
+    &:hover {
+      .users-tree-item__icon {
+        display: inline-block;
+      }
+    }
+  }
+
   nz-tree {
     display: block;
     height: calc(100% - 37px);
@@ -16,5 +34,17 @@
 
   .ant-tree li ul {
     padding: 0 0 0 10px;
+  }
+
+  .ant-tree .ant-tree-indent-unit {
+    width: 15px;
+  }
+
+  .ant-tree .ant-tree-switcher {
+    width: 15px;
+  }
+
+  .ant-tree .ant-tree-node-content-wrapper {
+    cursor: default;
   }
 }
