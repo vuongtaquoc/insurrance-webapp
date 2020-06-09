@@ -48,6 +48,7 @@
             [pageCode]="declarationCode"
             [declarationGeneral] = "declarationGeneral"
             [data]="declarations.origin['600']"
+            [tabEvents]="tabSubject.asObservable()"
             (onChange)="handleChangeTable($event, 'increaselabor')"
             (onFormChange)="handleFormChange($event)"
             (onHiddenSidebar)="handleHiddenSidebar($event)"
@@ -59,6 +60,7 @@
             [pageName]="declarationName"
             [pageCode]="declarationCode"
             [data]="declarations.origin['600a']"
+            [tabEvents]="tabSubject.asObservable()"
             (onChange)="handleChangeTable($event, 'reductionlabor')"
             (onHiddenSidebar)="handleHiddenSidebar($event)"
           ></app-reduction>
@@ -69,6 +71,7 @@
             [pageName]="declarationName"
             [pageCode]="declarationCode"
             [data]="declarations.origin['600b']"
+            [tabEvents]="tabSubject.asObservable()"
             (onChange)="handleChangeTable($event, 'adjustment')"
             (onHiddenSidebar)="handleHiddenSidebar($event)"
           ></app-adjustment>

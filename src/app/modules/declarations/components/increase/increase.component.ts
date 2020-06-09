@@ -19,7 +19,7 @@ import { eventEmitter } from '@app/shared/utils/event-emitter';
   encapsulation: ViewEncapsulation.None
 })
 export class IncreaseComponent extends GeneralBaseComponent implements OnInit, OnChanges {
-  
+
   panel: any = {
     general: { active: false },
     attachment: { active: false }
@@ -52,7 +52,7 @@ export class IncreaseComponent extends GeneralBaseComponent implements OnInit, O
     this.getHospitalsByCityCode = this.getHospitalsByCityCode.bind(this);
     this.getPlanByParent = this.getPlanByParent.bind(this);
     this.getRegisterDistrictsByCityCode = this.getRegisterDistrictsByCityCode.bind(this);
-  } 
+  }
 
   ngOnInit() {
     // initialize table columns
@@ -84,6 +84,7 @@ export class IncreaseComponent extends GeneralBaseComponent implements OnInit, O
       this.updateFilterToColumn(TABLE_HEADER_COLUMNS, 'planCode', this.getPlanByParent);
     });
 
+    this.tabSubscription = this.tabEvents.subscribe((data) => this.handleTabChanged(data));
   }
 
   ngOnChanges(changes) {
@@ -91,6 +92,10 @@ export class IncreaseComponent extends GeneralBaseComponent implements OnInit, O
       const data = this.declarationService.updateDeclarations(changes.data.currentValue, TABLE_HEADER_COLUMNS, !this.declarationId);
       this.declarations.increaselabor.table = data;
     }
+  }
+
+  ngOnDestroy() {
+    this.tabSubscription.unsubscribe();
   }
 
   checkInsurranceCode() {
@@ -178,7 +183,7 @@ export class IncreaseComponent extends GeneralBaseComponent implements OnInit, O
 
       return districts;
     });
-  }   
+  }
 
   private getHospitalsByCityCode(instance, cell, c, r, source) {
     const value = instance.jexcel.getValueFromCoords(c - 5, r);

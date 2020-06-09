@@ -21,7 +21,7 @@
         <button class="page-declarations__button" nz-button nzType="default" [ngClass]="{'flash-button': isBlinking}" (click)="handleAddEmployee('II_2','adjustment')">
           <i nz-icon nzType="arrow-up"></i>Điều chỉnh tham gia BHTNLD,BNN
         </button>
-        
+
       </div>
       <h1><strong>{{pageCode}} |</strong>| {{pageName}}</h1>
     </div><!-- page-declarations__group-button -->
@@ -30,7 +30,7 @@
       <ng-container *ngIf="hasForm">
         <app-increase-form (onFormValuesChanged)="handleFormValuesChanged($event)"></app-increase-form>
       </ng-container>
-      <div *ngIf="!hasForm"></div>       
+      <div *ngIf="!hasForm"></div>
     </div><!-- page-declarations__title -->
 
     <div class="page-declarations__editor">
@@ -49,7 +49,7 @@
 
     <nz-collapse [nzBordered]="false">
       <nz-collapse-panel class="collapse-attachment" [nzHeader]="attachmentHeader" [nzActive]="panel.attachment.active" (nzActiveChange)="collapseChange($event, 'attachment')">
-        <app-labor-attachment></app-labor-attachment>
+        <app-labor-attachment *ngIf="selectedTab == 'adjustment'"></app-labor-attachment>
       </nz-collapse-panel>
     </nz-collapse>
     <ng-template #attachmentHeader>

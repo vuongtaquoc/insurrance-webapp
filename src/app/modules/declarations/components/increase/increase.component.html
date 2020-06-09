@@ -65,7 +65,7 @@
         (onFormValuesChanged)="handleFormValuesChanged($event)"></app-labor-general-form>
       </nz-collapse-panel>
       <nz-collapse-panel class="collapse-attachment" [nzHeader]="attachmentHeader" [nzActive]="panel.attachment.active" (nzActiveChange)="collapseChange($event, 'attachment')">
-        <app-labor-attachment></app-labor-attachment>
+        <app-labor-attachment *ngIf="selectedTab == 'increase'"></app-labor-attachment>
       </nz-collapse-panel>
     </nz-collapse>
     <ng-template #attachmentHeader>
