@@ -42,7 +42,7 @@ export const TABLE_ARREARS_NESTED_HEADERS = [
     { title: 'Tỉnh/TP' },
     { title: 'Quận/huyện' },
     { title: 'Xã/phường' },
-    { title: 'Số nhà, đường phố, thôn, xóm' },  
+    { title: 'Số nhà, đường phố, thôn, xóm' },
     { title: 'Phụ cấp lương' },
     { title: 'Các khoản bổ sung' },
     { title: 'Chức vụ' },
@@ -217,40 +217,40 @@ export const TABLE_ARREARS_HEADER_COLUMNS = [{
   type: 'numeric',
   width: 80,
   title: '(17.1)',
-  mask: '# ##0',
-  decimal: ',',
+  mask: '#,##0',
+  // decimal: ',',
   sum: true,
   key: 'salary'
 }, {
   type: 'numeric',
   width: 80,
   title: '(17.2)',
-  mask: '# ##0',
-  decimal: ',',
+  mask: '#,##0',
+  // decimal: ',',
   sum: true,
   key: 'ratio'
 }, {
   type: 'numeric',
   width: 80,
   title: '(17.3)',
-  mask: '# ##0',
-  decimal: ',',
+  mask: '#,##0',
+  // decimal: ',',
   sum: true,
   key: 'allowanceSalary'
 }, {
   type: 'numeric',
   width: 80,
   title: '(17.4)',
-  mask: '# ##0',
-  decimal: ',',
+  mask: '#,##0',
+  // decimal: ',',
   sum: true,
   key: 'allowanceAdditional'
 }, {
   type: 'numeric',
   width: 80,
   title: '(17.5)',
-  mask: '# ##0',
-  decimal: ',',
+  mask: '#,##0',
+  // decimal: ',',
   sum: true,
   key: 'allowanceLevel'
 }, {
@@ -275,8 +275,8 @@ export const TABLE_ARREARS_HEADER_COLUMNS = [{
   type: 'numeric',
   width: 80,
   title: '(17.8)',
-  mask: '# ##0',
-  decimal: ',',
+  mask: '#,##0',
+  // decimal: ',',
   sum: true,
   key: 'allowanceOther',
   validations: {
@@ -286,40 +286,40 @@ export const TABLE_ARREARS_HEADER_COLUMNS = [{
   type: 'numeric',
   width: 80,
   title: '(18.1)',
-  mask: '# ##0',
-  decimal: ',',
+  mask: '#,##0',
+  // decimal: ',',
   sum: true,
   key: 'salaryNew'
 }, {
   type: 'numeric',
   width: 80,
   title: '(18.2)',
-  mask: '# ##0',
-  decimal: ',',
+  mask: '#,##0',
+  // decimal: ',',
   sum: true,
   key: 'ratioNew'
 }, {
   type: 'numeric',
   width: 80,
   title: '(18.3)',
-  mask: '# ##0',
-  decimal: ',',
+  mask: '#,##0',
+  // decimal: ',',
   sum: true,
   key: 'allowanceSalaryNew'
 }, {
   type: 'numeric',
   width: 80,
   title: '(18.4)',
-  mask: '# ##0',
-  decimal: ',',
+  mask: '#,##0',
+  // decimal: ',',
   sum: true,
   key: 'allowanceAdditionalNew'
 }, {
   type: 'numeric',
   width: 80,
   title: '(18.5)',
-  mask: '# ##0',
-  decimal: ',',
+  mask: '#,##0',
+  // decimal: ',',
   sum: true,
   key: 'allowanceLevelNew'
 }, {
@@ -344,8 +344,8 @@ export const TABLE_ARREARS_HEADER_COLUMNS = [{
   type: 'numeric',
   width: 80,
   title: '(18.8)',
-  mask: '# ##0',
-  decimal: ',',
+  mask: '#,##0',
+  // decimal: ',',
   sum: true,
   key: 'allowanceOtherNew',
   validations: {
