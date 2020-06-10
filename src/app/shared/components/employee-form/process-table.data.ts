@@ -77,7 +77,7 @@ export const TABLE_PROCESS_HEADER_COLUMNS = [{
   title: '(7)',
   key: 'salary',
   validations: {
-    onlyNumber: true
+    number: true
   }
 }, {
   type: 'numberic',
@@ -85,7 +85,7 @@ export const TABLE_PROCESS_HEADER_COLUMNS = [{
   title: '(8)',
   key: 'allowanceLevel',
   validations: {
-    onlyNumber: true
+    number: true
   }
 }, {
   type: 'numberic',
@@ -93,7 +93,7 @@ export const TABLE_PROCESS_HEADER_COLUMNS = [{
   title: '(9)',
   key: 'allowanceSeniority',
   validations: {
-    onlyDecimalNumber: true
+    number: true
   }
 }, {
   type: 'numberic',
@@ -101,7 +101,7 @@ export const TABLE_PROCESS_HEADER_COLUMNS = [{
   title: '(10)',
   key: 'allowanceSeniorityJob',
   validations: {
-    onlyDecimalNumber: true
+    number: true
   }
 }, {
   type: 'numberic',
@@ -109,7 +109,7 @@ export const TABLE_PROCESS_HEADER_COLUMNS = [{
   title: '(11)',
   key: 'allowanceOther',
   validations: {
-    onlyNumber: true
+    number: true
   }
 }, {
   type: 'numberic',
@@ -117,7 +117,7 @@ export const TABLE_PROCESS_HEADER_COLUMNS = [{
   title: '(12)',
   key: 'allowanceSalary',
   validations: {
-    onlyNumber: true
+    number: true
   }
 }, {
   type: 'numberic',
