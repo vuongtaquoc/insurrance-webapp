@@ -189,7 +189,7 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
         eventEmitter.emit('labor-table-editor:validate', {
           name: this.tableName,
           isValid: this.spreadsheet.isTableValid(),
-          errors: this.spreadsheet.getTableErrors()
+          errors: this.getColumnNameValid(this.spreadsheet.getTableErrors())
         });
       }, 10);
       return;
@@ -215,6 +215,20 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
       type,
       data: Object.values(declarations)
     });
+  }
+
+  private getColumnNameValid(errors) {
+    const errorcopy = [...errors];
+
+    errorcopy.forEach(error => {
+      let fieldName = this.columns[(error.x - 1)].fieldName;
+      if(!fieldName) {
+        fieldName = this.columns[(error.x - 1)].title;
+      }
+      error.columnName = fieldName;
+    });
+
+    return errorcopy;
   }
 
   handleValidate({ field, errors }) {

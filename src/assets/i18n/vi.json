@@ -16,6 +16,11 @@
 		"gender": {
 			"male": "Nam",
 			"female": "Nữ"
+		},
+		"errorMessenger": {
+			"success": "",
+			"dataInvalid": "Dữ liệu không hợp lệ",
+			"employeeIsExistDeclatation": "NLĐ đã có hồ sơ, bạn không thể xóa"
 		}
   },
   "auth": {

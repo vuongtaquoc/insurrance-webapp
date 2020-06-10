@@ -68,6 +68,7 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
     origin: {},
     form: {},
     formOrigin: {},
+    formGenelral: {},
     tables: {}
   };
 
@@ -143,7 +144,10 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
             submitter: declarations.submitter,
             mobile: declarations.mobile
           });
+
           this.declarations.origin = declarations.documentDetail;
+          this.informations = this.fomatInfomation(declarations.informations);
+          
           this.declarations.formOrigin = {
             batch: declarations.batch,
             openAddress: declarations.openAddress,
@@ -166,12 +170,7 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
         this.documentForm.patchValue({
           submitter: this.currentCredentials.companyInfo.delegate,
           mobile: this.currentCredentials.companyInfo.mobile
-        });
-
-        this.declarationGeneral = {
-          totalNumberInsurance: '2',
-          totalCardInsurance: '2'
-        };
+        });        
       }
 
       this.documentListService.getDocumentList(this.declarationCode).subscribe(documentList => {
@@ -259,6 +258,7 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
         nzTitle: 'Lỗi dữ liệu. Vui lòng sửa!',
         nzContent: TableEditorErrorsComponent,
         nzComponentParams: {
+         
           errors: Object.keys(this.tableErrors).reduce(
             (combine, key) => {
               if (this.tableErrors[key].length) {
@@ -289,8 +289,9 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
       submitter: this.submitter,
       mobile: this.mobile,
       ...this.declarations.form,
+      ...this.declarations.formGenelral,
       documentDetail: this.tablesToApi(this.declarations.tables),
-      informations: [],
+      informations: this.reformatInformations(),
       families: this.reformatFamilies()
     }).subscribe(data => {
       if (data.type === 'saveAndView') {
@@ -310,8 +311,10 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
       submitter: this.submitter,
       mobile: this.mobile,
       ...this.declarations.form,
+      ...this.declarations.formGenelral,
       documentDetail: this.tablesToApi(this.declarations.tables),
-      informations: []
+      informations: this.reformatInformations(),
+      families: this.reformatFamilies()
     }).subscribe(data => {
       if (type === 'saveAndView') {
         this.viewDocument(data);
@@ -786,12 +789,23 @@ private setDataToFamilyEditor(records: any)
   }
 
   handleFormChange(data) {
-    console.log(data,'FORM');
+    this.declarations.formGenelral = data;
   }
 
 // End Families tab
 
 // Document list tab
+reformatInformations() {
+  const informations = [];
+  let informationcopy = [ ...this.informations];
+  informationcopy.forEach(information => {
+      if(information.fullName) {
+        informations.push(information);
+      }
+  });
+
+  return informations;
+}
 
 getDocumentByPlancode(planCode: string) {
   if(!planCode) {
@@ -827,7 +841,6 @@ private setDateToInformationList(records: any)
     }
 
     const documents = this.getDocumentByPlancode(emp.planCode);
-    console.log(documents,'ssssssss');
 
     if(!documents) {
 
@@ -888,6 +901,24 @@ private setDateToInformationList(records: any)
   });
 
   this.informations = informations;
+  }
+
+  fomatInfomation(infomations) {
+    if(!infomations) {
+      return [];
+    }
+    let infomationscopy = [ ...infomations ];
+    infomationscopy.forEach(p => {
+      p.data = this.tableHeaderColumnsDocuments.map(column => {
+        if (!column.key || !p[column.key]) return '';
+        return p[column.key];
+      });
+      p.data.origin = {
+        employeeId: p.employeeId,
+        isLeaf: true,
+      }
+    });
+    return infomationscopy;
   }
 
   handleChangeInfomation({ records, columns }) {

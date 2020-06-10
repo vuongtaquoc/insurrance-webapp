@@ -13,6 +13,7 @@ export class UsersTreeComponent implements OnInit, OnDestroy {
   @Input() events: Observable<any>;
   @Output() onSelectEmployees = new EventEmitter();
   @Output() onEditEmployee = new EventEmitter();
+  @Output() onDeleteEmployee = new EventEmitter();
 
   employees: any[];
   searchValue = '';
@@ -20,6 +21,7 @@ export class UsersTreeComponent implements OnInit, OnDestroy {
   defaultSelectedKeys = [];
   defaultExpanded = [];
   isLoading = false;
+  
   private eventsSubscription: Subscription;
 
   constructor(private employeeService: EmployeeService) {}
@@ -47,7 +49,6 @@ export class UsersTreeComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     this.employeeService.getEmployeeTrees().subscribe(employees => {
       this.employees = employees;
-
       this.defaultExpanded = this.employees.map(e => e.key);
 
       this.isLoading = false;
@@ -76,5 +77,9 @@ export class UsersTreeComponent implements OnInit, OnDestroy {
 
   editUser(origin) {
     this.onEditEmployee.emit(origin);
+  }
+
+  deleteUser(origin) {
+    this.onDeleteEmployee.emit(origin);
   }
 }

@@ -362,6 +362,7 @@ export const TABLE_HEADER_COLUMNS = [{
   title: '(24)',
   key: 'toDate',
   isCalendar: true
+  
 }, {
   type: 'dropdown',
   autocomplete: true,
