@@ -25,7 +25,7 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
   @Output() onDelete: EventEmitter<any> = new EventEmitter();
   @Output() onAddRow: EventEmitter<any> = new EventEmitter();
   @Output() onFocus: EventEmitter<any> = new EventEmitter();
-  
+
 
   spreadsheet: any;
   isInitialized = false;
@@ -167,6 +167,7 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
   private updateTable() {
     const readonlyIndexes = [];
     const formulaIndexes = [];
+    const readonlyBlankRows = [];
     let formulaIgnoreIndexes = [];
     const data = [];
     this.data.forEach((d, index) => {
@@ -189,6 +190,10 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
         );
       }
 
+      if (d.isInitialize) {
+        readonlyBlankRows.push(index);
+      }
+
       d.data.origin = d.origin;
       d.data.options = {
         hasLeaf: d.hasLeaf,
@@ -207,6 +212,7 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
     this.spreadsheet.setData(data);
     this.spreadsheet.setReadonlyRowsTitle(readonlyIndexes, [0, 1]);
     this.spreadsheet.setReadonlyRowsFormula(formulaIndexes, formulaIgnoreIndexes);
+    this.spreadsheet.setReadonlyBlankRows(readonlyBlankRows);
     this.updateCellReadonly();
 
     // update dropdown data

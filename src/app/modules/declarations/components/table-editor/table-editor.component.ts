@@ -134,6 +134,7 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
   private updateTable() {
     const readonlyIndexes = [];
     const formulaIndexes = [];
+    const readonlyBlankRows = [];
     let formulaIgnoreIndexes = [];
     const data = [];
     this.data.forEach((d, index) => {
@@ -156,6 +157,10 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
         );
       }
 
+      if (d.isInitialize) {
+        readonlyBlankRows.push(index);
+      }
+
       d.data.origin = d.origin;
       d.data.options = {
         hasLeaf: d.hasLeaf,
@@ -173,6 +178,7 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
     this.spreadsheet.setData(data);
     this.spreadsheet.setReadonlyRowsTitle(readonlyIndexes, [0, 1]);
     this.spreadsheet.setReadonlyRowsFormula(formulaIndexes, formulaIgnoreIndexes);
+    this.spreadsheet.setReadonlyBlankRows(readonlyBlankRows);
     // update dropdown data
     data.forEach((row, rowIndex) => {
       this.columns.forEach((column, colIndex) => {

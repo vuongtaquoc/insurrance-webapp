@@ -184,7 +184,7 @@ export class RegimeApprovalBaseComponent {
   handleSelectEmployees(employees) {
     this.employeeSelected = employees;
     if (!this.employeeSelected.length) return;
-   
+
     this.isBlinking = true;
   }
 
@@ -280,6 +280,9 @@ export class RegimeApprovalBaseComponent {
       const origin = { ...row.data.origin };
       const options = { ...row.data.options };
 
+      origin.employeeId = 0;
+      origin.id = 0;
+
       row.data = [];
       row.origin = origin;
       row.options = options;
@@ -309,7 +312,7 @@ export class RegimeApprovalBaseComponent {
 
   handleFocus() {
     if (!this.employeeSelected.length) return;
-   
+
     this.isBlinking = true;
 
     setTimeout(() => this.isBlinking = false, 5000);
