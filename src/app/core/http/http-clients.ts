@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { ErrorMessage } from '@app/shared/constant';
 
 import { environment } from '@config';
 
@@ -98,18 +99,22 @@ export class ApplicationHttpClient {
     if (data.code === 1) {
       return data.data;
     }
-
-    // if (data.code === 2001) {
-    //   throw new Error(data.code);
-    // }
-
-    // return throwError({
-    //   code: data.code,
-    //   message: data.message
-    // });
+    
     throw {
       code: data.code,
-      message: data.message
+      message: this.getMessageErrorByErrorCode(data.code),
     };
+
+  }
+
+
+  private getMessageErrorByErrorCode(errorCode)
+  {
+    const message = ErrorMessage[errorCode];
+    if(!message) {
+      return ErrorMessage[8];
+    }
+    
+    return message;
   }
 }

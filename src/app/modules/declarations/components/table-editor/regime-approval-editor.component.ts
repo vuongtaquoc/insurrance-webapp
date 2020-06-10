@@ -25,6 +25,7 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
   @Output() onDelete: EventEmitter<any> = new EventEmitter();
   @Output() onAddRow: EventEmitter<any> = new EventEmitter();
   @Output() onFocus: EventEmitter<any> = new EventEmitter();
+  
 
   spreadsheet: any;
   isInitialized = false;
@@ -388,7 +389,7 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
     column.editor = customPicker(this.spreadsheet, type, isCustom);
   }
 
-  private handleEvent({ type, parentKey }) {
+  private handleEvent({ type, parentKey, employee }) {
     if (type === 'validate') {
       setTimeout(() => {
         const data = Object.values(this.spreadsheet.getJson());
@@ -398,12 +399,33 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
         eventEmitter.emit('regime-approval:validate', {
           name: this.tableName,
           isValid: this.spreadsheet.isTableValid(),
-          errors: this.spreadsheet.getTableErrors(),
+          errors: this.getColumnNameValid(this.spreadsheet.getTableErrors()),
           leaf,
           initialize
         });
       }, 10);
+    }else if (type === 'deleteUser') {
+      this.onDelete.emit({
+        rowNumber: 1,
+        numOfRows: 1,
+        records: this.spreadsheet.getJson(),
+        columns: this.columns
+      });
     }
+  }
+
+  private getColumnNameValid(errors) {
+    const errorcopy = [...errors];
+
+    errorcopy.forEach(error => {
+      let fieldName = this.columns[(error.x - 1)].fieldName;
+      if(!fieldName) {
+        fieldName = this.columns[(error.x - 1)].title;
+      }
+      error.columnName = fieldName;
+    });
+
+    return errorcopy;
   }
 
   private validationCellByOtherCell(cellValue, column, y, instance) {

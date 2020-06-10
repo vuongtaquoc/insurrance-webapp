@@ -5,6 +5,7 @@ import 'jsuites/dist/jsuites.js';
 
 import { customPicker } from '@app/shared/utils/custom-editor';
 import { eventEmitter } from '@app/shared/utils/event-emitter';
+import { keyframes } from '@angular/animations';
 
 @Component({
   selector: 'app-increase-editor',
@@ -97,8 +98,6 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
 
           instance.jexcel.setValue(nextColumn, '');
         }
-        console.log(this.tableName);
-
       },
       ondeleterow: (el, rowNumber, numOfRows) => {
         this.onDelete.emit({
@@ -241,16 +240,29 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
         const data = Object.values(this.spreadsheet.getJson());
         const leaf = data.filter((d: any) => d.options.isLeaf);
         const initialize = leaf.filter((d: any) => d.options.isInitialize);
-
         eventEmitter.emit('adjust-general:validate', {
           name: this.tableName,
           isValid: this.spreadsheet.isTableValid(),
-          errors: this.spreadsheet.getTableErrors(),
+          errors: this.getColumnNameValid(this.spreadsheet.getTableErrors()),
           leaf,
           initialize
         });
       }, 10);
     }
+  }
+
+  private getColumnNameValid(errors) {
+    const errorcopy = [...errors];
+
+    errorcopy.forEach(error => {
+      let fieldName = this.columns[(error.x - 1)].fieldName;
+      if(!fieldName) {
+        fieldName = this.columns[(error.x - 1)].title;
+      }
+      error.columnName = fieldName;
+    });
+
+    return errorcopy;
   }
   
   private validationCellByOtherCell(cellValue, column, y, instance, records) {

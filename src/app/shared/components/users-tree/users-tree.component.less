@@ -12,8 +12,22 @@
       }
     }
 
+    &__icon_delete {
+      display: none;
+      margin-left: 7px;
+      cursor: pointer;
+
+      &:hover {
+        color: #2E68D3;
+      }
+    }
+
     &:hover {
       .users-tree-item__icon {
+        display: inline-block;
+      }
+      .users-tree-item__icon_delete {
+        color: red;
         display: inline-block;
       }
     }

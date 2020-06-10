@@ -6,6 +6,8 @@ import { EmployeeService } from '@app/core/services';
 
 import { EmployeeFormComponent } from '@app/shared/components';
 import { DeclarationSidebarSearchComponent } from './search.component';
+import { TranslateService } from '@ngx-translate/core';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
   selector: 'app-declaration-sidebar',
@@ -18,6 +20,7 @@ export class DeclarationSidebarComponent implements OnInit, OnDestroy {
   @Output() onSelectEmployees: EventEmitter<any> = new EventEmitter();
   @Output() onToggleSidebar: EventEmitter<any> = new EventEmitter();
   @Output() onUserUpdated: EventEmitter<any> = new EventEmitter();
+  @Output() onUserDeleted: EventEmitter<any> = new EventEmitter();
 
   isSpinning: boolean;
   employeeSelected: any[] = [];
@@ -26,7 +29,9 @@ export class DeclarationSidebarComponent implements OnInit, OnDestroy {
 
   constructor(
     private modalService: NzModalService,
-    private employeeService: EmployeeService
+    private employeeService: EmployeeService,
+    private translateService: TranslateService,
+    private messageService: NzMessageService,
   ) {}
 
   ngOnInit() {
@@ -48,6 +53,10 @@ export class DeclarationSidebarComponent implements OnInit, OnDestroy {
     this.employeeSelected = employees;
 
     this.onSelectEmployees.emit(employees);
+  }
+
+  handleDeleteEmployee(employees) { 
+    this.delete(employees);
   }
 
   addEmployee() {
@@ -100,22 +109,8 @@ export class DeclarationSidebarComponent implements OnInit, OnDestroy {
       });
     }
 
-    const selected = this.employeeSelected[0];
-
-    this.modalService.confirm({
-      nzTitle: 'Xóa hồ sơ',
-      nzContent: `Bạn có chắc chắn xóa hồ sơ: ${selected.fullName}?`,
-      nzOkText: 'Tiếp tục',
-      nzCancelText: 'Hủy',
-      nzOnOk: () => {
-        this.employeeService.delete(selected.employeeId || selected.id).subscribe(() => {
-          this.employeeSubject.next({
-            type: 'delete',
-            status: 'success'
-          });
-        });
-      }
-    });
+    const employee = this.employeeSelected[0];
+    this.delete(employee);
   }
 
   toggleSidebar() {
@@ -146,12 +141,43 @@ export class DeclarationSidebarComponent implements OnInit, OnDestroy {
       status: 'success'
     });
   }
+  private delete(employee) {  
+
+    this.modalService.confirm({
+      nzTitle: 'Xóa hồ sơ',
+      nzContent: `Bạn có chắc chắn xóa hồ sơ: ${employee.fullName}?`,
+      nzOkText: 'Tiếp tục',
+      nzCancelText: 'Hủy',
+      nzOnOk: () => {
+        this.employeeService.delete(employee.employeeId || employee.id).subscribe(() => {
+          
+          this.employeeSubject.next({
+            type: 'delete',
+            status: 'success'
+          });
+
+          this.modalService.confirm({
+            nzTitle: 'Bạn muốn xóa thông tin NLĐ trong hồ sơ?',
+            nzOkText: 'Xóa NLĐ',
+            nzCancelText: 'Hủy',
+            nzOnOk: () => this.onUserDeleted.emit(employee)
+          });
+
+        },
+        (err) => {
+          this.translateService.get(err.message).subscribe(message => {
+            this.messageService.create('error', message);
+          });
+        });
+      }
+    });
+  }
 
   private edit(selected) {
     this.isSpinning = true;
 
     this.employeeService.getEmployeeById(selected.id).subscribe(employee => {
-      this.isSpinning = false;
+      
       const modal = this.modalService.create({
         nzWidth: 980,
         nzWrapClassName: 'employee-modal',
@@ -162,7 +188,7 @@ export class DeclarationSidebarComponent implements OnInit, OnDestroy {
           employee
         }
       });
-
+      this.isSpinning = false;
       modal.afterClose.subscribe(result => {
         if (!result) return;
 

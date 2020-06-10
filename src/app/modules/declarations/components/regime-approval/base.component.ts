@@ -133,6 +133,13 @@ export class RegimeApprovalBaseComponent {
     });
   }
 
+  handleUserDeleteTables(user) {
+      this.tableSubject.next({
+        type: 'deleteUser',
+        employee: user
+      })
+  }
+
   handleUserUpdateTables(user) {
     this.handleUserUpdated(user, 'part1');
     this.handleUserUpdated(user, 'part2');
@@ -294,6 +301,7 @@ export class RegimeApprovalBaseComponent {
       part,
       data: this.declarations[part].origin
     });
+
     this.tableSubject.next({
       type: 'validate'
     });

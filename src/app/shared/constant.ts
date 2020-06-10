@@ -138,3 +138,9 @@ export const DOCUMENTBYPLANCODE =
           }
         ]},
 ];
+
+export const ErrorMessage = {
+  0: 'common.gender.male',
+  8: 'common.errorMessenger.dataInvalid',
+  2040: 'common.errorMessenger.employeeIsExistDeclatation',
+};

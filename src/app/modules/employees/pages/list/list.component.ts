@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzMessageService } from 'ng-zorro-antd/message';
-
+import { TranslateService } from '@ngx-translate/core';
 import { EmployeeService } from '@app/core/services';
 import { EmployeeFormComponent } from '@app/shared/components';
 
@@ -34,7 +34,8 @@ export class EmployeeListComponent implements OnInit {
   constructor(
     private modalService: NzModalService,
     private messageService: NzMessageService,
-    private employeeService: EmployeeService
+    private employeeService: EmployeeService,
+    private translateService: TranslateService
   ) {}
 
   ngOnInit() {
@@ -129,7 +130,9 @@ export class EmployeeListComponent implements OnInit {
       this.getEmployees(this.skip);
     },
     (err) => {
-      this.messageService.create('error', err.message)
+      this.translateService.get(err.message).subscribe(message => {
+        this.messageService.create('error', message);
+      });
     });
   }
 }
