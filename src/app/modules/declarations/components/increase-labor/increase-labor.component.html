@@ -58,8 +58,8 @@
               [events]="employeeSubject.asObservable()"
               (onSelectEmployees)="handleSelectEmployees($event)"
               (onToggleSidebar)="handleToggleSidebar()"
-              (onUserUpdated)="handleUserUpdateTables($event)"
-              (onUserDeleted)="handleUserDeleteTables($event)"
+              (onUserUpdated)="handleUserUpdated($event)"
+              (onUserDeleted)="handleUserDeleted($event)"
             ></app-declaration-sidebar>
 
             <div class="page-declarations__content">

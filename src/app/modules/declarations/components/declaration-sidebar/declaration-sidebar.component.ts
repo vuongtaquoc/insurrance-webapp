@@ -55,7 +55,7 @@ export class DeclarationSidebarComponent implements OnInit, OnDestroy {
     this.onSelectEmployees.emit(employees);
   }
 
-  handleDeleteEmployee(employees) { 
+  handleDeleteEmployee(employees) {
     this.delete(employees);
   }
 
@@ -141,7 +141,7 @@ export class DeclarationSidebarComponent implements OnInit, OnDestroy {
       status: 'success'
     });
   }
-  private delete(employee) {  
+  private delete(employee) {
 
     this.modalService.confirm({
       nzTitle: 'Xóa hồ sơ',
@@ -149,25 +149,31 @@ export class DeclarationSidebarComponent implements OnInit, OnDestroy {
       nzOkText: 'Tiếp tục',
       nzCancelText: 'Hủy',
       nzOnOk: () => {
-        this.employeeService.delete(employee.employeeId || employee.id).subscribe(() => {
-          
-          this.employeeSubject.next({
-            type: 'delete',
-            status: 'success'
-          });
+        // this.employeeService.delete(employee.employeeId || employee.id).subscribe(() => {
 
-          this.modalService.confirm({
-            nzTitle: 'Bạn muốn xóa thông tin NLĐ trong hồ sơ?',
-            nzOkText: 'Xóa NLĐ',
-            nzCancelText: 'Hủy',
-            nzOnOk: () => this.onUserDeleted.emit(employee)
-          });
+        //   this.employeeSubject.next({
+        //     type: 'delete',
+        //     status: 'success'
+        //   });
 
-        },
-        (err) => {
-          this.translateService.get(err.message).subscribe(message => {
-            this.messageService.create('error', message);
-          });
+        //   this.modalService.confirm({
+        //     nzTitle: 'Bạn muốn xóa thông tin NLĐ trong hồ sơ?',
+        //     nzOkText: 'Xóa NLĐ',
+        //     nzCancelText: 'Hủy',
+        //     nzOnOk: () => this.onUserDeleted.emit(employee)
+        //   });
+
+        // },
+        // (err) => {
+        //   this.translateService.get(err.message).subscribe(message => {
+        //     this.messageService.create('error', message);
+        //   });
+        // });
+        this.modalService.confirm({
+          nzTitle: 'Bạn muốn xóa thông tin NLĐ trong hồ sơ?',
+          nzOkText: 'Xóa NLĐ',
+          nzCancelText: 'Hủy',
+          nzOnOk: () => this.onUserDeleted.emit(employee)
         });
       }
     });
@@ -177,7 +183,7 @@ export class DeclarationSidebarComponent implements OnInit, OnDestroy {
     this.isSpinning = true;
 
     this.employeeService.getEmployeeById(selected.id).subscribe(employee => {
-      
+
       const modal = this.modalService.create({
         nzWidth: 980,
         nzWrapClassName: 'employee-modal',

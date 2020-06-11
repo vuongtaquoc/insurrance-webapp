@@ -34,6 +34,7 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
   private eventsSubscription: Subscription;
   private handlers = [];
   private timer;
+  private deleteTimer;
 
   constructor(
     private modalService: NzModalService
@@ -403,7 +404,28 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
     column.editor = customPicker(this.spreadsheet, type, isCustom);
   }
 
-  private handleEvent({ type, parentKey, employee }) {
+  private handleDeleteUser(deletedIndexes) {
+    this.deleteTimer = setTimeout(() => {
+      if (!deletedIndexes.length) {
+        clearTimeout(this.deleteTimer);
+        return;
+      };
+      const index = deletedIndexes.shift();
+
+      this.spreadsheet.deleteRow(index, 1);
+
+      this.onDelete.emit({
+        rowNumber: index,
+        numOfRows: 1,
+        records: this.spreadsheet.getJson(),
+        columns: this.columns
+      });
+
+      this.handleDeleteUser(deletedIndexes);
+    }, 50);
+  }
+
+  private handleEvent({ type, parentKey, deletedIndexes, part }) {
     if (type === 'validate') {
       setTimeout(() => {
         const data = Object.values(this.spreadsheet.getJson());
@@ -418,13 +440,12 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
           initialize
         });
       }, 10);
-    }else if (type === 'deleteUser') {
-      this.onDelete.emit({
-        rowNumber: 1,
-        numOfRows: 1,
-        records: this.spreadsheet.getJson(),
-        columns: this.columns
-      });
+    } else if (type === 'deleteUser') {
+      if (this.tableName.toLowerCase().indexOf(part) > -1) {
+        this.handleDeleteUser(deletedIndexes);
+      }
+
+      return;
     }
   }
 

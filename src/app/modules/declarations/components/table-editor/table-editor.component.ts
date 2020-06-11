@@ -19,7 +19,7 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
   @Input() columns: any[] = [];
   @Input() nestedHeaders: any[] = [];
   @Input() tableName: string;
-  @Input() events: Observable<void>;
+  @Input() events: Observable<any>;
   @Input() validate: Observable<any>;
   @Output() onChange: EventEmitter<any> = new EventEmitter();
   @Output() onSubmit: EventEmitter<any> = new EventEmitter();
@@ -31,6 +31,7 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
   isSpinning = true;
   private eventsSubscription: Subscription;
   private validateSubscription: Subscription;
+  private deleteTimer;
 
   constructor(
     private element: ElementRef,
@@ -199,7 +200,27 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
     });
   }
 
-  private handleEvent(type) {
+  private handleDeleteUser(deletedIndexes) {
+    this.deleteTimer = setTimeout(() => {
+      if (!deletedIndexes.length) {
+        clearTimeout(this.deleteTimer);
+        return;
+      }
+
+      const index = deletedIndexes.shift();
+
+      this.spreadsheet.deleteRow(index, 1);
+      this.onDelete.emit({
+        rowNumber: index,
+        numOfRows: 1,
+        records: this.spreadsheet.getJson()
+      });
+
+      this.handleDeleteUser(deletedIndexes);
+    }, 30);
+  }
+
+  private handleEvent({ type, user, deletedIndexes }) {
     if (type === 'validate') {
       setTimeout(() => {
         eventEmitter.emit('labor-table-editor:validate', {
@@ -208,6 +229,12 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
           errors: this.getColumnNameValid(this.spreadsheet.getTableErrors())
         });
       }, 10);
+      return;
+    }
+
+    if (type === 'deleteUser') {
+      this.handleDeleteUser(deletedIndexes);
+
       return;
     }
 

@@ -134,10 +134,28 @@ export class RegimeApprovalBaseComponent {
   }
 
   handleUserDeleteTables(user) {
-      this.tableSubject.next({
-        type: 'deleteUser',
-        employee: user
-      })
+    this.handleUserDeleted(user, 'part1');
+    this.handleUserDeleted(user, 'part2');
+  }
+
+  handleUserDeleted(user, part) {
+    const indexes: any = this.declarations[part].table.reduce(
+      (combine, d, index) => {
+        if (d.isLeaf && d.origin && (d.origin.employeeId || d.origin.id) === user.id) {
+          return [...combine, index];
+        }
+
+        return [...combine];
+      },
+      []
+    );
+
+    this.tableSubject.next({
+      type: 'deleteUser',
+      user,
+      part,
+      deletedIndexes: indexes
+    });
   }
 
   handleUserUpdateTables(user) {
@@ -241,6 +259,10 @@ export class RegimeApprovalBaseComponent {
       row.parent = afterRow.parent;
       row.parentKey = afterRow.parentKey;
       row.planType = afterRow.planType;
+    } else if (beforeRow.isLeaf && afterRow.isLeaf) {
+      row.parent = beforeRow.parent;
+      row.parentKey = beforeRow.parentKey;
+      row.planType = beforeRow.planType;
     }
 
     // if (beforeRow.isInitialize) {
