@@ -1,5 +1,6 @@
 import { Component, Input, Output, OnInit, OnDestroy, OnChanges, AfterViewInit, ViewChild, ElementRef, EventEmitter, ViewEncapsulation } from '@angular/core';
 import { Subscription, Observable } from 'rxjs';
+import { NzModalService } from 'ng-zorro-antd/modal';
 import * as jexcel from 'jstable-editor/dist/jexcel.js';
 import 'jsuites/dist/jsuites.js';
 
@@ -31,7 +32,10 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
   private eventsSubscription: Subscription;
   private validateSubscription: Subscription;
 
-  constructor(private element: ElementRef) {
+  constructor(
+    private element: ElementRef,
+    private modalService: NzModalService
+  ) {
   }
 
   ngOnInit() {
@@ -114,6 +118,12 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
           options,
           origin,
           records: this.spreadsheet.getJson()
+        });
+      },
+      ondoubleclickreadonly: (el) => {
+        this.modalService.info({
+          nzTitle: 'Hướng dẫn',
+          nzContent: 'Hãy chọn NLĐ ở danh sách bên trái để kê khai. Nếu thêm mới NLĐ nhấn dấu + (góc trên bên trái) hoặc sử dụng chức năng Lấy file mẫu và Nạp dữ liệu để thực hiện.'
         });
       }
     });
