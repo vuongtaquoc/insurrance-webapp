@@ -71,6 +71,60 @@ export class GeneralBaseComponent {
     this.currentCredentials = currentCredentials;
   }
 
+  handleUserDeleteTables(user, tableName) {
+    this.tableSubject.next({
+      type: 'deleteUser',
+      employee: user
+    })
+}
+
+handleUserUpdateTables(user, tableName) {
+  this.handleUserUpdated(user, tableName);
+}
+
+handleUserUpdated(user, tableName) {
+  const declarations = [ ...this.declarations[tableName].table ];
+  const declarationUsers = declarations.filter(d => {
+    return d.isLeaf && d.origin && (d.origin.employeeId || d.origin.id) === user.id;
+  });
+  declarationUsers.forEach(declaration => {
+    declaration.origin = {
+      ...declaration.origin,
+      ...user
+    };
+
+    this.headers[tableName].columns.forEach((column, index) => {
+      if (user[column.key] !== null && typeof user[column.key] !== 'undefined') {
+        declaration.data[index] = user[column.key];
+      }
+    });
+  });
+
+  // update orders
+  this.updateOrders(declarations);
+
+  this.declarations[tableName].table = this.declarationService.updateFormula(declarations, this.headers[tableName].columns);
+
+ // clean employee
+  this.employeeSubject.next({
+    tableName,
+    type: 'clean'
+  });
+
+  this.employeeSelected.length = 0;
+  this.tableSubject.next({
+    tableName,
+    type: 'validate'
+  });
+
+  this.tableSubject.next({
+    tableName,
+    type: 'readonly',
+    data: this.declarations.table
+  });
+}
+
+
   handleAddEmployee(type, tableName) {
     if (!this.employeeSelected.length) {
       return this.modalService.warning({
@@ -156,6 +210,7 @@ export class GeneralBaseComponent {
       type: 'readonly',
       data: this.declarations.table
     });
+
   }
 
   handleTabChanged({ selected }) {
@@ -266,6 +321,9 @@ export class GeneralBaseComponent {
       declarationsDeleted.push(row);
       const origin = { ...row.data.origin };
       const options = { ...row.data.options };
+
+      origin.employeeId = 0;
+      origin.id = 0;
 
       row.data = [];
       row.origin = origin;

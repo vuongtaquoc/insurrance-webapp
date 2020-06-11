@@ -56,7 +56,6 @@ export const TABLE_DOCUMENT_HEADER_COLUMNS = [{
   validations: {
     required: true
   }
-
 }, {
   type: 'text',
   width: 123,

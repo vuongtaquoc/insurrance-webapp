@@ -1048,6 +1048,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     ).subscribe(emps => {
 
       emps.forEach(ep => {
+        console.log(ep);
         const master = this.getMaster(ep.families);
         master.isMaster = ep.isMaster;
         master.employeeName = ep.fullName;

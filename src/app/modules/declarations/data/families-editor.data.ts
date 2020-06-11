@@ -149,6 +149,7 @@ export const TABLE_FAMILIES_HEADER_COLUMNS = [{
   width: 100,
   title: '(11',
   key: 'isurranceCode',
+  fieldName: 'Mã số bảo hiểm',
   validations: {
     required: true
   }

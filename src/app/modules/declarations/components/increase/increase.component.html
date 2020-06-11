@@ -4,6 +4,8 @@
     [events]="employeeSubject.asObservable()"
     (onSelectEmployees)="handleSelectEmployees($event)"
     (onToggleSidebar)="handleToggleSidebar()"
+    (onUserUpdated)="handleUserUpdateTables($event, 'increaselabor')"
+    (onUserDeleted)="handleUserDeleteTables($event, 'increaselabor')"
   ></app-declaration-sidebar>
 
   <div class="page-declarations__content">
@@ -46,6 +48,7 @@
       [nestedHeaders]="headers.increaselabor.nested"
       [columns]="headers.increaselabor.columns"
       [events]="tableSubject.asObservable()"
+      [validate]="validateSubject.asObservable()"
       (onChange)="handleChangeTable($event,'increaselabor')"
       (onDelete)="handleDeleteTableData($event,'increaselabor')"
       (onAddRow)="handleAddRow($event,'increaselabor')"

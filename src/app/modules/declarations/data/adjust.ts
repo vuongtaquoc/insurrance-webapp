@@ -302,7 +302,11 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   mask: '# ##0',
   decimal: ',',
   sum: true,
-  key: 'salaryNew'
+  key: 'salaryNew',
+  fieldName: 'Mức lương mới',
+  validations: {
+    number: true
+  }
 }, {
   type: 'numeric',
   width: 80,
@@ -310,7 +314,11 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   mask: '# ##0',
   decimal: ',',
   sum: true,
-  key: 'ratioNew'
+  key: 'ratioNew',
+  fieldName: 'Hệ số lương mới',
+  validations: {
+    number: true
+  }
 }, {
   type: 'numeric',
   width: 80,
@@ -318,7 +326,11 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   mask: '# ##0',
   decimal: ',',
   sum: true,
-  key: 'allowanceSalaryNew'
+  key: 'allowanceSalaryNew',
+  fieldName: 'Phụ cấp lương lương mới',
+  validations: {
+    number: true
+  }
 }, {
   type: 'numeric',
   width: 80,
@@ -326,7 +338,11 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   mask: '# ##0',
   decimal: ',',
   sum: true,
-  key: 'allowanceAdditionalNew'
+  key: 'allowanceAdditionalNew',
+  fieldName: 'Phụ cấp lương lương mới',
+  validations: {
+    number: true
+  }
 }, {
   type: 'numeric',
   width: 80,
@@ -335,6 +351,7 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   decimal: ',',
   sum: true,
   key: 'allowanceLevelNew',
+  fieldName: 'Chức vụ lương mới',
   validations: {
     number: true
   }
@@ -344,6 +361,7 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   title: '(18.6)',
   key: 'allowanceSeniorityNew',
   suffix: '%',
+  fieldName: 'Thâm niên VK lương mới',
   validations: {
     number: true
   }
@@ -353,6 +371,7 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   title: '(18.7)',
   key: 'allowanceSeniorityJobNew',
   suffix: '%',
+  fieldName: 'Thâm niên nghề lương mới',
   validations: {
     number: true
   }
@@ -364,6 +383,7 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   decimal: ',',
   sum: true,
   key: 'allowanceOtherNew',
+  fieldName: 'Chênh lệch bảo lưu lương mới',
   validations: {
     number: true
   }
@@ -407,6 +427,7 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   width: 100,
   title: '(23.1)',
   key: 'contractNo',
+  fieldName: 'Số quyết định',
   validations: {
     required: true
   }
@@ -414,6 +435,7 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   type: 'text',
   width: 100,
   title: '(23.2)',
+  fieldName: 'Ngày quyết định',
   key: 'dateSign',
   validations: {
     required: true

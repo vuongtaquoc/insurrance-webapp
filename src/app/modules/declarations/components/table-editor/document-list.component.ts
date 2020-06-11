@@ -104,7 +104,7 @@ export class DocumentListTableComponent implements OnInit, OnDestroy, OnChanges,
         eventEmitter.emit(eventData.tableEvent, {
           name: this.tableName,
           isValid: this.spreadsheet.isTableValid(),
-          errors: this.spreadsheet.getTableErrors(),
+          errors: this.getColumnNameValid(this.spreadsheet.getTableErrors()),
           leaf,
           initialize
         });
@@ -121,4 +121,17 @@ export class DocumentListTableComponent implements OnInit, OnDestroy, OnChanges,
     column.editor = customPicker(this.spreadsheet, type, isCustom);
   }
 
+  private getColumnNameValid(errors) {
+    const errorcopy = [...errors];
+
+    errorcopy.forEach(error => {
+      let fieldName = this.columns[(error.x - 1)].fieldName;
+      if(!fieldName) {
+        fieldName = this.columns[(error.x - 1)].title;
+      }
+      error.columnName = fieldName;
+    });
+
+    return errorcopy;
+  }
 }

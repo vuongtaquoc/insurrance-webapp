@@ -20,6 +20,7 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
   @Input() nestedHeaders: any[] = [];
   @Input() validationRules: any = {};
   @Input() tableName: string;
+  @Input() validate: Observable<any>;
   @Input() events: Observable<any>;
   @Output() onChange: EventEmitter<any> = new EventEmitter();
   @Output() onSubmit: EventEmitter<any> = new EventEmitter();
@@ -34,6 +35,7 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
   private handlers = [];
   private timer;
   private validateTimer;
+  private validateSubscription: Subscription;
   constructor(
   ) {
 
@@ -41,6 +43,7 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
 
   ngOnInit() {
     this.eventsSubscription = this.events.subscribe((type) => this.handleEvent(type));
+    this.validateSubscription = this.validate.subscribe((result) => this.handleValidate(result));
     this.handlers.push(eventEmitter.on('adjust-general:tab:change', (index) => {
       clearTimeout(this.timer);
 
@@ -57,6 +60,7 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
   ngOnDestroy() {
     jexcel.destroy(this.spreadsheetEl.nativeElement, true);
     this.eventsSubscription.unsubscribe();
+    this.validateSubscription.unsubscribe();
     if (this.timer) clearTimeout(this.timer);
     clearTimeout(this.validateTimer);
     eventEmitter.destroy(this.handlers);
@@ -90,7 +94,6 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
           records: this.spreadsheet.getJson(),
           columns: this.columns
         });
-
         const column = this.columns[c];
 
         if (column.key === 'typeBirthday') {
@@ -107,9 +110,8 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
           columns: this.columns
         });
       },
-      oninsertrow: (instance, rowNumber, numOfRows, rowRecords, insertBefore) => {
+      oninsertrow: (instance, rowNumber, numOfRows, rowRecords, insertBefore,c, r) => {
         this.spreadsheet.updateFreezeColumn();
-
         const records = this.spreadsheet.getJson();
         const beforeRow = records[insertBefore ? rowNumber - 1 : rowNumber];
         const afterRow = records[insertBefore ? rowNumber + 1 : rowNumber + 2];
@@ -135,7 +137,8 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
           origin,
           records: this.spreadsheet.getJson()
         });
-      }
+        //this.validationCellByOtherCell(value, column, r, instance, records);
+      },
     });
 
     this.updateEditorToColumn('dateSign');
@@ -155,6 +158,7 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
     const readonlyIndexes = [];
     const formulaIndexes = [];
     let formulaIgnoreIndexes = [];
+    const readonlyBlankRows = [];
     const data = [];
     this.data.forEach((d, index) => {
       if (d.readonly) {
@@ -176,6 +180,10 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
         );
       }
 
+      if (d.isInitialize) {
+        readonlyBlankRows.push(index);
+      }
+
       d.data.origin = d.origin;
       d.data.options = {
         hasLeaf: d.hasLeaf,
@@ -194,17 +202,50 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
     this.spreadsheet.setData(data);
     this.spreadsheet.setReadonlyRowsTitle(readonlyIndexes, [0, 1]);
     this.spreadsheet.setReadonlyRowsFormula(formulaIndexes, formulaIgnoreIndexes);
+    this.spreadsheet.setReadonlyBlankRows(readonlyBlankRows);
     this.updateCellReadonly();
-
     // update dropdown data
     data.forEach((row, rowIndex) => {
       this.columns.forEach((column, colIndex) => {
+        //update source dropdown when change data
         if (column.defaultLoad) {
           this.spreadsheet.updateDropdownValue(colIndex, rowIndex);
-        }
+        } 
       });
     });
+    
+    this.setWarningSalaryWhenAddEmployee(data);
+    
   }
+
+  private setWarningSalaryWhenAddEmployee(data: any) {
+    if(this.tableName !== 'adjustment') { 
+        return;
+    }
+
+    const fieldName = {
+      name: 'Tiền lương mức đóng cũ',
+      otherName:'Tiền lương mức đóng mới'
+    };
+
+    clearTimeout(this.validateTimer);
+    this.validateTimer = setTimeout(() => {
+      data.forEach((row, rowIndex) => {
+        if(!row.origin.isLeaf) return;
+        
+        this.spreadsheet.setCellError(fieldName, 30,rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true);
+        this.spreadsheet.setCellError(fieldName, 31,rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true);
+        this.spreadsheet.setCellError(fieldName, 32,rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true);
+        this.spreadsheet.setCellError(fieldName, 33,rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true);
+        this.spreadsheet.setCellError(fieldName, 34,rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true);
+        this.spreadsheet.setCellError(fieldName, 35,rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true);
+        this.spreadsheet.setCellError(fieldName, 36,rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true);
+        this.spreadsheet.setCellError(fieldName, 37,rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true);
+      });
+    }, 10);
+
+  }
+  
 
   private updateCellReadonly() {
     const readonlyColumnIndex = this.columns.findIndex(c => !!c.checkReadonly);
@@ -264,42 +305,18 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
 
     return errorcopy;
   }
-  
-  private validationCellByOtherCell(cellValue, column, y, instance, records) {
-    clearTimeout(this.validateTimer);
 
-    this.validateTimer = setTimeout(() => {
-      const row = records[y];
+  handleValidate({ field, errors }) {
+    Object.keys(errors).forEach(row => {
+      const error = errors[row];
 
-      if (!(row.origin && row.origin.isMaster)) return;
+      this.spreadsheet.validationCell(row, error.col, {
+        name: `Mã số ${ error.value }`
+      }, {
+        fieldNotFound: true
+      }, !!error.valid);
+    });
 
-      let x;
-      let otherX;
-      if (column.key === 'relationshipFullName' || column.key === 'fullName') {
-        if (column.key === 'relationshipFullName') {
-          x = this.columns.findIndex(c => c.key === 'relationshipFullName');
-          otherX = this.columns.findIndex(c => c.key === 'fullName');
-        } else if (column.key === 'fullName') {
-          x = this.columns.findIndex(c => c.key === 'fullName');
-          otherX = this.columns.findIndex(c => c.key === 'relationshipFullName');
-        }
-
-        const fieldName = {
-          name: column.key === 'relationshipFullName' ? 'Chủ hộ' : 'Họ và tên',
-          otherName: column.key === 'relationshipFullName' ? 'Họ và tên' : 'Chủ hộ'
-        };
-
-        const xValue = records[y][x];
-        const otherXValue = records[y][otherX];
-        if (xValue !== otherXValue) {
-          instance.jexcel.setCellError(fieldName, x, y, { duplicateOtherField: otherXValue }, { duplicateOtherField: false }, true);
-          instance.jexcel.setCellError(fieldName, otherX, y, { duplicateOtherField: xValue }, { duplicateOtherField: false }, true);
-        } else {
-          instance.jexcel.setCellError(fieldName, x, y, { duplicateOtherField: otherXValue }, { duplicateOtherField: true }, false);
-          instance.jexcel.setCellError(fieldName, otherX, y, { duplicateOtherField: xValue }, { duplicateOtherField: true }, false);
-        }
-      }
-    }, 10)
-
+    console.log(this.spreadsheet.getTableErrors());
   }
 }

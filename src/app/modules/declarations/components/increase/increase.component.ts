@@ -127,7 +127,12 @@ export class IncreaseComponent extends GeneralBaseComponent implements OnInit, O
         field: 'isurranceCode',
         errors
       });
-    }, 100);
+    }, 20);
+
+    this.tableSubject.next({
+      tableName: 'increaselabor',
+      type: 'validate'
+    });
   }
 
   private getRegisterDistrictsByCityCode(instance, cell, c, r, source) {
