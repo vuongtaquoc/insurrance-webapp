@@ -63,7 +63,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
   tableNestedHeadersDocuments: any[] = TABLE_DOCUMENT_NESTED_HEADERS;
   tableHeaderColumnsDocuments: any[] = TABLE_DOCUMENT_HEADER_COLUMNS;
   employeeSelected: any[] = [];
-  eventsSubject: Subject<string> = new Subject<string>();
+  eventsSubject: Subject<any> = new Subject<any>();
   familiesSubject: Subject<string> = new Subject<string>();
   documentsSubject: Subject<string> = new Subject<string>();
   validateSubject: Subject<any> = new Subject<any>();
@@ -283,7 +283,38 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
       type: 'clean'
     });
     this.employeeSelected.length = 0;
-    this.eventsSubject.next('validate');
+    this.eventsSubject.next({ type: 'validate' });
+    this.familiesSubject.next('validate');
+    this.documentsSubject.next('validate');
+  }
+
+  handleUserAdded({ tableName, y, employee }) {
+    if (tableName !== 'increaseLabor') return;
+
+    const declarations = [ ...this.declarations ];
+    const row = declarations[y];
+
+    row.origin = {
+      ...row.origin,
+      ...employee
+    };
+    row.isInitialize = false;
+
+    this.tableHeaderColumns.forEach((column, index) => {
+      if (employee[column.key] !== null && typeof employee[column.key] !== 'undefined') {
+        row.data[index] = employee[column.key];
+      }
+    });
+
+    // update orders
+    this.updateOrders(declarations);
+
+    this.declarations = this.declarationService.updateFormula(declarations, this.tableHeaderColumns);
+
+    this.employeeSubject.next({
+      type: 'clean'
+    });
+    this.eventsSubject.next({ type: 'validate' });
     this.familiesSubject.next('validate');
     this.documentsSubject.next('validate');
   }
@@ -314,9 +345,28 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     this.employeeSubject.next({
       type: 'clean'
     });
-    this.eventsSubject.next('validate');
+    this.eventsSubject.next({ type: 'validate' });
     this.familiesSubject.next('validate');
     this.documentsSubject.next('validate');
+  }
+
+  handleUserDeleted(user) {
+    const indexes: any = this.declarations.reduce(
+      (combine, d, index) => {
+        if (d.isLeaf && d.origin && (d.origin.employeeId || d.origin.id) === user.id) {
+          return [...combine, index];
+        }
+
+        return [...combine];
+      },
+      []
+    );
+
+    this.eventsSubject.next({
+      type: 'deleteUser',
+      user,
+      deletedIndexes: indexes
+    });
   }
 
   handleSelectEmployees(employees) {
@@ -352,7 +402,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
       });
     }
 
-    this.eventsSubject.next(type);
+    this.eventsSubject.next({type});
   }
 
   handleSubmit(event) {
@@ -451,7 +501,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
 
     });
 
-    this.eventsSubject.next('validate');
+    this.eventsSubject.next({ type: 'validate' });
     this.familiesSubject.next('validate');
     this.documentsSubject.next('validate');
   }
@@ -499,7 +549,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     const employeesInDeclaration = this.getEmployeeInDeclaration(records);
     this.setDataToFamilies(employeesInDeclaration);
     this.setDateToInformationList(employeesInDeclaration);
-    this.eventsSubject.next('validate');
+    this.eventsSubject.next({ type: 'validate' });
     this.familiesSubject.next('validate');
     this.documentsSubject.next('validate');
   }
@@ -527,7 +577,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
       row.parent = afterRow.parent;
       row.parentKey = afterRow.parentKey;
       row.planType = afterRow.planType;
-    } else {
+    } else if (beforeRow.isLeaf && afterRow.isLeaf) {
       row.parent = beforeRow.parent;
       row.parentKey = beforeRow.parentKey;
       row.planType = beforeRow.planType;
@@ -546,7 +596,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     this.updateOrders(declarations);
 
     this.declarations = this.declarationService.updateFormula(declarations, this.tableHeaderColumns);
-    this.eventsSubject.next('validate');
+    this.eventsSubject.next({ type: 'validate' });
     this.familiesSubject.next('validate');
     this.documentsSubject.next('validate');
   }
@@ -576,7 +626,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
 
     this.declarations = this.declarationService.updateFormula(declarations, this.tableHeaderColumns);
     //this.deleteEmployeeInFamilies(declarationsDeleted);
-    this.eventsSubject.next('validate');
+    this.eventsSubject.next({ type: 'validate' });
     this.familiesSubject.next('validate');
     this.documentsSubject.next('validate');
   }
@@ -600,7 +650,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     families.splice(insertBefore ? rowNumber : rowNumber + 1, 0, row);
 
     this.families = families;
-    this.eventsSubject.next('validate');
+    this.eventsSubject.next({ type: 'validate' });
     this.familiesSubject.next('validate');
     this.documentsSubject.next('validate');
   }
@@ -618,7 +668,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
 
     const familyDeleted = families.splice(rowNumber, numOfRows);
     this.families = families;
-    this.eventsSubject.next('validate');
+    this.eventsSubject.next({type: 'validate'});
     this.familiesSubject.next('validate');
     this.documentsSubject.next('validate');
   }
@@ -895,7 +945,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
 
     });
 
-    this.eventsSubject.next('validate');
+    this.eventsSubject.next({ type: 'validate' });
     this.familiesSubject.next('validate');
     this.documentsSubject.next('validate');
   }
@@ -905,7 +955,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
 
     const infomaionDeleted = infomations.splice(rowNumber, numOfRows);
     this.informations = infomations;
-    this.eventsSubject.next('validate');
+    this.eventsSubject.next({ type: 'validate' });
     this.familiesSubject.next('validate');
     this.documentsSubject.next('validate');
   }

@@ -1,11 +1,13 @@
 <div class="page-regime-approval__container" [ngClass]="{ 'page-regime-approval__container--hidden': isHiddenSidebar }">
   <app-declaration-sidebar
+    tableName="maternity"
     [isHiddenSidebar]="isHiddenSidebar"
     [events]="employeeSubject.asObservable()"
     (onSelectEmployees)="handleSelectEmployees($event)"
     (onToggleSidebar)="handleToggleSidebar()"
     (onUserUpdated)="handleUserUpdateTables($event)"
     (onUserDeleted)="handleUserDeleteTables($event)"
+    (onUserAdded)="handleUserAdded($event)"
   ></app-declaration-sidebar>
 
   <div class="page-regime-approval__content">

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewEncapsulation, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { forkJoin, Subject } from 'rxjs';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
@@ -37,7 +37,7 @@ import { validateLessThanEqualNow } from '@app/shared/utils/custom-validation';
   styleUrls: ['./employee-form.component.less'],
   encapsulation: ViewEncapsulation.None
 })
-export class EmployeeFormComponent implements OnInit {
+export class EmployeeFormComponent implements OnInit, OnDestroy {
   @Input() employee: any = {};
   tableNestedHeadersFamilies: any[] = TABLE_FAMILIES_NESTED_HEADERS;
   tableHeaderColumnsFamilies: any[] = TABLE_FAMILIES_HEADER_COLUMNS;
@@ -71,6 +71,7 @@ export class EmployeeFormComponent implements OnInit {
   flagChangeMaster: boolean = false;
   formatterCurrency = (value: number) => typeof value === 'number' ? `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',') : '';
   private timer;
+  private saveTimer;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -210,6 +211,10 @@ export class EmployeeFormComponent implements OnInit {
     this.evolutionIsurrances = this.formatEvolutionIsurrances(employee.evolutionIsurrances);
   }
 
+  ngOnDestroy() {
+    clearTimeout(this.saveTimer);
+  }
+
   formatFamilies(families) {
     if(!families) {
       families = this.createObjectsBlank([], this.tableHeaderColumnsFamilies, 15);
@@ -271,7 +276,6 @@ export class EmployeeFormComponent implements OnInit {
   }
 
   save(): void {
-    console.log(this.employeeForm)
     for (const i in this.employeeForm.controls) {
       this.employeeForm.controls[i].markAsDirty();
       this.employeeForm.controls[i].updateValueAndValidity();
@@ -289,7 +293,9 @@ export class EmployeeFormComponent implements OnInit {
       });
     } else {
       this.employeeService.create(formData).subscribe(() => {
-        this.modal.destroy(formData);
+        this.saveTimer = setTimeout(() => {
+          this.modal.destroy(formData);
+        }, 500);
       });
     }
   }

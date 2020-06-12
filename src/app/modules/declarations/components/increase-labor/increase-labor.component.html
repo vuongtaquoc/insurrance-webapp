@@ -54,12 +54,14 @@
         <nz-tab nzTitle="D02-TS">
           <div class="page-declarations__container" [ngClass]="{ 'page-declarations__container--hidden': isHiddenSidebar }">
             <app-declaration-sidebar
+              tableName="increaseLabor"
               [isHiddenSidebar]="isHiddenSidebar"
               [events]="employeeSubject.asObservable()"
               (onSelectEmployees)="handleSelectEmployees($event)"
               (onToggleSidebar)="handleToggleSidebar()"
-              (onUserUpdated)="handleUserUpdateTables($event)"
-              (onUserDeleted)="handleUserDeleteTables($event)"
+              (onUserUpdated)="handleUserUpdated($event)"
+              (onUserDeleted)="handleUserDeleted($event)"
+              (onUserAdded)="handleUserAdded($event)"
             ></app-declaration-sidebar>
 
             <div class="page-declarations__content">

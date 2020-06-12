@@ -62,7 +62,9 @@ export class EmployeeFamilyTableComponent implements OnInit, OnDestroy, OnChange
   }
 
   ngOnDestroy() {
-    jexcel.destroy(this.spreadsheetEl.nativeElement, true);
+    if (this.spreadsheet) {
+      this.spreadsheet.destroy(this.spreadsheetEl.nativeElement, true);
+    }
     this.eventsSubscription.unsubscribe();
   }
 
@@ -131,12 +133,12 @@ export class EmployeeFamilyTableComponent implements OnInit, OnDestroy, OnChange
         const columnCityCode = jexcel.getColumnNameFromId([6,event.index]);
         this.spreadsheet.setValue(columnCityCode, event.data.cityCode);
       }
-      
+
       if(event.columName === 'districtCode') {
         const columnDistrictCode = jexcel.getColumnNameFromId([7,event.index]);
         this.spreadsheet.setValue(columnDistrictCode, event.data.districtCode);
       }
-      
+
       if(event.columName === 'wardsCode') {
         const columnWardsCode = jexcel.getColumnNameFromId([8,event.index]);
         this.spreadsheet.setValue(columnWardsCode, event.data.wardsCode);
@@ -155,7 +157,7 @@ export class EmployeeFamilyTableComponent implements OnInit, OnDestroy, OnChange
       d.data.origin  = d.origin;
       data.push(d.data);
     });
-   
+
     // init default data
     data.forEach((d, i) => d[0] = i + 1);
     this.data = data;

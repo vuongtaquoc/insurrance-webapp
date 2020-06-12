@@ -19,7 +19,7 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
   @Input() columns: any[] = [];
   @Input() nestedHeaders: any[] = [];
   @Input() tableName: string;
-  @Input() events: Observable<void>;
+  @Input() events: Observable<any>;
   @Input() validate: Observable<any>;
   @Output() onChange: EventEmitter<any> = new EventEmitter();
   @Output() onSubmit: EventEmitter<any> = new EventEmitter();
@@ -31,6 +31,7 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
   isSpinning = true;
   private eventsSubscription: Subscription;
   private validateSubscription: Subscription;
+  private deleteTimer;
 
   constructor(
     private element: ElementRef,
@@ -44,7 +45,9 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
   }
 
   ngOnDestroy() {
-    jexcel.destroy(this.spreadsheetEl.nativeElement, true);
+    if (this.spreadsheet) {
+      this.spreadsheet.destroy(this.spreadsheetEl.nativeElement, true);
+    }
     this.eventsSubscription.unsubscribe();
     this.validateSubscription.unsubscribe();
   }
@@ -62,6 +65,7 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
       columns: this.columns,
       allowInsertColumn: false,
       allowInsertRow: true,
+      allowAddEmployee: true,
       tableOverflow: true,
       tableWidth: '100%',
       tableHeight: '100%',
@@ -69,6 +73,13 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
       defaultColAlign: 'left',
       onfocus: () => {
         this.onFocus.emit();
+      },
+      onaddemployee: (y, x) => {
+        eventEmitter.emit('tableEditor:addEmployee', {
+          tableName: this.tableName,
+          y,
+          x
+        });
       },
       onchange: (instance, cell, c, r, value) => {
         this.onChange.emit({
@@ -199,7 +210,27 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
     });
   }
 
-  private handleEvent(type) {
+  private handleDeleteUser(deletedIndexes) {
+    this.deleteTimer = setTimeout(() => {
+      if (!deletedIndexes.length) {
+        clearTimeout(this.deleteTimer);
+        return;
+      }
+
+      const index = deletedIndexes.shift();
+
+      this.spreadsheet.deleteRow(index, 1);
+      this.onDelete.emit({
+        rowNumber: index,
+        numOfRows: 1,
+        records: this.spreadsheet.getJson()
+      });
+
+      this.handleDeleteUser(deletedIndexes);
+    }, 30);
+  }
+
+  private handleEvent({ type, user, deletedIndexes }) {
     if (type === 'validate') {
       setTimeout(() => {
         eventEmitter.emit('labor-table-editor:validate', {
@@ -208,6 +239,12 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
           errors: this.getColumnNameValid(this.spreadsheet.getTableErrors())
         });
       }, 10);
+      return;
+    }
+
+    if (type === 'deleteUser') {
+      this.handleDeleteUser(deletedIndexes);
+
       return;
     }
 

@@ -44,6 +44,7 @@ export class RegimeApprovalBaseComponent {
   tableSubject: Subject<any> = new Subject<any>();
   isHiddenSidebar = false;
   isBlinking = false;
+  tableName: any = {};
 
   constructor(
     protected declarationService: DeclarationService,
@@ -133,11 +134,65 @@ export class RegimeApprovalBaseComponent {
     });
   }
 
+  handleUserAdded({ tableName, y, employee }) {
+    if (!this.tableName[tableName]) return;
+    const part = tableName.toLowerCase().indexOf('part1') > -1 ? 'part1' : 'part2';
+    const declarations = [ ...this.declarations[part].table ];
+    const row = declarations[y];
+
+    row.origin = {
+      ...row.origin,
+      ...employee
+    };
+    row.isInitialize = false;
+
+    this.headers[part].columns.forEach((column, index) => {
+      if (employee[column.key] !== null && typeof employee[column.key] !== 'undefined') {
+        row.data[index] = employee[column.key];
+      }
+    });
+
+    // update orders
+    this.updateOrders(declarations);
+
+    this.declarations[part].table = this.declarationService.updateFormula(declarations, this.headers[part].columns);
+
+    this.employeeSubject.next({
+      type: 'clean'
+    });
+    this.tableSubject.next({
+      type: 'validate'
+    });
+    this.tableSubject.next({
+      type: 'readonly',
+      part,
+      data: this.declarations[part].table
+    });
+  }
+
   handleUserDeleteTables(user) {
-      this.tableSubject.next({
-        type: 'deleteUser',
-        employee: user
-      })
+    this.handleUserDeleted(user, 'part1');
+    this.handleUserDeleted(user, 'part2');
+  }
+
+  handleUserDeleted(user, part) {
+    const indexes: any = this.declarations[part].table.reduce(
+      (combine, d, index) => {
+        if (d.isLeaf && d.origin && (d.origin.employeeId || d.origin.id) === user.id) {
+          return [...combine, index];
+        }
+
+        return [...combine];
+      },
+      []
+    );
+
+    this.tableSubject.next({
+      type: 'deleteUser',
+      user,
+      part,
+      deletedIndexes: indexes
+    });
   }
 
   handleUserUpdateTables(user) {
@@ -241,6 +296,10 @@ export class RegimeApprovalBaseComponent {
       row.parent = afterRow.parent;
       row.parentKey = afterRow.parentKey;
       row.planType = afterRow.planType;
+    } else if (beforeRow.isLeaf && afterRow.isLeaf) {
+      row.parent = beforeRow.parent;
+      row.parentKey = beforeRow.parentKey;
+      row.planType = beforeRow.planType;
     }
 
     // if (beforeRow.isInitialize) {

@@ -34,7 +34,9 @@ export class DocumentListTableComponent implements OnInit, OnDestroy, OnChanges,
 
 
   ngOnDestroy() {
-    jexcel.destroy(this.spreadsheetEl.nativeElement, true);
+    if (this.spreadsheet) {
+      this.spreadsheet.destroy(this.spreadsheetEl.nativeElement, true);
+    }
     this.eventsSubscription.unsubscribe();
   }
 
