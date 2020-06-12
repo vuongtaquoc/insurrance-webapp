@@ -45,7 +45,9 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
   }
 
   ngOnDestroy() {
-    jexcel.destroy(this.spreadsheetEl.nativeElement, true);
+    if (this.spreadsheet) {
+      this.spreadsheet.destroy(this.spreadsheetEl.nativeElement, true);
+    }
     this.eventsSubscription.unsubscribe();
     this.validateSubscription.unsubscribe();
   }
@@ -63,6 +65,7 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
       columns: this.columns,
       allowInsertColumn: false,
       allowInsertRow: true,
+      allowAddEmployee: true,
       tableOverflow: true,
       tableWidth: '100%',
       tableHeight: '100%',
@@ -70,6 +73,13 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
       defaultColAlign: 'left',
       onfocus: () => {
         this.onFocus.emit();
+      },
+      onaddemployee: (y, x) => {
+        eventEmitter.emit('tableEditor:addEmployee', {
+          tableName: this.tableName,
+          y,
+          x
+        });
       },
       onchange: (instance, cell, c, r, value) => {
         this.onChange.emit({

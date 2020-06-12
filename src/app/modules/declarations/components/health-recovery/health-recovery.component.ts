@@ -24,6 +24,11 @@ export class HealthRecoveryComponent extends RegimeApprovalBaseComponent impleme
   }
 
   ngOnInit() {
+    this.tableName = {
+      healthRecoveryPart1: 'part1',
+      healthRecoveryPart2: 'part2'
+    };
+
     // initialize table columns
     this.initializeTableColumns('part1', TABLE_NESTED_HEADERS_PART_1, TABLE_HEADER_COLUMNS_PART_1);
     this.initializeTableColumns('part2', TABLE_NESTED_HEADERS_PART_2, TABLE_HEADER_COLUMNS_PART_2);

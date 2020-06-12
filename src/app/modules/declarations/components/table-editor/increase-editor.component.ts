@@ -5,7 +5,6 @@ import 'jsuites/dist/jsuites.js';
 
 import { customPicker } from '@app/shared/utils/custom-editor';
 import { eventEmitter } from '@app/shared/utils/event-emitter';
-import { keyframes } from '@angular/animations';
 
 @Component({
   selector: 'app-increase-editor',
@@ -58,7 +57,9 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
   }
 
   ngOnDestroy() {
-    jexcel.destroy(this.spreadsheetEl.nativeElement, true);
+    if (this.spreadsheet) {
+      this.spreadsheet.destroy(this.spreadsheetEl.nativeElement, true);
+    }
     this.eventsSubscription.unsubscribe();
     this.validateSubscription.unsubscribe();
     if (this.timer) clearTimeout(this.timer);
@@ -79,6 +80,7 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
       columns: this.columns,
       allowInsertColumn: false,
       allowInsertRow: true,
+      allowAddEmployee: true,
       tableOverflow: true,
       tableWidth: '100%',
       tableHeight: '100%',
@@ -87,6 +89,13 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
       defaultColAlign: 'left',
       onfocus: () => {
         this.onFocus.emit();
+      },
+      onaddemployee: (y, x) => {
+        eventEmitter.emit('tableEditor:addEmployee', {
+          tableName: this.tableName,
+          y,
+          x
+        });
       },
       onchange: (instance, cell, c, r, value) => {
         this.onChange.emit({
@@ -210,16 +219,16 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
         //update source dropdown when change data
         if (column.defaultLoad) {
           this.spreadsheet.updateDropdownValue(colIndex, rowIndex);
-        } 
+        }
       });
     });
-    
+
     this.setWarningSalaryWhenAddEmployee(data);
-    
+
   }
 
   private setWarningSalaryWhenAddEmployee(data: any) {
-    if(this.tableName !== 'adjustment') { 
+    if(this.tableName !== 'adjustment') {
         return;
     }
 
@@ -232,7 +241,7 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
     this.validateTimer = setTimeout(() => {
       data.forEach((row, rowIndex) => {
         if(!row.origin.isLeaf) return;
-        
+
         this.spreadsheet.setCellError(fieldName, 30,rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true);
         this.spreadsheet.setCellError(fieldName, 31,rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true);
         this.spreadsheet.setCellError(fieldName, 32,rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true);
@@ -245,7 +254,7 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
     }, 10);
 
   }
-  
+
 
   private updateCellReadonly() {
     const readonlyColumnIndex = this.columns.findIndex(c => !!c.checkReadonly);

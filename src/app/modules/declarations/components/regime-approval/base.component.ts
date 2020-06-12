@@ -44,6 +44,7 @@ export class RegimeApprovalBaseComponent {
   tableSubject: Subject<any> = new Subject<any>();
   isHiddenSidebar = false;
   isBlinking = false;
+  tableName: any = {};
 
   constructor(
     protected declarationService: DeclarationService,
@@ -123,6 +124,42 @@ export class RegimeApprovalBaseComponent {
       type: 'clean'
     });
     this.employeeSelected.length = 0;
+    this.tableSubject.next({
+      type: 'validate'
+    });
+    this.tableSubject.next({
+      type: 'readonly',
+      part,
+      data: this.declarations[part].table
+    });
+  }
+
+  handleUserAdded({ tableName, y, employee }) {
+    if (!this.tableName[tableName]) return;
+    const part = tableName.toLowerCase().indexOf('part1') > -1 ? 'part1' : 'part2';
+    const declarations = [ ...this.declarations[part].table ];
+    const row = declarations[y];
+
+    row.origin = {
+      ...row.origin,
+      ...employee
+    };
+    row.isInitialize = false;
+
+    this.headers[part].columns.forEach((column, index) => {
+      if (employee[column.key] !== null && typeof employee[column.key] !== 'undefined') {
+        row.data[index] = employee[column.key];
+      }
+    });
+
+    // update orders
+    this.updateOrders(declarations);
+
+    this.declarations[part].table = this.declarationService.updateFormula(declarations, this.headers[part].columns);
+
+    this.employeeSubject.next({
+      type: 'clean'
+    });
     this.tableSubject.next({
       type: 'validate'
     });

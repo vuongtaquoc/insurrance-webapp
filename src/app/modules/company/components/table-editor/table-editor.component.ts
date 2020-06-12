@@ -29,7 +29,9 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
   }
 
   ngOnDestroy() {
-    jexcel.destroy(this.spreadsheetEl.nativeElement, true);
+    if (this.spreadsheet) {
+      this.spreadsheet.destroy(this.spreadsheetEl.nativeElement, true);
+    }
     window.removeEventListener('resize', this.updateTableSize);
     this.eventsSubscription.unsubscribe();
   }

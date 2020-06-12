@@ -28,6 +28,11 @@ export class MaternityComponent extends RegimeApprovalBaseComponent implements O
   }
 
   ngOnInit() {
+    this.tableName = {
+      maternityPart1: 'part1',
+      maternityPart2: 'part2'
+    };
+
     // initialize table columns
     this.initializeTableColumns('part1', TABLE_NESTED_HEADERS_PART_1, TABLE_HEADER_COLUMNS_PART_1);
     this.initializeTableColumns('part2', TABLE_NESTED_HEADERS_PART_2, TABLE_HEADER_COLUMNS_PART_2);

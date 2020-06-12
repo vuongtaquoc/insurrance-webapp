@@ -42,7 +42,9 @@ export class EmployeeProcessTableComponent implements OnInit, OnDestroy, OnChang
   }
 
   ngOnDestroy() {
-    jexcel.destroy(this.spreadsheetEl.nativeElement, true);
+    if (this.spreadsheet) {
+      this.spreadsheet.destroy(this.spreadsheetEl.nativeElement, true);
+    }
     this.eventsSubscription.unsubscribe();
   }
 
@@ -109,7 +111,7 @@ export class EmployeeProcessTableComponent implements OnInit, OnDestroy, OnChang
     // init default data
     data.forEach((d, i) => d[0] = i + 1);
     this.data = data;
-    
+
     this.spreadsheet.setData(this.data);
     // update dropdown data
     data.forEach((row, rowIndex) => {

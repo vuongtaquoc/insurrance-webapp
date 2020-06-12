@@ -38,7 +38,7 @@ export class FamiliesListTableComponent implements OnInit, OnDestroy, OnChanges,
     this.handlers.push(eventEmitter.on('adjust-general:tab:change', (index) => {
       clearTimeout(this.timer);
       this.isSpinning = true;
-      
+
       this.timer = setTimeout(() => {
         this.spreadsheet.updateNestedHeaderPosition();
         this.spreadsheet.updateFreezeColumn();
@@ -49,7 +49,9 @@ export class FamiliesListTableComponent implements OnInit, OnDestroy, OnChanges,
 
   ngOnDestroy() {
     this.eventsSubscription.unsubscribe();
-    jexcel.destroy(this.spreadsheetEl.nativeElement, true);
+    if (this.spreadsheet) {
+      this.spreadsheet.destroy(this.spreadsheetEl.nativeElement, true);
+    }
     this.eventsSubscription.unsubscribe();
     if (this.timer) clearTimeout(this.timer);
     clearTimeout(this.validateTimer);

@@ -9,6 +9,8 @@ import { DeclarationSidebarSearchComponent } from './search.component';
 import { TranslateService } from '@ngx-translate/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
 
+import { eventEmitter } from '@app/shared/utils/event-emitter';
+
 @Component({
   selector: 'app-declaration-sidebar',
   templateUrl: './declaration-sidebar.component.html',
@@ -16,16 +18,19 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 })
 export class DeclarationSidebarComponent implements OnInit, OnDestroy {
   @Input() isHiddenSidebar = false;
+  @Input() tableName: string;
   @Input() events: Observable<any>;
   @Output() onSelectEmployees: EventEmitter<any> = new EventEmitter();
   @Output() onToggleSidebar: EventEmitter<any> = new EventEmitter();
   @Output() onUserUpdated: EventEmitter<any> = new EventEmitter();
   @Output() onUserDeleted: EventEmitter<any> = new EventEmitter();
+  @Output() onUserAdded: EventEmitter<any> = new EventEmitter();
 
   isSpinning: boolean;
   employeeSelected: any[] = [];
   employeeSubject: Subject<any> = new Subject<any>();
   private eventsSubscription: Subscription;
+  private handlers: any = [];
 
   constructor(
     private modalService: NzModalService,
@@ -43,10 +48,18 @@ export class DeclarationSidebarComponent implements OnInit, OnDestroy {
         this.employeeSelected.length = 0;
       }
     });
+    this.handlers = [
+      eventEmitter.on('tableEditor:addEmployee', ({ tableName, y, x }) => {
+        if (tableName.indexOf(this.tableName) > -1) {
+          this.add(tableName, y);
+        }
+      })
+    ];
   }
 
   ngOnDestroy() {
     this.eventsSubscription.unsubscribe();
+    eventEmitter.destroy(this.handlers);
   }
 
   handleSelectEmployees(employees) {
@@ -59,7 +72,7 @@ export class DeclarationSidebarComponent implements OnInit, OnDestroy {
     this.delete(employees);
   }
 
-  addEmployee() {
+  add(tableName = '', y?) {
     const modal = this.modalService.create({
       nzWidth: 980,
       nzWrapClassName: 'employee-modal',
@@ -69,11 +82,25 @@ export class DeclarationSidebarComponent implements OnInit, OnDestroy {
     });
 
     modal.afterClose.subscribe(result => {
+      if (!result) return;
+
       this.employeeSubject.next({
         type: 'add',
         status: 'success'
       });
+
+      if (tableName) {
+        this.onUserAdded.emit({
+          tableName,
+          y,
+          employee: result
+        });
+      }
     });
+  }
+
+  addEmployee() {
+    this.add();
   }
 
   editEmployee() {
@@ -149,31 +176,25 @@ export class DeclarationSidebarComponent implements OnInit, OnDestroy {
       nzOkText: 'Tiếp tục',
       nzCancelText: 'Hủy',
       nzOnOk: () => {
-        // this.employeeService.delete(employee.employeeId || employee.id).subscribe(() => {
+        this.employeeService.delete(employee.employeeId || employee.id).subscribe(() => {
 
-        //   this.employeeSubject.next({
-        //     type: 'delete',
-        //     status: 'success'
-        //   });
+          this.employeeSubject.next({
+            type: 'delete',
+            status: 'success'
+          });
 
-        //   this.modalService.confirm({
-        //     nzTitle: 'Bạn muốn xóa thông tin NLĐ trong hồ sơ?',
-        //     nzOkText: 'Xóa NLĐ',
-        //     nzCancelText: 'Hủy',
-        //     nzOnOk: () => this.onUserDeleted.emit(employee)
-        //   });
+          this.modalService.confirm({
+            nzTitle: 'Bạn muốn xóa thông tin NLĐ trong hồ sơ?',
+            nzOkText: 'Xóa NLĐ',
+            nzCancelText: 'Hủy',
+            nzOnOk: () => this.onUserDeleted.emit(employee)
+          });
 
-        // },
-        // (err) => {
-        //   this.translateService.get(err.message).subscribe(message => {
-        //     this.messageService.create('error', message);
-        //   });
-        // });
-        this.modalService.confirm({
-          nzTitle: 'Bạn muốn xóa thông tin NLĐ trong hồ sơ?',
-          nzOkText: 'Xóa NLĐ',
-          nzCancelText: 'Hủy',
-          nzOnOk: () => this.onUserDeleted.emit(employee)
+        },
+        (err) => {
+          this.translateService.get(err.message).subscribe(message => {
+            this.messageService.create('error', message);
+          });
         });
       }
     });
@@ -196,6 +217,7 @@ export class DeclarationSidebarComponent implements OnInit, OnDestroy {
       });
       this.isSpinning = false;
       modal.afterClose.subscribe(result => {
+        console.log('edit', result)
         if (!result) return;
 
         this.employeeSubject.next({
