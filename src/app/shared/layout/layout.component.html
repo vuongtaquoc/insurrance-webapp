@@ -108,6 +108,8 @@
   </header><!-- layout-header -->
 
   <div class="layout-container">
-    <router-outlet></router-outlet>
+    <nz-spin [nzSpinning]="isLoading">
+      <router-outlet></router-outlet>
+    </nz-spin>
   </div>
 </div>

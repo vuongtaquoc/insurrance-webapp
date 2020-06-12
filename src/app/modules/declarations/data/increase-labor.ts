@@ -267,7 +267,6 @@ export const TABLE_HEADER_COLUMNS = [{
   width: 80,
   title: '(22.1)',
   mask: '#,##0',
-  decimal: ',',
   sum: true,
   key: 'salary'
 }, {
@@ -362,7 +361,7 @@ export const TABLE_HEADER_COLUMNS = [{
   title: '(24)',
   key: 'toDate',
   isCalendar: true
-  
+
 }, {
   type: 'dropdown',
   autocomplete: true,

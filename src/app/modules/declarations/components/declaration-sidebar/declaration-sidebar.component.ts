@@ -202,6 +202,7 @@ export class DeclarationSidebarComponent implements OnInit, OnDestroy {
 
   private edit(selected) {
     this.isSpinning = true;
+    eventEmitter.emit('loading:open', true);
 
     this.employeeService.getEmployeeById(selected.id).subscribe(employee => {
 
@@ -216,8 +217,8 @@ export class DeclarationSidebarComponent implements OnInit, OnDestroy {
         }
       });
       this.isSpinning = false;
+      eventEmitter.emit('loading:open', false);
       modal.afterClose.subscribe(result => {
-        console.log('edit', result)
         if (!result) return;
 
         this.employeeSubject.next({

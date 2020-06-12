@@ -380,8 +380,8 @@ export const TABLE_ARREARS_HEADER_COLUMNS = [{
   }
 }, {
   type: 'numeric',
-  mask: '# ##0',
-  decimal: ',',
+  mask: '#,##0',
+  // decimal: ',',
   width: 50,
   title: '(22)',
   key: 'ratio'
