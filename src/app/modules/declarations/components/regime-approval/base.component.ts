@@ -134,6 +134,34 @@ export class RegimeApprovalBaseComponent {
     });
   }
 
+  handleSort({ direction, source, dist }, part) {
+    const declarations = [ ...this.declarations[part].table ];
+    const current = declarations[source];
+
+    // remove element
+    declarations.splice(source, 1);
+
+    // add element to new position
+    declarations.splice(dist, 0, current);
+
+    // update orders
+    this.updateOrders(declarations);
+
+    this.declarations[part].table = this.declarationService.updateFormula(declarations, this.headers[part].columns);
+
+    this.employeeSubject.next({
+      type: 'clean'
+    });
+    this.tableSubject.next({
+      type: 'validate'
+    });
+    this.tableSubject.next({
+      type: 'readonly',
+      part,
+      data: this.declarations[part].table
+    });
+  }
+
   handleUserAdded({ tableName, y, employee }) {
     if (!this.tableName[tableName]) return;
     const part = tableName.toLowerCase().indexOf('part1') > -1 ? 'part1' : 'part2';

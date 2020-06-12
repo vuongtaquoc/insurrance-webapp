@@ -26,6 +26,7 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
   @Output() onDelete: EventEmitter<any> = new EventEmitter();
   @Output() onAddRow: EventEmitter<any> = new EventEmitter();
   @Output() onFocus: EventEmitter<any> = new EventEmitter();
+  @Output() onSort: EventEmitter<any> = new EventEmitter();
 
   spreadsheet: any;
   isSpinning = true;
@@ -66,6 +67,7 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
       allowInsertColumn: false,
       allowInsertRow: true,
       allowAddEmployee: true,
+      allowSort: true,
       tableOverflow: true,
       tableWidth: '100%',
       tableHeight: '100%',
@@ -73,6 +75,20 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
       defaultColAlign: 'left',
       onfocus: () => {
         this.onFocus.emit();
+      },
+      onsorttop: (el, y, x) => {
+        this.onSort.emit({
+          direction: 'top',
+          source: y,
+          dist: y - 1
+        });
+      },
+      onsortdown: (el, y, x) => {
+        this.onSort.emit({
+          direction: 'down',
+          source: y,
+          dist: y + 1
+        });
       },
       onaddemployee: (y, x) => {
         eventEmitter.emit('tableEditor:addEmployee', {

@@ -26,7 +26,7 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
   @Output() onDelete: EventEmitter<any> = new EventEmitter();
   @Output() onAddRow: EventEmitter<any> = new EventEmitter();
   @Output() onFocus: EventEmitter<any> = new EventEmitter();
-
+  @Output() onSort: EventEmitter<any> = new EventEmitter();
 
   spreadsheet: any;
   isInitialized = false;
@@ -81,6 +81,7 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
       allowInsertColumn: false,
       allowInsertRow: true,
       allowAddEmployee: true,
+      allowSort: true,
       tableOverflow: true,
       tableWidth: '100%',
       tableHeight: '100%',
@@ -89,7 +90,22 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
       defaultColAlign: 'left',
       onfocus: () => {
         this.onFocus.emit();
-      },onaddemployee: (y, x) => {
+      },
+      onsorttop: (el, y, x) => {
+        this.onSort.emit({
+          direction: 'top',
+          source: y,
+          dist: y - 1
+        });
+      },
+      onsortdown: (el, y, x) => {
+        this.onSort.emit({
+          direction: 'down',
+          source: y,
+          dist: y + 1
+        });
+      },
+      onaddemployee: (y, x) => {
         eventEmitter.emit('tableEditor:addEmployee', {
           tableName: this.tableName,
           y,
