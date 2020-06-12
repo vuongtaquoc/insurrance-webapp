@@ -42,6 +42,7 @@
       [nestedHeaders]="headers.adjustment.nested"
       [columns]="headers.adjustment.columns"
       [events]="tableSubject.asObservable()"
+      [validate]="validateSubject.asObservable()"
       (onChange)="handleChangeTable($event,'adjustment')"
       (onDelete)="handleDeleteTableData($event,'adjustment')"
       (onAddRow)="handleAddRow($event,'adjustment')"

@@ -287,6 +287,7 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
   private handleEvent({ type }) {
     if (type === 'validate') {
       setTimeout(() => {
+        console.log('ok');
         const data = Object.values(this.spreadsheet.getJson());
         const leaf = data.filter((d: any) => d.options.isLeaf);
         const initialize = leaf.filter((d: any) => d.options.isInitialize);
@@ -306,6 +307,7 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
 
     errorcopy.forEach(error => {
       let fieldName = this.columns[(error.x - 1)].fieldName;
+      console.log(fieldName, error.x);
       if(!fieldName) {
         fieldName = this.columns[(error.x - 1)].title;
       }
@@ -316,16 +318,17 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
   }
 
   handleValidate({ field, errors }) {
-    Object.keys(errors).forEach(row => {
-      const error = errors[row];
+    setTimeout(() => {
+      Object.keys(errors).forEach(row => {
+        const error = errors[row];
 
-      this.spreadsheet.validationCell(row, error.col, {
-        name: `Mã số ${ error.value }`
-      }, {
-        fieldNotFound: true
-      }, !!error.valid);
-    });
-
+        this.spreadsheet.validationCell(row, error.col, {
+          name: `Mã số ${ error.value }`
+        }, {
+          fieldNotFound: true
+        }, !!error.valid);
+      });
+    }, 10);
     console.log(this.spreadsheet.getTableErrors());
   }
 }

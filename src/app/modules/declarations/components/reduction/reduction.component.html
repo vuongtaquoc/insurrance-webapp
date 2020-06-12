@@ -44,6 +44,7 @@
       [nestedHeaders]="headers.reductionlabor.nested"
       [columns]="headers.reductionlabor.columns"
       [events]="tableSubject.asObservable()"
+      [validate]="validateSubject.asObservable()"
       (onChange)="handleChangeTable($event,'reductionlabor')"
       (onDelete)="handleDeleteTableData($event,'reductionlabor')"
       (onAddRow)="handleAddRow($event,'reductionlabor')"
