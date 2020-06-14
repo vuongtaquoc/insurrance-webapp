@@ -59,6 +59,7 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
   handler: any;
   isTableValid = false;
   tableErrors = {};
+  formError: any[] = [];
   panel: any = {
     general: { active: false },
     attachment: { active: false }
@@ -243,10 +244,16 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
 
   save(type) {
 
-    if (type === 'rollback') {
-      this.router.navigate(['/declarations/adjust-general']);
-      return '';
-    }
+    eventEmitter.emit('tableEditor:validFrom', {
+      tableName: 'documentList'
+    });
+
+    console.log('Vaoday')
+
+    // if (type === 'rollback') {
+    //   this.router.navigate(['/declarations/adjust-general']);
+    //   return '';
+    // }
     let count = Object.keys(this.tableErrors).reduce(
       (total, key) => {
         const data = this.tableErrors[key];
@@ -258,18 +265,8 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
       return this.modalService.error({
         nzTitle: 'Lỗi dữ liệu. Vui lòng sửa!',
         nzContent: TableEditorErrorsComponent,
-        nzComponentParams: {
-         
-          errors: Object.keys(this.tableErrors).reduce(
-            (combine, key) => {
-              if (this.tableErrors[key].length) {
-                return { ...combine, [key]: this.tableErrors[key] };
-              }
-
-              return { ...combine };
-            },
-            {}
-          )
+        nzComponentParams: {         
+          errors: this.getColumnErrror()
         }
       });
     }
@@ -281,6 +278,21 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
 
   }
 
+  private getColumnErrror() {
+    let tableErrorMessage = Object.keys(this.tableErrors).reduce(
+      (combine, key) => {
+        if (this.tableErrors[key].length) {
+          return { ...combine, [key]: this.tableErrors[key] };
+        }
+
+        return { ...combine };
+      },
+      {}
+    );
+
+    console.log(tableErrorMessage);
+    return tableErrorMessage;
+  }
   private create(type: any) {
     this.declarationService.create({
       type: type,
@@ -534,6 +546,10 @@ private getEmployeeInDeclarations(records: any) {
 
   });
   return employeesInDeclaration;
+}
+
+handleValidForm(data) {
+  this.formError = data.errorMessage;
 }
 
 private setDataToFamilyEditor(records: any)

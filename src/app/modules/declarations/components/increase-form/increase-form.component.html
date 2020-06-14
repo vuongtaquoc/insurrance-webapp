@@ -2,8 +2,18 @@
 <form nz-form [formGroup]="form" class="page-regime-approval__search">
   <nz-form-item>
     <nz-form-label [nzNoColon]="true" [nzSpan]="10">Số</nz-form-label>
-    <nz-form-control [nzSpan]="14">
-      <input nz-input formControlName="number">
+    <nz-form-control [nzSpan]="14" [nzErrorTip]="numberTpl">
+      <nz-input-number
+         formControlName="number"
+      ></nz-input-number>
+      <ng-template #numberTpl let-control>
+        <ng-container *ngIf="control.hasError('required')">
+          Số không để trống
+        </ng-container>
+        <ng-container *ngIf="control.hasError('pattern')">
+          Số lương phải số
+        </ng-container>
+      </ng-template>
     </nz-form-control>
   </nz-form-item>
   <nz-form-item>

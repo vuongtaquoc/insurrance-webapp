@@ -21,11 +21,11 @@
               <nz-form-item>
                 <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Ngày sinh</nz-form-label>
                 <nz-form-control [nzSpan]="14" nzErrorTip="Ngày sinh không để trống" [nzErrorTip]="birthdayTpl">
-                  <nz-date-picker formControlName="birthday" nzPlaceHolder="Ngày sinh" *ngIf="!birthTypeOnlyYearMonth && !birthTypeOnlyYear"></nz-date-picker>
+                  <nz-date-picker formControlName="birthday" nzFormat="dd/MM/yyyy" nzPlaceHolder="Ngày sinh" *ngIf="!birthTypeOnlyYearMonth && !birthTypeOnlyYear"></nz-date-picker>
                   <nz-month-picker
                     formControlName="birthday"
                     nzPlaceHolder="Ngày sinh"
-                    nzFormat="yyyy/MM"
+                    nzFormat="MM/yyyy"
                     [nzAutoFocus]="true"
                     *ngIf="birthTypeOnlyYearMonth && !birthTypeOnlyYear"
                   ></nz-month-picker>
@@ -46,10 +46,6 @@
                 <label nz-checkbox (ngModelChange)="changeBirthType($event, 'birthTypeOnlyYearMonth')" formControlName="birthTypeOnlyYearMonth">Chỉ có tháng/năm sinh</label>
                 <label nz-checkbox (ngModelChange)="changeBirthType($event, 'birthTypeOnlyYear')" formControlName="birthTypeOnlyYear">Chỉ có năm sinh</label>
               </nz-checkbox-wrapper>
-              <!-- <nz-radio-group formControlName="typeBirthday">
-                <label nz-radio nzValue="1">Chỉ có tháng/năm sinh</label>
-                <label nz-radio nzValue="2">Chỉ có năm sinh</label>
-              </nz-radio-group> -->
             </div><!-- col -->
           </div><!-- END ROW -->
 
@@ -393,10 +389,11 @@
               <nz-form-item>
                 <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Tiền lương</nz-form-label>
                 <nz-form-control [nzSpan]="14" [nzErrorTip]="salaryTpl">
-                  <input nz-input
+                  <nz-input-number
                     placeholder="Tiền lương"
                     formControlName="salary"
-                  />
+                    [nzFormatter]="formatterCurrency"
+                  ></nz-input-number>
                   <ng-template #salaryTpl let-control>
                     <ng-container *ngIf="control.hasError('required')">
                       Tiền lương không để trống
@@ -611,11 +608,17 @@
             <div nz-col [nzSpan]="8">
               <nz-form-item>
                 <nz-form-label class="text-left" [nzSpan]="10">Các khoản bổ sung</nz-form-label>
-                <nz-form-control [nzSpan]="14">
-                  <input nz-input
+                <nz-form-control [nzSpan]="14" [nzErrorTip]="allowanceAdditional">
+                  <nz-input-number
                     placeholder="Các khoản bổ sung"
                     formControlName="allowanceAdditional"
-                  />
+                    [nzFormatter]="formatterCurrency"
+                  ></nz-input-number>
+                  <ng-template #allowanceAdditionalTpl let-control>
+                    <ng-container *ngIf="control.hasError('pattern')">
+                      PC lương phải là số
+                    </ng-container>
+                  </ng-template>
                 </nz-form-control>
               </nz-form-item>
             </div><!-- col -->

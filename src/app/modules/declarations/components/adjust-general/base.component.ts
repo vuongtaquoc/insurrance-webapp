@@ -58,7 +58,6 @@ export class GeneralBaseComponent {
   isBlinking = false;
   tabSubscription: Subscription;
   selectedTab: number;
-
   constructor(
     protected declarationService: DeclarationService,
     protected modalService: NzModalService,
@@ -211,6 +210,71 @@ handleUserUpdated(user, tableName) {
       data: this.declarations.table
     });
 
+  }
+
+  handleUserAdded({ tableName, y, employee }) {
+    console.log(tableName,'tableName');
+    if (!tableName) return;
+    const declarations = [ ...this.declarations[tableName].table];
+    const row = declarations[y];
+
+    row.origin = {
+      ...row.origin,
+      ...employee
+    };
+    row.isInitialize = false;
+
+    this.headers[tableName].columns.forEach((column, index) => {
+      if (employee[column.key] !== null && typeof employee[column.key] !== 'undefined') {
+        row.data[index] = employee[column.key];
+      }
+    });
+
+    // update orders
+    this.updateOrders(declarations);
+
+    this.declarations[tableName].table = this.declarationService.updateFormula(declarations, this.headers[tableName].columns);
+
+    this.employeeSubject.next({
+      type: 'clean'
+    });
+    this.tableSubject.next({
+      type: 'validate'
+    });
+    this.tableSubject.next({
+      tableName,
+      type: 'readonly',
+      data: this.declarations.table
+    });
+  }
+
+
+  handleSort({ direction, source, dist }, tableName) {
+    const declarations = [ ...this.declarations[tableName].table ];
+    const current = declarations[source];
+
+    // remove element
+    declarations.splice(source, 1);
+
+    // add element to new position
+    declarations.splice(dist, 0, current);
+
+    // update orders
+    this.updateOrders(declarations);
+
+    this.declarations[tableName].table = this.declarationService.updateFormula(declarations, this.headers[tableName].columns);
+
+    this.employeeSubject.next({
+      type: 'clean'
+    });
+    this.tableSubject.next({
+      type: 'validate'
+    });
+    this.tableSubject.next({
+      type: 'readonly',
+      tableName,
+      data: this.declarations[tableName].table
+    });
   }
 
   handleTabChanged({ selected }) {

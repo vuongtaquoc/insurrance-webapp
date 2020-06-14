@@ -330,14 +330,16 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
       )
     };
 
-    if (this.employeeForm.get('birthTypeOnlyYearMonth')) {
+    formData.typeBirthday = '3';
+    if (this.employeeForm.get('birthTypeOnlyYearMonth').value) {
       formData.typeBirthday = '1';
-    } else if (this.employeeForm.get('birthTypeOnlyYear')) {
+    }
+    
+    if (this.employeeForm.get('birthTypeOnlyYear').value) {
       formData.typeBirthday = '2';
-    } else {
-      formData.typeBirthday = '3';
     }
 
+    console.log(formData.typeBirthday);
     if (formData.allowanceSalary) {
       formData.allowanceSalary = formData.allowanceSalary.toString().split(',').join('');
     }

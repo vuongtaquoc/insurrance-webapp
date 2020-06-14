@@ -8,6 +8,7 @@ import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 import { NzSelectModule } from 'ng-zorro-antd/select';
@@ -90,6 +91,7 @@ import { RegimeAutoSizeDirective } from './directives';
     NzDropDownModule,
     NzFormModule,
     NzInputModule,
+    NzInputNumberModule,
     NzIconModule,
     NzPaginationModule,
     NzSelectModule,

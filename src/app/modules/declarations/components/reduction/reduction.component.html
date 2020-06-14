@@ -1,11 +1,13 @@
 <div class="page-declarations__container" [ngClass]="{ 'page-declarations__container--hidden': isHiddenSidebar }">
   <app-declaration-sidebar
+    tableName="reductionlabor"
     [isHiddenSidebar]="isHiddenSidebar"
     [events]="employeeSubject.asObservable()"
     (onSelectEmployees)="handleSelectEmployees($event)"
     (onToggleSidebar)="handleToggleSidebar()"
     (onUserUpdated)="handleUserUpdateTables($event, reductionlabor)"
     (onUserDeleted)="handleUserDeleteTables($event, reductionlabor)"
+    (onUserAdded)="handleUserAdded($event)"
   ></app-declaration-sidebar>
 
   <div class="page-declarations__content">
@@ -49,6 +51,7 @@
       (onDelete)="handleDeleteTableData($event,'reductionlabor')"
       (onAddRow)="handleAddRow($event,'reductionlabor')"
       (onFocus)="handleFocus($event)"
+      (onSort)="handleSort($event, 'increaselabor')"
     ></app-increase-editor>
     </div><!-- page-declarations__editor -->
 
