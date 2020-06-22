@@ -1,5 +1,6 @@
 import { Component, Input, Output, OnInit, OnDestroy, OnChanges, AfterViewInit, ViewChild, EventEmitter, ViewEncapsulation } from '@angular/core';
 import { Subscription, Observable } from 'rxjs';
+import { NzModalService } from 'ng-zorro-antd/modal';
 import * as jexcel from 'jstable-editor/dist/jexcel.js';
 import 'jsuites/dist/jsuites.js';
 
@@ -35,8 +36,10 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
   private handlers = [];
   private timer;
   private validateTimer;
+  private deleteTimer;
   private validateSubscription: Subscription;
   constructor(
+    private modalService: NzModalService
   ) {
 
   }
@@ -164,6 +167,12 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
         });
         //this.validationCellByOtherCell(value, column, r, instance, records);
       },
+      ondoubleclickreadonly: (el) => {
+        this.modalService.info({
+          nzTitle: 'Hướng dẫn',
+          nzContent: 'Hãy chọn NLĐ ở danh sách bên trái để kê khai. Nếu thêm mới NLĐ nhấn dấu + (góc trên bên trái) hoặc sử dụng chức năng Lấy file mẫu và Nạp dữ liệu để thực hiện.'
+        });
+      }
     });
 
     this.updateEditorToColumn('dateSign');
@@ -300,10 +309,9 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
     column.editor = customPicker(this.spreadsheet, type, isCustom);
   }
 
-  private handleEvent({ type }) {
+  private handleEvent({ type, parentKey, deletedIndexes, part }){
     if (type === 'validate') {
       setTimeout(() => {
-        console.log('ok');
         const data = Object.values(this.spreadsheet.getJson());
         const leaf = data.filter((d: any) => d.options.isLeaf);
         const initialize = leaf.filter((d: any) => d.options.isInitialize);
@@ -315,7 +323,33 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
           initialize
         });
       }, 10);
+    } else if (type === 'deleteUser') {
+      this.handleDeleteUser(deletedIndexes);
+
+      return;
     }
+  }
+
+  private handleDeleteUser(deletedIndexes) {
+    this.deleteTimer = setTimeout(() => {
+      if (!deletedIndexes.length) {
+        clearTimeout(this.deleteTimer);
+        return;
+      };
+      const index = deletedIndexes.shift();
+
+      this.spreadsheet.deleteRow(index, 1);
+
+      this.onDelete.emit({
+        rowNumber: index,
+        numOfRows: 1,
+        records: this.spreadsheet.getJson(),
+        columns: this.columns
+      });
+
+      this.handleDeleteUser(deletedIndexes);
+
+    }, 50);
   }
 
   private getColumnNameValid(errors) {
@@ -345,6 +379,5 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
         }, !!error.valid);
       });
     }, 10);
-    console.log(this.spreadsheet.getTableErrors());
   }
 }

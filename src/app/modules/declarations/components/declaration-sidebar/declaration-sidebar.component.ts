@@ -73,29 +73,41 @@ export class DeclarationSidebarComponent implements OnInit, OnDestroy {
   }
 
   add(tableName = '', y?) {
-    const modal = this.modalService.create({
-      nzWidth: 980,
-      nzWrapClassName: 'employee-modal',
-      nzTitle: 'Cập nhật thông tin người lao động',
-      nzContent: EmployeeFormComponent,
-      nzOnOk: (data) => console.log('Click ok', data)
-    });
-
-    modal.afterClose.subscribe(result => {
-      if (!result) return;
-
-      this.employeeSubject.next({
-        type: 'add',
-        status: 'success'
+    this.employeeService.getPressCreate().subscribe(data => {
+      const employee =
+      {
+        ratio: data.ratioInsurrance.ratio,
+        rate: data.ratioInsurrance.bhxh,
+        paymentMethodCode: data.ratioInsurrance.month,
+        orders: data.order
+      }
+      const modal = this.modalService.create({
+        nzWidth: 980,
+        nzWrapClassName: 'employee-modal',
+        nzTitle: 'Cập nhật thông tin người lao động',
+        nzContent: EmployeeFormComponent,
+        nzOnOk: (data) => console.log('Click ok', data),
+        nzComponentParams: {
+          employee
+        }
       });
 
-      if (tableName) {
-        this.onUserAdded.emit({
-          tableName,
-          y,
-          employee: result
+      modal.afterClose.subscribe(result => {
+        if (!result) return;
+
+        this.employeeSubject.next({
+          type: 'add',
+          status: 'success'
         });
-      }
+
+        if (tableName) {
+          this.onUserAdded.emit({
+            tableName,
+            y,
+            employee: result
+          });
+        }
+      });
     });
   }
 
@@ -219,6 +231,7 @@ export class DeclarationSidebarComponent implements OnInit, OnDestroy {
       this.isSpinning = false;
       eventEmitter.emit('loading:open', false);
       modal.afterClose.subscribe(result => {
+        console.log(result, 'result insert');
         if (!result) return;
 
         this.employeeSubject.next({

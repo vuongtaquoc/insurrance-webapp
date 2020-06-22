@@ -384,7 +384,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
       },
       []
     );
-
+    console.log(user);
     this.eventsSubject.next({
       type: 'deleteUser',
       user,

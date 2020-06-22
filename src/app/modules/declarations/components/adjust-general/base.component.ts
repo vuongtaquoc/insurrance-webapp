@@ -71,10 +71,28 @@ export class GeneralBaseComponent {
   }
 
   handleUserDeleteTables(user, tableName) {
-    this.tableSubject.next({
-      type: 'deleteUser',
-      employee: user
-    })
+    this.handleUserDeleted(user, tableName);
+}
+
+
+handleUserDeleted(user, tableName) {
+  const indexes: any = this.declarations[tableName].table.reduce(
+    (combine, d, index) => {
+      if (d.isLeaf && d.origin && (d.origin.employeeId || d.origin.id) === user.id) {
+        return [...combine, index];
+      }
+
+      return [...combine];
+    },
+    []
+  );
+  
+  this.tableSubject.next({
+    type: 'deleteUser',
+    user,
+    tableName,
+    deletedIndexes: indexes
+  });
 }
 
 handleUserUpdateTables(user, tableName) {
@@ -86,6 +104,7 @@ handleUserUpdated(user, tableName) {
   const declarationUsers = declarations.filter(d => {
     return d.isLeaf && d.origin && (d.origin.employeeId || d.origin.id) === user.id;
   });
+  
   declarationUsers.forEach(declaration => {
     declaration.origin = {
       ...declaration.origin,

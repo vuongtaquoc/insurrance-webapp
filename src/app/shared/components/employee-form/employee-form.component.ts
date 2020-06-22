@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewEncapsulation, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewEncapsulation, Input, AfterViewInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { forkJoin, Subject } from 'rxjs';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
@@ -66,6 +66,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
   departments: DropdownItem[] = [];
   typeBirthdays: DropdownItem[] = [];
   relationshipVillages: DropdownItem[] = [];
+  statusDefault: any;
   processSubject: Subject<string> = new Subject<string>();
   familySubject: Subject<any> = new Subject<any>();
   flagChangeMaster: boolean = false;
@@ -143,12 +144,13 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
       if (relationshipDistricts) this.relationshipDistricts = relationshipDistricts;
       if (relationshipWards) this.relationshipWards = relationshipWards;
       if (relationshipVillages) this.relationshipVillages = relationshipVillages;
+     
     });
 
     const dateFormat = employee.typeBirthday === '01' ? DATE_FORMAT.ONLY_MONTH_YEAR : DATE_FORMAT.ONLY_YEAR;
     const birthday = employee.birthday ? moment(employee.birthday, dateFormat) : '';
     const dateSign = employee.dateSign ? moment(employee.dateSign, DATE_FORMAT.FULL) : '';
-
+    //const statusDefault = employee.status ? employee.status : this.paymentStatus[0].id;
     this.employeeForm = this.formBuilder.group({
       fullName: [employee.fullName, Validators.required],
       birthday: [birthday ? new Date(birthday.valueOf()) : '', [Validators.required, validateLessThanEqualNow]],
@@ -288,13 +290,13 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
     const formData = this.getData();
 
     if (this.employee.id) {
-      this.employeeService.update(this.employee.id, formData).subscribe(() => {
-        this.modal.destroy(formData);
+      this.employeeService.update(this.employee.id, formData).subscribe((data) => {
+        this.modal.destroy(data);
       });
     } else {
-      this.employeeService.create(formData).subscribe(() => {
+      this.employeeService.create(formData).subscribe((data) => {
         this.saveTimer = setTimeout(() => {
-          this.modal.destroy(formData);
+          this.modal.destroy(data);
         }, 500);
       });
     }
@@ -339,7 +341,6 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
       formData.typeBirthday = '2';
     }
 
-    console.log(formData.typeBirthday);
     if (formData.allowanceSalary) {
       formData.allowanceSalary = formData.allowanceSalary.toString().split(',').join('');
     }
@@ -730,6 +731,11 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
   get birthTypeOnlyYear() {
     return this.employeeForm.get('birthTypeOnlyYear').value;
   }
+
+  get status() {
+    return this.employeeForm.get('status').value;
+  }
+
 
   getNameOfDropdown(sourceOfDropdown: any, id: string) {
     let name = '';

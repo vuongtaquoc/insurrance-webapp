@@ -37,7 +37,7 @@ export const customPicker = (table, mode, checkPrevCol = false) => {
           options.format = 'yyyy';
           options.viewMode = 'years';
           options.minViewMode = 'years';
-        }
+        } 
       } else {
         if (mode === 'month') {
           options.format = 'mm/yyyy';
@@ -47,7 +47,7 @@ export const customPicker = (table, mode, checkPrevCol = false) => {
           options.format = 'yyyy';
           options.viewMode = 'years';
           options.minViewMode = 'years';
-        }
+        } 
       }
 
       const value = cell.children[0].value;
@@ -76,7 +76,7 @@ export const customPicker = (table, mode, checkPrevCol = false) => {
           options.format = 'yyyy';
           options.viewMode = 'years';
           options.minViewMode = 'years';
-        }
+        } 
       } else {
         if (mode === 'month') {
           options.format = 'mm/yyyy';
@@ -86,7 +86,7 @@ export const customPicker = (table, mode, checkPrevCol = false) => {
           options.format = 'yyyy';
           options.viewMode = 'years';
           options.minViewMode = 'years';
-        }
+        } 
       }
 
       const isValid = moment(cell.innerHTML, options.format.toUpperCase(), true).isValid();

@@ -248,8 +248,8 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
       tableName: 'documentList'
     });
 
-    console.log('Vaoday')
-
+    console.log(this.formError);
+    console.log('OK');
     // if (type === 'rollback') {
     //   this.router.navigate(['/declarations/adjust-general']);
     //   return '';

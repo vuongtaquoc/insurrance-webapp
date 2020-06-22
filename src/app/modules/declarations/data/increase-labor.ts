@@ -99,7 +99,7 @@ export const TABLE_HEADER_COLUMNS = [{
   type: 'dropdown',
   width: 70,
   title: '(6)',
-  source: [ { id: '1', name: 'tháng/năm' }, { id: '2', name: 'năm' } ],
+  source: [ { id: '3', name: 'Ngày tháng năm' },{ id: '1', name: 'tháng/năm' }, { id: '2', name: 'năm' } ],
   key: 'typeBirthday'
 }, {
   type: 'text',
@@ -318,6 +318,7 @@ export const TABLE_HEADER_COLUMNS = [{
   width: 70,
   title: '(22.6)',
   key: 'allowanceSeniority',
+  fieldName: 'Thâm niên VK',
   suffix: '%',
   validations: {
     // number: true,
@@ -329,6 +330,7 @@ export const TABLE_HEADER_COLUMNS = [{
   width: 70,
   title: '(22.7)',
   key: 'allowanceSeniorityJob',
+  fieldName: 'Thâm niên nghề',
   suffix: '%',
   validations: {
     min: 0,
@@ -342,6 +344,7 @@ export const TABLE_HEADER_COLUMNS = [{
   // decimal: ',',
   sum: true,
   key: 'allowanceOther',
+  fieldName: 'Chênh lệch bảo lưu',
   validations: {
     number: true
   }

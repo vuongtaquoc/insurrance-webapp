@@ -93,7 +93,7 @@ export const TABLE_REDUCTION_HEADER_COLUMNS = [{
   type: 'dropdown',
   width: 70,
   title: '(6)',
-  source: [ { id: '1', name: 'tháng/năm' }, { id: '2', name: 'năm' } ],
+  source: [ { id: '3', name: 'Ngày tháng năm' },{ id: '1', name: 'tháng/năm' }, { id: '2', name: 'năm' } ],
   key: 'typeBirthday'
 }, {
   type: 'text',
