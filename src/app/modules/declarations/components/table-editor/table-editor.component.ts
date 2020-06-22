@@ -236,11 +236,11 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
       const index = deletedIndexes.shift();
 
       this.spreadsheet.deleteRow(index, 1);
-      this.onDelete.emit({
-        rowNumber: index,
-        numOfRows: 1,
-        records: this.spreadsheet.getJson()
-      });
+      // this.onDelete.emit({
+      //   rowNumber: index,
+      //   numOfRows: 1,
+      //   records: this.spreadsheet.getJson()
+      // });
 
       this.handleDeleteUser(deletedIndexes);
     }, 30);
@@ -309,6 +309,12 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
       }, {
         fieldNotFound: true
       }, !!error.valid);
+
+      this.handleEvent({
+        type: 'validate',
+        deletedIndexes: [],
+        user: {}
+      });
     });
   }
 

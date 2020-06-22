@@ -2,8 +2,19 @@ import { FormControl } from '@angular/forms';
 
 const getDateNow = () => {
   const now = new Date();
+  const credentials = JSON.parse(localStorage.getItem('CREDENTIALS') || '{}');
+  const currentDate = credentials.currentDate;
+
   now.setSeconds(0);
   now.setUTCMilliseconds(0);
+
+  if (currentDate) {
+    const [ day, month, year ] = currentDate.split('/');
+
+    now.setDate(day);
+    now.setMonth(Number(month) - 1);
+    now.setFullYear(year);
+  }
 
   return now;
 }

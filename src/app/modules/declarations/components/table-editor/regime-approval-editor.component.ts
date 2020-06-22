@@ -3,9 +3,11 @@ import { Subscription, Observable } from 'rxjs';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import * as jexcel from 'jstable-editor/dist/jexcel.js';
 import 'jsuites/dist/jsuites.js';
+import * as moment from 'moment';
 
 import { customPicker } from '@app/shared/utils/custom-editor';
 import { eventEmitter } from '@app/shared/utils/event-emitter';
+import { DATE_FORMAT } from '@app/shared/constant';
 
 @Component({
   selector: 'app-regime-approval-editor',
@@ -127,7 +129,7 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
           instance.jexcel.setValue(nextColumn, '');
         }
 
-        this.validationCellByOtherCell(value, column, r, instance);
+        this.validationCellByOtherCell(value, column, r, instance, c);
         this.updateCellValidation();
       },
       ondeleterow: (el, rowNumber, numOfRows) => {
@@ -389,6 +391,12 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
             });
           }
         });
+        this.handleEvent({
+          type: 'validate',
+          deletedIndexes: [],
+          parentKey: '',
+          part: ''
+        });
       });
     }, 50);
   }
@@ -439,13 +447,6 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
 
       this.spreadsheet.deleteRow(index, 1);
 
-      this.onDelete.emit({
-        rowNumber: index,
-        numOfRows: 1,
-        records: this.spreadsheet.getJson(),
-        columns: this.columns
-      });
-
       this.handleDeleteUser(deletedIndexes);
     }, 50);
   }
@@ -488,7 +489,7 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
     return errorcopy;
   }
 
-  private validationCellByOtherCell(cellValue, column, y, instance) {
+  private validationCellByOtherCell(cellValue, column, y, instance, cell) {
     if (column.key === 'planCode') {
       const rules = this.validationRules[cellValue];
       const x = this.columns.findIndex(c => c.key === 'childrenNumber');
@@ -499,6 +500,12 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
         validationColumn.validations = undefined;
         validationColumn.fieldName = undefined;
         instance.jexcel.clearValidation(y, x);
+        this.handleEvent({
+          type: 'validate',
+          deletedIndexes: [],
+          part: '',
+          parentKey: ''
+        });
         return;
       }
 
@@ -511,6 +518,93 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
       validationColumn.fieldName = fieldName;
 
       instance.jexcel.validationCell(y, x, fieldName, rules);
+
+      this.handleEvent({
+        type: 'validate',
+        deletedIndexes: [],
+        part: '',
+        parentKey: ''
+      });
+    } else if (column.key === 'regimeFromDate') {
+      const regimeToDateValue = this.spreadsheet.getValueFromCoords(Number(cell) + 1, y);
+      const validationColumn = this.columns[cell];
+
+      if (regimeToDateValue && cellValue) {
+        const cellValueMoment = moment(cellValue, DATE_FORMAT.FULL);
+        const regimeToDateValueMoment = moment(regimeToDateValue, DATE_FORMAT.FULL);
+        const isSameOrAfter = cellValueMoment.isSameOrAfter(regimeToDateValueMoment);
+
+        if (isSameOrAfter) {
+          validationColumn.validations = {
+            required: true,
+            lessThan: true
+          };
+          validationColumn.fieldName = {
+            name: 'Ngày đầu tiên người lao động được chỉ định nghỉ chế độ < hoặc = Ngày cuối cùng người lao động được chỉ định nghỉ chế độ',
+          };
+
+          instance.jexcel.validationCell(y, cell, validationColumn.fieldName, validationColumn.validations);
+        } else {
+          validationColumn.validations = {
+            required: true
+          };
+          validationColumn.fieldName = 'Từ ngày';
+          instance.jexcel.clearValidation(y, cell);
+        }
+      } else {
+        validationColumn.validations = {
+          required: true
+        };
+        validationColumn.fieldName = 'Từ ngày';
+        instance.jexcel.clearValidation(y, cell);
+      }
+
+      this.handleEvent({
+        type: 'validate',
+        deletedIndexes: [],
+        part: '',
+        parentKey: ''
+      });
+    } else if (column.key === 'regimeToDate') {
+      const regimeFromDateValue = this.spreadsheet.getValueFromCoords(Number(cell) - 1, y);
+      const validationColumn = this.columns[Number(cell) - 1];
+
+      if (cellValue && regimeFromDateValue) {
+        const cellValueMoment = moment(cellValue, DATE_FORMAT.FULL);
+        const regimeFromDateValueMoment = moment(regimeFromDateValue, DATE_FORMAT.FULL);
+        const isSameOrAfter = regimeFromDateValueMoment.isSameOrAfter(cellValueMoment);
+
+        if (isSameOrAfter) {
+          validationColumn.validations = {
+            required: true,
+            lessThan: true
+          };
+          validationColumn.fieldName = {
+            name: 'Ngày đầu tiên người lao động được chỉ định nghỉ chế độ < hoặc = Ngày cuối cùng người lao động được chỉ định nghỉ chế độ',
+          };
+
+          instance.jexcel.validationCell(y, Number(cell) - 1, validationColumn.fieldName, validationColumn.validations);
+        } else {
+          validationColumn.validations = {
+            required: true
+          };
+          validationColumn.fieldName = 'Từ ngày';
+          instance.jexcel.clearValidation(y, Number(cell) - 1);
+        }
+      } else {
+        validationColumn.validations = {
+          required: true
+        };
+        validationColumn.fieldName = 'Từ ngày';
+        instance.jexcel.clearValidation(y, Number(cell) - 1);
+      }
+
+      this.handleEvent({
+        type: 'validate',
+        deletedIndexes: [],
+        part: '',
+        parentKey: ''
+      });
     }
   }
 }
