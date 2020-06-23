@@ -37,7 +37,7 @@ export const customPicker = (table, mode, checkPrevCol = false) => {
           options.format = 'yyyy';
           options.viewMode = 'years';
           options.minViewMode = 'years';
-        } 
+        }
       } else {
         if (mode === 'month') {
           options.format = 'mm/yyyy';
@@ -47,7 +47,7 @@ export const customPicker = (table, mode, checkPrevCol = false) => {
           options.format = 'yyyy';
           options.viewMode = 'years';
           options.minViewMode = 'years';
-        } 
+        }
       }
 
       const value = cell.children[0].value;
@@ -76,7 +76,7 @@ export const customPicker = (table, mode, checkPrevCol = false) => {
           options.format = 'yyyy';
           options.viewMode = 'years';
           options.minViewMode = 'years';
-        } 
+        }
       } else {
         if (mode === 'month') {
           options.format = 'mm/yyyy';
@@ -86,18 +86,22 @@ export const customPicker = (table, mode, checkPrevCol = false) => {
           options.format = 'yyyy';
           options.viewMode = 'years';
           options.minViewMode = 'years';
-        } 
+        }
       }
 
       const isValid = moment(cell.innerHTML, options.format.toUpperCase(), true).isValid();
 
       // Create input
       const element = document.createElement('input');
-      element.value = isValid ? cell.innerHTML : '';
+      element.value = isValid ? table.runMask(cell.innerHTML, options.format) : '';
       // Update cell
       cell.classList.add('editor');
       cell.innerHTML = '';
       cell.appendChild(element);
+
+      $(element).on('keyup', function(e) {
+        this.value = table.runMask(this.value, options.format)
+      });
 
       $(element).datepicker(options).on('changeDate', function(e) {
         setTimeout(function() {

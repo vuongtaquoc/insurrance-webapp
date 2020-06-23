@@ -287,7 +287,8 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
         childrenWeekOld,
         planCode,
         childrenBirthday: {
-          required: true
+          required: true,
+          lessThanNow: true
         }
       },
       'III_2': {
@@ -312,7 +313,8 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
         childrenWeekOld,
         planCode,
         childrenBirthday: {
-          required: true
+          required: true,
+          lessThanNow: true
         }
       },
       'V_2': {
@@ -326,7 +328,8 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
         childrenWeekOld,
         planCode,
         childrenBirthday: {
-          required: true
+          required: true,
+          lessThanNow: true
         }
       },
       'VI_2': {
@@ -446,6 +449,12 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
       const index = deletedIndexes.shift();
 
       this.spreadsheet.deleteRow(index, 1);
+      this.handleEvent({
+        type: 'validate',
+        deletedIndexes: [],
+        part: '',
+        parentKey: ''
+      });
 
       this.handleDeleteUser(deletedIndexes);
     }, 50);
@@ -480,10 +489,16 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
 
     errorcopy.forEach(error => {
       let fieldName = this.columns[(error.x - 1)].fieldName;
+
       if(!fieldName) {
         fieldName = this.columns[(error.x - 1)].title;
       }
-      error.columnName = fieldName;
+
+      if (typeof fieldName === 'object') {
+        error.columnName = fieldName.name;
+      } else {
+        error.columnName = fieldName;
+      }
     });
 
     return errorcopy;
@@ -540,7 +555,8 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
             lessThan: true
           };
           validationColumn.fieldName = {
-            name: 'Ngày đầu tiên người lao động được chỉ định nghỉ chế độ < hoặc = Ngày cuối cùng người lao động được chỉ định nghỉ chế độ',
+            name: 'Từ ngày',
+            message: 'Ngày đầu tiên người lao động được chỉ định nghỉ chế độ < hoặc = Ngày cuối cùng người lao động được chỉ định nghỉ chế độ',
           };
 
           instance.jexcel.validationCell(y, cell, validationColumn.fieldName, validationColumn.validations);
@@ -580,7 +596,8 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
             lessThan: true
           };
           validationColumn.fieldName = {
-            name: 'Ngày đầu tiên người lao động được chỉ định nghỉ chế độ < hoặc = Ngày cuối cùng người lao động được chỉ định nghỉ chế độ',
+            name: 'Từ ngày',
+            message: 'Ngày đầu tiên người lao động được chỉ định nghỉ chế độ < hoặc = Ngày cuối cùng người lao động được chỉ định nghỉ chế độ',
           };
 
           instance.jexcel.validationCell(y, Number(cell) - 1, validationColumn.fieldName, validationColumn.validations);

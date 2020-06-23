@@ -3,15 +3,16 @@
   <nz-form-item>
     <nz-form-label [nzNoColon]="true" [nzSpan]="10">Số</nz-form-label>
     <nz-form-control [nzSpan]="14" [nzErrorTip]="numberTpl">
-      <nz-input-number
+      <!-- <nz-input-number
          formControlName="number"
-      ></nz-input-number>
+      ></nz-input-number> -->
+      <input nz-input formControlName="number">
       <ng-template #numberTpl let-control>
         <ng-container *ngIf="control.hasError('required')">
-          Số không để trống
+          <p class="regime-approval-form__error">Số không để trống</p>
         </ng-container>
         <ng-container *ngIf="control.hasError('pattern')">
-          Số lương phải số
+          <p class="regime-approval-form__error">Số lương phải số</p>
         </ng-container>
       </ng-template>
     </nz-form-control>
