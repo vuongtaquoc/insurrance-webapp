@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgxMaskModule } from 'ngx-mask';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
@@ -83,7 +84,8 @@ import {
     NzPaginationModule,
     NzTabsModule,
     NzTreeModule,
-    NzTableModule
+    NzTableModule,
+    NgxMaskModule.forRoot()
   ],
   declarations: [
     LayoutComponent,

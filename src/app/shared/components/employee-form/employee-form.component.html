@@ -21,7 +21,15 @@
               <nz-form-item>
                 <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Ngày sinh</nz-form-label>
                 <nz-form-control [nzSpan]="14" nzErrorTip="Ngày sinh không để trống" [nzErrorTip]="birthdayTpl">
-                  <nz-date-picker formControlName="birthday" nzFormat="dd/MM/yyyy" nzPlaceHolder="Ngày sinh" *ngIf="!birthTypeOnlyYearMonth && !birthTypeOnlyYear"></nz-date-picker>
+                  <input nz-input
+                    placeholder="Ngày sinh"
+                    formControlName="birthday"
+                    [mask]="birthdayFormat"
+                    [showMaskTyped]="true"
+                    [validation]="true"
+                    [clearIfNotMatch]="true"
+                  />
+                  <!-- <nz-date-picker [nzAllowClear]="false" formControlName="birthday" nzFormat="d/M/yyyy" nzPlaceHolder="Ngày sinh" *ngIf="!birthTypeOnlyYearMonth && !birthTypeOnlyYear"></nz-date-picker>
                   <nz-month-picker
                     formControlName="birthday"
                     nzPlaceHolder="Ngày sinh"
@@ -29,7 +37,7 @@
                     [nzAutoFocus]="true"
                     *ngIf="birthTypeOnlyYearMonth && !birthTypeOnlyYear"
                   ></nz-month-picker>
-                  <nz-year-picker nzFormat="yyyy" formControlName="birthday" nzPlaceHolder="Ngày sinh" *ngIf="!birthTypeOnlyYearMonth && birthTypeOnlyYear"></nz-year-picker>
+                  <nz-year-picker nzFormat="yyyy" formControlName="birthday" nzPlaceHolder="Ngày sinh" *ngIf="!birthTypeOnlyYearMonth && birthTypeOnlyYear"></nz-year-picker> -->
                   <ng-template #birthdayTpl let-control>
                     <ng-container *ngIf="control.hasError('required')">
                       Ngày sinh không để trống
@@ -358,7 +366,15 @@
               <nz-form-item>
                 <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Ngày ký</nz-form-label>
                 <nz-form-control [nzSpan]="14" [nzErrorTip]="dateSignTpl">
-                  <nz-date-picker nzPlaceHolder ="Ngày ký" formControlName="dateSign"></nz-date-picker>
+                  <!-- <nz-date-picker nzPlaceHolder ="Ngày ký" formControlName="dateSign"></nz-date-picker> -->
+                  <input nz-input
+                    placeholder="Ngày ký"
+                    formControlName="dateSign"
+                    mask="00/00/0000"
+                    [showMaskTyped]="true"
+                    [validation]="true"
+                    [clearIfNotMatch]="true"
+                  />
                   <ng-template #dateSignTpl let-control>
                     <ng-container *ngIf="control.hasError('required')">
                       Ngày ký không để trống
