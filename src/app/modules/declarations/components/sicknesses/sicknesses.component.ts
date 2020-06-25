@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, OnChanges, ViewEncapsulation, OnDestroy } from '@angular/core';
 import { NzModalService } from 'ng-zorro-antd/modal';
 
 import { DeclarationService, CategoryService, BankService } from '@app/core/services';
@@ -8,13 +8,15 @@ import { RegimeApprovalBaseComponent } from '@app/modules/declarations/component
 import { TABLE_NESTED_HEADERS_PART_1, TABLE_HEADER_COLUMNS_PART_1, TABLE_HEADER_COLUMNS_PART_2, TABLE_NESTED_HEADERS_PART_2 } from '@app/modules/declarations/data/sicknesses.data';
 import { Subject, forkJoin } from 'rxjs';
 
+import { eventEmitter } from '@app/shared/utils/event-emitter';
+
 @Component({
   selector: 'app-sicknesses',
   templateUrl: './sicknesses.component.html',
   styleUrls: ['./sicknesses.component.less'],
   encapsulation: ViewEncapsulation.None
 })
-export class SicknessesComponent extends RegimeApprovalBaseComponent implements OnInit, OnChanges {
+export class SicknessesComponent extends RegimeApprovalBaseComponent implements OnInit, OnChanges, OnDestroy {
   constructor(
     protected declarationService: DeclarationService,
     private categoryService: CategoryService,
@@ -53,6 +55,13 @@ export class SicknessesComponent extends RegimeApprovalBaseComponent implements 
       this.updateSourceToColumn(TABLE_HEADER_COLUMNS_PART_1, 'bankId', banks);
       this.updateSourceToColumn(TABLE_HEADER_COLUMNS_PART_2, 'bankId', banks);
     });
+
+    this.handlers.push(eventEmitter.on('regime-approval:deleteUser', (data) => {
+      this.handleUserDeleteTables(data.employee);
+    }));
+    this.handlers.push(eventEmitter.on('regime-approval:updateUser', (data) => {
+      this.handleUserUpdateTables(data.employee);
+    }));
   }
 
   ngOnChanges(changes) {
@@ -68,6 +77,10 @@ export class SicknessesComponent extends RegimeApprovalBaseComponent implements 
       this.updateOriginByPart('part1');
       this.updateOriginByPart('part2');
     }
+  }
+
+  ngOnDestroy() {
+    eventEmitter.destroy(this.handlers);
   }
 
   private getSourceDropDownByKey(key: string) {

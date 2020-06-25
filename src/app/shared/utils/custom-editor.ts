@@ -1,8 +1,11 @@
 import * as $ from 'jquery';
 import 'bootstrap-datepicker';
+import 'devbridge-autocomplete';
 import * as moment from 'moment';
 
-$.fn.datepicker.dates['vi'] = {
+const fn: any = $.fn;
+
+fn.datepicker.dates['vi'] = {
   days: ["Chủ nhật", "Thứ hai", "Thứ ba", "Thứ tư", "Thứ năm", "Thứ sáu", "Thứ bảy"],
   daysShort: ["CN", "Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6", "Thứ 7"],
   daysMin: ["CN", "T2", "T3", "T4", "T5", "T6", "T7"],
@@ -103,14 +106,83 @@ export const customPicker = (table, mode, checkPrevCol = false) => {
         this.value = table.runMask(this.value, options.format)
       });
 
-      $(element).datepicker(options).on('changeDate', function(e) {
+      (<any>$(element)).datepicker(options).on('changeDate', function(e) {
         setTimeout(function() {
           // To avoid double call
           if (cell.children[0]) {
             table.closeEditor(cell, true);
-            $(element).datepicker('destroy');
+            $(element).off('keyup');
+            (<any>$(element)).datepicker('destroy');
           }
         });
+      });
+
+      // Focus on the element
+      element.focus();
+    },
+    getValue : function(cell) {
+      return cell.innerHTML;
+    },
+    setValue : function(cell, value) {
+      cell.innerHTML = value;
+    }
+  };
+}
+
+export const customAutocomplete = (table, callback) => {
+  return {
+    // Methods
+    closeEditor : function(cell, save) {
+      console.log('close', cell.children[0].value, table.getValue(cell))
+      const value = cell.children[0].value || table.getValue(cell);
+
+      cell.innerHTML = value;
+
+      return value;
+    },
+    openEditor : function(cell) {
+      const dataset = cell.dataset;
+      const x = Number(dataset.x);
+      const y = Number(dataset.y);
+
+      // Create input
+      const element = document.createElement('input');
+
+      // Update cell
+      cell.classList.add('editor');
+      cell.innerHTML = table.getValue(cell);
+      cell.appendChild(element);
+      cell.style.overflow = 'hidden !important';
+
+      $(element).autocomplete({
+        lookup: function(query, done) {
+          callback(table, query, x, y).then(data => {
+            const result = {
+              suggestions: data.map(d => ({
+                ...d,
+                value: d.name,
+                data: d.id
+              }))
+            };
+
+            done(result);
+          });
+        },
+        onSelect: function (suggestion) {
+          console.log('select')
+          setTimeout(function() {
+            if (cell.children[0]) {
+              table.closeEditor(cell, true);
+              $(element).autocomplete().dispose();
+            }
+          });
+        },
+        onHide: function(container) {
+          // if (!cell.children[0]) {
+          //   cell.innerHTML = '';
+          //   console.log('hide', table.getValue(cell), cell.innerHTML)
+          // }
+        }
       });
 
       // Focus on the element

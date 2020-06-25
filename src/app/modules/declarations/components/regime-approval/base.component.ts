@@ -45,6 +45,7 @@ export class RegimeApprovalBaseComponent {
   isHiddenSidebar = false;
   isBlinking = false;
   tableName: any = {};
+  handlers: any = [];
 
   constructor(
     protected declarationService: DeclarationService,
@@ -204,22 +205,22 @@ export class RegimeApprovalBaseComponent {
   }
 
   handleUserDeleted(user, part) {
-    const indexes: any = this.declarations[part].table.reduce(
-      (combine, d, index) => {
-        if (d.isLeaf && d.origin && (d.origin.employeeId || d.origin.id) === user.id) {
-          return [...combine, index];
-        }
+    // const indexes: any = this.declarations[part].table.reduce(
+    //   (combine, d, index) => {
+    //     if (d.isLeaf && d.origin && (d.origin.employeeId || d.origin.id) === user.id) {
+    //       return [...combine, index];
+    //     }
 
-        return [...combine];
-      },
-      []
-    );
+    //     return [...combine];
+    //   },
+    //   []
+    // );
 
     this.tableSubject.next({
       type: 'deleteUser',
       user,
       part,
-      deletedIndexes: indexes
+      deletedIndexes: []
     });
   }
 

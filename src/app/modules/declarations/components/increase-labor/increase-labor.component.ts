@@ -169,7 +169,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
       this.updateFilterToColumn(this.tableHeaderColumns, 'registerWardsCode', this.getRegisterWardsByDistrictCode);
       this.updateFilterToColumn(this.tableHeaderColumns, 'recipientsDistrictCode', this.getRecipientsDistrictsByCityCode);
       this.updateFilterToColumn(this.tableHeaderColumns, 'recipientsWardsCode', this.getRecipientsWardsByDistrictCode);
-      this.updateFilterToColumn(this.tableHeaderColumns, 'hospitalFirstRegistCode', this.getHospitalsByCityCode);
+      // this.updateFilterToColumn(this.tableHeaderColumns, 'hospitalFirstRegistCode', this.getHospitalsByCityCode);
       this.updateFilterToColumn(this.tableHeaderColumns, 'planCode', this.getPlanByParent);
       //families filter columns
 
@@ -374,20 +374,10 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
   }
 
   handleUserDeleted(user) {
-    const indexes: any = this.declarations.reduce(
-      (combine, d, index) => {
-        if (d.isLeaf && d.origin && (d.origin.employeeId || d.origin.id) === user.id) {
-          return [...combine, index];
-        }
-
-        return [...combine];
-      },
-      []
-    );
     this.eventsSubject.next({
       type: 'deleteUser',
       user,
-      deletedIndexes: indexes
+      deletedIndexes: []
     });
   }
 

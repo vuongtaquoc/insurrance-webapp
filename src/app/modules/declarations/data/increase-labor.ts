@@ -220,7 +220,7 @@ export const TABLE_HEADER_COLUMNS = [{
   source: [ ],
   key: 'salaryAreaCode'
 }, {
-  type: 'dropdown',
+  type: 'text',
   autocomplete: true,
   width: 85,
   title: '(17.1)',

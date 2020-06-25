@@ -396,9 +396,9 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
         });
         this.handleEvent({
           type: 'validate',
-          deletedIndexes: [],
           parentKey: '',
-          part: ''
+          part: '',
+          user: {}
         });
       });
     }, 50);
@@ -440,27 +440,32 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
     column.editor = customPicker(this.spreadsheet, type, isCustom);
   }
 
-  private handleDeleteUser(deletedIndexes) {
-    this.deleteTimer = setTimeout(() => {
-      if (!deletedIndexes.length) {
-        clearTimeout(this.deleteTimer);
-        return;
-      };
-      const index = deletedIndexes.shift();
+  private handleDeleteUser(user) {
+    clearTimeout(this.deleteTimer);
 
-      this.spreadsheet.deleteRow(index, 1);
-      this.handleEvent({
-        type: 'validate',
-        deletedIndexes: [],
-        part: '',
-        parentKey: ''
+    this.deleteTimer = setTimeout(() => {
+      const records = this.spreadsheet.getJson();
+      const userDeleteIndex = records.findIndex(d => {
+        return d.options.isLeaf && d.origin && (d.origin.employeeId || d.origin.id) === user.id;
       });
 
-      this.handleDeleteUser(deletedIndexes);
+      if (userDeleteIndex > -1) {
+        this.spreadsheet.deleteRow(userDeleteIndex, 1);
+        this.handleEvent({
+          type: 'validate',
+          part: '',
+          parentKey: '',
+          user: {}
+        });
+
+        this.handleDeleteUser(user);
+      } else {
+        clearTimeout(this.deleteTimer);
+      }
     }, 50);
   }
 
-  private handleEvent({ type, parentKey, deletedIndexes, part }) {
+  private handleEvent({ type, parentKey, user, part }) {
     if (type === 'validate') {
       setTimeout(() => {
         const data = Object.values(this.spreadsheet.getJson());
@@ -477,7 +482,7 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
       }, 10);
     } else if (type === 'deleteUser') {
       if (this.tableName.toLowerCase().indexOf(part) > -1) {
-        this.handleDeleteUser(deletedIndexes);
+        this.handleDeleteUser(user);
       }
 
       return;
@@ -517,9 +522,9 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
         instance.jexcel.clearValidation(y, x);
         this.handleEvent({
           type: 'validate',
-          deletedIndexes: [],
           part: '',
-          parentKey: ''
+          parentKey: '',
+          user: {}
         });
         return;
       }
@@ -536,9 +541,9 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
 
       this.handleEvent({
         type: 'validate',
-        deletedIndexes: [],
         part: '',
-        parentKey: ''
+        parentKey: '',
+        user: {}
       });
     } else if (column.key === 'regimeFromDate') {
       const regimeToDateValue = this.spreadsheet.getValueFromCoords(Number(cell) + 1, y);
@@ -577,9 +582,9 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
 
       this.handleEvent({
         type: 'validate',
-        deletedIndexes: [],
         part: '',
-        parentKey: ''
+        parentKey: '',
+        user: {}
       });
     } else if (column.key === 'regimeToDate') {
       const regimeFromDateValue = this.spreadsheet.getValueFromCoords(Number(cell) - 1, y);
@@ -618,9 +623,9 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
 
       this.handleEvent({
         type: 'validate',
-        deletedIndexes: [],
         part: '',
-        parentKey: ''
+        parentKey: '',
+        user: {}
       });
     }
   }
