@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges } from '@angular/core';
+import { Component, OnInit, OnChanges, OnDestroy } from '@angular/core';
 import { NzModalService } from 'ng-zorro-antd/modal';
 
 import { DeclarationService, CategoryService, BankService, PlanService } from '@app/core/services';
@@ -8,12 +8,14 @@ import { RegimeApprovalBaseComponent } from '@app/modules/declarations/component
 import { TABLE_NESTED_HEADERS_PART_1, TABLE_HEADER_COLUMNS_PART_1, TABLE_HEADER_COLUMNS_PART_2, TABLE_NESTED_HEADERS_PART_2, VALIDATION_RULES } from '@app/modules/declarations/data/maternity.data';
 import { Subject, forkJoin } from 'rxjs';
 
+import { eventEmitter } from '@app/shared/utils/event-emitter';
+
 @Component({
   selector: 'app-maternity',
   templateUrl: './maternity.component.html',
   styleUrls: ['./maternity.component.less']
 })
-export class MaternityComponent extends RegimeApprovalBaseComponent implements OnInit, OnChanges {
+export class MaternityComponent extends RegimeApprovalBaseComponent implements OnInit, OnChanges, OnDestroy {
   declarationCode: string = '630b';
   validationRules: any = VALIDATION_RULES;
 
@@ -61,6 +63,13 @@ export class MaternityComponent extends RegimeApprovalBaseComponent implements O
       // add filter columns
       this.updateFilterToColumn(TABLE_HEADER_COLUMNS_PART_1, 'planCode', this.getPlanByParent);
     });
+
+    this.handlers.push(eventEmitter.on('regime-approval:deleteUser', (data) => {
+      this.handleUserDeleteTables(data.employee);
+    }));
+    this.handlers.push(eventEmitter.on('regime-approval:updateUser', (data) => {
+      this.handleUserUpdateTables(data.employee);
+    }));
   }
 
   ngOnChanges(changes) {
@@ -77,6 +86,10 @@ export class MaternityComponent extends RegimeApprovalBaseComponent implements O
       this.updateOriginByPart('part1');
       this.updateOriginByPart('part2');
     }
+  }
+
+  ngOnDestroy() {
+    eventEmitter.destroy(this.handlers);
   }
 
   private getSourceDropDownByKey(key: string) {

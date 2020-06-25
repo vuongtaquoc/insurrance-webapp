@@ -147,13 +147,9 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
 
     });
 
-    const dateFormat = employee.typeBirthday === '1' ? DATE_FORMAT.ONLY_MONTH_YEAR : (employee.typeBirthday === '2' ? DATE_FORMAT.ONLY_YEAR : DATE_FORMAT.FULL);
-    const birthday = employee.birthday ? moment(employee.birthday, dateFormat) : '';
-    const dateSign = employee.dateSign ? moment(employee.dateSign, DATE_FORMAT.FULL) : '';
-    //const statusDefault = employee.status ? employee.status : this.paymentStatus[0].id;
     this.employeeForm = this.formBuilder.group({
       fullName: [employee.fullName, Validators.required],
-      birthday: [birthday ? new Date(birthday.valueOf()) : '', [Validators.required, validateLessThanEqualNowBirthday]],
+      birthday: [employee.birthday ? employee.birthday.split('/').join('') : '', [Validators.required, validateLessThanEqualNowBirthday]],
       typeBirthday: [employee.typeBirthday || '3'],
       gender: [employee.gender, Validators.required],
       nationalityCode: [employee.nationalityCode, Validators.required],
@@ -174,7 +170,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
       isurranceNo: [employee.isurranceNo, [ Validators.maxLength(15), Validators.pattern(REGEX.ONLY_CHARACTER_NUMBER) ]],
       healthNo: [employee.healthNo, [ Validators.maxLength(15), Validators.pattern(REGEX.ONLY_CHARACTER_NUMBER) ]],
       contractNo: [employee.contractNo, [Validators.required, Validators.maxLength(50), Validators.pattern(REGEX.ONLY_CHARACTER_NUMBER)]],
-      dateSign: [employee.dateSign ? new Date(dateSign.valueOf()) : '', [Validators.required, validateLessThanEqualNowDateSign]],
+      dateSign: [employee.dateSign ? employee.dateSign.split('/').join('') : '', [Validators.required, validateLessThanEqualNowDateSign]],
       levelWork: [employee.levelWork, Validators.required],
       salary: [employee.salary, [Validators.required, Validators.pattern(REGEX.ONLY_NUMBER)]],
       ratio: [employee.ratio, [Validators.required, Validators.pattern(REGEX.ONLY_NUMBER)]],
@@ -278,29 +274,28 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
   }
 
   save(): void {
-    // for (const i in this.employeeForm.controls) {
-    //   this.employeeForm.controls[i].markAsDirty();
-    //   this.employeeForm.controls[i].updateValueAndValidity();
-    // }
+    for (const i in this.employeeForm.controls) {
+      this.employeeForm.controls[i].markAsDirty();
+      this.employeeForm.controls[i].updateValueAndValidity();
+    }
 
-    // if (this.employeeForm.invalid) {
-    //   return;
-    // }
+    if (this.employeeForm.invalid) {
+      return;
+    }
 
     const formData = this.getData();
-    console.log(formData)
 
-    // if (this.employee.id) {
-    //   this.employeeService.update(this.employee.id, formData).subscribe((data) => {
-    //     this.modal.destroy(data);
-    //   });
-    // } else {
-    //   this.employeeService.create(formData).subscribe((data) => {
-    //     this.saveTimer = setTimeout(() => {
-    //       this.modal.destroy(data);
-    //     }, 500);
-    //   });
-    // }
+    if (this.employee.id) {
+      this.employeeService.update(this.employee.id, formData).subscribe((data) => {
+        this.modal.destroy(data);
+      });
+    } else {
+      this.employeeService.create(formData).subscribe((data) => {
+        this.saveTimer = setTimeout(() => {
+          this.modal.destroy(data);
+        }, 500);
+      });
+    }
   }
 
   getData() {

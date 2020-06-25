@@ -233,29 +233,27 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
     });
   }
 
-  private handleDeleteUser(deletedIndexes) {
+  private handleDeleteUser(user) {
+    clearTimeout(this.deleteTimer);
+
     this.deleteTimer = setTimeout(() => {
-      if (!deletedIndexes.length) {
-        clearTimeout(this.deleteTimer);
-        return;
-      }
-
-      const index = deletedIndexes.shift();
-
-      this.spreadsheet.deleteRow(index, 1);
-      // this.onDelete.emit({
-      //   rowNumber: index,
-      //   numOfRows: 1,
-      //   records: this.spreadsheet.getJson()
-      // });
-
-      this.handleEvent({
-        type: 'validate',
-        deletedIndexes: [],
-        user: {}
+      const records = this.spreadsheet.getJson();
+      const userDeleteIndex = records.findIndex(d => {
+        return d.options.isLeaf && d.origin && (d.origin.employeeId || d.origin.id) === user.id;
       });
 
-      this.handleDeleteUser(deletedIndexes);
+      if (userDeleteIndex > -1) {
+        this.spreadsheet.deleteRow(userDeleteIndex, 1);
+        this.handleEvent({
+          type: 'validate',
+          deletedIndexes: [],
+          user: {}
+        });
+
+        this.handleDeleteUser(user);
+      } else {
+        clearTimeout(this.deleteTimer);
+      }
     }, 30);
   }
 
@@ -272,7 +270,7 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
     }
 
     if (type === 'deleteUser') {
-      this.handleDeleteUser(deletedIndexes);
+      this.handleDeleteUser(user);
 
       return;
     }

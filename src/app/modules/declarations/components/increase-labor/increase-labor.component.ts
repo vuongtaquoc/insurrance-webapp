@@ -374,20 +374,10 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
   }
 
   handleUserDeleted(user) {
-    const indexes: any = this.declarations.reduce(
-      (combine, d, index) => {
-        if (d.isLeaf && d.origin && (d.origin.employeeId || d.origin.id) === user.id) {
-          return [...combine, index];
-        }
-
-        return [...combine];
-      },
-      []
-    );
     this.eventsSubject.next({
       type: 'deleteUser',
       user,
-      deletedIndexes: indexes
+      deletedIndexes: []
     });
   }
 

@@ -199,7 +199,13 @@ export class DeclarationSidebarComponent implements OnInit, OnDestroy {
             nzTitle: 'Bạn muốn xóa thông tin NLĐ trong hồ sơ?',
             nzOkText: 'Xóa NLĐ',
             nzCancelText: 'Hủy',
-            nzOnOk: () => this.onUserDeleted.emit(employee)
+            nzOnOk: () => {
+              this.onUserDeleted.emit(employee);
+              eventEmitter.emit('regime-approval:deleteUser', {
+                tableName: this.tableName,
+                employee
+              });
+            }
           });
 
         },
@@ -231,7 +237,6 @@ export class DeclarationSidebarComponent implements OnInit, OnDestroy {
       this.isSpinning = false;
       eventEmitter.emit('loading:open', false);
       modal.afterClose.subscribe(result => {
-        console.log(result, 'result insert');
         if (!result) return;
 
         this.employeeSubject.next({
@@ -243,7 +248,13 @@ export class DeclarationSidebarComponent implements OnInit, OnDestroy {
           nzTitle: 'Bạn muốn cập nhật thông tin NLĐ trong hồ sơ?',
           nzOkText: 'Cập nhật',
           nzCancelText: 'Hủy',
-          nzOnOk: () => this.onUserUpdated.emit(result)
+          nzOnOk: () => {
+            this.onUserUpdated.emit(result);
+            eventEmitter.emit('regime-approval:updateUser', {
+              tableName: this.tableName,
+              employee: result
+            });
+          }
         });
       });
     });
