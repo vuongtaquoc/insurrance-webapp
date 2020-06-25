@@ -71,11 +71,13 @@ export class GeneralBaseComponent {
   }
 
   handleUserDeleteTables(user, tableName) {
+    console.log(tableName);
     this.handleUserDeleted(user, tableName);
 }
 
 
 handleUserDeleted(user, tableName) {
+  console.log(tableName);
   const indexes: any = this.declarations[tableName].table.reduce(
     (combine, d, index) => {
       if (d.isLeaf && d.origin && (d.origin.employeeId || d.origin.id) === user.id) {

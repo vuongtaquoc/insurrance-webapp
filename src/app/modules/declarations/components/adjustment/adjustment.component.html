@@ -5,8 +5,8 @@
     [events]="employeeSubject.asObservable()"
     (onSelectEmployees)="handleSelectEmployees($event)"
     (onToggleSidebar)="handleToggleSidebar()"
-    (onUserUpdated)="handleUserUpdateTables($event, adjustment)"
-    (onUserDeleted)="handleUserDeleteTables($event, adjustment)"
+    (onUserUpdated)="handleUserUpdateTables($event, 'adjustment')"
+    (onUserDeleted)="handleUserDeleteTables($event, 'adjustment')"
     (onUserAdded)="handleUserAdded($event)"
   ></app-declaration-sidebar>
 

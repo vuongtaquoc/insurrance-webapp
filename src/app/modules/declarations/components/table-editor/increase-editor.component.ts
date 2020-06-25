@@ -335,21 +335,21 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
       if (!deletedIndexes.length) {
         clearTimeout(this.deleteTimer);
         return;
-      };
+      }
+
       const index = deletedIndexes.shift();
 
       this.spreadsheet.deleteRow(index, 1);
 
-      this.onDelete.emit({
-        rowNumber: index,
-        numOfRows: 1,
-        records: this.spreadsheet.getJson(),
-        columns: this.columns
+      this.handleEvent({
+        type: 'validate',
+        deletedIndexes: [],
+        part: '',
+        parentKey: ''
       });
 
       this.handleDeleteUser(deletedIndexes);
-
-    }, 50);
+    }, 30);
   }
 
   private getColumnNameValid(errors) {
@@ -357,7 +357,6 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
 
     errorcopy.forEach(error => {
       let fieldName = this.columns[(error.x - 1)].fieldName;
-      console.log(fieldName, error.x);
       if(!fieldName) {
         fieldName = this.columns[(error.x - 1)].title;
       }
@@ -368,16 +367,21 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
   }
 
   handleValidate({ field, errors }) {
-    setTimeout(() => {
-      Object.keys(errors).forEach(row => {
-        const error = errors[row];
+    Object.keys(errors).forEach(row => {
+      const error = errors[row];
 
-        this.spreadsheet.validationCell(row, error.col, {
-          name: `Mã số ${ error.value }`
-        }, {
-          fieldNotFound: true
-        }, !!error.valid);
+      this.spreadsheet.validationCell(row, error.col, {
+        name: `Mã số ${ error.value }`
+      }, {
+        fieldNotFound: true
+      }, !!error.valid);
+
+      this.handleEvent({
+        type: 'validate',
+        deletedIndexes: [],
+        part: '',
+        parentKey: ''
       });
-    }, 10);
+    });
   }
 }
