@@ -29,7 +29,7 @@ import {
 } from '@app/core/services';
 
 import { DATE_FORMAT, REGEX } from '@app/shared/constant';
-import { validateLessThanEqualNow } from '@app/shared/utils/custom-validation';
+import { validateLessThanEqualNowBirthday, validateLessThanEqualNowDateSign, getBirthDay } from '@app/shared/utils/custom-validation';
 
 @Component({
   selector: 'app-employees-form',
@@ -144,17 +144,17 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
       if (relationshipDistricts) this.relationshipDistricts = relationshipDistricts;
       if (relationshipWards) this.relationshipWards = relationshipWards;
       if (relationshipVillages) this.relationshipVillages = relationshipVillages;
-     
+
     });
 
-    const dateFormat = employee.typeBirthday === '01' ? DATE_FORMAT.ONLY_MONTH_YEAR : DATE_FORMAT.ONLY_YEAR;
+    const dateFormat = employee.typeBirthday === '1' ? DATE_FORMAT.ONLY_MONTH_YEAR : (employee.typeBirthday === '2' ? DATE_FORMAT.ONLY_YEAR : DATE_FORMAT.FULL);
     const birthday = employee.birthday ? moment(employee.birthday, dateFormat) : '';
     const dateSign = employee.dateSign ? moment(employee.dateSign, DATE_FORMAT.FULL) : '';
     //const statusDefault = employee.status ? employee.status : this.paymentStatus[0].id;
     this.employeeForm = this.formBuilder.group({
       fullName: [employee.fullName, Validators.required],
-      birthday: [birthday ? new Date(birthday.valueOf()) : '', [Validators.required, validateLessThanEqualNow]],
-      typeBirthday: [employee.typeBirthday || '1'],
+      birthday: [birthday ? new Date(birthday.valueOf()) : '', [Validators.required, validateLessThanEqualNowBirthday]],
+      typeBirthday: [employee.typeBirthday || '3'],
       gender: [employee.gender, Validators.required],
       nationalityCode: [employee.nationalityCode, Validators.required],
       peopleCode: [employee.peopleCode, Validators.required],
@@ -174,7 +174,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
       isurranceNo: [employee.isurranceNo, [ Validators.maxLength(15), Validators.pattern(REGEX.ONLY_CHARACTER_NUMBER) ]],
       healthNo: [employee.healthNo, [ Validators.maxLength(15), Validators.pattern(REGEX.ONLY_CHARACTER_NUMBER) ]],
       contractNo: [employee.contractNo, [Validators.required, Validators.maxLength(50), Validators.pattern(REGEX.ONLY_CHARACTER_NUMBER)]],
-      dateSign: [employee.dateSign ? new Date(dateSign.valueOf()) : '', [Validators.required, validateLessThanEqualNow]],
+      dateSign: [employee.dateSign ? new Date(dateSign.valueOf()) : '', [Validators.required, validateLessThanEqualNowDateSign]],
       levelWork: [employee.levelWork, Validators.required],
       salary: [employee.salary, [Validators.required, Validators.pattern(REGEX.ONLY_NUMBER)]],
       ratio: [employee.ratio, [Validators.required, Validators.pattern(REGEX.ONLY_NUMBER)]],
@@ -278,34 +278,35 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
   }
 
   save(): void {
-    for (const i in this.employeeForm.controls) {
-      this.employeeForm.controls[i].markAsDirty();
-      this.employeeForm.controls[i].updateValueAndValidity();
-    }
+    // for (const i in this.employeeForm.controls) {
+    //   this.employeeForm.controls[i].markAsDirty();
+    //   this.employeeForm.controls[i].updateValueAndValidity();
+    // }
 
-    if (this.employeeForm.invalid) {
-      return;
-    }
+    // if (this.employeeForm.invalid) {
+    //   return;
+    // }
 
     const formData = this.getData();
+    console.log(formData)
 
-    if (this.employee.id) {
-      this.employeeService.update(this.employee.id, formData).subscribe((data) => {
-        this.modal.destroy(data);
-      });
-    } else {
-      this.employeeService.create(formData).subscribe((data) => {
-        this.saveTimer = setTimeout(() => {
-          this.modal.destroy(data);
-        }, 500);
-      });
-    }
+    // if (this.employee.id) {
+    //   this.employeeService.update(this.employee.id, formData).subscribe((data) => {
+    //     this.modal.destroy(data);
+    //   });
+    // } else {
+    //   this.employeeService.create(formData).subscribe((data) => {
+    //     this.saveTimer = setTimeout(() => {
+    //       this.modal.destroy(data);
+    //     }, 500);
+    //   });
+    // }
   }
 
   getData() {
     const formData = {
       ...this.employeeForm.value,
-      birthday: this.birthday,
+      birthday: getBirthDay(this.employeeForm.value.birthday, this.birthTypeOnlyYear, this.birthTypeOnlyYearMonth).format,
       dateSign: this.dateSign,
       nationalityName: this.getNameOfDropdown(this.nationalities , this.employeeForm.value.nationalityCode),
       hospitalFirstRegistName: this.getNameOfDropdown(this.hospitals , this.employeeForm.value.hospitalFirstRegistCode),
@@ -336,7 +337,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
     if (this.employeeForm.get('birthTypeOnlyYearMonth').value) {
       formData.typeBirthday = '1';
     }
-    
+
     if (this.employeeForm.get('birthTypeOnlyYear').value) {
       formData.typeBirthday = '2';
     }
@@ -359,11 +360,17 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
   changeBirthType(value, type) {
     if (value && type === 'birthTypeOnlyYearMonth') {
       this.employeeForm.patchValue({
-        'birthTypeOnlyYear': false
+        'birthTypeOnlyYear': false,
+        birthday: ''
       });
     } else if (value && type === 'birthTypeOnlyYear') {
       this.employeeForm.patchValue({
-        'birthTypeOnlyYearMonth': false
+        'birthTypeOnlyYearMonth': false,
+        birthday: ''
+      });
+    } else {
+      this.employeeForm.patchValue({
+        birthday: ''
       });
     }
   }
@@ -666,9 +673,9 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
 
     if (!birthday) return '';
 
-    const format = this.birthdayType === '1' ? DATE_FORMAT.ONLY_MONTH_YEAR : DATE_FORMAT.ONLY_YEAR;
+    const birth = getBirthDay(birthday, this.birthTypeOnlyYear, this.birthTypeOnlyYearMonth);
 
-    return moment(birthday).format(format);
+    return birth.format;
   }
 
   get insurranceCode() {
@@ -680,7 +687,9 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
 
     if (!dateSign) return '';
 
-    return moment(dateSign).format(DATE_FORMAT.FULL);
+    const birth = getBirthDay(dateSign, false, false);
+
+    return birth.format;
   }
 
 
@@ -736,6 +745,19 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
     return this.employeeForm.get('status').value;
   }
 
+  get birthdayFormat() {
+    if (!this.birthTypeOnlyYearMonth && !this.birthTypeOnlyYear) {
+      return '00/00/0000';
+    }
+
+    if (this.birthTypeOnlyYearMonth && !this.birthTypeOnlyYear) {
+      return '00/0000';
+    }
+
+    if (!this.birthTypeOnlyYearMonth && this.birthTypeOnlyYear) {
+      return '0000';
+    }
+  }
 
   getNameOfDropdown(sourceOfDropdown: any, id: string) {
     let name = '';
