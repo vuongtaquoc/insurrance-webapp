@@ -5,7 +5,9 @@ import * as jexcel from 'jstable-editor/dist/jexcel.js';
 import 'jsuites/dist/jsuites.js';
 import * as moment from 'moment';
 
-import { customPicker } from '@app/shared/utils/custom-editor';
+import { HospitalService } from '@app/core/services';
+
+import { customPicker, customAutocomplete } from '@app/shared/utils/custom-editor';
 import { eventEmitter } from '@app/shared/utils/event-emitter';
 import { DATE_FORMAT } from '@app/shared/constant';
 
@@ -38,7 +40,8 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
 
   constructor(
     private element: ElementRef,
-    private modalService: NzModalService
+    private modalService: NzModalService,
+    private hospitalService: HospitalService
   ) {
   }
 
@@ -163,7 +166,7 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
     this.updateEditorToColumn('birthday', 'month', true);
     this.updateEditorToColumn('fromDate', 'month');
     this.updateEditorToColumn('toDate', 'month');
-
+    this.updateAutoCompleteToColumn('hospitalFirstRegistCode');
 
     this.spreadsheet.hideIndex();
 
@@ -442,11 +445,29 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
     return object;
   }
 
+  private async getHospitalsByCityCode(table, keyword, c, r) {
+    const cityCode = table.getValueFromCoords(c - 5, r);
+
+    if (!cityCode) {
+      return [];
+    }
+
+    return await this.hospitalService.searchHospital(cityCode, keyword).toPromise();
+  }
+
   private updateEditorToColumn(key, type, isCustom = false) {
     const column = this.columns.find(c => c.key === key);
 
     if (!column) return;
 
     column.editor = customPicker(this.spreadsheet, type, isCustom);
+  }
+
+  private updateAutoCompleteToColumn(key) {
+    const column = this.columns.find(c => c.key === key);
+
+    if (!column) return;
+
+    column.editor = customAutocomplete(this.spreadsheet, this.getHospitalsByCityCode.bind(this));
   }
 }

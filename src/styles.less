@@ -179,3 +179,35 @@ app-layout {
   }
 }
 
+.autocomplete-suggestions {
+  border: 1px solid #8fb1e3;
+  background: #FFF;
+  overflow-y: auto;
+  min-height: 10px;
+  max-height: 215px;
+  margin: 0px;
+  min-width: 250px;
+}
+.autocomplete-suggestion {
+  white-space: nowrap;
+  text-align: left;
+  text-overflow: ellipsis;
+  overflow: hidden !important;
+  color: #000;
+  // display: flex;
+  // align-items: center;
+  padding: 4px;
+  padding-left: 8px;
+  padding-right: 40px;
+  cursor: pointer;
+}
+.autocomplete-selected {
+  background-color: #1f93ff;
+  color: #fff;
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMCAwaDI0djI0SDB6IiBmaWxsPSJub25lIiAvPjxwYXRoIGQ9Ik05IDE2LjE3TDQuODMgMTJsLTEuNDIgMS40MUw5IDE5IDIxIDdsLTEuNDEtMS40MXoiIGZpbGw9IndoaXRlIiAvPjwvc3ZnPgo=);
+  background-repeat: no-repeat;
+  background-position: top 50% right 5px;
+}
+.autocomplete-suggestions strong { font-weight: normal; color: #3399FF; }
+.autocomplete-group { padding: 2px 5px; }
+.autocomplete-group strong { display: block; border-bottom: 1px solid #000; }
