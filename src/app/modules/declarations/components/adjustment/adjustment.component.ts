@@ -87,6 +87,12 @@ export class AdjustmentComponent extends GeneralBaseComponent implements OnInit,
     });
 
     this.tabSubscription = this.tabEvents.subscribe((data) => this.handleTabChanged(data));
+    this.handlers.push(eventEmitter.on('tree-declaration:deleteUser', (data) => {
+      this.handleUserDeleteTables(data.employee,'adjustment');
+    }));
+    this.handlers.push(eventEmitter.on('tree-declaration:updateUser', (data) => {
+      this.handleUserUpdateTables(data.employee, 'adjustment');
+    }));
   }
 
   ngOnChanges(changes) {

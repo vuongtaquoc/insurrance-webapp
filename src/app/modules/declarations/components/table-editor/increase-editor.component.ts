@@ -309,7 +309,7 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
     column.editor = customPicker(this.spreadsheet, type, isCustom);
   }
 
-  private handleEvent({ type, parentKey, deletedIndexes, part }){
+  private handleEvent({ type, parentKey, user, part }){
     if (type === 'validate') {
       setTimeout(() => {
         const data = Object.values(this.spreadsheet.getJson());
@@ -324,32 +324,35 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
         });
       }, 10);
     } else if (type === 'deleteUser') {
-      this.handleDeleteUser(deletedIndexes);
+      this.handleDeleteUser(user);
 
       return;
     }
   }
 
-  private handleDeleteUser(deletedIndexes) {
+  private handleDeleteUser(user) {
+    clearTimeout(this.deleteTimer);
+
     this.deleteTimer = setTimeout(() => {
-      if (!deletedIndexes.length) {
-        clearTimeout(this.deleteTimer);
-        return;
-      }
-
-      const index = deletedIndexes.shift();
-
-      this.spreadsheet.deleteRow(index, 1);
-
-      this.handleEvent({
-        type: 'validate',
-        deletedIndexes: [],
-        part: '',
-        parentKey: ''
+      const records = this.spreadsheet.getJson();
+      const userDeleteIndex = records.findIndex(d => {
+        return d.options.isLeaf && d.origin && (d.origin.employeeId || d.origin.id) === user.id;
       });
 
-      this.handleDeleteUser(deletedIndexes);
-    }, 30);
+      if (userDeleteIndex > -1) {
+        this.spreadsheet.deleteRow(userDeleteIndex, 1);
+        this.handleEvent({
+          type: 'validate',
+          part: '',
+          parentKey: '',
+          user: {}
+        });
+
+        this.handleDeleteUser(user);
+      } else {
+        clearTimeout(this.deleteTimer);
+      }
+    }, 50);
   }
 
   private getColumnNameValid(errors) {
@@ -361,6 +364,8 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
         fieldName = this.columns[(error.x - 1)].title;
       }
       error.columnName = fieldName;
+      error.subfix = 'Dòng';
+      error.prefix = 'Cột';
     });
 
     return errorcopy;
@@ -378,7 +383,7 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
 
       this.handleEvent({
         type: 'validate',
-        deletedIndexes: [],
+        user: {},
         part: '',
         parentKey: ''
       });

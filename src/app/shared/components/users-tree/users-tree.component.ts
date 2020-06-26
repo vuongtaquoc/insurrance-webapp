@@ -31,18 +31,23 @@ export class UsersTreeComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.getEmployeeTrees();
 
-    this.eventsSubscription = this.events.subscribe(({ type, status }) => {
+    this.eventsSubscription = this.events.subscribe(({ type, status, data }) => {
       if (status === 'success') {
-        this.getEmployeeTrees();
+        if (!data) {
+          this.getEmployeeTrees();
+        } else {
+          this.getEmployeeTrees(data.searchType, data.text);
+        }
       }
 
       if (type === 'clean') {
         this.defaultCheckedKeys = [];
         this.defaultSelectedKeys = [];
-      }
+      }      
+
     });
 
-    this.handler = eventEmitter.on('regime-approval:deleteUser', () => {
+    this.handler = eventEmitter.on('tree-declaration:deleteUser', () => {
       this.getEmployeeTrees();
     });
   }
@@ -52,9 +57,12 @@ export class UsersTreeComponent implements OnInit, OnDestroy {
     this.handler();
   }
 
-  getEmployeeTrees() {
+  getEmployeeTrees(type = '', keyWord = '') {
     this.isLoading = true;
-    this.employeeService.getEmployeeTrees().subscribe(employees => {
+    this.employeeService.getEmployeeTrees({
+      keyWord,
+      type
+    }).subscribe(employees => {
       this.employees = employees;
       this.defaultExpanded = this.employees.map(e => e.key);
 
@@ -88,5 +96,9 @@ export class UsersTreeComponent implements OnInit, OnDestroy {
 
   deleteUser(origin) {
     this.onDeleteEmployee.emit(origin);
+  }
+
+  changeSearch(data) {
+    this.getEmployeeTrees('', data);
   }
 }

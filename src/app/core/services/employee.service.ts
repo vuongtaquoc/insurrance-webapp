@@ -10,8 +10,12 @@ export class EmployeeService {
   constructor(private http: ApplicationHttpClient) {
   }
 
-  public getEmployeeTrees() {
-    return this.http.get('/employees/group').pipe(
+  public getEmployeeTrees(filters = {}) {
+    return this.http.get('/employees/group', {
+      params: {
+        ...filters
+      }
+    }).pipe(
       map(employees => {
         return employees.map((employee, index) => {
           const parentKey = uuid.v4();

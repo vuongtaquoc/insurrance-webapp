@@ -31,7 +31,8 @@ export class DeclarationSidebarSearchComponent implements OnInit, OnDestroy {
   search() {
     this.modal.destroy({
       searchType: this.searchType,
-      keywords: this.text.split('\n')
+      keywords: this.text.replace('\n', ';'),
+      duclv: '1'
     });
   }
 }

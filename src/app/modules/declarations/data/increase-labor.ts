@@ -142,6 +142,7 @@ export const TABLE_HEADER_COLUMNS = [{
   type: 'numeric',
   width: 135,
   title: '(12)',
+  fieldName: 'Số điện thoại',
   align: 'left',
   key: 'mobile',
   validations: {
@@ -268,14 +269,21 @@ export const TABLE_HEADER_COLUMNS = [{
   width: 80,
   title: '(22.1)',
   mask: '#,##0',
+  fieldName: 'Mức lương',
   sum: true,
-  key: 'salary'
+  key: 'salary',
+  validations: {
+    required: true
+  }
 }, {
   type: 'numeric',
   width: 80,
   title: '(22.2)',
+  fieldName: 'Hệ số',  
   mask: '#,##0',
-  // decimal: ',',
+  validations: {
+    required: true
+  },
   sum: true,
   key: 'ratio'
 }, {
@@ -288,7 +296,7 @@ export const TABLE_HEADER_COLUMNS = [{
   key: 'allowanceSalary',
   fieldName: 'Phụ cấp lương',
   validations: {
-    number: true
+    required: true
   }
 }, {
   type: 'numeric',
@@ -300,7 +308,7 @@ export const TABLE_HEADER_COLUMNS = [{
   key: 'allowanceAdditional',
   fieldName: 'Các khoản bổ sung',
   validations: {
-    number: true
+    required: true
   }
 }, {
   type: 'numeric',
@@ -312,7 +320,7 @@ export const TABLE_HEADER_COLUMNS = [{
   key: 'allowanceLevel',
   fieldName: 'Chức vụ',
   validations: {
-    number: true
+    required: true
   }
 }, {
   type: 'numeric',
@@ -347,7 +355,7 @@ export const TABLE_HEADER_COLUMNS = [{
   key: 'allowanceOther',
   fieldName: 'Chênh lệch bảo lưu',
   validations: {
-    number: true
+    required: true
   }
 }, {
   type: 'text',

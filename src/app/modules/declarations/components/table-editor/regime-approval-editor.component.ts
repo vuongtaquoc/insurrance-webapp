@@ -504,6 +504,8 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
       } else {
         error.columnName = fieldName;
       }
+      error.subfix = 'Dòng';
+      error.prefix = 'Cột';
     });
 
     return errorcopy;

@@ -132,6 +132,8 @@ export class DocumentListTableComponent implements OnInit, OnDestroy, OnChanges,
         fieldName = this.columns[(error.x - 1)].title;
       }
       error.columnName = fieldName;
+      error.subfix = 'Dòng';
+      error.prefix = 'Cột';
     });
 
     return errorcopy;

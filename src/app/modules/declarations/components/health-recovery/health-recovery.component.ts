@@ -48,10 +48,10 @@ export class HealthRecoveryComponent extends RegimeApprovalBaseComponent impleme
       this.updateSourceToColumn(TABLE_HEADER_COLUMNS_PART_2, 'recordSolvedNumber', recruitmentNumbers);
     });
 
-    this.handlers.push(eventEmitter.on('regime-approval:deleteUser', (data) => {
+    this.handlers.push(eventEmitter.on('tree-declaration:deleteUser', (data) => {
       this.handleUserDeleteTables(data.employee);
     }));
-    this.handlers.push(eventEmitter.on('regime-approval:updateUser', (data) => {
+    this.handlers.push(eventEmitter.on('tree-declaration:updateUser', (data) => {
       this.handleUserUpdateTables(data.employee);
     }));
   }

@@ -319,6 +319,8 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
       } else {
         error.columnName = fieldName;
       }
+      error.subfix = 'Dòng';
+      error.prefix = 'Cột';
     });
 
     return errorcopy;

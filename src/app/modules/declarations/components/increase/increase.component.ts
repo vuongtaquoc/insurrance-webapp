@@ -85,6 +85,12 @@ export class IncreaseComponent extends GeneralBaseComponent implements OnInit, O
     });
 
     this.tabSubscription = this.tabEvents.subscribe((data) => this.handleTabChanged(data));
+    this.handlers.push(eventEmitter.on('tree-declaration:deleteUser', (data) => {
+      this.handleUserDeleteTables(data.employee,'increaselabor');
+    }));
+    this.handlers.push(eventEmitter.on('tree-declaration:updateUser', (data) => {
+      this.handleUserUpdateTables(data.employee, 'increaselabor');
+    }));
   }
 
   ngOnChanges(changes) {

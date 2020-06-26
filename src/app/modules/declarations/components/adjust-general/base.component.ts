@@ -58,6 +58,7 @@ export class GeneralBaseComponent {
   isBlinking = false;
   tabSubscription: Subscription;
   selectedTab: number;
+  handlers: any = [];
   constructor(
     protected declarationService: DeclarationService,
     protected modalService: NzModalService,
@@ -71,29 +72,27 @@ export class GeneralBaseComponent {
   }
 
   handleUserDeleteTables(user, tableName) {
-    console.log(tableName);
     this.handleUserDeleted(user, tableName);
-}
+  }
 
 
 handleUserDeleted(user, tableName) {
-  console.log(tableName);
-  const indexes: any = this.declarations[tableName].table.reduce(
-    (combine, d, index) => {
-      if (d.isLeaf && d.origin && (d.origin.employeeId || d.origin.id) === user.id) {
-        return [...combine, index];
-      }
+  // const indexes: any = this.declarations[tableName].table.reduce(
+  //   (combine, d, index) => {
+  //     if (d.isLeaf && d.origin && (d.origin.employeeId || d.origin.id) === user.id) {
+  //       return [...combine, index];
+  //     }
 
-      return [...combine];
-    },
-    []
-  );
+  //     return [...combine];
+  //   },
+  //   []
+  // );
   
   this.tableSubject.next({
     type: 'deleteUser',
     user,
     tableName,
-    deletedIndexes: indexes
+    deletedIndexes: []
   });
 }
 
@@ -234,7 +233,6 @@ handleUserUpdated(user, tableName) {
   }
 
   handleUserAdded({ tableName, y, employee }) {
-    console.log(tableName,'tableName');
     if (!tableName) return;
     const declarations = [ ...this.declarations[tableName].table];
     const row = declarations[y];

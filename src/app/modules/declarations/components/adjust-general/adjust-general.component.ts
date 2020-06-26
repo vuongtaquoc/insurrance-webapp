@@ -82,6 +82,7 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
   tableHeaderColumnsDocuments: any[] = TABLE_DOCUMENT_HEADER_COLUMNS;
   tableSubject: Subject<any> = new Subject<any>();
   tabSubject: Subject<any> = new Subject<any>();
+  handlers: any = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -189,6 +190,11 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
         type: 'change',
         selected: TAB_NAMES[1]
       });
+
+      this.handlers.push(eventEmitter.on('tree-declaration:deleteUser', (data) => {
+          this.handlersDeleteUseOnTree(data.employee);
+      }));
+
     });
   }
 
@@ -249,7 +255,6 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
     });
 
     console.log(this.formError);
-    console.log('OK');
     // if (type === 'rollback') {
     //   this.router.navigate(['/declarations/adjust-general']);
     //   return '';
@@ -289,8 +294,7 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
       },
       {}
     );
-
-    console.log(tableErrorMessage);
+    console.log(tableErrorMessage, 'tableErrorMessage');
     return tableErrorMessage;
   }
   private create(type: any) {
@@ -459,6 +463,7 @@ handleChangeDataFamilies({ instance, cell, c, r, records, columns }) {
       this.updateNextColumns(instance, r,value, [(numberColumn -1)]);
     }
   }
+
   //update families
   this.families.forEach((family: any, index) => {
     const record = records[index];
@@ -778,6 +783,22 @@ private setDataToFamilyEditor(records: any)
     }
     this.families = families;
   }
+
+  handlersDeleteUseOnTree(user) {
+
+    let families = [...this.families];
+    families = families.filter(fa => fa.employeeId !== user.employeeId);
+    // Kiểm tra nếu danh sách nhân viên trông thì add  1 dòng
+    if(families.length === 0) {
+      families.push({
+        isMaster: false,
+      });
+    }
+
+    this.families = families;
+  }
+
+
 
   private notificeEventValidData(tableName) {
 

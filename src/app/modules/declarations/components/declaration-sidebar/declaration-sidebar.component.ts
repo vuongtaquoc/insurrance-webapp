@@ -161,8 +161,12 @@ export class DeclarationSidebarComponent implements OnInit, OnDestroy {
       nzWidth: 600,
       nzWrapClassName: 'declaration-search-modal',
       nzTitle: 'Tìm kiếm mở rộng',
-      nzOnOk: (data) => {
-        console.log(data)
+      nzOnOk: (data,) => {
+        this.employeeSubject.next({
+          type: 'search',
+          status: 'success',
+          data: data
+        });
       },
       nzOkText: 'Tìm',
       nzCancelText: 'Đóng',
@@ -170,7 +174,6 @@ export class DeclarationSidebarComponent implements OnInit, OnDestroy {
     });
 
     modal.afterClose.subscribe(result => {
-
     });
   }
 
@@ -201,7 +204,7 @@ export class DeclarationSidebarComponent implements OnInit, OnDestroy {
             nzCancelText: 'Hủy',
             nzOnOk: () => {
               this.onUserDeleted.emit(employee);
-              eventEmitter.emit('regime-approval:deleteUser', {
+              eventEmitter.emit('tree-declaration:deleteUser', {
                 tableName: this.tableName,
                 employee
               });
@@ -250,7 +253,7 @@ export class DeclarationSidebarComponent implements OnInit, OnDestroy {
           nzCancelText: 'Hủy',
           nzOnOk: () => {
             this.onUserUpdated.emit(result);
-            eventEmitter.emit('regime-approval:updateUser', {
+            eventEmitter.emit('tree-declaration:updateUser', {
               tableName: this.tableName,
               employee: result
             });

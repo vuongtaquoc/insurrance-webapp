@@ -1,6 +1,6 @@
 <div class="users-tree">
   <nz-input-group [nzSuffix]="suffixIcon">
-    <input type="text" nz-input placeholder="Tìm kiếm" [(ngModel)]="searchValue" />
+    <input type="text" nz-input placeholder="Tìm kiếm" [(ngModel)]="searchValue" (ngModelChange)="changeSearch($event)" />
   </nz-input-group>
   <ng-template #suffixIcon>
     <i nz-icon nzType="search"></i>
@@ -13,7 +13,6 @@
       [nzCheckedKeys]="defaultCheckedKeys"
       [nzSelectedKeys]="defaultSelectedKeys"
       [nzAsyncData]="false"
-      [nzSearchValue]="searchValue"
       [nzTreeTemplate]="nzTreeTemplate"
       (nzCheckBoxChange)="nzCheck($event)"
     >
