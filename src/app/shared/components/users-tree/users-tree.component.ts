@@ -2,6 +2,7 @@ import { Component, Input, OnInit, OnDestroy, ViewEncapsulation, Output, EventEm
 import { Observable, Subscription } from 'rxjs';
 
 import { EmployeeService } from '@app/core/services';
+import { eventEmitter } from '@app/shared/utils/event-emitter';
 
 @Component({
   selector: 'app-users-tree',
@@ -21,7 +22,8 @@ export class UsersTreeComponent implements OnInit, OnDestroy {
   defaultSelectedKeys = [];
   defaultExpanded = [];
   isLoading = false;
-  
+  handler;
+
   private eventsSubscription: Subscription;
 
   constructor(private employeeService: EmployeeService) {}
@@ -39,10 +41,15 @@ export class UsersTreeComponent implements OnInit, OnDestroy {
         this.defaultSelectedKeys = [];
       }
     });
+
+    this.handler = eventEmitter.on('regime-approval:deleteUser', () => {
+      this.getEmployeeTrees();
+    });
   }
 
   ngOnDestroy() {
     this.eventsSubscription.unsubscribe();
+    this.handler();
   }
 
   getEmployeeTrees() {

@@ -133,12 +133,13 @@ export const customAutocomplete = (table, callback) => {
   return {
     // Methods
     closeEditor : function(cell, save) {
-      console.log('close', cell.children[0].value, table.getValue(cell))
+      const selected = !!cell.classList.contains('selected');
       const value = cell.children[0].value || table.getValue(cell);
 
-      cell.innerHTML = value;
+      cell.innerHTML = selected ? value : table.getValue(cell);
+      cell.classList.remove('selected');
 
-      return value;
+      return selected ? value : table.getValue(cell);
     },
     openEditor : function(cell) {
       const dataset = cell.dataset;
@@ -149,10 +150,9 @@ export const customAutocomplete = (table, callback) => {
       const element = document.createElement('input');
 
       // Update cell
-      cell.classList.add('editor');
+      // cell.classList.add('editor');
       cell.innerHTML = table.getValue(cell);
       cell.appendChild(element);
-      cell.style.overflow = 'hidden !important';
 
       $(element).autocomplete({
         lookup: function(query, done) {
@@ -169,19 +169,13 @@ export const customAutocomplete = (table, callback) => {
           });
         },
         onSelect: function (suggestion) {
-          console.log('select')
           setTimeout(function() {
             if (cell.children[0]) {
+              cell.classList.add('selected');
               table.closeEditor(cell, true);
               $(element).autocomplete().dispose();
             }
           });
-        },
-        onHide: function(container) {
-          // if (!cell.children[0]) {
-          //   cell.innerHTML = '';
-          //   console.log('hide', table.getValue(cell), cell.innerHTML)
-          // }
         }
       });
 

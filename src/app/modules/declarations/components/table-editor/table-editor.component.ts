@@ -227,7 +227,15 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
     data.forEach((row, rowIndex) => {
       this.columns.forEach((column, colIndex) => {
         if (column.defaultLoad) {
-          this.spreadsheet.updateDropdownValue(colIndex, rowIndex);
+          if (column.key === 'hospitalFirstRegistCode') {
+            if (row[colIndex]) {
+              this.getHospitalsByCityCode(this.spreadsheet, row[colIndex], colIndex, rowIndex).then(data => {
+                this.spreadsheet.updateAutoComplete(colIndex, rowIndex, data);
+              });
+            }
+          } else {
+            this.spreadsheet.updateDropdownValue(colIndex, rowIndex);
+          }
         }
       });
     });
@@ -429,6 +437,10 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
 
         if (column.type === 'numberic') {
           return { ...combine, [ column.key ]: array[current].toString().split(' ').join('') };
+        }
+
+        if (column.key === 'hospitalFirstRegistCode') {
+          return { ...combine, [ column.key ]: array[current].toString().split('-')[0].trim() };
         }
 
         return { ...combine, [ column.key ]: column.key === 'gender' ? +array[current] : array[current] };

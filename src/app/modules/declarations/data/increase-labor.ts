@@ -225,6 +225,7 @@ export const TABLE_HEADER_COLUMNS = [{
   width: 85,
   title: '(17.1)',
   source: [ ],
+  wordWrap: true,
   key: 'hospitalFirstRegistCode',
   defaultLoad: true
 }, {
