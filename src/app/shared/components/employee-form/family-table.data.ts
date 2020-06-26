@@ -45,7 +45,7 @@ export const TABLE_FAMILIES_HEADER_COLUMNS = [{
   autocomplete: true,
   width: 75,
   title: '(4)',
-  source: [ { id: '1', name: 'tháng/năm' }, { id: '2', name: 'năm' } ],
+  source: [ { id: '3', name: 'Ngày tháng năm' },{ id: '1', name: 'tháng/năm' }, { id: '2', name: 'năm' } ],
   key: 'typeBirthday'
 }, {
   type: 'text',

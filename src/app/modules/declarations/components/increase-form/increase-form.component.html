@@ -9,24 +9,42 @@
       <input nz-input formControlName="number">
       <ng-template #numberTpl let-control>
         <ng-container *ngIf="control.hasError('required')">
-          <p class="regime-approval-form__error">Số không để trống</p>
+          <p class="regime-approval-form__error">Số tờ khai không để trống</p>
         </ng-container>
         <ng-container *ngIf="control.hasError('pattern')">
-          <p class="regime-approval-form__error">Số lương phải số</p>
+          <p class="regime-approval-form__error">Số tờ khai phải số</p>
         </ng-container>
       </ng-template>
     </nz-form-control>
   </nz-form-item>
   <nz-form-item>
     <nz-form-label [nzNoColon]="true" [nzSpan]="10">Tháng</nz-form-label>
-    <nz-form-control [nzSpan]="14">
+    <nz-form-control [nzSpan]="14" [nzErrorTip]="monthTpl">
+      <!-- <input nz-input formControlName="month"> -->
       <input nz-input formControlName="month">
+      <ng-template #monthTpl let-control>
+        <ng-container *ngIf="control.hasError('required')">
+          <p class="regime-approval-form__error">Tháng tờ khai không để trống</p>
+        </ng-container>
+        <ng-container *ngIf="control.hasError('pattern')">
+          <p class="regime-approval-form__error">Tháng tờ khai phải số</p>
+        </ng-container>
+      </ng-template>
     </nz-form-control>
   </nz-form-item>
   <nz-form-item>
     <nz-form-label [nzNoColon]="true" [nzSpan]="10">Năm</nz-form-label>
-    <nz-form-control [nzSpan]="14">
+    <nz-form-control [nzSpan]="14"  [nzErrorTip]="yearTpl">
+      <!-- <input nz-input formControlName="year"> -->
       <input nz-input formControlName="year">
+      <ng-template #yearTpl let-control>
+        <ng-container *ngIf="control.hasError('required')">
+          <p class="regime-approval-form__error">Năm tờ khai không để trống</p>
+        </ng-container>
+        <ng-container *ngIf="control.hasError('pattern')">
+          <p class="regime-approval-form__error">Năm tờ khai phải số</p>
+        </ng-container>
+      </ng-template>
     </nz-form-control>
   </nz-form-item>
 </form>

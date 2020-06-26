@@ -36,8 +36,8 @@ export class IncreaseFormComponent implements OnInit, OnChanges {
     
     this.form = this.formBuilder.group({
       number: [ '1',[Validators.required, Validators.pattern(REGEX.ONLY_NUMBER)] ],
-      month: [ date.getMonth() + 1 ],
-      year: [ date.getFullYear() ]
+      month: [ date.getMonth() + 1 , [Validators.required, Validators.pattern(REGEX.ONLY_NUMBER)]],
+      year: [ date.getFullYear(), [Validators.required, Validators.pattern(REGEX.ONLY_NUMBER)] ]
     });
 
     this.formChanges();
@@ -50,6 +50,7 @@ export class IncreaseFormComponent implements OnInit, OnChanges {
       });
     }
   }
+
   validForm() {
     const formError: any[] = [];
     if(this.form.controls.number.errors) {

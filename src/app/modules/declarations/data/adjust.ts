@@ -269,6 +269,7 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   type: 'numeric',
   width: 70,
   title: '(17.6)',
+  fieldName: 'Thâm niên vK(%)',
   key: 'allowanceSeniority',
   suffix: '%',
   validations: {
@@ -279,6 +280,7 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   width: 70,
   title: '(17.7)',
   key: 'allowanceSeniorityJob',
+  fieldName: 'Thâm niên nghề(%)',
   suffix: '%',
   validations: {
     number: true
