@@ -566,18 +566,25 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
     master.districtCode = this.relationshipDistrictCode;
     master.wardsCode = this.relationshipWardsCode;
     master.fullName = this.relationshipFullName;
+    master.isurranceCode = this.insurranceCode;
+    master.birthday = this.birthday;
+    master.typeBirthday = this.typeBirthday;
+    master.gender = this.gender == 1 ? true : false;
+    master.identityCar = this.identityCar;
     master.data = this.tableHeaderColumnsFamilies.map(column => {
         if (!column.key || !master[column.key]) return '';
         return master[column.key];
     });
+    this.families = familiescopy;
 
-   const index = familiescopy.findIndex(f => f.relationshipCode === '00');
-   this.familySubject.next({
-      type:"familyMaster",
-      data: master,
-      columName: columnName,
-      index: index,
-    });
+  //  const index = familiescopy.findIndex(f => f.relationshipCode === '00');
+  //  this.familySubject.next({
+  //     type:"familyMaster",
+  //     data: master,
+  //     columName: columnName,
+  //     index: index,
+  //   });
+
   }
 
   addHospitalFirstRegistCode() {
@@ -612,14 +619,16 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
         relationshipFullName: this.fullName,
         relationshipCityCode: this.registerCityCode,
         relationshipDistrictCode: this.registerDistrictCode,
-        relationshipWardsCode: this.registerWardsCode
+        relationshipWardsCode: this.registerWardsCode,
+        relationshipMobile: this.mobile,
       });
     } else {
       this.employeeForm.patchValue({
         relationshipFullName: null,
         relationshipCityCode: null,
         relationshipDistrictCode: null,
-        relationshipWardsCode: null
+        relationshipWardsCode: null,
+        relationshipMobile: null,
       });
     }
   }
@@ -655,12 +664,12 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
     });
   }
 
-  get birthdayType() {
-    return this.employeeForm.get('typeBirthday').value;
-  }
-
   get fullName() {
     return this.employeeForm.get('fullName').value;
+  }
+
+  get gender() {
+    return this.employeeForm.get('gender').value;
   }
 
   get birthday() {
@@ -671,6 +680,20 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
     const birth = getBirthDay(birthday, this.birthTypeOnlyYear, this.birthTypeOnlyYearMonth);
 
     return birth.format;
+  }
+
+  get identityCar() {
+    return this.employeeForm.get('identityCar').value;
+  }
+
+  get typeBirthday() {
+    if (this.birthTypeOnlyYearMonth) {
+      return '1';
+    } else if (this.birthTypeOnlyYear) {
+      return '2';
+    }else {
+      return '3';
+    }
   }
 
   get insurranceCode() {
@@ -699,6 +722,15 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
   get registerWardsCode() {
     return this.employeeForm.get('registerWardsCode').value;
   }
+  
+  get mobile() {
+    return this.employeeForm.get('mobile').value;
+  }
+
+  get isurranceCode() {
+    return this.employeeForm.get('isurranceCode').value;
+  }
+
 
   get relationshipFullName() {
     return this.employeeForm.get('relationshipFullName').value;

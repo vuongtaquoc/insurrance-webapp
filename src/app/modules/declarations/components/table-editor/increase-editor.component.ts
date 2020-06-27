@@ -3,9 +3,13 @@ import { Subscription, Observable } from 'rxjs';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import * as jexcel from 'jstable-editor/dist/jexcel.js';
 import 'jsuites/dist/jsuites.js';
+import { HospitalService } from '@app/core/services';
 
-import { customPicker } from '@app/shared/utils/custom-editor';
+import { customPicker, customAutocomplete } from '@app/shared/utils/custom-editor';
 import { eventEmitter } from '@app/shared/utils/event-emitter';
+import * as moment from 'moment';
+import { DATE_FORMAT } from '@app/shared/constant';
+import { validateLessThanEqualNowBirthdayGrid, getBirthDayGrid } from '@app/shared/utils/custom-validation';
 
 @Component({
   selector: 'app-increase-editor',
@@ -39,7 +43,8 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
   private deleteTimer;
   private validateSubscription: Subscription;
   constructor(
-    private modalService: NzModalService
+    private modalService: NzModalService,
+    private hospitalService: HospitalService
   ) {
 
   }
@@ -129,6 +134,8 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
 
           instance.jexcel.setValue(nextColumn, '');
         }
+
+        this.validationCellByOtherCell(value, column, r, instance, c);
       },
       ondeleterow: (el, rowNumber, numOfRows) => {
         this.onDelete.emit({
@@ -180,6 +187,7 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
     this.updateEditorToColumn('fromDate', 'month');
     this.updateEditorToColumn('toDate', 'month');
     this.updateEditorToColumn('motherDayDead', 'date');
+    this.updateAutoCompleteToColumn('hospitalFirstRegistCode');
 
     this.spreadsheet.hideIndex();
 
@@ -242,7 +250,13 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
     data.forEach((row, rowIndex) => {
       this.columns.forEach((column, colIndex) => {
         //update source dropdown when change data
-        if (column.defaultLoad) {
+        if (column.key === 'hospitalFirstRegistCode') {
+          if (row[colIndex]) {
+            this.getHospitalsByCityCode(this.spreadsheet, row[colIndex], colIndex, rowIndex).then(data => {
+              this.spreadsheet.updateAutoComplete(colIndex, rowIndex, data);
+            });
+          }
+        } else {
           this.spreadsheet.updateDropdownValue(colIndex, rowIndex);
         }
       });
@@ -363,7 +377,11 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
       if(!fieldName) {
         fieldName = this.columns[(error.x - 1)].title;
       }
-      error.columnName = fieldName;
+      if (typeof fieldName === 'object') {
+        error.columnName = fieldName.name;
+      } else {
+        error.columnName = fieldName;
+      }
       error.subfix = 'Dòng';
       error.prefix = 'Cột';
     });
@@ -387,6 +405,125 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
         part: '',
         parentKey: ''
       });
+    });
+  }
+
+  private async getHospitalsByCityCode(table, keyword, c, r) {
+    const cityCode = table.getValueFromCoords(c - 5, r);
+
+    if (!cityCode) {
+      return [];
+    }
+
+    return await this.hospitalService.searchHospital(cityCode, keyword).toPromise();
+  }
+
+  private updateAutoCompleteToColumn(key) {
+    const column = this.columns.find(c => c.key === key);
+
+    if (!column) return;
+
+    column.editor = customAutocomplete(this.spreadsheet, this.getHospitalsByCityCode.bind(this));
+  }
+
+  validationCellByOtherCell(cellValue, column, y, instance, cell) {
+    if (column.key === 'fromDate') {
+      const toDateValue = this.spreadsheet.getValueFromCoords(Number(cell) + 1, y);
+      const validationColumn = this.columns[cell];
+
+      if (toDateValue && cellValue) {
+        const cellValueMoment = moment(cellValue, DATE_FORMAT.ONLY_MONTH_YEAR);
+        const toDateValueMoment = moment(toDateValue, DATE_FORMAT.ONLY_MONTH_YEAR);
+        const isAfter = cellValueMoment.isAfter(toDateValueMoment);
+
+        if (isAfter) {
+          validationColumn.validations = {
+            required: true,
+            lessThan: true
+          };
+          validationColumn.fieldName = {
+            name: 'Từ tháng, năm',
+            message: '<Từ tháng, năm> phải nhỏ hơn hoặc bằng <Đến tháng, năm>',
+          };
+
+          instance.jexcel.validationCell(y, cell, validationColumn.fieldName, validationColumn.validations);
+        } else {
+          validationColumn.validations = {
+            required: true
+          };
+          validationColumn.fieldName = 'Từ tháng, năm';
+          instance.jexcel.clearValidation(y, cell);
+        }
+      } else {
+        validationColumn.validations = {
+          required: true
+        };
+        validationColumn.fieldName = 'Từ tháng, năm';
+        instance.jexcel.clearValidation(y, cell);
+      }      
+    } else if (column.key === 'toDate') {
+      const fromDateValue = this.spreadsheet.getValueFromCoords(Number(cell) - 1, y);
+      const validationColumn = this.columns[Number(cell) - 1];
+
+      if (cellValue && fromDateValue) {
+        const cellValueMoment = moment(cellValue, DATE_FORMAT.ONLY_MONTH_YEAR);
+        const fromDateValueMoment = moment(fromDateValue, DATE_FORMAT.ONLY_MONTH_YEAR);
+        const isAfter = fromDateValueMoment.isAfter(cellValueMoment);
+
+        if (isAfter) {
+          validationColumn.validations = {
+            required: true,
+            lessThan: true
+          };
+          validationColumn.fieldName = {
+            name: 'Từ tháng, năm',
+            message: '<Từ tháng, năm> phải nhỏ hơn hoặc bằng <Đến tháng, năm>',
+          };
+
+          instance.jexcel.validationCell(y, Number(cell) - 1, validationColumn.fieldName, validationColumn.validations);
+        } else {
+          validationColumn.validations = {
+            required: true
+          };
+          validationColumn.fieldName = 'Từ tháng, năm';
+          instance.jexcel.clearValidation(y, Number(cell) - 1);
+        }
+      } else {
+        validationColumn.validations = {
+          required: true
+        };
+        validationColumn.fieldName = 'Từ tháng, năm';
+        instance.jexcel.clearValidation(y, Number(cell) - 1);
+      }     
+    } else if (column.key === 'birthday') { 
+      const typeBirthday = this.spreadsheet.getValueFromCoords(Number(cell) - 1, y);
+      const validationColumn = this.columns[cell];
+      const result = validateLessThanEqualNowBirthdayGrid(cellValue, typeBirthday);     
+      if(result) {
+        validationColumn.validations = {
+          required: true,
+          lessThan: true
+        };
+        validationColumn.fieldName = {
+          name: 'Ngày, tháng, năm sinh',
+          message: 'Ngày sinh phải nhỏ hơn hoặc bằng ngày hiện tại',
+        };
+
+        instance.jexcel.validationCell(y, cell, validationColumn.fieldName, validationColumn.validations);
+      }else {
+        validationColumn.validations = {
+          required: true
+        };
+        validationColumn.fieldName = 'Ngày, tháng, năm sinh';
+        instance.jexcel.clearValidation(y, cell);
+      }
+    }
+
+    this.handleEvent({
+      type: 'validate',
+      part: '',
+      parentKey: '',
+      user: {}
     });
   }
 }

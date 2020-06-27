@@ -280,6 +280,7 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
       },
       0
     );
+    
     if (count > 0) {
       return this.modalService.error({
         nzTitle: 'Lỗi dữ liệu. Vui lòng sửa!',
@@ -289,11 +290,12 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
         }
       });
     }
-    // if (this.declarationId) {
-    //   this.update(type);
-    // } else {
-    //   this.create(type);
-    // }
+
+    if (this.declarationId) {
+      this.update(type);
+    } else {
+      this.create(type);
+    }
 
   }
 

@@ -263,7 +263,11 @@ export const TABLE_HEADER_COLUMNS = [{
   type: 'text',
   width: 100,
   title: '(21.2)',
-  key: 'dateSign'
+  key: 'dateSign',
+  fieldName: 'Ngày ký',
+  validations: {
+    lessThanNow: true
+  }
 }, {
   type: 'numeric',
   width: 80,

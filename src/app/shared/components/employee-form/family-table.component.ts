@@ -104,6 +104,8 @@ export class EmployeeFamilyTableComponent implements OnInit, OnDestroy, OnChange
 
             instance.jexcel.setValue(nextColumn, '');
           }
+
+          
         },
         ondeleterow: (el, rowNumber, numOfRows) => {
           this.onDelete.emit({
@@ -142,6 +144,21 @@ export class EmployeeFamilyTableComponent implements OnInit, OnDestroy, OnChange
       if(event.columName === 'wardsCode') {
         const columnWardsCode = jexcel.getColumnNameFromId([8,event.index]);
         this.spreadsheet.setValue(columnWardsCode, event.data.wardsCode);
+      }
+
+      if(event.columName === 'birthday') {
+        const columnBirthday = jexcel.getColumnNameFromId([4,event.index]);
+        this.spreadsheet.setValue(columnBirthday, event.data.birthday);
+      }
+
+      if(event.columName === 'isurranceCode') {
+        const columnIsurranceCode = jexcel.getColumnNameFromId([2,event.index]);
+        this.spreadsheet.setValue(columnIsurranceCode, event.data.isurranceCode);
+      }
+
+      if(event.columName === 'typeBirthday') {
+        const columntypeBirthday = jexcel.getColumnNameFromId([3,event.index]);
+        this.spreadsheet.setValue(columntypeBirthday, event.data.typeBirthday);
       }
     }
   }

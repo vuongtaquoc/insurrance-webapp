@@ -10,11 +10,13 @@
                 <div nz-col [nzSpan]="12">
                   <nz-form-item>
                     <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Người nộp</nz-form-label>
-                    <nz-form-control [nzSpan]="14" nzErrorTip="Người nộp không được để trống">
-                      <input nz-input
-                        placeholder="Người nộp"
-                        formControlName="submitter"
-                      />
+                    <nz-form-control [nzSpan]="14" [nzErrorTip]="submitterTpl">
+                      <input nz-input placeholder="Người nộp" formControlName="submitter"/>
+                      <ng-template #submitterTpl let-control>
+                        <ng-container *ngIf="control.hasError('required')">
+                          <p class="regime-approval-form__error">Người nộp không được để trống</p>
+                        </ng-container>
+                      </ng-template>
                     </nz-form-control>
                   </nz-form-item>
                 </div>

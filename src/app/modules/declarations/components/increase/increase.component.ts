@@ -212,13 +212,6 @@ export class IncreaseComponent extends GeneralBaseComponent implements OnInit, O
     return source.filter(s => planTypes.indexOf(s.id) > -1);
   }
 
-  private updateNextColumns(instance, r, value, nextColumns = []) {
-    nextColumns.forEach(columnIndex => {
-      const columnName = instance.jexcel.getColumnNameFromId([columnIndex, r]);
-      instance.jexcel.setValue(columnName, value);
-    });
-  }
-
   private getSourceDropDownByKey(key: string) {
     return this.categoryService.getCategories(key);
   }

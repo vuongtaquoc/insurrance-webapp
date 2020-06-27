@@ -166,7 +166,8 @@ export class DeclarationSidebarComponent implements OnInit, OnDestroy {
           type: 'search',
           status: 'success',
           data: {
-            text: data.text ? data.text.replace(/(\r\n|\n|\r)/gm, ';') : ''
+            text: data.text ? data.text.replace(/(\r\n|\n|\r)/gm, ';') : '',
+            searchType: data.searchType
           }
         });
       },

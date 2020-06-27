@@ -36,6 +36,7 @@ export const TABLE_FAMILIES_HEADER_COLUMNS = [{
   width: 110,
   title: '(3)',
   key: 'isurranceCode',
+  fieldName: 'Mã số BHXH',
   validations: {
     maxLength: 50,
     onlyCharacterNumber: true
@@ -52,6 +53,7 @@ export const TABLE_FAMILIES_HEADER_COLUMNS = [{
   width: 80,
   title: '(5)',
   key: 'birthday',
+  fieldName: 'Ngày tháng năm sinh',
   isCalendar: true,
   // validations: {
   //   required: true
@@ -110,6 +112,7 @@ export const TABLE_FAMILIES_HEADER_COLUMNS = [{
   width: 120,
   title: '(11)',
   key: 'identityCar',
+  fieldName: 'Số CMND/Hộ chiếu/ Thẻ căn cước',
   validations: {
     onlyCharacterNumber: true,
     maxLength: 15

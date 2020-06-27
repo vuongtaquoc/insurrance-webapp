@@ -3,7 +3,7 @@ import { NzModalService } from 'ng-zorro-antd/modal';
 import { Subject, Subscription, Observable } from 'rxjs';
 import findLastIndex from 'lodash/findLastIndex';
 import findIndex from 'lodash/findIndex';
-
+import * as jexcel from 'jstable-editor/dist/jexcel.js';
 import {
   DeclarationService
 } from '@app/core/services';
@@ -319,6 +319,17 @@ handleUserUpdated(user, tableName) {
   }
 
   handleChangeTable({ instance, cell, c, r, records }, tableName) {
+
+    if (c !== null && c !== undefined) {
+      c = Number(c);
+      const column = this.headers[tableName].columns[c];
+
+      if (column.key === 'hospitalFirstRegistCode') {
+        const hospitalFirstRegistName = cell.innerText.split(' - ').pop();
+
+        this.updateNextColumns(instance, r, hospitalFirstRegistName, [ c + 1 ]);
+      }
+    }
     // update declarations
     this.declarations[tableName].table.forEach((declaration, index) => {
       const record = records[index];
@@ -344,6 +355,13 @@ handleUserUpdated(user, tableName) {
 
     this.tableSubject.next({
       type: 'validate'
+    });
+  }
+
+  private updateNextColumns(instance, r, value, nextColumns = []) {
+    nextColumns.forEach(columnIndex => {
+      const columnName = jexcel.getColumnNameFromId([columnIndex, r]);
+      instance.jexcel.setValue(columnName, value);
     });
   }
 

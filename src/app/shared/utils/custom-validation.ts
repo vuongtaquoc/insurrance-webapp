@@ -70,6 +70,123 @@ export function getBirthDay(value, birthTypeOnlyYear, birthTypeOnlyYearMonth) {
   }
 };
 
+export function getBirthDayGrid(value, type) {
+  if (type === '3') {
+    const select = new Date();
+    const date = value.substring(0, 2);
+    const month = Number(value.substring(3, 5));
+    const year = value.substring(6, 10);
+    select.setDate(date);
+    select.setMonth(Number(month) - 1);
+    select.setFullYear(year);
+
+    return {
+      date: select,
+      format: `${date}/${to2Digits(month)}/${year}`
+    };
+  }else if(type === '1') {
+    const select = new Date();
+    const month = Number(value.substring(0, 2));
+    const year = value.substring(3, 7);
+
+    select.setMonth(Number(month) - 1);
+    select.setFullYear(year);
+
+    return {
+      date: select,
+      format: `${to2Digits(month)}/${year}`
+    }
+  }else {
+    const select = new Date();
+    const year = value.substring(0, 4);
+
+    select.setFullYear(year);
+
+    return {
+      date: select,
+      format: year
+    }
+  }
+};
+
+
+export function validateLessThanEqualNowBirthdayGrid(currentDate, type) { 
+  if (!currentDate || !type) return null; 
+  const now = getDateNow();
+  // full date
+  if (type === '3') {
+    if (currentDate.length < 8) {
+      return {
+        lessThanEqualNow: {
+          valid: false
+        }
+      };
+    }
+
+    const birthDay = getBirthDayGrid(currentDate, type);
+    if (!moment(birthDay.format, 'DD/MM/YYYY').isValid()) {
+      return {
+        lessThanEqualNow: {
+          valid: false
+        }
+      };
+    }
+    return birthDay.date <= now ? null : {
+      lessThanEqualNow: {
+        valid: false
+      }
+    }
+
+  } //end full date
+  // Month year
+  else if(type === '1') {
+  
+    if (currentDate.length  < 6) {
+      return {
+        lessThanEqualNow: {
+          valid: false
+        }
+      };
+    }
+
+    const birthDay = getBirthDayGrid(currentDate, type);
+   console.log(birthDay);
+    if (!moment(birthDay.format, 'MM/YYYY').isValid()) {
+      return {
+        lessThanEqualNow: {
+          valid: false
+        }
+      };
+    }
+
+    return birthDay.date.getFullYear() < now.getFullYear() || (birthDay.date.getFullYear() <= now.getFullYear() && birthDay.date.getMonth() <= now.getMonth()) ? null : {
+      lessThanEqualNow: {
+        valid: false
+      }
+    };
+  }//End month year
+  else {
+    console.log(currentDate.length, type, '2');
+    if (currentDate.length < 4) {
+      return {
+        lessThanEqualNow: {
+          valid: false
+        }
+      };
+    }
+  
+    const birthDay = getBirthDayGrid(currentDate, type);
+  
+    return birthDay.date.getFullYear() <= now.getFullYear() ? null : {
+      lessThanEqualNow: {
+        valid: false
+      }
+    };
+  }
+
+}
+
+
 export function validateLessThanEqualNowBirthday(c: FormControl) {
   if (!c.value || !c.parent) return null;
 

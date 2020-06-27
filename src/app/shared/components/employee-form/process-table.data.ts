@@ -37,6 +37,7 @@ export const TABLE_PROCESS_HEADER_COLUMNS = [{
   width: 70,
   title: '(2)',
   key: 'fromDate',
+  isMasterKey: true,
   isCalendar: true,
   validations: {
     lessThanNow: true
@@ -54,76 +55,95 @@ export const TABLE_PROCESS_HEADER_COLUMNS = [{
   type: 'text',
   width: 75,
   title: '(4)',
-  key: 'companyCode',
-  isMasterKey: true,
+  key: 'companyCode',  
   validations: {
-    maxLength: 50,
-    onlyCharacterNumber: true
+    maxLength: 4,
+    onlyCharacterNumber: true,
   }
 }, {
   type: 'text',
   width: 210,
   title: '(5)',
-  key: 'companyName',
-  isMasterKey: true
+  key: 'companyName'
 }, {
   type: 'text',
   width: 120,
   title: '(6)',
   key: 'levelWork'
 }, {
-  type: 'numberic',
+  type: 'numeric',
   width: 90,
   title: '(7)',
+  mask: '#,##0',
+  fieldName: 'Mức đóng',
   key: 'salary',
   validations: {
-    number: true
+    required: true
   }
 }, {
   type: 'numberic',
   width: 55,
   title: '(8)',
   key: 'allowanceLevel',
+  mask: '#,##0',
+  fieldName: 'Phụ cấp chức vụ',
   validations: {
-    number: true
+    required: true
   }
 }, {
   type: 'numberic',
   width: 65,
   title: '(9)',
   key: 'allowanceSeniority',
+  fieldName: 'Thâm niên VK',
+  suffix: '%',
   validations: {
-    number: true
+    // number: true,
+    min: 0,
+    max: 100
   }
 }, {
   type: 'numberic',
   width: 65,
   title: '(10)',
   key: 'allowanceSeniorityJob',
+  fieldName: 'Thâm niên nghề',
+  suffix: '%',
   validations: {
-    number: true
+    // number: true,
+    min: 0,
+    max: 100
   }
 }, {
   type: 'numberic',
   width: 65,
   title: '(11)',
   key: 'allowanceOther',
+  mask: '#,##0',
+  fieldName: 'PC Khác',
   validations: {
-    number: true
+    required: true
   }
 }, {
   type: 'numberic',
   width: 90,
   title: '(12)',
   key: 'allowanceSalary',
+  mask: '#,##0',
+  fieldName: 'Phụ cấp lương',
   validations: {
-    number: true
+    required: true
   }
 }, {
   type: 'numberic',
   width: 90,
   title: '(13)',
-  key: 'allowanceAdditional'
+  key: 'allowanceAdditional',
+  mask: '#,##0',
+  fieldName: 'Các khoản bổ sung',
+  validations: {
+    required: true
+  }
 }, {
   type: 'dropdown',
   autocomplete: true,
@@ -135,20 +155,48 @@ export const TABLE_PROCESS_HEADER_COLUMNS = [{
   type: 'numberic',
   width: 70,
   title: '(15)',
-  key: 'ratioBHXH'
+  key: 'ratioBHXH',
+  fieldName: 'Tỷ lệ BHXH',
+  suffix: '%',
+  validations: {
+    // number: true,
+    min: 0,
+    max: 100
+  }
 }, {
   type: 'numberic',
   width: 70,
   title: '(16)',
-  key: 'ratioBHTNLD'
+  key: 'ratioBHTNLD',
+  fieldName: 'Tỷ lệ BHTNXH.BNN',
+  suffix: '%',
+  validations: {
+    // number: true,
+    min: 0,
+    max: 100
+  }
 }, {
   type: 'numberic',
   width: 70,
   title: '(17)',
-  key: 'ratioBHTN'
+  key: 'ratioBHTN',
+  fieldName: 'Tỷ lệ BHTN',
+  suffix: '%',
+  validations: {
+    // number: true,
+    min: 0,
+    max: 100
+  }
 }, {
   type: 'numberic',
   width: 70,
   title: '(18)',
-  key: 'ratioBHYT'
+  key: 'ratioBHYT',
+  fieldName: 'Tỷ lệ BHYT',
+  suffix: '%',
+  validations: {
+    // number: true,
+    min: 0,
+    max: 100
+  }
 }];
