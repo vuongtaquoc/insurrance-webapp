@@ -30,6 +30,7 @@ export class EmployeeListComponent implements OnInit {
     hospitalFirstRegistName: ''
   };
   keyword: string = '';
+  tableHeight: number;
 
   constructor(
     private modalService: NzModalService,
@@ -40,6 +41,13 @@ export class EmployeeListComponent implements OnInit {
 
   ngOnInit() {
     this.getEmployees();
+
+    console.log(window.innerWidth, window.innerHeight)
+    if (window.innerWidth > 1366) {
+      this.tableHeight = 600;
+    } else if (window.innerWidth <= 1366) {
+      this.tableHeight = 420;
+    }
   }
 
   getEmployees(skip = 0, take = PAGE_SIZE) {

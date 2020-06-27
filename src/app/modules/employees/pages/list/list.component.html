@@ -3,11 +3,8 @@
     <div class="page-card page-employees">
       <h1>Thông tin người lao động</h1>
       <div class="page-employees__menu-bar">
-        <div class="page-employees__filter">
-        </div>
-
         <div class="page-employees__group-button">
-          <button nz-button nzType="default" (click)="add()"><i nz-icon nzType="plus" nzTheme="outline"></i>Thêm</button>
+          <button nz-button nzType="primary" (click)="add()"><i nz-icon nzType="plus" nzTheme="outline"></i>Thêm người lao động</button>
           <!-- <a nz-button nzType="default"><i nz-icon nzType="edit"></i>Sửa</a>
           <button nz-button nzType="default"><i nz-icon nzType="delete"></i>Xóa</button> -->
         </div>
@@ -18,19 +15,20 @@
         [nzData]="employees"
         [nzPageSize]="employees.length"
         [nzShowPagination]="false"
-        class="table ui-table-custom ui-table-custom--center"
+        [nzScroll]="{ y: tableHeight + 'px' }"
+        class="table ui-table-custom"
       >
         <thead>
           <tr>
             <th class="text-left" >Họ và tên</th>
             <th class="text-left">Mã nhân viên</th>
-            <th>Mã số BHXH</th>
-            <th>Số sổ BHXH</th>
-            <th>CMND/HC/TCC</th>
-            <th>Năm sinh</th>
-            <th>GT</th>
-            <th>Đơn vị KCB ban đầu</th>
-            <th>Thao tác</th>
+            <th class="text-center">Mã số BHXH</th>
+            <th class="text-center">Số sổ BHXH</th>
+            <th class="text-center">CMND/HC/TCC</th>
+            <th class="text-center">Năm sinh</th>
+            <th class="text-center">GT</th>
+            <th class="text-left">Đơn vị KCB ban đầu</th>
+            <th class="text-center">Thao tác</th>
           </tr>
         </thead>
         <tbody>
