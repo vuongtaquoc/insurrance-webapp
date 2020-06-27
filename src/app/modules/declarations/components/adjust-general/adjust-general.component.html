@@ -21,12 +21,22 @@
                 <div nz-col [nzSpan]="12">
                     <nz-form-item>
                       <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Số điện thoại</nz-form-label>
-                      <nz-form-control [nzSpan]="14" nzErrorTip="Số điện thoại không được để trống">
-                        <input nz-input
-                          placeholder="Số điện thoại"
-                          formControlName="mobile"
-                        />
+                       
+                      <nz-form-control [nzSpan]="14" [nzErrorTip]="mobileTpl">
+                        <!-- <input nz-input formControlName="month"> -->
+                        <input nz-input formControlName="mobile" placeholder="Số điện thoại">
+                        <ng-template #mobileTpl let-control>
+                          <ng-container *ngIf="control.hasError('required')">
+                            <p class="regime-approval-form__error">Số điện thoại không được để trống</p>
+                          </ng-container>
+                          <ng-container *ngIf="control.hasError('pattern')">
+                            <p class="regime-approval-form__error">Số điện thoại phải là số</p>
+                          </ng-container>
+                        </ng-template>
                       </nz-form-control>
+
+
+
                     </nz-form-item>
                   </div>
                 </div>

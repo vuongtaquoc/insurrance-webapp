@@ -7,6 +7,7 @@ import findIndex from 'lodash/findIndex';
 import * as jexcel from 'jstable-editor/dist/jexcel.js';
 import * as moment from 'moment';
 import * as _ from 'lodash';
+import { REGEX } from '@app/shared/constant';
 import { DocumentFormComponent } from '@app/shared/components';
 
 import { Declaration, DocumentList } from '@app/core/models';
@@ -113,7 +114,7 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.documentForm = this.formBuilder.group({
       submitter: ['', Validators.required],
-      mobile: ['', Validators.required],
+      mobile: ['',  [Validators.required, Validators.pattern(REGEX.ONLY_NUMBER)]],
     });
 
     this.declarationName = this.getDeclaration(this.declarationCode).value;
@@ -254,11 +255,24 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
       tableName: 'documentList'
     });
 
-    console.log(this.formError);
-    // if (type === 'rollback') {
-    //   this.router.navigate(['/declarations/adjust-general']);
-    //   return '';
-    // }
+    if (type === 'rollback') {
+      this.router.navigate(['/declarations/adjust-general']);
+      return '';
+    }
+
+    if(this.formError.length > 0) {
+      this.tableErrors['generalFomError'] = this.formError;
+    } else {
+      this.tableErrors['generalFomError'] = [];
+    }
+
+    const errorDocumentForm = this.validDocumentForm();
+    if (errorDocumentForm.length > 0) {
+      this.tableErrors['documentFomError'] = errorDocumentForm;
+    } else {
+      this.tableErrors['documentFomError'] = [];
+    }
+
     let count = Object.keys(this.tableErrors).reduce(
       (total, key) => {
         const data = this.tableErrors[key];
@@ -294,7 +308,6 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
       },
       {}
     );
-    console.log(tableErrorMessage, 'tableErrorMessage');
     return tableErrorMessage;
   }
   private create(type: any) {
@@ -798,8 +811,6 @@ private setDataToFamilyEditor(records: any)
     this.families = families;
   }
 
-
-
   private notificeEventValidData(tableName) {
 
     this.tableSubject.next({
@@ -987,4 +998,27 @@ private setDateToInformationList(records: any)
     return moment(fullDate,"DD/MM/YYYY").toDate();
   }
 // End Document list Tab
+
+  validDocumentForm() {
+    const formError: any[] = [];
+    if(this.documentForm.controls.submitter.errors) {
+      formError.push({
+        y: 'Người nộp',
+        columnName: 'Kiểm tra lại trường người nộp',
+        prefix: '',
+        subfix: 'Lỗi'
+      });
+    }
+
+    if(this.documentForm.controls.mobile.errors) {
+      formError.push({
+        y: 'Số điện thoại',
+        columnName: 'Kiểm tra lại trường số điện thoại',
+        prefix: '',
+        subfix: 'Lỗi'
+      });
+    }
+
+    return formError;
+  }
 }

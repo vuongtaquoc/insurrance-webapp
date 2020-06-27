@@ -15,6 +15,8 @@ const TABLES = {
   adjustment601: 'D02-TS Điều chỉnh',
   family601: 'PL TVHGD-NLD',
   documentList601: 'Bảng kê hồ sơ',
+  generalFomError: 'Thông tin tờ khai',
+  documentFomError: 'Danh mục tài liệu'
 };
 
 @Component({

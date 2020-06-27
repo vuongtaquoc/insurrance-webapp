@@ -55,31 +55,36 @@ export class IncreaseFormComponent implements OnInit, OnChanges {
     const formError: any[] = [];
     if(this.form.controls.number.errors) {
       formError.push({
-        field: 'Số',
-        message: 'Kiểm tra lại trường số tờ khai'
+        y: 'Số',
+        columnName: 'Kiểm tra lại trường số tờ khai',
+        prefix: '',
+        subfix: 'Lỗi'
       });
     }
 
     if(this.form.controls.month.errors) {
       formError.push({
-        field: 'Tháng',
-        message: 'Kiểm tra lại trường số tháng'
+        y: 'Tháng',
+        columnName: 'Kiểm tra lại trường số tháng',
+        prefix: '',
+        subfix: 'Lỗi'
       });
     }
 
     if(this.form.controls.year.errors) {
       formError.push({
-        field: 'Năm',
-        message: 'Kiểm tra lại trường số năm'
+        y: 'Năm',
+        columnName: 'Kiểm tra lại trường số năm',
+        prefix: '',
+        subfix: 'Lỗi'
       });
     }
 
-    if(formError.length > 0){
-      this.onFormValid.emit({
-        tableName: 'validFrom',
-        errorMessage: formError
-      });
-    }
+    this.onFormValid.emit({
+      tableName: 'validFrom',
+      errorMessage: formError
+    });
+    
   }
   formChanges() {
     this.form.valueChanges.subscribe(value => {
