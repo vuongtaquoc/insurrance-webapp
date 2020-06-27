@@ -161,11 +161,13 @@ export class DeclarationSidebarComponent implements OnInit, OnDestroy {
       nzWidth: 600,
       nzWrapClassName: 'declaration-search-modal',
       nzTitle: 'Tìm kiếm mở rộng',
-      nzOnOk: (data,) => {
+      nzOnOk: (data) => {
         this.employeeSubject.next({
           type: 'search',
           status: 'success',
-          data: data
+          data: {
+            text: data.text ? data.text.replace(/(\r\n|\n|\r)/gm, ';') : ''
+          }
         });
       },
       nzOkText: 'Tìm',

@@ -20,6 +20,14 @@ const getDateNow = () => {
   return now;
 }
 
+const to2Digits = (number) => {
+  if (number < 10) {
+    return `0${number}`;
+  }
+
+  return number;
+};
+
 export function getBirthDay(value, birthTypeOnlyYear, birthTypeOnlyYearMonth) {
   if (!birthTypeOnlyYear && !birthTypeOnlyYearMonth) {
     const select = new Date();
@@ -33,7 +41,7 @@ export function getBirthDay(value, birthTypeOnlyYear, birthTypeOnlyYearMonth) {
 
     return {
       date: select,
-      format: `${date}/${month}/${year}`
+      format: `${date}/${to2Digits(month)}/${year}`
     };
   }
 
@@ -47,7 +55,7 @@ export function getBirthDay(value, birthTypeOnlyYear, birthTypeOnlyYearMonth) {
 
     return {
       date: select,
-      format: `${month}/${year}`
+      format: `${to2Digits(month)}/${year}`
     }
   }
 

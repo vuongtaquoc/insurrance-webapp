@@ -151,7 +151,8 @@ export const customAutocomplete = (table, callback) => {
 
       // Update cell
       // cell.classList.add('editor');
-      cell.innerHTML = table.getValue(cell);
+      // cell.innerHTML = table.getValue(cell);
+      cell.innerHTML = '';
       cell.appendChild(element);
 
       $(element).autocomplete({
