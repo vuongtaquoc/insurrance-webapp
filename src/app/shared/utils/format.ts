@@ -1,8 +1,10 @@
 import numeral from 'numeral';
 
+import { REGEX } from '@app/shared/constant';
+
 export default {
   currency: (value) => {
-    if (value === '' || value === null || typeof value === 'undefined') {
+    if (!REGEX.VALIDATE_NUMBER.test(value)) {
       return value;
     }
 
