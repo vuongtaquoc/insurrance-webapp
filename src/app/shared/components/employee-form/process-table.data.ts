@@ -76,20 +76,14 @@ export const TABLE_PROCESS_HEADER_COLUMNS = [{
   title: '(7)',
   mask: '#,##0',
   fieldName: 'Mức đóng',
-  key: 'salary',
-  validations: {
-    required: true
-  }
+  key: 'salary' 
 }, {
   type: 'numberic',
   width: 55,
   title: '(8)',
   key: 'allowanceLevel',
   mask: '#,##0',
-  fieldName: 'Phụ cấp chức vụ',
-  validations: {
-    required: true
-  }
+  fieldName: 'Phụ cấp chức vụ' 
 }, {
   type: 'numberic',
   width: 65,
@@ -120,43 +114,39 @@ export const TABLE_PROCESS_HEADER_COLUMNS = [{
   title: '(11)',
   key: 'allowanceOther',
   mask: '#,##0',
-  fieldName: 'PC Khác',
-  validations: {
-    required: true
-  }
+  fieldName: 'PC Khác'
 }, {
   type: 'numberic',
   width: 90,
   title: '(12)',
   key: 'allowanceSalary',
   mask: '#,##0',
-  fieldName: 'Phụ cấp lương',
-  validations: {
-    required: true
-  }
+  fieldName: 'Phụ cấp lương'
 }, {
   type: 'numberic',
   width: 90,
   title: '(13)',
   key: 'allowanceAdditional',
   mask: '#,##0',
-  fieldName: 'Các khoản bổ sung',
-  validations: {
-    required: true
-  }
+  fieldName: 'Các khoản bổ sung'
+   
 }, {
   type: 'dropdown',
   autocomplete: true,
   width: 40,
   title: '(14)',
   source: [],
-  key: 'planCode'
+  key: 'planCode',
+  validations: {
+    required: true
+  }
 }, {
   type: 'numberic',
   width: 70,
   title: '(15)',
   key: 'ratioBHXH',
   fieldName: 'Tỷ lệ BHXH',
+  defaultValue: '0',
   suffix: '%',
   validations: {
     // number: true,
@@ -170,6 +160,7 @@ export const TABLE_PROCESS_HEADER_COLUMNS = [{
   key: 'ratioBHTNLD',
   fieldName: 'Tỷ lệ BHTNXH.BNN',
   suffix: '%',
+  defaultValue: '0',
   validations: {
     // number: true,
     min: 0,
@@ -182,6 +173,7 @@ export const TABLE_PROCESS_HEADER_COLUMNS = [{
   key: 'ratioBHTN',
   fieldName: 'Tỷ lệ BHTN',
   suffix: '%',
+  defaultValue: '0',
   validations: {
     // number: true,
     min: 0,
@@ -193,6 +185,7 @@ export const TABLE_PROCESS_HEADER_COLUMNS = [{
   title: '(18)',
   key: 'ratioBHYT',
   fieldName: 'Tỷ lệ BHYT',
+  defaultValue: '0',
   suffix: '%',
   validations: {
     // number: true,

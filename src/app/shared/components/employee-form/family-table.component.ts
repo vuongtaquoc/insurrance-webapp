@@ -104,8 +104,6 @@ export class EmployeeFamilyTableComponent implements OnInit, OnDestroy, OnChange
 
             instance.jexcel.setValue(nextColumn, '');
           }
-
-          
         },
         ondeleterow: (el, rowNumber, numOfRows) => {
           this.onDelete.emit({

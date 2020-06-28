@@ -243,7 +243,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
           if(length === numberItem && column.key === 'relationshipCode' && i === 1) {
             item[column.key] =  '00';
           }else {
-            item[column.key] =  null;
+            item[column.key] = null ;
           }
         });
         objects.push(item);
@@ -261,6 +261,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
     let evolutionIsurrancesCopy = [ ...evolutionIsurrances ];
     //Tạo dữ liệu trống
     evolutionIsurrancesCopy = this.createObjectsBlank(evolutionIsurrancesCopy, this.tableHeaderColumnsProcess, 15);
+    console.log(evolutionIsurrancesCopy);
     evolutionIsurrancesCopy.forEach(p => {
       p.data = this.tableHeaderColumnsProcess.map(column => {
         if (!column.key || !p[column.key]) return '';
