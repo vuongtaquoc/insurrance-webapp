@@ -1,4 +1,4 @@
-import numeral from 'numeral';
+import format from '@app/shared/utils/format';
 
 export const TABLE_PROCESS_NESTED_HEADERS = [
   [
@@ -57,7 +57,7 @@ export const TABLE_PROCESS_HEADER_COLUMNS = [{
   type: 'text',
   width: 75,
   title: '(4)',
-  key: 'companyCode',  
+  key: 'companyCode',
   validations: {
     maxLength: 4,
     onlyCharacterNumber: true,
@@ -74,42 +74,36 @@ export const TABLE_PROCESS_HEADER_COLUMNS = [{
   key: 'levelWork'
 }, {
   type: 'numeric',
-  align: 'right',
   width: 90,
   title: '(7)',
   mask: '#,##0',
   fieldName: 'Mức đóng',
-  defaultValue: 0,
   key: 'salary',
   validations: {
     number: true
   },
   format: (value) => {
-    return numeral(value).format('0,0');
+    return format.currency(value);
   }
 }, {
   type: 'numberic',
-  align: 'right',
   width: 55,
   title: '(8)',
   key: 'allowanceLevel',
   mask: '#,##0',
   fieldName: 'Phụ cấp chức vụ',
-  defaultValue: 0,
   validations: {
     number: true
   },
   format: (value) => {
-    return numeral(value).format('0,0');
+    return format.currency(value);
   }
 }, {
   type: 'numberic',
-  align: 'right',
   width: 65,
   title: '(9)',
   key: 'allowanceSeniority',
   fieldName: 'Thâm niên VK',
-  defaultValue: '0',
   suffix: '%',
   validations: {
     // number: true,
@@ -118,12 +112,10 @@ export const TABLE_PROCESS_HEADER_COLUMNS = [{
   }
 }, {
   type: 'numberic',
-  align: 'right',
   width: 65,
   title: '(10)',
   key: 'allowanceSeniorityJob',
   fieldName: 'Thâm niên nghề',
-  defaultValue: '0',
   suffix: '%',
   validations: {
     // number: true,
@@ -136,38 +128,40 @@ export const TABLE_PROCESS_HEADER_COLUMNS = [{
   title: '(11)',
   key: 'allowanceOther',
   mask: '#,##0',
-  fieldName: 'PC Khác'
-}, {
-  type: 'numberic',
-  width: 90,
-  title: '(12)',
-  align: 'right',
-  key: 'allowanceSalary',
-  mask: '#,##0',
-  fieldName: 'Phụ cấp lương',
-  defaultValue: 0,
+  fieldName: 'PC Khác',
   validations: {
     number: true
   },
   format: (value) => {
-    return numeral(value).format('0,0');
+    return format.currency(value);
   }
 }, {
   type: 'numberic',
-  align: 'right',
+  width: 90,
+  title: '(12)',
+  key: 'allowanceSalary',
+  mask: '#,##0',
+  fieldName: 'Phụ cấp lương',
+  validations: {
+    number: true
+  },
+  format: (value) => {
+    return format.currency(value);
+  }
+}, {
+  type: 'numberic',
   width: 90,
   title: '(13)',
   key: 'allowanceAdditional',
   mask: '#,##0',
   fieldName: 'Các khoản bổ sung',
-  defaultValue: 0,
   validations: {
     number: true
   },
   format: (value) => {
-    return numeral(value).format('0,0');
+    return format.currency(value);
   }
-   
+
 }, {
   type: 'dropdown',
   autocomplete: true,
@@ -181,7 +175,6 @@ export const TABLE_PROCESS_HEADER_COLUMNS = [{
 }, {
   type: 'numberic',
   width: 70,
-  align: 'right',
   title: '(15)',
   key: 'ratioBHXH',
   fieldName: 'Tỷ lệ BHXH',
@@ -194,7 +187,6 @@ export const TABLE_PROCESS_HEADER_COLUMNS = [{
   }
 }, {
   type: 'numberic',
-  align: 'right',
   width: 70,
   title: '(16)',
   key: 'ratioBHTNLD',
@@ -208,13 +200,12 @@ export const TABLE_PROCESS_HEADER_COLUMNS = [{
   }
 }, {
   type: 'numberic',
-  align: 'right',
   width: 70,
   title: '(17)',
   key: 'ratioBHTN',
   fieldName: 'Tỷ lệ BHTN',
   suffix: '%',
-  defaultValue: 0,
+  defaultValue: '0',
   validations: {
     // number: true,
     min: 0,
@@ -222,7 +213,6 @@ export const TABLE_PROCESS_HEADER_COLUMNS = [{
   }
 }, {
   type: 'numberic',
-  align: 'right',
   width: 70,
   title: '(18)',
   key: 'ratioBHYT',

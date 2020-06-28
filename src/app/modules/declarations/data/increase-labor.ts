@@ -1,4 +1,4 @@
-import numeral from 'numeral';
+import format from '@app/shared/utils/format';
 
 export const TABLE_NESTED_HEADERS = [
   [
@@ -286,7 +286,7 @@ export const TABLE_HEADER_COLUMNS = [{
     number: true
   },
   format: (value) => {
-    return numeral(value).format('0,0');
+    return format.currency(value);
   }
 }, {
   type: 'numeric',
@@ -302,7 +302,7 @@ export const TABLE_HEADER_COLUMNS = [{
   sum: true,
   key: 'ratio',
   format: (value) => {
-    return numeral(value).format('0,0');
+    return format.currency(value);
   }
 }, {
   type: 'numeric',
@@ -319,7 +319,7 @@ export const TABLE_HEADER_COLUMNS = [{
     number: true
   },
   format: (value) => {
-    return numeral(value).format('0,0');
+    return format.currency(value);
   }
 }, {
   type: 'numeric',
@@ -336,7 +336,7 @@ export const TABLE_HEADER_COLUMNS = [{
     number: true
   },
   format: (value) => {
-    return numeral(value).format('0,0');
+    return format.currency(value);
   }
 }, {
   type: 'numeric',
@@ -353,7 +353,7 @@ export const TABLE_HEADER_COLUMNS = [{
     number: true
   },
   format: (value) => {
-    return numeral(value).format('0,0');
+    return format.currency(value);
   }
 }, {
   type: 'numeric',
@@ -395,7 +395,7 @@ export const TABLE_HEADER_COLUMNS = [{
     number: true
   },
   format: (value) => {
-    return numeral(value).format('0,0');
+    return format.currency(value);
   }
 }, {
   type: 'text',
@@ -437,7 +437,7 @@ export const TABLE_HEADER_COLUMNS = [{
     number: true
   },
   format: (value) => {
-    return numeral(value).format('0,0');
+    return format.currency(value);
   }
 }, {
   type: 'text',
