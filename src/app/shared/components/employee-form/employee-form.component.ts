@@ -4,12 +4,13 @@ import { forkJoin, Subject } from 'rxjs';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import * as moment from 'moment';
 import * as _ from 'lodash';
-
+import { download } from '@app/shared/utils/download-file';
 import { DropdownItem } from '@app/core/interfaces';
 import { City, District, Wards } from '@app/core/models';
 import { EmployeeHospitalRegisterFormComponent } from './hospital-register-form.component';
 import { TABLE_FAMILIES_NESTED_HEADERS, TABLE_FAMILIES_HEADER_COLUMNS } from './family-table.data';
 import { TABLE_PROCESS_NESTED_HEADERS, TABLE_PROCESS_HEADER_COLUMNS } from './process-table.data';
+import { MIME_TYPE } from '@app/shared/constant';
 import {
   CityService,
   DistrictService,
@@ -203,10 +204,11 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
       if (relationshipDistricts) this.relationshipDistricts = relationshipDistricts;
       if (relationshipWards) this.relationshipWards = relationshipWards;
       if (relationshipVillages) this.relationshipVillages = relationshipVillages;
-
       this.employeeForm.patchValue({
         peopleCode: peoples[0].id,
-        nationalityCode: nationalities[0].id
+        nationalityCode: nationalities[0].id,
+        status: paymentStatus[0].id,
+        relationshipDocumentType: relationshipDocumentTypies[0].id
       });
     });
 
@@ -248,7 +250,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
           if(length === numberItem && column.key === 'relationshipCode' && i === 1) {
             item[column.key] =  '00';
           }else {
-            item[column.key] = null ;
+            item[column.key] = column.defaultValue ? column.defaultValue : null;
           }
         });
         objects.push(item);
@@ -260,13 +262,12 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
 
   formatEvolutionIsurrances(evolutionIsurrances) {
     if(!evolutionIsurrances) {
-      return this.createObjectsBlank([], this.tableHeaderColumnsProcess, 15);
+      evolutionIsurrances = this.createObjectsBlank([], this.tableHeaderColumnsProcess, 15);
     }
 
     let evolutionIsurrancesCopy = [ ...evolutionIsurrances ];
     //Tạo dữ liệu trống
     evolutionIsurrancesCopy = this.createObjectsBlank(evolutionIsurrancesCopy, this.tableHeaderColumnsProcess, 15);
-    console.log(evolutionIsurrancesCopy);
     evolutionIsurrancesCopy.forEach(p => {
       p.data = this.tableHeaderColumnsProcess.map(column => {
         if (!column.key || !p[column.key]) return '';
@@ -816,5 +817,22 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
         this.hospitals = data;
       });
     }, 200);
+  }
+
+  download() {
+    this.employeeService.download(this.employee.id).then(response => { 
+      const mimeType = this.getMimeType('docx');
+      download('duckv', response, mimeType);
+    });
+  }
+
+  getMimeType(subfixFile: string) {
+    const mimeType = _.find(MIME_TYPE, {
+        key: subfixFile,
+    });
+    if (mimeType) {
+      return mimeType.value;
+    }
+    return MIME_TYPE[0].value
   }
 }

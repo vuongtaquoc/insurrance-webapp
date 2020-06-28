@@ -4,10 +4,14 @@ import { map } from 'rxjs/operators';
 import uuid from 'uuid';
 
 import { ApplicationHttpClient } from '@app/core/http';
+import { AuthenticationService } from '@app/core/services/authentication.service';
 
 @Injectable({ providedIn: 'root' })
 export class EmployeeService {
-  constructor(private http: ApplicationHttpClient) {
+  constructor(
+    private http: ApplicationHttpClient,
+    private authService: AuthenticationService
+  ) {
   }
 
   public getEmployeeTrees(filters = {}) {
@@ -62,5 +66,13 @@ export class EmployeeService {
 
   public delete(id) {
     return this.http.delete(`/employees/${ id }`);
+  }
+
+  public download(employeeId: string ) {
+    return this.http.getFile(`/employees/download/${ employeeId }`, {
+      headers: {
+        token: this.authService.getCredentialToken()
+      }
+    });
   }
 }

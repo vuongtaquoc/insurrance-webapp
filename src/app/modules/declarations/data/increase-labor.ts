@@ -84,6 +84,7 @@ export const TABLE_HEADER_COLUMNS = [{
   key: 'isurranceNo'
 }, {
   type: 'numeric',
+  align: 'right',
   width: 123,
   title: '(5.1)',
   key: 'isurranceCode',
@@ -131,9 +132,9 @@ export const TABLE_HEADER_COLUMNS = [{
   key: 'nationalityCode'
 }, {
   type: 'numeric',
+  align: 'right',
   width: 135,
   title: '(11)',
-  align: 'left',
   key: 'identityCar',
   fieldName: 'Số CMND/Hộ chiếu/Thẻ căn cước',
   validations: {
@@ -142,20 +143,20 @@ export const TABLE_HEADER_COLUMNS = [{
   }
 }, {
   type: 'numeric',
+  align: 'right',
   width: 135,
   title: '(12)',
   fieldName: 'Số điện thoại',
-  align: 'left',
   key: 'mobile',
   validations: {
     number: true
   }
 }, {
   type: 'numeric',
+  align: 'right',
   autocomplete: true,
   width: 135,
   title: '(13)',
-  align: 'left',
   key: 'familyNo',
 }, {
   type: 'dropdown',
@@ -258,6 +259,7 @@ export const TABLE_HEADER_COLUMNS = [{
   key: 'departmentId'
 }, {
   type: 'numeric',
+  align: 'right',
   width: 100,
   title: '(21.1)',
   key: 'contractNo'
@@ -272,6 +274,7 @@ export const TABLE_HEADER_COLUMNS = [{
   }
 }, {
   type: 'numeric',
+  align: 'right',
   width: 80,
   title: '(22.1)',
   mask: '#,##0',
@@ -287,6 +290,7 @@ export const TABLE_HEADER_COLUMNS = [{
   }
 }, {
   type: 'numeric',
+  align: 'right',
   width: 80,
   title: '(22.2)',
   fieldName: 'Hệ số',
@@ -302,6 +306,7 @@ export const TABLE_HEADER_COLUMNS = [{
   }
 }, {
   type: 'numeric',
+  align: 'right',
   width: 80,
   title: '(22.3)',
   mask: '#,##0',
@@ -318,6 +323,7 @@ export const TABLE_HEADER_COLUMNS = [{
   }
 }, {
   type: 'numeric',
+  align: 'right',
   width: 80,
   title: '(22.4)',
   mask: '#,##0',
@@ -334,6 +340,7 @@ export const TABLE_HEADER_COLUMNS = [{
   }
 }, {
   type: 'numeric',
+  align: 'right',
   width: 80,
   title: '(22.5)',
   mask: '#,##0',
@@ -350,6 +357,7 @@ export const TABLE_HEADER_COLUMNS = [{
   }
 }, {
   type: 'numeric',
+  align: 'right',
   width: 70,
   title: '(22.6)',
   key: 'allowanceSeniority',
@@ -362,6 +370,7 @@ export const TABLE_HEADER_COLUMNS = [{
   }
 }, {
   type: 'numeric',
+  align: 'right',
   width: 70,
   title: '(22.7)',
   key: 'allowanceSeniorityJob',
@@ -373,6 +382,7 @@ export const TABLE_HEADER_COLUMNS = [{
   }
 }, {
   type: 'numeric',
+  align: 'right',
   width: 80,
   title: '(22.8)',
   mask: '#,##0',
@@ -417,6 +427,7 @@ export const TABLE_HEADER_COLUMNS = [{
   }
 }, {
   type: 'numeric',
+  align: 'right',
   mask: '#,##0',
   // decimal: ',',
   width: 50,

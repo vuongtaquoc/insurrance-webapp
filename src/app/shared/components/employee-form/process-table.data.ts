@@ -1,3 +1,5 @@
+import numeral from 'numeral';
+
 export const TABLE_PROCESS_NESTED_HEADERS = [
   [
     { title: 'STT', rowspan: 2 },
@@ -72,24 +74,42 @@ export const TABLE_PROCESS_HEADER_COLUMNS = [{
   key: 'levelWork'
 }, {
   type: 'numeric',
+  align: 'right',
   width: 90,
   title: '(7)',
   mask: '#,##0',
   fieldName: 'Mức đóng',
-  key: 'salary' 
+  defaultValue: 0,
+  key: 'salary',
+  validations: {
+    number: true
+  },
+  format: (value) => {
+    return numeral(value).format('0,0');
+  }
 }, {
   type: 'numberic',
+  align: 'right',
   width: 55,
   title: '(8)',
   key: 'allowanceLevel',
   mask: '#,##0',
-  fieldName: 'Phụ cấp chức vụ' 
+  fieldName: 'Phụ cấp chức vụ',
+  defaultValue: 0,
+  validations: {
+    number: true
+  },
+  format: (value) => {
+    return numeral(value).format('0,0');
+  }
 }, {
   type: 'numberic',
+  align: 'right',
   width: 65,
   title: '(9)',
   key: 'allowanceSeniority',
   fieldName: 'Thâm niên VK',
+  defaultValue: '0',
   suffix: '%',
   validations: {
     // number: true,
@@ -98,10 +118,12 @@ export const TABLE_PROCESS_HEADER_COLUMNS = [{
   }
 }, {
   type: 'numberic',
+  align: 'right',
   width: 65,
   title: '(10)',
   key: 'allowanceSeniorityJob',
   fieldName: 'Thâm niên nghề',
+  defaultValue: '0',
   suffix: '%',
   validations: {
     // number: true,
@@ -119,16 +141,32 @@ export const TABLE_PROCESS_HEADER_COLUMNS = [{
   type: 'numberic',
   width: 90,
   title: '(12)',
+  align: 'right',
   key: 'allowanceSalary',
   mask: '#,##0',
-  fieldName: 'Phụ cấp lương'
+  fieldName: 'Phụ cấp lương',
+  defaultValue: 0,
+  validations: {
+    number: true
+  },
+  format: (value) => {
+    return numeral(value).format('0,0');
+  }
 }, {
   type: 'numberic',
+  align: 'right',
   width: 90,
   title: '(13)',
   key: 'allowanceAdditional',
   mask: '#,##0',
-  fieldName: 'Các khoản bổ sung'
+  fieldName: 'Các khoản bổ sung',
+  defaultValue: 0,
+  validations: {
+    number: true
+  },
+  format: (value) => {
+    return numeral(value).format('0,0');
+  }
    
 }, {
   type: 'dropdown',
@@ -143,6 +181,7 @@ export const TABLE_PROCESS_HEADER_COLUMNS = [{
 }, {
   type: 'numberic',
   width: 70,
+  align: 'right',
   title: '(15)',
   key: 'ratioBHXH',
   fieldName: 'Tỷ lệ BHXH',
@@ -155,6 +194,7 @@ export const TABLE_PROCESS_HEADER_COLUMNS = [{
   }
 }, {
   type: 'numberic',
+  align: 'right',
   width: 70,
   title: '(16)',
   key: 'ratioBHTNLD',
@@ -168,12 +208,13 @@ export const TABLE_PROCESS_HEADER_COLUMNS = [{
   }
 }, {
   type: 'numberic',
+  align: 'right',
   width: 70,
   title: '(17)',
   key: 'ratioBHTN',
   fieldName: 'Tỷ lệ BHTN',
   suffix: '%',
-  defaultValue: '0',
+  defaultValue: 0,
   validations: {
     // number: true,
     min: 0,
@@ -181,6 +222,7 @@ export const TABLE_PROCESS_HEADER_COLUMNS = [{
   }
 }, {
   type: 'numberic',
+  align: 'right',
   width: 70,
   title: '(18)',
   key: 'ratioBHYT',
