@@ -97,55 +97,6 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     const employee = this.employee;
-    const jobs = [
-      this.cityService.getCities(),
-      this.nationalityService.getNationalities(),
-      this.peopleService.getPeoples(),
-      this.salaryAreaService.getSalaryAreas(),
-      this.paymentStatusServiced.getPaymentStatus(),
-      this.paymentMethodServiced.getPaymentMethods(),
-      this.relationshipService.getRelationships(),
-      this.bankService.getBanks(),
-      this.departmentService.getDepartments(),
-      this.categoryService.getCategories('relationshipDocumentType'),
-      this.categoryService.getCategories('typeBirthday')
-    ];
-
-    if (employee.registerCityCode) jobs.push(this.districtService.getDistrict(employee.registerCityCode));
-    if (employee.registerDistrictCode) jobs.push(this.wardService.getWards(employee.registerDistrictCode));
-    if (employee.recipientsCityCode) jobs.push(this.districtService.getDistrict(employee.recipientsCityCode));
-    if (employee.recipientsDistrictCode) jobs.push(this.wardService.getWards(employee.recipientsDistrictCode));
-    if (employee.cityFirstRegistCode) jobs.push(this.hospitalService.searchHospital(employee.cityFirstRegistCode,''));
-    if (employee.relationshipCityCode) jobs.push(this.districtService.getDistrict(employee.relationshipCityCode));
-    if (employee.relationshipDistrictCode) jobs.push(this.wardService.getWards(employee.relationshipDistrictCode));
-    if (employee.relationshipWardsCode) jobs.push(this.villageService.getVillage(employee.relationshipWardsCode));
-
-    forkJoin(jobs).subscribe(([ cities, nationalities, peoples, salaryAreas, paymentStatus,
-       paymentMethods, relationships, banks, departments,relationshipDocumentTypies, typeBirthdays,
-       registerDistricts, registerWards, recipientsDistricts, recipientsWards, hospitals, relationshipDistricts, relationshipWards, relationshipVillages ]) => {
-
-      this.nationalities = nationalities;
-      this.peoples = peoples;
-      this.salaryAreas = salaryAreas;
-      this.cities = cities;
-      this.paymentStatus = paymentStatus;
-      this.paymentMethods = paymentMethods;
-      this.relationships = relationships;
-      this.banks = banks;
-      this.departments = departments;
-      this.relationshipDocumentTypies = relationshipDocumentTypies;
-      this.typeBirthdays = typeBirthdays;
-
-      if (registerDistricts) this.registerDistricts = registerDistricts;
-      if (registerWards) this.registerWards = registerWards;
-      if (recipientsDistricts) this.recipientsDistricts = recipientsDistricts;
-      if (recipientsWards) this.recipientsWards = recipientsWards;
-      if (hospitals) this.hospitals = hospitals;
-      if (relationshipDistricts) this.relationshipDistricts = relationshipDistricts;
-      if (relationshipWards) this.relationshipWards = relationshipWards;
-      if (relationshipVillages) this.relationshipVillages = relationshipVillages;
-
-    });
 
     this.employeeForm = this.formBuilder.group({
       fullName: [employee.fullName, Validators.required],
@@ -203,6 +154,60 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
       isDuplicateAddress: [false],
       birthTypeOnlyYearMonth: [employee.typeBirthday === '1'],
       birthTypeOnlyYear: [employee.typeBirthday === '2']
+    });
+
+    const jobs = [
+      this.cityService.getCities(),
+      this.nationalityService.getNationalities(),
+      this.peopleService.getPeoples(),
+      this.salaryAreaService.getSalaryAreas(),
+      this.paymentStatusServiced.getPaymentStatus(),
+      this.paymentMethodServiced.getPaymentMethods(),
+      this.relationshipService.getRelationships(),
+      this.bankService.getBanks(),
+      this.departmentService.getDepartments(),
+      this.categoryService.getCategories('relationshipDocumentType'),
+      this.categoryService.getCategories('typeBirthday')
+    ];
+
+    if (employee.registerCityCode) jobs.push(this.districtService.getDistrict(employee.registerCityCode));
+    if (employee.registerDistrictCode) jobs.push(this.wardService.getWards(employee.registerDistrictCode));
+    if (employee.recipientsCityCode) jobs.push(this.districtService.getDistrict(employee.recipientsCityCode));
+    if (employee.recipientsDistrictCode) jobs.push(this.wardService.getWards(employee.recipientsDistrictCode));
+    if (employee.cityFirstRegistCode) jobs.push(this.hospitalService.searchHospital(employee.cityFirstRegistCode,''));
+    if (employee.relationshipCityCode) jobs.push(this.districtService.getDistrict(employee.relationshipCityCode));
+    if (employee.relationshipDistrictCode) jobs.push(this.wardService.getWards(employee.relationshipDistrictCode));
+    if (employee.relationshipWardsCode) jobs.push(this.villageService.getVillage(employee.relationshipWardsCode));
+
+    forkJoin(jobs).subscribe(([ cities, nationalities, peoples, salaryAreas, paymentStatus,
+       paymentMethods, relationships, banks, departments,relationshipDocumentTypies, typeBirthdays,
+       registerDistricts, registerWards, recipientsDistricts, recipientsWards, hospitals, relationshipDistricts, relationshipWards, relationshipVillages ]) => {
+
+      this.nationalities = nationalities;
+      this.peoples = peoples;
+      this.salaryAreas = salaryAreas;
+      this.cities = cities;
+      this.paymentStatus = paymentStatus;
+      this.paymentMethods = paymentMethods;
+      this.relationships = relationships;
+      this.banks = banks;
+      this.departments = departments;
+      this.relationshipDocumentTypies = relationshipDocumentTypies;
+      this.typeBirthdays = typeBirthdays;
+
+      if (registerDistricts) this.registerDistricts = registerDistricts;
+      if (registerWards) this.registerWards = registerWards;
+      if (recipientsDistricts) this.recipientsDistricts = recipientsDistricts;
+      if (recipientsWards) this.recipientsWards = recipientsWards;
+      if (hospitals) this.hospitals = hospitals;
+      if (relationshipDistricts) this.relationshipDistricts = relationshipDistricts;
+      if (relationshipWards) this.relationshipWards = relationshipWards;
+      if (relationshipVillages) this.relationshipVillages = relationshipVillages;
+
+      this.employeeForm.patchValue({
+        peopleCode: peoples[0].id,
+        nationalityCode: nationalities[0].id
+      });
     });
 
     this.families = this.formatFamilies(employee.families);
@@ -723,7 +728,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
   get registerWardsCode() {
     return this.employeeForm.get('registerWardsCode').value;
   }
-  
+
   get mobile() {
     return this.employeeForm.get('mobile').value;
   }

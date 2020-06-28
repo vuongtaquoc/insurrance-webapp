@@ -110,8 +110,8 @@ export function getBirthDayGrid(value, type) {
 };
 
 
-export function validateLessThanEqualNowBirthdayGrid(currentDate, type) { 
-  if (!currentDate || !type) return null; 
+export function validateLessThanEqualNowBirthdayGrid(currentDate, type) {
+  if (!currentDate || !type) return null;
   const now = getDateNow();
   // full date
   if (type === '3') {
@@ -140,7 +140,7 @@ export function validateLessThanEqualNowBirthdayGrid(currentDate, type) {
   } //end full date
   // Month year
   else if(type === '1') {
-  
+
     if (currentDate.length  < 6) {
       return {
         lessThanEqualNow: {
@@ -150,7 +150,7 @@ export function validateLessThanEqualNowBirthdayGrid(currentDate, type) {
     }
 
     const birthDay = getBirthDayGrid(currentDate, type);
-   console.log(birthDay);
+
     if (!moment(birthDay.format, 'MM/YYYY').isValid()) {
       return {
         lessThanEqualNow: {
@@ -174,9 +174,9 @@ export function validateLessThanEqualNowBirthdayGrid(currentDate, type) {
         }
       };
     }
-  
+
     const birthDay = getBirthDayGrid(currentDate, type);
-  
+
     return birthDay.date.getFullYear() <= now.getFullYear() ? null : {
       lessThanEqualNow: {
         valid: false
@@ -213,7 +213,7 @@ export function validateLessThanEqualNowBirthday(c: FormControl) {
       };
     }
 
-    return birthDay.date <= now ? null : {
+    return birthDay.date.getTime() <= now.getTime() ? null : {
       lessThanEqualNow: {
         valid: false
       }

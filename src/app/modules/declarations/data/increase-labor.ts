@@ -1,3 +1,5 @@
+import numeral from 'numeral';
+
 export const TABLE_NESTED_HEADERS = [
   [
     { title: 'STT', rowspan: '3' },
@@ -277,19 +279,27 @@ export const TABLE_HEADER_COLUMNS = [{
   sum: true,
   key: 'salary',
   validations: {
-    required: true
+    required: true,
+    number: true
+  },
+  format: (value) => {
+    return numeral(value).format('0,0');
   }
 }, {
   type: 'numeric',
   width: 80,
   title: '(22.2)',
-  fieldName: 'Hệ số',  
+  fieldName: 'Hệ số',
   mask: '#,##0',
   validations: {
-    required: true
+    required: true,
+    number: true
   },
   sum: true,
-  key: 'ratio'
+  key: 'ratio',
+  format: (value) => {
+    return numeral(value).format('0,0');
+  }
 }, {
   type: 'numeric',
   width: 80,
@@ -300,7 +310,11 @@ export const TABLE_HEADER_COLUMNS = [{
   key: 'allowanceSalary',
   fieldName: 'Phụ cấp lương',
   validations: {
-    required: true
+    required: true,
+    number: true
+  },
+  format: (value) => {
+    return numeral(value).format('0,0');
   }
 }, {
   type: 'numeric',
@@ -312,7 +326,11 @@ export const TABLE_HEADER_COLUMNS = [{
   key: 'allowanceAdditional',
   fieldName: 'Các khoản bổ sung',
   validations: {
-    required: true
+    required: true,
+    number: true
+  },
+  format: (value) => {
+    return numeral(value).format('0,0');
   }
 }, {
   type: 'numeric',
@@ -324,7 +342,11 @@ export const TABLE_HEADER_COLUMNS = [{
   key: 'allowanceLevel',
   fieldName: 'Chức vụ',
   validations: {
-    required: true
+    required: true,
+    number: true
+  },
+  format: (value) => {
+    return numeral(value).format('0,0');
   }
 }, {
   type: 'numeric',
@@ -359,7 +381,11 @@ export const TABLE_HEADER_COLUMNS = [{
   key: 'allowanceOther',
   fieldName: 'Chênh lệch bảo lưu',
   validations: {
-    required: true
+    required: true,
+    number: true
+  },
+  format: (value) => {
+    return numeral(value).format('0,0');
   }
 }, {
   type: 'text',
@@ -395,7 +421,13 @@ export const TABLE_HEADER_COLUMNS = [{
   // decimal: ',',
   width: 50,
   title: '(26)',
-  key: 'ratio'
+  key: 'ratio',
+  validations: {
+    number: true
+  },
+  format: (value) => {
+    return numeral(value).format('0,0');
+  }
 }, {
   type: 'text',
   width: 180,
