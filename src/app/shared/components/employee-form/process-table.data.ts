@@ -1,3 +1,5 @@
+import format from '@app/shared/utils/format';
+
 export const TABLE_PROCESS_NESTED_HEADERS = [
   [
     { title: 'STT', rowspan: 2 },
@@ -55,7 +57,7 @@ export const TABLE_PROCESS_HEADER_COLUMNS = [{
   type: 'text',
   width: 75,
   title: '(4)',
-  key: 'companyCode',  
+  key: 'companyCode',
   validations: {
     maxLength: 4,
     onlyCharacterNumber: true,
@@ -76,14 +78,26 @@ export const TABLE_PROCESS_HEADER_COLUMNS = [{
   title: '(7)',
   mask: '#,##0',
   fieldName: 'Mức đóng',
-  key: 'salary' 
+  key: 'salary',
+  validations: {
+    number: true
+  },
+  format: (value) => {
+    return format.currency(value);
+  }
 }, {
   type: 'numberic',
   width: 55,
   title: '(8)',
   key: 'allowanceLevel',
   mask: '#,##0',
-  fieldName: 'Phụ cấp chức vụ' 
+  fieldName: 'Phụ cấp chức vụ',
+  validations: {
+    number: true
+  },
+  format: (value) => {
+    return format.currency(value);
+  }
 }, {
   type: 'numberic',
   width: 65,
@@ -114,22 +128,40 @@ export const TABLE_PROCESS_HEADER_COLUMNS = [{
   title: '(11)',
   key: 'allowanceOther',
   mask: '#,##0',
-  fieldName: 'PC Khác'
+  fieldName: 'PC Khác',
+  validations: {
+    number: true
+  },
+  format: (value) => {
+    return format.currency(value);
+  }
 }, {
   type: 'numberic',
   width: 90,
   title: '(12)',
   key: 'allowanceSalary',
   mask: '#,##0',
-  fieldName: 'Phụ cấp lương'
+  fieldName: 'Phụ cấp lương',
+  validations: {
+    number: true
+  },
+  format: (value) => {
+    return format.currency(value);
+  }
 }, {
   type: 'numberic',
   width: 90,
   title: '(13)',
   key: 'allowanceAdditional',
   mask: '#,##0',
-  fieldName: 'Các khoản bổ sung'
-   
+  fieldName: 'Các khoản bổ sung',
+  validations: {
+    number: true
+  },
+  format: (value) => {
+    return format.currency(value);
+  }
+
 }, {
   type: 'dropdown',
   autocomplete: true,
