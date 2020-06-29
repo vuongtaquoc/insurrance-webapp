@@ -42,7 +42,6 @@ export class EmployeeListComponent implements OnInit {
   ngOnInit() {
     this.getEmployees();
 
-    console.log(window.innerWidth, window.innerHeight)
     if (window.innerWidth > 1366) {
       this.tableHeight = 600;
     } else if (window.innerWidth <= 1366) {
