@@ -822,7 +822,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
   download() {
     this.employeeService.download(this.employee.id).then(response => { 
       const mimeType = this.getMimeType('docx');
-      download('duckv', response, mimeType);
+      download(`TK1-TS-${ this.employee.fullName }`, response, mimeType);
     });
   }
 

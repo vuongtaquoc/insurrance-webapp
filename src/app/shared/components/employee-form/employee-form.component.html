@@ -924,7 +924,7 @@
   </div>
 
   <div class="employee-form__footer" *nzModalFooter>
-    <button class="employee-form__button-export" nz-button nzType="primary" (click)="download()">
+    <button class="employee-form__button-export" *ngIf="employee.id" nz-button nzType="primary" (click)="download()">
        Xuất KT1-TS
     </button>
     <button class="employee-form__button-save" nz-button nzType="primary" (click)="save()">Lưu</button>
