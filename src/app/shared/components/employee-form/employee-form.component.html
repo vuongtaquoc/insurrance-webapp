@@ -13,6 +13,7 @@
                   <input nz-input
                     placeholder="Họ và tên"
                     formControlName="fullName"
+                    (keyup)="handleSpaceFullName($event)"
                   />
                 </nz-form-control>
               </nz-form-item>
