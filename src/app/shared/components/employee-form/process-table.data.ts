@@ -80,6 +80,7 @@ export const TABLE_PROCESS_HEADER_COLUMNS = [{
   fieldName: 'Mức đóng',
   key: 'salary',
   validations: {
+    required: true,
     number: true
   },
   format: (value) => {
