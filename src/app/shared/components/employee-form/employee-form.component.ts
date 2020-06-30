@@ -409,6 +409,16 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
     });
 }
 
+  handleSpaceFullName(event) {
+    const fullNames = this.employeeForm.value.fullName.split(' ').map(fullName => {
+      return fullName.charAt(0).toUpperCase() + fullName.slice(1);
+    });
+
+    this.employeeForm.patchValue({
+      fullName: fullNames.join(' ')
+    });
+  }
+
   handleDeleteFamilyData({ rowNumber, numOfRows }) {
     const families = [ ...this.families ];
 
@@ -820,7 +830,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
   }
 
   download() {
-    this.employeeService.download(this.employee.id).then(response => { 
+    this.employeeService.download(this.employee.id).then(response => {
       const mimeType = this.getMimeType('docx');
       download(`TK1-TS-${ this.employee.fullName }`, response, mimeType);
     });
