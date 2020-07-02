@@ -140,7 +140,7 @@ export class AdjustComponent implements OnInit, OnDestroy {
       this.updateSourceToColumn(this.tableHeaderColumns, 'salaryAreaCode', salaryAreas);
       this.updateSourceToColumn(this.tableHeaderColumns, 'planCode', plans);
       this.updateSourceToColumn(this.tableHeaderColumns, 'departmentId', departments);
-   
+
       // get filter columns
       this.updateFilterToColumn(this.tableHeaderColumns, 'registerDistrictCode', this.getRegisterDistrictsByCityCode);
       this.updateFilterToColumn(this.tableHeaderColumns, 'registerWardsCode', this.getRegisterWardsByDistrictCode);
@@ -197,7 +197,7 @@ export class AdjustComponent implements OnInit, OnDestroy {
         const accepted = employeeExists.findIndex(e => (e.origin && (e.origin.employeeId || e.origin.id)) === employee.id) === -1;
 
         // replace
-        employee.gender = !employee.gender;
+        employee.gender = employee.gender === '1';
         employee.workAddress = this.currentCredentials.companyInfo.address;
         //
         if (accepted) {
@@ -255,7 +255,7 @@ export class AdjustComponent implements OnInit, OnDestroy {
     });
   }
 
-  
+
   private updateSelectedValueDropDow(columns, instance, r) {
 
       columns.forEach((column, colIndex) => {

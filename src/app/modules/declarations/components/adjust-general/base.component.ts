@@ -87,7 +87,7 @@ handleUserDeleted(user, tableName) {
   //   },
   //   []
   // );
-  
+
   this.tableSubject.next({
     type: 'deleteUser',
     user,
@@ -105,7 +105,7 @@ handleUserUpdated(user, tableName) {
   const declarationUsers = declarations.filter(d => {
     return d.isLeaf && d.origin && (d.origin.employeeId || d.origin.id) === user.id;
   });
-  
+
   declarationUsers.forEach(declaration => {
     declaration.origin = {
       ...declaration.origin,
@@ -162,7 +162,7 @@ handleUserUpdated(user, tableName) {
         const accepted = employeeExists.findIndex(e => (e.origin && (e.origin.employeeId || e.origin.id)) === employee.id) === -1;
 
         // replace
-        employee.gender = !employee.gender;
+        employee.gender = employee.gender === '1';
         employee.workAddress = this.currentCredentials.companyInfo.address;
 
         //copy salary
@@ -304,17 +304,17 @@ handleUserUpdated(user, tableName) {
 
     if (!this.employeeSelected.length) return;
     this.isBlinking = true;
-    
+
     setTimeout(() => this.isBlinking = false, 5000);
   }
 
   handleSelectEmployees(employees) {
-  
+
     this.employeeSelected = employees;
-    
+
     if (!this.employeeSelected.length) return;
     this.isBlinking = true;
-    
+
     setTimeout(() => this.isBlinking = false, 5000);
   }
 

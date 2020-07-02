@@ -242,7 +242,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
         const accepted = employeeExists.findIndex(e => (e.origin && (e.origin.employeeId || e.origin.id)) === employee.id) === -1;
 
         // replace
-        employee.gender = !employee.gender;
+        employee.gender = employee.gender === '1';
         employee.workAddress = this.currentCredentials.companyInfo.address;
         //
         if (accepted) {

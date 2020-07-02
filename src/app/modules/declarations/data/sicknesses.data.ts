@@ -151,7 +151,8 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   type: 'numeric',
   width: 80,
   title: '(8.3)',
-  key: 'childrenNumberSick'
+  key: 'childrenNumberSick',
+  sum: true,
 }, {
   type: 'dropdown',
   width: 120,

@@ -179,6 +179,10 @@ export class DeclarationService {
       data: tableHeaderColumns.map(column => {
         if (!column.key) return '';
 
+        if (column.key === 'gender') {
+          return employee[column.key] === true || employee[column.key] === '1';
+        }
+
         return employee[column.key];
       })
     };
