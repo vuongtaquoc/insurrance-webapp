@@ -43,7 +43,8 @@ export const REGEX = {
   ONLY_CHARACTER_NUMBER: '^[a-zA-Z0-9]+$',
   ONLY_NUMBER: '^[0-9]*$',
   ONLY_NUMBER_INCLUDE_DECIMAL: '^[0-9]+(\.[0-9]{1,2})?$',
-  VALIDATE_NUMBER: /^-?\d+\.?\d*$/
+  VALIDATE_NUMBER: /^-?\d+\.?\d*$/,
+  VALIDATE_PASSPORT: /^([A-Z a-z]){1}([0-9]){7}$/
 };
 
 export const DECLARATIONS =

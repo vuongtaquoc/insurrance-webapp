@@ -30,7 +30,7 @@ import {
 } from '@app/core/services';
 
 import { DATE_FORMAT, REGEX } from '@app/shared/constant';
-import { validateLessThanEqualNowBirthday, validateLessThanEqualNowDateSign, getBirthDay } from '@app/shared/utils/custom-validation';
+import { validateLessThanEqualNowBirthday, validateDateSign, getBirthDay, validateIdentifyCard } from '@app/shared/utils/custom-validation';
 
 @Component({
   selector: 'app-employees-form',
@@ -117,12 +117,12 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
       recipientsAddress: [employee.recipientsAddress, Validators.required],
       isurranceCode: [employee.isurranceCode, [Validators.maxLength(50), Validators.pattern(REGEX.ONLY_CHARACTER_NUMBER)]],
       mobile: [employee.mobile, [ Validators.maxLength(15), Validators.pattern(REGEX.ONLY_NUMBER) ]],
-      identityCar: [employee.identityCar, [Validators.required, Validators.maxLength(15), Validators.pattern(REGEX.ONLY_CHARACTER_NUMBER)]],
+      identityCar: [employee.identityCar, [Validators.required, Validators.maxLength(15), validateIdentifyCard]],
       familyNo: [employee.familyNo],
       isurranceNo: [employee.isurranceNo, [ Validators.maxLength(15), Validators.pattern(REGEX.ONLY_CHARACTER_NUMBER) ]],
       healthNo: [employee.healthNo, [ Validators.maxLength(15), Validators.pattern(REGEX.ONLY_CHARACTER_NUMBER) ]],
-      contractNo: [employee.contractNo, [Validators.required, Validators.maxLength(50), Validators.pattern(REGEX.ONLY_CHARACTER_NUMBER)]],
-      dateSign: [employee.dateSign ? employee.dateSign.split('/').join('') : '', [Validators.required, validateLessThanEqualNowDateSign]],
+      contractNo: [employee.contractNo, [Validators.required, Validators.maxLength(100)]],
+      dateSign: [employee.dateSign ? employee.dateSign.split('/').join('') : '', [Validators.required, validateDateSign]],
       levelWork: [employee.levelWork, Validators.required],
       salary: [employee.salary, [Validators.required, Validators.pattern(REGEX.ONLY_NUMBER)]],
       ratio: [employee.ratio, [Validators.required, Validators.pattern(REGEX.ONLY_NUMBER)]],
@@ -416,6 +416,14 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
 
     this.employeeForm.patchValue({
       fullName: fullNames.join(' ')
+    });
+  }
+
+  handleUpperCase(key) {
+    const value = this.employeeForm.value[key];
+
+    this.employeeForm.patchValue({
+      [key]: value.toUpperCase()
     });
   }
 

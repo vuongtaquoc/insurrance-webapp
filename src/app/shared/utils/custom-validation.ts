@@ -1,6 +1,8 @@
 import { FormControl } from '@angular/forms';
 import * as moment from 'moment';
 
+import { REGEX } from '@app/shared/constant';
+
 const getDateNow = () => {
   const now = new Date();
   const credentials = JSON.parse(localStorage.getItem('CREDENTIALS') || '{}');
@@ -41,7 +43,8 @@ export function getBirthDay(value, birthTypeOnlyYear, birthTypeOnlyYearMonth) {
 
     return {
       date: select,
-      format: `${date}/${to2Digits(month)}/${year}`
+      format: `${date}/${to2Digits(month)}/${year}`,
+      text: `${date}${to2Digits(month)}${year}`
     };
   }
 
@@ -55,7 +58,8 @@ export function getBirthDay(value, birthTypeOnlyYear, birthTypeOnlyYearMonth) {
 
     return {
       date: select,
-      format: `${to2Digits(month)}/${year}`
+      format: `${to2Digits(month)}/${year}`,
+      text: `${to2Digits(month)}${year}`
     }
   }
 
@@ -66,7 +70,8 @@ export function getBirthDay(value, birthTypeOnlyYear, birthTypeOnlyYearMonth) {
 
   return {
     date: select,
-    format: year
+    format: year,
+    text: year
   }
 };
 
@@ -166,7 +171,6 @@ export function validateLessThanEqualNowBirthdayGrid(currentDate, type) {
     };
   }//End month year
   else {
-    console.log(currentDate.length, type, '2');
     if (currentDate.length < 4) {
       return {
         lessThanEqualNow: {
@@ -263,7 +267,7 @@ export function validateLessThanEqualNowBirthday(c: FormControl) {
   };
 }
 
-export function validateLessThanEqualNowDateSign(c: FormControl) {
+export function validateLessThanEqualNow(c: FormControl) {
   if (!c.value || !c.parent) return null;
 
   const now = getDateNow();
@@ -286,9 +290,98 @@ export function validateLessThanEqualNowDateSign(c: FormControl) {
     };
   }
 
-  return birthDay.date <= now ? null : {
+  return birthDay.date.getTime() <= now.getTime() ? null : {
     lessThanEqualNow: {
       valid: false
     }
   };
+}
+
+export function validateDateSign(c: FormControl) {
+  if (!c.value || !c.parent) return null;
+
+  const birthDay = c.parent.value.birthday;
+
+  if (!birthDay) return null;
+
+  const dateSign = getBirthDay(c.value, false, false);
+  const birthTypeOnlyYearMonth = c.parent.value.birthTypeOnlyYearMonth;
+  const birthTypeOnlyYear = c.parent.value.birthTypeOnlyYear;
+
+  // validate full date
+  if (!birthTypeOnlyYearMonth && !birthTypeOnlyYear) {
+    return dateSign.text > birthDay ? null : { greaterThanBirthday: { valid: false } };
+  }
+
+  if (birthTypeOnlyYearMonth && !birthTypeOnlyYear) {
+    const birthday = getBirthDay(birthDay, false, true);
+
+    return dateSign.date.getFullYear() < birthday.date.getFullYear() || (dateSign.date.getFullYear() === birthday.date.getFullYear() && dateSign.date.getMonth() >= birthday.date.getMonth()) ? null : {
+      greaterThanBirthday: { valid: false }
+    };
+  }
+
+  const birthday = getBirthDay(birthDay, true, false);
+
+  return dateSign.date.getFullYear() <= birthday.date.getFullYear() ? null : {
+    greaterThanBirthday: { valid: false }
+  };
+}
+
+// VALIDATE CARD ID
+const normalize = function(id) {
+  let re;
+  re = /[-\/\s]/g;
+  id = id.toUpperCase().replace(re, '');
+  re = /\([A-Z0-9]\)$/;
+
+  if (re.test(id)) {
+    id = id.replace(/[\(\)]/g, '');
+  }
+
+  return id;
+};
+
+const validCardId = function(id, type = 'peopleId') {
+  var isFormatValid, isLengthValid;
+
+  isLengthValid = function isLengthValid(id) {
+    if (type === 'peopleId') {
+      return id.length === 9;
+    }
+    return id.length === 12;
+  };
+
+  isFormatValid = function isFormatValid(id) {
+    if (type === 'peopleId') {
+      return /^[0-9]{9}$/.test(id);
+    }
+    return /^[0-9]{12}$/.test(id);
+  };
+
+  id = normalize(id);
+
+  return isLengthValid(id) && isFormatValid(id);
+};
+
+const validPassport = function(id) {
+  const isLengthValid = function isLengthValid(id) {
+    return id.length === 8;
+  };
+
+  const isFormatValid = function(id) {
+    return REGEX.VALIDATE_PASSPORT.test(id);
+  };
+
+  id = normalize(id);
+
+  return isLengthValid(id) && isFormatValid(id);
+};
+
+export function validateIdentifyCard(c: FormControl) {
+  if (!c.value) return null;
+
+  const isValid = validCardId(c.value, 'peopleId') || validCardId(c.value, 'cardId') || validPassport(c.value);
+
+  return isValid ? null : { cardId: { valid: false } };
 }
