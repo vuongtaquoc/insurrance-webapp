@@ -37,6 +37,7 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
   private eventsSubscription: Subscription;
   private validateSubscription: Subscription;
   private deleteTimer;
+  private differents: any = {};
 
   constructor(
     private element: ElementRef,
@@ -78,6 +79,22 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
       tableHeight: '100%',
       columnSorting: false,
       defaultColAlign: 'left',
+      ondifference: (isDifferent, value, row, field) => {
+        const element = document.getElementById(`users-tree-item-${row.origin.employeeId || row.origin.id}`);
+
+        if (!element) return;
+
+        this.differents[field.primary] = isDifferent;
+
+        const hasDifferent = Object.values(this.differents).indexOf(true) > -1;
+
+        if (!hasDifferent) {
+          element.classList.remove('users-tree-item-warning');
+          return;
+        }
+
+        element.classList.add('users-tree-item-warning');
+      },
       onfocus: () => {
         this.onFocus.emit();
       },

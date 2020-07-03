@@ -43,7 +43,7 @@ export class UsersTreeComponent implements OnInit, OnDestroy {
       if (type === 'clean') {
         this.defaultCheckedKeys = [];
         this.defaultSelectedKeys = [];
-      }      
+      }
 
     });
 
