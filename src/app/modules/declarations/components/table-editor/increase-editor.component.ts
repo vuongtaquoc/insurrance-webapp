@@ -9,6 +9,7 @@ import { customPicker, customAutocomplete } from '@app/shared/utils/custom-edito
 import { eventEmitter } from '@app/shared/utils/event-emitter';
 import * as moment from 'moment';
 import { DATE_FORMAT } from '@app/shared/constant';
+import { validationColumnsPlanCode } from '@app/shared/constant-valid';
 import { validateLessThanEqualNowBirthdayGrid, getBirthDayGrid } from '@app/shared/utils/custom-validation';
 
 @Component({
@@ -136,6 +137,7 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
         }
 
         this.validationCellByOtherCell(value, column, r, instance, c);
+        this.validationCellByPlanCode(value, column, r, instance, c);
       },
       ondeleterow: (el, rowNumber, numOfRows) => {
         this.onDelete.emit({
@@ -517,10 +519,7 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
         validationColumn.fieldName = 'Ngày, tháng, năm sinh';
         instance.jexcel.clearValidation(y, cell);
       }
-    }else if (column.key === 'planCode') { 
-      this.validationCellByPlanCode(cellValue, column, y, instance, cell);
-    }
-
+    }    
     this.handleEvent({
       type: 'validate',
       part: '',
@@ -529,75 +528,40 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
     });
   }
 
-  private validationCellByPlanCode(cellValue, column, y, instance, cell) {
-    //  valid data by plan code 
-    const planCode = {
-      required: true
-    };
-
-    const validationColumns: any = {
-      'GH1': {
-        contractNo: {
-          required: true,
-        },
-        dateSign: {
-          required: true,
-          lessThanNow: true
-        }
-      },
-      'GH2': {
-        contractNo: {
-          required: true,
-        },
-        dateSign: {
-          required: true,
-          lessThanNow: true
-        }
-      },
-      'GH3': {
-        contractNo: {
-          required: true,
-        },
-        dateSign: {
-          required: true,
-          lessThanNow: true
-        }
-      },
-      'GH4': {
-        motherDayDead: {
-          required: true
-        }
-      },
-      'GC': {
-        contractNo: {
-          required: true,
-        },
-        dateSign: {
-          required: true,
-          lessThanNow: true
-        }
-      },
-      'GD': {
-        contractNo: {
-          required: true,
-        },
-        dateSign: {
-          required: true,
-          lessThanNow: true
-        }
-      },
-      'SB': {
-        toDate: {
-          required: true,
-          lessThanNow: true
-        }
-      } 
-    };
+  private validationCellByPlanCode(cellValue, column, y, instance, cell) {    
     
-    this.data.forEach((d, y) => { 
+    setTimeout(() => {
+      const indexPlanCode = this.columns.findIndex(c => c.key === 'planCode');
+      this.data.forEach((d, y) => { 
+        //lấy Mã phướng án
+          const planCode =  d.data[indexPlanCode];
+          if (planCode) {
+            const columnIndexes = [];
+            Object.keys(validationColumnsPlanCode[planCode] || {}).forEach(column => {
+        
+              const x = this.columns.findIndex(c => c.key === column);
+              
+                  if (x > -1) {
+                    columnIndexes.push(x);
+                  }
+            });
 
-    });
-    
+            columnIndexes.forEach(x => {
+              const column = this.columns[x];
+              this.spreadsheet.validationCell(y, x, column.fieldName ? column.fieldName : column.title, validationColumnsPlanCode[planCode][column.key]);
+            });
+          }
+
+      });
+
+      this.handleEvent({
+        type: 'validate',
+        parentKey: '',
+        part: '',
+        user: {}
+      });
+
+    }, 50);
   }
 
  

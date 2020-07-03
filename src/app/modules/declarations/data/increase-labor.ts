@@ -70,7 +70,14 @@ export const TABLE_HEADER_COLUMNS = [{
   width: 170,
   title: '(2)',
   key: 'fullName',
-  isMasterKey: true
+  isMasterKey: true,
+  validations: {
+    duplicateUserFields: {
+      primary: 'fullName',
+      check: ['employeeId']
+    },
+    required: true,
+  }
 }, {
   type: 'checkbox',
   width: 45,
@@ -85,8 +92,9 @@ export const TABLE_HEADER_COLUMNS = [{
   validations: {
     duplicateUserFields: {
       primary: 'isurranceNo',
-      check: ['fullName', 'birthday']
-    }
+      check: ['employeeId']
+    },
+    required: true,
   }
 }, {
   type: 'numeric',
@@ -494,4 +502,10 @@ export const TABLE_HEADER_COLUMNS = [{
   width: 180,
   title: '(28)',
   key: 'note'
-}];
+},{
+  type: 'hidden',
+  width: 140,
+  title: 'key',
+  key: 'employeeId'  
+}
+];

@@ -63,7 +63,14 @@ export const TABLE_REDUCTION_HEADER_COLUMNS = [{
   width: 170,
   title: '(2)',
   key: 'fullName',
-  isMasterKey: true
+  isMasterKey: true,
+  validations: {
+    duplicateUserFields: {
+      primary: 'fullName',
+      check: ['employeeId']
+    },
+    required: true,
+  }
 }, {
   type: 'checkbox',
   width: 45,
@@ -295,7 +302,9 @@ export const TABLE_REDUCTION_HEADER_COLUMNS = [{
   width: 60,
   title: '(20)',
   key: 'toDate',
-  isCalendar: true
+  isCalendar: true,
+  fieldName: 'Đến tháng năm'
+  
 }, {
   type: 'dropdown',
   autocomplete: true,
@@ -319,16 +328,23 @@ export const TABLE_REDUCTION_HEADER_COLUMNS = [{
   type: 'numeric',
   width: 100,
   title: '(23.1)',
-  key: 'contractNo'
+  key: 'contractNo',
+  fieldName: 'Số quyết định chấm dứt hợp đồng'
 }, {
   type: 'text',
   width: 100,
   title: '(23.2)',
-  key: 'dateSign'
+  key: 'dateSign',
+  fieldName: 'Ngày ký quyết định chấm dứt hợp đồng'
 },
 {
   type: 'text',
   width: 180,
   title: '(24)',
   key: 'note'
+},{
+  type: 'hidden',
+  width: 140,
+  title: 'key',
+  key: 'employeeId'  
 }];
