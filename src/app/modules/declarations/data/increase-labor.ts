@@ -81,7 +81,13 @@ export const TABLE_HEADER_COLUMNS = [{
   type: 'text',
   width: 120,
   title: '(4)',
-  key: 'isurranceNo'
+  key: 'isurranceNo',
+  validations: {
+    duplicateUserFields: {
+      primary: 'isurranceNo',
+      check: ['fullName', 'birthday']
+    }
+  }
 }, {
   type: 'numeric',
   align: 'right',
@@ -104,7 +110,13 @@ export const TABLE_HEADER_COLUMNS = [{
   width: 70,
   title: '(6)',
   source: [ { id: '3', name: 'Ngày tháng năm' },{ id: '1', name: 'tháng/năm' }, { id: '2', name: 'năm' } ],
-  key: 'typeBirthday'
+  key: 'typeBirthday',
+  validations: {
+    duplicateUserFields: {
+      primary: 'typeBirthday',
+      check: ['fullName']
+    }
+  }
 }, {
   type: 'text',
   width: 80,
@@ -122,7 +134,13 @@ export const TABLE_HEADER_COLUMNS = [{
   width: 75,
   title: '(9)',
   source: [ 'Chọn' ],
-  key: 'peopleCode'
+  key: 'peopleCode',
+  validations: {
+    duplicateUserFields: {
+      primary: 'peopleCode',
+      check: ['fullName']
+    }
+  }
 }, {
   type: 'dropdown',
   autocomplete: true,
@@ -130,7 +148,13 @@ export const TABLE_HEADER_COLUMNS = [{
   title: '(10)',
   source: [ 'Chọn' ],
   align: 'left',
-  key: 'nationalityCode'
+  key: 'nationalityCode',
+  validations: {
+    duplicateUserFields: {
+      primary: 'nationalityCode',
+      check: ['fullName']
+    }
+  }
 }, {
   type: 'numeric',
   align: 'right',
@@ -150,8 +174,7 @@ export const TABLE_HEADER_COLUMNS = [{
   fieldName: 'Số điện thoại',
   key: 'mobile',
   validations: {
-    number: true,
-    required:true,
+    phone: true
   }
 }, {
   type: 'numeric',

@@ -269,6 +269,7 @@
                   <input nz-input
                     placeholder="Số CMT/HC/Thẻ căn cước"
                     formControlName="identityCar"
+                    (keyup)="handleUpperCase('identityCar')"
                   />
                   <ng-template #identityCarTpl let-control>
                     <ng-container *ngIf="control.hasError('required')">
@@ -277,8 +278,8 @@
                     <ng-container *ngIf="control.hasError('maxlength')">
                       Số CMT/HC/Thẻ căn cước chỉ được tối đa 15 ký tự
                     </ng-container>
-                    <ng-container *ngIf="control.hasError('pattern')">
-                      Số CMT/HC/Thẻ căn cước phải là ký tự hoặc số
+                    <ng-container *ngIf="control.hasError('cardId')">
+                      Số CMT/HC/Thẻ căn cước không đúng định dạng
                     </ng-container>
                   </ng-template>
                 </nz-form-control>
@@ -348,6 +349,7 @@
                   <input nz-input
                     placeholder="Số HĐLĐ/QĐ"
                     formControlName="contractNo"
+                    (keyup)="handleUpperCase('contractNo')"
                   />
                   <ng-template #contractNoTpl let-control>
                     <ng-container *ngIf="control.hasError('required')">
@@ -377,6 +379,9 @@
                     </ng-container>
                     <ng-container *ngIf="control.hasError('lessThanEqualNow')">
                       Ngày ký phải nhỏ hơn hoặc bằng ngày hiện tại
+                    </ng-container>
+                    <ng-container *ngIf="control.hasError('greaterThanBirthday')">
+                      Ngày ký phải lớn hơn ngày sinh
                     </ng-container>
                   </ng-template>
                 </nz-form-control>
