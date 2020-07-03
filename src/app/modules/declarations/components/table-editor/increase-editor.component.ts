@@ -529,8 +529,76 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
     });
   }
 
-  private validationCellByPlanCode(cellValue, column, y, instance, cell) { 
-      if (cellValue === 'GH4') {
-      }
+  private validationCellByPlanCode(cellValue, column, y, instance, cell) {
+    //  valid data by plan code 
+    const planCode = {
+      required: true
+    };
+
+    const validationColumns: any = {
+      'GH1': {
+        contractNo: {
+          required: true,
+        },
+        dateSign: {
+          required: true,
+          lessThanNow: true
+        }
+      },
+      'GH2': {
+        contractNo: {
+          required: true,
+        },
+        dateSign: {
+          required: true,
+          lessThanNow: true
+        }
+      },
+      'GH3': {
+        contractNo: {
+          required: true,
+        },
+        dateSign: {
+          required: true,
+          lessThanNow: true
+        }
+      },
+      'GH4': {
+        motherDayDead: {
+          required: true
+        }
+      },
+      'GC': {
+        contractNo: {
+          required: true,
+        },
+        dateSign: {
+          required: true,
+          lessThanNow: true
+        }
+      },
+      'GD': {
+        contractNo: {
+          required: true,
+        },
+        dateSign: {
+          required: true,
+          lessThanNow: true
+        }
+      },
+      'SB': {
+        toDate: {
+          required: true,
+          lessThanNow: true
+        }
+      } 
+    };
+    
+    this.data.forEach((d, y) => { 
+
+    });
+    
   }
+
+ 
 }
