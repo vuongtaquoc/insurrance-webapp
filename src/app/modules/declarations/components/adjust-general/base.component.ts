@@ -326,9 +326,13 @@ handleUserUpdated(user, tableName) {
 
       if (column.key === 'hospitalFirstRegistCode') {
         const hospitalFirstRegistName = cell.innerText.split(' - ').pop();
-
         this.updateNextColumns(instance, r, hospitalFirstRegistName, [ c + 1 ]);
+      }else if (column.key === 'registerCityCode') {
+        this.updateNextColumns(instance, r, '', [ c + 1, c + 2 ]);
+      } else if (column.key === 'recipientsCityCode') {
+        this.updateNextColumns(instance, r, '', [ c + 1, c + 2, c + 5, c + 6 ]);
       }
+
     }
     // update declarations
     this.declarations[tableName].table.forEach((declaration, index) => {

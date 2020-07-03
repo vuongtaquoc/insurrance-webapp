@@ -351,14 +351,9 @@
                   />
                   <ng-template #contractNoTpl let-control>
                     <ng-container *ngIf="control.hasError('required')">
-                      Số HĐLĐ/QĐ căn cước không để trống
+                      Số HĐLĐ/QĐ không để trống
                     </ng-container>
-                    <ng-container *ngIf="control.hasError('maxlength')">
-                      Số HĐLĐ/QĐ căn cước chỉ được tối đa 15 ký tự
-                    </ng-container>
-                    <ng-container *ngIf="control.hasError('pattern')">
-                      Số HĐLĐ/QĐ căn cước liên hệ phải là chữ hoặc số
-                    </ng-container>
+                     
                   </ng-template>
                 </nz-form-control>
               </nz-form-item>

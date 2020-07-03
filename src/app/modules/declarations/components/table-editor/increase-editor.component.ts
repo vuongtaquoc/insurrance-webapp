@@ -517,6 +517,8 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
         validationColumn.fieldName = 'Ngày, tháng, năm sinh';
         instance.jexcel.clearValidation(y, cell);
       }
+    }else if (column.key === 'planCode') { 
+      this.validationCellByPlanCode(cellValue, column, y, instance, cell);
     }
 
     this.handleEvent({
@@ -525,5 +527,10 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
       parentKey: '',
       user: {}
     });
+  }
+
+  private validationCellByPlanCode(cellValue, column, y, instance, cell) { 
+      if (cellValue === 'GH4') {
+      }
   }
 }

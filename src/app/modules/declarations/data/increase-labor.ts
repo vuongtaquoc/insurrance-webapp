@@ -96,6 +96,7 @@ export const TABLE_HEADER_COLUMNS = [{
   type: 'text',
   key: 'isurranceCodeStatus',
   width: 123,
+  readOnly: true,
   title: '(5.2)',
   wordWrap: true,
 }, {
@@ -149,7 +150,8 @@ export const TABLE_HEADER_COLUMNS = [{
   fieldName: 'Số điện thoại',
   key: 'mobile',
   validations: {
-    number: true
+    number: true,
+    required:true,
   }
 }, {
   type: 'numeric',
@@ -160,6 +162,11 @@ export const TABLE_HEADER_COLUMNS = [{
   key: 'familyNo',
 }, {
   type: 'dropdown',
+  fieldName: 'Tỉnh thàng đăng ký khai sinh',
+  autocomplete: true,
+  validations: {     
+    required:true,
+  },
   width: 145,
   title: '(14.1)',
   source: [ 'Chọn' ],
@@ -167,22 +174,30 @@ export const TABLE_HEADER_COLUMNS = [{
   key: 'registerCityCode'
 }, {
   type: 'dropdown',
-  autocomplete: true,
+  autocomplete: true,   
   width: 145,
+  fieldName: 'Quận huyện đăng ký khai sinh',  
+  validations: {     
+    required:true,
+  },
   source: [ ],
   title: '(14.2)',
   align: 'left',
   key: 'registerDistrictCode',
   defaultLoad: true
 }, {
-  type: 'dropdown',
-  autocomplete: true,
+  type: 'dropdown', 
+  autocomplete: true,  
   width: 175,
   title: '(14.3)',
   source: [  ],
   align: 'left',
   key: 'registerWardsCode',
-  defaultLoad: true
+  defaultLoad: true,
+  fieldName: 'Xã phương đăng ký khai sinh',
+  validations: {     
+    required:true,
+  }
 }, {
   type: 'dropdown',
   autocomplete: true,
@@ -190,16 +205,24 @@ export const TABLE_HEADER_COLUMNS = [{
   title: '(15.1)',
   align: 'left',
   source: [ 'Chọn' ],
-  key: 'recipientsCityCode'
+  key: 'recipientsCityCode',
+  fieldName: 'Tỉnh thành nhận hồ sơ',
+  validations: {     
+    required:true,
+  }
 }, {
   type: 'dropdown',
-  autocomplete: true,
+  autocomplete: true,  
   width: 145,
-  title: '(15.2)',
+  title: '(15.2)',   
   align: 'left',
   source: [ ],
   key: 'recipientsDistrictCode',
-  defaultLoad: true
+  defaultLoad: true,
+  fieldName: 'Quận huyện nhận hồ sơ',
+  validations: {     
+    required:true,
+  }
 }, {
   type: 'dropdown',
   autocomplete: true,
@@ -208,7 +231,11 @@ export const TABLE_HEADER_COLUMNS = [{
   align: 'left',
   source: [ ],
   key: 'recipientsWardsCode',
-  defaultLoad: true
+  defaultLoad: true,
+  fieldName: 'Xã phường nhận hồ sơ',
+  validations: {     
+    required:true,
+  }
 }, {
   type: 'text',
   width: 165,

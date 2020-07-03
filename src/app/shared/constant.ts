@@ -43,7 +43,8 @@ export const REGEX = {
   ONLY_CHARACTER_NUMBER: '^[a-zA-Z0-9]+$',
   ONLY_NUMBER: '^[0-9]*$',
   ONLY_NUMBER_INCLUDE_DECIMAL: '^[0-9]+(\.[0-9]{1,2})?$',
-  VALIDATE_NUMBER: /^-?\d+\.?\d*$/
+  VALIDATE_NUMBER: /^-?\d+\.?\d*$/,
+  PHONE_NUMBER: '^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$',
 };
 
 export const DECLARATIONS =

@@ -210,9 +210,6 @@ export const TABLE_REDUCTION_HEADER_COLUMNS = [{
   title: '(17)',
   key: 'motherDayDead',
   fieldName: 'Ngày chết',
-  validations: {
-    required: true
-  },
   isCalendar: true
 }, {
   type: 'numeric',
