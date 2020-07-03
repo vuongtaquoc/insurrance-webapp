@@ -372,8 +372,11 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
         const columnIndexes = [];
 
         Object.keys(validationColumns[parentKey] || {}).forEach(column => {
+		 
+		  console.log(column, 'console');
           const x = this.columns.findIndex(c => c.key === column);
-
+		  console.log(x, 'x');
+		  
           if (x > -1) {
             columnIndexes.push(x);
           }
