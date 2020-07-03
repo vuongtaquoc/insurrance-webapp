@@ -18,7 +18,7 @@
     >
     </nz-tree>
     <ng-template #nzTreeTemplate let-node let-origin="origin">
-      <div [ngStyle]="{'font-weight': !origin.isLeaf ? '700' : '400'}" class="users-tree-item">
+      <div [ngStyle]="{'font-weight': !origin.isLeaf ? '700' : '400'}" class="users-tree-item" id="users-tree-item-{{origin.id}}">
         <span class="folder-name">{{ node.title }}</span>
         <i nz-icon nzType="edit" *ngIf="origin.isLeaf" nzTheme="outline" class="users-tree-item__icon" (click)="editUser(origin)"></i>
         <i nz-icon nzType="delete" *ngIf="origin.isLeaf" nzTheme="outline" class="users-tree-item__icon_delete" (click)="deleteUser(origin)"></i>

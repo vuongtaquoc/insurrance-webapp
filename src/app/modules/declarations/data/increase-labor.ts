@@ -187,7 +187,7 @@ export const TABLE_HEADER_COLUMNS = [{
   type: 'dropdown',
   fieldName: 'Tỉnh thàng đăng ký khai sinh',
   autocomplete: true,
-  validations: {     
+  validations: {
     required:true,
   },
   width: 145,
@@ -197,10 +197,10 @@ export const TABLE_HEADER_COLUMNS = [{
   key: 'registerCityCode'
 }, {
   type: 'dropdown',
-  autocomplete: true,   
+  autocomplete: true,
   width: 145,
-  fieldName: 'Quận huyện đăng ký khai sinh',  
-  validations: {     
+  fieldName: 'Quận huyện đăng ký khai sinh',
+  validations: {
     required:true,
   },
   source: [ ],
@@ -209,8 +209,8 @@ export const TABLE_HEADER_COLUMNS = [{
   key: 'registerDistrictCode',
   defaultLoad: true
 }, {
-  type: 'dropdown', 
-  autocomplete: true,  
+  type: 'dropdown',
+  autocomplete: true,
   width: 175,
   title: '(14.3)',
   source: [  ],
@@ -218,7 +218,7 @@ export const TABLE_HEADER_COLUMNS = [{
   key: 'registerWardsCode',
   defaultLoad: true,
   fieldName: 'Xã phương đăng ký khai sinh',
-  validations: {     
+  validations: {
     required:true,
   }
 }, {
@@ -230,20 +230,20 @@ export const TABLE_HEADER_COLUMNS = [{
   source: [ 'Chọn' ],
   key: 'recipientsCityCode',
   fieldName: 'Tỉnh thành nhận hồ sơ',
-  validations: {     
+  validations: {
     required:true,
   }
 }, {
   type: 'dropdown',
-  autocomplete: true,  
+  autocomplete: true,
   width: 145,
-  title: '(15.2)',   
+  title: '(15.2)',
   align: 'left',
   source: [ ],
   key: 'recipientsDistrictCode',
   defaultLoad: true,
   fieldName: 'Quận huyện nhận hồ sơ',
-  validations: {     
+  validations: {
     required:true,
   }
 }, {
@@ -256,7 +256,7 @@ export const TABLE_HEADER_COLUMNS = [{
   key: 'recipientsWardsCode',
   defaultLoad: true,
   fieldName: 'Xã phường nhận hồ sơ',
-  validations: {     
+  validations: {
     required:true,
   }
 }, {
