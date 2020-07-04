@@ -4,7 +4,7 @@
       "vi": "Tiếng Việt",
       "en": "Tiếng Anh"
     },
-    "title": "Bảo hiểm xã hội",
+    "title": "mBHXH – Phần mềm bảo hiểm xã hội điện tử",
     "search": "Tìm kiếm...",
     "footer": {
       "copyright": "Copyrights © 2020 Phần mềm Hóa đơn điện tử. All Rights"
@@ -25,7 +25,8 @@
   },
   "auth": {
     "login": {
-      "pageTitle": "Phần mềm bảo hiểm xã hội",
+			"pageTitle": "mBHXH – Phần mềm bảo hiểm xã hội điện tử",
+			"title": "Phần mềm bảo hiểm xã hội",
       "form": {
         "company": "Đơn vị",
         "username": "Tên đăng nhập",

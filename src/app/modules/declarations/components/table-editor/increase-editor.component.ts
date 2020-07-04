@@ -33,6 +33,7 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
   @Output() onAddRow: EventEmitter<any> = new EventEmitter();
   @Output() onFocus: EventEmitter<any> = new EventEmitter();
   @Output() onSort: EventEmitter<any> = new EventEmitter();
+  
 
   spreadsheet: any;
   isInitialized = false;
@@ -42,6 +43,7 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
   private timer;
   private validateTimer;
   private deleteTimer;
+  private differents: any = {};
   private validateSubscription: Subscription;
   constructor(
     private modalService: NzModalService,
@@ -98,6 +100,22 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
       columnSorting: false,
       freezeColumns: 1,
       defaultColAlign: 'left',
+      ondifference: (isDifferent, value, row, field) => {
+        const element = document.getElementById(`users-tree-item-${row.origin.employeeId || row.origin.id}`);
+
+        if (!element) return;
+
+        this.differents[field.primary] = isDifferent;
+
+        const hasDifferent = Object.values(this.differents).indexOf(true) > -1;
+
+        if (!hasDifferent) {
+          element.classList.remove('users-tree-item-warning');
+          return;
+        }
+
+        element.classList.add('users-tree-item-warning');
+      },
       onfocus: () => {
         this.onFocus.emit();
       },
@@ -261,6 +279,7 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
         } else {
           this.spreadsheet.updateDropdownValue(colIndex, rowIndex);
         }
+       
       });
     });
 

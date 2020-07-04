@@ -63,6 +63,7 @@ export const TABLE_REDUCTION_HEADER_COLUMNS = [{
   width: 170,
   title: '(2)',
   key: 'fullName',
+  fieldName: 'Họ và tên',
   isMasterKey: true,
   validations: {
     duplicateUserFields: {
@@ -346,5 +347,6 @@ export const TABLE_REDUCTION_HEADER_COLUMNS = [{
   type: 'hidden',
   width: 140,
   title: 'key',
-  key: 'employeeId'  
+  key: 'employeeId',
+  isMasterKey: true
 }];

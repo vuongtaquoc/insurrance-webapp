@@ -84,6 +84,7 @@ export class DeclarationService {
         origin: d,
         employeeId: 12,
         planType: d.planType,
+        planDefault: d.planDefault,
         key: d.code,
         data: [ d.codeView, d.name ],
         hasLeaf: d.hasChildren,
@@ -111,6 +112,7 @@ export class DeclarationService {
         formula: hasFormula,
         origin: d,
         planType: d.planType,
+        planDefault: d.planDefault,
         key: d.code,
         data: [ d.codeView, d.name ],
         hasLeaf: d.hasChildren,
@@ -176,6 +178,7 @@ export class DeclarationService {
       isLeaf: true,
       isInitialize,
       planType: parent.planType,
+      planDefault: parent.planDefault,
       data: tableHeaderColumns.map(column => {
         if (!column.key) return '';
 

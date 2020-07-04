@@ -7,5 +7,6 @@ export class Declaration {
   parentKey?: string;
   isInitialize?: boolean;
   hasLeaf?: boolean;
+  planDefault?: string;
   isLeaf?: boolean;
 }

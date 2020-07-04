@@ -77,17 +77,6 @@ export class GeneralBaseComponent {
 
 
 handleUserDeleted(user, tableName) {
-  // const indexes: any = this.declarations[tableName].table.reduce(
-  //   (combine, d, index) => {
-  //     if (d.isLeaf && d.origin && (d.origin.employeeId || d.origin.id) === user.id) {
-  //       return [...combine, index];
-  //     }
-
-  //     return [...combine];
-  //   },
-  //   []
-  // );
-
   this.tableSubject.next({
     type: 'deleteUser',
     user,
@@ -164,6 +153,7 @@ handleUserUpdated(user, tableName) {
         // replace
         employee.gender = employee.gender === '1';
         employee.workAddress = this.currentCredentials.companyInfo.address;
+        employee.planCode = declarations[parentIndex].planDefault;
 
         //copy salary
         if(tableName === 'adjustment') {

@@ -15,13 +15,27 @@ export class PlanService {
 
   public getPlans(declarationCode: string): Observable<Plan> {
     return this.http.get(`/plan/declaration-code/${ declarationCode }`, {
-    });
+    }).pipe(
+      map(hospitals => {
+        return hospitals.map(plan => ({
+          ...plan,
+          name: `${ plan.id } - ${ plan.name }`
+        }));
+      })
+    );
   }
   
   public getDetailById(id: string) {
     return this.http.get('/plan', {
       params: { id }
-    });
+    }).pipe(
+      map(hospitals => {
+        return hospitals.map(plan => ({
+          ...plan,
+          name: `${ plan.id } - ${ plan.name }`
+        }));
+      })
+    );
   }
   
 }

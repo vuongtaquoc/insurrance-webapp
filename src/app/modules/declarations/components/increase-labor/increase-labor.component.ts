@@ -244,6 +244,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
         // replace
         employee.gender = employee.gender === '1';
         employee.workAddress = this.currentCredentials.companyInfo.address;
+        employee.planCode = declarations[parentIndex].planDefault;
         //
         if (accepted) {
           if (declarations[childLastIndex].isInitialize) {

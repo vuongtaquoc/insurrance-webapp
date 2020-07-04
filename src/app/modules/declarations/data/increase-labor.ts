@@ -69,8 +69,8 @@ export const TABLE_HEADER_COLUMNS = [{
   type: 'text',
   width: 170,
   title: '(2)',
-  key: 'fullName',
-  isMasterKey: true,
+  fieldName: 'Họ và tên',
+  key: 'fullName',  
   validations: {
     duplicateUserFields: {
       primary: 'fullName',
@@ -83,7 +83,8 @@ export const TABLE_HEADER_COLUMNS = [{
   width: 45,
   title: '(3)',
   align: 'center',
-  key: 'isurranceNo'
+  key: 'hasBookIsurrance',
+  readOnly: true
 }, {
   type: 'text',
   width: 120,
@@ -360,7 +361,7 @@ export const TABLE_HEADER_COLUMNS = [{
   sum: true,
   key: 'ratio',
   format: (value) => {
-    return format.currency(value);
+    return format.currency(value, '0,0.000');
   }
 }, {
   type: 'numeric',
@@ -368,7 +369,7 @@ export const TABLE_HEADER_COLUMNS = [{
   width: 80,
   title: '(22.3)',
   mask: '#,##0',
-  // decimal: ',',
+  defaultValue:0,
   sum: true,
   key: 'allowanceSalary',
   fieldName: 'Phụ cấp lương',
@@ -377,7 +378,7 @@ export const TABLE_HEADER_COLUMNS = [{
     number: true
   },
   format: (value) => {
-    return format.currency(value);
+    return format.currency(value,'0,0.000');
   }
 }, {
   type: 'numeric',
@@ -385,7 +386,7 @@ export const TABLE_HEADER_COLUMNS = [{
   width: 80,
   title: '(22.4)',
   mask: '#,##0',
-  // decimal: ',',
+  defaultValue:0,
   sum: true,
   key: 'allowanceAdditional',
   fieldName: 'Các khoản bổ sung',
@@ -402,7 +403,7 @@ export const TABLE_HEADER_COLUMNS = [{
   width: 80,
   title: '(22.5)',
   mask: '#,##0',
-  // decimal: ',',
+  defaultValue:0,
   sum: true,
   key: 'allowanceLevel',
   fieldName: 'Chức vụ',
@@ -444,7 +445,7 @@ export const TABLE_HEADER_COLUMNS = [{
   width: 80,
   title: '(22.8)',
   mask: '#,##0',
-  // decimal: ',',
+  defaultValue: 0,
   sum: true,
   key: 'allowanceOther',
   fieldName: 'Chênh lệch bảo lưu',
@@ -495,7 +496,7 @@ export const TABLE_HEADER_COLUMNS = [{
     number: true
   },
   format: (value) => {
-    return format.currency(value);
+    return format.currency(value, '0,0.000');
   }
 }, {
   type: 'text',
@@ -506,6 +507,7 @@ export const TABLE_HEADER_COLUMNS = [{
   type: 'hidden',
   width: 140,
   title: 'key',
-  key: 'employeeId'  
+  key: 'employeeId',
+  isMasterKey: true
 }
 ];

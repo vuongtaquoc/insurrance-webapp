@@ -72,7 +72,11 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   width: 170,
   title: '(2)',
   key: 'fullName',
-  isMasterKey: true
+  fieldName: 'Họ và tên',
+  validations: {
+    required: true
+  }
+   
 }, {
   type: 'checkbox',
   width: 45,
@@ -448,4 +452,11 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   width: 180,
   title: '(24)',
   key: 'note'
+},
+{
+  type: 'hidden',
+  width: 140,
+  title: 'key',
+  key: 'employeeId',
+  isMasterKey: true
 }];

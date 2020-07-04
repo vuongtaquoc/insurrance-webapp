@@ -253,7 +253,10 @@ export const TABLE_HEADER_COLUMNS_PART_2 = [{
   width: 180,
   title: '(B)',
   key: 'fullName',
-  isMasterKey: true
+  fieldName: 'Họ và tên',
+  validations: {
+    required: true
+  }
 }, {
   type: 'text',
   width: 120,
@@ -363,4 +366,11 @@ export const TABLE_HEADER_COLUMNS_PART_2 = [{
   title: '(D)',
   key: 'note',
   wordWrap: true
+},
+{
+  type: 'hidden',
+  width: 140,
+  title: 'key',
+  key: 'employeeId',
+  isMasterKey: true
 }];
