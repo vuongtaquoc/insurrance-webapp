@@ -17,7 +17,8 @@ export class HospitalService {
       map(hospitals => {
         return hospitals.map(hospital => ({
           ...hospital,
-          name: `${ hospital.id } - ${ hospital.name }`
+          name: `${ hospital.id } - ${ hospital.name }`,
+          shortName: hospital.id
         }));
       })
     );
@@ -33,7 +34,8 @@ export class HospitalService {
       map(hospitals => {
         return hospitals.map(hospital => ({
           ...hospital,
-          name: `${ hospital.id } - ${ hospital.name }`
+          name: `${ hospital.id } - ${ hospital.name }`,
+          shortName: hospital.id
         }));
       })
     );

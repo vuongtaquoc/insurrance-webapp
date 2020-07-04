@@ -71,6 +71,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
   processSubject: Subject<string> = new Subject<string>();
   familySubject: Subject<any> = new Subject<any>();
   flagChangeMaster: boolean = false;
+  isAccountHolderChange: boolean = false;
   formatterCurrency = (value: number) => typeof value === 'number' ? `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',') : '';
   private timer;
   private saveTimer;
@@ -115,7 +116,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
       recipientsDistrictCode: [employee.recipientsDistrictCode, Validators.required],
       recipientsWardsCode: [employee.recipientsWardsCode, Validators.required],
       recipientsAddress: [employee.recipientsAddress, Validators.required],
-      isurranceCode: [employee.isurranceCode, [Validators.maxLength(50), Validators.pattern(REGEX.ONLY_CHARACTER_NUMBER)]],
+      isurranceCode: [employee.isurranceCode, [Validators.minLength(10), Validators.maxLength(10), Validators.pattern(REGEX.ONLY_NUMBER)]],
       mobile: [employee.mobile, [ Validators.maxLength(15), Validators.pattern(REGEX.PHONE_NUMBER) ]],
       identityCar: [employee.identityCar, [Validators.required, Validators.maxLength(15), validateIdentifyCard]],
       familyNo: [employee.familyNo],
@@ -417,6 +418,19 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
     this.employeeForm.patchValue({
       fullName: fullNames.join(' ')
     });
+
+    if (!this.isAccountHolderChange) {
+      this.employeeForm.patchValue({
+        accountHolder: fullNames.join(' ').toUpperCase()
+      });
+
+      this.handleUpperCase('accountHolder');
+    }
+  }
+
+  handleChangeAccountHolder() {
+    this.isAccountHolderChange = true;
+    this.handleUpperCase('accountHolder');
   }
 
   handleUpperCase(key) {

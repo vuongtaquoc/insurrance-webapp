@@ -534,7 +534,8 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
       const column = this.tableHeaderColumns[c];
 
       if (column.key === 'hospitalFirstRegistCode') {
-        const hospitalFirstRegistName = cell.innerText.split(' - ').pop();
+        const name = cell.getAttribute('data-name');
+        const hospitalFirstRegistName = name || cell.innerText.split(' - ').pop();
 
         this.updateNextColumns(instance, r, hospitalFirstRegistName, [ c + 1 ]);
       } else if (column.key === 'registerCityCode') {
@@ -917,7 +918,6 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
   }
 
   private getPlanByParent(instance, cell, c, r, source) {
-
     const row = instance.jexcel.getRowFromCoords(r);
     return source.filter(s => s.type === row.options.planType);
   }
