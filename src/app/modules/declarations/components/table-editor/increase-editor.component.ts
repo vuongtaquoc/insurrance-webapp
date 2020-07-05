@@ -155,7 +155,7 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
         }
 
         this.validationCellByOtherCell(value, column, r, instance, c);
-        this.validationCellByPlanCode(value, column, r, instance, c);
+        this.validationCellByPlanCode();
       },
       ondeleterow: (el, rowNumber, numOfRows) => {
         this.onDelete.emit({
@@ -284,7 +284,7 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
     });
 
     this.setWarningSalaryWhenAddEmployee(data);
-
+    this.validationCellByPlanCode();
   }
 
   private setWarningSalaryWhenAddEmployee(data: any) {
@@ -547,7 +547,7 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
     });
   }
 
-  private validationCellByPlanCode(cellValue, column, y, instance, cell) {    
+  private validationCellByPlanCode() {    
     
     setTimeout(() => {
       const indexPlanCode = this.columns.findIndex(c => c.key === 'planCode');
@@ -583,5 +583,4 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
     }, 50);
   }
 
- 
 }
