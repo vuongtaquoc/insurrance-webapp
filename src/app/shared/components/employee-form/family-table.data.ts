@@ -47,17 +47,17 @@ export const TABLE_FAMILIES_HEADER_COLUMNS = [{
   width: 75,
   title: '(4)',
   source: [ { id: '3', name: 'Ngày tháng năm' },{ id: '1', name: 'tháng/năm' }, { id: '2', name: 'năm' } ],
-  key: 'typeBirthday'
+  key: 'typeBirthday',
+  validations: {
+    required: true
+  }
 }, {
   type: 'text',
   width: 80,
   title: '(5)',
   key: 'birthday',
   fieldName: 'Ngày tháng năm sinh',
-  isCalendar: true,
-  // validations: {
-  //   required: true
-  // }
+  isCalendar: true, 
   validations: {
     lessThanNow: true
   }

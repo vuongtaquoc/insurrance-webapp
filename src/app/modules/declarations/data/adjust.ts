@@ -204,6 +204,7 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   type: 'text',
   width: 135,
   title: '(14)',
+  fieldName: 'Cấp bậc, chức vụ, chức danh nghề',
   key: 'levelWork'
 },{
   type: 'text',

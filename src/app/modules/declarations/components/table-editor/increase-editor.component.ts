@@ -154,8 +154,15 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
           instance.jexcel.setValue(nextColumn, '');
         }
 
+       
         this.validationCellByOtherCell(value, column, r, instance, c);
         this.validationCellByPlanCode();
+        if(this.data[r].origin.isLeaf) {
+          clearTimeout(this.validateTimer);
+          this.validateTimer = setTimeout(() => {
+            this.validChangeSalary(this.spreadsheet.getJson()[r], r);
+          }, 10);
+        } 
       },
       ondeleterow: (el, rowNumber, numOfRows) => {
         this.onDelete.emit({
@@ -192,7 +199,6 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
           origin,
           records: this.spreadsheet.getJson()
         });
-        //this.validationCellByOtherCell(value, column, r, instance, records);
       },
       ondoubleclickreadonly: (el) => {
         this.modalService.info({
@@ -255,9 +261,10 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
         isParent: d.isParent,
         formula: !!d.formula,
         planType: d.planType,
+        planDefault: d.planDefault,
         isInitialize: d.isInitialize
       };
-
+     
       data.push(d.data);
     });
 
@@ -292,29 +299,90 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
         return;
     }
 
-    const fieldName = {
-      name: 'Tiền lương mức đóng cũ',
-      otherName:'Tiền lương mức đóng mới'
-    };
-
     clearTimeout(this.validateTimer);
     this.validateTimer = setTimeout(() => {
       data.forEach((row, rowIndex) => {
         if(!row.origin.isLeaf) return;
-
-        this.spreadsheet.setCellError(fieldName, 30,rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true);
-        this.spreadsheet.setCellError(fieldName, 31,rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true);
-        this.spreadsheet.setCellError(fieldName, 32,rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true);
-        this.spreadsheet.setCellError(fieldName, 33,rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true);
-        this.spreadsheet.setCellError(fieldName, 34,rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true);
-        this.spreadsheet.setCellError(fieldName, 35,rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true);
-        this.spreadsheet.setCellError(fieldName, 36,rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true);
-        this.spreadsheet.setCellError(fieldName, 37,rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true);
+        this.validChangeSalary(row, rowIndex);
       });
     }, 10);
 
   }
 
+  private validChangeSalary(data: any, rowIndex) {
+    const indexOfColumnPlan = this.columns.findIndex(c => c.key === 'planCode');
+    const planCode = data[indexOfColumnPlan];
+    if(planCode === 'DC') {
+      const indexOfColumnSalaryNew = this.columns.findIndex(c => c.key === 'salaryNew');
+      const indexOfColumnRatioNew = this.columns.findIndex(c => c.key === 'ratioNew');
+      const indexOfColumnAllowanceSalaryNew = this.columns.findIndex(c => c.key === 'allowanceSalaryNew');
+      const indexOfColumnAllowanceAdditionalNew = this.columns.findIndex(c => c.key === 'allowanceAdditionalNew');
+      const indexOfColumnAllowanceLevelNew = this.columns.findIndex(c => c.key === 'allowanceLevelNew');
+      const indexOfColumnAllowanceSeniorityNew = this.columns.findIndex(c => c.key === 'allowanceSeniorityNew');
+      const indexOfColumnAllowanceSeniorityJobNew = this.columns.findIndex(c => c.key === 'allowanceSeniorityJobNew');
+      const indexOfColumnAllowanceOtherNew = this.columns.findIndex(c => c.key === 'allowanceOtherNew');
+
+      const salaryNew = data[indexOfColumnSalaryNew];
+      const ratioNew = data[indexOfColumnRatioNew];
+      const allowanceSalaryNew = data[indexOfColumnAllowanceSalaryNew];
+      const allowanceAdditionalNew = data[indexOfColumnAllowanceAdditionalNew];
+      const allowanceLevelNew = data[indexOfColumnAllowanceLevelNew];
+      const allowanceSeniorityNew = data[indexOfColumnAllowanceSeniorityNew];
+      const allowanceSeniorityJobNew = data[indexOfColumnAllowanceSeniorityJobNew];
+      const allowanceOtherNew = data[indexOfColumnAllowanceOtherNew];
+
+      const indexOfColumnSalary = this.columns.findIndex(c => c.key === 'salary');
+      const indexOfColumnRatio = this.columns.findIndex(c => c.key === 'ratio');
+      const indexOfColumnAllowanceSalary = this.columns.findIndex(c => c.key === 'allowanceSalary');
+      const indexOfColumnAllowanceAdditional = this.columns.findIndex(c => c.key === 'allowanceAdditional');
+      const indexOfColumnAllowanceLevel = this.columns.findIndex(c => c.key === 'allowanceLevel');
+      const indexOfColumnAllowanceSeniority = this.columns.findIndex(c => c.key === 'allowanceSeniority');
+      const indexOfColumnAllowanceSeniorityJob = this.columns.findIndex(c => c.key === 'allowanceSeniorityJob');
+      const indexOfColumnAllowanceOther = this.columns.findIndex(c => c.key === 'allowanceOther');
+
+      const salary = data[indexOfColumnSalary];
+      const ratio = data[indexOfColumnRatio];
+      const allowanceSalary = data[indexOfColumnAllowanceSalary];
+      const allowanceAdditional = data[indexOfColumnAllowanceAdditional];
+      const allowanceLevel = data[indexOfColumnAllowanceLevel];
+      const allowanceSeniority = data[indexOfColumnAllowanceSeniority];
+      const allowanceSeniorityJob = data[indexOfColumnAllowanceSeniorityJob];
+      const allowanceOther = data[indexOfColumnAllowanceOther];
+      console.log(salary,salaryNew,ratio,ratioNew,allowanceSalary,allowanceSalaryNew,allowanceAdditional,allowanceAdditionalNew);
+      console.log(allowanceLevel,allowanceLevelNew,allowanceSeniority,allowanceSeniorityNew,allowanceSeniorityJob,allowanceSeniorityJobNew,allowanceOther,allowanceOtherNew);
+      if ( Number(salary) === Number(salaryNew) && Number(ratio) === Number(ratioNew)
+        && Number(allowanceSalary) === Number(allowanceSalaryNew) && Number(allowanceAdditional) === Number(allowanceAdditionalNew)
+        && Number(allowanceLevel) === Number(allowanceLevelNew)  && Number(allowanceOther) === Number(allowanceOtherNew))
+        //&& Number(allowanceSeniorityJob) === Number(allowanceSeniorityJobNew)  && Number(allowanceSeniority) === (allowanceSeniorityNew)) 
+       
+      {
+        const fieldName = {
+          name: 'Tiền lương mức đóng cũ',
+          otherName:'Tiền lương mức đóng mới'
+        };
+        console.log('Vao Đây');
+        this.spreadsheet.setCellError(fieldName, indexOfColumnSalaryNew, rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true);
+        this.spreadsheet.setCellError(fieldName, indexOfColumnRatioNew, rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true);
+        this.spreadsheet.setCellError(fieldName, indexOfColumnAllowanceSalaryNew, rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true);
+        this.spreadsheet.setCellError(fieldName, indexOfColumnAllowanceAdditionalNew, rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true);
+        this.spreadsheet.setCellError(fieldName, indexOfColumnAllowanceLevelNew, rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true);
+        this.spreadsheet.setCellError(fieldName, indexOfColumnAllowanceSeniorityNew, rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true);
+        this.spreadsheet.setCellError(fieldName, indexOfColumnAllowanceSeniorityJobNew, rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true);
+        this.spreadsheet.setCellError(fieldName, indexOfColumnAllowanceOtherNew, rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true);
+      }
+    }else if(planCode === 'CD') {     
+      const indexOfColumnLevelWork = this.columns.findIndex(c => c.key === 'levelWork');
+      const levelWork = data[indexOfColumnLevelWork];
+      if (data.origin.levelWork === levelWork)
+      {
+        const fieldName = {
+          name: 'Chức vụ cũ',
+          otherName:'chức vụ cũ'
+        };
+        this.spreadsheet.setCellError(fieldName, indexOfColumnLevelWork, rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true); 
+      }
+    }
+  }
 
   private updateCellReadonly() {
     const readonlyColumnIndex = this.columns.findIndex(c => !!c.checkReadonly);
@@ -538,7 +606,7 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
         validationColumn.fieldName = 'Ngày, tháng, năm sinh';
         instance.jexcel.clearValidation(y, cell);
       }
-    }    
+    }
     this.handleEvent({
       type: 'validate',
       part: '',
@@ -580,7 +648,7 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
         user: {}
       });
 
-    }, 50);
+    }, 10);
   }
 
 }

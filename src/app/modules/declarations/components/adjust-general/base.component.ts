@@ -8,6 +8,7 @@ import {
   DeclarationService
 } from '@app/core/services';
 import { ACTION } from '@app/shared/constant';
+import { validationColumnsPlanCode } from '@app/shared/constant-valid';
 export class GeneralBaseComponent {
   @Input() data: any;
   @Input() NzPageHeaderContentDirective: string;
@@ -154,6 +155,15 @@ handleUserUpdated(user, tableName) {
         employee.gender = employee.gender === '1';
         employee.workAddress = this.currentCredentials.companyInfo.address;
         employee.planCode = declarations[parentIndex].planDefault;
+        if(employee.planCode) {
+          const planConfigInfo = validationColumnsPlanCode[employee.planCode] || {note:{argsColumn: [], message: ''}};
+          const argsColumn = planConfigInfo.note.argsColumn || [] ;
+          const argsMessgae = [];
+          argsColumn.forEach(column => { 
+            argsMessgae.push(employee[column]);
+          });
+          employee.note = this.formatNote(planConfigInfo.note.message, argsMessgae);
+        }
 
         //copy salary
         if(tableName === 'adjustment') {
@@ -321,6 +331,21 @@ handleUserUpdated(user, tableName) {
         this.updateNextColumns(instance, r, '', [ c + 1, c + 2 ]);
       } else if (column.key === 'recipientsCityCode') {
         this.updateNextColumns(instance, r, '', [ c + 1, c + 2, c + 5, c + 6 ]);
+      }
+
+      if (column.key === 'planCode') {
+        //Phuong thức lấy note theo phương án
+        const planCode = records[r][c];
+        const planConfigInfo = validationColumnsPlanCode[planCode] || {note:{argsColumn: [], message: ''}};
+        const argsColumn = planConfigInfo.note.argsColumn || [] ;
+        const argsMessgae = [];
+        argsColumn.forEach(column => {
+          const indexOfColumn = this.headers[tableName].columns.findIndex(c => c.key === column);
+          argsMessgae.push(records[r][indexOfColumn]);
+        });
+        const indexColumnNote = this.headers[tableName].columns.findIndex(c => c.key === 'note');
+        const notebuild = this.formatNote(planConfigInfo.note.message, argsMessgae);
+        this.updateNextColumns(instance, r, notebuild, [indexColumnNote]);
       }
 
     }
@@ -568,5 +593,11 @@ handleUserUpdated(user, tableName) {
     this.tableSubject.next({
       type: 'validate'
     });
+  }
+
+  protected formatNote(str, args) {
+    for (let i = 0; i < args.length; i++)
+       str = str.replace("{" + i + "}", args[i]);
+    return str;
   }
 }

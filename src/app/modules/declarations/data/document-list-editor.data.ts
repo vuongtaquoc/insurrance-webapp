@@ -23,13 +23,13 @@ export const TABLE_DOCUMENT_HEADER_COLUMNS = [{
   align: 'center'
 }, {
   type: 'text',
-  width: 170,
+  width: 150,
   title: '(2)',
   key: 'fullName',
   isMasterKey: true
 }, {
   type: 'text',
-  width: 120,
+  width: 100,
   title: '(3)',
   key: 'isurranceNo',
   fieldName: 'Số sổ bảo hiểm',
@@ -38,7 +38,7 @@ export const TABLE_DOCUMENT_HEADER_COLUMNS = [{
   }
 }, {
   type: 'text',
-  width: 120,
+  width: 100,
   title: '(4)',
   key: 'isurranceCode',
   fieldName: 'Mã số bảo hiểm',
@@ -48,7 +48,7 @@ export const TABLE_DOCUMENT_HEADER_COLUMNS = [{
 
 }, {
   type: 'text',
-  width: 170,
+  width: 150,
   title: '(5)',
   wordWrap: true,
   key: 'documentType',
@@ -58,7 +58,7 @@ export const TABLE_DOCUMENT_HEADER_COLUMNS = [{
   }
 }, {
   type: 'text',
-  width: 123,
+  width: 120,
   title: '(6)',
   align: 'left',
   key: 'documentNo',
@@ -88,7 +88,7 @@ export const TABLE_DOCUMENT_HEADER_COLUMNS = [{
   }
 }, {
   type: 'text',
-  width: 155,
+  width: 180,
   wordWrap: true,
   title: '(9)',
   align: 'left',
@@ -102,7 +102,7 @@ export const TABLE_DOCUMENT_HEADER_COLUMNS = [{
   key: 'documentNote'
 }, {
   type: 'text',
-  width: 225,
+  width: 240,
   title: '(11)',
   wordWrap: true,
   align: 'left',

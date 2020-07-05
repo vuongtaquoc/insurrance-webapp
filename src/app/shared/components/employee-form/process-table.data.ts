@@ -50,6 +50,7 @@ export const TABLE_PROCESS_HEADER_COLUMNS = [{
   title: '(3)',
   key: 'toDate',
   isCalendar: true,
+  fieldName: 'Đến ngày',
   validations: {
     lessThanNow: true
   }
@@ -58,8 +59,9 @@ export const TABLE_PROCESS_HEADER_COLUMNS = [{
   width: 75,
   title: '(4)',
   key: 'companyCode',
+  fieldName: 'Mã công ty',
   validations: {
-    maxLength: 4,
+    maxLength: 15,
     onlyCharacterNumber: true,
   }
 }, {

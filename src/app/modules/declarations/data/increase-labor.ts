@@ -503,6 +503,7 @@ export const TABLE_HEADER_COLUMNS = [{
   type: 'text',
   width: 180,
   title: '(28)',
+  wordWrap: true,
   key: 'note'
 },{
   type: 'hidden',
