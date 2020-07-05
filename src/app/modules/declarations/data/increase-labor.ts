@@ -470,6 +470,7 @@ export const TABLE_HEADER_COLUMNS = [{
   type: 'text',
   width: 60,
   title: '(24)',
+  fieldName: 'Đến tháng năm',
   key: 'toDate',
   isCalendar: true
 

@@ -1,3 +1,4 @@
+import format from '@app/shared/utils/format';
 export const TABLE_ADJUST_NESTED_HEADERS = [
   [
     { title: 'STT', rowspan: '3' },
@@ -426,7 +427,13 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   // decimal: ',',
   width: 50,
   title: '(22)',
-  key: 'ratio'
+  key: 'ratio',
+  validations: {
+    number: true
+  },
+  format: (value) => {
+    return format.currency(value, '0,0.000');
+  }
 },
 {
   type: 'numeric',
