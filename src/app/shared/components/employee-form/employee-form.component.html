@@ -233,11 +233,14 @@
                     formControlName="isurranceCode"
                   />
                   <ng-template #errorTplInsurranceCode let-control>
+                    <ng-container *ngIf="control.hasError('minlength')">
+                      Mã số BHXH phải chứa 10 ký tự số
+                    </ng-container>
                     <ng-container *ngIf="control.hasError('maxlength')">
-                      Mã số BHXH chỉ được tối đa 50 ký tự
+                      Mã số BHXH phải chứa 10 ký tự số
                     </ng-container>
                     <ng-container *ngIf="control.hasError('pattern')">
-                      Mã số BHXH chỉ được chữ hoặc số
+                      Mã số BHXH chỉ được ký tự số
                     </ng-container>
                   </ng-template>
                 </nz-form-control>
@@ -355,7 +358,7 @@
                     <ng-container *ngIf="control.hasError('required')">
                       Số HĐLĐ/QĐ không để trống
                     </ng-container>
-                     
+
                   </ng-template>
                 </nz-form-control>
               </nz-form-item>
@@ -714,6 +717,7 @@
                   <input nz-input
                     placeholder="Chủ tài khoản"
                     formControlName="accountHolder"
+                    (keyup)="handleChangeAccountHolder()"
                   />
                 </nz-form-control>
               </nz-form-item>

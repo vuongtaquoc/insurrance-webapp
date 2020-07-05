@@ -19,12 +19,13 @@ export class PlanService {
       map(hospitals => {
         return hospitals.map(plan => ({
           ...plan,
-          name: `${ plan.id } - ${ plan.name }`
+          name: `${ plan.id } - ${ plan.name }`,
+          shortName: plan.id
         }));
       })
     );
   }
-  
+
   public getDetailById(id: string) {
     return this.http.get('/plan', {
       params: { id }
@@ -32,10 +33,11 @@ export class PlanService {
       map(hospitals => {
         return hospitals.map(plan => ({
           ...plan,
-          name: `${ plan.id } - ${ plan.name }`
+          name: `${ plan.id } - ${ plan.name }`,
+          shortName: plan.id
         }));
       })
     );
   }
-  
+
 }

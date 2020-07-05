@@ -310,20 +310,22 @@ export function validateDateSign(c: FormControl) {
 
   // validate full date
   if (!birthTypeOnlyYearMonth && !birthTypeOnlyYear) {
-    return dateSign.text > birthDay ? null : { greaterThanBirthday: { valid: false } };
+    const birthday = getBirthDay(birthDay, false, false);
+
+    return dateSign.date.getTime() > birthday.date.getTime() ? null : { greaterThanBirthday: { valid: false } };
   }
 
   if (birthTypeOnlyYearMonth && !birthTypeOnlyYear) {
     const birthday = getBirthDay(birthDay, false, true);
 
-    return dateSign.date.getFullYear() < birthday.date.getFullYear() || (dateSign.date.getFullYear() === birthday.date.getFullYear() && dateSign.date.getMonth() >= birthday.date.getMonth()) ? null : {
+    return dateSign.date.getFullYear() > birthday.date.getFullYear() || (dateSign.date.getFullYear() === birthday.date.getFullYear() && dateSign.date.getMonth() >= birthday.date.getMonth()) ? null : {
       greaterThanBirthday: { valid: false }
     };
   }
 
   const birthday = getBirthDay(birthDay, true, false);
 
-  return dateSign.date.getFullYear() <= birthday.date.getFullYear() ? null : {
+  return dateSign.date.getFullYear() >= birthday.date.getFullYear() ? null : {
     greaterThanBirthday: { valid: false }
   };
 }
