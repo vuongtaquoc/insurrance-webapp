@@ -31,6 +31,7 @@ import {
 
 import { DATE_FORMAT, REGEX } from '@app/shared/constant';
 import { validateLessThanEqualNowBirthday, validateDateSign, getBirthDay, validateIdentifyCard } from '@app/shared/utils/custom-validation';
+import format from '@app/shared/utils/format';
 
 @Component({
   selector: 'app-employees-form',
@@ -420,8 +421,10 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
     });
 
     if (!this.isAccountHolderChange) {
+      const fullName = fullNames.join(' ').toUpperCase();
+
       this.employeeForm.patchValue({
-        accountHolder: fullNames.join(' ').toUpperCase()
+        accountHolder: format.normalize(fullName)
       });
 
       this.handleUpperCase('accountHolder');
@@ -430,6 +433,11 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
 
   handleChangeAccountHolder() {
     this.isAccountHolderChange = true;
+
+    this.employeeForm.patchValue({
+      accountHolder: format.normalize(this.employeeForm.value.accountHolder)
+    });
+
     this.handleUpperCase('accountHolder');
   }
 
