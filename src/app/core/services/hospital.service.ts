@@ -40,6 +40,11 @@ export class HospitalService {
       })
     );
   }
+
+  public getById(id): Observable<any> {
+    return this.http.get(`/hospital/code/${id}`);
+  }
+
   public create(body, options = {}) {
     return this.http.post('/hospital', body, options);
   }
