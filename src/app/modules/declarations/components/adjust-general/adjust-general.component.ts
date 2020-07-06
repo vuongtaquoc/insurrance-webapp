@@ -204,6 +204,7 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
   }
 
   handleChangeTable(data, tableName) {
+    console.log(tableName);
     this.declarations.tables[tableName] = this.declarations[tableName] || {};
     this.declarations.tables[data.tableName]= data.data;
 

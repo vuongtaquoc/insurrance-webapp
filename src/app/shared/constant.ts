@@ -75,7 +75,7 @@ export const DECLARATIONS =
 export const DOCUMENTBYPLANCODE =
 [
   {
-  key: 'TLD',
+  key: 'TL',
   value: [
     {
       documentName: 'Bản chính hợp đồng lao động',
@@ -89,7 +89,7 @@ export const DOCUMENTBYPLANCODE =
     }
   ]},
   {
-    key: 'TNTG',
+    key: 'TN',
     value: [
       {
         documentName: 'Bản chính hợp đồng lao động',

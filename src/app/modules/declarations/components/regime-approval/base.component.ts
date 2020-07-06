@@ -3,6 +3,7 @@ import { NzModalService } from 'ng-zorro-antd/modal';
 import { Subject } from 'rxjs';
 import findLastIndex from 'lodash/findLastIndex';
 import findIndex from 'lodash/findIndex';
+import * as jexcel from 'jstable-editor/dist/jexcel.js';
 
 import {
   DeclarationService
@@ -273,6 +274,14 @@ export class RegimeApprovalBaseComponent {
   }
 
   handleChangeTable({ instance, cell, c, r, records }, part) {
+    if (c !== null && c !== undefined) {
+      c = Number(c);
+      const column =  this.headers[part].columns[c];
+      if (column.key === 'diagnosticCode') {
+        const diagnosticName = cell.innerText.split(' - ').pop();
+        this.updateNextColumns(instance, r, diagnosticName, [ c + 1 ]);
+      }
+    }
     // update declarations
     this.declarations[part].table.forEach((declaration, index) => {
       const record = records[index];
@@ -299,6 +308,13 @@ export class RegimeApprovalBaseComponent {
     });
     this.tableSubject.next({
       type: 'validate'
+    });
+  }
+
+  private updateNextColumns(instance, r, value, nextColumns = []) {
+    nextColumns.forEach(columnIndex => {
+      const columnName = jexcel.getColumnNameFromId([columnIndex, r]);
+      instance.jexcel.setValue(columnName, value);
     });
   }
 

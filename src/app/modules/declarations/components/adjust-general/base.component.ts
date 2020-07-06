@@ -352,11 +352,9 @@ handleUserUpdated(user, tableName) {
     // update declarations
     this.declarations[tableName].table.forEach((declaration, index) => {
       const record = records[index];
-      console.log(record);
       Object.keys(record).forEach(index => {
         declaration.data[index] = record[index];
       });
-      console.log(declaration);
     });
 
     const rowChange: any = this.declarations[tableName].table[r];

@@ -107,4 +107,17 @@ export const TABLE_DOCUMENT_HEADER_COLUMNS = [{
   wordWrap: true,
   align: 'left',
   key: 'documentAppraisal'
-}];
+},
+{
+  type: 'hidden',
+  width: 240,
+  align: 'left',
+  key: 'planCode'
+},
+{
+  type: 'hidden',
+  width: 240,
+  align: 'left',
+  key: 'employeeId'
+}
+];

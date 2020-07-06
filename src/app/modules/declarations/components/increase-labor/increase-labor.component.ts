@@ -7,6 +7,7 @@ import findIndex from 'lodash/findIndex';
 import * as jexcel from 'jstable-editor/dist/jexcel.js';
 import * as moment from 'moment';
 import * as _ from 'lodash';
+import { validationColumnsPlanCode } from '@app/shared/constant-valid';
 
 import { Declaration, DocumentList } from '@app/core/models';
 import {
@@ -550,6 +551,21 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
         this.updateNextColumns(instance, r, '', [ c + 1, c + 2, c + 5, c + 6 ]);
       }
 
+      if (column.key === 'planCode') {
+        //Phuong thức lấy note theo phương án
+        const planCode = records[r][c];
+        const planConfigInfo = validationColumnsPlanCode[planCode] || {note:{argsColumn: [], message: ''}};
+        const argsColumn = planConfigInfo.note.argsColumn || [] ;
+        const argsMessgae = [];
+        argsColumn.forEach(column => {
+          const indexOfColumn = this.tableHeaderColumns.findIndex(c => c.key === column);
+          argsMessgae.push(records[r][indexOfColumn]);
+        });
+        const indexColumnNote = this.tableHeaderColumns.findIndex(c => c.key === 'note');
+        const notebuild = this.formatNote(planConfigInfo.note.message, argsMessgae);
+        this.updateNextColumns(instance, r, notebuild, [indexColumnNote]);
+      }
+
     }
     // update declarations
     this.declarations.forEach((declaration: any, index) => {
@@ -924,8 +940,11 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
   }
 
   private getPlanByParent(instance, cell, c, r, source) {
+    // const row = instance.jexcel.getRowFromCoords(r);
+    // return source.filter(s => s.type === row.options.planType);
     const row = instance.jexcel.getRowFromCoords(r);
-    return source.filter(s => s.type === row.options.planType);
+    const planTypes = (row.options.planType || '').split(',');
+    return source.filter(s => planTypes.indexOf(s.id) > -1);
   }
 
   private getRelationShips(instance, cell, c, r, source) {
@@ -1301,5 +1320,11 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
 
   handleSelectTab(index) {
     eventEmitter.emit('increase-labor:tab:change', index);
+  }
+
+  protected formatNote(str, args) {
+    for (let i = 0; i < args.length; i++)
+       str = str.replace("{" + i + "}", args[i]);
+    return str;
   }
 }
