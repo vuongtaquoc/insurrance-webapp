@@ -1,6 +1,7 @@
 .document-table {
   width: 100%;
   height: 100%;
+  display: grid;
 
   .jexcel > thead > tr > td {
     white-space: normal;
@@ -8,5 +9,19 @@
     font-weight: 700;
     vertical-align: middle;
     text-align: center !important;
+  }
+
+  .jexcel > tbody > tr > td.readonly {
+    color: #333;
+    background: #E9EDFB;
+  }
+
+  .jexcel > tbody > tr > td.readonly.jexcel_freezed {
+    color: #333;
+    background: #E9EDFB;
+  }
+
+  .jexcel > tbody > tr > td.families-cell {
+    background-color: #d0f0f0 !important;
   }
 }
