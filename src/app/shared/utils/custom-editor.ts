@@ -141,9 +141,10 @@ export const customAutocomplete = (table, callback) => {
 
       const selectedValue = selected ? value : table.getValue(cell);
 
-      cell.setAttribute('data-name', selectedValue);
+      // cell.setAttribute('data-name', selectedValue);
 
       return selectedValue.indexOf(' - ') > -1 ? selectedValue.split(' - ')[0] : selectedValue;
+      // return selectedValue;
     },
     openEditor : function(cell) {
       const dataset = cell.dataset;

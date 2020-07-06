@@ -70,7 +70,7 @@ export const TABLE_HEADER_COLUMNS = [{
   width: 170,
   title: '(2)',
   fieldName: 'Họ và tên',
-  key: 'fullName',  
+  key: 'fullName',
   validations: {
     duplicateUserFields: {
       primary: 'fullName',
@@ -290,7 +290,7 @@ export const TABLE_HEADER_COLUMNS = [{
   source: [ ],
   wordWrap: true,
   key: 'hospitalFirstRegistCode',
-  defaultLoad: true
+  defaultLoad: true,
 }, {
   type: 'text',
   width: 300,

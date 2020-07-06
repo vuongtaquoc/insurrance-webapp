@@ -534,10 +534,16 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
       const column = this.tableHeaderColumns[c];
 
       if (column.key === 'hospitalFirstRegistCode') {
-        const name = cell.getAttribute('data-name');
-        const hospitalFirstRegistName = name || cell.innerText.split(' - ').pop();
+        // const name = cell.getAttribute('data-name');
+        // const hospitalFirstRegistName = cell.innerText.split(' - ').pop();
+        const hospitalFirstCode = cell.innerText.split(' - ').shift();
 
-        this.updateNextColumns(instance, r, hospitalFirstRegistName, [ c + 1 ]);
+        this.hospitalService.getById(hospitalFirstCode).subscribe(data => {
+          const name = `${ data.id } - ${ data.name }`;
+          this.updateNextColumns(instance, r, name, [ c + 1 ]);
+        });
+
+        // this.updateNextColumns(instance, r, hospitalFirstRegistName, [ c + 1 ]);
       } else if (column.key === 'registerCityCode') {
         this.updateNextColumns(instance, r, '', [ c + 1, c + 2 ]);
       } else if (column.key === 'recipientsCityCode') {
