@@ -326,7 +326,7 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
       informations: this.reformatInformations(),
       families: this.reformatFamilies()
     }).subscribe(data => {
-      if (data.type === 'saveAndView') {
+      if (type === 'saveAndView') {
         this.viewDocument(data);
       } else if(data.type === 'save') {
         this.router.navigate(['/declarations/adjust-general']);

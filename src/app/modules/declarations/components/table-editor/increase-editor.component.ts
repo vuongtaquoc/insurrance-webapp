@@ -348,8 +348,6 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
       const allowanceSeniority = data[indexOfColumnAllowanceSeniority];
       const allowanceSeniorityJob = data[indexOfColumnAllowanceSeniorityJob];
       const allowanceOther = data[indexOfColumnAllowanceOther];
-      console.log(salary,salaryNew,ratio,ratioNew,allowanceSalary,allowanceSalaryNew,allowanceAdditional,allowanceAdditionalNew);
-      console.log(allowanceLevel,allowanceLevelNew,allowanceSeniority,allowanceSeniorityNew,allowanceSeniorityJob,allowanceSeniorityJobNew,allowanceOther,allowanceOtherNew);
       if ( Number(salary) === Number(salaryNew) && Number(ratio) === Number(ratioNew)
         && Number(allowanceSalary) === Number(allowanceSalaryNew) && Number(allowanceAdditional) === Number(allowanceAdditionalNew)
         && Number(allowanceLevel) === Number(allowanceLevelNew)  && Number(allowanceOther) === Number(allowanceOtherNew))
@@ -360,7 +358,6 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
           name: 'Tiền lương mức đóng cũ',
           otherName:'Tiền lương mức đóng mới'
         };
-        console.log('Vao Đây');
         this.spreadsheet.setCellError(fieldName, indexOfColumnSalaryNew, rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true);
         this.spreadsheet.setCellError(fieldName, indexOfColumnRatioNew, rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true);
         this.spreadsheet.setCellError(fieldName, indexOfColumnAllowanceSalaryNew, rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true);
@@ -377,7 +374,7 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
       {
         const fieldName = {
           name: 'Chức vụ cũ',
-          otherName:'chức vụ cũ'
+          otherName:'chức vụ mới'
         };
         this.spreadsheet.setCellError(fieldName, indexOfColumnLevelWork, rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true); 
       }

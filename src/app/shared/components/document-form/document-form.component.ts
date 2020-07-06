@@ -44,6 +44,7 @@ export class DocumentFormComponent implements OnInit {
   }
 
   private loadDeclarationFiles() {
+    console.log(this.declarationInfo, 'View doc');
     this.declarationFileService.getDeclarationFiles(this.declarationInfo.id).subscribe(declarationFiles => {
       this.declarationFiles = declarationFiles;
     });

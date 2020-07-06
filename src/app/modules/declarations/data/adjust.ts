@@ -83,7 +83,7 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   width: 45,
   title: '(3)',
   align: 'center',
-  key: 'isurranceNo'
+  key: 'hasBookIsurrance'
 }, {
   type: 'text',
   width: 120,
@@ -230,6 +230,9 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   fieldName: 'Mức lương',
   validations: {
     number: true
+  },
+  format: (value) => {
+    return format.currency(value);
   }
 }, {
   type: 'numeric',
@@ -242,6 +245,9 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   fieldName: 'Hệ số',
   validations: {
     number: true
+  },
+  format: (value) => {
+    return format.currency(value, '0,0.000');
   }
 }, {
   type: 'numeric',
@@ -254,6 +260,9 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   fieldName: 'Các khoản bổ sung',
   validations: {
     number: true
+  },
+  format: (value) => {
+    return format.currency(value);
   }
 }, {
   type: 'numeric',
@@ -262,7 +271,11 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   mask: '#,##0',
   // decimal: ',',
   sum: true,
-  key: 'allowanceAdditional'
+  key: 'allowanceAdditional',
+  format: (value) => {
+    return format.currency(value);
+  }
+  
 }, {
   type: 'numeric',
   width: 80,
@@ -279,7 +292,9 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   key: 'allowanceSeniority',
   suffix: '%',
   validations: {
-    number: true
+    // number: true,
+    min: 0,
+    max: 100
   }
 }, {
   type: 'numeric',
@@ -289,7 +304,9 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   fieldName: 'Thâm niên nghề(%)',
   suffix: '%',
   validations: {
-    number: true
+    // number: true,
+    min: 0,
+    max: 100
   }
 }, {
   type: 'numeric',
@@ -314,6 +331,9 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   fieldName: 'Mức lương mới',
   validations: {
     number: true
+  },
+  format: (value) => {
+    return format.currency(value);
   }
 }, {
   type: 'numeric',
@@ -326,6 +346,9 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   fieldName: 'Hệ số lương mới',
   validations: {
     number: true
+  },
+  format: (value) => {
+    return format.currency(value, '0,0.000');
   }
 }, {
   type: 'numeric',
@@ -338,6 +361,9 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   fieldName: 'Phụ cấp lương lương mới',
   validations: {
     number: true
+  },
+  format: (value) => {
+    return format.currency(value);
   }
 }, {
   type: 'numeric',
@@ -350,6 +376,9 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   fieldName: 'Phụ cấp lương lương mới',
   validations: {
     number: true
+  },
+  format: (value) => {
+    return format.currency(value);
   }
 }, {
   type: 'numeric',
@@ -362,6 +391,9 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   fieldName: 'Chức vụ lương mới',
   validations: {
     number: true
+  },
+  format: (value) => {
+    return format.currency(value);
   }
 }, {
   type: 'numeric',
@@ -371,7 +403,9 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   suffix: '%',
   fieldName: 'Thâm niên VK lương mới',
   validations: {
-    number: true
+    // number: true,
+    min: 0,
+    max: 100
   }
 }, {
   type: 'numeric',
@@ -381,7 +415,9 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   suffix: '%',
   fieldName: 'Thâm niên nghề lương mới',
   validations: {
-    number: true
+    // number: true,
+    min: 0,
+    max: 100
   }
 }, {
   type: 'numeric',
