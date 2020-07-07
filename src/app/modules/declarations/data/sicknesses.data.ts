@@ -146,7 +146,10 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   type: 'numeric',
   width: 130,
   title: '(8.2)',
-  key: 'childrenHealthNo'
+  key: 'childrenHealthNo',
+  validations: {
+    number: true
+  }
 }, {
   type: 'numeric',
   width: 80,
@@ -155,6 +158,7 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   sum: true,
 }, {
   type: 'dropdown',
+  autocomplete: true,
   width: 120,
   title: '(9.1)',
   key: 'diagnosticCode',
@@ -172,6 +176,7 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   align: 'center'
 }, {
   type: 'dropdown',
+  autocomplete: true,
   width: 55,
   title: '(11.1)',
   key: 'recruitmentNumber',
@@ -184,6 +189,7 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   isCalendar: true
 }, {
   type: 'dropdown',
+  autocomplete: true,
   width: 190,
   title: '(C.1)',
   key: 'subsidizeReceipt',

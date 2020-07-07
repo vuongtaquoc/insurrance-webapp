@@ -71,7 +71,12 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   type: 'text',
   width: 120,
   title: '(1)',
-  key: 'isurranceCode'
+  key: 'isurranceCode',
+  fieldName: 'Mã số BHXH, Số sổ BHXH',
+  validations: {
+    required: true
+  }
+
 }, {
   type: 'text',
   width: 135,
@@ -80,7 +85,8 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   fieldName: 'Số CMND/Hộ chiếu/Thẻ căn cước',
   validations: {
     cardId: true,
-    duplicate: true
+    duplicate: true,
+    required: true
   }
 }, {
   type: 'text',
@@ -94,7 +100,7 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   title: '(4)',
   key: 'holidayWeekly',
   multiple:true,
-  source: [ ],
+  source: [],
 }, {
   type: 'text',
   width: 80,
@@ -154,6 +160,7 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   key: 'conditionPrenatal'
 }, {
   type: 'dropdown',
+  autocomplete: true,
   source: [],
   width: 230,
   title: '(9)',
@@ -173,6 +180,9 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   width: 50,
   title: '(10.3)',
   key: 'childrenWeekOld',
+  validations: {
+    numeric: true,
+  }
 }, {
   type: 'text',
   width: 80,
@@ -196,6 +206,9 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   width: 65,
   title: '(10.7)',
   key: 'childrenNumberSick',
+  validations: {
+    numeric: true,
+  }
 }, {
   type: 'text',
   width: 80,
@@ -363,7 +376,9 @@ export const TABLE_HEADER_COLUMNS_PART_2 = [{
   width: 180,
   title: '(B)',
   key: 'fullName',
-  isMasterKey: true
+  validations: {
+    required: true,
+  }
 }, {
   type: 'text',
   width: 120,
@@ -413,6 +428,7 @@ export const TABLE_HEADER_COLUMNS_PART_2 = [{
   }
 }, {
   type: 'dropdown',
+  autocomplete: true,
   source: [],
   width: 55,
   title: '(5.2)',
@@ -443,6 +459,7 @@ export const TABLE_HEADER_COLUMNS_PART_2 = [{
   }
 }, {
   type: 'dropdown',
+  autocomplete: true,
   source: [],
   width: 130,
   title: '(C.1)',
@@ -459,6 +476,7 @@ export const TABLE_HEADER_COLUMNS_PART_2 = [{
   key: 'accountHolder'
 }, {
   type: 'dropdown',
+  autocomplete: true,
   source: [],
   width: 240,
   title: '(C.4)',

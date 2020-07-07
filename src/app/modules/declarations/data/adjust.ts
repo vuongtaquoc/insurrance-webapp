@@ -83,7 +83,8 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   width: 45,
   title: '(3)',
   align: 'center',
-  key: 'hasBookIsurrance'
+  key: 'hasBookIsurrance',
+  readOnly: true
 }, {
   type: 'text',
   width: 120,

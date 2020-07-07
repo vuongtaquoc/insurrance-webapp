@@ -77,7 +77,8 @@ export const TABLE_REDUCTION_HEADER_COLUMNS = [{
   width: 45,
   title: '(3)',
   align: 'center',
-  key: 'isurranceNo'
+  key: 'hasBookIsurrance',
+  readOnly: true
 }, {
   type: 'text',
   width: 120,
@@ -99,6 +100,7 @@ export const TABLE_REDUCTION_HEADER_COLUMNS = [{
   wordWrap: true,
 }, {
   type: 'dropdown',
+  autocomplete: true,
   width: 70,
   title: '(6)',
   source: [ { id: '3', name: 'Ngày tháng năm' },{ id: '1', name: 'tháng/năm' }, { id: '2', name: 'năm' } ],
@@ -131,6 +133,7 @@ export const TABLE_REDUCTION_HEADER_COLUMNS = [{
   key: 'nationalityCode'
 }, {
   type: 'dropdown',
+  autocomplete: true,
   width: 145,
   title: '(11.1)',
   source: [ 'Chọn' ],
