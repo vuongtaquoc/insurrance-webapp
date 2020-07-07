@@ -21,12 +21,12 @@ export class MaternityComponent extends RegimeApprovalBaseComponent implements O
 
   constructor(
     protected declarationService: DeclarationService,
-    private categoryService: CategoryService,
+    protected categoryService: CategoryService,
     private bankService: BankService,
     private planService: PlanService,
     protected modalService: NzModalService
   ) {
-    super(declarationService, modalService);
+    super(declarationService, modalService, categoryService);
   }
 
   ngOnInit() {

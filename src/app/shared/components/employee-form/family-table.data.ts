@@ -38,8 +38,7 @@ export const TABLE_FAMILIES_HEADER_COLUMNS = [{
   key: 'isurranceCode',
   fieldName: 'Mã số BHXH',
   validations: {
-    maxLength: 50,
-    onlyCharacterNumber: true
+    numberLength: 10
   }
 }, {
   type: 'dropdown',
@@ -57,7 +56,7 @@ export const TABLE_FAMILIES_HEADER_COLUMNS = [{
   title: '(5)',
   key: 'birthday',
   fieldName: 'Ngày tháng năm sinh',
-  isCalendar: true, 
+  isCalendar: true,
   validations: {
     lessThanNow: true
   }

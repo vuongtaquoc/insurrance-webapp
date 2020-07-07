@@ -19,10 +19,10 @@ export class HealthRecoveryComponent extends RegimeApprovalBaseComponent impleme
   constructor(
     protected declarationService: DeclarationService,
     private bankService: BankService,
-    private categoryService: CategoryService,
+    protected categoryService: CategoryService,
     protected modalService: NzModalService
   ) {
-    super(declarationService, modalService);
+    super(declarationService, modalService, categoryService);
   }
 
   ngOnInit() {

@@ -4,6 +4,10 @@ import { Subject } from 'rxjs';
 import findLastIndex from 'lodash/findLastIndex';
 import findIndex from 'lodash/findIndex';
 import * as jexcel from 'jstable-editor/dist/jexcel.js';
+import * as moment from 'moment';
+
+import { CategoryService } from '@app/core/services';
+import { DATE_FORMAT } from '@app/shared/constant';
 
 import {
   DeclarationService
@@ -50,7 +54,8 @@ export class RegimeApprovalBaseComponent {
 
   constructor(
     protected declarationService: DeclarationService,
-    protected modalService: NzModalService
+    protected modalService: NzModalService,
+    protected categoryService: CategoryService
   ) {}
 
   initializeTableColumns(part, nested, columns) {
@@ -278,8 +283,33 @@ export class RegimeApprovalBaseComponent {
       c = Number(c);
       const column =  this.headers[part].columns[c];
       if (column.key === 'diagnosticCode') {
-        const diagnosticName = cell.innerText.split(' - ').pop();
-        this.updateNextColumns(instance, r, diagnosticName, [ c + 1 ]);
+        // const diagnosticName = cell.innerText.split(' - ').pop();
+        // this.updateNextColumns(instance, r, diagnosticName, [ c + 1 ]);
+        this.categoryService.getCategoryByTypeAndCode('diagnosticCode', cell.innerText).subscribe(data => {
+          this.updateNextColumns(instance, r, data.name, [ c + 1 ]);
+        });
+      } else if (column.key === 'regimeFromDate' || column.key === 'regimeToDate') {
+        let regimeFromDateValue;
+        let regimeToDateValue;
+        let totalColumn;
+
+        if (column.key === 'regimeFromDate') {
+          regimeFromDateValue = instance.jexcel.getValueFromCoords(c, r);
+          regimeToDateValue = instance.jexcel.getValueFromCoords(c + 1, r);
+          totalColumn = c + 2;
+        } else {
+          regimeFromDateValue = instance.jexcel.getValueFromCoords(c - 1, r);
+          regimeToDateValue = instance.jexcel.getValueFromCoords(c, r);
+          totalColumn = c + 1;
+        }
+
+        if (regimeFromDateValue && regimeToDateValue) {
+          const regimeFromDateMoment = moment(regimeFromDateValue, DATE_FORMAT.FULL);
+          const regimeToDateMoment = moment(regimeToDateValue, DATE_FORMAT.FULL);
+          const totalValue = regimeToDateMoment.diff(regimeFromDateMoment, 'days');
+
+          instance.jexcel.setValueFromCoords(totalColumn, r, totalValue > 0 ? totalValue : 0);
+        }
       }
     }
     // update declarations
