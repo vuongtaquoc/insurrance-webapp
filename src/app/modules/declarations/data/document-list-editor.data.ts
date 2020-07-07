@@ -112,6 +112,12 @@ export const TABLE_DOCUMENT_HEADER_COLUMNS = [{
   type: 'hidden',
   width: 240,
   align: 'left',
+  key: 'documentCode'
+},
+{
+  type: 'hidden',
+  width: 240,
+  align: 'left',
   key: 'planCode'
 },
 {

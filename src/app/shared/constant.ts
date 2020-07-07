@@ -80,11 +80,13 @@ export const DOCUMENTBYPLANCODE =
     {
       documentName: 'Bản chính hợp đồng lao động',
       documentNote: 'Hợp đồng lao động',
+      documentCode: 'TL_1',
       isContract: true,
     },
     {
       documentName: 'Bảng chỉnh lương',
       documentNote: 'Bảng lương nhân viên',
+      documentCode: 'TL_2',
       isContract: false,
     }
   ]},
@@ -94,11 +96,13 @@ export const DOCUMENTBYPLANCODE =
       {
         documentName: 'Bản chính hợp đồng lao động',
         documentNote: 'Hợp đồng lao động',
+        documentCode: 'TN_1',
         isContract: true,
       },
       {
         documentName: 'Bảng chỉnh lương',
         documentNote: 'Bảng lương nhân viên',
+        documentCode: 'TN_1',
         isContract: false,
       }
     ]},
@@ -108,11 +112,13 @@ export const DOCUMENTBYPLANCODE =
         {
           documentName: 'Bản chính hợp đồng lao động',
           documentNote: 'Hợp đồng lao động',
+          documentCode: 'TD_1',
           isContract: true,
         },
         {
           documentName: 'Bảng chỉnh lương',
           documentNote: 'Bảng lương nhân viên',
+          documentCode: 'TD_1',
           isContract: false,
         }
       ]},
@@ -122,11 +128,13 @@ export const DOCUMENTBYPLANCODE =
           {
             documentName: 'Bản chính hợp đồng lao động',
             documentNote: 'Hợp đồng lao động',
+            documentCode: 'TH_1',
             isContract: true,
           },
           {
             documentName: 'Bảng chỉnh lương',
             documentNote: 'Bảng lương nhân viên',
+            documentCode: 'TH_2',
             isContract: false,
           }
         ]},
@@ -137,6 +145,7 @@ export const DOCUMENTBYPLANCODE =
           {
             documentName: 'Bảng chỉnh lương',
             documentNote: 'Bảng lương nhân viên',
+            documentCode: 'AD_1',
             isContract: false,
           }
         ]},

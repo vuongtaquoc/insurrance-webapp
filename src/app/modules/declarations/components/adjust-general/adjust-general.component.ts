@@ -204,7 +204,6 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
   }
 
   handleChangeTable(data, tableName) {
-    console.log(tableName);
     this.declarations.tables[tableName] = this.declarations[tableName] || {};
     this.declarations.tables[data.tableName]= data.data;
 
@@ -558,6 +557,7 @@ private getEmployeeInDeclarations(records: any) {
           isMaster: false,
           declarationCode: record.code,
           category: record.category,
+          planCode: declaration.planCode
         };
 
         declaration.conditionValid = declaration.relationshipFullName;
@@ -905,10 +905,16 @@ private setDateToInformationList(records: any)
         documentType: '',
         companyRelease: this.currentCredentials.companyInfo.name,
         documentNote: '',
+        documentAppraisal: '',
+        documentCode: 'manual',
+        planCode: emp.planCode,
+        employeeId: emp.employeeId,
         //documentAppraisal: ('Truy tăng ' + emp.fullName + ' từ ' + emp.fromDate),
         origin: {
           employeeId: emp.employeeId,
           isLeaf: true,
+          documentCode: 'manual',
+          planCode: emp.planCode,
         }
       };
       informations.push(item);
@@ -916,27 +922,41 @@ private setDateToInformationList(records: any)
     }else {
 
       documents.forEach(doc => {
-        let item = {
-          fullName: emp.fullName,
-          isurranceNo: emp.isurranceNo,
-          documentNo: '',
-          dateRelease: '',
-          isurranceCode: emp.isurranceCode,
-          documentType: doc.documentName,
-          companyRelease: this.currentCredentials.companyInfo.name,
-          documentNote: doc.documentNote,
-          documentAppraisal: ('Truy tăng ' + emp.fullName + ' từ ' + emp.fromDate),
-          origin: {
-            employeeId: emp.employeeId,
-            isLeaf: true,
-          }
-        };
-        if(doc.isContract) {
-          item.documentNo = emp.contractNo;
-          item.dateRelease =  emp.dateSign;
-        }else {
-          item.documentNo = emp.fromDate;
+        let item = _.find(this.informations, {
+          planCode: emp.planCode,
+          employeeId: emp.employeeId,
+          documentCode: doc.documentCode,
+        });
+        if (!item) {
+            item = {
+              fullName: emp.fullName,
+              isurranceNo: emp.isurranceNo,
+              documentNo: '',
+              dateRelease: '',
+              isurranceCode: emp.isurranceCode,
+              documentType: doc.documentName,
+              companyRelease: this.currentCredentials.companyInfo.name,
+              documentNote: doc.documentNote,
+              documentAppraisal: ('Truy tăng ' + emp.fullName + ' từ ' + emp.fromDate),
+              documentCode: doc.documentCode,
+              planCode: emp.planCode,
+              employeeId: emp.employeeId,
+              origin: {
+                employeeId: emp.employeeId,
+                isLeaf: true,
+                planCode: emp.planCode,
+                documentCode: doc.documentCode,
+              }
+            };
+    
+            if(doc.isContract) {
+              item.documentNo = emp.contractNo;
+              item.dateRelease =  emp.dateSign;
+            }else {
+              item.dateRelease = emp.fromDate;
+            }
         }
+        item.isurranceNo = emp.isurranceNo;
         informations.push(item);
       });
 
@@ -951,6 +971,7 @@ private setDateToInformationList(records: any)
     });
 
   });
+
 
   this.informations = informations;
   }
@@ -975,7 +996,7 @@ private setDateToInformationList(records: any)
 
   handleChangeInfomation({ records, columns }) {
 
-    //update families
+    //update informations
     this.informations.forEach((d: any, index) => {
       const record = records[index];
       //update data on Jexcel

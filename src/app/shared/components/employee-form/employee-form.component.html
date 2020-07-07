@@ -102,6 +102,7 @@
                   <input nz-input
                     placeholder="Mã nhân viên"
                     formControlName="code"
+                    (keyup)="handleUpperCase('code')"
                   />
                   <ng-template #errorTplCode let-control>
                     <ng-container *ngIf="control.hasError('required')">
@@ -541,11 +542,17 @@
             <div nz-col [nzSpan]="8">
               <nz-form-item>
                 <nz-form-label class="text-left" [nzSpan]="10">Chức vụ</nz-form-label>
-                <nz-form-control [nzSpan]="14">
-                  <input nz-input
+                <nz-form-control [nzSpan]="14" [nzErrorTip]="allowanceLevelTpl">
+                  <nz-input-number
                     placeholder="Chức vụ"
                     formControlName="allowanceLevel"
-                  />
+                    [nzFormatter]="formatterCurrency"
+                  ></nz-input-number>
+                  <ng-template #allowanceLevelTpl let-control>
+                    <ng-container *ngIf="control.hasError('pattern')">
+                      Chức vụ phải là số
+                    </ng-container>
+                  </ng-template>
                 </nz-form-control>
               </nz-form-item>
             </div><!-- col -->
@@ -611,7 +618,7 @@
             <div nz-col [nzSpan]="8">
               <nz-form-item>
                 <nz-form-label class="text-left" [nzSpan]="10">PC lương</nz-form-label>
-                <nz-form-control [nzSpan]="14" [nzErrorTip]="allowanceSalary">
+                <nz-form-control [nzSpan]="14" [nzErrorTip]="allowanceSalaryTpl">
                   <nz-input-number
                     placeholder="PC lương"
                     formControlName="allowanceSalary"
