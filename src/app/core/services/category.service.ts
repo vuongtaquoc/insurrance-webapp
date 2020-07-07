@@ -14,9 +14,23 @@ export class CategoryService {
   }
 
   public getCategories(type: string) {
+    if (type === 'diagnosticCode') {
+      return this.http.get(`/categories/type/${ type }`, {
+      }).pipe(
+        map(categories => {
+          return categories.map(category => ({
+            ...category,
+            shortName: category.name.split(' - ')[0]
+          }));
+        })
+      );
+    }
     return this.http.get(`/categories/type/${ type }`, {
     });
   }
 
-
+  public getCategoryByTypeAndCode(type, code) {
+    return this.http.get(`/categories/type/${ type }/code/${code}`, {
+    });
+  }
 }

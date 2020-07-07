@@ -64,6 +64,7 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   title: '(B)',
   key: 'fullName',
   fieldName: 'Họ và tên',
+  isMasterKey: true,
   validations: {
     required: true
   }
@@ -74,6 +75,7 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   key: 'isurranceCode',
   fieldName: 'Mã số BHXH, Số sổ BHXH',
   validations: {
+    numberLength: 10,
     required: true
   }
 
@@ -383,7 +385,11 @@ export const TABLE_HEADER_COLUMNS_PART_2 = [{
   type: 'text',
   width: 120,
   title: '(1)',
-  key: 'isurranceCode'
+  key: 'isurranceCode',
+  fieldName: 'Mã số BHXH',
+  validations: {
+    numberLength: 10
+  }
 }, {
   type: 'text',
   width: 135,

@@ -19,11 +19,11 @@ import { eventEmitter } from '@app/shared/utils/event-emitter';
 export class SicknessesComponent extends RegimeApprovalBaseComponent implements OnInit, OnChanges, OnDestroy {
   constructor(
     protected declarationService: DeclarationService,
-    private categoryService: CategoryService,
+    protected categoryService: CategoryService,
     private bankService: BankService,
     protected modalService: NzModalService
   ) {
-    super(declarationService, modalService);
+    super(declarationService, modalService, categoryService);
   }
 
   ngOnInit() {

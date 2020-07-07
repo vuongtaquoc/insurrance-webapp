@@ -41,8 +41,9 @@ export const TABLE_DOCUMENT_HEADER_COLUMNS = [{
   width: 100,
   title: '(4)',
   key: 'isurranceCode',
-  fieldName: 'Mã số bảo hiểm',
+  fieldName: 'Mã số BHXH',
   validations: {
+    numberLength: 10,
     required: true
   }
 
@@ -77,7 +78,7 @@ export const TABLE_DOCUMENT_HEADER_COLUMNS = [{
     required: true
   }
 }, {
-  type: 'text',  
+  type: 'text',
   width:120,
   title: '(8)',
   align: 'left',

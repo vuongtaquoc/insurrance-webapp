@@ -372,9 +372,9 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
         const columnIndexes = [];
 
         Object.keys(validationColumns[parentKey] || {}).forEach(column => {
-		 
+
 		  const x = this.columns.findIndex(c => c.key === column);
-		   
+
           if (x > -1) {
             columnIndexes.push(x);
           }
@@ -513,61 +513,69 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
   }
 
   private validationCellByOtherCell(cellValue, column, y, instance, cell) {
-    if (column.key === 'planCode') {
-      const rules = this.validationRules[cellValue];
-      const x = this.columns.findIndex(c => c.key === 'childrenNumber');
-      const cellSelected = column.source.find(s => s.id === cellValue);
-      const validationColumn = this.columns[x];
+    setTimeout(() => {
+      if (column.key === 'planCode') {
+        const rules = this.validationRules[cellValue];
+        const x = this.columns.findIndex(c => c.key === 'childrenNumber');
+        const cellSelected = column.source.find(s => s.id === cellValue);
+        const validationColumn = this.columns[x];
 
-      if (!rules) {
-        validationColumn.validations = undefined;
-        validationColumn.fieldName = undefined;
-        instance.jexcel.clearValidation(y, x);
+        if (!rules) {
+          validationColumn.validations = undefined;
+          validationColumn.fieldName = undefined;
+          instance.jexcel.clearValidation(y, x);
+          this.handleEvent({
+            type: 'validate',
+            part: '',
+            parentKey: '',
+            user: {}
+          });
+          return;
+        }
+
+        const fieldName = {
+          name: 'Số con',
+          otherField: `phương án ${ cellSelected.name }`
+        };
+
+        validationColumn.validations = rules;
+        validationColumn.fieldName = fieldName;
+
+        instance.jexcel.validationCell(y, x, fieldName, rules);
+
         this.handleEvent({
           type: 'validate',
           part: '',
           parentKey: '',
           user: {}
         });
-        return;
-      }
+      } else if (column.key === 'regimeFromDate') {
+        const regimeToDateValue = this.spreadsheet.getValueFromCoords(Number(cell) + 1, y);
+        const validationColumn = this.columns[cell];
 
-      const fieldName = {
-        name: 'Số con',
-        otherField: `phương án ${ cellSelected.name }`
-      };
+        if (regimeToDateValue && cellValue) {
+          const cellValueMoment = moment(cellValue, DATE_FORMAT.FULL);
+          const regimeToDateValueMoment = moment(regimeToDateValue, DATE_FORMAT.FULL);
+          const isSameOrAfter = cellValueMoment.isSameOrAfter(regimeToDateValueMoment);
 
-      validationColumn.validations = rules;
-      validationColumn.fieldName = fieldName;
+          if (isSameOrAfter) {
+            validationColumn.validations = {
+              required: true,
+              lessThan: true
+            };
+            validationColumn.fieldName = {
+              name: 'Từ ngày',
+              message: 'Ngày đầu tiên người lao động được chỉ định nghỉ chế độ < hoặc = Ngày cuối cùng người lao động được chỉ định nghỉ chế độ',
+            };
 
-      instance.jexcel.validationCell(y, x, fieldName, rules);
-
-      this.handleEvent({
-        type: 'validate',
-        part: '',
-        parentKey: '',
-        user: {}
-      });
-    } else if (column.key === 'regimeFromDate') {
-      const regimeToDateValue = this.spreadsheet.getValueFromCoords(Number(cell) + 1, y);
-      const validationColumn = this.columns[cell];
-
-      if (regimeToDateValue && cellValue) {
-        const cellValueMoment = moment(cellValue, DATE_FORMAT.FULL);
-        const regimeToDateValueMoment = moment(regimeToDateValue, DATE_FORMAT.FULL);
-        const isSameOrAfter = cellValueMoment.isSameOrAfter(regimeToDateValueMoment);
-
-        if (isSameOrAfter) {
-          validationColumn.validations = {
-            required: true,
-            lessThan: true
-          };
-          validationColumn.fieldName = {
-            name: 'Từ ngày',
-            message: 'Ngày đầu tiên người lao động được chỉ định nghỉ chế độ < hoặc = Ngày cuối cùng người lao động được chỉ định nghỉ chế độ',
-          };
-
-          instance.jexcel.validationCell(y, cell, validationColumn.fieldName, validationColumn.validations);
+            instance.jexcel.validationCell(y, cell, validationColumn.fieldName, validationColumn.validations);
+          } else {
+            validationColumn.validations = {
+              required: true
+            };
+            validationColumn.fieldName = 'Từ ngày';
+            instance.jexcel.clearValidation(y, cell);
+          }
         } else {
           validationColumn.validations = {
             required: true
@@ -575,40 +583,40 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
           validationColumn.fieldName = 'Từ ngày';
           instance.jexcel.clearValidation(y, cell);
         }
-      } else {
-        validationColumn.validations = {
-          required: true
-        };
-        validationColumn.fieldName = 'Từ ngày';
-        instance.jexcel.clearValidation(y, cell);
-      }
 
-      this.handleEvent({
-        type: 'validate',
-        part: '',
-        parentKey: '',
-        user: {}
-      });
-    } else if (column.key === 'regimeToDate') {
-      const regimeFromDateValue = this.spreadsheet.getValueFromCoords(Number(cell) - 1, y);
-      const validationColumn = this.columns[Number(cell) - 1];
+        this.handleEvent({
+          type: 'validate',
+          part: '',
+          parentKey: '',
+          user: {}
+        });
+      } else if (column.key === 'regimeToDate') {
+        const regimeFromDateValue = this.spreadsheet.getValueFromCoords(Number(cell) - 1, y);
+        const validationColumn = this.columns[Number(cell) - 1];
 
-      if (cellValue && regimeFromDateValue) {
-        const cellValueMoment = moment(cellValue, DATE_FORMAT.FULL);
-        const regimeFromDateValueMoment = moment(regimeFromDateValue, DATE_FORMAT.FULL);
-        const isSameOrAfter = regimeFromDateValueMoment.isSameOrAfter(cellValueMoment);
+        if (cellValue && regimeFromDateValue) {
+          const cellValueMoment = moment(cellValue, DATE_FORMAT.FULL);
+          const regimeFromDateValueMoment = moment(regimeFromDateValue, DATE_FORMAT.FULL);
+          const isSameOrAfter = regimeFromDateValueMoment.isSameOrAfter(cellValueMoment);
 
-        if (isSameOrAfter) {
-          validationColumn.validations = {
-            required: true,
-            lessThan: true
-          };
-          validationColumn.fieldName = {
-            name: 'Từ ngày',
-            message: 'Ngày đầu tiên người lao động được chỉ định nghỉ chế độ < hoặc = Ngày cuối cùng người lao động được chỉ định nghỉ chế độ',
-          };
+          if (isSameOrAfter) {
+            validationColumn.validations = {
+              required: true,
+              lessThan: true
+            };
+            validationColumn.fieldName = {
+              name: 'Từ ngày',
+              message: 'Ngày đầu tiên người lao động được chỉ định nghỉ chế độ < hoặc = Ngày cuối cùng người lao động được chỉ định nghỉ chế độ',
+            };
 
-          instance.jexcel.validationCell(y, Number(cell) - 1, validationColumn.fieldName, validationColumn.validations);
+            instance.jexcel.validationCell(y, Number(cell) - 1, validationColumn.fieldName, validationColumn.validations);
+          } else {
+            validationColumn.validations = {
+              required: true
+            };
+            validationColumn.fieldName = 'Từ ngày';
+            instance.jexcel.clearValidation(y, Number(cell) - 1);
+          }
         } else {
           validationColumn.validations = {
             required: true
@@ -616,20 +624,14 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
           validationColumn.fieldName = 'Từ ngày';
           instance.jexcel.clearValidation(y, Number(cell) - 1);
         }
-      } else {
-        validationColumn.validations = {
-          required: true
-        };
-        validationColumn.fieldName = 'Từ ngày';
-        instance.jexcel.clearValidation(y, Number(cell) - 1);
-      }
 
-      this.handleEvent({
-        type: 'validate',
-        part: '',
-        parentKey: '',
-        user: {}
-      });
-    }
+        this.handleEvent({
+          type: 'validate',
+          part: '',
+          parentKey: '',
+          user: {}
+        });
+      }
+    }, 50);
   }
 }

@@ -53,7 +53,11 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   type: 'text',
   width: 120,
   title: '(1)',
-  key: 'isurranceCode'
+  key: 'isurranceCode',
+  fieldName: 'Mã số BHXH',
+  validations: {
+    numberLength: 10
+  }
 }, {
   type: 'text',
   width: 135,
@@ -141,7 +145,11 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   width: 80,
   title: '(8.1)',
   key: 'childrenBirthday',
-  isCalendar: true
+  isCalendar: true,
+  fieldName: 'Ngày sinh con',
+  validations: {
+    greaterThanNow: true
+  }
 }, {
   type: 'numeric',
   width: 130,
@@ -267,7 +275,11 @@ export const TABLE_HEADER_COLUMNS_PART_2 = [{
   type: 'text',
   width: 120,
   title: '(1)',
-  key: 'isurranceCode'
+  key: 'isurranceCode',
+  fieldName: 'Mã số BHXH',
+  validations: {
+    numberLength: 10
+  }
 }, {
   type: 'text',
   width: 135,
