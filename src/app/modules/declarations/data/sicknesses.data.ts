@@ -172,6 +172,7 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   width: 120,
   title: '(9.1)',
   key: 'diagnosticCode',
+  defaultLoad: true,
   source: [ ],
 }, {
   type: 'text',
