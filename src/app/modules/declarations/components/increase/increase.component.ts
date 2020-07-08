@@ -32,7 +32,7 @@ export class IncreaseComponent extends GeneralBaseComponent implements OnInit, O
 
     private cityService: CityService,
     private districtService: DistrictService,
-    private hospitalService: HospitalService,
+    protected hospitalService: HospitalService,
     private nationalityService: NationalityService,
     private peopleService: PeopleService,
     private wardService: WardsService,
@@ -44,7 +44,7 @@ export class IncreaseComponent extends GeneralBaseComponent implements OnInit, O
     private relationshipService: RelationshipService,
     private villageService: VillageService,
   ) {
-    super(declarationService, modalService);
+    super(declarationService, modalService, hospitalService);
     this.getRecipientsDistrictsByCityCode = this.getRecipientsDistrictsByCityCode.bind(this);
     this.getRecipientsWardsByDistrictCode = this.getRecipientsWardsByDistrictCode.bind(this);
     this.getRegisterDistrictsByCityCode = this.getRegisterDistrictsByCityCode.bind(this);
@@ -66,7 +66,8 @@ export class IncreaseComponent extends GeneralBaseComponent implements OnInit, O
       this.salaryAreaService.getSalaryAreas(),
       this.departmentService.getDepartments(),
       this.planService.getPlans('600'),
-    ]).subscribe(([ peoples,nationalities, cities, salaryAreas,departments, plans ]) => {
+      this.categoryService.getCategories('livesAreaCode'),
+    ]).subscribe(([ peoples,nationalities, cities, salaryAreas,departments, plans,livesAreas ]) => {
       this.updateSourceToColumn(TABLE_HEADER_COLUMNS, 'peopleCode', peoples);
       this.updateSourceToColumn(TABLE_HEADER_COLUMNS, 'nationalityCode', nationalities);
       this.updateSourceToColumn(TABLE_HEADER_COLUMNS, 'registerCityCode', cities);
@@ -74,13 +75,14 @@ export class IncreaseComponent extends GeneralBaseComponent implements OnInit, O
       this.updateSourceToColumn(TABLE_HEADER_COLUMNS, 'salaryAreaCode', salaryAreas);
       this.updateSourceToColumn(TABLE_HEADER_COLUMNS, 'planCode', plans);
       this.updateSourceToColumn(TABLE_HEADER_COLUMNS, 'departmentId', departments);
+      this.updateSourceToColumn(TABLE_HEADER_COLUMNS, 'livesAreaCode', livesAreas);
 
       // // get filter columns
       this.updateFilterToColumn(TABLE_HEADER_COLUMNS, 'registerDistrictCode', this.getRegisterDistrictsByCityCode);
       this.updateFilterToColumn(TABLE_HEADER_COLUMNS, 'registerWardsCode', this.getRegisterWardsByDistrictCode);
       this.updateFilterToColumn(TABLE_HEADER_COLUMNS, 'recipientsDistrictCode', this.getRecipientsDistrictsByCityCode);
       this.updateFilterToColumn(TABLE_HEADER_COLUMNS, 'recipientsWardsCode', this.getRecipientsWardsByDistrictCode);
-      this.updateFilterToColumn(TABLE_HEADER_COLUMNS, 'hospitalFirstRegistCode', this.getHospitalsByCityCode);
+      //this.updateFilterToColumn(TABLE_HEADER_COLUMNS, 'hospitalFirstRegistCode', this.getHospitalsByCityCode);
       this.updateFilterToColumn(TABLE_HEADER_COLUMNS, 'planCode', this.getPlanByParent);
     });
 

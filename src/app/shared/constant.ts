@@ -78,14 +78,30 @@ export const DOCUMENTBYPLANCODE =
   key: 'TL',
   value: [
     {
-      documentName: 'Bản chính hợp đồng lao động',
+      documentType: 'Bản chính hợp đồng lao động',
       documentNote: 'Hợp đồng lao động',
+      documentNo:  {
+        mesage: '',
+        column: [],
+      },
+      dateRelease: {
+        mesage: '',
+        column: [],
+      },
+      companyRelease: {
+        mesage: '',
+        column: [],
+      },
+      documentAppraisal: {
+        mesage: '',
+        column: [],
+      },
       documentCode: 'TL_1',
       isContract: true,
     },
     {
-      documentName: 'Bảng chỉnh lương',
-      documentNote: 'Bảng lương nhân viên',
+      documentType: 'Bảng chỉnh lương',
+      documentNo: 'Bảng lương nhân viên',
       documentCode: 'TL_2',
       isContract: false,
     }

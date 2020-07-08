@@ -64,7 +64,6 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   title: '(B)',
   key: 'fullName',
   fieldName: 'Họ và tên',
-  isMasterKey: true,
   validations: {
     required: true
   }
@@ -336,7 +335,14 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   width: 180,
   title: '(E)',
   key: 'note'
-}];
+},{
+  type: 'hidden',
+  width: 140,
+  title: 'key',
+  key: 'employeeId',
+  isMasterKey: true
+}
+];
 
 export const TABLE_NESTED_HEADERS_PART_2 = [
   [

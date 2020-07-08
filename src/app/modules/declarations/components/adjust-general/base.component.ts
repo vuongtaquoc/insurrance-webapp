@@ -5,7 +5,8 @@ import findLastIndex from 'lodash/findLastIndex';
 import findIndex from 'lodash/findIndex';
 import * as jexcel from 'jstable-editor/dist/jexcel.js';
 import {
-  DeclarationService
+  DeclarationService,
+  HospitalService
 } from '@app/core/services';
 import { ACTION } from '@app/shared/constant';
 import { validationColumnsPlanCode } from '@app/shared/constant-valid';
@@ -63,6 +64,7 @@ export class GeneralBaseComponent {
   constructor(
     protected declarationService: DeclarationService,
     protected modalService: NzModalService,
+    protected hospitalService: HospitalService,
 
   ) {}
 
@@ -324,16 +326,11 @@ handleUserUpdated(user, tableName) {
       c = Number(c);
       const column = this.headers[tableName].columns[c];
 
-      if (column.key === 'hospitalFirstRegistCode') {
-        const hospitalFirstRegistName = cell.innerText.split(' - ').pop();
-        this.updateNextColumns(instance, r, hospitalFirstRegistName, [ c + 1 ]);
-      }else if (column.key === 'registerCityCode') {
+      if (column.key === 'registerCityCode') {
         this.updateNextColumns(instance, r, '', [ c + 1, c + 2 ]);
       } else if (column.key === 'recipientsCityCode') {
         this.updateNextColumns(instance, r, '', [ c + 1, c + 2, c + 5, c + 6 ]);
-      }
-
-      if (column.key === 'planCode') {
+      } else if (column.key === 'planCode') {
         //Phuong thức lấy note theo phương án
         const planCode = records[r][c];
         const planConfigInfo = validationColumnsPlanCode[planCode] || {note:{argsColumn: [], message: ''}};
@@ -346,6 +343,14 @@ handleUserUpdated(user, tableName) {
         const indexColumnNote = this.headers[tableName].columns.findIndex(c => c.key === 'note');
         const notebuild = this.formatNote(planConfigInfo.note.message, argsMessgae);
         this.updateNextColumns(instance, r, notebuild, [indexColumnNote]);
+      }else if (column.key === 'hospitalFirstRegistCode') {
+        const hospitalFirstCode = cell.innerText.split(' - ').shift();
+
+        this.hospitalService.getById(hospitalFirstCode).subscribe(data => {
+          const name = `${ data.id } - ${ data.name }`;
+          this.updateNextColumns(instance, r, name, [ c + 1 ]);
+        });
+
       }
 
     }
