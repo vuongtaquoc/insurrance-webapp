@@ -79,7 +79,7 @@ export const TABLE_DOCUMENT_HEADER_COLUMNS = [{
   }
 }, {
   type: 'text',
-  width:120,
+  width:110,
   title: '(8)',
   align: 'left',
   key: 'dateEffective',
@@ -89,21 +89,21 @@ export const TABLE_DOCUMENT_HEADER_COLUMNS = [{
   }
 }, {
   type: 'text',
-  width: 180,
+  width: 240,
   wordWrap: true,
   title: '(9)',
   align: 'left',
   key: 'companyRelease'
 }, {
   type: 'text',
-  width: 220,
+  width: 200,
   title: '(10)',
   align: 'left',
   wordWrap: true,
   key: 'documentNote'
 }, {
   type: 'text',
-  width: 240,
+  width: 260,
   title: '(11)',
   wordWrap: true,
   align: 'left',

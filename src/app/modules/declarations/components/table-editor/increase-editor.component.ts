@@ -358,14 +358,15 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
           name: 'Tiền lương mức đóng cũ',
           otherName:'Tiền lương mức đóng mới'
         };
-        this.spreadsheet.setCellError(fieldName, indexOfColumnSalaryNew, rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true);
-        this.spreadsheet.setCellError(fieldName, indexOfColumnRatioNew, rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true);
-        this.spreadsheet.setCellError(fieldName, indexOfColumnAllowanceSalaryNew, rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true);
-        this.spreadsheet.setCellError(fieldName, indexOfColumnAllowanceAdditionalNew, rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true);
-        this.spreadsheet.setCellError(fieldName, indexOfColumnAllowanceLevelNew, rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true);
-        this.spreadsheet.setCellError(fieldName, indexOfColumnAllowanceSeniorityNew, rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true);
-        this.spreadsheet.setCellError(fieldName, indexOfColumnAllowanceSeniorityJobNew, rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true);
-        this.spreadsheet.setCellError(fieldName, indexOfColumnAllowanceOtherNew, rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true);
+        const messageError = 'Tiền lương mức đóng cũ, Tiền lương mức đóng mới chưa được điều chỉnh';
+        this.spreadsheet.setCellError(fieldName, indexOfColumnSalaryNew, rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true, messageError);
+        this.spreadsheet.setCellError(fieldName, indexOfColumnRatioNew, rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true, messageError);
+        this.spreadsheet.setCellError(fieldName, indexOfColumnAllowanceSalaryNew, rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true, messageError);
+        this.spreadsheet.setCellError(fieldName, indexOfColumnAllowanceAdditionalNew, rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true, messageError);
+        this.spreadsheet.setCellError(fieldName, indexOfColumnAllowanceLevelNew, rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true, messageError);
+        this.spreadsheet.setCellError(fieldName, indexOfColumnAllowanceSeniorityNew, rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true, messageError);
+        this.spreadsheet.setCellError(fieldName, indexOfColumnAllowanceSeniorityJobNew, rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true, messageError);
+        this.spreadsheet.setCellError(fieldName, indexOfColumnAllowanceOtherNew, rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true, messageError);
       }
     }else if(planCode === 'CD') {     
       const indexOfColumnLevelWork = this.columns.findIndex(c => c.key === 'levelWork');
@@ -376,7 +377,8 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
           name: 'Chức vụ cũ',
           otherName:'chức vụ mới'
         };
-        this.spreadsheet.setCellError(fieldName, indexOfColumnLevelWork, rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true); 
+        const messageError = 'Chức vụ cũ, chức vụ mới chưa được điều chỉnh';
+        this.spreadsheet.setCellError(fieldName, indexOfColumnLevelWork, rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true, messageError); 
       }
     }
   }
@@ -495,7 +497,8 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
   }
 
   private async getHospitalsByCityCode(table, keyword, c, r) {
-    const cityCode = table.getValueFromCoords(c - 5, r);
+    const indexOfCloumnRecipientsCityCode= this.columns.findIndex(c => c.key === 'recipientsCityCode');
+    const cityCode = table.getValueFromCoords(indexOfCloumnRecipientsCityCode, r);
 
     if (!cityCode) {
       return [];

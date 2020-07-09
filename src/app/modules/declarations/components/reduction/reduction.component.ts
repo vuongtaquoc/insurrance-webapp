@@ -99,6 +99,7 @@ export class ReductionComponent extends GeneralBaseComponent implements OnInit, 
      if (changes.data && changes.data.currentValue && changes.data.currentValue.length) {
       const data = this.declarationService.updateDeclarations(changes.data.currentValue, TABLE_REDUCTION_HEADER_COLUMNS, !this.declarationId);
       this.declarations.reductionlabor.table = data;
+      this.updateOriginByTableName('reductionlabor');
     }
   }
 

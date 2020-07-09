@@ -148,7 +148,6 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
             submitter: declarations.submitter,
             mobile: declarations.mobile
           });
-
           this.declarations.origin = declarations.documentDetail;
           this.informations = this.fomatInfomation(declarations.informations);
           
@@ -1045,4 +1044,5 @@ private setDateToInformationList(records: any)
 
     return formError;
   }
+  
 }

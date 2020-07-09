@@ -241,11 +241,13 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
     this.spreadsheet.setReadonlyRowsFormula(formulaIndexes, formulaIgnoreIndexes);
     this.spreadsheet.setReadonlyBlankRows(readonlyBlankRows);
     // update dropdown data
+    
     data.forEach((row, rowIndex) => {
       this.columns.forEach((column, colIndex) => {
         if (column.defaultLoad) {
           if (column.key === 'hospitalFirstRegistCode') {
             if (row[colIndex]) {
+              
               this.getHospitalsByCityCode(this.spreadsheet, row[colIndex], colIndex, rowIndex).then(data => {
                 this.spreadsheet.updateAutoComplete(colIndex, rowIndex, data);
               });
@@ -475,8 +477,8 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
   }
 
   private async getHospitalsByCityCode(table, keyword, c, r) {
-    const cityCode = table.getValueFromCoords(c - 5, r);
-
+    const indexOfCloumnRecipientsCityCode= this.columns.findIndex(c => c.key === 'recipientsCityCode');
+    const cityCode = table.getValueFromCoords(indexOfCloumnRecipientsCityCode, r);
     if (!cityCode) {
       return [];
     }

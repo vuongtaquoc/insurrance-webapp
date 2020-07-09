@@ -61,6 +61,7 @@ export class GeneralBaseComponent {
   tabSubscription: Subscription;
   selectedTab: number;
   handlers: any = [];
+  timer: any;
   constructor(
     protected declarationService: DeclarationService,
     protected modalService: NzModalService,
@@ -332,23 +333,26 @@ handleUserUpdated(user, tableName) {
         this.updateNextColumns(instance, r, '', [ c + 1, c + 2, c + 5, c + 6 ]);
       } else if (column.key === 'planCode') {
         //Phuong thức lấy note theo phương án
-        const planCode = records[r][c];
-        const planConfigInfo = validationColumnsPlanCode[planCode] || {note:{argsColumn: [], message: ''}};
-        const argsColumn = planConfigInfo.note.argsColumn || [] ;
-        const argsMessgae = [];
-        argsColumn.forEach(column => {
-          const indexOfColumn = this.headers[tableName].columns.findIndex(c => c.key === column);
-          argsMessgae.push(records[r][indexOfColumn]);
-        });
-        const indexColumnNote = this.headers[tableName].columns.findIndex(c => c.key === 'note');
-        const notebuild = this.formatNote(planConfigInfo.note.message, argsMessgae);
-        this.updateNextColumns(instance, r, notebuild, [indexColumnNote]);
+        clearTimeout(this.timer);
+        this.timer = setTimeout(() => {
+            const planCode = records[r][c];
+            const planConfigInfo = validationColumnsPlanCode[planCode] || {note:{argsColumn: [], message: ''}};
+            const argsColumn = planConfigInfo.note.argsColumn || [] ;
+            const argsMessgae = [];
+            argsColumn.forEach(column => {
+              const indexOfColumn = this.headers[tableName].columns.findIndex(c => c.key === column);
+              argsMessgae.push(records[r][indexOfColumn]);
+            });
+            const indexColumnNote = this.headers[tableName].columns.findIndex(c => c.key === 'note');
+            const notebuild = this.formatNote(planConfigInfo.note.message, argsMessgae);
+            this.updateNextColumns(instance, r, notebuild, [indexColumnNote]);
+          }, 10);
       }else if (column.key === 'hospitalFirstRegistCode') {
         const hospitalFirstCode = cell.innerText.split(' - ').shift();
 
         this.hospitalService.getById(hospitalFirstCode).subscribe(data => {
-          const name = `${ data.id } - ${ data.name }`;
-          this.updateNextColumns(instance, r, name, [ c + 1 ]);
+          //const name = `${ data.id } - ${ data.name }`;
+          this.updateNextColumns(instance, r,  data.name, [ c + 1 ]);
         });
 
       }
@@ -585,9 +589,8 @@ handleUserUpdated(user, tableName) {
 
   protected updateOriginByTableName(tableName) {
     const records = this.toTableRecords([ ...this.declarations[tableName].table ]);
-
+    
     this.declarations[tableName].origin = Object.values(this.updateOrigin(records, tableName));
-
     this.onChange.emit({
       action: ACTION.MUNTILEUPDATE,
       tableName,

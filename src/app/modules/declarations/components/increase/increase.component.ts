@@ -11,6 +11,7 @@ import { GeneralBaseComponent } from '@app/modules/declarations/components/adjus
 import { TABLE_HEADER_COLUMNS, TABLE_NESTED_HEADERS } from '@app/modules/declarations/data/increase-labor';
 import { Subject, forkJoin } from 'rxjs';
 import { eventEmitter } from '@app/shared/utils/event-emitter';
+import { log } from 'ng-zorro-antd';
 
 @Component({
   selector: 'app-increase',
@@ -99,6 +100,7 @@ export class IncreaseComponent extends GeneralBaseComponent implements OnInit, O
      if (changes.data && changes.data.currentValue && changes.data.currentValue.length) {
       const data = this.declarationService.updateDeclarations(changes.data.currentValue, TABLE_HEADER_COLUMNS, !this.declarationId);
       this.declarations.increaselabor.table = data;
+      this.updateOriginByTableName('increaselabor');
     }
   }
 
