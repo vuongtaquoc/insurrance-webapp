@@ -82,6 +82,9 @@ export class MaternityComponent extends RegimeApprovalBaseComponent implements O
       this.declarations.part1.table = data.part1;
       this.declarations.part2.table = data.part2;
 
+      this.updateOrders(this.declarations.part1.table);
+      this.updateOrders(this.declarations.part2.table);
+
       // update origin
       this.updateOriginByPart('part1');
       this.updateOriginByPart('part2');
