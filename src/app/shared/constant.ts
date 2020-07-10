@@ -75,96 +75,870 @@ export const DECLARATIONS =
 export const DOCUMENTBYPLANCODE =
 [
   {
-  key: 'TL',
-  value: [
-    {
-      documentType: 'Bản chính hợp đồng lao động',
-      documentNote: 'Hợp đồng lao động',
-      documentNo:  {
-        mesage: '',
-        column: [],
-      },
-      dateRelease: {
-        mesage: '',
-        column: [],
-      },
-      companyRelease: {
-        mesage: '',
-        column: [],
-      },
-      documentAppraisal: {
-        mesage: '',
-        column: [],
-      },
-      documentCode: 'TL_1',
-      isContract: true,
-    },
-    {
-      documentType: 'Bảng chỉnh lương',
-      documentNo: 'Bảng lương nhân viên',
-      documentCode: 'TL_2',
-      isContract: false,
-    }
-  ]},
-  {
-    key: 'TN',
+    key: 'TM',
     value: [
       {
-        documentName: 'Bản chính hợp đồng lao động',
+        documentType: 'Bản chính hợp đồng lao động',
         documentNote: 'Hợp đồng lao động',
-        documentCode: 'TN_1',
+        documentNo:  {
+          mesage: '{0}',
+          column: ['contractNo'],
+        },
+        companyRelease: {
+          mesage: '{0}',
+          column: ['companyRelease'],
+        },  
+        dateRelease: {
+          mesage: '{0}',
+          column: ['dateSign'],
+        },         
+        documentAppraisal: {
+          mesage: 'Truy tăng {0} từ {1}',
+          column: ['fullName', 'fromDate'],
+        },
+        documentCode: 'TM_1',
         isContract: true,
       },
       {
-        documentName: 'Bảng chỉnh lương',
+        documentType: 'Bản chính Bảng lương',
         documentNote: 'Bảng lương nhân viên',
-        documentCode: 'TN_1',
-        isContract: false,
-      }
-    ]},
-    {
-      key: 'TD',
-      value: [
-        {
-          documentName: 'Bản chính hợp đồng lao động',
-          documentNote: 'Hợp đồng lao động',
-          documentCode: 'TD_1',
-          isContract: true,
+        documentNo:  {
+          mesage: '{0}',
+          column: ['fromDate'],
         },
-        {
-          documentName: 'Bảng chỉnh lương',
-          documentNote: 'Bảng lương nhân viên',
-          documentCode: 'TD_1',
-          isContract: false,
-        }
-      ]},
+        companyRelease: {
+          mesage: '{0}',
+          column: ['companyRelease'],
+        },  
+        dateRelease: {
+          mesage: '',
+          column: [],
+        },         
+        documentAppraisal: {
+          mesage: 'Truy tăng {0} từ {1}',
+          column: ['fullName', 'fromDate'],
+        },
+        documentCode: 'TM_2',
+      }
+  ]},
+  {
+    key: 'TD',
+    value: [
       {
-        key: 'TH',
-        value: [
-          {
-            documentName: 'Bản chính hợp đồng lao động',
-            documentNote: 'Hợp đồng lao động',
-            documentCode: 'TH_1',
-            isContract: true,
-          },
-          {
-            documentName: 'Bảng chỉnh lương',
-            documentNote: 'Bảng lương nhân viên',
-            documentCode: 'TH_2',
-            isContract: false,
-          }
-        ]},
-        ,
+        documentType: 'Bản chính hợp đồng lao động',
+        documentNote: 'Hợp đồng lao động',
+        documentNo:  {
+          mesage: '{0}',
+          column: ['contractNo'],
+        },
+        companyRelease: {
+          mesage: '{0}',
+          column: ['companyRelease'],
+        },  
+        dateRelease: {
+          mesage: '{0}',
+          column: ['dateSign'],
+        },         
+        documentAppraisal: {
+          mesage: 'Truy tăng {0} từ {1}',
+          column: ['fullName', 'fromDate'],
+        },
+        documentCode: 'TD_1',
+        isContract: true,
+      },
       {
-        key: 'AD',
-        value: [
-          {
-            documentName: 'Bảng chỉnh lương',
-            documentNote: 'Bảng lương nhân viên',
-            documentCode: 'AD_1',
-            isContract: false,
-          }
-        ]},
+        documentType: 'Bản chính Bảng lương',
+        documentNote: 'Bảng lương nhân viên',
+        documentNo:  {
+          mesage: '{0}',
+          column: ['fromDate'],
+        },
+        companyRelease: {
+          mesage: '{0}',
+          column: ['companyRelease'],
+        },  
+        dateRelease: {
+          mesage: '',
+          column: [],
+        },         
+        documentAppraisal: {
+          mesage: 'Truy tăng {0} từ {1}',
+          column: ['fullName', 'fromDate'],
+        },
+        documentCode: 'TD_2',
+      }
+  ]},
+  {
+    key: 'TC',
+    value: [
+      {
+        documentType: 'Bản chính hợp đồng lao động',
+        documentNote: 'Hợp đồng lao động',
+        documentNo:  {
+          mesage: '{0}',
+          column: ['contractNo'],
+        },
+        companyRelease: {
+          mesage: '{0}',
+          column: ['companyRelease'],
+        },  
+        dateRelease: {
+          mesage: '{0}',
+          column: ['dateSign'],
+        },         
+        documentAppraisal: {
+          mesage: 'Truy tăng {0} từ {1}',
+          column: ['fullName', 'fromDate'],
+        },
+        documentCode: 'TC_1',
+        isContract: true,
+      },
+      {
+        documentType: 'Bản chính Bảng lương',
+        documentNote: 'Bảng lương nhân viên',
+        documentNo:  {
+          mesage: '{0}',
+          column: ['fromDate'],
+        },
+        companyRelease: {
+          mesage: '{0}',
+          column: ['companyRelease'],
+        },  
+        dateRelease: {
+          mesage: '',
+          column: [],
+        },         
+        documentAppraisal: {
+          mesage: 'Truy tăng {0} từ {1}',
+          column: ['fullName', 'fromDate'],
+        },
+        documentCode: 'TC_2',
+      }
+  ]},
+  {
+    key: 'TH',
+    value: [
+      {
+        documentType: 'Bản chính hợp đồng lao động',
+        documentNote: 'Hợp đồng lao động',
+        documentNo:  {
+          mesage: '',
+          column: ['contractNo'],
+        },
+        companyRelease: {
+          mesage: '{0}',
+          column: ['companyRelease'],
+        },  
+        dateRelease: {
+          mesage: '{0}',
+          column: ['dateSign'],
+        },         
+        documentAppraisal: {
+          mesage: 'Truy tăng {0} từ {1}',
+          column: ['fullName', 'fromDate'],
+        },
+        documentCode: 'TH_1',
+        isContract: true,
+      },
+      {
+        documentType: 'Bản chính Bảng lương',
+        documentNote: 'Bảng lương nhân viên',
+        documentNo:  {
+          mesage: '{0}',
+          column: ['fromDate'],
+        },
+        companyRelease: {
+          mesage: '{0}',
+          column: ['companyRelease'],
+        },  
+        dateRelease: {
+          mesage: '',
+          column: [],
+        },         
+        documentAppraisal: {
+          mesage: 'Truy tăng {0} từ {1}',
+          column: ['fullName', 'fromDate'],
+        },
+        documentCode: 'TH_2',
+      }
+  ]},
+  {
+    key: 'AD',
+    value: [
+      {
+        documentType: 'Bản chính Bảng lương',
+        documentNote: 'Bảng lương nhân viên',
+        documentNo:  {
+          mesage: '{0}',
+          column: ['fromDate'],
+        },
+        companyRelease: {
+          mesage: '{0}',
+          column: ['companyRelease'],
+        },  
+        dateRelease: {
+          mesage: '',
+          column: [],
+        },     
+        documentAppraisal: {
+          mesage: 'Truy tăng {0} từ {1}',
+          column: ['fullName', 'fromDate'],
+        },
+        documentCode: 'AD_1',
+      }
+  ]},
+  {
+    key: 'AT',
+    value: [
+      {
+        documentType: '',
+        documentNote: '',
+        documentNo:  {
+          mesage: '{0}',
+          column: ['contractNo'],
+        },
+        companyRelease: {
+          mesage: '',
+          column: [],
+        },  
+        dateRelease: {
+          mesage: '{0}',
+          column: ['dateSign'],
+        },           
+        documentAppraisal: {
+          mesage: '',
+          column: [],
+        },
+        documentCode: 'AT_1',
+      }
+  ]},
+  {
+    key: 'ON (ts)',
+    value: [       
+      {
+        documentType: 'Bản chính Bảng lương',
+        documentNote: 'Bảng lương nhân viên',
+        documentNo:  {
+          mesage: '{0}',
+          column: ['fromDate'],
+        },
+        companyRelease: {
+          mesage: '{0}',
+          column: ['companyRelease'],
+        },  
+        dateRelease: {
+          mesage: '',
+          column: [],
+        },         
+        documentAppraisal: {
+          mesage: 'Truy tăng {0} từ {1}',
+          column: ['fullName', 'fromDate'],
+        },
+        documentCode: 'ON (ts)_1',
+      }
+  ]},{
+    key: 'ON (kl)',
+    value: [       
+      {
+        documentType: 'Bản chính Bảng lương',
+        documentNote: 'Bảng lương nhân viên',
+        documentNo:  {
+          mesage: '{0}',
+          column: ['fromDate'],
+        },
+        companyRelease: {
+          mesage: '{0}',
+          column: ['companyRelease'],
+        },  
+        dateRelease: {
+          mesage: '',
+          column: [],
+        },         
+        documentAppraisal: {
+          mesage: 'Truy tăng {0} từ {1}',
+          column: ['fullName', 'fromDate'],
+        },
+        documentCode: 'ON (kl)_1',
+      }
+  ]},
+  {
+    key: 'ON (om)',
+    value: [       
+      {
+        documentType: 'Bản chính Bảng lương',
+        documentNote: 'Bảng lương nhân viên',
+        documentNo:  {
+          mesage: '{0}',
+          column: ['fromDate'],
+        },
+        companyRelease: {
+          mesage: '{0}',
+          column: ['companyRelease'],
+        },  
+        dateRelease: {
+          mesage: '',
+          column: [],
+        },         
+        documentAppraisal: {
+          mesage: 'Truy tăng {0} từ {1}',
+          column: ['fullName', 'fromDate'],
+        },
+        documentCode: 'ON (om)_1',
+      }
+  ]},{
+    key: 'GH1',
+    value: [
+      {
+        documentType: 'Bản chính Quyết định',
+        documentNote: 'Quyết định nghỉ việc',
+        documentNo:  {
+          mesage: '',
+          column: [],
+        },
+        companyRelease: {
+          mesage: '{0}',
+          column: ['companyRelease'],
+        },  
+        dateRelease: {
+          mesage: '',
+          column: [],
+        },         
+        documentAppraisal: {
+          mesage: 'Truy tăng {0} từ {1}',
+          column: ['fullName', 'fromDate'],
+        },
+        documentCode: 'GH1_1',
+        isContract: true,
+      },
+      {
+        documentType: 'Bản chính Bảng lương',
+        documentNote: 'Bảng lương nhân viên',
+        documentNo:  {
+          mesage: '{0}',
+          column: ['fromDate'],
+        },
+        companyRelease: {
+          mesage: '{0}',
+          column: ['companyRelease'],
+        },  
+        dateRelease: {
+          mesage: '',
+          column: [],
+        },         
+        documentAppraisal: {
+          mesage: 'Truy tăng {0} từ {1}',
+          column: ['fullName', 'fromDate'],
+        },
+        documentCode: 'GH1_2',
+      }
+  ]},{
+    key: 'GH2',
+    value: [
+      {
+        documentType: 'Bản chính Quyết định',
+        documentNote: 'Quyết định nghỉ hưu',
+        documentNo:  {
+          mesage: '',
+          column: [],
+        },
+        companyRelease: {
+          mesage: '{0}',
+          column: ['companyRelease'],
+        },  
+        dateRelease: {
+          mesage: '',
+          column: [],
+        },         
+        documentAppraisal: {
+          mesage: 'Truy tăng {0} từ {1}',
+          column: ['fullName', 'fromDate'],
+        },
+        documentCode: 'GH2_1',
+        isContract: true,
+      },
+      {
+        documentType: 'Bản chính Bảng lương',
+        documentNote: 'Bảng lương nhân viên',
+        documentNo:  {
+          mesage: '{0}',
+          column: ['fromDate'],
+        },
+        companyRelease: {
+          mesage: '{0}',
+          column: ['companyRelease'],
+        },  
+        dateRelease: {
+          mesage: '',
+          column: [],
+        },         
+        documentAppraisal: {
+          mesage: 'Truy tăng {0} từ {1}',
+          column: ['fullName', 'fromDate'],
+        },
+        documentCode: 'GH2_2',
+      }
+  ]},{
+    key: 'GH3',
+    value: [
+      {
+        documentType: 'Bản chính Quyết định',
+        documentNote: 'Quyết định nghỉ việc',
+        documentNo:  {
+          mesage: '',
+          column: [],
+        },
+        companyRelease: {
+          mesage: '{0}',
+          column: ['companyRelease'],
+        },  
+        dateRelease: {
+          mesage: '',
+          column: [],
+        },         
+        documentAppraisal: {
+          mesage: 'Truy tăng {0} từ {1}',
+          column: ['fullName', 'fromDate'],
+        },
+        documentCode: 'GH3_1',
+        isContract: true,
+      },
+      {
+        documentType: 'Bản chính Bảng lương',
+        documentNote: 'Bảng lương nhân viên',
+        documentNo:  {
+          mesage: '{0}',
+          column: ['fromDate'],
+        },
+        companyRelease: {
+          mesage: '{0}',
+          column: ['companyRelease'],
+        },  
+        dateRelease: {
+          mesage: '',
+          column: [],
+        },         
+        documentAppraisal: {
+          mesage: 'Truy tăng {0} từ {1}',
+          column: ['fullName', 'fromDate'],
+        },
+        documentCode: 'GH3_2',
+      }
+  ]},{
+    key: 'GH4',
+    value: [
+      {
+        documentType: 'Giấy chứng tử',
+        documentNote: 'Quyết định nghỉ việc',
+        documentNo:  {
+          mesage: '',
+          column: [],
+        },
+        companyRelease: {
+          mesage: '{0}',
+          column: ['companyRelease'],
+        },  
+        dateRelease: {
+          mesage: '',
+          column: [],
+        },         
+        documentAppraisal: {
+          mesage: 'Truy tăng {0} từ {1}',
+          column: ['fullName', 'fromDate'],
+        },
+        documentCode: 'GH4_1',
+        isContract: true,
+      },
+      {
+        documentType: 'Bản chính Bảng lương',
+        documentNote: 'Bảng lương nhân viên',
+        documentNo:  {
+          mesage: '{0}',
+          column: ['fromDate'],
+        },
+        companyRelease: {
+          mesage: '{0}',
+          column: ['companyRelease'],
+        },  
+        dateRelease: {
+          mesage: '',
+          column: [],
+        },         
+        documentAppraisal: {
+          mesage: 'Truy tăng {0} từ {1}',
+          column: ['fullName', 'fromDate'],
+        },
+        documentCode: 'GH4_2',
+      }
+  ]} ,{
+    key: 'GC',
+    value: [
+      {
+        documentType: 'Giấy chứng tử',
+        documentNote: 'Quyết định nghỉ việc',
+        documentNo:  {
+          mesage: '',
+          column: [],
+        },
+        companyRelease: {
+          mesage: '{0}',
+          column: ['companyRelease'],
+        },  
+        dateRelease: {
+          mesage: '',
+          column: [],
+        },         
+        documentAppraisal: {
+          mesage: 'Truy tăng {0} từ {1}',
+          column: ['fullName', 'fromDate'],
+        },
+        documentCode: 'GC_1',
+        isContract: true,
+      },
+      {
+        documentType: 'Bản chính Bảng lương',
+        documentNote: 'Bảng lương nhân viên',
+        documentNo:  {
+          mesage: '{0}',
+          column: ['fromDate'],
+        },
+        companyRelease: {
+          mesage: '{0}',
+          column: ['companyRelease'],
+        },  
+        dateRelease: {
+          mesage: '',
+          column: [],
+        },         
+        documentAppraisal: {
+          mesage: 'Truy tăng {0} từ {1}',
+          column: ['fullName', 'fromDate'],
+        },
+        documentCode: 'GC_2',
+      }
+  ]},{
+    key: 'GD',
+    value: [
+      {
+        documentType: 'Bản chính Quyết định',
+        documentNote: 'Quyết định nghỉ việc',
+        documentNo:  {
+          mesage: '',
+          column: [],
+        },
+        companyRelease: {
+          mesage: '{0}',
+          column: ['companyRelease'],
+        },  
+        dateRelease: {
+          mesage: '',
+          column: [],
+        },         
+        documentAppraisal: {
+          mesage: 'Truy tăng {0} từ {1}',
+          column: ['fullName', 'fromDate'],
+        },
+        documentCode: 'GD_1',
+        isContract: true,
+      },
+      {
+        documentType: 'Bản chính Bảng lương',
+        documentNote: 'Bảng lương nhân viên',
+        documentNo:  {
+          mesage: '{0}',
+          column: ['fromDate'],
+        },
+        companyRelease: {
+          mesage: '{0}',
+          column: ['companyRelease'],
+        },  
+        dateRelease: {
+          mesage: '',
+          column: [],
+        },         
+        documentAppraisal: {
+          mesage: 'Truy tăng {0} từ {1}',
+          column: ['fullName', 'fromDate'],
+        },
+        documentCode: 'GD_2',
+      }
+  ]},{
+    key: 'SB',
+    value: [
+      {
+        documentType: 'Bản chính Bảng lương',
+        documentNote: 'Quyết định nghỉ việc',
+        documentNo:  {
+          mesage: '',
+          column: [],
+        },
+        companyRelease: {
+          mesage: '{0}',
+          column: ['companyRelease'],
+        },  
+        dateRelease: {
+          mesage: '',
+          column: [],
+        },         
+        documentAppraisal: {
+          mesage: 'Truy tăng {0} từ {1}',
+          column: ['fullName', 'fromDate'],
+        },
+        documentCode: 'SB_1',
+        isContract: true,
+      },
+      {
+        documentType: 'Bản chính Bảng lương',
+        documentNote: 'Bảng lương nhân viên',
+        documentNo:  {
+          mesage: '{0}',
+          column: ['fromDate'],
+        },
+        companyRelease: {
+          mesage: '{0}',
+          column: ['companyRelease'],
+        },  
+        dateRelease: {
+          mesage: '',
+          column: [],
+        },         
+        documentAppraisal: {
+          mesage: 'Truy tăng {0} từ {1}',
+          column: ['fullName', 'fromDate'],
+        },
+        documentCode: 'SB_2',
+      }
+  ]} ,{
+    key: 'OF',
+    value: [
+      {
+        documentType: 'Giấy ra viện/Chứng nhận nghỉ việc hưởng BHXH',
+        documentNote: 'Quyết định nghỉ việc',
+        documentNo:  {
+          mesage: '',
+          column: [],
+        },
+        companyRelease: {
+          mesage: '',
+          column: [],
+        },  
+        dateRelease: {
+          mesage: '',
+          column: [],
+        },         
+        documentAppraisal: {
+          mesage: '',
+          column: [],
+        },
+        documentCode: '0F_1',
+      },
+      {
+        documentType: 'Bản chính Bảng lương',
+        documentNote: 'Bảng lương nhân viên',
+        documentNo:  {
+          mesage: '{0}',
+          column: ['fromDate'],
+        },
+        companyRelease: {
+          mesage: '{0}',
+          column: ['companyRelease'],
+        },  
+        dateRelease: {
+          mesage: '',
+          column: [],
+        },         
+        documentAppraisal: {
+          mesage: 'Truy tăng {0} từ {1}',
+          column: ['fullName', 'fromDate'],
+        },
+        documentCode: 'OF_2',
+      }
+  ]},{
+    key: 'KL',
+    value: [
+     {
+        documentType: 'Bản chính Bảng lương',
+        documentNote: 'Bảng lương nhân viên',
+        documentNo:  {
+          mesage: '{0}',
+          column: ['fromDate'],
+        },
+        companyRelease: {
+          mesage: '{0}',
+          column: ['companyRelease'],
+        },  
+        dateRelease: {
+          mesage: '',
+          column: [],
+        },         
+        documentAppraisal: {
+          mesage: 'Truy tăng {0} từ {1}',
+          column: ['fullName', 'fromDate'],
+        },
+        documentCode: 'KL_1',
+      }
+  ]},{
+    key: 'TS',
+    value: [
+      {
+        documentType: 'Giấy khai sinh/Giấy chứng sinh con',
+        documentNote: '',
+        documentNo:  {
+          mesage: '',
+          column: [],
+        },
+        companyRelease: {
+          mesage: '',
+          column: [],
+        },  
+        dateRelease: {
+          mesage: '',
+          column: [],
+        },         
+        documentAppraisal: {
+          mesage: '',
+          column: [],
+        },
+        documentCode: 'TS_1',
+      },
+      {
+        documentType: 'Bản chính Bảng lương',
+        documentNote: 'Bảng lương nhân viên',
+        documentNo:  {
+          mesage: '{0}',
+          column: ['fromDate'],
+        },
+        companyRelease: {
+          mesage: '{0}',
+          column: ['companyRelease'],
+        },  
+        dateRelease: {
+          mesage: '',
+          column: [],
+        },         
+        documentAppraisal: {
+          mesage: 'Truy tăng {0} từ {1}',
+          column: ['fullName', 'fromDate'],
+        },
+        documentCode: 'TS_2',
+      }
+  ]},{
+    key: 'DC',
+    value: [
+      {
+        documentType: 'Bản chính Quyết định',
+        documentNote: 'Quyết định điều chỉnh lương, chức danh',
+        documentNo:  {
+          mesage: '',
+          column: [],
+        },
+        companyRelease: {
+          mesage: '{0}',
+          column: ['companyRelease'],
+        },  
+        dateRelease: {
+          mesage: '',
+          column: [],
+        },         
+        documentAppraisal: {
+          mesage: 'Thay đổi lương, chức danh {0} từ {1}',
+          column: ['fullName', 'fromDate'],
+        },
+        documentCode: 'DC_1',
+      },
+      {
+        documentType: 'Bản chính Bảng lương',
+        documentNote: 'Bảng lương nhân viên',
+        documentNo:  {
+          mesage: '{0}',
+          column: ['fromDate'],
+        },
+        companyRelease: {
+          mesage: '{0}',
+          column: ['companyRelease'],
+        },  
+        dateRelease: {
+          mesage: '',
+          column: [],
+        },         
+        documentAppraisal: {
+          mesage: 'Thay đổi lương, chức danh {0} từ {1}',
+          column: ['fullName', 'fromDate'],
+        },
+        documentCode: 'DC_2',
+      }
+  ]},{
+    key: 'CD',
+    value: [
+      {
+        documentType: 'Bản chính Quyết định',
+        documentNote: 'Quyết định điều chỉnh chức danh',
+        documentNo:  {
+          mesage: '',
+          column: [],
+        },
+        companyRelease: {
+          mesage: '{0}',
+          column: ['companyRelease'],
+        },  
+        dateRelease: {
+          mesage: '',
+          column: [],
+        },         
+        documentAppraisal: {
+          mesage: 'Thay đổi chức danh {0} từ {1}',
+          column: ['fullName', 'fromDate'],
+        },
+        documentCode: 'CD_1',
+      } 
+  ]},{
+    key: 'DN',
+    value: [
+      {
+        documentType: '',
+        documentNote: '',
+        documentNo:  {
+          mesage: '',
+          column: [],
+        },
+        companyRelease: {
+          mesage: '{0}',
+          column: ['companyRelease'],
+        },  
+        dateRelease: {
+          mesage: '',
+          column: [],
+        },         
+        documentAppraisal: {
+          mesage: '',
+          column: [],
+        },
+        documentCode: 'DN_1',
+      } 
+  ]},{
+    key: 'TV',
+    value: [
+      {
+        documentType: '',
+        documentNote: '',
+        documentNo:  {
+          mesage: '',
+          column: [],
+        },
+        companyRelease: {
+          mesage: '',
+          column: [],
+        },  
+        dateRelease: {
+          mesage: '',
+          column: [],
+        },         
+        documentAppraisal: {
+          mesage: '',
+          column: [],
+        },
+        documentCode: 'TV_1',
+      } 
+  ]}   
 ];
 
 export const ErrorMessage = {

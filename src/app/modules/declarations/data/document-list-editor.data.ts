@@ -93,21 +93,32 @@ export const TABLE_DOCUMENT_HEADER_COLUMNS = [{
   wordWrap: true,
   title: '(9)',
   align: 'left',
-  key: 'companyRelease'
+  key: 'companyRelease',
+  fieldName: 'Cơ quan ban hành văn bản',
+  validations: {
+    required: true
+  }
 }, {
   type: 'text',
   width: 200,
   title: '(10)',
   align: 'left',
   wordWrap: true,
-  key: 'documentNote'
+  fieldName: 'Trích yếu văn bản',
+  key: 'documentNote',
+  validations: {
+    required: true
+  }
 }, {
   type: 'text',
   width: 260,
   title: '(11)',
   wordWrap: true,
   align: 'left',
-  key: 'documentAppraisal'
+  key: 'documentAppraisal',
+  validations: {
+    required: true
+  }
 },
 {
   type: 'hidden',

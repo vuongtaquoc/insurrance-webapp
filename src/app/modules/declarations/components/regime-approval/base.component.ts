@@ -212,17 +212,6 @@ export class RegimeApprovalBaseComponent {
   }
 
   handleUserDeleted(user, part) {
-    // const indexes: any = this.declarations[part].table.reduce(
-    //   (combine, d, index) => {
-    //     if (d.isLeaf && d.origin && (d.origin.employeeId || d.origin.id) === user.id) {
-    //       return [...combine, index];
-    //     }
-
-    //     return [...combine];
-    //   },
-    //   []
-    // );
-
     this.tableSubject.next({
       type: 'deleteUser',
       user,

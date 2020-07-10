@@ -10,6 +10,11 @@ export const validationColumnsPlanCode: any = {
     note: {
       message: 'Điều chỉnh tiền lương',
       argsColumn: []
+    },
+    copy: {
+      type: 'I_1',
+      note: 'Truy thu BHYT',
+      tableName : 'reductionlabor'
     }
   },
   'DC': {
@@ -63,6 +68,11 @@ export const validationColumnsPlanCode: any = {
       message: 'Điều chỉnh lương/điều chỉnh chức danh tham gia BH TNLĐ, BNN',
       argsColumn: []   
     }
+  },'DN' : {
+    note: {
+      message: 'Điều chỉnh tham gia thất nghiệp',
+      argsColumn: []   
+    }
   },
   'GH2': {
     contractNo: {
@@ -72,7 +82,7 @@ export const validationColumnsPlanCode: any = {
       required: true,
       lessThanNow: true
     },note: {
-      message: '', 
+      message: 'Nghỉ hưu', 
       argsColumn: []    
     }
   },
@@ -84,7 +94,7 @@ export const validationColumnsPlanCode: any = {
       required: true,
       lessThanNow: true
     },note: {
-      message: '', 
+      message: 'Nghỉ thai sản/ốm/không lương chuyển sang Giảm', 
       argsColumn: []    
     }
   },
@@ -92,7 +102,7 @@ export const validationColumnsPlanCode: any = {
     motherDayDead: {
       required: true
     },note: {
-      message: '', 
+      message: 'Giảm hẳn do chết, người lao động chết, ngày chết ', 
       argsColumn: []    
     }
   },
@@ -104,7 +114,7 @@ export const validationColumnsPlanCode: any = {
       required: true,
       lessThanNow: true
     },note: {
-      message: '', 
+      message: 'Giảm do chuyển tỉnh', 
       argsColumn: []    
     }
   },
@@ -116,7 +126,7 @@ export const validationColumnsPlanCode: any = {
       required: true,
       lessThanNow: true
     },note: {
-      message: '', 
+      message: 'Giảm do chuyển đơn vị', 
       argsColumn: []    
     }
   },
@@ -125,7 +135,22 @@ export const validationColumnsPlanCode: any = {
       required: true,
       lessThanNow: true
     },note: {
-      message: '', 
+      message: 'Giảm nguyên lương', 
+      argsColumn: []    
+    }
+  },'OF': {
+    note: {
+      message: 'Nghỉ ốm', 
+      argsColumn: []    
+    }
+  },'KL': {
+    note: {
+      message: 'Nghỉ không lương', 
+      argsColumn: []    
+    }
+  },'TS': {
+    note: {
+      message: 'Nghỉ thai sản', 
       argsColumn: []    
     }
   },

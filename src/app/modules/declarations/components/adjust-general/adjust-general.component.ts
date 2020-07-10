@@ -881,85 +881,55 @@ private setDateToInformationList(records: any)
   const informations = [];
 
   employeesInDeclaration.forEach(emp => {
-
+    emp.companyRelease = this.currentCredentials.companyInfo.name;
     const fromDate = this.getFromDate(emp.fromDate);
     const curentDate = new Date();
     const  numberFromDate = (fromDate.getMonth() + 1 + fromDate.getFullYear());
     const  numberCurentDate = (curentDate.getMonth() + 1 + curentDate.getFullYear());
+    
+
     if(numberFromDate >= numberCurentDate)
     {
       return;
     }
 
     const documents = this.getDocumentByPlancode(emp.planCode);
-
     if(!documents) {
+      return '';
+    }
 
-      let item = {
-        fullName: emp.fullName,
-        isurranceNo: emp.isurranceNo,
-        documentNo: '',
-        dateRelease: '',
-        isurranceCode: emp.isurranceCode,
-        documentType: '',
-        companyRelease: this.currentCredentials.companyInfo.name,
-        documentNote: '',
-        documentAppraisal: '',
-        documentCode: 'manual',
+    documents.forEach(doc => {
+      let item = _.find(this.informations, {
         planCode: emp.planCode,
         employeeId: emp.employeeId,
-        //documentAppraisal: ('Truy tăng ' + emp.fullName + ' từ ' + emp.fromDate),
-        origin: {
-          employeeId: emp.employeeId,
-          isLeaf: true,
-          documentCode: 'manual',
-          planCode: emp.planCode,
-        }
-      };
-      informations.push(item);
-
-    }else {
-
-      documents.forEach(doc => {
-        let item = _.find(this.informations, {
-          planCode: emp.planCode,
-          employeeId: emp.employeeId,
-          documentCode: doc.documentCode,
-        });
-        if (!item) {
-            item = {
-              fullName: emp.fullName,
-              isurranceNo: emp.isurranceNo,
-              documentNo: '',
-              dateRelease: '',
-              isurranceCode: emp.isurranceCode,
-              documentType: doc.documentName,
-              companyRelease: this.currentCredentials.companyInfo.name,
-              documentNote: doc.documentNote,
-              documentAppraisal: ('Truy tăng ' + emp.fullName + ' từ ' + emp.fromDate),
-              documentCode: doc.documentCode,
-              planCode: emp.planCode,
-              employeeId: emp.employeeId,
-              origin: {
-                employeeId: emp.employeeId,
-                isLeaf: true,
-                planCode: emp.planCode,
-                documentCode: doc.documentCode,
-              }
-            };
-    
-            if(doc.isContract) {
-              item.documentNo = emp.contractNo;
-              item.dateRelease =  emp.dateSign;
-            }else {
-              item.dateRelease = emp.fromDate;
-            }
-        }
-        item.isurranceNo = emp.isurranceNo;
-        informations.push(item);
+        documentCode: doc.documentCode,
       });
-
-    }
+      console.log(emp, 'XXXXXX');
+      if (!item) {
+        item = {
+            documentNote: doc.documentNote,
+            documentType: doc.documentType,  
+            isurranceNo: emp.isurranceNo,           
+            isurranceCode: emp.isurranceCode,    
+            fullName: emp.fullName,
+            companyRelease: this.buildMessgaeByConfig(doc.companyRelease,emp),
+            documentNo: this.buildMessgaeByConfig(doc.documentNo,emp),           
+            documentAppraisal: this.buildMessgaeByConfig(doc.documentAppraisal,emp),
+            dateRelease: this.buildMessgaeByConfig(doc.dateRelease,emp),
+            documentCode: doc.documentCode,
+            planCode: emp.planCode,
+            employeeId: emp.employeeId,
+            origin: {
+              employeeId: emp.employeeId,
+              isLeaf: true,
+              planCode: emp.planCode,
+              documentCode: doc.documentCode,
+            }
+        }; 
+      }
+      item.isurranceNo = emp.isurranceNo;
+      informations.push(item);
+    });
 
     informations.forEach(p => {
       p.data = this.tableHeaderColumnsDocuments.map(column => {
@@ -1023,26 +993,43 @@ private setDateToInformationList(records: any)
 // End Document list Tab
 
   validDocumentForm() {
-    const formError: any[] = [];
-    if(this.documentForm.controls.submitter.errors) {
-      formError.push({
-        y: 'Người nộp',
-        columnName: 'Kiểm tra lại trường người nộp',
-        prefix: '',
-        subfix: 'Lỗi'
-      });
-    }
+      const formError: any[] = [];
+      if(this.documentForm.controls.submitter.errors) {
+        formError.push({
+          y: 'Người nộp',
+          columnName: 'Kiểm tra lại trường người nộp',
+          prefix: '',
+          subfix: 'Lỗi'
+        });
+      }
 
-    if(this.documentForm.controls.mobile.errors) {
-      formError.push({
-        y: 'Số điện thoại',
-        columnName: 'Kiểm tra lại trường số điện thoại',
-        prefix: '',
-        subfix: 'Lỗi'
-      });
-    }
+      if(this.documentForm.controls.mobile.errors) {
+        formError.push({
+          y: 'Số điện thoại',
+          columnName: 'Kiểm tra lại trường số điện thoại',
+          prefix: '',
+          subfix: 'Lỗi'
+        });
+      }
 
-    return formError;
+      return formError;
+  }
+
+ private buildMessgaeByConfig(objConfig, employeeInfo) {
+    const argsColumn = objConfig.column || [] ;
+    const mesage = objConfig.mesage || '' ;
+    const argsMessgae = [];
+    argsColumn.forEach(column => { 
+      argsMessgae.push(employeeInfo[column]);
+    });
+
+    return this.formatNote(mesage, argsMessgae);;
+  }
+
+  protected formatNote(str, args) {
+    for (let i = 0; i < args.length; i++)
+       str = str.replace("{" + i + "}", args[i]);
+    return str;
   }
   
 }

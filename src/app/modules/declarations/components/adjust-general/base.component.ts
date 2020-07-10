@@ -332,7 +332,7 @@ handleUserUpdated(user, tableName) {
       } else if (column.key === 'recipientsCityCode') {
         this.updateNextColumns(instance, r, '', [ c + 1, c + 2, c + 5, c + 6 ]);
       } else if (column.key === 'planCode') {
-        //Phuong thức lấy note theo phương án
+        //Lấy mô tả theo phương án người dùng chọn
         clearTimeout(this.timer);
         this.timer = setTimeout(() => {
             const planCode = records[r][c];
@@ -351,7 +351,6 @@ handleUserUpdated(user, tableName) {
         const hospitalFirstCode = cell.innerText.split(' - ').shift();
 
         this.hospitalService.getById(hospitalFirstCode).subscribe(data => {
-          //const name = `${ data.id } - ${ data.name }`;
           this.updateNextColumns(instance, r,  data.name, [ c + 1 ]);
         });
 
@@ -461,7 +460,6 @@ handleUserUpdated(user, tableName) {
       declarationsDeleted = declarations.splice(rowNumber, numOfRows);
     }
 
-    // declarations.splice(rowNumber, numOfRows);
 
     this.updateOrders(declarations);
 

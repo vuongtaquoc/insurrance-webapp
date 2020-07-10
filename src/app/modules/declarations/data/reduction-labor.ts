@@ -345,6 +345,7 @@ export const TABLE_REDUCTION_HEADER_COLUMNS = [{
   type: 'text',
   width: 180,
   title: '(24)',
+  wordWrap: true,
   key: 'note'
 },{
   type: 'hidden',
