@@ -73,11 +73,13 @@ export const TABLE_HEADER_COLUMNS = [{
   title: '(2)',
   fieldName: 'Họ và tên',
   key: 'fullName',
-  validations: {
+  warnings: {
     duplicateUserFields: {
       primary: 'fullName',
       check: ['employeeId']
     },
+  },
+  validations: {
     required: true,
   }
 }, {
@@ -92,11 +94,13 @@ export const TABLE_HEADER_COLUMNS = [{
   width: 120,
   title: '(4)',
   key: 'isurranceNo',
-  validations: {
+  warnings: {
     duplicateUserFields: {
       primary: 'isurranceNo',
       check: ['employeeId']
     },
+  },
+  validations: {
     required: true,
   }
 }, {
@@ -122,7 +126,7 @@ export const TABLE_HEADER_COLUMNS = [{
   title: '(6)',
   source: [ { id: '3', name: 'Ngày tháng năm' },{ id: '1', name: 'tháng/năm' }, { id: '2', name: 'năm' } ],
   key: 'typeBirthday',
-  validations: {
+  warnings: {
     duplicateUserFields: {
       primary: 'typeBirthday',
       check: ['fullName']
@@ -146,7 +150,7 @@ export const TABLE_HEADER_COLUMNS = [{
   title: '(9)',
   source: [ 'Chọn' ],
   key: 'peopleCode',
-  validations: {
+  warnings: {
     duplicateUserFields: {
       primary: 'peopleCode',
       check: ['fullName']
@@ -160,7 +164,7 @@ export const TABLE_HEADER_COLUMNS = [{
   source: [ 'Chọn' ],
   align: 'left',
   key: 'nationalityCode',
-  validations: {
+  warnings: {
     duplicateUserFields: {
       primary: 'nationalityCode',
       check: ['fullName']
