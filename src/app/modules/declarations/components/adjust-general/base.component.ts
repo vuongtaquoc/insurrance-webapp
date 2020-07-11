@@ -212,7 +212,8 @@ handleUserUpdated(user, tableName) {
       action: ACTION.MUNTILEADD,
       tableName,
       data: this.declarations[tableName].origin,
-      dataChange : []
+      dataChange : [],
+      columns: this.headers[tableName].columns,
     });
 
     // clean employee
@@ -377,6 +378,7 @@ handleUserUpdated(user, tableName) {
       tableName,
       data: this.declarations[tableName].origin,
       dataChange : [],
+      columns: this.headers[tableName].columns,
     });
 
     this.tableSubject.next({
@@ -430,6 +432,7 @@ handleUserUpdated(user, tableName) {
       tableName,
       data: this.declarations[tableName].origin,
       dataChange : [],
+      columns: this.headers[tableName].columns,
     });
 
     this.tableSubject.next({
@@ -445,13 +448,15 @@ handleUserUpdated(user, tableName) {
 
     if (!((beforeRow.options && beforeRow.options.isLeaf) || (afterRow.options && afterRow.options.isLeaf))) {
       const row: any = declarations[rowNumber];
-      declarationsDeleted.push(row);
       const origin = { ...row.data.origin };
       const options = { ...row.data.options };
-
       origin.employeeId = 0;
       origin.id = 0;
-
+      declarationsDeleted.push( {
+          data: [...row.data],
+          origin: { ...row.data.origin },
+          options: { ...row.data.options }
+      });
       row.data = [];
       row.origin = origin;
       row.options = options;
@@ -473,6 +478,7 @@ handleUserUpdated(user, tableName) {
       tableName,
       data: this.declarations[tableName].origin,
       dataChange : declarationsDeleted,
+      columns: this.headers[tableName].columns,
     });
 
     this.tableSubject.next({
@@ -594,6 +600,7 @@ handleUserUpdated(user, tableName) {
       tableName,
       data: this.declarations[tableName].origin,
       dataChange : [],
+      columns: this.headers[tableName].columns,
     });
     this.tableSubject.next({
       type: 'validate'

@@ -210,6 +210,10 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
       this.setDateToInformationList(this.declarations.tables);
     }
 
+    if (data.action === ACTION.DELETE) {
+      this.deleteEmployeeInInfomation(data.data, data.dataChange, data.columns);
+    }
+
     this.notificeEventValidData('documentList');
 
     if(tableName !== 'increaselabor') {
@@ -774,7 +778,21 @@ private setDataToFamilyEditor(records: any)
     });
   }
 
-  deleteEmployeeInFamilies(declarations ,declarationsDeleted) {
+  deleteEmployeeInInfomation(declarations, declarationsDeleted, columns) {
+    declarationsDeleted.forEach(d => {
+        console.log(this.getDeclarationInData(d.data, columns));
+    });
+  }
+
+  getDeclarationInData(record, columns) {
+    let declaration = {};
+    columns.map((column, index) => {
+      declaration[column.key] = record[index];
+    });
+    return declaration;
+  }
+
+  deleteEmployeeInFamilies(declarations, declarationsDeleted) {
     const employees = this.getEmployeeInDeclarations(declarations);
     const employeeIdDeleted = [];
     declarationsDeleted.forEach(itemDeleted => {
@@ -904,7 +922,6 @@ private setDateToInformationList(records: any)
         employeeId: emp.employeeId,
         documentCode: doc.documentCode,
       });
-      console.log(emp, 'XXXXXX');
       if (!item) {
         item = {
             documentNote: doc.documentNote,

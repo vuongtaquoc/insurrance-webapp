@@ -100,6 +100,7 @@ export class IncreaseComponent extends GeneralBaseComponent implements OnInit, O
      if (changes.data && changes.data.currentValue && changes.data.currentValue.length) {
       const data = this.declarationService.updateDeclarations(changes.data.currentValue, TABLE_HEADER_COLUMNS, !this.declarationId);
       this.declarations.increaselabor.table = data;
+      this.updateOrders(this.declarations.increaselabor.table);
       this.updateOriginByTableName('increaselabor');
     }
   }

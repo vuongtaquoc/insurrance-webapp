@@ -100,6 +100,7 @@ export class AdjustmentComponent extends GeneralBaseComponent implements OnInit,
      if (changes.data && changes.data.currentValue && changes.data.currentValue.length) {
       const data = this.declarationService.updateDeclarations(changes.data.currentValue, TABLE_ADJUST_HEADER_COLUMNS, !this.declarationId);
       this.declarations.adjustment.table = data;
+      this.updateOrders(this.declarations.adjustment.table);
       this.updateOriginByTableName('adjustment');
     }
   }
