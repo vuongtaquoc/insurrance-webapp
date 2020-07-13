@@ -779,13 +779,25 @@ private setDataToFamilyEditor(records: any)
   }
 
   deleteEmployeeInInfomation(declarations, declarationsDeleted, columns) {
+    let informations = [...this.informations];
     declarationsDeleted.forEach(d => {
-        console.log(this.getDeclarationInData(d.data, columns));
+        const employeeInfo = this.getDeclarationInData(d.data, columns);
+        console.log(employeeInfo);
+        informations = informations.filter(info => info.employeeId !== employeeInfo.employeeId
+          &&  info.planCode !== employeeInfo.planCode );
     });
+    console.log(informations,informations.length);
+    if(informations.length === 0) {
+      informations.push({
+        origin: {},
+      });
+    }
+    console.log(informations);
+    this.informations = informations;
   }
 
   getDeclarationInData(record, columns) {
-    let declaration = {};
+    let declaration: any = {};
     columns.map((column, index) => {
       declaration[column.key] = record[index];
     });
