@@ -264,145 +264,217 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
   }
 
   private updateCellValidation() {
-    if (['maternityPart1', 'maternityPart2'].indexOf(this.tableName) === -1) {
-      return;
+    if (['maternityPart1', 'maternityPart2'].indexOf(this.tableName) > -1) {
+      const parentKeys = ['II', 'III_1', 'III_2', 'III_3', 'IV', 'V_1', 'V_2', 'VI_1', 'VI_2', 'VII', 'VIII', 'IX'];
+
+      const childrenWeekOld = {
+        required: true,
+        number: true,
+        min: 0,
+      };
+      const planCode = {
+        required: true
+      };
+      const validationColumns: any = {
+        'II': {
+          childrenWeekOld,
+          planCode
+        },
+        'III_1': {
+          childrenWeekOld,
+          planCode,
+          childrenBirthday: {
+            required: true,
+            lessThanNow: true
+          }
+        },
+        'III_2': {
+          childrenWeekOld,
+          planCode,
+          childrenDayDead: {
+            required: true
+          }
+        },
+        'III_3': {
+          childrenWeekOld,
+          planCode,
+          motherDayDead: {
+            required: true
+          }
+        },
+        'IV': {
+          childrenWeekOld,
+          planCode,
+        },
+        'V_1': {
+          childrenWeekOld,
+          planCode,
+          childrenBirthday: {
+            required: true,
+            lessThanNow: true
+          }
+        },
+        'V_2': {
+          childrenWeekOld,
+          planCode,
+          childrenDayDead: {
+            required: true
+          }
+        },
+        'VI_1': {
+          childrenWeekOld,
+          planCode,
+          childrenBirthday: {
+            required: true,
+            lessThanNow: true
+          }
+        },
+        'VI_2': {
+          childrenWeekOld,
+          planCode,
+          childrenDayDead: {
+            required: true
+          }
+        },
+        'VII': {
+          childrenWeekOld,
+          planCode,
+        },
+        'VIII': {
+          childrenWeekOld,
+          planCode,
+        },
+        'IX': {
+          childrenWeekOld,
+          planCode,
+        }
+      };
+      const readonlyColumns = {
+        'II': ['childrenDayDead', 'surrogacy', 'motherDayDead'],
+        'III_1': ['childrenDayDead', 'surrogacy', 'motherDayDead'],
+        'III_2': ['surrogacy', 'motherDayDead'],
+        'III_3': ['childrenDayDead', 'surrogacy'],
+        'IV': ['childrenDayDead', 'surrogacy', 'motherDayDead'],
+        'V_1': ['childrenDayDead', 'surrogacy', 'motherDayDead'],
+        'V_2': ['surrogacy', 'motherDayDead'],
+        'VI_1': ['childrenDayDead', 'surrogacy', 'motherDayDead'],
+        'VI_2': ['surrogacy', 'motherDayDead'],
+        'VII': ['childrenDayDead', 'motherDayDead'],
+        'VIII': ['childrenDayDead', 'motherDayDead'],
+        'IX': ['childrenDayDead', 'surrogacy', 'motherDayDead']
+      };
+
+      setTimeout(() => {
+        parentKeys.forEach(parentKey => {
+          const columnIndexes = [];
+
+          Object.keys(validationColumns[parentKey] || {}).forEach(column => {
+
+            const x = this.columns.findIndex(c => c.key === column);
+
+            if (x > -1) {
+              columnIndexes.push(x);
+            }
+          });
+
+          this.data.forEach((d, y) => {
+            if (d.parentKey === parentKey) {
+              columnIndexes.forEach(x => {
+                const column = this.columns[x];
+                this.spreadsheet.validationCell(y, x, column.fieldName, validationColumns[parentKey][column.key]);
+              });
+
+              // set readonly column
+              readonlyColumns[parentKey].forEach(column => {
+                const x = this.columns.findIndex(c => c.key === column);
+
+                this.spreadsheet.setReadonly(y, x);
+              });
+            }
+          });
+          this.handleEvent({
+            type: 'validate',
+            parentKey: '',
+            part: '',
+            user: {}
+          });
+        });
+      }, 50);
+    } else if (['healthRecoveryPart1'].indexOf(this.tableName) > -1) {
+      const parentKeys = ['I_1', 'I_2', 'I_3', 'II_1', 'II_2', 'II_3', 'II_4', 'III_1', 'III_2', 'III_3'];
+      const ratioReduction = { min: 0, max: 100 };
+      const validationColumns: any = {
+        'I_1': {
+          ratioReduction
+        },
+        'I_2': {
+          ratioReduction
+        },
+        'I_3': {
+          ratioReduction
+        },
+        'II_1': {
+          ratioReduction
+        },
+        'II_2': {
+          ratioReduction
+        },
+        'II_3': {
+          ratioReduction
+        },
+        'II_4': {
+          ratioReduction
+        },
+        'III_1': {
+          ratioReduction: {
+            min: 51,
+            max: 100
+          }
+        },
+        'III_2': {
+          ratioReduction: {
+            min: 31,
+            max: 50
+          }
+        },
+        'III_3': {
+          ratioReduction: {
+            min: 15,
+            max: 30
+          }
+        }
+      };
+
+      setTimeout(() => {
+        parentKeys.forEach(parentKey => {
+          const columnIndexes = [];
+
+          Object.keys(validationColumns[parentKey] || {}).forEach(column => {
+
+            const x = this.columns.findIndex(c => c.key === column);
+
+            if (x > -1) {
+              columnIndexes.push(x);
+            }
+          });
+
+          this.data.forEach((d, y) => {
+            if (d.parentKey === parentKey) {
+              columnIndexes.forEach(x => {
+                const column = this.columns[x];
+                this.spreadsheet.validationCell(y, x, column.fieldName, validationColumns[parentKey][column.key]);
+              });
+            }
+          });
+          this.handleEvent({
+            type: 'validate',
+            parentKey: '',
+            part: '',
+            user: {}
+          });
+        });
+      }, 50);
     }
-
-    const parentKeys = ['II', 'III_1', 'III_2', 'III_3', 'IV', 'V_1', 'V_2', 'VI_1', 'VI_2', 'VII', 'VIII', 'IX'];
-
-    const childrenWeekOld = {
-      required: true,
-      number: true,
-      min: 0,
-    };
-    const planCode = {
-      required: true
-    };
-    const validationColumns: any = {
-      'II': {
-        childrenWeekOld,
-        planCode
-      },
-      'III_1': {
-        childrenWeekOld,
-        planCode,
-        childrenBirthday: {
-          required: true,
-          lessThanNow: true
-        }
-      },
-      'III_2': {
-        childrenWeekOld,
-        planCode,
-        childrenDayDead: {
-          required: true
-        }
-      },
-      'III_3': {
-        childrenWeekOld,
-        planCode,
-        motherDayDead: {
-          required: true
-        }
-      },
-      'IV': {
-        childrenWeekOld,
-        planCode,
-      },
-      'V_1': {
-        childrenWeekOld,
-        planCode,
-        childrenBirthday: {
-          required: true,
-          lessThanNow: true
-        }
-      },
-      'V_2': {
-        childrenWeekOld,
-        planCode,
-        childrenDayDead: {
-          required: true
-        }
-      },
-      'VI_1': {
-        childrenWeekOld,
-        planCode,
-        childrenBirthday: {
-          required: true,
-          lessThanNow: true
-        }
-      },
-      'VI_2': {
-        childrenWeekOld,
-        planCode,
-        childrenDayDead: {
-          required: true
-        }
-      },
-      'VII': {
-        childrenWeekOld,
-        planCode,
-      },
-      'VIII': {
-        childrenWeekOld,
-        planCode,
-      },
-      'IX': {
-        childrenWeekOld,
-        planCode,
-      }
-    };
-    const readonlyColumns = {
-      'II': ['childrenDayDead', 'surrogacy', 'motherDayDead'],
-      'III_1': ['childrenDayDead', 'surrogacy', 'motherDayDead'],
-      'III_2': ['surrogacy', 'motherDayDead'],
-      'III_3': ['childrenDayDead', 'surrogacy'],
-      'IV': ['childrenDayDead', 'surrogacy', 'motherDayDead'],
-      'V_1': ['childrenDayDead', 'surrogacy', 'motherDayDead'],
-      'V_2': ['surrogacy', 'motherDayDead'],
-      'VI_1': ['childrenDayDead', 'surrogacy', 'motherDayDead'],
-      'VI_2': ['surrogacy', 'motherDayDead'],
-      'VII': ['childrenDayDead', 'motherDayDead'],
-      'VIII': ['childrenDayDead', 'motherDayDead'],
-      'IX': ['childrenDayDead', 'surrogacy', 'motherDayDead']
-    };
-
-    setTimeout(() => {
-      parentKeys.forEach(parentKey => {
-        const columnIndexes = [];
-
-        Object.keys(validationColumns[parentKey] || {}).forEach(column => {
-
-		  const x = this.columns.findIndex(c => c.key === column);
-
-          if (x > -1) {
-            columnIndexes.push(x);
-          }
-        });
-
-        this.data.forEach((d, y) => {
-          if (d.parentKey === parentKey) {
-            columnIndexes.forEach(x => {
-              const column = this.columns[x];
-              this.spreadsheet.validationCell(y, x, column.fieldName, validationColumns[parentKey][column.key]);
-            });
-
-            // set readonly column
-            readonlyColumns[parentKey].forEach(column => {
-              const x = this.columns.findIndex(c => c.key === column);
-
-              this.spreadsheet.setReadonly(y, x);
-            });
-          }
-        });
-        this.handleEvent({
-          type: 'validate',
-          parentKey: '',
-          part: '',
-          user: {}
-        });
-      });
-    }, 50);
   }
 
   private updateCellReadonly() {
@@ -556,13 +628,16 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
         if (regimeToDateValue && cellValue) {
           const cellValueMoment = moment(cellValue, DATE_FORMAT.FULL);
           const regimeToDateValueMoment = moment(regimeToDateValue, DATE_FORMAT.FULL);
-          const isSameOrAfter = cellValueMoment.isSameOrAfter(regimeToDateValueMoment);
+          const isAfter = cellValueMoment.isAfter(regimeToDateValueMoment);
 
-          if (isSameOrAfter) {
+          if (isAfter) {
             validationColumn.validations = {
               required: true,
               lessThan: true
             };
+            if (['sicknessesPart1', 'sicknessesPart2'].indexOf(this.tableName) === -1) {
+              validationColumn.validations.lessThanNow = true;
+            }
             validationColumn.fieldName = {
               name: 'Từ ngày',
               message: 'Ngày đầu tiên người lao động được chỉ định nghỉ chế độ < hoặc = Ngày cuối cùng người lao động được chỉ định nghỉ chế độ',
@@ -571,17 +646,24 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
             instance.jexcel.validationCell(y, cell, validationColumn.fieldName, validationColumn.validations);
           } else {
             validationColumn.validations = {
-              required: true
+              required: true,
             };
+            if (['sicknessesPart1', 'sicknessesPart2'].indexOf(this.tableName) === -1) {
+              validationColumn.validations.lessThanNow = true;
+            }
             validationColumn.fieldName = 'Từ ngày';
-            instance.jexcel.clearValidation(y, cell);
+            instance.jexcel.validationCell(y, cell, validationColumn.fieldName, validationColumn.validations);
           }
         } else {
           validationColumn.validations = {
-            required: true
+            required: true,
           };
+          if (['sicknessesPart1', 'sicknessesPart2'].indexOf(this.tableName) === -1) {
+            validationColumn.validations.lessThanNow = true;
+          }
           validationColumn.fieldName = 'Từ ngày';
-          instance.jexcel.clearValidation(y, cell);
+
+          instance.jexcel.validationCell(y, cell, validationColumn.fieldName, validationColumn.validations);
         }
 
         this.handleEvent({
@@ -597,13 +679,16 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
         if (cellValue && regimeFromDateValue) {
           const cellValueMoment = moment(cellValue, DATE_FORMAT.FULL);
           const regimeFromDateValueMoment = moment(regimeFromDateValue, DATE_FORMAT.FULL);
-          const isSameOrAfter = regimeFromDateValueMoment.isSameOrAfter(cellValueMoment);
+          const isAfter = regimeFromDateValueMoment.isAfter(cellValueMoment);
 
-          if (isSameOrAfter) {
+          if (isAfter) {
             validationColumn.validations = {
               required: true,
-              lessThan: true
+              lessThan: true,
             };
+            if (['sicknessesPart1', 'sicknessesPart2'].indexOf(this.tableName) === -1) {
+              validationColumn.validations.lessThanNow = true;
+            }
             validationColumn.fieldName = {
               name: 'Từ ngày',
               message: 'Ngày đầu tiên người lao động được chỉ định nghỉ chế độ < hoặc = Ngày cuối cùng người lao động được chỉ định nghỉ chế độ',
@@ -612,17 +697,23 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
             instance.jexcel.validationCell(y, Number(cell) - 1, validationColumn.fieldName, validationColumn.validations);
           } else {
             validationColumn.validations = {
-              required: true
+              required: true,
             };
+            if (['sicknessesPart1', 'sicknessesPart2'].indexOf(this.tableName) === -1) {
+              validationColumn.validations.lessThanNow = true;
+            }
             validationColumn.fieldName = 'Từ ngày';
-            instance.jexcel.clearValidation(y, Number(cell) - 1);
+            instance.jexcel.validationCell(y, Number(cell) - 1, validationColumn.fieldName, validationColumn.validations);
           }
         } else {
           validationColumn.validations = {
-            required: true
+            required: true,
           };
+          if (['sicknessesPart1', 'sicknessesPart2'].indexOf(this.tableName) === -1) {
+            validationColumn.validations.lessThanNow = true;
+          }
           validationColumn.fieldName = 'Từ ngày';
-          instance.jexcel.clearValidation(y, Number(cell) - 1);
+          instance.jexcel.validationCell(y, Number(cell) - 1, validationColumn.fieldName, validationColumn.validations);
         }
 
         this.handleEvent({
@@ -631,6 +722,28 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
           parentKey: '',
           user: {}
         });
+      } else if (column.key === 'subsidizeReceipt') {
+        const bankAccountColumn = this.columns[Number(cell) + 1];
+        const accountHolderColumn = this.columns[Number(cell) + 2];
+        const bankIdColumn = this.columns[Number(cell) + 3];
+
+        if (cellValue === 'ATM') {
+          bankAccountColumn.validations = { required: true };
+          accountHolderColumn.validations = { required: true };
+          bankIdColumn.validations = { required: true };
+        } else {
+          bankAccountColumn.validations = { };
+          accountHolderColumn.validations = { };
+          bankIdColumn.validations = { };
+        }
+
+        bankAccountColumn.fieldName = 'Số tài khoản';
+        accountHolderColumn.fieldName = 'Tên chủ tài khoản';
+        bankIdColumn.fieldName = 'Ngân hàng';
+
+        instance.jexcel.validationCell(y, Number(cell) + 1, bankAccountColumn.fieldName, bankAccountColumn.validations);
+        instance.jexcel.validationCell(y, Number(cell) + 2, accountHolderColumn.fieldName, accountHolderColumn.validations);
+        instance.jexcel.validationCell(y, Number(cell) + 3, bankIdColumn.fieldName, bankIdColumn.validations);
       }
     }, 50);
   }

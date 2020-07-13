@@ -300,7 +300,7 @@ export class RegimeApprovalBaseComponent {
             const regimeToDateMoment = moment(regimeToDateValue, DATE_FORMAT.FULL);
             const totalValue = regimeToDateMoment.diff(regimeFromDateMoment, 'days');
 
-            instance.jexcel.setValueFromCoords(totalColumn, r, totalValue > 0 ? totalValue : 0);
+            instance.jexcel.setValueFromCoords(totalColumn, r, totalValue >= 0 ? totalValue + 1 : 0);
           }
         }, 100);
       }

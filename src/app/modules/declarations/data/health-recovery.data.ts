@@ -72,7 +72,11 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   width: 80,
   title: '(4)',
   key: 'dateStartWork',
-  isCalendar: true
+  isCalendar: true,
+  fieldName: 'Ngày quay trở lại làm việc tại đơn vị',
+  validations: {
+    lessThanNow: true
+  }
 }, {
   type: 'text',
   width: 130,
@@ -106,6 +110,7 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   sum: true,
   fieldName: 'Tổng số ngày thực tế người lao động nghỉ việc trong kỳ đề nghị giải quyết',
   validations: {
+    required: true,
     min: 1
   }
 }, {
@@ -116,7 +121,8 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   isCalendar: true,
   fieldName: 'Từ ngày đơn vị đề nghị hưởng',
   validations: {
-    required: true
+    required: true,
+    lessThanNow: true
   }
 }, {
   type: 'numeric',
@@ -271,6 +277,11 @@ export const TABLE_HEADER_COLUMNS_PART_2 = [{
   width: 60,
   title: '(4.3)',
   key: 'regimeSum',
+  fieldName: 'Tổng số',
+  validations: {
+    required: true,
+    min: 1
+  },
   sum: true
 }, {
   type: 'text',
@@ -280,7 +291,8 @@ export const TABLE_HEADER_COLUMNS_PART_2 = [{
   isCalendar: true,
   fieldName: 'Từ ngày đã giải quyết',
   validations: {
-    required: true
+    required: true,
+    lessThanNow: true
   }
 }, {
   type: 'dropdown',

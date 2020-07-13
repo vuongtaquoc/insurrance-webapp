@@ -33,7 +33,7 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
   @Output() onAddRow: EventEmitter<any> = new EventEmitter();
   @Output() onFocus: EventEmitter<any> = new EventEmitter();
   @Output() onSort: EventEmitter<any> = new EventEmitter();
-  
+
 
   spreadsheet: any;
   isInitialized = false;
@@ -154,7 +154,7 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
           instance.jexcel.setValue(nextColumn, '');
         }
 
-       
+
         this.validationCellByOtherCell(value, column, r, instance, c);
         this.validationCellByPlanCode();
         if(this.data[r].origin.isLeaf) {
@@ -162,7 +162,7 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
           this.validateTimer = setTimeout(() => {
             this.validChangeSalary(this.spreadsheet.getJson()[r], r);
           }, 10);
-        } 
+        }
       },
       ondeleterow: (el, rowNumber, numOfRows) => {
         this.onDelete.emit({
@@ -264,7 +264,7 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
         planDefault: d.planDefault,
         isInitialize: d.isInitialize
       };
-     
+
       data.push(d.data);
     });
 
@@ -286,7 +286,7 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
         } else {
           this.spreadsheet.updateDropdownValue(colIndex, rowIndex);
         }
-       
+
       });
     });
 
@@ -351,8 +351,8 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
       if ( Number(salary) === Number(salaryNew) && Number(ratio) === Number(ratioNew)
         && Number(allowanceSalary) === Number(allowanceSalaryNew) && Number(allowanceAdditional) === Number(allowanceAdditionalNew)
         && Number(allowanceLevel) === Number(allowanceLevelNew)  && Number(allowanceOther) === Number(allowanceOtherNew))
-        //&& Number(allowanceSeniorityJob) === Number(allowanceSeniorityJobNew)  && Number(allowanceSeniority) === (allowanceSeniorityNew)) 
-       
+        //&& Number(allowanceSeniorityJob) === Number(allowanceSeniorityJobNew)  && Number(allowanceSeniority) === (allowanceSeniorityNew))
+
       {
         const fieldName = {
           name: 'Tiền lương mức đóng cũ',
@@ -368,7 +368,7 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
         this.spreadsheet.setCellError(fieldName, indexOfColumnAllowanceSeniorityJobNew, rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true, messageError);
         this.spreadsheet.setCellError(fieldName, indexOfColumnAllowanceOtherNew, rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true, messageError);
       }
-    }else if(planCode === 'CD') {     
+    }else if(planCode === 'CD') {
       const indexOfColumnLevelWork = this.columns.findIndex(c => c.key === 'levelWork');
       const levelWork = data[indexOfColumnLevelWork];
       if (data.origin.levelWork === levelWork)
@@ -378,7 +378,7 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
           otherName:'chức vụ mới'
         };
         const messageError = 'Chức vụ cũ, chức vụ mới chưa được điều chỉnh';
-        this.spreadsheet.setCellError(fieldName, indexOfColumnLevelWork, rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true, messageError); 
+        this.spreadsheet.setCellError(fieldName, indexOfColumnLevelWork, rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true, messageError);
       }
     }
   }
@@ -541,15 +541,17 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
             required: true
           };
           validationColumn.fieldName = 'Từ tháng, năm';
-          instance.jexcel.clearValidation(y, cell);
+          // instance.jexcel.clearValidation(y, cell);
+          instance.jexcel.validationCell(y, cell, validationColumn.fieldName, validationColumn.validations);
         }
       } else {
         validationColumn.validations = {
           required: true
         };
         validationColumn.fieldName = 'Từ tháng, năm';
-        instance.jexcel.clearValidation(y, cell);
-      }      
+        // instance.jexcel.clearValidation(y, cell);
+        instance.jexcel.validationCell(y, cell, validationColumn.fieldName, validationColumn.validations);
+      }
     } else if (column.key === 'toDate') {
       const fromDateValue = this.spreadsheet.getValueFromCoords(Number(cell) - 1, y);
       const validationColumn = this.columns[Number(cell) - 1];
@@ -575,19 +577,21 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
             required: true
           };
           validationColumn.fieldName = 'Từ tháng, năm';
-          instance.jexcel.clearValidation(y, Number(cell) - 1);
+          // instance.jexcel.clearValidation(y, Number(cell) - 1);
+          instance.jexcel.validationCell(y, Number(cell) - 1, validationColumn.fieldName, validationColumn.validations);
         }
       } else {
         validationColumn.validations = {
           required: true
         };
         validationColumn.fieldName = 'Từ tháng, năm';
-        instance.jexcel.clearValidation(y, Number(cell) - 1);
-      }     
-    } else if (column.key === 'birthday') { 
+        // instance.jexcel.clearValidation(y, Number(cell) - 1);
+        instance.jexcel.validationCell(y, Number(cell) - 1, validationColumn.fieldName, validationColumn.validations);
+      }
+    } else if (column.key === 'birthday') {
       const typeBirthday = this.spreadsheet.getValueFromCoords(Number(cell) - 1, y);
       const validationColumn = this.columns[cell];
-      const result = validateLessThanEqualNowBirthdayGrid(cellValue, typeBirthday);     
+      const result = validateLessThanEqualNowBirthdayGrid(cellValue, typeBirthday);
       if(result) {
         validationColumn.validations = {
           required: true,
@@ -604,7 +608,8 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
           required: true
         };
         validationColumn.fieldName = 'Ngày, tháng, năm sinh';
-        instance.jexcel.clearValidation(y, cell);
+        // instance.jexcel.clearValidation(y, cell);
+        instance.jexcel.validationCell(y, cell, validationColumn.fieldName, validationColumn.validations);
       }
     }
     this.handleEvent({
@@ -615,19 +620,19 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
     });
   }
 
-  private validationCellByPlanCode() {    
-    
+  private validationCellByPlanCode() {
+
     setTimeout(() => {
       const indexPlanCode = this.columns.findIndex(c => c.key === 'planCode');
-      this.data.forEach((d, y) => { 
+      this.data.forEach((d, y) => {
         //lấy Mã phướng án
           const planCode =  d.data[indexPlanCode];
           if (planCode) {
             const columnIndexes = [];
             Object.keys(validationColumnsPlanCode[planCode] || {}).forEach(column => {
-        
+
               const x = this.columns.findIndex(c => c.key === column);
-              
+
                   if (x > -1) {
                     columnIndexes.push(x);
                   }

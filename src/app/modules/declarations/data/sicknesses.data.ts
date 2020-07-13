@@ -130,7 +130,8 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   sum: true,
   fieldName: 'Tổng số',
   validations: {
-    required: true
+    required: true,
+    min: 1
   }
 }, {
   type: 'text',
@@ -140,7 +141,8 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   isCalendar: true,
   fieldName: 'Từ ngày đơn vị đề nghị',
   validations: {
-    required: true
+    required: true,
+    lessThanNow: true
   }
 }, {
   type: 'text',
@@ -321,7 +323,12 @@ export const TABLE_HEADER_COLUMNS_PART_2 = [{
   width: 60,
   title: '(4.3)',
   key: 'regimeSum',
-  sum: true
+  sum: true,
+  validations: {
+    required: true,
+    min: 1
+  },
+  fieldName: 'Tổng số'
 }, {
   type: 'text',
   width: 85,
@@ -330,7 +337,8 @@ export const TABLE_HEADER_COLUMNS_PART_2 = [{
   isCalendar: true,
   fieldName: 'Từ ngày đã giải quyết',
   validations: {
-    required: true
+    required: true,
+    lessThanNow: true
   }
 }, {
   type: 'dropdown',

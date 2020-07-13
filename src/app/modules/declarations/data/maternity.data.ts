@@ -140,6 +140,7 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   key: 'regimeSum',
   fieldName: 'Tổng số ngày thực tế người lao động nghỉ việc trong kỳ đề nghị giải quyết',
   validations: {
+    required: true,
     min: 1
   }
 }, {
@@ -150,7 +151,8 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   isCalendar: true,
   fieldName: 'Từ ngày đơn vị đề nghị hưởng',
   validations: {
-    required: true
+    required: true,
+    lessThanNow: true
   }
 }, {
   type: 'dropdown',
@@ -427,7 +429,12 @@ export const TABLE_HEADER_COLUMNS_PART_2 = [{
   type: 'numeric',
   width: 60,
   title: '(4.3)',
-  key: 'regimeSum'
+  key: 'regimeSum',
+  fieldName: 'Tổng số',
+  validations: {
+    required: true,
+    min: 1
+  }
 }, {
   type: 'text',
   width: 85,
@@ -436,7 +443,8 @@ export const TABLE_HEADER_COLUMNS_PART_2 = [{
   isCalendar: true,
   fieldName: 'Từ ngày đã giải quyết',
   validations: {
-    rqeuired: true
+    required: true,
+    lessThanNow: true
   }
 }, {
   type: 'dropdown',
