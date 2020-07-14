@@ -40,7 +40,7 @@ export const TABLE_NESTED_HEADERS_PART_1 = [
     { title: 'Mang thai hộ' },
     { title: 'Phẫu thuật hoặc thai dưới 32 tuần' },
     { title: 'Ngày mẹ chết' },
-    { title: 'Ngày kết luận', subtitle: 'mẹ được kết luận không còn đủ sức khỏe chăm con' },
+    { title: 'Ngày kết luận', subtitle: 'mẹ được kết luận không còn đủ sức khỏe chăm con', quote: 'Ngày kết luận (mẹ được kết luận không còn đủ sức khỏe chăm con)' },
     { title: 'Phí giám định y khoa' },
     { title: 'Đợt' },
     { title: 'Tháng/năm' },
@@ -122,7 +122,8 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   fieldName: 'Ngày đầu tiên người lao động thực tế nghỉ việc hưởng chế độ theo quy định',
   validations: {
     required: true
-  }
+  },
+  ignoreRequiredRow: ['VIII']
 }, {
   type: 'text',
   width: 80,
@@ -132,7 +133,8 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   fieldName: 'Ngày cuối cùng người lao động thực tế nghỉ việc hưởng chế độ theo quy định',
   validations: {
     required: true
-  }
+  },
+  ignoreRequiredRow: ['VIII']
 }, {
   type: 'numeric',
   width: 60,
@@ -142,7 +144,8 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   validations: {
     required: true,
     min: 1
-  }
+  },
+  ignoreRequiredRow: ['VIII']
 }, {
   type: 'text',
   width: 100,
@@ -153,7 +156,8 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   validations: {
     required: true,
     lessThanNow: true
-  }
+  },
+  ignoreRequiredRow: ['VIII']
 }, {
   type: 'dropdown',
   autocomplete: true,
@@ -418,19 +422,22 @@ export const TABLE_HEADER_COLUMNS_PART_2 = [{
   width: 95,
   title: '(4.1)',
   key: 'regimeFromDate',
-  isCalendar: true
+  isCalendar: true,
+  ignoreRequiredRow: ['VIII']
 }, {
   type: 'text',
   width: 95,
   title: '(4.2)',
   key: 'regimeToDate',
-  isCalendar: true
+  isCalendar: true,
+  ignoreRequiredRow: ['VIII']
 }, {
   type: 'numeric',
   width: 60,
   title: '(4.3)',
   key: 'regimeSum',
   fieldName: 'Tổng số',
+  ignoreRequiredRow: ['VIII'],
   validations: {
     required: true,
     min: 1
@@ -442,6 +449,7 @@ export const TABLE_HEADER_COLUMNS_PART_2 = [{
   key: 'recordSolvedFromDate',
   isCalendar: true,
   fieldName: 'Từ ngày đã giải quyết',
+  ignoreRequiredRow: ['VIII'],
   validations: {
     required: true,
     lessThanNow: true
