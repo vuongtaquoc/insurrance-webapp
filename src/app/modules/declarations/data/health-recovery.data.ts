@@ -13,12 +13,15 @@ export const TABLE_NESTED_HEADERS_PART_1 = [
     { title: 'Hình thức trợ cấp', colspan: 4 },
     { title: 'Ghi chú', rowspan: 2 }
   ], [
-    { title: 'Từ ngày' },
-    { title: 'Đến ngày' },
-    { title: 'Tổng số' },
+    { title: 'Từ ngày', quote: 'Ngày đầu tiên nghỉ việc hưởng chế độ' },
+    { title: 'Đến ngày', quote: 'Ngày cuối cùng nghỉ việc hưởng chế độ' },
+    { title: 'Tổng số', quote: 'Ghi tổng số ngày thực tế NLĐ nghỉ việc trong kỳ đề nghị giải quyết theo từng loại chế độ' },
     { title: 'Từ ngày đơn vị đề nghị...' },
     { title: 'Tỷ lệ suy giảm (%)' },
-    { title: 'Ngày giám định' },
+    { title: 'Ngày giám định', quote: `- DS sau con ốm: Ghi ngày sinh con nếu Giấy ra viện/GCN không thể hiện
+- DS sau ốm đau: Ghi ngày làm việc trở lại sau nghỉ ốm
+- DS sau thai sản: Ghi ngày làm việc trở lại sau thai sản
+- DS sau TNLĐ-BNN: Ghi ngày Hội đồng Giám định y khoa kết luận suy giảm khả năng lao động` },
     { title: 'Đợt' },
     { title: 'Tháng/năm' },
     { title: 'Hình thức nhận' },
@@ -201,15 +204,15 @@ export const TABLE_NESTED_HEADERS_PART_2 = [
     { title: 'Mã nhân viên', rowspan: 3 },
     { title: 'Số ngày đề nghị hưởng chế độ tại đơn vị', colspan: 3 },
     { title: 'Hồ sơ đã giải quyết', colspan: 3 },
-    { title: 'Lý do đề nghị điều chỉnh', rowspan: 3 },
+    { title: 'Lý do đề nghị điều chỉnh', rowspan: 3, quote: 'Ghi chi tiết lý do phát sinh việc điều chỉnh' },
     { title: 'Hình thức trợ cấp', colspan: 4 },
     { title: 'Ghi chú', rowspan: 3 }
   ], [
     { title: 'Từ ngày', rowspan: 2 },
     { title: 'Đến ngày', rowspan: 2 },
-    { title: 'Tổng số', rowspan: 2 },
+    { title: 'Tổng số', rowspan: 2, quote: 'Ghi tổng số ngày thực tế NLĐ nghỉ việc trong kỳ đề nghị giải quyết theo từng loại chế độ' },
     { title: 'Từ ngày đã giải quyết', rowspan: 2 },
-    { title: 'Đợt đã giải quyết', colspan: 2 },
+    { title: 'Đợt đã giải quyết', colspan: 2, quote: 'Ghi Đợt...tháng...năm...cơ quan BHXH đã xét duyệt NLĐ được tính hưởng trợ cấp bị sai' },
     { title: 'Hình thức nhận', rowspan: 2 },
     { title: 'Số tài khoản', rowspan: 2 },
     { title: 'Tên chủ tài khoản', rowspan: 2 },

@@ -342,7 +342,7 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
         },
         'VIII': {
           childrenWeekOld,
-          planCode,
+          planCode
         },
         'IX': {
           childrenWeekOld,
