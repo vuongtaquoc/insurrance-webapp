@@ -353,4 +353,9 @@ export const TABLE_REDUCTION_HEADER_COLUMNS = [{
   title: 'key',
   key: 'employeeId',
   isMasterKey: true
+},{
+  type: 'hidden',
+  width: 140,
+  title: 'key',
+  key: 'employeeIdClone'
 }];

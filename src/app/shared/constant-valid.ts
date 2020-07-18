@@ -8,13 +8,14 @@ export const validationColumnsPlanCode: any = {
       lessThanNow: true
     },
     note: {
-      message: 'Điều chỉnh tiền lương',
+      message: 'Chấm dứt HĐLĐ/Chuyển công tác',
       argsColumn: []
     },
     copy: {
-      type: 'I_1',
+      type: 'I_1',      
+      tableName : 'reductionlabor',
       note: 'Truy thu BHYT',
-      tableName : 'reductionlabor'
+      planCode : 'TT'
     }
   },
   'DC': {
@@ -116,6 +117,12 @@ export const validationColumnsPlanCode: any = {
     },note: {
       message: 'Giảm do chuyển tỉnh', 
       argsColumn: []    
+    },
+    copy: {
+      type: 'I_1',      
+      tableName : 'reductionlabor',
+      note: 'Truy thu BHYT',
+      planCode : 'TT'
     }
   },
   'GD': {
@@ -142,11 +149,23 @@ export const validationColumnsPlanCode: any = {
     note: {
       message: 'Nghỉ ốm', 
       argsColumn: []    
+    },
+    copy: {
+      type: 'I_1',      
+      tableName : 'reductionlabor',
+      note: 'Truy thu BHYT',
+      planCode : 'TT'
     }
   },'KL': {
     note: {
       message: 'Nghỉ không lương', 
       argsColumn: []    
+    },
+    copy: {
+      type: 'I_1',      
+      tableName : 'reductionlabor',
+      note: 'Truy thu BHYT',
+      planCode : 'TT'
     }
   },'TS': {
     note: {

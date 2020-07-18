@@ -195,11 +195,62 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
           this.handlersDeleteUseOnTree(data.employee);
       }));
 
+      this.handlers.push(eventEmitter.on('tree-declaration:updateUser', (data) => {
+        this.updateEmployeeInFamily(data.employee);
+        this.updateEmployeeInInfomation(data.employee);     
+      }));
+
     });
   }
 
   ngOnDestroy() {
     this.handler();
+  }
+
+  private updateEmployeeInFamily(user) {
+
+    const families = [ ...this.families ];
+    families.forEach(d => {
+      if(d.origin &&  d.origin.isMaster &&  d.origin.employeeId === user.id) {
+        Object.keys(d).forEach(key => {
+          if(user[key] !== undefined) {
+             d[key] = user[key];
+          }           
+        });
+
+        d.employeeName = user.fullName;
+        d.data = this.tableHeaderColumnsFamilies.map(column => {
+          if (!column.key || !d[column.key]) return '';
+          return d[column.key];
+        });
+        d.data.origin = d.origin;
+      }
+    });
+
+    this.families = families;
+  }
+
+
+  private updateEmployeeInInfomation(user) {
+
+    const informations = [ ...this.informations ];
+    informations.forEach(d => {
+      if(d.origin && d.origin.employeeId === user.id) {
+        Object.keys(d).forEach(key => {
+          if(user[key] !== undefined) {
+             d[key] = user[key];
+          }           
+        });
+
+        d.data = this.tableHeaderColumnsDocuments.map(column => {
+          if (!column.key || !d[column.key]) return '';
+          return d[column.key];
+        });
+        d.data.origin = d.origin;
+      }
+    });
+
+    this.informations = informations;
   }
 
   handleChangeTable(data, tableName) {
@@ -578,39 +629,32 @@ handleValidForm(data) {
 
 private setDataToFamilyEditor(records: any)
   {
+    const currentFamilis = [...this.families]
     const families = [];
     const employees = [];
     const employeesId = [];
     const employeesInDeclaration = this.getEmployeeInDeclarations(records);
     employeesInDeclaration.forEach(emp => {
 
-      const empId = employeesId.find(c => c === emp.employeeId);
-      if(empId) {
-        return;
+      const firstEmployee = currentFamilis.find(f => f.employeeId === emp.employeeId);
+      if(!firstEmployee) {
+        employees.push(emp);
+      } else {
+
+        const family = families.find(p => p.employeeId === emp.employeeId);
+        if(family) {
+          return;
+        }
+
+        const currentFamilies = currentFamilis.filter(fm => fm.employeeId === emp.employeeId);
+        if(currentFamilies){
+          currentFamilies.forEach(oldEmp => {
+            families.push(oldEmp);
+          });
+        }
+
       }
 
-      employeesId.push(empId);
-
-      const family = this.families.find(p => p.employeeId === emp.employeeId);
-
-        if (!family) {
-
-          const isContainsEmployee = employees.find(p => p.employeeId === emp.employeeId);
-          if(!isContainsEmployee)
-          {
-            employees.push(emp);
-          }
-
-        }else {
-
-          const currentFamilies = this.families.filter(fm => fm.employeeId === emp.employeeId);
-          if(currentFamilies){
-            currentFamilies.forEach(oldEmp => {
-              families.push(oldEmp);
-            });
-          }
-
-        }
     });
 
     forkJoin(
@@ -618,7 +662,7 @@ private setDataToFamilyEditor(records: any)
         return this.employeeService.getEmployeeById(emp.employeeId)
       })
     ).subscribe(emps => {
-
+      const familiesNotExists = [];
       emps.forEach(ep => {
         const master = this.getMaster(ep.families);
         master.isMaster = ep.isMaster;
@@ -639,7 +683,7 @@ private setDataToFamilyEditor(records: any)
           isLeaf: true,
           isMaster: true,
         };
-        families.push(master);
+        familiesNotExists.push(master);
 
         if(ep.families.length > 1) {
           ep.families.forEach(fa => {
@@ -655,14 +699,18 @@ private setDataToFamilyEditor(records: any)
               isLeaf: true,
               isMaster: false,
             }
-            families.push(fa);
+            familiesNotExists.push(fa);
           });
         }else {
           // nếu chưa có thông tin của gia đình thì add dòng trống
-          families.push(this.fakeEmployeeInFamilies(ep));
-          families.push(this.fakeEmployeeInFamilies(ep));
+          familiesNotExists.push(this.fakeEmployeeInFamilies(ep));
+          familiesNotExists.push(this.fakeEmployeeInFamilies(ep));
         }
 
+      });
+
+      familiesNotExists.forEach(d => {
+        families.push(d);
       });
 
       families.forEach(p => {
@@ -672,6 +720,7 @@ private setDataToFamilyEditor(records: any)
         });
         p.data.origin = p.origin;
       });
+
       this.families = families;
     });
   }
@@ -780,19 +829,21 @@ private setDataToFamilyEditor(records: any)
 
   deleteEmployeeInInfomation(declarations, declarationsDeleted, columns) {
     let informations = [...this.informations];
+   
     declarationsDeleted.forEach(d => {
         const employeeInfo = this.getDeclarationInData(d.data, columns);
-        console.log(employeeInfo);
-        informations = informations.filter(info => info.employeeId !== employeeInfo.employeeId
-          &&  info.planCode !== employeeInfo.planCode );
+        informations = informations.filter(info => {
+            return info.employeeId + info.planCode !== employeeInfo.employeeId + employeeInfo.planCode;
+          });
     });
-    console.log(informations,informations.length);
+
     if(informations.length === 0) {
       informations.push({
-        origin: {},
+        data: {
+          origin: {},
+        }
       });
     }
-    console.log(informations);
     this.informations = informations;
   }
 
@@ -808,8 +859,7 @@ private setDataToFamilyEditor(records: any)
     const employees = this.getEmployeeInDeclarations(declarations);
     const employeeIdDeleted = [];
     declarationsDeleted.forEach(itemDeleted => {
-      const item = employeeIdDeleted.find(d => (d.origin && d.origin.employeeId) === (itemDeleted.origin && itemDeleted.origin.employeeId));
-
+      const item = employees.find(d => (d.origin && d.origin.employeeId) === (itemDeleted.origin && itemDeleted.origin.employeeId));
       if(item){
         return;
       }
@@ -957,6 +1007,8 @@ private setDateToInformationList(records: any)
         }; 
       }
       item.isurranceNo = emp.isurranceNo;
+      item.isurranceCode = emp.isurranceCode;
+      item.fullName = emp.fullName;
       informations.push(item);
     });
 

@@ -630,9 +630,7 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
           if (planCode) {
             const columnIndexes = [];
             Object.keys(validationColumnsPlanCode[planCode] || {}).forEach(column => {
-
               const x = this.columns.findIndex(c => c.key === column);
-
                   if (x > -1) {
                     columnIndexes.push(x);
                   }

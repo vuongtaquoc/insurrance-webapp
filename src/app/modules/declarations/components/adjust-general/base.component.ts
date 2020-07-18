@@ -136,6 +136,70 @@ handleUserUpdated(user, tableName) {
   });
 }
 
+  cloneEmployeeByPlanCode(groupInfo, tableName, employee) {
+
+    const declarations = [ ...this.declarations[tableName].table];
+
+    const parentIndex = findIndex(declarations, d => d.key === groupInfo.type);
+    const childLastIndex = findLastIndex(declarations, d => d.isLeaf && d.parentKey === groupInfo.type);
+
+    if (childLastIndex > -1) {
+      const employeeExists = declarations.filter(d => d.parentKey === groupInfo.type);
+      const accepted = employeeExists.findIndex(e => (e.origin && (e.origin.employeeId || e.origin.id)) === employee.id) === -1;
+      // replace
+      employee.gender = employee.gender === '1';
+      employee.employeeIdClone = employee.id;
+      employee.workAddress = this.currentCredentials.companyInfo.address;
+      employee.planCode = groupInfo.planCode;
+      employee.note = groupInfo.note;
+
+      if (accepted) {
+        if (declarations[childLastIndex].isInitialize) {
+          // remove initialize data
+          declarations.splice(childLastIndex, 1);
+
+          declarations.splice(childLastIndex, 0, this.declarationService.getLeaf(declarations[parentIndex], employee, this.headers[tableName].columns));
+        } else {
+          declarations.splice(childLastIndex + 1, 0, this.declarationService.getLeaf(declarations[parentIndex], employee, this.headers[tableName].columns));
+        }
+      }
+
+      // update orders
+      this.updateOrders(declarations);
+
+      this.declarations[tableName].table = this.declarationService.updateFormula(declarations, this.headers[tableName].columns);
+    } 
+    // update origin data
+    const records = this.toTableRecords(declarations);
+    this.declarations[tableName].origin = Object.values(this.updateOrigin(records, tableName));
+
+    this.onChange.emit({
+      action: ACTION.MUNTILEADD,
+      tableName,
+      data: this.declarations[tableName].origin,
+      dataChange : [],
+      columns: this.headers[tableName].columns,
+    });
+
+    // clean employee
+    this.employeeSubject.next({
+      tableName,
+      type: 'clean'
+    });
+
+    this.employeeSelected.length = 0;
+    this.tableSubject.next({
+      tableName,
+      type: 'validate'
+    });
+
+    this.tableSubject.next({
+      tableName,
+      type: 'readonly',
+      data: this.declarations.table
+    });
+
+  }
 
   handleAddEmployee(type, tableName) {
     if (!this.employeeSelected.length) {
@@ -333,21 +397,14 @@ handleUserUpdated(user, tableName) {
       } else if (column.key === 'recipientsCityCode') {
         this.updateNextColumns(instance, r, '', [ c + 1, c + 2, c + 5, c + 6 ]);
       } else if (column.key === 'planCode') {
-        //Lấy mô tả theo phương án người dùng chọn
-        clearTimeout(this.timer);
-        this.timer = setTimeout(() => {
-            const planCode = records[r][c];
-            const planConfigInfo = validationColumnsPlanCode[planCode] || {note:{argsColumn: [], message: ''}};
-            const argsColumn = planConfigInfo.note.argsColumn || [] ;
-            const argsMessgae = [];
-            argsColumn.forEach(column => {
-              const indexOfColumn = this.headers[tableName].columns.findIndex(c => c.key === column);
-              argsMessgae.push(records[r][indexOfColumn]);
-            });
-            const indexColumnNote = this.headers[tableName].columns.findIndex(c => c.key === 'note');
-            const notebuild = this.formatNote(planConfigInfo.note.message, argsMessgae);
-            this.updateNextColumns(instance, r, notebuild, [indexColumnNote]);
-          }, 10);
+        const planCode = records[r][c];
+        this.setDataByPlanCode(instance, records,r, planCode, tableName);
+        
+      } else if (column.key === 'fromDate') {
+        const indexOfPlanCode = this.headers[tableName].columns.findIndex(c => c.key === 'planCode')
+        const planCode = records[r][indexOfPlanCode];
+        this.setDataByPlanCode(instance, records,r, planCode, tableName);
+        
       }else if (column.key === 'hospitalFirstRegistCode') {
         const hospitalFirstCode = cell.innerText.split(' - ').shift();
 
@@ -384,6 +441,59 @@ handleUserUpdated(user, tableName) {
     this.tableSubject.next({
       type: 'validate'
     });
+  }
+
+  private setDataByPlanCode(instance, records, r, planCode,tableName) {
+    clearTimeout(this.timer);
+        this.timer = setTimeout(() => {
+          const planConfigInfo = validationColumnsPlanCode[planCode] || {note:{argsColumn: [], message: ''}};
+          const argsColumn = planConfigInfo.note.argsColumn || [] ;
+          const cloneEmployee = planConfigInfo.copy || { type: '', note: '', tableName: '' };
+          const argsMessgae = [];
+          argsColumn.forEach(column => {
+            const indexOfColumn = this.headers[tableName].columns.findIndex(c => c.key === column);
+            argsMessgae.push(records[r][indexOfColumn]);
+          });
+          const indexColumnNote = this.headers[tableName].columns.findIndex(c => c.key === 'note');
+          const notebuild = this.formatNote(planConfigInfo.note.message, argsMessgae);
+          this.updateNextColumns(instance, r, notebuild, [indexColumnNote]);
+          this.processEmployeeByPlanCode(cloneEmployee, tableName, records, r);
+        }, 10);
+  }
+  private processEmployeeByPlanCode(groupInfo, tableName, data, r) {
+
+    if(groupInfo.type !== '') {
+      this.cloneEmployeeByPlanCode(groupInfo, groupInfo.tableName, data[r].origin);
+    }else {
+      const employeeId = data[r].origin.employeeId;
+      const parentKey = data[r].options.parentKey;
+      this.deleteEmployeeLink(tableName, data, employeeId, parentKey);
+    }
+    
+  }
+
+  private deleteEmployeeLink(tableName, data, employeeId, parentKey) {
+
+    if(parentKey !== 'II_1') {
+      return '';
+    }
+
+    const indexEmployeeIdClone = this.headers[tableName].columns.findIndex(c => c.key === 'employeeIdClone')
+      const indexOfEmployee = data.findIndex(d => d[indexEmployeeIdClone] === employeeId);
+      if(indexOfEmployee > -1) {
+        const declarations = [];
+        data.forEach(d => {
+          if(d[indexEmployeeIdClone] !== employeeId) {
+            declarations.push(d);
+          }
+        });
+
+        this.handleDeleteTableData({
+          rowNumber: indexOfEmployee,
+          numOfRows: 1,
+          records: declarations
+        }, tableName);
+      }
   }
 
   private updateNextColumns(instance, r, value, nextColumns = []) {
@@ -484,6 +594,10 @@ handleUserUpdated(user, tableName) {
     this.tableSubject.next({
       type: 'validate'
     });
+
+    const employeeId = declarationsDeleted[0].origin.employeeId;
+    const parentKey = declarationsDeleted[0].parentKey;
+    this.deleteEmployeeLink(tableName, records, employeeId, parentKey);
   }
 
   updateOrders(declarations) {

@@ -191,7 +191,6 @@ export const DOCUMENTBYPLANCODE =
           column: ['fullName', 'fromDate'],
         },
         documentCode: 'TC_1',
-        isContract: true,
       },
       {
         documentType: 'Bản chính Bảng lương',
@@ -238,7 +237,6 @@ export const DOCUMENTBYPLANCODE =
           column: ['fullName', 'fromDate'],
         },
         documentCode: 'TH_1',
-        isContract: true,
       },
       {
         documentType: 'Bản chính Bảng lương',
@@ -454,7 +452,6 @@ export const DOCUMENTBYPLANCODE =
           column: ['fullName', 'fromDate'],
         },
         documentCode: 'GH2_1',
-        isContract: true,
       },
       {
         documentType: 'Bản chính Bảng lương',
@@ -500,7 +497,6 @@ export const DOCUMENTBYPLANCODE =
           column: ['fullName', 'fromDate'],
         },
         documentCode: 'GH3_1',
-        isContract: true,
       },
       {
         documentType: 'Bản chính Bảng lương',
@@ -546,7 +542,6 @@ export const DOCUMENTBYPLANCODE =
           column: ['fullName', 'fromDate'],
         },
         documentCode: 'GH4_1',
-        isContract: true,
       },
       {
         documentType: 'Bản chính Bảng lương',
@@ -592,7 +587,6 @@ export const DOCUMENTBYPLANCODE =
           column: ['fullName', 'fromDate'],
         },
         documentCode: 'GC_1',
-        isContract: true,
       },
       {
         documentType: 'Bản chính Bảng lương',
@@ -638,7 +632,6 @@ export const DOCUMENTBYPLANCODE =
           column: ['fullName', 'fromDate'],
         },
         documentCode: 'GD_1',
-        isContract: true,
       },
       {
         documentType: 'Bản chính Bảng lương',
@@ -684,7 +677,6 @@ export const DOCUMENTBYPLANCODE =
           column: ['fullName', 'fromDate'],
         },
         documentCode: 'SB_1',
-        isContract: true,
       },
       {
         documentType: 'Bản chính Bảng lương',
