@@ -332,13 +332,13 @@ export const TABLE_REDUCTION_HEADER_COLUMNS = [{
   type: 'numeric',
   width: 100,
   title: '(23.1)',
-  key: 'contractNo',
+  key: 'contractCancelNo',
   fieldName: 'Số quyết định chấm dứt hợp đồng'
 }, {
   type: 'text',
   width: 100,
   title: '(23.2)',
-  key: 'dateSign',
+  key: 'dateCancelSign',
   fieldName: 'Ngày ký quyết định chấm dứt hợp đồng'
 },
 {

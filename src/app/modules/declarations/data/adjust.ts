@@ -477,7 +477,7 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   type: 'numeric',
   width: 100,
   title: '(23.1)',
-  key: 'contractNo',
+  key: 'contractCancelNo',
   fieldName: 'Số quyết định',
   validations: {
     required: true
@@ -487,7 +487,7 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   width: 100,
   title: '(23.2)',
   fieldName: 'Ngày quyết định',
-  key: 'dateSign',
+  key: 'dateCancelSign',
   validations: {
     required: true
   }

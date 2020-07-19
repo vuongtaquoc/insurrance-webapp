@@ -303,16 +303,10 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
     this.isHiddenSidebar = isHidden;
   }
 
-  save(type) {
-
+  saveAndView() {
     eventEmitter.emit('tableEditor:validFrom', {
       tableName: 'documentList'
     });
-
-    if (type === 'rollback') {
-      this.router.navigate(['/declarations/adjust-general']);
-      return '';
-    }
 
     if(this.formError.length > 0) {
       this.tableErrors['generalFomError'] = this.formError;
@@ -346,9 +340,38 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
     }
 
     if (this.declarationId) {
-      this.update(type);
+      this.update('saveAndView');
     } else {
-      this.create(type);
+      this.create('saveAndView');
+    }
+  }
+
+  rollback() {
+    this.modalService.confirm({
+      nzTitle: 'Bạn có muốn lưu lại thông tin thay đổi',
+      nzOkText: 'Có',
+      nzCancelText: 'Không',
+      nzOnOk: () => {
+        if (this.declarationId) {
+          this.update('save');
+        } else {
+          this.create('save');
+        }
+      },
+      nzOnCancel: () => {
+        this.router.navigate(['/declarations/adjust-general']);
+      }
+
+    });
+      
+  }
+
+  save() {
+    
+    if (this.declarationId) {
+      this.update('save');
+    } else {
+      this.create('save');
     }
 
   }
@@ -382,7 +405,7 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
     }).subscribe(data => {
       if (type === 'saveAndView') {
         this.viewDocument(data);
-      } else if(data.type === 'save') {
+      } else{
         this.router.navigate(['/declarations/adjust-general']);
       }
     });
@@ -1064,8 +1087,8 @@ private setDateToInformationList(records: any)
   }
 
 
-  private getFromDate(dateOf) {
-    const fullDate = '01/' + dateOf;
+  private getFromDate(dateMonthYear) {
+    const fullDate = '01/' + dateMonthYear;
     if(!moment(fullDate,"DD/MM/YYYY")) {
       return new Date();
     }

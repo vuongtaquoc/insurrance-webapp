@@ -94,11 +94,32 @@ export class RegimeApprovalComponent implements OnInit, OnDestroy {
     this.handler();
   }
 
-  save(type) {
+  rollback() {
+    this.modalService.confirm({
+      nzTitle: 'Bạn có muốn lưu lại thông tin thay đổi',
+      nzOkText: 'Có',
+      nzCancelText: 'Không',
+      nzClosable: true,
+      nzOnOk: () => {
+        if (this.declarationId) {
+          this.update('save');
+        } else {
+          this.create('save');
+        }
+      },
+      nzOnCancel: () => {
+        this.router.navigate(['/declarations/regime-approval']);
+      }
+
+    });
+      
+  }
+
+  saveAndView() {
+
     let count = Object.keys(this.tableErrors).reduce(
       (total, key) => {
         const data = this.tableErrors[key];
-
         return total + data.length;
       },
       0
@@ -123,14 +144,18 @@ export class RegimeApprovalComponent implements OnInit, OnDestroy {
       });
     }
 
-    if (type === 'rollback') {
-      this.router.navigate(['/declarations/regime-approval']);
-    } else  {
-      if (this.declarationId) {
-        this.update(type);
-      } else {
-        this.create(type);
-      }
+    if (this.declarationId) {
+      this.update('saveAndView');
+    } else {
+      this.create('saveAndView');
+    }
+  }
+
+  save() {
+    if (this.declarationId) {
+      this.update('save');
+    } else {
+      this.create('save');
     }
   }
 

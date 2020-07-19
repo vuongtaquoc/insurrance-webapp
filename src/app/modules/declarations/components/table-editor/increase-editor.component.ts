@@ -214,6 +214,7 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
     this.updateEditorToColumn('toDate', 'month');
     this.updateEditorToColumn('motherDayDead', 'date');
     this.updateAutoCompleteToColumn('hospitalFirstRegistCode');
+    this.updateEditorToColumn('dateCancelSign');
 
     this.spreadsheet.hideIndex();
 
