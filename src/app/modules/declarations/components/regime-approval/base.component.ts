@@ -415,6 +415,19 @@ export class RegimeApprovalBaseComponent {
       row.origin = origin;
       row.options = options;
       row.isInitialize = true;
+
+      if (!(beforeRow.options && beforeRow.options.isLeaf) && !(afterRow.options && afterRow.options.isLeaf)) {
+        const nextRow: any = declarations[rowNumber + 1];
+        const prevRow: any = declarations[rowNumber - 1];
+
+        if (nextRow.isLeaf) {
+          declarations.splice(rowNumber + 1, 1);
+        }
+
+        if (prevRow.isLeaf) {
+          declarations.splice(rowNumber - 1, 1);
+        }
+      }
     } else {
       declarations.splice(rowNumber, numOfRows);
     }
