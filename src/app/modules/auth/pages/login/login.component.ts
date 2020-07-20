@@ -63,10 +63,6 @@ export class AuthLoginComponent implements OnInit, OnDestroy {
       .subscribe(
         () => {
           this.router.navigate(['/'], { replaceUrl: true });
-        },
-        (error) => {
-          console.error(error)
-          this.messageService.create('error', 'Sai Tên đăng nhập hoặc Mật khẩu. Vui lòng thử lại!')
         }
       );
   }

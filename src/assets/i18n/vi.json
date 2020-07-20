@@ -20,7 +20,8 @@
 		"errorMessenger": {
 			"success": "",
 			"dataInvalid": "Dữ liệu không hợp lệ",
-			"employeeIsExistDeclatation": "NLĐ đã có hồ sơ, bạn không thể xóa"
+			"employeeIsExistDeclatation": "NLĐ đã có hồ sơ, bạn không thể xóa",
+			"loginFailed": "Sai Tên đăng nhập hoặc Mật khẩu. Vui lòng thử lại!"
 		}
   },
   "auth": {

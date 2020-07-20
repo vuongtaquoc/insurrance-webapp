@@ -35,6 +35,7 @@
             "styles": [
               "node_modules/jsuites/dist/jsuites.css",
               "node_modules/jstable-editor/dist/jexcel.css",
+              "node_modules/toastr/build/toastr.css",
               "node_modules/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css",
               "src/assets/less/themes/default/theme.less",
               "src/styles.less"
