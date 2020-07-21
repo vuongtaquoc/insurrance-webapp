@@ -43,24 +43,24 @@ export class PlanService {
   public getNoteByPlanCode(planCode, employee) {
     let note = '';
     switch(planCode) {
-      // Điều chỉnh
+      // �i?u ch?nh
       case 'DC':
-         note = 'Điều chỉnh tiền lương';
+         note = '�i?u ch?nh ti?n luong';
         break;
       case 'CD':
-        note = 'Điều chỉnh chức danh';
+        note = '�i?u ch?nh ch?c danh';
         break;
        case 'DL':
-        note = 'Điều chỉnh tham gia thất nghiệp';
+        note = '�i?u ch?nh tham gia th?t nghi?p';
         break;
       case 'TV':
-        note = 'Tăng quỹ HTTT';
+        note = 'Tang qu? HTTT';
         break;
       case 'GV':
-        note = 'Giảm quỹ HTTT';
+        note = 'Gi?m qu? HTTT';
         break;
       case 'DL':
-        note = 'Điều chỉnh lương/điều chỉnh chức danh tham gia BH TNLĐ, BNN';
+        note = '�i?u ch?nh luong/di?u ch?nh ch?c danh tham gia BH TNL�, BNN';
         break;
       default:
         // code block

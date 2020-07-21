@@ -1,9 +1,10 @@
+
 export const validationColumnsPlanCode: any = {
   'GH1': {
-    contractNo: {
+    contractCancelNo: {
       required: true,
     },
-    dateSign: {
+    dateCancelSign: {
       required: true,
       lessThanNow: true
     },
@@ -19,10 +20,10 @@ export const validationColumnsPlanCode: any = {
     }
   },
   'DC': {
-    contractNo: {
+    contractCancelNo: {
       required: true,
     },
-    dateSign: {
+    dateCancelSign: {
       required: true,
       lessThanNow: true
     },
@@ -32,13 +33,13 @@ export const validationColumnsPlanCode: any = {
     }
   },
   'CD': {
-    contractNo: {
+    contractCancelNo: {
       required: true,
     },
     levelWork: {
       required: true,
     },
-    dateSign: {
+    dateCancelSign: {
       required: true,
       lessThanNow: true
     },
@@ -76,10 +77,10 @@ export const validationColumnsPlanCode: any = {
     }
   },
   'GH2': {
-    contractNo: {
+    contractCancelNo: {
       required: true,
     },
-    dateSign: {
+    dateCancelSign: {
       required: true,
       lessThanNow: true
     },note: {
@@ -88,10 +89,10 @@ export const validationColumnsPlanCode: any = {
     }
   },
   'GH3': {
-    contractNo: {
+    contractCancelNo: {
       required: true,
     },
-    dateSign: {
+    dateCancelSign: {
       required: true,
       lessThanNow: true
     },note: {
@@ -108,10 +109,10 @@ export const validationColumnsPlanCode: any = {
     }
   },
   'GC': {
-    contractNo: {
+    contractCancelNo: {
       required: true,
     },
-    dateSign: {
+    dateCancelSign: {
       required: true,
       lessThanNow: true
     },note: {
@@ -126,10 +127,10 @@ export const validationColumnsPlanCode: any = {
     }
   },
   'GD': {
-    contractNo: {
+    contractCancelNo: {
       required: true,
     },
-    dateSign: {
+    dateCancelSign: {
       required: true,
       lessThanNow: true
     },note: {

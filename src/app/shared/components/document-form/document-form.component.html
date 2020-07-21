@@ -22,7 +22,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let data of ajaxTable.data;">
-          <td>{{ data.declaretionName }}</td>
+          <td>{{ data.fileName }}</td>
           <td class="text-center">
             <a (click)="downloadFile(data)" *ngIf="!data.isDownloading">
               <i nz-icon nzType="eye" nzTheme="outline"></i>

@@ -64,6 +64,14 @@ export class RegimeApprovalListComponent implements OnInit {
   }
 
   viewDocument(declarationInfo: any) {
+    if(declarationInfo.status === 0) {
+      this.showMessageNotView();
+    } else {
+      this.showViewDeclarationFile(declarationInfo);
+    }
+  }
+
+  private showViewDeclarationFile(declarationInfo: any) {
     const modal = this.modalService.create({
       nzWidth: 680,
       nzWrapClassName: 'document-modal',
@@ -76,6 +84,13 @@ export class RegimeApprovalListComponent implements OnInit {
     });
 
     modal.afterClose.subscribe(result => {
+    });
+  }
+
+  private showMessageNotView() {
+    const modal = this.modalService.warning({
+      nzTitle: 'Thông báo',
+      nzContent: 'Hồ sơ đang ở trạng thái lưu tạm thời nên không thể xem tờ khai'
     });
   }
 }

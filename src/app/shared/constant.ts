@@ -72,6 +72,14 @@ export const DECLARATIONS =
   }
 ];
 
+export const CONSTPARENTDELETEAUTOROW =
+[
+  {
+    parent: 'reductionlabor_II_1',
+    tableName:'Giảm lao động'
+  }
+]
+
 export const DOCUMENTBYPLANCODE =
 [
   {

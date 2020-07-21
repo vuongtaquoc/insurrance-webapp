@@ -4,12 +4,15 @@ import { Subject, Subscription, Observable } from 'rxjs';
 import findLastIndex from 'lodash/findLastIndex';
 import findIndex from 'lodash/findIndex';
 import * as jexcel from 'jstable-editor/dist/jexcel.js';
+import * as moment from 'moment';
+
 import {
   DeclarationService,
   HospitalService
 } from '@app/core/services';
 import { ACTION } from '@app/shared/constant';
 import { validationColumnsPlanCode } from '@app/shared/constant-valid';
+import { CONSTPARENTDELETEAUTOROW } from '@app/shared/constant';
 export class GeneralBaseComponent {
   @Input() data: any;
   @Input() NzPageHeaderContentDirective: string;
@@ -136,8 +139,7 @@ handleUserUpdated(user, tableName) {
   });
 }
 
-  cloneEmployeeByPlanCode(groupInfo, tableName, employee) {
-
+  cloneEmployeeByPlanCode(groupInfo, tableName, employee, fromDate) {
     const declarations = [ ...this.declarations[tableName].table];
 
     const parentIndex = findIndex(declarations, d => d.key === groupInfo.type);
@@ -397,21 +399,36 @@ handleUserUpdated(user, tableName) {
       } else if (column.key === 'recipientsCityCode') {
         this.updateNextColumns(instance, r, '', [ c + 1, c + 2, c + 5, c + 6 ]);
       } else if (column.key === 'planCode') {
+        const indexOfPlanCode = this.headers[tableName].columns.findIndex(c => c.key === 'fromDate')
         const planCode = records[r][c];
-        this.setDataByPlanCode(instance, records,r, planCode, tableName);
+        const fromDate = records[r][indexOfPlanCode];
+        this.setDataByPlanCode(instance, records,r, planCode, tableName, fromDate);
         
       } else if (column.key === 'fromDate') {
         const indexOfPlanCode = this.headers[tableName].columns.findIndex(c => c.key === 'planCode')
+        const indexOfFromDate = this.headers[tableName].columns.findIndex(c => c.key === 'fromDate')
         const planCode = records[r][indexOfPlanCode];
-        this.setDataByPlanCode(instance, records,r, planCode, tableName);
+        const fromDate = records[r][indexOfFromDate];
+        this.setDataByPlanCode(instance, records,r, planCode, tableName,fromDate);
         
-      }else if (column.key === 'hospitalFirstRegistCode') {
+      } else if (column.key === 'contractNo') {
+        const indexOfPlanCode = this.headers[tableName].columns.findIndex(c => c.key === 'planCode')
+        const planCode = records[r][indexOfPlanCode];
+        const fromDate = records[r][c];
+        this.setDataByPlanCode(instance, records,r, planCode, tableName,fromDate);
+      } else if (column.key === 'dateSign') {
+        const indexOfPlanCode = this.headers[tableName].columns.findIndex(c => c.key === 'planCode')
+        const planCode = records[r][indexOfPlanCode];
+        const fromDate = records[r][c];
+        this.setDataByPlanCode(instance, records,r, planCode, tableName,fromDate);
+     }  else if (column.key === 'hospitalFirstRegistCode') {
         const hospitalFirstCode = cell.innerText.split(' - ').shift();
-
-        this.hospitalService.getById(hospitalFirstCode).subscribe(data => {
-          this.updateNextColumns(instance, r,  data.name, [ c + 1 ]);
-        });
-
+        if(hospitalFirstCode !== '' && hospitalFirstCode !== undefined) 
+        {
+          this.hospitalService.getById(hospitalFirstCode).subscribe(data => {
+            this.updateNextColumns(instance, r,  data.name, [ c + 1 ]);
+          });
+        }
       }
 
     }
@@ -443,27 +460,32 @@ handleUserUpdated(user, tableName) {
     });
   }
 
-  private setDataByPlanCode(instance, records, r, planCode,tableName) {
+  private setDataByPlanCode(instance, records, r, planCode,tableName, fromDate) {
     clearTimeout(this.timer);
         this.timer = setTimeout(() => {
-          const planConfigInfo = validationColumnsPlanCode[planCode] || {note:{argsColumn: [], message: ''}};
-          const argsColumn = planConfigInfo.note.argsColumn || [] ;
-          const cloneEmployee = planConfigInfo.copy || { type: '', note: '', tableName: '' };
-          const argsMessgae = [];
-          argsColumn.forEach(column => {
-            const indexOfColumn = this.headers[tableName].columns.findIndex(c => c.key === column);
-            argsMessgae.push(records[r][indexOfColumn]);
-          });
-          const indexColumnNote = this.headers[tableName].columns.findIndex(c => c.key === 'note');
-          const notebuild = this.formatNote(planConfigInfo.note.message, argsMessgae);
-          this.updateNextColumns(instance, r, notebuild, [indexColumnNote]);
-          this.processEmployeeByPlanCode(cloneEmployee, tableName, records, r);
+          const indexEmployeeIdClone = this.headers[tableName].columns.findIndex(c => c.key === 'employeeIdClone');
+          const employeeIdClone = records[r][indexEmployeeIdClone]
+          if (employeeIdClone === '' ||  employeeIdClone === undefined) {
+            const planConfigInfo = validationColumnsPlanCode[planCode] || {note:{argsColumn: [], message: ''}};
+            const argsColumn = planConfigInfo.note.argsColumn || [] ;
+            const cloneEmployee = planConfigInfo.copy || { type: '', note: '', tableName: '' };
+            const argsMessgae = [];
+            argsColumn.forEach(column => {
+              const indexOfColumn = this.headers[tableName].columns.findIndex(c => c.key === column);
+              argsMessgae.push(records[r][indexOfColumn]);
+            });
+          
+            const indexColumnNote = this.headers[tableName].columns.findIndex(c => c.key === 'note');
+            const notebuild = this.formatNote(planConfigInfo.note.message, argsMessgae);
+            this.updateNextColumns(instance, r, notebuild, [indexColumnNote]);
+            this.processEmployeeByPlanCode(cloneEmployee, tableName, records, r, fromDate);
+          }
         }, 10);
   }
-  private processEmployeeByPlanCode(groupInfo, tableName, data, r) {
-
-    if(groupInfo.type !== '') {
-      this.cloneEmployeeByPlanCode(groupInfo, groupInfo.tableName, data[r].origin);
+  private processEmployeeByPlanCode(groupInfo, tableName, data, r, fromDate) {
+    const isLessThanNow = this.isLessThanNow(fromDate);
+    if(groupInfo.type !== '' && isLessThanNow) {
+      this.cloneEmployeeByPlanCode(groupInfo, groupInfo.tableName, data[r].origin,fromDate);
     }else {
       const employeeId = data[r].origin.employeeId;
       const parentKey = data[r].options.parentKey;
@@ -473,8 +495,9 @@ handleUserUpdated(user, tableName) {
   }
 
   private deleteEmployeeLink(tableName, data, employeeId, parentKey) {
-
-    if(parentKey !== 'II_1') {
+    const key = (tableName + '_' + parentKey);
+    const willBeDeleted =  CONSTPARENTDELETEAUTOROW.findIndex(p => p.parent === (tableName + '_' + parentKey)) > -1;
+    if(!willBeDeleted) {
       return '';
     }
 
@@ -725,5 +748,28 @@ handleUserUpdated(user, tableName) {
     for (let i = 0; i < args.length; i++)
        str = str.replace("{" + i + "}", args[i]);
     return str;
+  }
+
+  private isLessThanNow(dateMonthYear) {
+    const fromDate = this.getFromDate(dateMonthYear);
+    const curentDate = new Date();
+    const  numberFromDate = (fromDate.getMonth() + 1 + fromDate.getFullYear());
+    const  numberCurentDate = (curentDate.getMonth() + 1 + curentDate.getFullYear());
+    
+
+    if(numberFromDate >= numberCurentDate)
+    {
+      return false;
+    }
+
+    return true;
+  }
+
+  private getFromDate(dateMonthYear) {
+    const fullDate = '01/' + dateMonthYear;
+    if(!moment(fullDate,"DD/MM/YYYY")) {
+      return new Date();
+    }
+    return moment(fullDate,"DD/MM/YYYY").toDate();
   }
 }
