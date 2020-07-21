@@ -25,6 +25,9 @@ export class LayoutComponent implements OnInit, OnDestroy {
     this.handlers = [
       eventEmitter.on('loading:open', (isLoading = false) => {
         this.isLoading = isLoading;
+      }),
+      eventEmitter.on('saveData:loading', (display) => {
+        this.isLoading = display;
       })
     ];
   }

@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
+import { AuthorizeGuard } from '@app/core/guards';
+
 import { LayoutComponent } from '@app/shared/layout';
 import {
   IncreaseLaborAddComponent,
@@ -30,7 +32,12 @@ const routes: Routes = [
     children: [
       {
         path: 'increase-labor/add',
-        component: IncreaseLaborAddComponent
+        component: IncreaseLaborAddComponent,
+        // check permission
+        canActivate: [ AuthorizeGuard ],
+        data: {
+          expectedPermission: 'substituteInvoice_U'
+        }
       },
       {
         path: 'increase-labor/:id/edit',

@@ -20,7 +20,7 @@ export class PlanService {
         return hospitals.map(plan => ({
           ...plan,
           name: `${ plan.id } - ${ plan.name }`,
-          shortName: plan.shortName
+          shortName: plan.name
         }));
       })
     );
@@ -34,7 +34,7 @@ export class PlanService {
         return hospitals.map(plan => ({
           ...plan,
           name: `${ plan.id } - ${ plan.name }`,
-          shortName: plan.shortName
+          shortName: plan.name
         }));
       })
     );
@@ -52,22 +52,22 @@ export class PlanService {
         break;
        case 'DL':
         note = 'Điều chỉnh tham gia thất nghiệp';
-        break;  
+        break;
       case 'TV':
         note = 'Tăng quỹ HTTT';
-        break; 
+        break;
       case 'GV':
         note = 'Giảm quỹ HTTT';
-        break; 
+        break;
       case 'DL':
         note = 'Điều chỉnh lương/điều chỉnh chức danh tham gia BH TNLĐ, BNN';
-        break;  
+        break;
       default:
         // code block
     }
 
     return note;
-    
-  } 
+
+  }
 
 }
