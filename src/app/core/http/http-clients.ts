@@ -2,8 +2,9 @@ import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { NzMessageService } from 'ng-zorro-antd/message';
-import { ErrorMessage } from '@app/shared/constant';
+import toastr from 'toastr';
+
+import { errorMessages } from '@app/shared/constant';
 
 import { environment } from '@config';
 
@@ -99,7 +100,7 @@ export class ApplicationHttpClient {
     if (data.code === 1) {
       return data.data;
     }
-    
+
     throw {
       code: data.code,
       message: this.getMessageErrorByErrorCode(data.code),
@@ -107,14 +108,16 @@ export class ApplicationHttpClient {
 
   }
 
-
   private getMessageErrorByErrorCode(errorCode)
   {
-    const message = ErrorMessage[errorCode];
-    if(!message) {
-      return ErrorMessage[8];
+    const message = errorMessages[errorCode];
+
+    if (!message) {
+      toastr.error(errorMessages[8]);
+      return errorMessages[8];
     }
-    
+
+    toastr.error(message);
     return message;
   }
 }

@@ -95,11 +95,11 @@ export const DOCUMENTBYPLANCODE =
         companyRelease: {
           mesage: '{0}',
           column: ['companyRelease'],
-        },  
+        },
         dateRelease: {
           mesage: '{0}',
           column: ['dateSign'],
-        },         
+        },
         documentAppraisal: {
           mesage: 'Truy tăng {0} từ {1}',
           column: ['fullName', 'fromDate'],
@@ -117,11 +117,11 @@ export const DOCUMENTBYPLANCODE =
         companyRelease: {
           mesage: '{0}',
           column: ['companyRelease'],
-        },  
+        },
         dateRelease: {
           mesage: '',
           column: [],
-        },         
+        },
         documentAppraisal: {
           mesage: 'Truy tăng {0} từ {1}',
           column: ['fullName', 'fromDate'],
@@ -142,11 +142,11 @@ export const DOCUMENTBYPLANCODE =
         companyRelease: {
           mesage: '{0}',
           column: ['companyRelease'],
-        },  
+        },
         dateRelease: {
           mesage: '{0}',
           column: ['dateSign'],
-        },         
+        },
         documentAppraisal: {
           mesage: 'Truy tăng {0} từ {1}',
           column: ['fullName', 'fromDate'],
@@ -164,11 +164,11 @@ export const DOCUMENTBYPLANCODE =
         companyRelease: {
           mesage: '{0}',
           column: ['companyRelease'],
-        },  
+        },
         dateRelease: {
           mesage: '',
           column: [],
-        },         
+        },
         documentAppraisal: {
           mesage: 'Truy tăng {0} từ {1}',
           column: ['fullName', 'fromDate'],
@@ -189,11 +189,11 @@ export const DOCUMENTBYPLANCODE =
         companyRelease: {
           mesage: '{0}',
           column: ['companyRelease'],
-        },  
+        },
         dateRelease: {
           mesage: '{0}',
           column: ['dateSign'],
-        },         
+        },
         documentAppraisal: {
           mesage: 'Truy tăng {0} từ {1}',
           column: ['fullName', 'fromDate'],
@@ -210,11 +210,11 @@ export const DOCUMENTBYPLANCODE =
         companyRelease: {
           mesage: '{0}',
           column: ['companyRelease'],
-        },  
+        },
         dateRelease: {
           mesage: '',
           column: [],
-        },         
+        },
         documentAppraisal: {
           mesage: 'Truy tăng {0} từ {1}',
           column: ['fullName', 'fromDate'],
@@ -235,11 +235,11 @@ export const DOCUMENTBYPLANCODE =
         companyRelease: {
           mesage: '{0}',
           column: ['companyRelease'],
-        },  
+        },
         dateRelease: {
           mesage: '{0}',
           column: ['dateSign'],
-        },         
+        },
         documentAppraisal: {
           mesage: 'Truy tăng {0} từ {1}',
           column: ['fullName', 'fromDate'],
@@ -256,11 +256,11 @@ export const DOCUMENTBYPLANCODE =
         companyRelease: {
           mesage: '{0}',
           column: ['companyRelease'],
-        },  
+        },
         dateRelease: {
           mesage: '',
           column: [],
-        },         
+        },
         documentAppraisal: {
           mesage: 'Truy tăng {0} từ {1}',
           column: ['fullName', 'fromDate'],
@@ -281,11 +281,11 @@ export const DOCUMENTBYPLANCODE =
         companyRelease: {
           mesage: '{0}',
           column: ['companyRelease'],
-        },  
+        },
         dateRelease: {
           mesage: '',
           column: [],
-        },     
+        },
         documentAppraisal: {
           mesage: 'Truy tăng {0} từ {1}',
           column: ['fullName', 'fromDate'],
@@ -306,11 +306,11 @@ export const DOCUMENTBYPLANCODE =
         companyRelease: {
           mesage: '',
           column: [],
-        },  
+        },
         dateRelease: {
           mesage: '{0}',
           column: ['dateSign'],
-        },           
+        },
         documentAppraisal: {
           mesage: '',
           column: [],
@@ -320,7 +320,7 @@ export const DOCUMENTBYPLANCODE =
   ]},
   {
     key: 'ON (ts)',
-    value: [       
+    value: [
       {
         documentType: 'Bản chính Bảng lương',
         documentNote: 'Bảng lương nhân viên',
@@ -331,11 +331,11 @@ export const DOCUMENTBYPLANCODE =
         companyRelease: {
           mesage: '{0}',
           column: ['companyRelease'],
-        },  
+        },
         dateRelease: {
           mesage: '',
           column: [],
-        },         
+        },
         documentAppraisal: {
           mesage: 'Truy tăng {0} từ {1}',
           column: ['fullName', 'fromDate'],
@@ -344,7 +344,7 @@ export const DOCUMENTBYPLANCODE =
       }
   ]},{
     key: 'ON (kl)',
-    value: [       
+    value: [
       {
         documentType: 'Bản chính Bảng lương',
         documentNote: 'Bảng lương nhân viên',
@@ -355,11 +355,11 @@ export const DOCUMENTBYPLANCODE =
         companyRelease: {
           mesage: '{0}',
           column: ['companyRelease'],
-        },  
+        },
         dateRelease: {
           mesage: '',
           column: [],
-        },         
+        },
         documentAppraisal: {
           mesage: 'Truy tăng {0} từ {1}',
           column: ['fullName', 'fromDate'],
@@ -369,7 +369,7 @@ export const DOCUMENTBYPLANCODE =
   ]},
   {
     key: 'ON (om)',
-    value: [       
+    value: [
       {
         documentType: 'Bản chính Bảng lương',
         documentNote: 'Bảng lương nhân viên',
@@ -380,11 +380,11 @@ export const DOCUMENTBYPLANCODE =
         companyRelease: {
           mesage: '{0}',
           column: ['companyRelease'],
-        },  
+        },
         dateRelease: {
           mesage: '',
           column: [],
-        },         
+        },
         documentAppraisal: {
           mesage: 'Truy tăng {0} từ {1}',
           column: ['fullName', 'fromDate'],
@@ -404,11 +404,11 @@ export const DOCUMENTBYPLANCODE =
         companyRelease: {
           mesage: '{0}',
           column: ['companyRelease'],
-        },  
+        },
         dateRelease: {
           mesage: '',
           column: [],
-        },         
+        },
         documentAppraisal: {
           mesage: 'Truy tăng {0} từ {1}',
           column: ['fullName', 'fromDate'],
@@ -426,11 +426,11 @@ export const DOCUMENTBYPLANCODE =
         companyRelease: {
           mesage: '{0}',
           column: ['companyRelease'],
-        },  
+        },
         dateRelease: {
           mesage: '',
           column: [],
-        },         
+        },
         documentAppraisal: {
           mesage: 'Truy tăng {0} từ {1}',
           column: ['fullName', 'fromDate'],
@@ -450,11 +450,11 @@ export const DOCUMENTBYPLANCODE =
         companyRelease: {
           mesage: '{0}',
           column: ['companyRelease'],
-        },  
+        },
         dateRelease: {
           mesage: '',
           column: [],
-        },         
+        },
         documentAppraisal: {
           mesage: 'Truy tăng {0} từ {1}',
           column: ['fullName', 'fromDate'],
@@ -471,11 +471,11 @@ export const DOCUMENTBYPLANCODE =
         companyRelease: {
           mesage: '{0}',
           column: ['companyRelease'],
-        },  
+        },
         dateRelease: {
           mesage: '',
           column: [],
-        },         
+        },
         documentAppraisal: {
           mesage: 'Truy tăng {0} từ {1}',
           column: ['fullName', 'fromDate'],
@@ -495,11 +495,11 @@ export const DOCUMENTBYPLANCODE =
         companyRelease: {
           mesage: '{0}',
           column: ['companyRelease'],
-        },  
+        },
         dateRelease: {
           mesage: '',
           column: [],
-        },         
+        },
         documentAppraisal: {
           mesage: 'Truy tăng {0} từ {1}',
           column: ['fullName', 'fromDate'],
@@ -516,11 +516,11 @@ export const DOCUMENTBYPLANCODE =
         companyRelease: {
           mesage: '{0}',
           column: ['companyRelease'],
-        },  
+        },
         dateRelease: {
           mesage: '',
           column: [],
-        },         
+        },
         documentAppraisal: {
           mesage: 'Truy tăng {0} từ {1}',
           column: ['fullName', 'fromDate'],
@@ -540,11 +540,11 @@ export const DOCUMENTBYPLANCODE =
         companyRelease: {
           mesage: '{0}',
           column: ['companyRelease'],
-        },  
+        },
         dateRelease: {
           mesage: '',
           column: [],
-        },         
+        },
         documentAppraisal: {
           mesage: 'Truy tăng {0} từ {1}',
           column: ['fullName', 'fromDate'],
@@ -561,11 +561,11 @@ export const DOCUMENTBYPLANCODE =
         companyRelease: {
           mesage: '{0}',
           column: ['companyRelease'],
-        },  
+        },
         dateRelease: {
           mesage: '',
           column: [],
-        },         
+        },
         documentAppraisal: {
           mesage: 'Truy tăng {0} từ {1}',
           column: ['fullName', 'fromDate'],
@@ -585,11 +585,11 @@ export const DOCUMENTBYPLANCODE =
         companyRelease: {
           mesage: '{0}',
           column: ['companyRelease'],
-        },  
+        },
         dateRelease: {
           mesage: '',
           column: [],
-        },         
+        },
         documentAppraisal: {
           mesage: 'Truy tăng {0} từ {1}',
           column: ['fullName', 'fromDate'],
@@ -606,11 +606,11 @@ export const DOCUMENTBYPLANCODE =
         companyRelease: {
           mesage: '{0}',
           column: ['companyRelease'],
-        },  
+        },
         dateRelease: {
           mesage: '',
           column: [],
-        },         
+        },
         documentAppraisal: {
           mesage: 'Truy tăng {0} từ {1}',
           column: ['fullName', 'fromDate'],
@@ -630,11 +630,11 @@ export const DOCUMENTBYPLANCODE =
         companyRelease: {
           mesage: '{0}',
           column: ['companyRelease'],
-        },  
+        },
         dateRelease: {
           mesage: '',
           column: [],
-        },         
+        },
         documentAppraisal: {
           mesage: 'Truy tăng {0} từ {1}',
           column: ['fullName', 'fromDate'],
@@ -651,11 +651,11 @@ export const DOCUMENTBYPLANCODE =
         companyRelease: {
           mesage: '{0}',
           column: ['companyRelease'],
-        },  
+        },
         dateRelease: {
           mesage: '',
           column: [],
-        },         
+        },
         documentAppraisal: {
           mesage: 'Truy tăng {0} từ {1}',
           column: ['fullName', 'fromDate'],
@@ -675,11 +675,11 @@ export const DOCUMENTBYPLANCODE =
         companyRelease: {
           mesage: '{0}',
           column: ['companyRelease'],
-        },  
+        },
         dateRelease: {
           mesage: '',
           column: [],
-        },         
+        },
         documentAppraisal: {
           mesage: 'Truy tăng {0} từ {1}',
           column: ['fullName', 'fromDate'],
@@ -696,11 +696,11 @@ export const DOCUMENTBYPLANCODE =
         companyRelease: {
           mesage: '{0}',
           column: ['companyRelease'],
-        },  
+        },
         dateRelease: {
           mesage: '',
           column: [],
-        },         
+        },
         documentAppraisal: {
           mesage: 'Truy tăng {0} từ {1}',
           column: ['fullName', 'fromDate'],
@@ -720,11 +720,11 @@ export const DOCUMENTBYPLANCODE =
         companyRelease: {
           mesage: '',
           column: [],
-        },  
+        },
         dateRelease: {
           mesage: '',
           column: [],
-        },         
+        },
         documentAppraisal: {
           mesage: '',
           column: [],
@@ -741,11 +741,11 @@ export const DOCUMENTBYPLANCODE =
         companyRelease: {
           mesage: '{0}',
           column: ['companyRelease'],
-        },  
+        },
         dateRelease: {
           mesage: '',
           column: [],
-        },         
+        },
         documentAppraisal: {
           mesage: 'Truy tăng {0} từ {1}',
           column: ['fullName', 'fromDate'],
@@ -765,11 +765,11 @@ export const DOCUMENTBYPLANCODE =
         companyRelease: {
           mesage: '{0}',
           column: ['companyRelease'],
-        },  
+        },
         dateRelease: {
           mesage: '',
           column: [],
-        },         
+        },
         documentAppraisal: {
           mesage: 'Truy tăng {0} từ {1}',
           column: ['fullName', 'fromDate'],
@@ -789,11 +789,11 @@ export const DOCUMENTBYPLANCODE =
         companyRelease: {
           mesage: '',
           column: [],
-        },  
+        },
         dateRelease: {
           mesage: '',
           column: [],
-        },         
+        },
         documentAppraisal: {
           mesage: '',
           column: [],
@@ -810,11 +810,11 @@ export const DOCUMENTBYPLANCODE =
         companyRelease: {
           mesage: '{0}',
           column: ['companyRelease'],
-        },  
+        },
         dateRelease: {
           mesage: '',
           column: [],
-        },         
+        },
         documentAppraisal: {
           mesage: 'Truy tăng {0} từ {1}',
           column: ['fullName', 'fromDate'],
@@ -834,11 +834,11 @@ export const DOCUMENTBYPLANCODE =
         companyRelease: {
           mesage: '{0}',
           column: ['companyRelease'],
-        },  
+        },
         dateRelease: {
           mesage: '',
           column: [],
-        },         
+        },
         documentAppraisal: {
           mesage: 'Thay đổi lương, chức danh {0} từ {1}',
           column: ['fullName', 'fromDate'],
@@ -855,11 +855,11 @@ export const DOCUMENTBYPLANCODE =
         companyRelease: {
           mesage: '{0}',
           column: ['companyRelease'],
-        },  
+        },
         dateRelease: {
           mesage: '',
           column: [],
-        },         
+        },
         documentAppraisal: {
           mesage: 'Thay đổi lương, chức danh {0} từ {1}',
           column: ['fullName', 'fromDate'],
@@ -879,17 +879,17 @@ export const DOCUMENTBYPLANCODE =
         companyRelease: {
           mesage: '{0}',
           column: ['companyRelease'],
-        },  
+        },
         dateRelease: {
           mesage: '',
           column: [],
-        },         
+        },
         documentAppraisal: {
           mesage: 'Thay đổi chức danh {0} từ {1}',
           column: ['fullName', 'fromDate'],
         },
         documentCode: 'CD_1',
-      } 
+      }
   ]},{
     key: 'DN',
     value: [
@@ -903,17 +903,17 @@ export const DOCUMENTBYPLANCODE =
         companyRelease: {
           mesage: '{0}',
           column: ['companyRelease'],
-        },  
+        },
         dateRelease: {
           mesage: '',
           column: [],
-        },         
+        },
         documentAppraisal: {
           mesage: '',
           column: [],
         },
         documentCode: 'DN_1',
-      } 
+      }
   ]},{
     key: 'TV',
     value: [
@@ -927,18 +927,18 @@ export const DOCUMENTBYPLANCODE =
         companyRelease: {
           mesage: '',
           column: [],
-        },  
+        },
         dateRelease: {
           mesage: '',
           column: [],
-        },         
+        },
         documentAppraisal: {
           mesage: '',
           column: [],
         },
         documentCode: 'TV_1',
-      } 
-  ]}   
+      }
+  ]}
 ];
 
 export const ErrorMessage = {
@@ -946,3 +946,10 @@ export const ErrorMessage = {
   8: 'common.errorMessenger.dataInvalid',
   2040: 'common.errorMessenger.employeeIsExistDeclatation',
 };
+
+export const errorMessages = {
+  0: 'Nam',
+  8: 'Dữ liệu không hợp lệ',
+  2040: 'NLĐ đã có hồ sơ, bạn không thể xóa',
+  2001: 'Sai Tên đăng nhập hoặc Mật khẩu. Vui lòng thử lại!'
+}
