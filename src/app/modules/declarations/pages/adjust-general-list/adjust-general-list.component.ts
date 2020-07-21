@@ -4,8 +4,8 @@ import { DeclarationService } from '@app/core/services';
 import { Declaration } from '@app/core/interfaces';
 
 import { PAGE_SIZE, DECLARATIONS } from '@app/shared/constant';
-import { NzModalService } from 'ng-zorro-antd/modal';
 import { DocumentFormComponent } from '@app/shared/components';
+import { NzModalService } from 'ng-zorro-antd/modal';
 
 @Component({
   selector: 'app-adjust-general-list',
@@ -67,6 +67,15 @@ export class AdjustGeneralListComponent implements OnInit {
   }
 
   viewDocument(declarationInfo: any) {
+
+    if(declarationInfo.status === 0) {
+      this.showMessageNotView();
+    } else {
+      this.showViewDeclarationFile(declarationInfo);
+    }
+  }
+
+  private showViewDeclarationFile(declarationInfo: any) {
     const modal = this.modalService.create({
       nzWidth: 680,
       nzWrapClassName: 'document-modal',
@@ -79,6 +88,13 @@ export class AdjustGeneralListComponent implements OnInit {
     });
 
     modal.afterClose.subscribe(result => {
+    });
+  }
+
+  private showMessageNotView() {
+    const modal = this.modalService.warning({
+      nzTitle: 'Thông báo',
+      nzContent: 'Hồ sơ đang ở trạng thái lưu tạm thời nên không thể xem tờ khai'
     });
   }
 

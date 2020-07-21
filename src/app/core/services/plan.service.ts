@@ -40,34 +40,4 @@ export class PlanService {
     );
   }
 
-  public getNoteByPlanCode(planCode, employee) {
-    let note = '';
-    switch(planCode) {
-      // Điều chỉnh
-      case 'DC':
-         note = 'Điều chỉnh tiền lương';
-        break;
-      case 'CD':
-        note = 'Điều chỉnh chức danh';
-        break;
-       case 'DL':
-        note = 'Điều chỉnh tham gia thất nghiệp';
-        break;  
-      case 'TV':
-        note = 'Tăng quỹ HTTT';
-        break; 
-      case 'GV':
-        note = 'Giảm quỹ HTTT';
-        break; 
-      case 'DL':
-        note = 'Điều chỉnh lương/điều chỉnh chức danh tham gia BH TNLĐ, BNN';
-        break;  
-      default:
-        // code block
-    }
-
-    return note;
-    
-  } 
-
 }

@@ -514,7 +514,7 @@ export const TABLE_HEADER_COLUMNS = [{
   // decimal: ',',
   width: 50,
   title: '(28)',
-  key: 'ratio',
+  key: 'rate',
   validations: {
     number: true
   },

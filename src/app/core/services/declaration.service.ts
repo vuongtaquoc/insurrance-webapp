@@ -61,10 +61,12 @@ export class DeclarationService {
   }
 
   public create(body, options = {}) {
+    console.log(body);
     return this.http.post('/declarations', body, options);
   }
 
   public update(id, body, options = {}) {
+    console.log(body);
     return this.http.post(`/declarations/${ id }`, body, options);
   }
 

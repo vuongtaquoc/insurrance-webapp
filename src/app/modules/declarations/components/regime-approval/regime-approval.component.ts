@@ -193,7 +193,7 @@ export class RegimeApprovalComponent implements OnInit, OnDestroy {
     }).subscribe(data => {
       if (data.type === 'saveAndView') {
         this.viewDocument(data);
-      } else if(data.type === 'save') {
+      } else {
         this.router.navigate(['/declarations/regime-approval']);
       }
     });

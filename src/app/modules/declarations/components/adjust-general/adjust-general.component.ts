@@ -148,8 +148,10 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
             submitter: declarations.submitter,
             mobile: declarations.mobile
           });
+
           this.declarations.origin = declarations.documentDetail;
           this.informations = this.fomatInfomation(declarations.informations);
+          this.families = this.fomatFamilies(declarations.families);
           
           this.declarations.formOrigin = {
             batch: declarations.batch,
@@ -395,6 +397,7 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
       declarationCode: this.declarationCode,
       declarationName: this.getDeclaration(this.declarationCode).value,
       documentStatus: 0,
+      status: type === 'saveAndView' ? 1: 0,
       submitter: this.submitter,
       mobile: this.mobile,
       ...this.declarations.form,
@@ -752,7 +755,7 @@ private setDataToFamilyEditor(records: any)
 
     return {
       isMaster:false,
-      conditionValid: null, //employee.relationshipFullName,
+      conditionValid: null,
       employeeId: employee.employeeId,
       origin: {
         employeeId: employee.employeeId,
@@ -930,7 +933,8 @@ private setDataToFamilyEditor(records: any)
     const families = [];
     let familiescopy = [ ...this.families ];
     familiescopy.forEach(family => {
-        if(family.fullName) {
+      const employeeName = family.fullName ? family.fullName : family.relationshipFullName;
+        if(employeeName) {
           family.isMaster = family.origin.isMaster
           family.id = family.id ? family.id : 0;
           family.gender = family.gender ? 1: 0;
@@ -938,7 +942,6 @@ private setDataToFamilyEditor(records: any)
           families.push(family);
         }
     });
-
     return families;
   }
 
@@ -1014,10 +1017,9 @@ private setDateToInformationList(records: any)
             isurranceNo: emp.isurranceNo,           
             isurranceCode: emp.isurranceCode,    
             fullName: emp.fullName,
-            companyRelease: this.buildMessgaeByConfig(doc.companyRelease,emp),
-            documentNo: this.buildMessgaeByConfig(doc.documentNo,emp),           
-            documentAppraisal: this.buildMessgaeByConfig(doc.documentAppraisal,emp),
-            dateRelease: this.buildMessgaeByConfig(doc.dateRelease,emp),
+            //companyRelease: this.buildMessgaeByConfig(doc.companyRelease,emp),
+            //documentNo: this.buildMessgaeByConfig(doc.documentNo,emp),           
+            //dateRelease: this.buildMessgaeByConfig(doc.dateRelease,emp),
             documentCode: doc.documentCode,
             planCode: emp.planCode,
             employeeId: emp.employeeId,
@@ -1029,6 +1031,10 @@ private setDateToInformationList(records: any)
             }
         }; 
       }
+      item.companyRelease = item.companyRelease ? item.companyRelease : this.buildMessgaeByConfig(doc.companyRelease,emp);
+      item.dateRelease = item.dateRelease ? item.dateRelease : this.buildMessgaeByConfig(doc.dateRelease,emp);
+      item.documentNo = this.buildMessgaeByConfig(doc.documentNo,emp);
+      item.documentAppraisal = this.buildMessgaeByConfig(doc.documentAppraisal,emp);
       item.isurranceNo = emp.isurranceNo;
       item.isurranceCode = emp.isurranceCode;
       item.fullName = emp.fullName;
@@ -1065,6 +1071,45 @@ private setDateToInformationList(records: any)
       }
     });
     return infomationscopy;
+  }
+
+  fomatFamilies(families) {
+    
+    if(!families) {
+      return [];
+    }
+
+    let familiesFomat = [];
+    families.forEach(p => {
+      p.conditionValid = p.relationshipFullName ? p.relationshipFullName : p.fullName;
+      p.data = this.tableHeaderColumnsFamilies.map(column => {
+        if (!column.key || !p[column.key]) return '';
+        return p[column.key];
+      });
+     
+      p.data.origin = {
+        employeeId: p.employeeId,
+        isLeaf: true,
+        isMaster: p.isMaster,
+      };
+
+      p.origin = {
+        employeeId: p.employeeId,
+        isLeaf: true,
+        isMaster: p.isMaster,
+      };
+
+      familiesFomat.push(p);
+      const containMember = families.findIndex(e => (!e.isMaster && e.employeeId  === p.employeeId)) > -1;
+      if(!containMember) {
+        familiesFomat.push(this.fakeEmployeeInFamilies(p));
+        familiesFomat.push(this.fakeEmployeeInFamilies(p));
+      }
+      
+    });
+
+    return familiesFomat;
+
   }
 
   handleChangeInfomation({ records, columns }) {

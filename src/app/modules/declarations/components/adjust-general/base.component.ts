@@ -140,10 +140,6 @@ handleUserUpdated(user, tableName) {
 }
 
   cloneEmployeeByPlanCode(groupInfo, tableName, employee, fromDate) {
-   const isLessThanNow = this.isLessThanNow(fromDate);
-   if(!isLessThanNow) {
-     return  '';
-   }
     const declarations = [ ...this.declarations[tableName].table];
 
     const parentIndex = findIndex(declarations, d => d.key === groupInfo.type);
@@ -410,17 +406,29 @@ handleUserUpdated(user, tableName) {
         
       } else if (column.key === 'fromDate') {
         const indexOfPlanCode = this.headers[tableName].columns.findIndex(c => c.key === 'planCode')
+        const indexOfFromDate = this.headers[tableName].columns.findIndex(c => c.key === 'fromDate')
+        const planCode = records[r][indexOfPlanCode];
+        const fromDate = records[r][indexOfFromDate];
+        this.setDataByPlanCode(instance, records,r, planCode, tableName,fromDate);
+        
+      } else if (column.key === 'contractNo') {
+        const indexOfPlanCode = this.headers[tableName].columns.findIndex(c => c.key === 'planCode')
         const planCode = records[r][indexOfPlanCode];
         const fromDate = records[r][c];
         this.setDataByPlanCode(instance, records,r, planCode, tableName,fromDate);
-        
-      }else if (column.key === 'hospitalFirstRegistCode') {
+      } else if (column.key === 'dateSign') {
+        const indexOfPlanCode = this.headers[tableName].columns.findIndex(c => c.key === 'planCode')
+        const planCode = records[r][indexOfPlanCode];
+        const fromDate = records[r][c];
+        this.setDataByPlanCode(instance, records,r, planCode, tableName,fromDate);
+     }  else if (column.key === 'hospitalFirstRegistCode') {
         const hospitalFirstCode = cell.innerText.split(' - ').shift();
-
-        this.hospitalService.getById(hospitalFirstCode).subscribe(data => {
-          this.updateNextColumns(instance, r,  data.name, [ c + 1 ]);
-        });
-
+        if(hospitalFirstCode !== '' && hospitalFirstCode !== undefined) 
+        {
+          this.hospitalService.getById(hospitalFirstCode).subscribe(data => {
+            this.updateNextColumns(instance, r,  data.name, [ c + 1 ]);
+          });
+        }
       }
 
     }
@@ -455,23 +463,28 @@ handleUserUpdated(user, tableName) {
   private setDataByPlanCode(instance, records, r, planCode,tableName, fromDate) {
     clearTimeout(this.timer);
         this.timer = setTimeout(() => {
-          const planConfigInfo = validationColumnsPlanCode[planCode] || {note:{argsColumn: [], message: ''}};
-          const argsColumn = planConfigInfo.note.argsColumn || [] ;
-          const cloneEmployee = planConfigInfo.copy || { type: '', note: '', tableName: '' };
-          const argsMessgae = [];
-          argsColumn.forEach(column => {
-            const indexOfColumn = this.headers[tableName].columns.findIndex(c => c.key === column);
-            argsMessgae.push(records[r][indexOfColumn]);
-          });
-          const indexColumnNote = this.headers[tableName].columns.findIndex(c => c.key === 'note');
-          const notebuild = this.formatNote(planConfigInfo.note.message, argsMessgae);
-          this.updateNextColumns(instance, r, notebuild, [indexColumnNote]);
-          this.processEmployeeByPlanCode(cloneEmployee, tableName, records, r, fromDate);
+          const indexEmployeeIdClone = this.headers[tableName].columns.findIndex(c => c.key === 'employeeIdClone');
+          const employeeIdClone = records[r][indexEmployeeIdClone]
+          if (employeeIdClone === '' ||  employeeIdClone === undefined) {
+            const planConfigInfo = validationColumnsPlanCode[planCode] || {note:{argsColumn: [], message: ''}};
+            const argsColumn = planConfigInfo.note.argsColumn || [] ;
+            const cloneEmployee = planConfigInfo.copy || { type: '', note: '', tableName: '' };
+            const argsMessgae = [];
+            argsColumn.forEach(column => {
+              const indexOfColumn = this.headers[tableName].columns.findIndex(c => c.key === column);
+              argsMessgae.push(records[r][indexOfColumn]);
+            });
+          
+            const indexColumnNote = this.headers[tableName].columns.findIndex(c => c.key === 'note');
+            const notebuild = this.formatNote(planConfigInfo.note.message, argsMessgae);
+            this.updateNextColumns(instance, r, notebuild, [indexColumnNote]);
+            this.processEmployeeByPlanCode(cloneEmployee, tableName, records, r, fromDate);
+          }
         }, 10);
   }
   private processEmployeeByPlanCode(groupInfo, tableName, data, r, fromDate) {
-
-    if(groupInfo.type !== '') {
+    const isLessThanNow = this.isLessThanNow(fromDate);
+    if(groupInfo.type !== '' && isLessThanNow) {
       this.cloneEmployeeByPlanCode(groupInfo, groupInfo.tableName, data[r].origin,fromDate);
     }else {
       const employeeId = data[r].origin.employeeId;
