@@ -8,6 +8,7 @@ import * as jexcel from 'jstable-editor/dist/jexcel.js';
 import * as moment from 'moment';
 import * as _ from 'lodash';
 import { REGEX } from '@app/shared/constant';
+import { PLANCODECOUNTBHXH, PLANCODECOUNTBHYT } from '@app/shared/constant-valid';
 import { DocumentFormComponent } from '@app/shared/components';
 
 import { Declaration, DocumentList } from '@app/core/models';
@@ -175,7 +176,12 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
         this.documentForm.patchValue({
           submitter: this.currentCredentials.companyInfo.delegate,
           mobile: this.currentCredentials.companyInfo.mobile
-        });        
+        });  
+        
+        this.declarationGeneral = {
+          totalNumberInsurance: 0,
+          totalCardInsurance: 0
+        };
       }
 
       this.documentListService.getDocumentList(this.declarationCode).subscribe(documentList => {
@@ -259,6 +265,10 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
     this.declarations.tables[tableName] = this.declarations[tableName] || {};
     this.declarations.tables[data.tableName]= data.data;
 
+    if(tableName === 'increaselabor') {
+      this.sumCreateBHXH(data.data);
+    }
+    
     if (data.action === ACTION.EDIT) {
       this.setDateToInformationList(this.declarations.tables);
     }
@@ -306,6 +316,13 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
   }
 
   saveAndView() {
+    if(!this.isTableValid) {
+      this.modalService.warning({
+        nzTitle: 'Bạn chưa kê khai'
+      });
+      return;
+    }
+
     eventEmitter.emit('tableEditor:validFrom', {
       tableName: 'documentList'
     });
@@ -349,6 +366,11 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
   }
 
   rollback() {
+    if(!this.isTableValid) { 
+      this.router.navigate(['/declarations/adjust-general']);
+      return;
+    }
+    
     this.modalService.confirm({
       nzTitle: 'Bạn có muốn lưu lại thông tin thay đổi',
       nzOkText: 'Có',
@@ -363,13 +385,42 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
       nzOnCancel: () => {
         this.router.navigate(['/declarations/adjust-general']);
       }
+    });      
+  }
 
+  private sumCreateBHXH(data) {
+    let totalCardInsurance = 0;
+    let totalNumberInsurance = 0;
+    data.forEach(d => {
+        d.declarations.forEach(e => {
+          const isSumCardInsurance = PLANCODECOUNTBHXH.findIndex(p => p === e.planCode) > -1;
+          const isSumNumberInsurance = PLANCODECOUNTBHYT.findIndex(p => p === e.planCode) > -1;
+          if(isSumCardInsurance) {
+            totalCardInsurance = totalCardInsurance + 1;
+          }
+
+          if(isSumNumberInsurance) {
+            totalNumberInsurance = totalNumberInsurance + 1;
+          }
+
+        });
     });
-      
+    const declarationGeneralTemp = {...this.declarationGeneral};
+    declarationGeneralTemp.totalCardInsurance = totalCardInsurance;
+    declarationGeneralTemp.totalNumberInsurance = totalNumberInsurance;
+
+    this.declarationGeneral = declarationGeneralTemp;
   }
 
   save() {
-    
+
+    if(!this.isTableValid) {
+      this.modalService.warning({
+        nzTitle: 'Bạn chưa kê khai'
+      });
+      return;
+    }
+
     if (this.declarationId) {
       this.update('save');
     } else {
@@ -391,6 +442,7 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
     );
     return tableErrorMessage;
   }
+
   private create(type: any) {
     this.declarationService.create({
       type: type,

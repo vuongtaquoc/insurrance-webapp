@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-
+import { NzModalService } from 'ng-zorro-antd/modal';
 import { AuthenticationService } from '@app/core/services';
 import { eventEmitter } from '@app/shared/utils/event-emitter';
 
@@ -17,7 +17,8 @@ export class LayoutComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private translateService: TranslateService,
-    private authService: AuthenticationService
+    private authService: AuthenticationService,
+    private modalService: NzModalService,
   ) {
   }
 
@@ -28,6 +29,11 @@ export class LayoutComponent implements OnInit, OnDestroy {
       }),
       eventEmitter.on('saveData:loading', (display) => {
         this.isLoading = display;
+      }),
+      eventEmitter.on('authencation:error', (show) => {
+        this.modalService.warning({
+          nzTitle: 'Bạn không có quyền truy cập trang này'
+        });
       })
     ];
   }

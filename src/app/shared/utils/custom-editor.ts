@@ -16,7 +16,7 @@ fn.datepicker.dates['vi'] = {
   format: "dd/mm/yyyy"
 };
 
-export const customPicker = (table, mode, checkPrevCol = false) => {
+export const customPicker = (table, mode, checkPrevCol = false, showCalendar = true) => {
   return {
     // Methods
     closeEditor : function(cell, save) {
@@ -106,19 +106,20 @@ export const customPicker = (table, mode, checkPrevCol = false) => {
         this.value = table.runMask(this.value, options.format)
       });
 
-      (<any>$(element)).datepicker(options).on('changeDate', function(e) {
-        setTimeout(function() {
-          // To avoid double call
-          if (cell.children[0]) {
-            table.closeEditor(cell, true);
-            $(element).off('keyup');
-            (<any>$(element)).datepicker('destroy');
-          }
+      if(showCalendar) {
+        (<any>$(element)).datepicker(options).on('changeDate', function(e) {
+          setTimeout(function() {
+            // To avoid double call
+            if (cell.children[0]) {
+              table.closeEditor(cell, true);
+              $(element).off('keyup');
+              (<any>$(element)).datepicker('destroy');
+            }
+          });
         });
-      });
-
-      // Focus on the element
-      element.focus();
+         // Focus on the element
+     }
+     element.focus();
     },
     getValue : function(cell) {
       return cell.innerHTML;

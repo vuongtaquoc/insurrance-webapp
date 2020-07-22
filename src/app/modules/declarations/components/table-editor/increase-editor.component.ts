@@ -157,7 +157,8 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
 
         this.validationCellByOtherCell(value, column, r, instance, c);
         this.validationCellByPlanCode();
-        if(this.data[r].origin.isLeaf) {
+        const isLeaf = this.data[r].origin.isLeaf  || this.data[r].isLeaf;
+        if(isLeaf) {
           clearTimeout(this.validateTimer);
           this.validateTimer = setTimeout(() => {
             this.validChangeSalary(this.spreadsheet.getJson()[r], r);
@@ -208,11 +209,11 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
       }
     });
 
-    this.updateEditorToColumn('dateSign');
-    this.updateEditorToColumn('birthday', 'month', true);
-    this.updateEditorToColumn('fromDate', 'month');
-    this.updateEditorToColumn('toDate', 'month');
-    this.updateEditorToColumn('motherDayDead', 'date');
+    this.updateEditorToColumn('dateSign',false);
+    this.updateEditorToColumn('birthday' ,false, 'month', true);
+    this.updateEditorToColumn('fromDate',true, 'month');
+    this.updateEditorToColumn('toDate',true, 'month');
+    this.updateEditorToColumn('motherDayDead',true, 'date');
     this.updateAutoCompleteToColumn('hospitalFirstRegistCode');
     this.updateEditorToColumn('dateCancelSign');
 
@@ -303,7 +304,8 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
     clearTimeout(this.validateTimer);
     this.validateTimer = setTimeout(() => {
       data.forEach((row, rowIndex) => {
-        if(!row.origin.isLeaf) return;
+        const isLeaf = row.origin.isLeaf  || row.options.isLeaf;
+        if(!isLeaf) return;
         this.validChangeSalary(row, rowIndex);
       });
     }, 10);
@@ -349,6 +351,10 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
       const allowanceSeniority = data[indexOfColumnAllowanceSeniority];
       const allowanceSeniorityJob = data[indexOfColumnAllowanceSeniorityJob];
       const allowanceOther = data[indexOfColumnAllowanceOther];
+      // console.log(salary,salaryNew);
+      // console.log(ratio,ratioNew);
+      // console.log(allowanceSalary,allowanceSalaryNew);
+      // console.log(allowanceAdditional,allowanceAdditionalNew);
       if ( Number(salary) === Number(salaryNew) && Number(ratio) === Number(ratioNew)
         && Number(allowanceSalary) === Number(allowanceSalaryNew) && Number(allowanceAdditional) === Number(allowanceAdditionalNew)
         && Number(allowanceLevel) === Number(allowanceLevelNew)  && Number(allowanceOther) === Number(allowanceOtherNew))
@@ -404,12 +410,12 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
     }
   }
 
-  private updateEditorToColumn(key, type = 'date', isCustom = false) {
+  private updateEditorToColumn(key,  showCalendar = true, type = 'date', isCustom = false) {
     const column = this.columns.find(c => c.key === key);
 
     if (!column) return;
 
-    column.editor = customPicker(this.spreadsheet, type, isCustom);
+    column.editor = customPicker(this.spreadsheet, type, isCustom, showCalendar);
   }
 
   private handleEvent({ type, parentKey, user, part }){

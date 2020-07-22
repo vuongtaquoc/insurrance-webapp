@@ -6,6 +6,10 @@ export const PLANCODECOUNTBHXH: any = [
   'AD',
 ]
 
+export const PLANCODECOUNTBHYT: any = [
+  'KJY', //Todo add plancode will be sum 
+]
+
 
 export const validationColumnsPlanCode: any = {
   'GH1': {

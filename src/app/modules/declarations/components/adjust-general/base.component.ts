@@ -11,7 +11,7 @@ import {
   HospitalService
 } from '@app/core/services';
 import { ACTION } from '@app/shared/constant';
-import { validationColumnsPlanCode } from '@app/shared/constant-valid';
+import { validationColumnsPlanCode, PLANCODECOUNTBHXH } from '@app/shared/constant-valid';
 import { CONSTPARENTDELETEAUTOROW } from '@app/shared/constant';
 export class GeneralBaseComponent {
   @Input() data: any;
@@ -430,7 +430,6 @@ handleUserUpdated(user, tableName) {
           });
         }
       }
-
     }
     // update declarations
     this.declarations[tableName].table.forEach((declaration, index) => {
@@ -482,6 +481,7 @@ handleUserUpdated(user, tableName) {
           }
         }, 10);
   }
+  
   private processEmployeeByPlanCode(groupInfo, tableName, data, r, fromDate) {
     const isLessThanNow = this.isLessThanNow(fromDate);
     if(groupInfo.type !== '' && isLessThanNow) {
@@ -511,7 +511,7 @@ handleUserUpdated(user, tableName) {
           }
         });
 
-        this.handleDeleteTableData({
+        this.handleDeleteTableDataRelationship({
           rowNumber: indexOfEmployee,
           numOfRows: 1,
           records: declarations
@@ -629,10 +629,66 @@ handleUserUpdated(user, tableName) {
     });
 
     declarationsDeleted.forEach(d => {
-      console.log(records, d.origin.employeeId);//TODO
       this.deleteEmployeeLink(tableName, records, d.origin.employeeId, d.parentKey);
       const indexEmployeeIdClone = this.headers[tableName].columns.findIndex(c => c.key === 'employeeIdClone');
       records = records.filter(p => p[indexEmployeeIdClone] !== d.origin.employeeId);
+    });
+  }
+
+
+  handleDeleteTableDataRelationship({ rowNumber, numOfRows, records }, tableName) {
+    const declarations = [ ...this.declarations[tableName].table ];
+    let declarationsDeleted = [];
+    let declarationsFirstDeleted;
+    const beforeRow = records[rowNumber - 1];
+    const afterRow = records[rowNumber];
+
+    if (!((beforeRow.options && beforeRow.options.isLeaf) || (afterRow.options && afterRow.options.isLeaf))) {
+      const row: any = declarations[rowNumber];
+      const origin = { ...row.data.origin };
+      const options = { ...row.data.options };
+      origin.employeeId = 0;
+      origin.id = 0;
+      declarationsFirstDeleted = {
+          data: [...row.data],
+          origin: { ...row.data.origin },
+          options: { ...row.data.options }
+      };
+      row.data = [];
+      row.origin = origin;
+      row.options = options;
+      row.isInitialize = true;
+      if (!(beforeRow.options && beforeRow.options.isLeaf) && !(afterRow.options && afterRow.options.isLeaf)) {
+        const nextRow: any = declarations[rowNumber + 1];
+
+        if (nextRow.isLeaf) {
+          declarationsDeleted = declarations.splice(rowNumber + 1, numOfRows - 1);
+        }
+
+        declarationsDeleted.push(declarationsFirstDeleted);
+      }
+
+    } else {
+      declarationsDeleted = declarations.splice(rowNumber, numOfRows);
+    }
+
+    this.updateOrders(declarations);
+
+    this.declarations[tableName].table = this.declarationService.updateFormula(declarations, this.headers[tableName].columns);
+
+    // update origin data
+    this.declarations[tableName].origin = Object.values(this.updateOrigin(records, tableName));
+
+    this.onChange.emit({
+      action: ACTION.DELETE,
+      tableName,
+      data: this.declarations[tableName].origin,
+      dataChange : declarationsDeleted,
+      columns: this.headers[tableName].columns,
+    });
+
+    this.tableSubject.next({
+      type: 'validate'
     });
   }
 
@@ -768,7 +824,6 @@ handleUserUpdated(user, tableName) {
     const curentDate = new Date();
     const  numberFromDate = (fromDate.getMonth() + 1 + fromDate.getFullYear());
     const  numberCurentDate = (curentDate.getMonth() + 1 + curentDate.getFullYear());
-    
 
     if(numberFromDate >= numberCurentDate)
     {

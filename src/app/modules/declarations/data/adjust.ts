@@ -23,7 +23,7 @@ export const TABLE_ADJUST_NESTED_HEADERS = [
     { title: 'Đến tháng, năm', rowspan: '3' },
     { title: 'Phương án', rowspan: '3' },
     { title: 'Tỷ lệ đóng', rowspan: '3' },
-    { title: 'Quyết định châm dứt HĐLD/ chuyển công tác/nghỉ hưu', colspan: '2', rowspan: '2' },
+    { title: 'Quyết định điều chỉnh chức danh mức đóng', colspan: '2', rowspan: '2' },
     { title: 'Ghi chú', rowspan: '3' },
   ],
   [

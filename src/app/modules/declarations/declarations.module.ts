@@ -145,7 +145,7 @@ import { RegimeAutoSizeDirective } from './directives';
     IncreaseFormComponent,
     IncreaseEditorComponent,
     ReductionComponent,
-	AdjustmentComponent,
+	  AdjustmentComponent,
     DeclarationSidebarSearchComponent
   ],
   providers: [

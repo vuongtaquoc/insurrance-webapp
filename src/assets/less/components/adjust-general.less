@@ -107,7 +107,7 @@
     height: 100%;
     display: grid;
     grid-template-rows: 42px 70px 1fr;
-    grid-gap: 10px;
+    grid-gap: 5px;
   }
 
   &__group-button {
@@ -167,8 +167,41 @@
     }
   }
 
+  &__close {
+    display: grid;
+    grid-gap: 7px;
+    justify-content: flex-end;
+    grid-template-columns: repeat(5, max-content);
+    align-items: flex-end;
+    margin-top: 3px;
+
+    button {
+      color: #768A9B;
+      border-color: #D1D5EE;
+
+      i {
+        color: #768A9B;
+      }
+    }
+  }
+
   &__footer-button {
     background-color: #8BA0B3 !important;
+    color: #fff !important;
+
+    i {
+      color: #fff !important;
+    }
+
+    &:hover {
+      background-color: #7F91A1 !important;
+      border-color: #d9d9d9 !important;
+      color: #fff !important;
+    }
+  }
+
+  &__navigater-button {
+    background-color: #e30909  !important;
     color: #fff !important;
 
     i {
@@ -271,7 +304,7 @@
   }
 
   nz-collapse .collapse-general .ant-collapse-content {
-    height: 90px;
+    height: 100px;
   }
 
   nz-collapse .collapse-attachment {

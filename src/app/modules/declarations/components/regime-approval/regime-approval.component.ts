@@ -95,6 +95,11 @@ export class RegimeApprovalComponent implements OnInit, OnDestroy {
   }
 
   rollback() {
+    if(!this.isTableValid) { 
+      this.router.navigate(['/declarations/adjust-general']);
+      return;
+    }
+
     this.modalService.confirm({
       nzTitle: 'Bạn có muốn lưu lại thông tin thay đổi',
       nzOkText: 'Có',
@@ -116,6 +121,13 @@ export class RegimeApprovalComponent implements OnInit, OnDestroy {
   }
 
   saveAndView() {
+
+    if(!this.isTableValid) {
+      this.modalService.warning({
+        nzTitle: 'Bạn chưa kê khai'
+      });
+      return;
+    }
 
     let count = Object.keys(this.tableErrors).reduce(
       (total, key) => {
@@ -152,6 +164,15 @@ export class RegimeApprovalComponent implements OnInit, OnDestroy {
   }
 
   save() {
+
+    if(!this.isTableValid) {
+      this.modalService.warning({
+        nzTitle: 'Bạn chưa kê khai'
+      });
+      return;
+    }
+
+    
     if (this.declarationId) {
       this.update('save');
     } else {
