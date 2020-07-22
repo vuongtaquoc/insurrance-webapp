@@ -501,7 +501,7 @@ handleUserUpdated(user, tableName) {
       return '';
     }
 
-    const indexEmployeeIdClone = this.headers[tableName].columns.findIndex(c => c.key === 'employeeIdClone')
+      const indexEmployeeIdClone = this.headers[tableName].columns.findIndex(c => c.key === 'employeeIdClone')
       const indexOfEmployee = data.findIndex(d => d[indexEmployeeIdClone] === employeeId);
       if(indexOfEmployee > -1) {
         const declarations = [];
@@ -576,6 +576,7 @@ handleUserUpdated(user, tableName) {
   handleDeleteTableData({ rowNumber, numOfRows, records }, tableName) {
     const declarations = [ ...this.declarations[tableName].table ];
     let declarationsDeleted = [];
+    let declarationsFirstDeleted;
     const beforeRow = records[rowNumber - 1];
     const afterRow = records[rowNumber];
 
@@ -585,19 +586,28 @@ handleUserUpdated(user, tableName) {
       const options = { ...row.data.options };
       origin.employeeId = 0;
       origin.id = 0;
-      declarationsDeleted.push( {
+      declarationsFirstDeleted = {
           data: [...row.data],
           origin: { ...row.data.origin },
           options: { ...row.data.options }
-      });
+      };
       row.data = [];
       row.origin = origin;
       row.options = options;
       row.isInitialize = true;
+      if (!(beforeRow.options && beforeRow.options.isLeaf) && !(afterRow.options && afterRow.options.isLeaf)) {
+        const nextRow: any = declarations[rowNumber + 1];
+
+        if (nextRow.isLeaf) {
+          declarationsDeleted = declarations.splice(rowNumber + 1, numOfRows - 1);
+        }
+
+        declarationsDeleted.push(declarationsFirstDeleted);
+      }
+
     } else {
       declarationsDeleted = declarations.splice(rowNumber, numOfRows);
     }
-
 
     this.updateOrders(declarations);
 
@@ -618,9 +628,12 @@ handleUserUpdated(user, tableName) {
       type: 'validate'
     });
 
-    const employeeId = declarationsDeleted[0].origin.employeeId;
-    const parentKey = declarationsDeleted[0].parentKey;
-    this.deleteEmployeeLink(tableName, records, employeeId, parentKey);
+    declarationsDeleted.forEach(d => {
+      console.log(records, d.origin.employeeId);//TODO
+      this.deleteEmployeeLink(tableName, records, d.origin.employeeId, d.parentKey);
+      const indexEmployeeIdClone = this.headers[tableName].columns.findIndex(c => c.key === 'employeeIdClone');
+      records = records.filter(p => p[indexEmployeeIdClone] !== d.origin.employeeId);
+    });
   }
 
   updateOrders(declarations) {

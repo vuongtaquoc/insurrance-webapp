@@ -1,3 +1,11 @@
+export const PLANCODECOUNTBHXH: any = [
+  'TM', //Tăng mới
+  'TC',
+  'TD',
+  'TH',
+  'AD',
+]
+
 
 export const validationColumnsPlanCode: any = {
   'GH1': {
