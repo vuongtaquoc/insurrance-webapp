@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation, OnInit } from '@angular/core';
+import { Component, ViewEncapsulation, OnInit, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-labor-attachment',
@@ -7,6 +7,8 @@ import { Component, ViewEncapsulation, OnInit } from '@angular/core';
   encapsulation: ViewEncapsulation.None
 })
 export class LaborAttachmentComponent implements OnInit {
+  @Output() onSelectedFileChanged = new EventEmitter<any>();
+
   rows: any[] = [];
 
   ngOnInit() {
@@ -26,5 +28,7 @@ export class LaborAttachmentComponent implements OnInit {
     if (!row) return;
 
     row.file = file;
+
+    this.onSelectedFileChanged.emit(this.rows);
   }
 }

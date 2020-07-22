@@ -27,6 +27,7 @@ import {
   CategoryService,
   RelationshipService,
   VillageService,
+  FileUploadEmitter
 } from '@app/core/services';
 import { DATE_FORMAT, DECLARATIONS, DOCUMENTBYPLANCODE } from '@app/shared/constant';
 import { eventEmitter } from '@app/shared/utils/event-emitter';
@@ -76,7 +77,8 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
   isHiddenSidebar = false;
   declarationCode: string = '600';
   employeeSubject: Subject<any> = new Subject<any>();
-  handler: any;
+  handlers: any[] = [];
+  handler;
   isTableValid = false;
   tableErrors = {};
   panel: any = {
@@ -86,6 +88,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
   totalNumberInsurance: any;
   totalCardInsurance: any;
   isBlinking = false;
+  submitType: string;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -106,6 +109,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     private modalService: NzModalService,
     private relationshipService: RelationshipService,
     private villageService: VillageService,
+    private fileUploadEmitter: FileUploadEmitter
   ) {
     this.getRecipientsDistrictsByCityCode = this.getRecipientsDistrictsByCityCode.bind(this);
     this.getRecipientsWardsByDistrictCode = this.getRecipientsWardsByDistrictCode.bind(this);
@@ -207,20 +211,28 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
         };
       }
     });
-    this.handler = eventEmitter.on('labor-table-editor:validate', ({ name, isValid, errors }) => {
+    this.handlers.push(eventEmitter.on('labor-table-editor:validate', ({ name, isValid, errors }) => {
       if (name === 'increaseLabor' || name === 'families' || name === 'informations') {
         this.tableErrors[name] = errors;
       }
-    });
+    }));
 
-    this.handler = eventEmitter.on('labor-family-editor:validate', ({ name, isValid }) => {
+    this.handlers.push(eventEmitter.on('labor-family-editor:validate', ({ name, isValid }) => {
       if (name === 'family') {
         this.isTableValid = isValid;
       }
+    }));
+
+    this.handler = this.fileUploadEmitter.on('file:uploaded', (file) => {
+      this.eventsSubject.next({
+        type: this.submitType
+      });
+      eventEmitter.emit('saveData:loading', false);
     });
   }
 
   ngOnDestroy() {
+    eventEmitter.destroy(this.handlers);
     this.handler();
   }
 
@@ -387,6 +399,10 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     this.employeeSelected = employees;
   }
 
+  handleFileSelected(files) {
+    console.log(files)
+  }
+
   emitEventToChild(type) {
     let count = Object.keys(this.tableErrors).reduce(
       (total, key) => {
@@ -416,7 +432,12 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
       });
     }
 
-    this.eventsSubject.next({type});
+    // this.eventsSubject.next({type});
+    this.submitType = type;
+
+    eventEmitter.emit('saveData:loading', true);
+
+    this.fileUploadEmitter.emit('file:upload');
   }
 
   handleSubmit(event) {

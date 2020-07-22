@@ -27,7 +27,8 @@ import {
   HospitalService,
   NationalityService,
   PeopleService,
-  WardsService
+  WardsService,
+  FileUploadEmitter
 } from '@app/core/services';
 import { SharedModule } from '@app/shared/shared.module';
 import { DeclarationsRoutingModule } from './declarations-routing.module';
@@ -156,7 +157,8 @@ import { RegimeAutoSizeDirective } from './directives';
     HospitalService,
     NationalityService,
     PeopleService,
-    WardsService
+    WardsService,
+    FileUploadEmitter
   ],
   entryComponents: [
     DeclarationSidebarSearchComponent

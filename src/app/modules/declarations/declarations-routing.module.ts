@@ -34,9 +34,9 @@ const routes: Routes = [
         path: 'increase-labor/add',
         component: IncreaseLaborAddComponent,
         // check permission
-        canActivate: [ AuthorizeGuard ],
+        // canActivate: [ AuthorizeGuard ],
         data: {
-          expectedPermission: 'substituteInvoice_U'
+          // expectedPermission: 'substituteInvoice_U'
         }
       },
       {

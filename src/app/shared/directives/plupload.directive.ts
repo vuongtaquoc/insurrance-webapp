@@ -20,7 +20,7 @@ export class PluploadDirective {
     filters: {
       mime_types: [{
         title: 'Attachment files',
-        extensions: 'xlxs,docx,pdf,pptx',
+        extensions: 'xlsx,docx,pdf,pptx,xls,doc,ppt',
       }],
       max_file_size: '5mb',
     },
@@ -56,7 +56,8 @@ export class PluploadDirective {
   }
 
   private setUploaderUrl() {
-    return `${environment.apiUrl}/upload`;
+    // return `${environment.apiUrl}/upload`;
+    return 'http://media:3000/upload'
   }
 
   private filesAdded(uploader, files) {
@@ -71,7 +72,7 @@ export class PluploadDirective {
   private fileUploaded(uploader, file, result) {
     file.serverPath = result.response;
 
-    this.fileUploadEmitter.emit('image:uploaded', file);
+    this.fileUploadEmitter.emit('file:uploaded', file);
   }
 
   private uploadError(uploader, error) {
@@ -80,10 +81,6 @@ export class PluploadDirective {
 
   private uploadStart(data) {
     this.uploader.settings.multipart_params = this.uploader.settings.multipart_params || {};
-    this.uploader.settings.multipart_params.imageWidth = data.width;
-    this.uploader.settings.multipart_params.imageHeight = data.height;
-    this.uploader.settings.multipart_params.imagePosX = data.posX;
-    this.uploader.settings.multipart_params.imagePosY = data.posY;
 
     this.uploader.start();
   }
