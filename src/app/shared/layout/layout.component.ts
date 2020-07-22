@@ -4,7 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { AuthenticationService } from '@app/core/services';
 import { eventEmitter } from '@app/shared/utils/event-emitter';
-
+import { PERMISSIONS } from '@app/shared/constant';
 @Component({
   selector: 'app-layout',
   templateUrl: './layout.component.html',
@@ -12,7 +12,9 @@ import { eventEmitter } from '@app/shared/utils/event-emitter';
 })
 export class LayoutComponent implements OnInit, OnDestroy {
   isLoading = false;
+  private permissions: any = {};
   private handlers: any = [];
+  pmsConf = PERMISSIONS;
 
   constructor(
     private router: Router,
@@ -36,8 +38,21 @@ export class LayoutComponent implements OnInit, OnDestroy {
         });
       })
     ];
+
+    this.setPermissions();
   }
 
+  setPermissions() {
+    const authServiceOfUser = this.authService.currentCredentials.role;
+    if (authServiceOfUser) {
+        const userPermissions = authServiceOfUser.permission;
+
+        this.permissions = {};
+        userPermissions.forEach((screenName) => {
+            this.permissions[screenName] = true;
+        });
+    }
+  }
   ngOnDestroy() {
     eventEmitter.destroy(this.handlers);
   }

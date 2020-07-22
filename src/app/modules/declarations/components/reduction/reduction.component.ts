@@ -64,7 +64,7 @@ export class ReductionComponent extends GeneralBaseComponent implements OnInit, 
       this.nationalityService.getNationalities(),
       this.peopleService.getPeoples(),
       this.salaryAreaService.getSalaryAreas(),
-      this.planService.getPlans('600a'),
+      this.planService.getPlanShowCode('600a'),
       this.departmentService.getDepartments(),
       this.categoryService.getCategories('relationshipDocumentType'),
       this.relationshipService.getRelationships()

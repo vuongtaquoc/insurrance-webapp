@@ -940,7 +940,50 @@ export const DOCUMENTBYPLANCODE =
       }
   ]}
 ];
-
+export const PERMISSIONS = {
+  regime_approval: {
+    C: 'regimeApproval_C',
+    R: 'regimeApproval_R',
+    U: 'regimeApproval_U',
+    D: 'regimeApproval_D',
+  },
+  increase_labor: {
+    C: 'increaseLabor_C',
+    R: 'increaseLabor_R',
+    U: 'increaseLabor_U',
+    D: 'increaseLabor_D',
+  },
+  reduction_labor: {
+    C: 'reductionLabor_C',
+    R: 'reductionLabor_R',
+    U: 'reductionLabor_U',
+    D: 'reductionLabor_D',
+  },
+  adjust: {
+    C: 'adjust_C',
+    R: 'adjust_R',
+    U: 'adjust_U',
+    D: 'adjust_D',
+  },
+  arrears: {
+    C: 'arrears_C',
+    R: 'arrears_R',
+    U: 'arrears_U',
+    D: 'arrears_D',
+  },
+  adjust_general: {
+    C: 'adjustGeneral_C',
+    R: 'adjustGeneral_R',
+    U: 'adjustGeneral_U',
+    D: 'adjustGeneral_D',
+  },
+  employees: {
+    C: 'employees_C',
+    R: 'employees_R',
+    U: 'employees_U',
+    D: 'employees_D',
+  } 
+}
 export const ErrorMessage = {
   0: 'common.gender.male',
   8: 'common.errorMessenger.dataInvalid',

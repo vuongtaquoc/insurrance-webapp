@@ -150,7 +150,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
       this.nationalityService.getNationalities(),
       this.peopleService.getPeoples(),
       this.salaryAreaService.getSalaryAreas(),
-      this.planService.getPlans(this.declarationCode),
+      this.planService.getPlanShowCode(this.declarationCode),
       this.departmentService.getDepartments(),
       this.categoryService.getCategories('relationshipDocumentType'),
       this.relationshipService.getRelationships()
@@ -280,7 +280,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
           nzTitle: `Nhân viên đã có trong danh sách ${TYPES[type]}`,
         });
       }
-
+      console.log(declarations);
       // update orders
       this.updateOrders(declarations);
 
@@ -570,21 +570,6 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
         this.updateNextColumns(instance, r, '', [ c + 1, c + 2 ]);
       } else if (column.key === 'recipientsCityCode') {
         this.updateNextColumns(instance, r, '', [ c + 1, c + 2, c + 5, c + 6 ]);
-      }
-
-      if (column.key === 'planCode') {
-        //Phuong thức lấy note theo phương án
-        const planCode = records[r][c];
-        const planConfigInfo = validationColumnsPlanCode[planCode] || {note:{argsColumn: [], message: ''}};
-        const argsColumn = planConfigInfo.note.argsColumn || [] ;
-        const argsMessgae = [];
-        argsColumn.forEach(column => {
-          const indexOfColumn = this.tableHeaderColumns.findIndex(c => c.key === column);
-          argsMessgae.push(records[r][indexOfColumn]);
-        });
-        const indexColumnNote = this.tableHeaderColumns.findIndex(c => c.key === 'note');
-        const notebuild = this.formatNote(planConfigInfo.note.message, argsMessgae);
-        this.updateNextColumns(instance, r, notebuild, [indexColumnNote]);
       }
 
     }

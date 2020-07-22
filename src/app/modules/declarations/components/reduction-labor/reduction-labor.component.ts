@@ -128,7 +128,7 @@ export class ReducingLaborComponent implements OnInit, OnDestroy {
       this.nationalityService.getNationalities(),
       this.peopleService.getPeoples(),
       this.salaryAreaService.getSalaryAreas(),
-      this.planService.getPlans(this.declarationCode),
+      this.planService.getPlanShowCode(this.declarationCode),
       this.departmentService.getDepartments(),
       this.categoryService.getCategories('relationshipDocumentType'),
       this.relationshipService.getRelationships()
