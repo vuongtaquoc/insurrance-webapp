@@ -60,13 +60,15 @@ export class DeclarationService {
     );
   }
 
-  public create(body, options = {}) {
-    console.log(body);
+  public create(body, options: any = {}) {
+    options.displayLoading = true;
+
     return this.http.post('/declarations', body, options);
   }
 
-  public update(id, body, options = {}) {
-    console.log(body);
+  public update(id, body, options: any = {}) {
+    options.displayLoading = true;
+
     return this.http.post(`/declarations/${ id }`, body, options);
   }
 

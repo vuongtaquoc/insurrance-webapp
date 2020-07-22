@@ -20,7 +20,7 @@ export class PlanService {
         return hospitals.map(plan => ({
           ...plan,
           name: `${ plan.id } - ${ plan.name }`,
-          shortName: plan.shortName
+          shortName: plan.name
         }));
       })
     );
@@ -34,10 +34,40 @@ export class PlanService {
         return hospitals.map(plan => ({
           ...plan,
           name: `${ plan.id } - ${ plan.name }`,
-          shortName: plan.shortName
+          shortName: plan.name
         }));
       })
     );
+  }
+
+  public getNoteByPlanCode(planCode, employee) {
+    let note = '';
+    switch(planCode) {
+      // Ði?u ch?nh
+      case 'DC':
+         note = 'Ði?u ch?nh ti?n luong';
+        break;
+      case 'CD':
+        note = 'Ði?u ch?nh ch?c danh';
+        break;
+       case 'DL':
+        note = 'Ði?u ch?nh tham gia th?t nghi?p';
+        break;
+      case 'TV':
+        note = 'Tang qu? HTTT';
+        break;
+      case 'GV':
+        note = 'Gi?m qu? HTTT';
+        break;
+      case 'DL':
+        note = 'Ði?u ch?nh luong/di?u ch?nh ch?c danh tham gia BH TNLÐ, BNN';
+        break;
+      default:
+        // code block
+    }
+
+    return note;
+
   }
 
 }

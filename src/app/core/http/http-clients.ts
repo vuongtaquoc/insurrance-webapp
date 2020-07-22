@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 import toastr from 'toastr';
 
 import { errorMessages } from '@app/shared/constant';
+import { eventEmitter } from '@app/shared/utils/event-emitter';
 
 import { environment } from '@config';
 
@@ -20,6 +21,7 @@ export interface RequestOptions {
   responseType?: 'json';
   withCredentials?: boolean;
   body?: any;
+  displayLoading?: boolean;
 }
 
 export function applicationHttpClientCreator(http: HttpClient) {
@@ -31,8 +33,12 @@ export class ApplicationHttpClient {
   constructor(public http: HttpClient ) {}
 
   get<T>(endpoint: string, options?: RequestOptions): Observable<any> {
+    if (options && options.displayLoading) {
+      eventEmitter.emit('saveData:loading', true);
+    }
+
     return this.http.get<any>(endpoint, options)
-      .pipe(map(data => this.handleResponse(data)));
+      .pipe(map(data => this.handleResponse(data, options && options.displayLoading)));
   }
 
   getList<T>(endpoint: string, options?: RequestOptions): Observable<any> {
@@ -77,26 +83,46 @@ export class ApplicationHttpClient {
   }
 
   post<T>(endpoint: string, body: any | null, options?: RequestOptions): Observable<any> {
+    if (options && options.displayLoading) {
+      eventEmitter.emit('saveData:loading', true);
+    }
+
     return this.http.post<any>(endpoint, body, options)
-      .pipe(map(data => this.handleResponse(data)));
+      .pipe(map(data => this.handleResponse(data, options && options.displayLoading)));
   }
 
   put<T>(endpoint: string, body: any | null, options?: RequestOptions): Observable<any> {
+    if (options && options.displayLoading) {
+      eventEmitter.emit('saveData:loading', true);
+    }
+
     return this.http.put<any>(endpoint, body, options)
-      .pipe(map(data => this.handleResponse(data)));
+      .pipe(map(data => this.handleResponse(data, options && options.displayLoading)));
   }
 
   delete<T>(endpoint: string, options?: RequestOptions): Observable<any> {
+    if (options && options.displayLoading) {
+      eventEmitter.emit('saveData:loading', true);
+    }
+
     return this.http.delete<any>(endpoint, options)
-      .pipe(map(data => this.handleResponse(data)));
+      .pipe(map(data => this.handleResponse(data, options && options.displayLoading)));
   }
 
   patch<T>(endpoint: string, body: any | null, options?: RequestOptions): Observable<any> {
+    if (options && options.displayLoading) {
+      eventEmitter.emit('saveData:loading', true);
+    }
+
     return this.http.patch<any>(endpoint, body, options)
-      .pipe(map(data => this.handleResponse(data)));
+      .pipe(map(data => this.handleResponse(data, options && options.displayLoading)));
   }
 
-  private handleResponse(data) {
+  private handleResponse(data, displayLoading) {
+    if (displayLoading) {
+      eventEmitter.emit('saveData:loading', false);
+    }
+
     if (data.code === 1) {
       return data.data;
     }
