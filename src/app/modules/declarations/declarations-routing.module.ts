@@ -2,8 +2,9 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { AuthorizeGuard } from '@app/core/guards';
-
+import { PERMISSIONS } from '@app/shared/constant';
 import { LayoutComponent } from '@app/shared/layout';
+
 import {
   IncreaseLaborAddComponent,
   IncreaseLaborListComponent,
@@ -36,7 +37,7 @@ const routes: Routes = [
         // check permission
         canActivate: [ AuthorizeGuard ],
         data: {
-          expectedPermission: 'substituteInvoice_U'
+          expectedPermission: PERMISSIONS.increase_labor.C
         }
       },
       {
@@ -45,7 +46,11 @@ const routes: Routes = [
       },
       {
         path: 'increase-labor',
-        component: IncreaseLaborListComponent
+        component: IncreaseLaborListComponent,
+        canActivate: [ AuthorizeGuard ],
+        data: {
+          expectedPermission: PERMISSIONS.reduction_labor.R
+        }
       },
       {
         path: 'reduction-labor',
@@ -53,57 +58,113 @@ const routes: Routes = [
       },
       {
         path: 'reduction-labor/add',
-        component: ReductionLaborAddComponent
+        component: ReductionLaborAddComponent,
+        canActivate: [ AuthorizeGuard ],
+        data: {
+          expectedPermission: PERMISSIONS.reduction_labor.C
+        }
       },
       {
         path: 'reduction-labor/:id/edit',
-        component: ReductionLaborEditComponent
+        component: ReductionLaborEditComponent,
+        canActivate: [ AuthorizeGuard ],
+        data: {
+          expectedPermission: PERMISSIONS.reduction_labor.U
+        }
       },
       {
         path: 'regime-approval',
-        component: RegimeApprovalListComponent
+        component: RegimeApprovalListComponent,
+        canActivate: [ AuthorizeGuard ],
+        data: {
+          expectedPermission: PERMISSIONS.regime_approval.R
+        }
       },
       {
         path: 'regime-approval/add',
-        component: RegimeApprovalAddComponent
+        component: RegimeApprovalAddComponent,
+        canActivate: [ AuthorizeGuard ],
+        data: {
+          expectedPermission: PERMISSIONS.regime_approval.C
+        }
       },
       {
         path: 'regime-approval/:id/edit',
-        component: RegimeApprovalEditComponent
+        component: RegimeApprovalEditComponent,
+        canActivate: [ AuthorizeGuard ],
+        data: {
+          expectedPermission: PERMISSIONS.regime_approval.U
+        }
       },
       {
         path: 'arrears',
-        component: ArrearsListComponent
+        component: ArrearsListComponent,
+        canActivate: [ AuthorizeGuard ],
+        data: {
+          expectedPermission: PERMISSIONS.arrears.R
+        }
       },
       {
         path: 'arrears/add',
-        component: ArrearsAddComponent
+        component: ArrearsAddComponent,
+        canActivate: [ AuthorizeGuard ],
+        data: {
+          expectedPermission: PERMISSIONS.arrears.C
+        }
       },
       {
         path: 'arrears/:id/edit',
-        component: ArrearsEditComponent
+        component: ArrearsEditComponent,
+        canActivate: [ AuthorizeGuard ],
+        data: {
+          expectedPermission: PERMISSIONS.arrears.U
+        }
       },{
         path: 'adjust',
-        component: AdjustListComponent
+        component: AdjustListComponent,
+        canActivate: [ AuthorizeGuard ],
+        data: {
+          expectedPermission: PERMISSIONS.arrears.R
+        }
       },
       {
         path: 'adjust/add',
-        component: AdjustAddComponent
+        component: AdjustAddComponent,
+        canActivate: [ AuthorizeGuard ],
+        data: {
+          expectedPermission: PERMISSIONS.arrears.C
+        }
       },
       {
         path: 'adjust/:id/edit',
-        component: AdjustEditComponent
+        component: AdjustEditComponent,
+        canActivate: [ AuthorizeGuard ],
+        data: {
+          expectedPermission: PERMISSIONS.arrears.U
+        }
       },{
         path: 'adjust-general',
-        component: AdjustGeneralListComponent
+        component: AdjustGeneralListComponent,
+        canActivate: [ AuthorizeGuard ],
+        data: {
+          expectedPermission: PERMISSIONS.adjust_general.R
+        }
       },
       {
         path: 'adjust-general/add',
-        component: AdjustGeneralAddComponent
+        component: AdjustGeneralAddComponent,
+        canActivate: [ AuthorizeGuard ],
+        data: {
+          expectedPermission: PERMISSIONS.adjust_general.C
+        }
       },
       {
         path: 'adjust-general/:id/edit',
-        component: AdjustGeneralEditComponent
+        component: AdjustGeneralEditComponent,
+        canActivate: [ AuthorizeGuard ],
+        data: {
+          expectedPermission: PERMISSIONS.adjust_general.U
+        }
       }
     ]
   }

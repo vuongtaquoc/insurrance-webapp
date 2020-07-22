@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { AuthorizeGuard } from '@app/core/guards';
+import { PERMISSIONS } from '@app/shared/constant';
 
 import { LayoutComponent } from '@app/shared/layout';
 import {
@@ -13,7 +15,12 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        component: EmployeeListComponent
+        component: EmployeeListComponent,
+        // check permission
+        canActivate: [ AuthorizeGuard ],
+        data: {
+          expectedPermission: PERMISSIONS.employees.R
+        }
       }
     ]
   }
