@@ -280,7 +280,6 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
           nzTitle: `Nhân viên đã có trong danh sách ${TYPES[type]}`,
         });
       }
-      console.log(declarations);
       // update orders
       this.updateOrders(declarations);
 
@@ -342,7 +341,6 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
         row.data[index] = employee[column.key];
       }
     });
-
     // update orders
     this.updateOrders(declarations);
 
@@ -634,7 +632,6 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     // }
 
     declarations.splice(insertBefore ? rowNumber : rowNumber + 1, 0, row);
-
     this.updateOrders(declarations);
 
     this.declarations = this.declarationService.updateFormula(declarations, this.tableHeaderColumns);

@@ -318,7 +318,7 @@ handleUserUpdated(user, tableName) {
         row.data[index] = employee[column.key];
       }
     });
-
+    console.log(declarations);
     // update orders
     this.updateOrders(declarations);
 
@@ -541,6 +541,15 @@ handleUserUpdated(user, tableName) {
     row.origin = origin;
     row.options = options;
 
+    // if (beforeRow.isLeaf && !afterRow.isLeaf) {
+    //   row.parent = beforeRow.parent;
+    //   row.parentKey = beforeRow.parentKey;
+    //   row.planType = beforeRow.planType;
+    // } else if (!beforeRow.isLeaf && afterRow.isLeaf) {
+    //   row.parent = afterRow.parent;
+    //   row.parentKey = afterRow.parentKey;
+    //   row.planType = afterRow.planType;
+    // }
     if (beforeRow.isLeaf && !afterRow.isLeaf) {
       row.parent = beforeRow.parent;
       row.parentKey = beforeRow.parentKey;
@@ -549,6 +558,10 @@ handleUserUpdated(user, tableName) {
       row.parent = afterRow.parent;
       row.parentKey = afterRow.parentKey;
       row.planType = afterRow.planType;
+    } else if (beforeRow.isLeaf && afterRow.isLeaf) {
+      row.parent = beforeRow.parent;
+      row.parentKey = beforeRow.parentKey;
+      row.planType = beforeRow.planType;
     }
 
     declarations.splice(insertBefore ? rowNumber : rowNumber + 1, 0, row);

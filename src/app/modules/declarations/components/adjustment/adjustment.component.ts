@@ -65,7 +65,7 @@ export class AdjustmentComponent extends GeneralBaseComponent implements OnInit,
       this.nationalityService.getNationalities(),
       this.peopleService.getPeoples(),
       this.salaryAreaService.getSalaryAreas(),
-      this.planService.getPlans('600b'),
+      this.planService.getPlanShowCode('600b'),
       this.departmentService.getDepartments(),
       this.categoryService.getCategories('relationshipDocumentType'),
       this.relationshipService.getRelationships()
