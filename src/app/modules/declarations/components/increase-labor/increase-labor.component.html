@@ -14,6 +14,7 @@
                       <input nz-input
                         placeholder="Người nộp"
                         formControlName="userAction"
+                        (onChange)="handleChangeForm()"
                       />
                     </nz-form-control>
                   </nz-form-item>
@@ -25,6 +26,7 @@
                         <input nz-input
                           placeholder="Số điện thoại"
                           formControlName="mobile"
+                          (onChange)="handleChangeForm()"
                         />
                       </nz-form-control>
                     </nz-form-item>
@@ -92,19 +94,19 @@
                   <nz-form-item>
                     <nz-form-label [nzNoColon]="true" [nzSpan]="10">Số</nz-form-label>
                     <nz-form-control [nzSpan]="14">
-                      <input nz-input formControlName="number">
+                      <input nz-input formControlName="number" (onChange)="handleChangeForm()">
                     </nz-form-control>
                   </nz-form-item>
                   <nz-form-item>
                     <nz-form-label [nzNoColon]="true" [nzSpan]="10">Tháng</nz-form-label>
                     <nz-form-control [nzSpan]="14">
-                      <input nz-input formControlName="month">
+                      <input nz-input formControlName="month" (onChange)="handleChangeForm()">
                     </nz-form-control>
                   </nz-form-item>
                   <nz-form-item>
                     <nz-form-label [nzNoColon]="true" [nzSpan]="10">Năm</nz-form-label>
                     <nz-form-control [nzSpan]="14">
-                      <input nz-input formControlName="year">
+                      <input nz-input formControlName="year" (onChange)="handleChangeForm()">
                     </nz-form-control>
                   </nz-form-item>
                 </form>

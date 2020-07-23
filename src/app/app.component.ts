@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { LocationStrategy } from '@angular/common';
 import { Router, NavigationEnd, NavigationStart, NavigationCancel, NavigationError } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
@@ -20,11 +21,19 @@ export class AppComponent implements OnInit, OnDestroy {
 
   constructor(
     private translate: TranslateService,
+    private location: LocationStrategy,
     private navigationService: NavigationService,
     private router: Router,
     private loadingBar: LoadingBarService,
   ) {
     translate.setDefaultLang(environment.defaultLanguage);
+
+    // disable back/forward browser
+    this.location.onPopState((event) => {
+      this.navigationService.setBackClicked(true);
+
+      return false;
+    });
   }
 
   ngOnInit() {

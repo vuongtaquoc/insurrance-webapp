@@ -10,6 +10,8 @@ import { NzMessageModule } from 'ng-zorro-antd/message';
 
 import { AuthInterceptor, ApiPrefixInterceptor, ErrorInterceptor } from '@app/core/interceptors';
 import { ApplicationHttpClient, applicationHttpClientCreator } from '@app/core/http';
+import { UnsavedChangesGuard } from '@app/core/guards';
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
@@ -41,7 +43,8 @@ import { AppComponent } from './app.component';
       useFactory: applicationHttpClientCreator,
       deps: [ HttpClient ]
     },
-    { provide: NZ_I18N, useValue: en_US }
+    { provide: NZ_I18N, useValue: en_US },
+    UnsavedChangesGuard
   ],
   bootstrap: [AppComponent]
 })

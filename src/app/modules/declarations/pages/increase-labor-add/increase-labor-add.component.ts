@@ -1,20 +1,35 @@
-import { Component } from '@angular/core';
+import { Component, Injector } from '@angular/core';
 import { Router } from '@angular/router';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { DeclarationService } from '@app/core/services';
-import { DocumentFormComponent } from '@app/shared/components';
+import { DocumentFormComponent, PageCoreComponent } from '@app/shared/components';
+
+import { eventEmitter } from '@app/shared/utils/event-emitter';
 
 @Component({
   selector: 'app-declaration-increase-labor-add',
   templateUrl: './increase-labor-add.component.html',
   styleUrls: ['./increase-labor-add.component.less']
 })
-export class IncreaseLaborAddComponent {
+export class IncreaseLaborAddComponent extends PageCoreComponent {
+  handlers: any[] = [];
+
   constructor(
     private router: Router,
     private declarationService: DeclarationService,
-    private modalService: NzModalService
-  ) {}
+    private modalService: NzModalService,
+    public injector: Injector
+  ) {
+    super(injector);
+  }
+
+  ngOnInit() {
+    this.handlers.push(eventEmitter.on('unsaved-changed', () => this.setIsUnsavedChanges(true)));
+  }
+
+  ngOnDestroy() {
+    eventEmitter.destroy(this.handlers);
+  }
 
   handleSubmit(data) {
     if (data.type === 'saveAndView') {

@@ -1,25 +1,37 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Injector } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { DeclarationService } from '@app/core/services';
-import { DocumentFormComponent } from '@app/shared/components';
+import { DocumentFormComponent, PageCoreComponent } from '@app/shared/components';
+
+import { eventEmitter } from '@app/shared/utils/event-emitter';
+
 @Component({
   selector: 'app-declaration-increase-labor-edit',
   templateUrl: './increase-labor-edit.component.html',
   styleUrls: ['./increase-labor-edit.component.less']
 })
-export class IncreaseLaborEditComponent implements OnInit {
+export class IncreaseLaborEditComponent extends PageCoreComponent implements OnInit {
   declarationId: string;
+  handlers: any[] = [];
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
+    public injector: Injector,
     private declarationService: DeclarationService,
     private modalService: NzModalService
-  ) {}
+  ) {
+    super(injector);
+  }
 
   ngOnInit() {
     this.declarationId = this.route.snapshot.params.id;
+    this.handlers.push(eventEmitter.on('unsaved-changed', () => this.setIsUnsavedChanges(true)));
+  }
+
+  ngOnDestroy() {
+    eventEmitter.destroy(this.handlers);
   }
 
   handleSubmit(data) {

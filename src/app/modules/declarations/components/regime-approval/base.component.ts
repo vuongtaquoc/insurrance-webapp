@@ -9,6 +9,8 @@ import * as moment from 'moment';
 import { CategoryService } from '@app/core/services';
 import { DATE_FORMAT } from '@app/shared/constant';
 
+import { eventEmitter } from '@app/shared/utils/event-emitter';
+
 import {
   DeclarationService
 } from '@app/core/services';
@@ -140,6 +142,7 @@ export class RegimeApprovalBaseComponent {
       part,
       data: this.declarations[part].table
     });
+    eventEmitter.emit('unsaved-changed');
   }
 
   handleSort({ direction, source, dist }, part) {
@@ -168,6 +171,7 @@ export class RegimeApprovalBaseComponent {
       part,
       data: this.declarations[part].table
     });
+    eventEmitter.emit('unsaved-changed');
   }
 
   handleUserAdded({ tableName, y, employee }) {
@@ -204,11 +208,13 @@ export class RegimeApprovalBaseComponent {
       part,
       data: this.declarations[part].table
     });
+    eventEmitter.emit('unsaved-changed');
   }
 
   handleUserDeleteTables(user) {
     this.handleUserDeleted(user, 'part1');
     this.handleUserDeleted(user, 'part2');
+    eventEmitter.emit('unsaved-changed');
   }
 
   handleUserDeleted(user, part) {
@@ -223,6 +229,7 @@ export class RegimeApprovalBaseComponent {
   handleUserUpdateTables(user) {
     this.handleUserUpdated(user, 'part1');
     this.handleUserUpdated(user, 'part2');
+    eventEmitter.emit('unsaved-changed');
   }
 
   handleUserUpdated(user, part) {
@@ -259,6 +266,7 @@ export class RegimeApprovalBaseComponent {
       part,
       data: this.declarations[part].table
     });
+    eventEmitter.emit('unsaved-changed');
   }
 
   handleSelectEmployees(employees) {
@@ -333,6 +341,7 @@ export class RegimeApprovalBaseComponent {
     this.tableSubject.next({
       type: 'validate'
     });
+    eventEmitter.emit('unsaved-changed');
   }
 
   private updateNextColumns(instance, r, value, nextColumns = []) {
@@ -395,6 +404,7 @@ export class RegimeApprovalBaseComponent {
     this.tableSubject.next({
       type: 'validate'
     });
+    eventEmitter.emit('unsaved-changed');
   }
 
   handleDeleteTableData({ rowNumber, numOfRows, records }, part) {
@@ -444,6 +454,7 @@ export class RegimeApprovalBaseComponent {
     this.tableSubject.next({
       type: 'validate'
     });
+    eventEmitter.emit('unsaved-changed');
   }
 
   handleFocus() {

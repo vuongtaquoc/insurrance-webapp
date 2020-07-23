@@ -25,3 +25,4 @@ export * from './declaration-file.service';
 export * from './sicknesses.service';
 export * from './category.service';
 export * from './file-upload.service';
+export * from './navigation.service';

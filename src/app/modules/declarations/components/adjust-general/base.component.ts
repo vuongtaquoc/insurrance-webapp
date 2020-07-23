@@ -170,7 +170,7 @@ handleUserUpdated(user, tableName) {
       this.updateOrders(declarations);
 
       this.declarations[tableName].table = this.declarationService.updateFormula(declarations, this.headers[tableName].columns);
-    } 
+    }
     // update origin data
     const records = this.toTableRecords(declarations);
     this.declarations[tableName].origin = Object.values(this.updateOrigin(records, tableName));
@@ -223,12 +223,13 @@ handleUserUpdated(user, tableName) {
         // replace
         employee.gender = employee.gender === '1';
         employee.workAddress = this.currentCredentials.companyInfo.address;
+
         employee.planCode = declarations[parentIndex].planDefault;
         if(employee.planCode) {
           const planConfigInfo = validationColumnsPlanCode[employee.planCode] || {note:{argsColumn: [], message: ''}};
           const argsColumn = planConfigInfo.note.argsColumn || [] ;
           const argsMessgae = [];
-          argsColumn.forEach(column => { 
+          argsColumn.forEach(column => {
             argsMessgae.push(employee[column]);
           });
           employee.note = this.formatNote(planConfigInfo.note.message, argsMessgae);
@@ -403,14 +404,14 @@ handleUserUpdated(user, tableName) {
         const planCode = records[r][c];
         const fromDate = records[r][indexOfPlanCode];
         this.setDataByPlanCode(instance, records,r, planCode, tableName, fromDate);
-        
+
       } else if (column.key === 'fromDate') {
         const indexOfPlanCode = this.headers[tableName].columns.findIndex(c => c.key === 'planCode')
         const indexOfFromDate = this.headers[tableName].columns.findIndex(c => c.key === 'fromDate')
         const planCode = records[r][indexOfPlanCode];
         const fromDate = records[r][indexOfFromDate];
         this.setDataByPlanCode(instance, records,r, planCode, tableName,fromDate);
-        
+
       } else if (column.key === 'contractNo') {
         const indexOfPlanCode = this.headers[tableName].columns.findIndex(c => c.key === 'planCode')
         const planCode = records[r][indexOfPlanCode];
@@ -423,7 +424,7 @@ handleUserUpdated(user, tableName) {
         this.setDataByPlanCode(instance, records,r, planCode, tableName,fromDate);
      }  else if (column.key === 'hospitalFirstRegistCode') {
         const hospitalFirstCode = cell.innerText.split(' - ').shift();
-        if(hospitalFirstCode !== '' && hospitalFirstCode !== undefined) 
+        if(hospitalFirstCode !== '' && hospitalFirstCode !== undefined)
         {
           this.hospitalService.getById(hospitalFirstCode).subscribe(data => {
             this.updateNextColumns(instance, r,  data.name, [ c + 1 ]);
@@ -473,7 +474,7 @@ handleUserUpdated(user, tableName) {
               const indexOfColumn = this.headers[tableName].columns.findIndex(c => c.key === column);
               argsMessgae.push(records[r][indexOfColumn]);
             });
-          
+
             const indexColumnNote = this.headers[tableName].columns.findIndex(c => c.key === 'note');
             const notebuild = this.formatNote(planConfigInfo.note.message, argsMessgae);
             this.updateNextColumns(instance, r, notebuild, [indexColumnNote]);
@@ -481,7 +482,7 @@ handleUserUpdated(user, tableName) {
           }
         }, 10);
   }
-  
+
   private processEmployeeByPlanCode(groupInfo, tableName, data, r, fromDate) {
     const isLessThanNow = this.isLessThanNow(fromDate);
     if(groupInfo.type !== '' && isLessThanNow) {
@@ -491,7 +492,7 @@ handleUserUpdated(user, tableName) {
       const parentKey = data[r].options.parentKey;
       this.deleteEmployeeLink(tableName, data, employeeId, parentKey);
     }
-    
+
   }
 
   private deleteEmployeeLink(tableName, data, employeeId, parentKey) {
@@ -799,7 +800,7 @@ handleUserUpdated(user, tableName) {
 
   protected updateOriginByTableName(tableName) {
     const records = this.toTableRecords([ ...this.declarations[tableName].table ]);
-    
+
     this.declarations[tableName].origin = Object.values(this.updateOrigin(records, tableName));
     this.onChange.emit({
       action: ACTION.MUNTILEUPDATE,

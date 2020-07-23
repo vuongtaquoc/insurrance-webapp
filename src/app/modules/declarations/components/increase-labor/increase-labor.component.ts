@@ -243,6 +243,8 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
       });
     }
 
+    eventEmitter.emit('unsaved-changed');
+
     const declarations = [ ...this.declarations ];
     const parentIndex = findIndex(declarations, d => d.key === type);
     const childLastIndex = findLastIndex(declarations, d => d.isLeaf && d.parentKey === type);
@@ -280,7 +282,6 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
           nzTitle: `Nhân viên đã có trong danh sách ${TYPES[type]}`,
         });
       }
-      console.log(declarations);
       // update orders
       this.updateOrders(declarations);
 
@@ -323,6 +324,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     this.eventsSubject.next({ type: 'validate' });
     this.familiesSubject.next('validate');
     this.documentsSubject.next('validate');
+    eventEmitter.emit('unsaved-changed');
   }
 
   handleUserAdded({ tableName, y, employee }) {
@@ -354,6 +356,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     this.eventsSubject.next({ type: 'validate' });
     this.familiesSubject.next('validate');
     this.documentsSubject.next('validate');
+    eventEmitter.emit('unsaved-changed');
   }
 
   handleUserUpdated(user) {
@@ -385,6 +388,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     this.eventsSubject.next({ type: 'validate' });
     this.familiesSubject.next('validate');
     this.documentsSubject.next('validate');
+    eventEmitter.emit('unsaved-changed');
   }
 
   handleUserDeleted(user) {
@@ -393,6 +397,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
       user,
       deletedIndexes: []
     });
+    eventEmitter.emit('unsaved-changed');
   }
 
   handleSelectEmployees(employees) {
@@ -401,6 +406,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
 
   handleFileSelected(files) {
     console.log(files)
+    eventEmitter.emit('unsaved-changed');
   }
 
   emitEventToChild(type) {
@@ -539,6 +545,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     this.eventsSubject.next({ type: 'validate' });
     this.familiesSubject.next('validate');
     this.documentsSubject.next('validate');
+    eventEmitter.emit('unsaved-changed');
   }
 
   private updateSelectedValueDropDow(columns, instance, r) {
@@ -551,6 +558,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
   }
 
   handleChangeTable({ instance, cell, c, r, records }) {
+    eventEmitter.emit('unsaved-changed');
     if (c !== null && c !== undefined) {
       c = Number(c);
       const column = this.tableHeaderColumns[c];
@@ -641,6 +649,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     this.eventsSubject.next({ type: 'validate' });
     this.familiesSubject.next('validate');
     this.documentsSubject.next('validate');
+    eventEmitter.emit('unsaved-changed');
   }
 
   handleDeleteData({ rowNumber, numOfRows, records }) {
@@ -679,6 +688,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     this.eventsSubject.next({ type: 'validate' });
     this.familiesSubject.next('validate');
     this.documentsSubject.next('validate');
+    eventEmitter.emit('unsaved-changed');
   }
 
   handleAddMember({ rowNumber, numOfRows, beforeRowIndex, afterRowIndex, options, origin, insertBefore }) {
@@ -703,6 +713,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     this.eventsSubject.next({ type: 'validate' });
     this.familiesSubject.next('validate');
     this.documentsSubject.next('validate');
+    eventEmitter.emit('unsaved-changed');
   }
 
   handleFocus() {
@@ -721,6 +732,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     this.eventsSubject.next({type: 'validate'});
     this.familiesSubject.next('validate');
     this.documentsSubject.next('validate');
+    eventEmitter.emit('unsaved-changed');
   }
 
 
@@ -745,6 +757,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
       });
     }
     this.families = families;
+    eventEmitter.emit('unsaved-changed');
   }
 
   collapseChange(isActive, type) {
@@ -754,6 +767,11 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
   handleFormValuesChanged(data) {
     this.totalNumberInsurance = data.totalNumberInsurance;
     this.totalCardInsurance = data.totalNumberInsurance;
+    eventEmitter.emit('unsaved-changed');
+  }
+
+  handleChangeForm() {
+    eventEmitter.emit('unsaved-changed');
   }
 
   checkInsurranceCode() {
@@ -1000,6 +1018,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     this.eventsSubject.next({ type: 'validate' });
     this.familiesSubject.next('validate');
     this.documentsSubject.next('validate');
+    eventEmitter.emit('unsaved-changed');
   }
 
   handleDeleteInfomation({ rowNumber, numOfRows }) {
@@ -1010,6 +1029,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     this.eventsSubject.next({ type: 'validate' });
     this.familiesSubject.next('validate');
     this.documentsSubject.next('validate');
+    eventEmitter.emit('unsaved-changed');
   }
 
   private arrayToProps(array, columns) {

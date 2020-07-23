@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { AuthorizeGuard } from '@app/core/guards';
+import { AuthorizeGuard, UnsavedChangesGuard, NavigationGuard } from '@app/core/guards';
 
 import { LayoutComponent } from '@app/shared/layout';
 import {
@@ -37,11 +37,13 @@ const routes: Routes = [
         // canActivate: [ AuthorizeGuard ],
         data: {
           // expectedPermission: 'substituteInvoice_U'
-        }
+        },
+        canDeactivate: [ UnsavedChangesGuard, NavigationGuard ]
       },
       {
         path: 'increase-labor/:id/edit',
-        component: IncreaseLaborEditComponent
+        component: IncreaseLaborEditComponent,
+        canDeactivate: [ UnsavedChangesGuard, NavigationGuard ]
       },
       {
         path: 'increase-labor',
@@ -65,11 +67,13 @@ const routes: Routes = [
       },
       {
         path: 'regime-approval/add',
-        component: RegimeApprovalAddComponent
+        component: RegimeApprovalAddComponent,
+        canDeactivate: [ UnsavedChangesGuard, NavigationGuard ]
       },
       {
         path: 'regime-approval/:id/edit',
-        component: RegimeApprovalEditComponent
+        component: RegimeApprovalEditComponent,
+        canDeactivate: [ UnsavedChangesGuard, NavigationGuard ]
       },
       {
         path: 'arrears',
