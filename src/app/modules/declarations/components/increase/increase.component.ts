@@ -225,7 +225,7 @@ export class IncreaseComponent extends GeneralBaseComponent implements OnInit, O
     this.panel[type].active = isActive;
   }
 
-  handleFormValuesChanged(data) {
+  handleFormValuesChanged({ data }) {
     this.onFormChange.emit(data);
   }
 

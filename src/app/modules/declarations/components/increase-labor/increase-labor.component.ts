@@ -409,6 +409,14 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
   }
 
   emitEventToChild(type) {
+    if (type === 'back') {
+      this.onSubmit.emit({
+        type
+      });
+
+      return;
+    }
+
     let count = Object.keys(this.tableErrors).reduce(
       (total, key) => {
         const data = this.tableErrors[key];
@@ -762,10 +770,13 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     this.panel[type].active = isActive;
   }
 
-  handleFormValuesChanged(data) {
+  handleFormValuesChanged({ data, first }) {
     this.totalNumberInsurance = data.totalNumberInsurance;
     this.totalCardInsurance = data.totalNumberInsurance;
-    eventEmitter.emit('unsaved-changed');
+
+    if (!first) {
+      eventEmitter.emit('unsaved-changed');
+    }
   }
 
   handleChangeForm() {
