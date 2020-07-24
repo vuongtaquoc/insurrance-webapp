@@ -66,7 +66,13 @@ export class PluploadDirective {
         uploader.removeFile(file);
       }
     });
-    this.onSelectedFileChanged.emit(files[0]);
+
+    this.readLocalFile(files[0].getNative()).then(file => {
+      this.onSelectedFileChanged.emit({
+        metadata: files[0],
+        file
+      });
+    });
   }
 
   private fileUploaded(uploader, file, result) {
@@ -100,18 +106,13 @@ export class PluploadDirective {
 
       reader.onload = event => {
         const target = <any>event.target;
-        const image = new Image();
-        image.src = target.result;
-        image.onload = function() {
-          if (image.width < minDimensions.width ||
-            image.height < minDimensions.height) {
-            return reject({
-              minDimensions: true,
-            });
-          }
+        // let encoded = target.result.toString().replace(/^data:(.*,)?/, '');
+        // if ((encoded.length % 4) > 0) {
+        //   encoded += '='.repeat(4 - (encoded.length % 4));
+        // }
+        // console.log(encoded)
 
-          return resolve(target.result);
-        };
+        return resolve(target.result);
       };
 
       reader.readAsDataURL(file);

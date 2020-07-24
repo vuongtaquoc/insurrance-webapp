@@ -44,6 +44,7 @@ const TYPES = {
   'II_1': 'Giảm BHYT',
   'II_2': 'Tăng BHTNLĐ, BNN'
 };
+const MAX_UPLOAD_SIZE = 20 * 1024 * 1024; // ~ 20MB
 
 @Component({
   selector: 'app-declaration-increase-labor',
@@ -89,6 +90,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
   totalCardInsurance: any;
   isBlinking = false;
   submitType: string;
+  files: any[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -191,6 +193,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
           this.updateOrders(declarations.documentDetail);
           this.declarations = declarations.documentDetail;
           this.informations = this.fomatInfomation(declarations.informations);
+          this.files = declarations.files;
 
           this.declarationGeneral = {
             totalNumberInsurance: declarations.totalNumberInsurance,
@@ -404,7 +407,31 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
   }
 
   handleFileSelected(files) {
-    console.log(files)
+    const totalSize = files.reduce(
+      (total, file) => {
+        return total + (file.size || 0);
+      },
+      0
+    );
+
+    if (totalSize >= MAX_UPLOAD_SIZE) {
+      return this.modalService.error({
+        nzTitle: 'Lỗi quá dung lượng',
+        nzContent: 'Tổng dung lượng Tài liệu kèm theo phải nhỏ hơn 20MB'
+      });
+    }
+
+    this.files = files.map(file => ({
+      documentName: file.documentName,
+      fileName: file.fileName,
+      fullPathFile: file.fullPathFile,
+      data: file.data,
+      size: file.size,
+      id: file.id,
+      declarationId: this.declarationId,
+      declarationCode: this.declarationCode,
+      order: file.no
+    }));
     eventEmitter.emit('unsaved-changed');
   }
 
@@ -445,16 +472,18 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
       });
     }
 
-    // this.eventsSubject.next({type});
-    this.submitType = type;
+    this.eventsSubject.next({type});
+    // this.submitType = type;
 
-    eventEmitter.emit('saveData:loading', true);
+    // eventEmitter.emit('saveData:loading', true);
 
-    this.fileUploadEmitter.emit('file:upload');
+    // this.fileUploadEmitter.emit('file:upload');
   }
 
   handleSubmit(event) {
     const { number, month, year } = this.form.value;
+
+    eventEmitter.emit('unsaved-changed', true);
 
     this.onSubmit.emit({
       type: event.type,
@@ -468,6 +497,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
       documentDetail: event.data,
       informations: this.reformatInformations(),
       families: this.reformatFamilies(),
+      files: this.files
     });
   }
 
