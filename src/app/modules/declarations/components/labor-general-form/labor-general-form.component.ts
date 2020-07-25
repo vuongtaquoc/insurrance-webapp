@@ -28,19 +28,26 @@ export class LaborGeneralFormComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes) {
     if (changes.data && !isEmpty(changes.data.currentValue) && this.form) {
-      this.form.patchValue({
-        totalNumberInsurance: changes.data.currentValue.totalNumberInsurance,
-        totalCardInsurance: changes.data.currentValue.totalCardInsurance,
-      });
+      if (changes.data.currentValue.totalNumberInsurance || changes.data.currentValue.totalCardInsurance) {
+        this.form.patchValue({
+          totalNumberInsurance: changes.data.currentValue.totalNumberInsurance,
+          totalCardInsurance: changes.data.currentValue.totalCardInsurance,
+        });
+      }
     }
   }
 
   formChanges() {
     this.form.valueChanges.subscribe(value => {
-      this.onFormValuesChanged.emit(value);
+      this.onFormValuesChanged.emit({
+        data: value
+      });
     });
 
-    this.onFormValuesChanged.emit(this.form.value);
+    this.onFormValuesChanged.emit({
+      data: this.form.value,
+      first: true
+    });
   }
-  
+
 }

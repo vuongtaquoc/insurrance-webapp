@@ -24,7 +24,7 @@ export class IncreaseLaborAddComponent extends PageCoreComponent {
   }
 
   ngOnInit() {
-    this.handlers.push(eventEmitter.on('unsaved-changed', () => this.setIsUnsavedChanges(true)));
+    this.handlers.push(eventEmitter.on('unsaved-changed', (isSubmit) => this.setIsUnsavedChanges(!isSubmit)));
   }
 
   ngOnDestroy() {

@@ -39,6 +39,9 @@ export class PageCoreComponent {
         nzContent: 'Bạn có 1 vài thay đổi chưa được lưu lại',
         nzOkText: 'Có',
         nzCancelText: 'Không',
+        nzOnCancel: () => {
+          resolve(false);
+        },
         nzOnOk: () => {
           resolve(true);
         }
