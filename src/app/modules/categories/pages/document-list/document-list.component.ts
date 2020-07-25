@@ -6,4 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./document-list.component.less']
 })
 export class DocumentListComponent {
+ 
 }

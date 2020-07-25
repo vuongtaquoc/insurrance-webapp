@@ -81,12 +81,11 @@ export class DeclarationService {
 
     declarations.forEach((d, index) => {
       const hasFormula = d.code.indexOf('SUM') > -1 || d.code.indexOf('Sum') > -1;
-
       data.push({
         readonly: !hasFormula,
         formula: hasFormula,
         origin: d,
-        employeeId: 12,
+        employeeId: (d.employeeId || d.id),
         planType: d.planType,
         planDefault: d.planDefault,
         key: d.code,

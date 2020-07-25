@@ -5,8 +5,16 @@
         <div nz-col [nzSpan]="3">
           <nz-form-item>
             <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10" [nzXXl]="8">Đợt</nz-form-label>
-            <nz-form-control [nzSpan]="14" [nzXXl]="16">
+            <nz-form-control [nzSpan]="14" [nzXXl]="16" [nzErrorTip]="batchTpl">
               <input nz-input nzSize="small" formControlName="batch">
+              <ng-template #batchTpl let-control>
+                <ng-container *ngIf="control.hasError('required')">
+                  <p class="regime-approval-form__error">Đợt kê khai không được để trống</p>
+                </ng-container>
+                <ng-container *ngIf="control.hasError('pattern')">
+                  <p class="regime-approval-form__error">Đợt kê khai phải số</p>
+                </ng-container>
+              </ng-template>
             </nz-form-control>
           </nz-form-item>
         </div>
@@ -14,8 +22,22 @@
         <div nz-col [nzSpan]="3">
           <nz-form-item>
             <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="13" [nzXXl]="11">Tháng</nz-form-label>
-            <nz-form-control [nzSpan]="11" [nzXXl]="13">
+            <nz-form-control [nzSpan]="11" [nzXXl]="13" [nzErrorTip]="monthTpl">
               <input nz-input nzSize="small" formControlName="month">
+              <ng-template #monthTpl let-control>
+                  <ng-container *ngIf="control.hasError('required')">
+                    <p class="regime-approval-form__error">Tháng kê khai không được để trống</p>
+                  </ng-container>
+                  <ng-container *ngIf="control.hasError('pattern')">
+                    <p class="regime-approval-form__error">Tháng kê khai phải số</p>
+                  </ng-container>
+                  <ng-container *ngIf="control.hasError('min')">
+                    Tháng phải lớn hơn 0
+                  </ng-container>
+                  <ng-container *ngIf="control.hasError('max')">
+                    Tháng phải nhỏ hơn 12
+                  </ng-container>
+              </ng-template>
             </nz-form-control>
           </nz-form-item>
         </div>
@@ -23,8 +45,16 @@
         <div nz-col [nzSpan]="3">
           <nz-form-item>
             <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="12" [nzXXl]="10">Năm</nz-form-label>
-            <nz-form-control [nzSpan]="12" [nzXXl]="14">
+            <nz-form-control [nzSpan]="12" [nzXXl]="14" [nzErrorTip]="yearTpl">
               <input nz-input nzSize="small" formControlName="year">
+              <ng-template #monthTpl let-control>
+                <ng-container *ngIf="control.hasError('required')">
+                  <p class="regime-approval-form__error">Năm kê khai không được để trống</p>
+                </ng-container>
+                <ng-container *ngIf="control.hasError('pattern')">
+                  <p class="regime-approval-form__error">Năm kê khai phải số</p>
+                </ng-container>
+              </ng-template>
             </nz-form-control>
           </nz-form-item>
         </div>
@@ -61,10 +91,15 @@
         <div nz-col [nzSpan]="7">
           <nz-form-item>
             <nz-form-label [nzRequired]="true" [nzSpan]="13">Gửi kèm hồ sơ giấy</nz-form-label>
-            <nz-form-control [nzSpan]="11">
+            <nz-form-control [nzSpan]="11" [nzErrorTip]="typeDocumentActtachTpl">
                 <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="typeDocumentActtach">
                     <nz-option *ngFor="let typeDocumentActtach of typeDocumentActtachs" [nzLabel]="typeDocumentActtach.name" [nzValue]="typeDocumentActtach.id"></nz-option>
                 </nz-select>
+                <ng-template #typeDocumentActtachTpl let-control>
+                  <ng-container *ngIf="control.hasError('required')">
+                    <p class="regime-approval-form__error">Gửi kèm hồ sơ giấy không được để trống</p>
+                  </ng-container>
+                </ng-template>
             </nz-form-control>
           </nz-form-item>
         </div>
@@ -74,8 +109,13 @@
     <div nz-col [nzSpan]="6">
       <nz-form-item class="reason">
         <nz-form-label class="text-left" [nzRequired]="true">Lý do giải trình (Đối với hồ sơ chậm muộn)</nz-form-label>
-        <nz-form-control class="reason-control">
+        <nz-form-control class="reason-control" [nzErrorTip]="reasonTpl">
           <textarea rows="1" nz-input formControlName="reason"></textarea>
+          <ng-template #reasonTpl let-control>
+            <ng-container *ngIf="control.hasError('required')">
+              <p class="regime-approval-form__error">Lý do giải trình không được để trống</p>
+            </ng-container>
+          </ng-template>
         </nz-form-control>
       </nz-form-item>
     </div>

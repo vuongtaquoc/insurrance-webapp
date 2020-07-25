@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DeclarationService, AuthenticationService, DocumentListService } from '@app/core/services';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import * as _ from 'lodash';
@@ -11,6 +11,7 @@ import { DocumentList } from '@app/core/models';
 import { DATE_FORMAT, DECLARATIONS } from '@app/shared/constant';
 
 import { TableEditorErrorsComponent } from '@app/shared/components';
+import { REGEX } from '@app/shared/constant';
 
 @Component({
   selector: 'app-regime-approval',
@@ -32,6 +33,7 @@ export class RegimeApprovalComponent implements OnInit, OnDestroy {
   documentForm: FormGroup;
   handler: any;
   isTableValid = false;
+  formError: any[] = [];
   tableErrors = {};
   isValid: any = {};
   allInitialize: any = {};
@@ -48,8 +50,8 @@ export class RegimeApprovalComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.documentForm = this.formBuilder.group({
-      submitter: [''],
-      mobile: ['']
+      submitter: ['', Validators.required],
+      mobile: ['',  [Validators.required, Validators.pattern(REGEX.ONLY_NUMBER)]],
     });
 
     if (this.declarationId) {
@@ -96,7 +98,7 @@ export class RegimeApprovalComponent implements OnInit, OnDestroy {
 
   rollback() {
     if(!this.isTableValid) { 
-      this.router.navigate(['/declarations/adjust-general']);
+      this.router.navigate(['/declarations/regime-approval']);
       return;
     }
 
@@ -127,6 +129,23 @@ export class RegimeApprovalComponent implements OnInit, OnDestroy {
         nzTitle: 'Bạn chưa kê khai'
       });
       return;
+    }
+
+    eventEmitter.emit('tableEditor:validFrom', {
+      tableName: 'documentList'
+    });
+
+    if(this.formError.length > 0) {
+      this.tableErrors['generalFomError'] = this.formError;
+    } else {
+      this.tableErrors['generalFomError'] = [];
+    }
+
+    const errorDocumentForm = this.validDocumentForm();
+    if (errorDocumentForm.length > 0) {
+      this.tableErrors['documentFomError'] = errorDocumentForm;
+    } else {
+      this.tableErrors['documentFomError'] = [];
     }
 
     let count = Object.keys(this.tableErrors).reduce(
@@ -285,4 +304,33 @@ export class RegimeApprovalComponent implements OnInit, OnDestroy {
     modal.afterClose.subscribe(result => {
     });
   }
+
+  validDocumentForm() {
+      const formError: any[] = [];
+      if(this.documentForm.controls.submitter.errors) {
+        formError.push({
+          y: 'Người nộp',
+          columnName: 'Kiểm tra lại trường người nộp',
+          prefix: '',
+          subfix: 'Lỗi'
+        });
+      }
+
+      if(this.documentForm.controls.mobile.errors) {
+        formError.push({
+          y: 'Số điện thoại',
+          columnName: 'Kiểm tra lại trường số điện thoại',
+          prefix: '',
+          subfix: 'Lỗi'
+        });
+      }
+
+      return formError;
+  }
+
+  handleValidForm(data) {
+    this.formError = data.errorMessage;
+  }
+
+
 }

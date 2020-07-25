@@ -10,7 +10,7 @@ const routes: Routes = [
     component: LayoutComponent,
     children: [
       {
-        path: 'documents',
+        path: 'list',
         component: DocumentListComponent
       }
     ]

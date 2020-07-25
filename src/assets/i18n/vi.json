@@ -6,6 +6,8 @@
     },
     "title": "mBHXH – Phần mềm bảo hiểm xã hội điện tử",
     "search": "Tìm kiếm...",
+	"btnCreate": "Thêm mới",
+	"btnSearch": "Tìm kiếm",
     "footer": {
       "copyright": "Copyrights © 2020 Phần mềm Hóa đơn điện tử. All Rights"
     },
@@ -141,6 +143,33 @@
 			"object": "Đôi tượng cấp thẻ",
 			"studentLevelOne": "Học sinh(Lớp 1->12)",
 			"studentLevelTwo": "Sinh viên(Đại học, Cao đẳng, Trung học chuyên nghiệp, Nghề...)"
+		}
+	},
+	"agencies": {
+		"agencies-list": {
+		"title": "Danh sách đại lý"	,
+		  "dateFrom": "Từ ngày",
+		  "dateTo": "Đến ngày",
+		  "keyWords": "Từ khóa"
+		},
+		"table": {
+		  "stt": "STT",
+		  "company": "Tên đại lý",
+		  "taxCode": "Mã số thuế",
+		  "personContact": "Người đại diện",
+		  "tel": "Số điện thoại",
+		  "active": "Trạng thái",
+		  "action": "Thao tác"
+		},
+		"from" : {
+			"tax": "Mã số thuế / Số CMTND",
+			"agenciesName": "Tên đại lý",
+			"address": "Địa chỉ",
+			"personContact": "Người đại diện",
+			"tel": "Điện thoại",
+			"email": "Địa chỉ email",
+			"Website": "Website",
+			"status": "Trạng thái"		 
 		}
 	},
 	"documentTable" : {

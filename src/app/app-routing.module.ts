@@ -42,7 +42,12 @@ const routes: Routes = [
     path: 'employees',
     loadChildren: './modules/employees/employees.module#EmployeesModule',
     canActivate: [ AuthGuard ],
-  }
+  },
+  {
+    path: 'agencies',
+    loadChildren: './modules/agencies/agencies.module#AgenciesModule',
+    canActivate: [ AuthGuard ],
+  },
 ];
 
 @NgModule({

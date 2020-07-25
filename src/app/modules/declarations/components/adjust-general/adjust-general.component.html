@@ -106,7 +106,7 @@
             </div>
           </div>
         </nz-tab><!-- tab 4-->
-        <nz-tab nzTitle="Bảng kê hồ sơ">
+        <nz-tab nzTitle="Bảng kê hồ sơ" [nzDisabled]="!informations || !informations.length">
           <div class="page-document-list__container">
             <form nz-form [formGroup]="documentForm">
               <h1>{{declarationCode}} | {{declarationName}}</h1>

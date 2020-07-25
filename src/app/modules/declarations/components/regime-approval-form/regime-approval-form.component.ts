@@ -4,6 +4,8 @@ import isEmpty from 'lodash/isEmpty';
 
 import { CategoryService, AuthenticationService } from '@app/core/services';
 import { Category } from '@app/core/models';
+import { REGEX } from '@app/shared/constant';
+import { eventEmitter } from '@app/shared/utils/event-emitter';
 
 @Component({
   selector: 'app-regime-approval-form',
@@ -15,8 +17,9 @@ export class RegimeApprovalFormComponent implements OnInit, OnChanges {
   @Input() form: FormGroup;
   @Input() data: any = {};
   @Output() onFormValuesChanged: EventEmitter<any> = new EventEmitter();
+  @Output() onFormValid: EventEmitter<any> = new EventEmitter();
   typeDocumentActtachs: Category[] = [];
-
+  private handlers: any = [];
   constructor(
     private formBuilder: FormBuilder,
     private categoryService: CategoryService
@@ -26,15 +29,21 @@ export class RegimeApprovalFormComponent implements OnInit, OnChanges {
     const date = new Date();
     this.loadTypeDocumentAttach();
     this.form = this.formBuilder.group({
-      batch: ['1'],
-      month: [ date.getMonth() + 1, Validators.required ],
+      batch: ['1', Validators.required],
+      month: [ date.getMonth() + 1, [Validators.min(0), Validators.max(12), Validators.pattern(REGEX.ONLY_NUMBER_INCLUDE_DECIMAL)] ],
       year: [ date.getFullYear(), Validators.required ],
       bankAccount: [''],
       openAddress: [''],
       branch: [''],
-      typeDocumentActtach: [''],
-      reason: ['']
+      typeDocumentActtach: ['', Validators.required],
+      reason: ['', Validators.required]
     });
+
+    this.handlers = [
+      eventEmitter.on('tableEditor:validFrom', ({ tableName }) => {        
+          this.validForm();
+      })
+    ];
 
     this.formChanges();
   }
@@ -56,6 +65,61 @@ export class RegimeApprovalFormComponent implements OnInit, OnChanges {
     });
 
     this.onFormValuesChanged.emit(this.form.value);
+  }
+
+
+  validForm() {
+    const formError: any[] = [];
+    if(this.form.controls.batch.errors) {
+      formError.push({
+        y: 'Đợt',
+        columnName: 'Kiểm tra lại trường đợt kê khai',
+        prefix: '',
+        subfix: 'Lỗi'
+      });
+    }
+
+    if(this.form.controls.month.errors) {
+      formError.push({
+        y: 'Tháng',
+        columnName: 'Kiểm tra lại trường số tháng',
+        prefix: '',
+        subfix: 'Lỗi'
+      });
+    }
+
+    if(this.form.controls.year.errors) {
+      formError.push({
+        y: 'Năm',
+        columnName: 'Kiểm tra lại trường số năm',
+        prefix: '',
+        subfix: 'Lỗi'
+      });
+    }
+
+    if(this.form.controls.typeDocumentActtach.errors) {
+      formError.push({
+        y: 'Gửi kèm hồ sơ giấy',
+        columnName: 'Kiểm tra lại Gửi kèm hồ sơ giấy',
+        prefix: '',
+        subfix: 'Lỗi'
+      });
+    }
+
+    if(this.form.controls.reason.errors) {
+      formError.push({
+        y: 'Lý do giải trình',
+        columnName: 'Kiểm tra lại lý do giải trình',
+        prefix: '',
+        subfix: 'Lỗi'
+      });
+    }
+
+    this.onFormValid.emit({
+      tableName: 'validFrom',
+      errorMessage: formError
+    });
+    
   }
 
   private loadTypeDocumentAttach() {

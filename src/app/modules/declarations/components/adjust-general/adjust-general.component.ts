@@ -60,6 +60,7 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
   eventValidData = 'adjust-general:validate';
   handler: any;
   isTableValid = false;
+  status = 0;
   tableErrors = {};
   formError: any[] = [];
   panel: any = {
@@ -153,7 +154,7 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
           this.declarations.origin = declarations.documentDetail;
           this.informations = this.fomatInfomation(declarations.informations);
           this.families = this.fomatFamilies(declarations.families);
-          
+          this.status = declarations.status;
           this.declarations.formOrigin = {
             batch: declarations.batch,
             openAddress: declarations.openAddress,
@@ -467,11 +468,13 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
   }
 
   private update(type: any) {
+     
     this.declarationService.update(this.declarationId, {
       type: type,
       declarationCode: this.declarationCode,
       declarationName: this.declarationName,
       documentStatus: 0,
+      status: this.getStatus(type),
       submitter: this.submitter,
       mobile: this.mobile,
       ...this.declarations.form,
@@ -486,6 +489,14 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
         this.router.navigate(['/declarations/adjust-general']);
       }
     });
+  }
+ 
+  private getStatus(type) {
+    if(this.status > 0) {
+      return this.status;
+    }
+
+    return (type === 'saveAndView' ) ? 1: 0;
   }
 
   viewDocument(declarationInfo: any) {
@@ -1057,11 +1068,7 @@ private setDateToInformationList(records: any)
     }
 
     documents.forEach(doc => {
-      let item = _.find(this.informations, {
-        planCode: emp.planCode,
-        employeeId: emp.employeeId,
-        documentCode: doc.documentCode,
-      });
+      let item = this.informations.find(i => (i.planCode === emp.planCode && i.employeeId === emp.employeeId && i.documentCode === doc.documentCode));
       if (!item) {
         item = {
             documentNote: doc.documentNote,
@@ -1069,9 +1076,6 @@ private setDateToInformationList(records: any)
             isurranceNo: emp.isurranceNo,           
             isurranceCode: emp.isurranceCode,    
             fullName: emp.fullName,
-            //companyRelease: this.buildMessgaeByConfig(doc.companyRelease,emp),
-            //documentNo: this.buildMessgaeByConfig(doc.documentNo,emp),           
-            //dateRelease: this.buildMessgaeByConfig(doc.dateRelease,emp),
             documentCode: doc.documentCode,
             planCode: emp.planCode,
             employeeId: emp.employeeId,
@@ -1083,6 +1087,7 @@ private setDateToInformationList(records: any)
             }
         }; 
       }
+
       item.companyRelease = item.companyRelease ? item.companyRelease : this.buildMessgaeByConfig(doc.companyRelease,emp);
       item.dateRelease = item.dateRelease ? item.dateRelease : this.buildMessgaeByConfig(doc.dateRelease,emp);
       item.documentNo = this.buildMessgaeByConfig(doc.documentNo,emp);

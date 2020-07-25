@@ -10,22 +10,35 @@
                   <div nz-col [nzSpan]="12">
                     <nz-form-item>
                       <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Người nộp</nz-form-label>
-                      <nz-form-control [nzSpan]="14">
+                      <nz-form-control [nzSpan]="14" [nzErrorTip]="submitterTpl">
                         <input nz-input
                           placeholder="Người nộp"
                           formControlName="submitter"
                         />
+                        <ng-template #submitterTpl let-control>
+                          <ng-container *ngIf="control.hasError('required')">
+                            <p class="regime-approval-form__error">Người nộp không được để trống</p>
+                          </ng-container>
+                        </ng-template>
                       </nz-form-control>
                     </nz-form-item>
                   </div>
                   <div nz-col [nzSpan]="12">
                       <nz-form-item>
                         <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Số điện thoại</nz-form-label>
-                        <nz-form-control [nzSpan]="14">
+                        <nz-form-control [nzSpan]="14"[nzErrorTip]="mobileTpl">
                           <input nz-input
                             placeholder="Số điện thoại"
                             formControlName="mobile"
                           />
+                          <ng-template #mobileTpl let-control>
+                            <ng-container *ngIf="control.hasError('required')">
+                              <p class="regime-approval-form__error">Số điện thoại không được để trống</p>
+                            </ng-container>
+                            <ng-container *ngIf="control.hasError('pattern')">
+                              <p class="regime-approval-form__error">Số điện thoại phải là số</p>
+                            </ng-container>
+                          </ng-template>
                         </nz-form-control>
                       </nz-form-item>
                     </div>
@@ -88,7 +101,7 @@
           </button>
         </div>
       </ng-template>
-      <app-regime-approval-form [data]="regimeApproval.formOrigin" class="page-regime-approval__form" [ngClass]="{'page-regime-approval__form--hidden': selectedTabIndex == 0}" (onFormValuesChanged)="handleFormValuesChanged($event)"></app-regime-approval-form>
+      <app-regime-approval-form [data]="regimeApproval.formOrigin" (onFormValid) = "handleValidForm($event)"  class="page-regime-approval__form" [ngClass]="{'page-regime-approval__form--hidden': selectedTabIndex == 0}" (onFormValuesChanged)="handleFormValuesChanged($event)"></app-regime-approval-form>
     </div><!-- page-regime-approval -->
   </nz-spin>
 </div>
