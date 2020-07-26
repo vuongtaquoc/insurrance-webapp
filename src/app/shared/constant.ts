@@ -11,6 +11,12 @@ export const GENDER = {
   1: 'common.gender.female',
 };
 
+export const STATUS = {
+  0: 'common.notActive',
+  1: 'common.active',
+};
+
+
 export const ACTION = {
   ADD: 'Add',
   EDIT: 'Edit',

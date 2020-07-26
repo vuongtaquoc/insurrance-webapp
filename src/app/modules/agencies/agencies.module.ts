@@ -11,21 +11,20 @@ import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 
 import { AuthenticationService } from '@app/core/services';
 import { SharedModule } from '@app/shared/shared.module';
-import { CompanyRoutingModule } from './company-routing.module';
-import { CompanyComponent, CompanyEditComponent } from './pages';
+import { AgenciesRoutingModule } from './agencies-routing.module';
+import { AgenciesListComponent,AgenciesAddComponent } from './pages';
 
-import {
-  TableEditorComponent
-} from './components';
 
 @NgModule({
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    CompanyRoutingModule,
+    AgenciesRoutingModule,
     NzButtonModule,
     NzDatePickerModule,
     NzFormModule,
@@ -34,17 +33,18 @@ import {
     NzSelectModule,
     NzTableModule,
     NzRadioModule,
+    NzIconModule,
+    NzCheckboxModule,
     SharedModule,
-    NgxMaskModule.forRoot()    
+    NgxMaskModule.forRoot()
   ],
   declarations: [
-    CompanyComponent,
-    CompanyEditComponent,
-    TableEditorComponent
+    AgenciesListComponent,
+    AgenciesAddComponent
   ],
   providers: [
     AuthenticationService
   ],
   entryComponents: []
 })
-export class CompanyModule { }
+export class AgenciesModule { }

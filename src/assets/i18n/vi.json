@@ -6,8 +6,8 @@
     },
     "title": "mBHXH – Phần mềm bảo hiểm xã hội điện tử",
     "search": "Tìm kiếm...",
-	"btnCreate": "Thêm mới",
-	"btnSearch": "Tìm kiếm",
+		"btnCreate": "Thêm mới",
+		"btnSearch": "Tìm kiếm",
     "footer": {
       "copyright": "Copyrights © 2020 Phần mềm Hóa đơn điện tử. All Rights"
     },
@@ -15,6 +15,8 @@
       "setting": "Cài đặt",
       "logout": "Đăng xuất"
 		},
+		"notActive": "Chưa kích hoạt",
+		"active": "Đã kích hoạt",
 		"gender": {
 			"male": "Nam",
 			"female": "Nữ"

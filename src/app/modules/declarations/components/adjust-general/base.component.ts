@@ -319,7 +319,6 @@ handleUserUpdated(user, tableName) {
         row.data[index] = employee[column.key];
       }
     });
-    console.log(declarations);
     // update orders
     this.updateOrders(declarations);
 

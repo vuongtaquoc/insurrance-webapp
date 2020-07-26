@@ -1,0 +1,107 @@
+<form  nz-form [formGroup]="companyAgencies" (ngSubmit)="handleSubmit()" class="login-page">
+  <div class="page-container">  
+      <div class="page-company" cardFullHeight>
+        <div class="page-company__blank"></div>
+        <div class="page-company__main">
+            <h1>I. THÔNG TIN ĐẠI LÝ</h1> 
+            <div nz-row nzGutter="8">
+                <div nz-col nzMd="6">
+                    <nz-form-label class="black" [nzRequired]="true"  [nzSpan]="24">{{ 'agencies.from.tax' | translate }} </nz-form-label>
+                </div>
+                <div nz-col nzMd="8">
+                    <nz-form-control [nzSpan]="24" [nzErrorTip]="taxtpl">
+                        <nz-input-group nzSearch  [nzAddOnAfter]="suffixButton">
+                            <input type="text" formControlName="tax" nz-input placeholder="Tìm kiếm theo mã số thuế" />
+                        </nz-input-group>
+                        <ng-template #suffixButton>
+                            <button nz-button nzType="primary"  nzSearch>tra cứu </button>
+                        </ng-template>
+                        <ng-template #taxtpl let-control>
+                            <ng-container *ngIf="control.hasError('required')">
+                                Ngày sinh không để trống
+                            </ng-container>
+                        </ng-template>
+                    </nz-form-control>
+                </div>
+            </div>
+
+            <div nz-row nzGutter="8">
+                <div nz-col nzMd="6">
+                    <nz-form-label class="black" [nzRequired]="true" [nzSpan]="24">{{ 'agencies.from.agenciesName' | translate }} </nz-form-label>
+                </div>
+                <div nz-col nzMd="18">
+                    <nz-form-control [nzSpan]="24" [nzErrorTip]="nametpl">
+                        <input formControlName="name" class="ant-input" placeholder="Tên đại lý" />
+                        <ng-template #nametpl let-control>
+                            <ng-container *ngIf="control.hasError('required')">
+                                Mã nhân viên không để trống
+                            </ng-container>
+                        </ng-template>
+                    </nz-form-control>
+                </div>
+            </div>
+            <div nz-row nzGutter="8">
+                <div nz-col nzMd="6">
+                    <nz-form-label class="black" [nzRequired]="true" [nzSpan]="24">{{ 'agencies.from.address' | translate }} </nz-form-label>
+                </div>
+                <div nz-col nzMd="18">
+                <nz-form-control [nzSpan]="24">
+                    <input formControlName="address" class="ant-input" placeholder="{{ 'agencies.from.address' | translate }}" />
+                </nz-form-control>
+                </div>
+            </div>
+            <div nz-row nzGutter="8">
+                <div nz-col nzMd="6">
+                    <nz-form-label class="black" [nzRequired]="true" [nzSpan]="24">{{ 'agencies.from.personContact' | translate }}</nz-form-label>
+                </div>
+                <div nz-col nzMd="6">
+                    <nz-form-control [nzSpan]="24">
+                        <input formControlName="delegate" class="ant-input" placeholder="{{ 'agencies.from.personContact' | translate }}" [(ngModel)]="personContact" />
+                    </nz-form-control>
+                </div>
+                <div nz-col nzMd="6">
+                    <nz-form-label class="black text-padding-left" [nzRequired]="true" [nzSpan]="24">{{ 'agencies.from.tel' | translate }}</nz-form-label>
+                </div>
+                <div nz-col nzMd="6">
+                    <nz-form-control [nzSpan]="24">
+                        <input formControlName="tel" class="ant-input"  placeholder="{{ 'agencies.from.tel' | translate }}" />
+                    </nz-form-control>
+                </div>
+            </div>
+
+            <div nz-row nzGutter="8">
+                <div nz-col nzMd="6">
+                    <nz-form-label class="black" [nzRequired]="true" [nzSpan]="24">{{ 'agencies.from.email' | translate }}</nz-form-label>
+                </div>
+                <div nz-col nzMd="6">
+                    <nz-form-control [nzSpan]="24">
+                    <input formControlName="email" class="ant-input" placeholder="{{ 'agencies.from.email' | translate }}" />
+                    </nz-form-control>
+                </div>
+                <div nz-col nzMd="6">
+                    <nz-form-label class="black text-padding-left" [nzRequired]="true" [nzSpan]="24">{{ 'agencies.from.Website' | translate }}</nz-form-label>
+                </div>
+                <div nz-col nzMd="6">
+                    <nz-form-control [nzSpan]="24">
+                        <input formControlName="Website" class="ant-input"  placeholder="{{ 'agencies.from.Website' | translate }}" />
+                    </nz-form-control>
+                </div>
+            </div>
+            <div nz-row nzGutter="8">
+                <div nz-col nzMd="6"></div>
+                <div nz-col nzMd="6">
+                    <nz-checkbox-wrapper>
+                            &nbsp;<label nz-checkbox formControlName="active">{{ 'agencies.from.status' | translate }} </label>
+                    </nz-checkbox-wrapper>
+                </div>
+            </div>
+            <div nz-row nzGutter="8">
+                <div nz-col nzMd="24"  class="footer-botton">  
+                    <button class="employee-form__button-save" nz-button nzType="primary">Lưu</button>
+                    <button class="employee-form__button-back" nz-button nzType="default" [routerLink]="['/agencies/list']">Quay lại</button>
+                </div>
+            </div>
+        </div>        
+      </div>      
+  </div>
+</form>

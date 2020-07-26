@@ -23,7 +23,9 @@ import {
   DocumentListService,
   DeclarationFileService,
   SicknessesService,
-  FileUploadEmitter
+  AgencieService,
+  FileUploadEmitter,
+  
 } from './services';
 
 @NgModule({
