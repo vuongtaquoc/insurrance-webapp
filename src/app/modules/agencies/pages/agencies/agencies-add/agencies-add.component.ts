@@ -42,12 +42,13 @@ export class AgenciesAddComponent implements OnInit, OnDestroy {
     this.companyAgencies = this.formBuilder.group({
       tax: ['', Validators.required],
       name: ['', Validators.required],
-      address: ['', Validators.required],
-      delegate: ['', Validators.required],
-      tel: ['', Validators.required],
-      email: ['', Validators.required],
-      Website: ['', Validators.required],
-      active: ['', Validators.required] 
+      code: ['', Validators.required],
+      address: [''],//Validators.required],
+      delegate: [''],//Validators.required],
+      tel: [''],//Validators.required],
+      email: [''],//Validators.required],
+      Website: [''],//Validators.required],
+      active: [''],//Validators.required],
     });
   }
 
@@ -56,6 +57,12 @@ export class AgenciesAddComponent implements OnInit, OnDestroy {
   }
   
   private save() {
+    
+    for (const i in this.companyAgencies.controls) {
+      this.companyAgencies.controls[i].markAsDirty();
+      this.companyAgencies.controls[i].updateValueAndValidity();
+    }
+
     if (this.companyAgencies.invalid) {
       return;
     }

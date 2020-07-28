@@ -45,6 +45,7 @@ export class PluploadDirective {
     this.init.url = this.setUploaderUrl();
     this.init.browse_button = this.el.nativeElement;
     this.init.headers = this.getHeaders();
+    console.log(this.init)
 
     this.uploader = new plupload.Uploader(this.init);
     this.uploader.bind('FilesAdded', this.filesAdded.bind(this));
@@ -106,11 +107,11 @@ export class PluploadDirective {
 
       reader.onload = event => {
         const target = <any>event.target;
-        // let encoded = target.result.toString().replace(/^data:(.*,)?/, '');
-        // if ((encoded.length % 4) > 0) {
-        //   encoded += '='.repeat(4 - (encoded.length % 4));
-        // }
-        // console.log(encoded)
+        let encoded = target.result.toString().replace(/^data:(.*,)?/, '');
+        if ((encoded.length % 4) > 0) {
+          encoded += '='.repeat(4 - (encoded.length % 4));
+        }
+         
 
         return resolve(target.result);
       };

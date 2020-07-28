@@ -1,55 +1,107 @@
-<form  nz-form [formGroup]="companyAgencies" (ngSubmit)="handleSubmit()" class="login-page">
+<form  nz-form [formGroup]="companyAgencies" (ngSubmit)="handleSubmit()" class="companyAgencies-form">
   <div class="page-container">  
       <div class="page-company" cardFullHeight>
         <div class="page-company__blank"></div>
         <div class="page-company__main">
             <h1>I. THÔNG TIN ĐẠI LÝ</h1> 
-            <div nz-row nzGutter="8">
-                <div nz-col nzMd="6">
-                    <nz-form-label class="black" [nzRequired]="true"  [nzSpan]="24">{{ 'agencies.from.tax' | translate }} </nz-form-label>
+            <div nz-row nzGutter="10">
+                <div nz-col [nzSpan]="24">
+                    <nz-form-item>
+                        <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="6">{{ 'agencies.from.tax' | translate }}</nz-form-label>
+                        <nz-form-control [nzSpan]="10" [nzErrorTip]="taxtpl" >
+                            <nz-input-group nzSearch  [nzAddOnAfter]="suffixButton">
+                                <input type="text" formControlName="tax" nz-input placeholder="Tìm kiếm theo mã số thuế" />
+                            </nz-input-group>
+                            <ng-template #suffixButton>
+                                <button nz-button nzType="primary"  nzSearch>tra cứu </button>
+                            </ng-template>
+                            <ng-template #taxtpl let-control>
+                                <ng-container *ngIf="control.hasError('required')">
+                                    {{ 'agencies.from.tax' | translate }} không được để trống
+                                </ng-container>
+                                <ng-container *ngIf="control.hasError('maxlength')">
+                                    {{ 'agencies.from.tax' | translate }}chỉ được tối đa 50 ký tự
+                                </ng-container>
+                            </ng-template>
+                        </nz-form-control>
+                    </nz-form-item>
                 </div>
-                <div nz-col nzMd="8">
-                    <nz-form-control [nzSpan]="24" [nzErrorTip]="taxtpl">
-                        <nz-input-group nzSearch  [nzAddOnAfter]="suffixButton">
-                            <input type="text" formControlName="tax" nz-input placeholder="Tìm kiếm theo mã số thuế" />
-                        </nz-input-group>
-                        <ng-template #suffixButton>
-                            <button nz-button nzType="primary"  nzSearch>tra cứu </button>
-                        </ng-template>
-                        <ng-template #taxtpl let-control>
+            </div>
+            <div nz-row nzGutter="10">
+                <div nz-col [nzSpan]="24">
+                    <nz-form-item>
+                        <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="6">{{ 'agencies.from.agenciesName' | translate }}</nz-form-label>
+                        <nz-form-control [nzSpan]="18" [nzErrorTip]="nametpl" >
+                        <input nz-input
+                            placeholder="{{ 'agencies.from.agenciesName' | translate }}"
+                            formControlName="name" />
+                        <ng-template #nametpl let-control>
                             <ng-container *ngIf="control.hasError('required')">
-                                Ngày sinh không để trống
+                            Tên đại lý không được để trống
+                            </ng-container>
+                            <ng-container *ngIf="control.hasError('maxlength')">
+                            Mã nhân viên chỉ được tối đa 50 ký tự
                             </ng-container>
                         </ng-template>
-                    </nz-form-control>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div><!-- col -->
+            </div>
+            <div nz-row nzGutter="10">
+                <div nz-col [nzSpan]="24">
+                    <nz-form-item>
+                        <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="6">{{ 'agencies.from.address' | translate }}</nz-form-label>
+                        <nz-form-control [nzSpan]="18" [nzErrorTip]="addressTpl" >
+                        <input nz-input
+                            placeholder="{{ 'agencies.from.address' | translate }}"
+                            formControlName="address"/>
+                        <ng-template #addressTpl let-control>
+                            <ng-container *ngIf="control.hasError('required')">
+                                {{ 'agencies.from.address' | translate }} không được để trống
+                            </ng-container>
+                        </ng-template>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div><!-- col -->
+            </div>
+            <div nz-row nzGutter="10">
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                        <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="12">{{ 'agencies.from.personContact' | translate }}</nz-form-label>
+                        <nz-form-control [nzSpan]="12" [nzErrorTip]="delegateTpl" class="item-left-2" >
+                        <input nz-input
+                            placeholder="{{ 'agencies.from.address' | translate }}"
+                            formControlName="delegate" />
+                        <ng-template #delegateTpl let-control>
+                            <ng-container *ngIf="control.hasError('required')">
+                                {{ 'agencies.from.personContact' | translate }} không được để trống
+                            </ng-container>
+                        </ng-template>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                        <nz-form-label class="text-left item-padding-left-2" [nzRequired]="true" [nzSpan]="12">{{ 'agencies.from.personContact' | translate }}</nz-form-label>
+                        <nz-form-control [nzSpan]="12" [nzErrorTip]="delegateTpl" class="item-left-2" >
+                        <input nz-input
+                            placeholder="{{ 'agencies.from.address' | translate }}"
+                            formControlName="delegate" />
+                        <ng-template #delegateTpl let-control>
+                            <ng-container *ngIf="control.hasError('required')">
+                                {{ 'agencies.from.personContact' | translate }} không được để trống
+                            </ng-container>
+                        </ng-template>
+                        </nz-form-control>
+                    </nz-form-item>
                 </div>
             </div>
 
-            <div nz-row nzGutter="8">
-                <div nz-col nzMd="6">
-                    <nz-form-label class="black" [nzRequired]="true" [nzSpan]="24">{{ 'agencies.from.agenciesName' | translate }} </nz-form-label>
-                </div>
-                <div nz-col nzMd="18">
-                    <nz-form-control [nzSpan]="24" [nzErrorTip]="nametpl">
-                        <input formControlName="name" class="ant-input" placeholder="Tên đại lý" />
-                        <ng-template #nametpl let-control>
-                            <ng-container *ngIf="control.hasError('required')">
-                                Mã nhân viên không để trống
-                            </ng-container>
-                        </ng-template>
-                    </nz-form-control>
-                </div>
-            </div>
-            <div nz-row nzGutter="8">
-                <div nz-col nzMd="6">
-                    <nz-form-label class="black" [nzRequired]="true" [nzSpan]="24">{{ 'agencies.from.address' | translate }} </nz-form-label>
-                </div>
-                <div nz-col nzMd="18">
-                <nz-form-control [nzSpan]="24">
-                    <input formControlName="address" class="ant-input" placeholder="{{ 'agencies.from.address' | translate }}" />
-                </nz-form-control>
-                </div>
-            </div>
+
+
+
+
+
             <div nz-row nzGutter="8">
                 <div nz-col nzMd="6">
                     <nz-form-label class="black" [nzRequired]="true" [nzSpan]="24">{{ 'agencies.from.personContact' | translate }}</nz-form-label>
@@ -68,7 +120,6 @@
                     </nz-form-control>
                 </div>
             </div>
-
             <div nz-row nzGutter="8">
                 <div nz-col nzMd="6">
                     <nz-form-label class="black" [nzRequired]="true" [nzSpan]="24">{{ 'agencies.from.email' | translate }}</nz-form-label>

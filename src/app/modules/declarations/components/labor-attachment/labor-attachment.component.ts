@@ -4,8 +4,8 @@ import uuid from 'uuid';
 @Component({
   selector: 'app-labor-attachment',
   templateUrl: './labor-attachment.component.html',
-  styleUrls: ['./labor-attachment.component.less'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./labor-attachment.component.less']
+  ,encapsulation: ViewEncapsulation.None
 })
 export class LaborAttachmentComponent implements OnInit, OnChanges {
   @Input() files: any = [];
@@ -26,7 +26,7 @@ export class LaborAttachmentComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes) {
-    if (changes.files && changes.files.currentValue.length) {
+    if (changes.files && changes.files.currentValue && changes.files.currentValue.length) {
       changes.files.currentValue.forEach((file, index) => {
         this.rows[index].documentName = file.documentName;
         this.rows[index].fileName = file.fileName;

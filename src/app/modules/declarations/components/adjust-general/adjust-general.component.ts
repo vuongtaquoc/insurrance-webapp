@@ -50,6 +50,7 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
   @Output() onAddEmployee: EventEmitter<any> = new EventEmitter();
 
   form: FormGroup;
+  files: any;
   currentCredentials: any;
   documentForm: FormGroup;
   documentList: DocumentList[] = [];
@@ -152,6 +153,7 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
           });
 
           this.declarations.origin = declarations.documentDetail;
+          this.declarations.files = declarations.files;
           this.informations = this.fomatInfomation(declarations.informations);
           this.families = this.fomatFamilies(declarations.families);
           this.status = declarations.status;
@@ -1236,6 +1238,10 @@ private setDateToInformationList(records: any)
     for (let i = 0; i < args.length; i++)
        str = str.replace("{" + i + "}", args[i]);
     return str;
+  }
+
+  private getFileByDeclarationCode(code) {
+     console.log(this.files);
   }
   
 }

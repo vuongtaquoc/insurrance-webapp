@@ -54,7 +54,7 @@ export class DeclarationService {
         const declaration = detail;
 
         declaration.documentDetail = groupBy(detail.documentDetail, 'category');
-
+        //declaration.files = detail.files;// groupBy(detail.files, 'declarationCode');
         return declaration;
       })
     );

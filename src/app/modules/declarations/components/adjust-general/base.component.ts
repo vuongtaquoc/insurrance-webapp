@@ -17,6 +17,7 @@ export class GeneralBaseComponent {
   @Input() data: any;
   @Input() NzPageHeaderContentDirective: string;
   @Input() hasForm = false;
+  @Input() files: any[] = [];;
   @Input() declarationId: string;
   @Input() pageName: string;
   @Input() pageCode: string;
@@ -54,6 +55,8 @@ export class GeneralBaseComponent {
       table: []
     }
   };
+  
+  filetest: any[] = [];
   employeeSelected: any[] = [];
   employeeSubject: Subject<any> = new Subject<any>();
   tableSubject: Subject<any> = new Subject<any>();
@@ -852,5 +855,9 @@ handleUserUpdated(user, tableName) {
       return new Date();
     }
     return moment(fullDate,"DD/MM/YYYY").toDate();
+  }
+
+  handleFileSelected(files) { 
+    // console.log(files)
   }
 }

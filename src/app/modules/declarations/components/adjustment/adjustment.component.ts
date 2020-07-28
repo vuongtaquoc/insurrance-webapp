@@ -166,7 +166,6 @@ export class AdjustmentComponent extends GeneralBaseComponent implements OnInit,
 
   private getHospitalsByCityCode(instance, cell, c, r, source) {
     const value = instance.jexcel.getValueFromCoords(c - 5, r);
-    console.log(value, 'value');
     if (!value) {
       return [];
     }

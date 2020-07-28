@@ -59,6 +59,7 @@
             [pageName]="declarationName"
             [pageCode]="declarationCode"
             [declarationGeneral] = "declarationGeneral"
+            [files] = 'declarations.files'
             [data]="declarations.origin['600']"
             [tabEvents]="tabSubject.asObservable()"
             (onChange)="handleChangeTable($event, 'increaselabor')"
@@ -72,6 +73,7 @@
             [pageName]="declarationName"
             [pageCode]="declarationCode"
             [data]="declarations.origin['600a']"
+            [files] = 'declarations.files'
             [tabEvents]="tabSubject.asObservable()"
             (onChange)="handleChangeTable($event, 'reductionlabor')"
             (onHiddenSidebar)="handleHiddenSidebar($event)"
@@ -83,6 +85,7 @@
             [pageName]="declarationName"
             [pageCode]="declarationCode"
             [data]="declarations.origin['600b']"
+            [files] = 'declarations.files'
             [tabEvents]="tabSubject.asObservable()"
             (onChange)="handleChangeTable($event, 'adjustment')"
             (onHiddenSidebar)="handleHiddenSidebar($event)"
