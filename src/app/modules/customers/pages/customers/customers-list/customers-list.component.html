@@ -1,12 +1,12 @@
 <div class="page-card">
 <form  nz-form [formGroup]="formSearch" (ngSubmit)="handleSearchBox()">
   <div class="page-title ">
-      <h1>{{'agencies.agencies-list.title' | translate}}</h1>
+      <h1>{{'customers.customers-list.title' | translate}}</h1>
       <div class="page-declarations__footer">
           <button nz-button nzType="default">
             <i nz-icon nzType="search"></i>{{ 'common.btnSearch' | translate }}
           </button>
-          <button nz-button nzType="default" [routerLink]="['/agencies/add']">
+          <button nz-button nzType="default" [routerLink]="['/customers/add']">
             <i nz-icon nzType="user-add" nzTheme="outline"></i>{{ 'common.btnCreate' | translate }}
           </button>
       </div>
@@ -15,7 +15,7 @@
       <div nz-row nzGutter="30">
           <div nz-col nzMd="8">
             <nz-form-item>
-              <nz-form-label>{{ 'agencies.agencies-list.keyWords' | translate }}</nz-form-label>
+              <nz-form-label>{{ 'customers.customers-list.keyWords' | translate }}</nz-form-label>
               <nz-form-control>
                 <input type="text" nz-input formControlName="keyword">
               </nz-form-control>
@@ -23,7 +23,7 @@
           </div>
           <div nz-col nzMd="4">
             <nz-form-item>
-              <nz-form-label>{{ 'agencies.agencies-list.dateFrom' | translate }}</nz-form-label>
+              <nz-form-label>{{ 'customers.customers-list.dateFrom' | translate }}</nz-form-label>
               <nz-form-control>
                  <input nz-input
                     placeholder="Từ ngày"
@@ -38,7 +38,7 @@
           </div>
           <div nz-col nzMd="4">
             <nz-form-item>
-              <nz-form-label>{{ 'agencies.agencies-list.dateTo' | translate }}</nz-form-label>
+              <nz-form-label>{{ 'customers.customers-list.dateTo' | translate }}</nz-form-label>
               <nz-form-control>
                   <input nz-input
                      placeholder="Đến ngày"
@@ -88,7 +88,7 @@
           <td>{{ status[(data.active ? 1 : 0)] | translate }}</td>
           <td>
             <ng-container>
-                <a [routerLink]="['/agencies/' + data.id + '/edit']" class="action-padding">
+                <a [routerLink]="['/customers/' + data.id + '/edit']" class="action-padding">
                     <i nz-icon nzType="edit" nzTheme="outline"></i>
                 </a>    
             </ng-container>

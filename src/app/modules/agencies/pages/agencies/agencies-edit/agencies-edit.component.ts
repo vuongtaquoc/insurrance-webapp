@@ -2,43 +2,38 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthenticationService, AgencieService} from '@app/core/services';
 import {Company } from '@app/core/models';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { DATE_FORMAT, REGEX } from '@app/shared/constant';
 import { NzModalService } from 'ng-zorro-antd/modal';
 
 @Component({
-  selector: 'app-agencies-add',
-  templateUrl: './agencies-add.component.html',
-  styleUrls: ['./agencies-add.component.less']
+  selector: 'app-agencies-edit',
+  templateUrl: './agencies-edit.component.html',
+  styleUrls: ['./agencies-edit.component.less']
 })
-export class AgenciesAddComponent implements OnInit, OnDestroy {
+export class AgenciesEditComponent implements OnInit, OnDestroy {
 
   item: Company;
   companyAgencies: FormGroup;
-
+  id: number;
   loading = false;
-  groupCompanies: any;
-  cities: any;
-  wards: any;
-  districts: any;
-  salaryAreas: any;
-  paymentMethods: any;
-  groupCompanyCode: any;
-  isurranceDepartments: any;
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
+    private route: ActivatedRoute,
     private agencieService: AgencieService,
     private modalService: NzModalService,
   ) {
   }
 
   ngOnInit() {
-    
+    this.id = this.route.snapshot.params.id;
     this.loadForm();
+    this.getDetail(this.id);
   }
 
   ngOnDestroy() {
+
   }
 
   private loadForm() {
@@ -83,14 +78,32 @@ export class AgenciesAddComponent implements OnInit, OnDestroy {
 
   }
   
+  getDetail(id) {
+
+    this.agencieService.getDetailById(id).subscribe(data => {
+
+      this.companyAgencies.patchValue({
+        tax: data.tax,
+        name: data.name,
+        address: data.address,
+        delegate: data.delegate,
+        tel:data.tel,
+        email:data.email,
+        website:data.website,
+        active:data.active,
+      });
+
+    });
+
+  }
+
+
   taxInvalid() {
     this.modalService.warning({
       nzTitle: 'Không tìm thấy mã số thuế cần tìm'
     });
-  }
-           
+  }         
   
-
   get tax() {
     return this.companyAgencies.get('tax').value;
   }
@@ -106,7 +119,7 @@ export class AgenciesAddComponent implements OnInit, OnDestroy {
       return;
     }
     
-    this.agencieService.create(this.companyAgencies.value).subscribe(data => {
+    this.agencieService.update(this.id, this.companyAgencies.value).subscribe(data => {
       this.router.navigate(['/agencies/list']);
     });    
   }

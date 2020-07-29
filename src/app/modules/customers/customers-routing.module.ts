@@ -4,7 +4,7 @@ import { AuthorizeGuard, UnsavedChangesGuard, NavigationGuard } from '@app/core/
 import { PERMISSIONS } from '@app/shared/constant';
 
 import { LayoutComponent } from '@app/shared/layout';
-import { AgenciesListComponent, AgenciesAddComponent, AgenciesEditComponent } from './pages';
+import { CustomersListComponent, CustomersAddComponent, CustomersEditComponent } from './pages';
 
 const routes: Routes = [
   {
@@ -13,7 +13,7 @@ const routes: Routes = [
     children: [
       {
         path: 'list',
-        component: AgenciesListComponent,
+        component: CustomersListComponent,
         canActivate: [ AuthorizeGuard ],
         data: {
           expectedPermission: PERMISSIONS.increase_labor.R
@@ -22,7 +22,7 @@ const routes: Routes = [
       },
       {
         path: 'add',
-        component: AgenciesAddComponent,
+        component: CustomersAddComponent,
         canActivate: [ AuthorizeGuard ],
         data: {
           expectedPermission: PERMISSIONS.increase_labor.C
@@ -31,7 +31,7 @@ const routes: Routes = [
       },
       {
         path: ':id/edit',
-        component: AgenciesEditComponent,
+        component: CustomersEditComponent,
         canActivate: [ AuthorizeGuard ],
         data: {
           expectedPermission: PERMISSIONS.increase_labor.U
@@ -46,4 +46,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class AgenciesRoutingModule { }
+export class CustomersRoutingModule { }

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-
+import { eventEmitter } from '@app/shared/utils/event-emitter';
 import { ApplicationHttpClient } from '@app/core/http';
 
 
@@ -20,8 +20,7 @@ export class AgencieService {
   }
 
   public getDetailById(id: string) {
-    return this.http.get('/agencies', {
-      params: { id }
+    return this.http.get(`/agencies/${ id }`, {
     });
   }
 
@@ -36,5 +35,31 @@ export class AgencieService {
   public delete(id) {
     return this.http.delete(`/agencies/${ id }`);
   }
+
+  getOrganizationByTax(id?: any) {
+    return new Promise((resolve, reject) => {
+        try {
+            eventEmitter.emit('saveData:loading', true);
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET',  'http://apicompany.newinvoice.vn/companies/' + id);
+            xhr.responseType = 'json';
+            xhr.setRequestHeader('X-Authorization-Token', 'NewInvoice');
+            xhr.onload = function() {
+                if (xhr.status === 200 && xhr.response && xhr.response.data) {
+                    resolve(xhr.response.data);
+                    eventEmitter.emit('saveData:loading', false);
+                } else {
+                    reject();
+                    eventEmitter.emit('saveData:loading', false);
+                }
+            };
+            xhr.send();
+            
+        } catch (error) {
+            reject(error);
+            eventEmitter.emit('saveData:loading', false);
+        }
+    });
+}
 
 }

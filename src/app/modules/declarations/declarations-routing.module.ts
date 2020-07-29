@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { AuthorizeGuard, UnsavedChangesGuard, NavigationGuard } from '@app/core/guards';
-
+import { PERMISSIONS } from '@app/shared/constant';
 import { LayoutComponent } from '@app/shared/layout';
 import {
   IncreaseLaborAddComponent,
@@ -34,9 +34,9 @@ const routes: Routes = [
         path: 'increase-labor/add',
         component: IncreaseLaborAddComponent,
         // check permission
-        // canActivate: [ AuthorizeGuard ],
+        canActivate: [ AuthorizeGuard ],
         data: {
-          // expectedPermission: 'substituteInvoice_U'
+          expectedPermission: PERMISSIONS.increase_labor.C
         },
         canDeactivate: [ UnsavedChangesGuard, NavigationGuard ]
       },

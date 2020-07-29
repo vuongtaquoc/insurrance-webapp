@@ -174,6 +174,33 @@
 			"status": "Trạng thái"		 
 		}
 	},
+	"customers": {
+		"customers-list": {
+		"title": "Danh sách khách hàng"	,
+		  "dateFrom": "Từ ngày",
+		  "dateTo": "Đến ngày",
+		  "keyWords": "Từ khóa"
+		},
+		"table": {
+		  "stt": "STT",
+		  "company": "Tên đại lý",
+		  "taxCode": "Mã số thuế",
+		  "personContact": "Người đại diện",
+		  "tel": "Số điện thoại",
+		  "active": "Trạng thái",
+		  "action": "Thao tác"
+		},
+		"from" : {
+			"tax": "Mã số thuế / Số CMTND",
+			"agenciesName": "Tên đại lý",
+			"address": "Địa chỉ",
+			"personContact": "Người đại diện",
+			"tel": "Điện thoại",
+			"email": "Địa chỉ email",
+			"Website": "Website",
+			"status": "Trạng thái"		 
+		}
+	},
 	"documentTable" : {
 			"list" : {
 				"stt": "STT",

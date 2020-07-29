@@ -52,6 +52,7 @@ export const REGEX = {
   VALIDATE_NUMBER: /^-?\d+\.?\d*$/,
   VALIDATE_PASSPORT: /^([A-Z a-z]){1}([0-9]){7}$/,
   PHONE_NUMBER: '^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$',
+  EMAIL: /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
 };
 
 export const DECLARATIONS =
@@ -1000,5 +1001,6 @@ export const errorMessages = {
   0: 'Nam',
   8: 'Dữ liệu không hợp lệ',
   2040: 'NLĐ đã có hồ sơ, bạn không thể xóa',
-  2001: 'Sai Tên đăng nhập hoặc Mật khẩu. Vui lòng thử lại!'
+  2001: 'Sai Tên đăng nhập hoặc Mật khẩu. Vui lòng thử lại!',
+  3018: 'Email đã tồn tại trong hệ thống'
 }

@@ -7,11 +7,11 @@ import { DATE_FORMAT, REGEX } from '@app/shared/constant';
 import { NzModalService } from 'ng-zorro-antd/modal';
 
 @Component({
-  selector: 'app-agencies-add',
-  templateUrl: './agencies-add.component.html',
-  styleUrls: ['./agencies-add.component.less']
+  selector: 'app-customers-add',
+  templateUrl: './customers-add.component.html',
+  styleUrls: ['./customers-add.component.less']
 })
-export class AgenciesAddComponent implements OnInit, OnDestroy {
+export class CustomersAddComponent implements OnInit, OnDestroy {
 
   item: Company;
   companyAgencies: FormGroup;
@@ -107,7 +107,7 @@ export class AgenciesAddComponent implements OnInit, OnDestroy {
     }
     
     this.agencieService.create(this.companyAgencies.value).subscribe(data => {
-      this.router.navigate(['/agencies/list']);
+      this.router.navigate(['/customers/list']);
     });    
   }
 }

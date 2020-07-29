@@ -38,14 +38,22 @@ const routes: Routes = [
     loadChildren: './modules/contract/contract.module#ContractModule',
     canActivate: [ AuthGuard ],
   },
+  
   {
     path: 'employees',
     loadChildren: './modules/employees/employees.module#EmployeesModule',
     canActivate: [ AuthGuard ],
   },
+
   {
     path: 'agencies',
     loadChildren: './modules/agencies/agencies.module#AgenciesModule',
+    canActivate: [ AuthGuard ],
+  },
+
+  {
+    path: 'customers',
+    loadChildren: './modules/customers/customers.module#CustomersModule',
     canActivate: [ AuthGuard ],
   },
 ];

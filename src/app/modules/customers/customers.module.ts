@@ -16,15 +16,15 @@ import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 
 import { AuthenticationService } from '@app/core/services';
 import { SharedModule } from '@app/shared/shared.module';
-import { AgenciesRoutingModule } from './agencies-routing.module';
-import { AgenciesListComponent, AgenciesAddComponent, AgenciesEditComponent } from './pages';
+import { CustomersRoutingModule } from './customers-routing.module';
+import { CustomersListComponent, CustomersAddComponent, CustomersEditComponent } from './pages';
 
 
 @NgModule({
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    AgenciesRoutingModule,
+    CustomersRoutingModule,
     NzButtonModule,
     NzDatePickerModule,
     NzFormModule,
@@ -39,13 +39,13 @@ import { AgenciesListComponent, AgenciesAddComponent, AgenciesEditComponent } fr
     NgxMaskModule.forRoot()
   ],
   declarations: [
-    AgenciesListComponent,
-    AgenciesAddComponent,
-    AgenciesEditComponent
+    CustomersListComponent,
+    CustomersAddComponent,
+    CustomersEditComponent
   ],
   providers: [
     AuthenticationService
   ],
   entryComponents: []
 })
-export class AgenciesModule { }
+export class CustomersModule { }
