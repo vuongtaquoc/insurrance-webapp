@@ -14,6 +14,7 @@
                         <input nz-input
                           placeholder="Người nộp"
                           formControlName="submitter"
+                          (blur)="handleTrimValue('submitter')"
                         />
                         <ng-template #submitterTpl let-control>
                           <ng-container *ngIf="control.hasError('required')">
@@ -30,6 +31,7 @@
                           <input nz-input
                             placeholder="Số điện thoại"
                             formControlName="mobile"
+                            (blur)="handleTrimValue('mobile')"
                           />
                           <ng-template #mobileTpl let-control>
                             <ng-container *ngIf="control.hasError('required')">

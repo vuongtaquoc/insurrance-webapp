@@ -24,7 +24,7 @@ export class RegimeApprovalEditComponent extends PageCoreComponent implements On
 
   ngOnInit() {
     this.declarationId = this.route.snapshot.params.id;
-    this.handlers.push(eventEmitter.on('unsaved-changed', () => this.setIsUnsavedChanges(true)));
+    this.handlers.push(eventEmitter.on('unsaved-changed', (isSubmit) => this.setIsUnsavedChanges(!isSubmit)));
   }
 
   ngOnDestroy() {

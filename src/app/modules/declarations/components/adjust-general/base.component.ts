@@ -55,7 +55,7 @@ export class GeneralBaseComponent {
       table: []
     }
   };
-  
+
   filetest: any[] = [];
   employeeSelected: any[] = [];
   employeeSubject: Subject<any> = new Subject<any>();
@@ -857,7 +857,7 @@ handleUserUpdated(user, tableName) {
     return moment(fullDate,"DD/MM/YYYY").toDate();
   }
 
-  handleFileSelected(files) { 
+  handleFileSelected(files) {
     // console.log(files)
   }
 }

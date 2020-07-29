@@ -97,11 +97,12 @@ export class RegimeApprovalComponent implements OnInit, OnDestroy {
   }
 
   rollback() {
-    if(!this.isTableValid) { 
+    if(!this.isTableValid) {
       this.router.navigate(['/declarations/regime-approval']);
       return;
     }
 
+    eventEmitter.emit('unsaved-changed', true);
     this.modalService.confirm({
       nzTitle: 'Bạn có muốn lưu lại thông tin thay đổi',
       nzOkText: 'Có',
@@ -119,7 +120,7 @@ export class RegimeApprovalComponent implements OnInit, OnDestroy {
       }
 
     });
-      
+
   }
 
   saveAndView() {
@@ -175,6 +176,7 @@ export class RegimeApprovalComponent implements OnInit, OnDestroy {
       });
     }
 
+    eventEmitter.emit('unsaved-changed', true);
     if (this.declarationId) {
       this.update('saveAndView');
     } else {
@@ -191,7 +193,7 @@ export class RegimeApprovalComponent implements OnInit, OnDestroy {
       return;
     }
 
-    
+    eventEmitter.emit('unsaved-changed', true);
     if (this.declarationId) {
       this.update('save');
     } else {
@@ -332,5 +334,12 @@ export class RegimeApprovalComponent implements OnInit, OnDestroy {
     this.formError = data.errorMessage;
   }
 
+  handleTrimValue(key) {
+    const value = this.documentForm.value[key] || '';
+
+    this.documentForm.patchValue({
+      [key]: value.trim()
+    });
+  }
 
 }
