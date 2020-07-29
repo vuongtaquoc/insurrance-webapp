@@ -129,6 +129,7 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   key: 'regimeSum',
   sum: true,
   fieldName: 'Tổng số',
+  readOnly: true,
   validations: {
     required: true,
     min: 1
@@ -211,7 +212,10 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   type: 'text',
   width: 120,
   title: '(C.2)',
-  key: 'bankAccount'
+  key: 'bankAccount',
+  validations: {
+    required: true
+  }
 }, {
   type: 'text',
   width: 120,
@@ -324,6 +328,7 @@ export const TABLE_HEADER_COLUMNS_PART_2 = [{
   title: '(4.3)',
   key: 'regimeSum',
   sum: true,
+  readOnly: true,
   validations: {
     required: true,
     min: 1
