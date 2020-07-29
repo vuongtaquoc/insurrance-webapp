@@ -31,10 +31,10 @@
                   <ng-container *ngIf="control.hasError('pattern')">
                     <p class="regime-approval-form__error">Tháng kê khai phải số</p>
                   </ng-container>
-                  <ng-container *ngIf="control.hasError('min')">
+                  <ng-container class="regime-approval-form__error" *ngIf="control.hasError('min')">
                     Tháng phải lớn hơn 0
                   </ng-container>
-                  <ng-container *ngIf="control.hasError('max')">
+                  <ng-container class="regime-approval-form__error" *ngIf="control.hasError('max')">
                     Tháng phải nhỏ hơn 12
                   </ng-container>
               </ng-template>
@@ -47,12 +47,18 @@
             <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="12" [nzXXl]="10">Năm</nz-form-label>
             <nz-form-control [nzSpan]="12" [nzXXl]="14" [nzErrorTip]="yearTpl">
               <input nz-input nzSize="small" formControlName="year">
-              <ng-template #monthTpl let-control>
+              <ng-template #yearTpl let-control>
                 <ng-container *ngIf="control.hasError('required')">
                   <p class="regime-approval-form__error">Năm kê khai không được để trống</p>
                 </ng-container>
                 <ng-container *ngIf="control.hasError('pattern')">
                   <p class="regime-approval-form__error">Năm kê khai phải số</p>
+                </ng-container>
+                <ng-container *ngIf="control.hasError('maxlength')">
+                    <p class="regime-approval-form__error">Năm kê khai tối đa 4 ký tự</p>
+                </ng-container>
+                <ng-container class="regime-approval-form__error" *ngIf="control.hasError('min')">
+                    <p class="regime-approval-form__error">Năm kê khai tối thiểu 4 ký tự </p>
                 </ng-container>
               </ng-template>
             </nz-form-control>
@@ -61,7 +67,7 @@
 
         <div nz-col [nzSpan]="8">
           <nz-form-item>
-            <nz-form-label class="text-left" [nzSpan]="15" [nzXXl]="12">Số hiệu tài khoản của đơn vị</nz-form-label>
+            <nz-form-label class="text-left" [nzSpan]="15" [nzXXl]="12">Số hiệu TK của đơn vị</nz-form-label>
             <nz-form-control [nzSpan]="9" [nzXXl]="12">
               <input nz-input nzSize="small" formControlName="bankAccount">
             </nz-form-control>
