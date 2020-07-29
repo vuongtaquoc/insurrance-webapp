@@ -27,7 +27,7 @@ export class IncreaseLaborEditComponent extends PageCoreComponent implements OnI
 
   ngOnInit() {
     this.declarationId = this.route.snapshot.params.id;
-    this.handlers.push(eventEmitter.on('unsaved-changed', () => this.setIsUnsavedChanges(true)));
+    this.handlers.push(eventEmitter.on('unsaved-changed', (isSubmit) => this.setIsUnsavedChanges(!isSubmit)));
   }
 
   ngOnDestroy() {

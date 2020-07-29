@@ -9,6 +9,7 @@ import uuid from 'uuid';
 })
 export class LaborAttachmentComponent implements OnInit, OnChanges {
   @Input() files: any = [];
+  @Output() onChangeName = new EventEmitter<any>();
   @Output() onSelectedFileChanged = new EventEmitter<any>();
 
   rows: any[] = [];
@@ -44,6 +45,27 @@ export class LaborAttachmentComponent implements OnInit, OnChanges {
     row.fileName = file.metadata.name;
     row.size = file.metadata.size;
     row.hasFile = true;
+
+    this.onSelectedFileChanged.emit(this.rows.filter(row => row.hasFile));
+  }
+
+  handleChangeDocumentName(rowId) {
+    const row = this.rows.find(r => r.rowId === rowId);
+
+    if (!row) return;
+
+    this.onSelectedFileChanged.emit(this.rows.filter(row => row.hasFile));
+  }
+
+  handleClearRow(rowId) {
+    const row = this.rows.find(r => r.rowId === rowId);
+
+    if (!row) return;
+
+    row.data = null;
+    row.fileName = null;
+    row.size = null;
+    row.hasFile = false;
 
     this.onSelectedFileChanged.emit(this.rows.filter(row => row.hasFile));
   }
