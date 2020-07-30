@@ -212,10 +212,7 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   type: 'text',
   width: 120,
   title: '(C.2)',
-  key: 'bankAccount',
-  validations: {
-    required: true
-  }
+  key: 'bankAccount'
 }, {
   type: 'text',
   width: 120,
