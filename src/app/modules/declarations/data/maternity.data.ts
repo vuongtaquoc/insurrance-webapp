@@ -145,6 +145,7 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
     required: true,
     min: 1
   },
+  readOnly: true,
   ignoreRequiredRow: ['VIII']
 }, {
   type: 'text',
@@ -438,6 +439,7 @@ export const TABLE_HEADER_COLUMNS_PART_2 = [{
   key: 'regimeSum',
   fieldName: 'Tổng số',
   ignoreRequiredRow: ['VIII'],
+  readOnly: true,
   validations: {
     required: true,
     min: 1

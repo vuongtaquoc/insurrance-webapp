@@ -110,6 +110,7 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   width: 60,
   title: '(6.3)',
   key: 'regimeSum',
+  readOnly: true,
   sum: true,
   fieldName: 'Tổng số ngày thực tế người lao động nghỉ việc trong kỳ đề nghị giải quyết',
   validations: {
@@ -280,6 +281,7 @@ export const TABLE_HEADER_COLUMNS_PART_2 = [{
   width: 60,
   title: '(4.3)',
   key: 'regimeSum',
+  readOnly: true,
   fieldName: 'Tổng số',
   validations: {
     required: true,
