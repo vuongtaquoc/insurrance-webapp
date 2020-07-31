@@ -40,7 +40,7 @@ export class RegimeApprovalFormComponent implements OnInit, OnChanges {
     });
 
     this.handlers = [
-      eventEmitter.on('tableEditor:validFrom', ({ tableName }) => {        
+      eventEmitter.on('tableEditor:validFrom', ({ tableName }) => {
           this.validForm();
       })
     ];
@@ -119,7 +119,7 @@ export class RegimeApprovalFormComponent implements OnInit, OnChanges {
       tableName: 'validFrom',
       errorMessage: formError
     });
-    
+
   }
 
   private loadTypeDocumentAttach() {
@@ -128,4 +128,11 @@ export class RegimeApprovalFormComponent implements OnInit, OnChanges {
     });
   }
 
+  handleTrimValue(key) {
+    const value = this.form.value[key] || '';
+
+    this.form.patchValue({
+      [key]: value.trim()
+    });
+  }
 }

@@ -6,7 +6,7 @@
           <nz-form-item>
             <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10" [nzXXl]="8">Đợt</nz-form-label>
             <nz-form-control [nzSpan]="14" [nzXXl]="16" [nzErrorTip]="batchTpl">
-              <input nz-input nzSize="small" formControlName="batch">
+              <input nz-input nzSize="small" formControlName="batch" (blur)="handleTrimValue('batch')">
               <ng-template #batchTpl let-control>
                 <ng-container *ngIf="control.hasError('required')">
                   <p class="regime-approval-form__error">Đợt kê khai không được để trống</p>
@@ -23,7 +23,7 @@
           <nz-form-item>
             <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="13" [nzXXl]="11">Tháng</nz-form-label>
             <nz-form-control [nzSpan]="11" [nzXXl]="13" [nzErrorTip]="monthTpl">
-              <input nz-input nzSize="small" formControlName="month">
+              <input nz-input nzSize="small" formControlName="month" (blur)="handleTrimValue('month')">
               <ng-template #monthTpl let-control>
                   <ng-container *ngIf="control.hasError('required')">
                     <p class="regime-approval-form__error">Tháng kê khai không được để trống</p>
@@ -46,7 +46,7 @@
           <nz-form-item>
             <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="12" [nzXXl]="10">Năm</nz-form-label>
             <nz-form-control [nzSpan]="12" [nzXXl]="14" [nzErrorTip]="yearTpl">
-              <input nz-input nzSize="small" formControlName="year">
+              <input nz-input nzSize="small" formControlName="year" (blur)="handleTrimValue('year')">
               <ng-template #yearTpl let-control>
                 <ng-container *ngIf="control.hasError('required')">
                   <p class="regime-approval-form__error">Năm kê khai không được để trống</p>
@@ -69,7 +69,7 @@
           <nz-form-item>
             <nz-form-label class="text-left" [nzSpan]="15" [nzXXl]="12">Số hiệu TK của đơn vị</nz-form-label>
             <nz-form-control [nzSpan]="9" [nzXXl]="12">
-              <input nz-input nzSize="small" formControlName="bankAccount">
+              <input nz-input nzSize="small" formControlName="bankAccount" (blur)="handleTrimValue('bankAccount')">
             </nz-form-control>
           </nz-form-item>
         </div>
@@ -78,7 +78,7 @@
           <nz-form-item>
             <nz-form-label [nzSpan]="13">Mở tại</nz-form-label>
             <nz-form-control [nzSpan]="11">
-              <input nz-input nzSize="small" formControlName="openAddress">
+              <input nz-input nzSize="small" formControlName="openAddress" (blur)="handleTrimValue('openAddress')">
             </nz-form-control>
           </nz-form-item>
         </div>
@@ -89,7 +89,7 @@
           <nz-form-item>
             <nz-form-label class="text-left" [nzSpan]="3" [nzXXl]="2">Chi nhánh</nz-form-label>
             <nz-form-control [nzSpan]="21" [nzXXl]="22">
-              <input nz-input nzSize="small" formControlName="branch">
+              <input nz-input nzSize="small" formControlName="branch" (blur)="handleTrimValue('branch')">
             </nz-form-control>
           </nz-form-item>
         </div>
@@ -116,7 +116,7 @@
       <nz-form-item class="reason">
         <nz-form-label class="text-left" [nzRequired]="true">Lý do giải trình (Đối với hồ sơ chậm muộn)</nz-form-label>
         <nz-form-control class="reason-control" [nzErrorTip]="reasonTpl">
-          <textarea rows="1" nz-input formControlName="reason"></textarea>
+          <textarea rows="1" nz-input formControlName="reason"  (blur)="handleTrimValue('reason')"></textarea>
           <ng-template #reasonTpl let-control>
             <ng-container *ngIf="control.hasError('required')">
               <p class="regime-approval-form__error">Lý do giải trình không được để trống</p>
