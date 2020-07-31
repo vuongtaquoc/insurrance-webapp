@@ -56,7 +56,6 @@ export class GeneralBaseComponent {
     }
   };
 
-  filetest: any[] = [];
   employeeSelected: any[] = [];
   employeeSubject: Subject<any> = new Subject<any>();
   tableSubject: Subject<any> = new Subject<any>();
