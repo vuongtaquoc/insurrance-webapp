@@ -12,8 +12,10 @@
       </div>
       <nz-dropdown-menu #menu="nzDropdownMenu">
         <ul nz-menu>
-          <li nz-menu-item><i nz-icon nzType="setting" nzTheme="outline"></i>{{'common.headerMenu.setting' | translate}}</li>
-          <li nz-menu-item (click)="handleLogout()"><i nz-icon nzType="logout" nzTheme="outline"></i>{{'common.headerMenu.logout' | translate}}</li>
+          <li nz-menu-item><i nz-icon nzType="setting" nzTheme="outline"></i>{{'common.headerMenu.setting' | translate}}
+          </li>
+          <li nz-menu-item (click)="handleLogout()"><i nz-icon nzType="logout"
+              nzTheme="outline"></i>{{'common.headerMenu.logout' | translate}}</li>
         </ul>
       </nz-dropdown-menu>
     </div><!-- layout-header__left -->
@@ -29,7 +31,8 @@
           </a>
         </li>
         <li class="layout-menu__item" [hidden]="!permissions[pmsConf.employees.R]">
-          <a class="layout-menu__link" nz-dropdown nzTrigger="click" [nzDropdownMenu]="systemMenu" [nzOverlayClassName]="'header-dropdown-menu'">
+          <a class="layout-menu__link" nz-dropdown nzTrigger="click" [nzDropdownMenu]="systemMenu"
+            [nzOverlayClassName]="'header-dropdown-menu'">
             <span class="layout-menu__icon">
               <i nz-icon nzType="setting" nzTheme="fill"></i>
             </span>
@@ -37,12 +40,14 @@
           </a>
           <nz-dropdown-menu #systemMenu="nzDropdownMenu">
             <ul nz-menu>
-              <li nz-menu-item [hidden]="!permissions[pmsConf.employees.R]"><a [routerLink]="['/employees']"><i nz-icon nzType="user" nzTheme="outline"></i>Quản lý người lao động</a></li>
+              <li nz-menu-item [hidden]="!permissions[pmsConf.employees.R]"><a [routerLink]="['/employees']"><i nz-icon
+                    nzType="user" nzTheme="outline"></i>Quản lý người lao động</a></li>
             </ul>
           </nz-dropdown-menu>
         </li>
         <li class="layout-menu__item">
-          <a class="layout-menu__link" nz-dropdown nzTrigger="click" [nzDropdownMenu]="categoryMenu" [nzOverlayClassName]="'header-dropdown-menu'">
+          <a class="layout-menu__link" nz-dropdown nzTrigger="click" [nzDropdownMenu]="categoryMenu"
+            [nzOverlayClassName]="'header-dropdown-menu'">
             <span class="layout-menu__icon">
               <i nz-icon nzType="container" nzTheme="fill"></i>
             </span>
@@ -50,13 +55,36 @@
           </a>
           <nz-dropdown-menu #categoryMenu="nzDropdownMenu">
             <ul nz-menu>
-              <li nz-menu-item><a [routerLink]="['/agencies/list']"><i nz-icon nzType="team" nzTheme="outline"></i>Danh sách đại lý</a></li>
-              <li nz-menu-item><a [routerLink]="['/customers/list']"><i nz-icon nzType="team" nzTheme="outline"></i>Danh sách khách hàng</a></li>
+              <li nz-menu-item><a [routerLink]="['/agencies/list']"><i nz-icon nzType="team" nzTheme="outline"></i>Danh
+                  sách đại lý</a></li>
+              <li nz-menu-item><a [routerLink]="['/customers/list']"><i nz-icon nzType="team" nzTheme="outline"></i>Danh
+                  sách khách hàng</a></li>
+
+              <li nz-submenu nzTitle="Hệ thống">
+                <ul>
+                  <li nz-menu-item><a [routerLink]="['/staffs/list']"><i nz-icon nzType="user"
+                        nzTheme="outline"></i>Danh sách nhân viên</a></li>
+                  <li nz-menu-item><a [routerLink]="['/products/list']"><i nz-icon nzType="appstore"
+                        nzTheme="outline"></i>Danh sách sản phẩm</a></li>
+                </ul>
+              </li>
+
+              <li nz-submenu nzTitle="Thông báo">
+                <ul>
+                  <li nz-menu-item><a [routerLink]="['/notifications/list']"><i nz-icon nzType="notification"
+                        nzTheme="outline"></i>Thông báo tin tức</a></li>
+                  <li nz-menu-item><a [routerLink]="['/notificationEmails/list']"><i nz-icon nzType="notification"
+                        nzTheme="outline"></i>Thông báo gửi Email</a></li>
+                </ul>
+              </li>
+
             </ul>
           </nz-dropdown-menu>
-        </li> 
-        <li class="layout-menu__item" [hidden]="!permissions[pmsConf.increase_labor.R] && !permissions[pmsConf.reduction_labor.R] && !permissions[pmsConf.adjust.R] && !permissions[pmsConf.arrears.R] && !permissions[pmsConf.adjust_general.R] && !permissions[pmsConf.regime_approval.R]">
-          <a class="layout-menu__link" nz-dropdown nzTrigger="click" [nzDropdownMenu]="declarationMenu" [nzOverlayClassName]="'header-dropdown-menu'">
+        </li>
+        <li class="layout-menu__item"
+          [hidden]="!permissions[pmsConf.increase_labor.R] && !permissions[pmsConf.reduction_labor.R] && !permissions[pmsConf.adjust.R] && !permissions[pmsConf.arrears.R] && !permissions[pmsConf.adjust_general.R] && !permissions[pmsConf.regime_approval.R]">
+          <a class="layout-menu__link" nz-dropdown nzTrigger="click" [nzDropdownMenu]="declarationMenu"
+            [nzOverlayClassName]="'header-dropdown-menu'">
             <span class="layout-menu__icon">
               <i nz-icon nzType="file" nzTheme="fill"></i>
             </span>
@@ -64,30 +92,46 @@
           </a>
           <nz-dropdown-menu #declarationMenu="nzDropdownMenu">
             <ul nz-menu>
-              <li nz-menu-item [hidden]="!permissions[pmsConf.increase_labor.R]"><a [routerLink]="['/declarations/increase-labor']"><i nz-icon nzType="arrow-up" nzTheme="outline"></i>Báo tăng lao động</a></li>
-              <li nz-menu-item [hidden]="!permissions[pmsConf.reduction_labor.R]"><a [routerLink]="['/declarations/reduction-labor']"><i nz-icon nzType="arrow-down" nzTheme="outline"></i>Báo giảm lao động</a></li>
-              <li nz-menu-item [hidden]="!permissions[pmsConf.adjust.R]"><a [routerLink]="['/declarations/adjust']"><i nz-icon nzType="arrow-down" nzTheme="outline"></i>Điều chỉnh chức danh, mức đóng</a></li>
-              <li nz-menu-item [hidden]="!permissions[pmsConf.arrears.R]"><a [routerLink]="['/declarations/arrears']"><i nz-icon nzType="arrow-down" nzTheme="outline"></i>Truy thu điều chỉnh điều chỉnh chức danh, mức đóng(trường hợp báo muộn)</a></li>
-              <li nz-menu-item [hidden]="!permissions[pmsConf.adjust_general.R]"><a [routerLink]="['/declarations/adjust-general']"><i nz-icon nzType="arrow-down" nzTheme="outline"></i>Truy thu (Trường hợp vi phạp quy định của pháp luật về đóng BHXH.BHYT, BHTNLĐ, BNN)</a></li>
-              <li nz-menu-item [hidden]="!permissions[pmsConf.regime_approval.R]"><a [routerLink]="['/declarations/regime-approval']"><i nz-icon nzType="check" nzTheme="outline"></i>Xét duyệt chế độ</a></li>
+              <li nz-menu-item [hidden]="!permissions[pmsConf.increase_labor.R]"><a
+                  [routerLink]="['/declarations/increase-labor']"><i nz-icon nzType="arrow-up" nzTheme="outline"></i>Báo
+                  tăng lao động</a></li>
+              <li nz-menu-item [hidden]="!permissions[pmsConf.reduction_labor.R]"><a
+                  [routerLink]="['/declarations/reduction-labor']"><i nz-icon nzType="arrow-down"
+                    nzTheme="outline"></i>Báo giảm lao động</a></li>
+              <li nz-menu-item [hidden]="!permissions[pmsConf.adjust.R]"><a [routerLink]="['/declarations/adjust']"><i
+                    nz-icon nzType="arrow-down" nzTheme="outline"></i>Điều chỉnh chức danh, mức đóng</a></li>
+              <li nz-menu-item [hidden]="!permissions[pmsConf.arrears.R]"><a [routerLink]="['/declarations/arrears']"><i
+                    nz-icon nzType="arrow-down" nzTheme="outline"></i>Truy thu điều chỉnh điều chỉnh chức danh, mức
+                  đóng(trường hợp báo muộn)</a></li>
+              <li nz-menu-item [hidden]="!permissions[pmsConf.adjust_general.R]"><a
+                  [routerLink]="['/declarations/adjust-general']"><i nz-icon nzType="arrow-down"
+                    nzTheme="outline"></i>Truy thu (Trường hợp vi phạp quy định của pháp luật về đóng BHXH.BHYT, BHTNLĐ,
+                  BNN)</a></li>
+              <li nz-menu-item [hidden]="!permissions[pmsConf.regime_approval.R]"><a
+                  [routerLink]="['/declarations/regime-approval']"><i nz-icon nzType="check" nzTheme="outline"></i>Xét
+                  duyệt chế độ</a></li>
             </ul>
           </nz-dropdown-menu>
         </li>
         <li class="layout-menu__item">
-            <a class="layout-menu__link" nz-dropdown nzTrigger="click" [nzDropdownMenu]="contractMenu" [nzOverlayClassName]="'header-dropdown-menu'">
-              <span class="layout-menu__icon">
-                <i nz-icon nzType="file" nzTheme="fill"></i>
-              </span>
-              <span class="layout-menu__text">Quản lý hợp đồng</span>
-            </a>
-            <nz-dropdown-menu #contractMenu="nzDropdownMenu">
-              <ul nz-menu>
-                <li nz-menu-item><a [routerLink]="['/customer/list']"><i nz-icon nzType="file" nzTheme="outline"></i>Danh sách khách hàng</a></li>
-                <li nz-menu-item><a [routerLink]="['/contract/new']"><i nz-icon nzType="file" nzTheme="outline"></i>Tạo mới hợp đồng</a></li>
-                <li nz-menu-item><a [routerLink]="['/contract/list']"><i nz-icon nzType="book" nzTheme="outline"></i>Danh sách hợp đồng</a></li>
-              </ul>
-            </nz-dropdown-menu>
-          </li>
+          <a class="layout-menu__link" nz-dropdown nzTrigger="click" [nzDropdownMenu]="contractMenu"
+            [nzOverlayClassName]="'header-dropdown-menu'">
+            <span class="layout-menu__icon">
+              <i nz-icon nzType="file" nzTheme="fill"></i>
+            </span>
+            <span class="layout-menu__text">Quản lý hợp đồng</span>
+          </a>
+          <nz-dropdown-menu #contractMenu="nzDropdownMenu">
+            <ul nz-menu>
+              <li nz-menu-item><a [routerLink]="['/customer/list']"><i nz-icon nzType="file" nzTheme="outline"></i>Danh
+                  sách khách hàng</a></li>
+              <li nz-menu-item><a [routerLink]="['/contract/new']"><i nz-icon nzType="file" nzTheme="outline"></i>Tạo
+                  mới hợp đồng</a></li>
+              <li nz-menu-item><a [routerLink]="['/contract/list']"><i nz-icon nzType="book" nzTheme="outline"></i>Danh
+                  sách hợp đồng</a></li>
+            </ul>
+          </nz-dropdown-menu>
+        </li>
         <li class="layout-menu__item">
           <a href="" class="layout-menu__link">
             <span class="layout-menu__icon">

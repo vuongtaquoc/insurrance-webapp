@@ -27,3 +27,7 @@ export * from './category.service';
 export * from './file-upload.service';
 export * from './navigation.service';
 export * from './agencie.service';
+export * from './customer.service';
+export * from './staff.service';
+export * from './product.service';
+export * from './notification.service';

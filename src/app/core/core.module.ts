@@ -24,8 +24,12 @@ import {
   DeclarationFileService,
   SicknessesService,
   AgencieService,
+  CustomerService,
+  StaffService,
+  ProductService,
+  NotificationService,
   FileUploadEmitter,
-  
+
 } from './services';
 
 @NgModule({
@@ -33,7 +37,7 @@ import {
   providers: [
     AuthenticationService,
     DocumentTypeService,
-    CompanyService ,
+    CompanyService,
     DeclarationService,
     EmployeeService,
     GroupCompanyService,
@@ -54,6 +58,11 @@ import {
     DocumentListService,
     DeclarationFileService,
     SicknessesService,
+    AgencieService,
+    CustomerService,
+    StaffService,
+    ProductService,
+    NotificationService,
     FileUploadEmitter
   ],
   declarations: []
