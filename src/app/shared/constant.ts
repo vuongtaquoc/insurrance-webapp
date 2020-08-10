@@ -1004,3 +1004,11 @@ export const errorMessages = {
   2001: 'Sai Tên đăng nhập hoặc Mật khẩu. Vui lòng thử lại!',
   3018: 'Email đã tồn tại trong hệ thống'
 }
+
+
+export function formatDateVn(date){
+  var month = date .getMonth() + 1;
+  var day = date .getDate();
+  var year = date .getFullYear();
+  return day + "/" + month + "/" + year;
+}

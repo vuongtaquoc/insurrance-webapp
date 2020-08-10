@@ -282,6 +282,30 @@
 				"productPrice": "Đơn giá",
 				"status": "Trạng thái"
 			}
+		},
+		"notifications": {
+			"info": {
+				"title": "Danh sách thông báo",
+				"dateFrom": "Từ ngày",
+				"dateTo": "Đến ngày",
+				"keyWords": "Từ khóa"
+			},
+			"table": {
+				"stt": "STT",
+				"title": "Tiêu đề",
+				"files": "File đính kèm",
+				"status": "Trạng thái",
+				"createDate": "Ngày tạo",
+				"action": "Thao tác"
+			},
+			"form": {
+				"title": "Tiêu đề",
+				"files": "File đính kèm",
+				"body": "Nội dung",
+				"status": "Trạng thái",
+				"createDate": "Ngày tạo",
+				"notificationDate": "Ngày thông báo"
+			}
 		}
 	}
 }
