@@ -1,0 +1,101 @@
+<form nz-form [formGroup]="form" class="products-form">
+  <div class="page-container">
+    <div class="page-company" cardFullHeight>
+      <div class="page-company__blank"></div>
+      <div class="page-company__main">
+        <h1>I. THÊM MỚI SẢN PHẨM</h1>
+        <div nz-row nzGutter="10">
+          <div nz-col [nzSpan]="24">
+            <nz-form-item>
+              <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="6">
+                {{ 'system.products.form.productCode' | translate }}</nz-form-label>
+              <nz-form-control [nzSpan]="18" [nzErrorTip]="productCodeError">
+                <input nz-input placeholder="{{ 'system.products.form.productCode' | translate }}"
+                  formControlName="productCode" />
+                <ng-template #productCodeError let-control>
+                  <ng-container *ngIf="validateControl('fullName') && hasError('productCode', 'required')">
+                    {{ 'system.products.form.productCode' | translate }} không được để trống
+                  </ng-container>
+                </ng-template>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+
+
+        </div>
+
+        <div nz-row nzGutter="10">
+          <div nz-col [nzSpan]="24">
+            <nz-form-item>
+              <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="6">
+                {{ 'system.products.form.productName' | translate }}</nz-form-label>
+              <nz-form-control [nzSpan]="18" [nzErrorTip]="productNameError">
+                <input nz-input placeholder="{{ 'system.products.form.productName' | translate }}"
+                  formControlName="productName" />
+                <ng-template #productNameError let-control>
+                  <ng-container *ngIf="validateControl('productName') && hasError('productName', 'required')">
+                    {{ 'system.products.form.productName' | translate }} không được để trống
+                  </ng-container>
+                </ng-template>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+        </div>
+
+        <div nz-row nzGutter="10">
+          <div nz-col [nzSpan]="24">
+            <nz-form-item>
+              <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="6">
+                {{ 'system.products.form.productPrice' | translate }}</nz-form-label>
+              <nz-form-control [nzSpan]="18" [nzErrorTip]="productPriceError">
+                <input nz-input placeholder="{{ 'system.products.form.productPrice' | translate }}"
+                  formControlName="productPrice" />
+                <ng-template #productPriceError let-control>
+                  <ng-container *ngIf="validateControl('productPrice') && hasError('productPrice', 'required')">
+                    {{ 'system.products.form.productPrice' | translate }} không được để trống
+                  </ng-container>
+                </ng-template>
+              </nz-form-control>
+            </nz-form-item>
+          </div><!-- col -->
+
+        </div>
+
+        <div nz-row nzGutter="10">
+          <div nz-col [nzSpan]="24">
+            <nz-form-item>
+              <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="6">
+                {{ 'system.products.form.useTime' | translate }}</nz-form-label>
+              <nz-form-control [nzSpan]="18" [nzErrorTip]="useTimeError">
+                <input [readonly]="isEdit" nz-input placeholder="{{ 'system.products.form.useTime' | translate }}"
+                  formControlName="useTime" />
+                <ng-template #useTimeError let-control>
+                  <ng-container *ngIf="validateControl('useTime') && hasError('useTime', 'required')">
+                    {{ 'system.products.form.useTime' | translate }} không được để trống
+                  </ng-container>
+                </ng-template>
+              </nz-form-control>
+            </nz-form-item>
+          </div><!-- col -->
+        </div>
+
+        <div nz-row nzGutter="10">
+          <div nz-col [nzSpan]="6">&nbsp;</div>
+          <div nz-col [nzSpan]="12">
+            <nz-checkbox-wrapper>
+              <label nz-checkbox formControlName="active">{{ 'system.products.form.status' | translate }} </label>
+            </nz-checkbox-wrapper>
+          </div>
+        </div>
+        <div nz-row nzGutter="8">
+          <div nz-col nzMd="24" class="footer-botton">
+            <button type="submit" [disabled]="!form.valid" class="employee-form__button-save" nz-button nzType="primary"
+              (click)="save()">Lưu</button>
+            <button class="employee-form__button-back" nz-button nzType="default" [routerLink]="['/products/list']">Quay
+              lại</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

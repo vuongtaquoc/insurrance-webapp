@@ -1,0 +1,96 @@
+<div class="page-card">
+  <form nz-form [formGroup]="formSearch" (ngSubmit)="handleSearchBox()">
+    <div class="page-title ">
+      <h1>{{'system.notifications.info.title' | translate}}</h1>
+      <div class="page-declarations__footer">
+        <button nz-button nzType="default">
+          <i nz-icon nzType="search"></i>{{ 'common.btnSearch' | translate }}
+        </button>
+        <button nz-button nzType="default" [routerLink]="['/notifications/add']">
+          <i nz-icon nzType="user-add" nzTheme="outline"></i>{{ 'common.btnCreate' | translate }}
+        </button>
+      </div>
+    </div>
+    <div class="page-search">
+      <div nz-row nzGutter="30">
+        <div nz-col nzMd="8">
+          <nz-form-item>
+            <nz-form-label>{{ 'system.notifications.info.keyWords' | translate }}</nz-form-label>
+            <nz-form-control>
+              <input type="text" nz-input formControlName="keyword">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzMd="4">
+          <nz-form-item>
+            <nz-form-label>{{ 'system.notifications.info.dateFrom' | translate }}</nz-form-label>
+            <nz-form-control>
+              <input nz-input placeholder="Từ ngày" formControlName="dateFrom" mask="00/00/0000" [showMaskTyped]="true"
+                [validation]="true" [clearIfNotMatch]="true" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzMd="4">
+          <nz-form-item>
+            <nz-form-label>{{ 'system.notifications.info.dateTo' | translate }}</nz-form-label>
+            <nz-form-control>
+              <input nz-input placeholder="Đến ngày" formControlName="dateTo" mask="00/00/0000" [showMaskTyped]="true"
+                [validation]="true" [clearIfNotMatch]="true" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+      </div>
+    </div>
+  </form>
+
+  <nz-table nzBordered #ajaxTable nzShowSizeChanger [nzFrontPagination]="false" [nzData]="notifications"
+    [nzLoading]="loading" [nzPageSize]="notifications.length" [nzShowPagination]="false" [nzLoading]="loading"
+    [nzTotal]="total" class="table-editor">
+    <thead (nzSortChange)="sort($event)" nzSortFn>
+      <tr>
+        <th style="width: 50px;">{{'system.notifications.table.stt' | translate}}</th>
+        <th nzShowSort nzColumnKey="name">{{'system.notifications.table.title' | translate}}</th>
+        <th nzShowSort nzColumnKey="tax"><span>{{'system.notifications.table.files' | translate}}</span></th>
+        <th nzShowSort nzColumnKey="delegate"><span>{{'system.notifications.table.createDate' | translate}}</span>
+        </th>
+        <th style="width: 140px;" nzShowSort nzColumnKey="active">
+          <span>{{'system.notifications.table.status' | translate}}</span>
+        </th>
+        <th style="width: 120px;"><span>{{'system.notifications.table.action' | translate}}</span></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="ui-table-custom-filter">
+        <td></td>
+        <td><input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small" [(ngModel)]="filter.title"
+            (ngModelChange)="handleFilter('title')" /></td>
+        <td></td>
+        <td><input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small"
+            [(ngModel)]="filter.createDate" (ngModelChange)="handleFilter('createDate')" /></td>
+        <td><input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small" [(ngModel)]="filter.status"
+            (ngModelChange)="handleFilter('status')" /></td>
+        <td></td>
+      </tr>
+
+      <tr *ngFor="let data of ajaxTable.data;index as i">
+        <td>{{i + 1}}</td>
+        <td>{{ data.title }}</td>
+        <td>
+          <a href="">File số 1</a>
+        </td>
+        <td>{{ data.createDate | date: 'dd/MM/yyyy' }}</td>
+        <td>{{ status[(data.status ? 1 : 0)] | translate }}</td>
+        <td>
+          <ng-container>
+            <a [routerLink]="['/notifications/' + data.id + '/edit']" class="action-padding">
+              <i nz-icon nzType="edit" nzTheme="outline"></i>
+            </a>
+          </ng-container>
+          <app-button-delete [id]="data.id" (delete)="delete($event)"></app-button-delete>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+  <app-pagination [total]="total" [selected]="selectedPage" (onPageChange)="pageChange($event)"></app-pagination>
+</div>

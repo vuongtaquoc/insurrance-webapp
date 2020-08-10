@@ -61,9 +61,9 @@
       #ajaxTable
       nzShowSizeChanger
       [nzFrontPagination]="false"
-      [nzData]="agencies"
+      [nzData]="customers"
       [nzLoading]="loading"
-      [nzPageSize]="agencies.length"
+      [nzPageSize]="customers.length"
       [nzShowPagination]="false"
       [nzLoading]="loading"
       [nzTotal]="total"
@@ -71,12 +71,12 @@
     >
       <thead (nzSortChange)="sort($event)" nzSortFn>
         <tr>
-          <th style="width: 50px;">{{'agencies.table.stt' | translate}}</th>
-          <th nzShowSort  nzColumnKey="name">{{'agencies.table.company' | translate}}</th>
-          <th nzShowSort  nzColumnKey="tax"><span>{{'agencies.table.taxCode' | translate}}</span></th>
-          <th nzShowSort  nzColumnKey="delegate"><span>{{'agencies.table.personContact' | translate}}</span></th>
-          <th style="width: 140px;" nzShowSort nzColumnKey="active"><span>{{'agencies.table.active' | translate}}</span></th>
-          <th style="width: 120px;"><span>{{'agencies.table.action' | translate}}</span></th>
+          <th style="width: 50px;">{{'customers.table.stt' | translate}}</th>
+          <th nzShowSort  nzColumnKey="name">{{'customers.table.company' | translate}}</th>
+          <th nzShowSort  nzColumnKey="tax"><span>{{'customers.table.taxCode' | translate}}</span></th>
+          <th nzShowSort  nzColumnKey="delegate"><span>{{'customers.table.personContact' | translate}}</span></th>
+          <th style="width: 140px;" nzShowSort nzColumnKey="active"><span>{{'customers.table.active' | translate}}</span></th>
+          <th style="width: 120px;"><span>{{'customers.table.action' | translate}}</span></th>
         </tr>
       </thead>
       <tbody>
