@@ -1,0 +1,122 @@
+<form nz-form [formGroup]="form" class="staffs-form">
+  <div class="page-container">
+    <div class="page-company" cardFullHeight>
+      <div class="page-company__blank"></div>
+      <div class="page-company__main">
+        <h1>I. THÊM MỚI NHÂN VIÊN</h1>
+        <div nz-row nzGutter="10">
+          <div nz-col [nzSpan]="12">
+            <nz-form-item>
+              <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="6">
+                {{ 'system.staffs.form.fullName' | translate }}</nz-form-label>
+              <nz-form-control [nzSpan]="18" [nzErrorTip]="fullNameError">
+                <input nz-input placeholder="{{ 'system.staffs.form.fullName' | translate }}"
+                  formControlName="fullName" />
+                <ng-template #fullNameError let-control>
+                  <ng-container *ngIf="validateControl('fullName') && hasError('fullName', 'required')">
+                    {{ 'system.staffs.form.fullName' | translate }} không được để trống
+                  </ng-container>
+                </ng-template>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+
+          <div nz-col [nzSpan]="12">
+            <nz-form-item>
+              <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="6">
+                {{ 'system.staffs.form.tel' | translate }}</nz-form-label>
+              <nz-form-control [nzSpan]="18" [nzErrorTip]="telError">
+                <input nz-input placeholder="{{ 'system.staffs.form.tel' | translate }}" formControlName="tel" />
+                <ng-template #telError let-control>
+                  <ng-container *ngIf="validateControl('tel') && hasError('tel', 'required')">
+                    {{ 'system.staffs.form.tel' | translate }} không được để trống
+                  </ng-container>
+                  <ng-container *ngIf="validateControl('tel') && hasError('tel', 'pattern')">
+                    {{ 'system.staffs.form.tel' | translate }} số điện thoại không hợp lệ
+                  </ng-container>
+                </ng-template>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+        </div>
+
+        <div nz-row nzGutter="10">
+          <div nz-col [nzSpan]="12">
+            <nz-form-item>
+              <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="6">
+                {{ 'system.staffs.form.userName' | translate }}</nz-form-label>
+              <nz-form-control [nzSpan]="18" [nzErrorTip]="userNameError">
+                <input nz-input placeholder="{{ 'system.staffs.form.userName' | translate }}"
+                  formControlName="userName" />
+                <ng-template #userNameError let-control>
+                  <ng-container *ngIf="validateControl('userName') && hasError('userName', 'required')">
+                    {{ 'system.staffs.form.userName' | translate }} không được để trống
+                  </ng-container>
+                  <ng-container *ngIf="validateControl('userName') && hasError('userName', 'minlength')">
+                    {{ 'system.staffs.form.userName' | translate }} tối thiểu 6 ký tự
+                  </ng-container>
+                </ng-template>
+              </nz-form-control>
+            </nz-form-item>
+          </div><!-- col -->
+
+          <div nz-col [nzSpan]="12">
+            <nz-form-item>
+              <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="6">
+                {{ 'system.staffs.form.passWord' | translate }}</nz-form-label>
+              <nz-form-control [nzSpan]="18" [nzErrorTip]="nametpl">
+                <input [readonly]="isEdit" type="password" nz-input
+                  placeholder="{{ 'system.staffs.form.passWord' | translate }}" formControlName="passWord" />
+                <ng-template #nametpl let-control>
+                  <ng-container *ngIf="validateControl('passWord') && hasError('passWord', 'required')">
+                    {{ 'system.staffs.form.passWord' | translate }} không được để trống
+                  </ng-container>
+                  <ng-container *ngIf="validateControl('passWord') && hasError('passWord', 'minlength')">
+                    {{ 'system.staffs.form.passWord' | translate }} tối thiểu 6 ký tự
+                  </ng-container>
+                </ng-template>
+              </nz-form-control>
+            </nz-form-item>
+          </div><!-- col -->
+        </div>
+
+        <div nz-row nzGutter="10">
+          <div nz-col [nzSpan]="12">
+            <nz-form-item>
+              <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="6">
+                {{ 'system.staffs.form.email' | translate }}</nz-form-label>
+              <nz-form-control [nzSpan]="18" [nzErrorTip]="emailError">
+                <input nz-input placeholder="{{ 'system.staffs.form.email' | translate }}" formControlName="email" />
+                <ng-template #emailError let-control>
+                  <ng-container *ngIf="validateControl('email') && hasError('email', 'required')">
+                    {{ 'system.staffs.form.email' | translate }} không được để trống
+                  </ng-container>
+                  <ng-container *ngIf="validateControl('email') && hasError('email', 'pattern')">
+                    {{ 'system.staffs.form.email' | translate }} không đúng định dạng
+                  </ng-container>
+                </ng-template>
+              </nz-form-control>
+            </nz-form-item>
+          </div><!-- col -->
+          <div nz-col [nzSpan]="12">
+            <nz-checkbox-wrapper>
+              <label nz-checkbox formControlName="status">{{ 'system.staffs.form.status' | translate }} </label>
+            </nz-checkbox-wrapper>
+          </div>
+        </div>
+
+
+
+
+        <div nz-row nzGutter="8">
+          <div nz-col nzMd="24" class="footer-botton">
+            <button type="submit" [disabled]="!form.valid" class="employee-form__button-save" nz-button nzType="primary"
+              (click)="save()">Lưu</button>
+            <button class="employee-form__button-back" nz-button nzType="default" [routerLink]="['/staffs/list']">Quay
+              lại</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

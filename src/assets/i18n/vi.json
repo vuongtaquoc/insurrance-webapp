@@ -1,19 +1,19 @@
 {
-  "common": {
-    "languages": {
-      "vi": "Tiếng Việt",
-      "en": "Tiếng Anh"
-    },
-    "title": "mBHXH – Phần mềm bảo hiểm xã hội điện tử",
-    "search": "Tìm kiếm...",
+	"common": {
+		"languages": {
+			"vi": "Tiếng Việt",
+			"en": "Tiếng Anh"
+		},
+		"title": "mBHXH – Phần mềm bảo hiểm xã hội điện tử",
+		"search": "Tìm kiếm...",
 		"btnCreate": "Thêm mới",
 		"btnSearch": "Tìm kiếm",
-    "footer": {
-      "copyright": "Copyrights © 2020 Phần mềm Hóa đơn điện tử. All Rights"
-    },
-    "headerMenu": {
-      "setting": "Cài đặt",
-      "logout": "Đăng xuất"
+		"footer": {
+			"copyright": "Copyrights © 2020 Phần mềm Hóa đơn điện tử. All Rights"
+		},
+		"headerMenu": {
+			"setting": "Cài đặt",
+			"logout": "Đăng xuất"
 		},
 		"notActive": "Chưa kích hoạt",
 		"active": "Đã kích hoạt",
@@ -27,95 +27,96 @@
 			"employeeIsExistDeclatation": "NLĐ đã có hồ sơ, bạn không thể xóa",
 			"loginFailed": "Sai Tên đăng nhập hoặc Mật khẩu. Vui lòng thử lại!"
 		}
-  },
-  "auth": {
-    "login": {
+	},
+	"auth": {
+		"login": {
 			"pageTitle": "mBHXH – Phần mềm bảo hiểm xã hội điện tử",
 			"title": "Phần mềm bảo hiểm xã hội",
-      "form": {
-        "company": "Đơn vị",
-        "username": "Tên đăng nhập",
-        "password": "Mật khẩu",
-        "remember": "Ghi nhớ?",
-        "submit": "Đăng nhập",
-        "forgot": "Quên mật khẩu?",
-        "register": "Đăng ký"
-      }
-    }
-  },
-  "dashboard": {
-    "title": "Trang chủ"
-  },
-  "categories": {
-    "document-list": {
-      "title": "Danh mục loại hồ sơ"
-    }
-  },
-  "company": {
-    "company-list": {
-      "title": "Danh sách công ty"
-    },
-	"from" : {
-	   "subject": "Kính gửi",
-	   "city": "Tỉnh thành phố",
-	   "area": "Vùng",
-	   "insurranceManagement": "Cơ quan BHXH quản lý",
-       "name": "Tên đơn vị",
-	   "companyCode": "Mã số đơn vị",
-	   "taxCode": "Mã số thuế/ mã ngân sách",
-	   "addressRegister": "Địa chỉ đăng ký kinh doanh",
-	   "address": "Địa chỉ giao dịch hoặc liên hệ",
-	   "companyType": "Loại hình đơn vị",
-	   "mobile": "Điện thoại di động",
-	   "regency": "Chức danh",
-	   "traders": "Người giao dịch BHX",
-	   "tel": "Điện thoại cố định",
-	   "delegate": "Người đại diện",
-	   "email": "Email đơn vị",
-	   "emailContract": "Email liên hệ",
-	   "responseResults": "Nhận kết quả",
-	   "license": "QĐ thành lập/Giấy phép ĐKKD số",
-	   "issued": "Nơi cấp",
-	   "methodPay": "Phương thức đóng",
-	   "methodPayother": "Phương thức đóng khác",
-	   "noteChange": "Nội dung thay đổi, yêu cầu",
-	   "documentFile": "Hồ sơ kèm theo(nếu có)",
-	   "monthly": "Hàng tháng  ",
-	   "quarterly": "Hàng quý  ",
-	   "sixMonth": "6 tháng",
-	   "group": "Nhóm đối tượng",
-	   "submission": "Trình ký số",
-	   "district": "Quận huyện",
-	   "wards": "Phường xã",
-	   "object": "Đôi tượng cấp thẻ",
-	   "studentLevelOne": "Học sinh(Lớp 1->12)",
-	   "studentLevelTwo": "Sinh viên(Đại học, Cao đẳng, Trung học chuyên nghiệp, Nghề...)"
-	}
-  },
-  "contract": {
-    "contract-list": {
-      "title": "Danh sách hợp đồng"	,
-	  "dateFrom": "Từ ngày",
-	  "dateTo": "Đến ngày",
-	  "companyType": "Loại hợp đồng",
-	  "contractStatus": "Trạng thái",
-	  "keyWords": "Từ khóa"
-    },
-	"table": {
-      "stt": "STT",
-	  "company": "Tên đơn vị",
-	  "contractNo": "Số hợp đồng",
-	  "numberMonth": "Số tháng đăng ký",
-	  "contractType": "Loại hợp đồng",
-	  "createDate": "Ngay tạo",
-	  "action": "Thao tác"
-    },
-		"from" : {
+			"form": {
+				"company": "Đơn vị",
+				"username": "Tên đăng nhập",
+				"password": "Mật khẩu",
+				"remember": "Ghi nhớ?",
+				"submit": "Đăng nhập",
+				"forgot": "Quên mật khẩu?",
+				"register": "Đăng ký"
+			}
+		},
+		"resetPassword": {}
+	},
+	"dashboard": {
+		"title": "Trang chủ"
+	},
+	"categories": {
+		"document-list": {
+			"title": "Danh mục loại hồ sơ"
+		}
+	},
+	"company": {
+		"company-list": {
+			"title": "Danh sách công ty"
+		},
+		"from": {
 			"subject": "Kính gửi",
 			"city": "Tỉnh thành phố",
 			"area": "Vùng",
 			"insurranceManagement": "Cơ quan BHXH quản lý",
-				"name": "Tên đơn vị",
+			"name": "Tên đơn vị",
+			"companyCode": "Mã số đơn vị",
+			"taxCode": "Mã số thuế/ mã ngân sách",
+			"addressRegister": "Địa chỉ đăng ký kinh doanh",
+			"address": "Địa chỉ giao dịch hoặc liên hệ",
+			"companyType": "Loại hình đơn vị",
+			"mobile": "Điện thoại di động",
+			"regency": "Chức danh",
+			"traders": "Người giao dịch BHX",
+			"tel": "Điện thoại cố định",
+			"delegate": "Người đại diện",
+			"email": "Email đơn vị",
+			"emailContract": "Email liên hệ",
+			"responseResults": "Nhận kết quả",
+			"license": "QĐ thành lập/Giấy phép ĐKKD số",
+			"issued": "Nơi cấp",
+			"methodPay": "Phương thức đóng",
+			"methodPayother": "Phương thức đóng khác",
+			"noteChange": "Nội dung thay đổi, yêu cầu",
+			"documentFile": "Hồ sơ kèm theo(nếu có)",
+			"monthly": "Hàng tháng  ",
+			"quarterly": "Hàng quý  ",
+			"sixMonth": "6 tháng",
+			"group": "Nhóm đối tượng",
+			"submission": "Trình ký số",
+			"district": "Quận huyện",
+			"wards": "Phường xã",
+			"object": "Đôi tượng cấp thẻ",
+			"studentLevelOne": "Học sinh(Lớp 1->12)",
+			"studentLevelTwo": "Sinh viên(Đại học, Cao đẳng, Trung học chuyên nghiệp, Nghề...)"
+		}
+	},
+	"contract": {
+		"contract-list": {
+			"title": "Danh sách hợp đồng",
+			"dateFrom": "Từ ngày",
+			"dateTo": "Đến ngày",
+			"companyType": "Loại hợp đồng",
+			"contractStatus": "Trạng thái",
+			"keyWords": "Từ khóa"
+		},
+		"table": {
+			"stt": "STT",
+			"company": "Tên đơn vị",
+			"contractNo": "Số hợp đồng",
+			"numberMonth": "Số tháng đăng ký",
+			"contractType": "Loại hợp đồng",
+			"createDate": "Ngay tạo",
+			"action": "Thao tác"
+		},
+		"from": {
+			"subject": "Kính gửi",
+			"city": "Tỉnh thành phố",
+			"area": "Vùng",
+			"insurranceManagement": "Cơ quan BHXH quản lý",
+			"name": "Tên đơn vị",
 			"companyCode": "Mã số đơn vị",
 			"taxCode": "Mã số thuế/ mã ngân sách",
 			"addressRegister": "Địa chỉ đăng ký kinh doanh",
@@ -149,21 +150,21 @@
 	},
 	"agencies": {
 		"agencies-list": {
-		"title": "Danh sách đại lý"	,
-		  "dateFrom": "Từ ngày",
-		  "dateTo": "Đến ngày",
-		  "keyWords": "Từ khóa"
+			"title": "Danh sách đại lý",
+			"dateFrom": "Từ ngày",
+			"dateTo": "Đến ngày",
+			"keyWords": "Từ khóa"
 		},
 		"table": {
-		  "stt": "STT",
-		  "company": "Tên đại lý",
-		  "taxCode": "Mã số thuế",
-		  "personContact": "Người đại diện",
-		  "tel": "Số điện thoại",
-		  "active": "Trạng thái",
-		  "action": "Thao tác"
+			"stt": "STT",
+			"company": "Tên đại lý",
+			"taxCode": "Mã số thuế",
+			"personContact": "Người đại diện",
+			"tel": "Số điện thoại",
+			"active": "Trạng thái",
+			"action": "Thao tác"
 		},
-		"from" : {
+		"from": {
 			"tax": "Mã số thuế / Số CMTND",
 			"agenciesName": "Tên đại lý",
 			"address": "Địa chỉ",
@@ -171,26 +172,26 @@
 			"tel": "Điện thoại",
 			"email": "Địa chỉ email",
 			"Website": "Website",
-			"status": "Trạng thái"		 
+			"status": "Trạng thái"
 		}
 	},
 	"customers": {
 		"customers-list": {
-		"title": "Danh sách khách hàng"	,
-		  "dateFrom": "Từ ngày",
-		  "dateTo": "Đến ngày",
-		  "keyWords": "Từ khóa"
+			"title": "Danh sách khách hàng",
+			"dateFrom": "Từ ngày",
+			"dateTo": "Đến ngày",
+			"keyWords": "Từ khóa"
 		},
 		"table": {
-		  "stt": "STT",
-		  "company": "Tên đại lý",
-		  "taxCode": "Mã số thuế",
-		  "personContact": "Người đại diện",
-		  "tel": "Số điện thoại",
-		  "active": "Trạng thái",
-		  "action": "Thao tác"
+			"stt": "STT",
+			"company": "Tên đại lý",
+			"taxCode": "Mã số thuế",
+			"personContact": "Người đại diện",
+			"tel": "Số điện thoại",
+			"active": "Trạng thái",
+			"action": "Thao tác"
 		},
-		"from" : {
+		"from": {
 			"tax": "Mã số thuế / Số CMTND",
 			"agenciesName": "Tên đại lý",
 			"address": "Địa chỉ",
@@ -198,13 +199,113 @@
 			"tel": "Điện thoại",
 			"email": "Địa chỉ email",
 			"Website": "Website",
-			"status": "Trạng thái"		 
+			"status": "Trạng thái"
 		}
 	},
-	"documentTable" : {
-			"list" : {
-				"stt": "STT",
-				"documentName": "Loại giấy tờ, biểu mẫu"
+	"documentTable": {
+		"list": {
+			"stt": "STT",
+			"documentName": "Loại giấy tờ, biểu mẫu"
+		}
+	},
+	"system": {
+		"staffs": {
+			"info": {
+				"title": "Danh sách nhân viên",
+				"dateFrom": "Từ ngày",
+				"dateTo": "Đến ngày",
+				"keyWords": "Từ khóa"
+			},
+			"table": {
+				"stt": "STT", 
+				"fullName": "Tên nhân viên",
+				"userName": "Tên đăng nhập",
+				"tel": "Số điện thoại",
+				"email": "Email",
+				"status": "Trạng thái",
+				"action": "Thao tác"
+			},
+			"form": {
+				"fullName": "Tên nhân viên",
+				"userName": "Tên đăng nhập",
+				"passWord": "Mật khẩu",
+				"tel": "Số điện thoại",
+				"email": "Email",
+				"status": "Trạng thái"
 			}
+		},
+		"notificationEmails": {
+			"info": {
+				"title": "Danh sách Email thông báo",
+				"dateFrom": "Từ ngày",
+				"dateTo": "Đến ngày",
+				"keyWords": "Từ khóa"
+			},
+			"table": {
+				"stt": "STT",
+				"title": "Tiêu đề Email",
+				"to": "Email nhận",
+				"status": "Trạng thái",
+				"createDate": "Ngày tạo",
+				"action": "Thao tác"
+			},
+			"form": {
+				"title": "Tiêu đề Email",
+				"to": "Email nhận",
+				"toNote": "(Cách nhau bởi dấu phẩy)",
+				"body": "Nội dung",
+				"status": "Trạng thái",
+				"createDate": "Ngày tạo",
+				"sendDate": "Ngày gửi"
+			}
+		},
+		"products": {
+			"info": {
+				"title": "Danh sách sản phẩm",
+				"dateFrom": "Từ ngày",
+				"dateTo": "Đến ngày",
+				"keyWords": "Từ khóa"
+			}, 
+			"table": {
+				"stt": "STT",
+				"productName": "Tên hàng hóa, dịch vụ",
+				"unitCode": "Mã HH-DV",
+				"useTime": "Thời gian sử dụng",
+				"productPrice": "Đơn giá",
+				"status": "Trạng thái",
+				"action": "Thao tác"
+			},
+			"form": {
+				"productName": "Tên hàng hóa, dịch vụ",
+				"productCode": "Mã HH-DV",
+				"useTime": "Thời gian sử dụng",
+				"productPrice": "Đơn giá",
+				"status": "Trạng thái"
+			}
+		},
+		"notifications": {
+			"info": {
+				"title": "Danh sách thông báo",
+				"dateFrom": "Từ ngày",
+				"dateTo": "Đến ngày",
+				"keyWords": "Từ khóa"
+			},
+			"table": {
+				"stt": "STT",
+				"title": "Tiêu đề",
+				"files": "File đính kèm",
+				"status": "Trạng thái",
+				"createDate": "Ngày tạo",
+				"action": "Thao tác"
+			},
+			"form": {
+				"title": "Tiêu đề",
+				"files": "File đính kèm",
+				"body": "Nội dung",
+				"status": "Trạng thái",
+				"createDate": "Ngày tạo",
+				"notificationDate": "Ngày thông báo"
+			}
+		}
 	}
 }

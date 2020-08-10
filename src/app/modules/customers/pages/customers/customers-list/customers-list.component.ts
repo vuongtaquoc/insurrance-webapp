@@ -1,17 +1,17 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AgencieService } from '@app/core/services';
 import { NzTableQueryParams } from 'ng-zorro-antd/table';
 import { PAGE_SIZE, STATUS, ACTION } from '@app/shared/constant';
 import { getBirthDay } from '@app/shared/utils/custom-validation';
 import { TranslateService } from '@ngx-translate/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { CustomerService } from '@app/core/services/customer.service';
 
 @Component({
   selector: 'app-customers-list',
   templateUrl: './customers-list.component.html',
   styleUrls: ['./customers-list.component.less']
-})
+}) 
 export class CustomersListComponent implements OnInit, OnDestroy {
   total: number;
   skip: number;
@@ -24,10 +24,10 @@ export class CustomersListComponent implements OnInit, OnDestroy {
     value: ''
   };
 
-  agencies: any[] = [];
+  customers: any[] = [];
   constructor(
     private formBuilder: FormBuilder,
-    private agencieService: AgencieService,
+    private customerService: CustomerService,
     private messageService: NzMessageService,
     private translateService: TranslateService
   ) {
@@ -39,11 +39,11 @@ export class CustomersListComponent implements OnInit, OnDestroy {
       dateTo: ['']
     });
 
-    this.getAgenCies();
+    this.getCustomers();
   }
 
-  private getAgenCies(skip = 0, take = PAGE_SIZE) {
-    this.agencieService.getAgencies({
+  private getCustomers(skip = 0, take = PAGE_SIZE) {
+    this.customerService.getCustomers({
       name: this.keyword,
       dateFrom: this.dateFrom,
       dateTo: this.dateTo,
@@ -53,21 +53,21 @@ export class CustomersListComponent implements OnInit, OnDestroy {
       orderby: (this.shortColumn.key || '')
 
     }).subscribe(res => {
-      this.agencies = res.data;
+      this.customers = res.data;
       this.total = res.total;
       this.skip = skip;
 
       if (res.data.length === 0 && this.selectedPage > 1) {
         this.skip -= PAGE_SIZE;
         this.selectedPage -= 1;
-        this.getAgenCies(this.skip);
+        this.getCustomers(this.skip);
       }
     });
   }
 
   sort(event) {
     this.shortColumn = event;
-    this.getAgenCies();
+    this.getCustomers();
   }
 
   get keyword() {
@@ -94,8 +94,8 @@ export class CustomersListComponent implements OnInit, OnDestroy {
   }
 
   delete(id) {
-    this.agencieService.delete(id).subscribe(() => {
-      this.getAgenCies(this.skip);
+    this.customerService.delete(id).subscribe(() => {
+      this.getCustomers(this.skip);
     },
     (err) => {
       this.translateService.get(err.message).subscribe(message => {
@@ -105,7 +105,7 @@ export class CustomersListComponent implements OnInit, OnDestroy {
   }
 
   handleSearchBox() {
-    this.getAgenCies();
+    this.getCustomers();
   }
 
   ngOnDestroy() {
