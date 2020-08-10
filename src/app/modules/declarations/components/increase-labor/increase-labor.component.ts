@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subject, forkJoin } from 'rxjs';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import findLastIndex from 'lodash/findLastIndex';
@@ -7,44 +7,37 @@ import findIndex from 'lodash/findIndex';
 import * as jexcel from 'jstable-editor/dist/jexcel.js';
 import * as moment from 'moment';
 import * as _ from 'lodash';
-import { validationColumnsPlanCode } from '@app/shared/constant-valid';
+import { REGEX } from '@app/shared/constant';
+import { PLANCODECOUNTBHXH, PLANCODECOUNTBHYT } from '@app/shared/constant-valid';
+import { DocumentFormComponent } from '@app/shared/components';
 
 import { Declaration, DocumentList } from '@app/core/models';
 import {
   CityService,
   DistrictService,
   DeclarationService,
-  HospitalService,
-  NationalityService,
-  PeopleService,
   WardsService,
-  SalaryAreaService,
-  PlanService,
   DocumentListService,
   AuthenticationService,
-  DepartmentService,
   EmployeeService,
   CategoryService,
   RelationshipService,
   VillageService,
-  FileUploadEmitter
 } from '@app/core/services';
-import { DATE_FORMAT, DECLARATIONS, DOCUMENTBYPLANCODE } from '@app/shared/constant';
+import { DATE_FORMAT, DECLARATIONS, DOCUMENTBYPLANCODE, ACTION } from '@app/shared/constant';
 import { eventEmitter } from '@app/shared/utils/event-emitter';
 
-import { TABLE_NESTED_HEADERS, TABLE_HEADER_COLUMNS } from '@app/modules/declarations/data/increase-labor';
+import { TableEditorErrorsComponent } from '@app/shared/components';
 import { TABLE_FAMILIES_NESTED_HEADERS, TABLE_FAMILIES_HEADER_COLUMNS } from '@app/modules/declarations/data/families-editor.data';
 import { TABLE_DOCUMENT_NESTED_HEADERS, TABLE_DOCUMENT_HEADER_COLUMNS } from '@app/modules/declarations/data/document-list-editor.data';
-import { TableEditorErrorsComponent } from '@app/shared/components';
 
-const TYPES = {
-  'I_1': 'Tăng lao động',
-  'I_2': 'Tăng BHYT',
-  'I_3': 'Tăng BHTN',
-  'II_1': 'Giảm BHYT',
-  'II_2': 'Tăng BHTNLĐ, BNN'
+import { Router } from '@angular/router';
+
+const TAB_NAMES = {
+  1: 'increase',
+  2: 'reduction',
+  3: 'adjustment'
 };
-const MAX_UPLOAD_SIZE = 20 * 1024 * 1024; // ~ 20MB
 
 @Component({
   selector: 'app-declaration-increase-labor',
@@ -54,130 +47,91 @@ const MAX_UPLOAD_SIZE = 20 * 1024 * 1024; // ~ 20MB
 export class IncreaseLaborComponent implements OnInit, OnDestroy {
   @Input() declarationId: string;
   @Output() onSubmit: EventEmitter<any> = new EventEmitter();
+  @Output() onAddEmployee: EventEmitter<any> = new EventEmitter();
 
   form: FormGroup;
+  files: any;
   currentCredentials: any;
   documentForm: FormGroup;
-  declarations: Declaration[] = [];
-  tableNestedHeaders: any[] = TABLE_NESTED_HEADERS;
-  tableHeaderColumns: any[] = TABLE_HEADER_COLUMNS;
-  tableNestedHeadersFamilies: any[] = TABLE_FAMILIES_NESTED_HEADERS;
-  tableHeaderColumnsFamilies: any[] = TABLE_FAMILIES_HEADER_COLUMNS;
-  tableNestedHeadersDocuments: any[] = TABLE_DOCUMENT_NESTED_HEADERS;
-  tableHeaderColumnsDocuments: any[] = TABLE_DOCUMENT_HEADER_COLUMNS;
-  employeeSelected: any[] = [];
-  eventsSubject: Subject<any> = new Subject<any>();
-  familiesSubject: Subject<string> = new Subject<string>();
-  documentsSubject: Subject<string> = new Subject<string>();
-  validateSubject: Subject<any> = new Subject<any>();
   documentList: DocumentList[] = [];
-  families: any[] = [];
-  informations: any[] = [];
-  declaration: any;
-  declarationGeneral: any;
   isHiddenSidebar = false;
   declarationCode: string = '600';
-  employeeSubject: Subject<any> = new Subject<any>();
-  handlers: any[] = [];
-  handler;
+  declarationName: string;
+  selectedTabIndex: number = 1;
+  eventValidData = 'adjust-general:validate';
+  handler: any;
   isTableValid = false;
+  status = 0;
   tableErrors = {};
+  formError: any[] = [];
   panel: any = {
     general: { active: false },
     attachment: { active: false }
   };
-  totalNumberInsurance: any;
-  totalCardInsurance: any;
-  isBlinking = false;
-  submitType: string;
-  files: any[] = [];
+  declarationGeneral: any;
+  allInitialize: any = {};
+  declarations: any = {
+    origin: {},
+    form: {},
+    formOrigin: {},
+    formGenelral: {},
+    tables: {}
+  };
+
+  families: any[] = [];
+  informations: any[] = [];
+  tableNestedHeadersFamilies: any[] = TABLE_FAMILIES_NESTED_HEADERS;
+  tableHeaderColumnsFamilies: any[] = TABLE_FAMILIES_HEADER_COLUMNS;
+  tableNestedHeadersDocuments: any[] = TABLE_DOCUMENT_NESTED_HEADERS;
+  tableHeaderColumnsDocuments: any[] = TABLE_DOCUMENT_HEADER_COLUMNS;
+  tableSubject: Subject<any> = new Subject<any>();
+  tabSubject: Subject<any> = new Subject<any>();
+  handlers: any = [];
 
   constructor(
     private formBuilder: FormBuilder,
-    private cityService: CityService,
-    private districtService: DistrictService,
+    private router: Router,
     private declarationService: DeclarationService,
-    private hospitalService: HospitalService,
-    private nationalityService: NationalityService,
-    private peopleService: PeopleService,
-    private wardService: WardsService,
-    private salaryAreaService: SalaryAreaService,
-    private planService: PlanService,
-    private departmentService: DepartmentService,
-    private documentListService: DocumentListService,
-    private employeeService: EmployeeService,
     private authenticationService: AuthenticationService,
-    private categoryService: CategoryService,
+    private documentListService: DocumentListService,
     private modalService: NzModalService,
+    private employeeService: EmployeeService,
+    private cityService: CityService,
+    private categoryService: CategoryService,
     private relationshipService: RelationshipService,
-    private villageService: VillageService,
-    private fileUploadEmitter: FileUploadEmitter
+    private districtService:  DistrictService,
+    private wardService: WardsService,
+    private villageService: VillageService
   ) {
-    this.getRecipientsDistrictsByCityCode = this.getRecipientsDistrictsByCityCode.bind(this);
-    this.getRecipientsWardsByDistrictCode = this.getRecipientsWardsByDistrictCode.bind(this);
-    this.getRegisterDistrictsByCityCode = this.getRegisterDistrictsByCityCode.bind(this);
-    this.getRegisterWardsByDistrictCode = this.getRegisterWardsByDistrictCode.bind(this);
-    this.getHospitalsByCityCode = this.getHospitalsByCityCode.bind(this);
-    this.getPlanByParent = this.getPlanByParent.bind(this);
-    this.getRegisterDistrictsByCityCode = this.getRegisterDistrictsByCityCode.bind(this);
+
     this.getRelationshipDistrictsByCityCode = this.getRelationshipDistrictsByCityCode.bind(this);
     this.getRelationshipWardsByDistrictCode = this.getRelationshipWardsByDistrictCode.bind(this);
     this.getRecipientsVillageCodeByWarssCode = this.getRecipientsVillageCodeByWarssCode.bind(this);
+
     this.getDistrictsByCityCode = this.getDistrictsByCityCode.bind(this);
     this.getWardsByDistrictCode = this.getWardsByDistrictCode.bind(this);
+
     this.getRelationShips = this.getRelationShips.bind(this);
   }
 
   ngOnInit() {
-    const date = new Date();
-    this.currentCredentials = this.authenticationService.currentCredentials;
-    this.form = this.formBuilder.group({
-      number: [ '1' ],
-      month: [ date.getMonth() + 1 ],
-      year: [ date.getFullYear() ]
-    });
-
     this.documentForm = this.formBuilder.group({
-      userAction: [this.currentCredentials.companyInfo.delegate],
-      mobile:[this.currentCredentials.companyInfo.mobile],
-      usedocumentDT01:[true],
+      submitter: ['', Validators.required],
+      mobile: ['',  [Validators.required, Validators.pattern(REGEX.ONLY_NUMBER)]],
     });
 
-    this.documentListService.getDocumentList(this.declarationCode).subscribe(documentList => {
-      this.documentList = documentList;
-    });
-
+    this.declarationName = this.getDeclaration(this.declarationCode).value;
+    //Init data families table editor
     forkJoin([
       this.cityService.getCities(),
-      this.nationalityService.getNationalities(),
-      this.peopleService.getPeoples(),
-      this.salaryAreaService.getSalaryAreas(),
-      this.planService.getPlanShowCode(this.declarationCode),
-      this.departmentService.getDepartments(),
       this.categoryService.getCategories('relationshipDocumentType'),
       this.relationshipService.getRelationships()
-    ]).subscribe(([ cities, nationalities, peoples, salaryAreas, plans, departments, relationshipDocumentTypies, relationShips ]) => {
-      this.updateSourceToColumn(this.tableHeaderColumns, 'peopleCode', peoples);
-      this.updateSourceToColumn(this.tableHeaderColumns, 'nationalityCode', nationalities);
-      this.updateSourceToColumn(this.tableHeaderColumns, 'registerCityCode', cities);
-      this.updateSourceToColumn(this.tableHeaderColumns, 'recipientsCityCode', cities);
-      this.updateSourceToColumn(this.tableHeaderColumns, 'salaryAreaCode', salaryAreas);
-      this.updateSourceToColumn(this.tableHeaderColumns, 'planCode', plans);
-      this.updateSourceToColumn(this.tableHeaderColumns, 'departmentId', departments);
-
-      //families table
+    ]).subscribe(([cities, relationshipDocumentTypies, relationShips ]) => {
       this.updateSourceToColumn(this.tableHeaderColumnsFamilies, 'relationshipCityCode', cities);
       this.updateSourceToColumn(this.tableHeaderColumnsFamilies, 'cityCode', cities);
       this.updateSourceToColumn(this.tableHeaderColumnsFamilies, 'relationshipDocumentType', relationshipDocumentTypies);
       this.updateSourceToColumn(this.tableHeaderColumnsFamilies, 'relationshipCode', relationShips);
 
-      // get filter columns
-      this.updateFilterToColumn(this.tableHeaderColumns, 'registerDistrictCode', this.getRegisterDistrictsByCityCode);
-      this.updateFilterToColumn(this.tableHeaderColumns, 'registerWardsCode', this.getRegisterWardsByDistrictCode);
-      this.updateFilterToColumn(this.tableHeaderColumns, 'recipientsDistrictCode', this.getRecipientsDistrictsByCityCode);
-      this.updateFilterToColumn(this.tableHeaderColumns, 'recipientsWardsCode', this.getRecipientsWardsByDistrictCode);
-      // this.updateFilterToColumn(this.tableHeaderColumns, 'hospitalFirstRegistCode', this.getHospitalsByCityCode);
-      this.updateFilterToColumn(this.tableHeaderColumns, 'planCode', this.getPlanByParent);
       //families filter columns
 
       this.updateFilterToColumn(this.tableHeaderColumnsFamilies, 'relationshipDistrictCode', this.getRelationshipDistrictsByCityCode);
@@ -188,12 +142,28 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
       this.updateFilterToColumn(this.tableHeaderColumnsFamilies, 'wardsCode', this.getWardsByDistrictCode);
       this.updateFilterToColumn(this.tableHeaderColumnsFamilies, 'relationshipCode', this.getRelationShips);
 
+    //End Init data families table editor
+      this.currentCredentials = this.authenticationService.currentCredentials;
+
       if (this.declarationId) {
-        this.declarationService.getDeclarationsByDocumentId(this.declarationId, this.tableHeaderColumns).subscribe(declarations => {
-          this.updateOrders(declarations.documentDetail);
-          this.declarations = declarations.documentDetail;
+        this.declarationService.getDeclarationsByDocumentIdByGroup(this.declarationId).subscribe(declarations => {
+          this.documentForm.patchValue({
+            submitter: declarations.submitter,
+            mobile: declarations.mobile
+          });
+
+          this.declarations.origin = declarations.documentDetail;
+          this.declarations.files = declarations.files;
           this.informations = this.fomatInfomation(declarations.informations);
-          this.files = declarations.files;
+          this.families = this.fomatFamilies(declarations.families);
+          this.status = declarations.status;
+          this.declarations.formOrigin = {
+            batch: declarations.batch,
+            openAddress: declarations.openAddress,
+            branch: declarations.branch,
+            typeDocumentActtach: declarations.typeDocumentActtach,
+            reason: declarations.reason
+          };
 
           this.declarationGeneral = {
             totalNumberInsurance: declarations.totalNumberInsurance,
@@ -201,665 +171,376 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
           };
 
         });
-
-        this.isTableValid = true;
       } else {
-        this.declarationService.getDeclarationInitials('600', this.tableHeaderColumns).subscribe(declarations => {
-          this.declarations = declarations;
+        this.declarationService.getDeclarationInitialsByGroup(this.declarationCode).subscribe(data => {
+          this.declarations.origin = data;
         });
 
+        this.documentForm.patchValue({
+          submitter: this.currentCredentials.companyInfo.delegate,
+          mobile: this.currentCredentials.companyInfo.mobile
+        });  
+        
         this.declarationGeneral = {
-          totalNumberInsurance: '',
-          totalCardInsurance: ''
+          totalNumberInsurance: 0,
+          totalCardInsurance: 0
         };
       }
-    });
-    this.handlers.push(eventEmitter.on('labor-table-editor:validate', ({ name, isValid, errors }) => {
-      if (name === 'increaseLabor' || name === 'families' || name === 'informations') {
-        this.tableErrors[name] = errors;
-      }
-    }));
 
-    this.handlers.push(eventEmitter.on('labor-family-editor:validate', ({ name, isValid }) => {
-      if (name === 'family') {
-        this.isTableValid = isValid;
-      }
-    }));
-
-    this.handler = this.fileUploadEmitter.on('file:uploaded', (file) => {
-      this.eventsSubject.next({
-        type: this.submitType
+      this.documentListService.getDocumentList(this.declarationCode).subscribe(documentList => {
+        this.documentList = documentList;
       });
-      eventEmitter.emit('saveData:loading', false);
+
+      this.handler = eventEmitter.on(this.eventValidData, ({ name, isValid, leaf, initialize, errors }) => {
+        this.allInitialize[name] = leaf.length === initialize.length;
+        this.isTableValid = Object.values(this.allInitialize).indexOf(false) === -1 ? false : true;
+        this.tableErrors[name + this.declarationCode] = errors;
+      });
+
+      this.tabSubject.next({
+        type: 'change',
+        selected: TAB_NAMES[1]
+      });
+
+      this.handlers.push(eventEmitter.on('tree-declaration:deleteUser', (data) => {
+          this.handlersDeleteUseOnTree(data.employee);
+      }));
+
+      this.handlers.push(eventEmitter.on('tree-declaration:updateUser', (data) => {
+        this.updateEmployeeInFamily(data.employee);
+        this.updateEmployeeInInfomation(data.employee);     
+      }));
+
     });
   }
 
   ngOnDestroy() {
-    eventEmitter.destroy(this.handlers);
     this.handler();
   }
 
-  handleAddEmployee(type) {
-    if (!this.employeeSelected.length) {
-      return this.modalService.warning({
-        nzTitle: 'Chưa có nhân viên nào được chọn',
-      });
-    }
+  private updateEmployeeInFamily(user) {
 
-    eventEmitter.emit('unsaved-changed');
-
-    const declarations = [ ...this.declarations ];
-    const parentIndex = findIndex(declarations, d => d.key === type);
-    const childLastIndex = findLastIndex(declarations, d => d.isLeaf && d.parentKey === type);
-    let isExist = false;
-
-    if (childLastIndex > -1) {
-      const employeeExists = declarations.filter(d => d.parentKey === type);
-
-      this.employeeSelected.forEach(employee => {
-        const accepted = employeeExists.findIndex(e => (e.origin && (e.origin.employeeId || e.origin.id)) === employee.id) === -1;
-
-        // replace
-        employee.gender = employee.gender === '1';
-        employee.workAddress = this.currentCredentials.companyInfo.address;
-        employee.planCode = declarations[parentIndex].planDefault;
-        //
-        if (accepted) {
-          if (declarations[childLastIndex].isInitialize) {
-            // remove initialize data
-            declarations.splice(childLastIndex, 1);
-
-            declarations.splice(childLastIndex, 0, this.declarationService.getLeaf(declarations[parentIndex], employee, this.tableHeaderColumns));
-          } else {
-            declarations.splice(childLastIndex + 1, 0, this.declarationService.getLeaf(declarations[parentIndex], employee, this.tableHeaderColumns));
-          }
-        } else {
-          if (!isExist) {
-            isExist = true;
-          }
-        }
-      });
-
-      if (isExist) {
-        this.modalService.warning({
-          nzTitle: `Nhân viên đã có trong danh sách ${TYPES[type]}`,
+    const families = [ ...this.families ];
+    families.forEach(d => {
+      if(d.origin &&  d.origin.isMaster &&  d.origin.employeeId === user.id) {
+        Object.keys(d).forEach(key => {
+          if(user[key] !== undefined) {
+             d[key] = user[key];
+          }           
         });
-      }
-      // update orders
-      this.updateOrders(declarations);
 
-      this.declarations = this.declarationService.updateFormula(declarations, this.tableHeaderColumns);
-    } else {
-      this.employeeSelected.forEach(employee => {
-        declarations.splice(parentIndex + 1, 0, this.declarationService.getLeaf(declarations[parentIndex], employee, this.tableHeaderColumns));
-      });
-
-      this.declarations = this.declarationService.updateFormula(declarations, this.tableHeaderColumns);
-    }
-
-    this.employeeSubject.next({
-      type: 'clean'
-    });
-    this.employeeSelected.length = 0;
-    this.eventsSubject.next({ type: 'validate' });
-    this.familiesSubject.next('validate');
-    this.documentsSubject.next('validate');
-  }
-
-  handleSort({ direction, source, dist }) {
-    const declarations = [ ...this.declarations ];
-    const current = declarations[source];
-
-    // remove element
-    declarations.splice(source, 1);
-
-    // add element to new position
-    declarations.splice(dist, 0, current);
-
-    // update orders
-    this.updateOrders(declarations);
-
-    this.declarations = this.declarationService.updateFormula(declarations, this.tableHeaderColumns);
-
-    this.employeeSubject.next({
-      type: 'clean'
-    });
-    this.eventsSubject.next({ type: 'validate' });
-    this.familiesSubject.next('validate');
-    this.documentsSubject.next('validate');
-    eventEmitter.emit('unsaved-changed');
-  }
-
-  handleUserAdded({ tableName, y, employee }) {
-    if (tableName !== 'increaseLabor') return;
-
-    const declarations = [ ...this.declarations ];
-    const row = declarations[y];
-
-    row.origin = {
-      ...row.origin,
-      ...employee
-    };
-    row.isInitialize = false;
-
-    this.tableHeaderColumns.forEach((column, index) => {
-      if (employee[column.key] !== null && typeof employee[column.key] !== 'undefined') {
-        row.data[index] = employee[column.key];
+        d.employeeName = user.fullName;
+        d.data = this.tableHeaderColumnsFamilies.map(column => {
+          if (!column.key || !d[column.key]) return '';
+          return d[column.key];
+        });
+        d.data.origin = d.origin;
       }
     });
-    // update orders
-    this.updateOrders(declarations);
 
-    this.declarations = this.declarationService.updateFormula(declarations, this.tableHeaderColumns);
-
-    this.employeeSubject.next({
-      type: 'clean'
-    });
-    this.eventsSubject.next({ type: 'validate' });
-    this.familiesSubject.next('validate');
-    this.documentsSubject.next('validate');
-    eventEmitter.emit('unsaved-changed');
+    this.families = families;
   }
 
-  handleUserUpdated(user) {
-    const declarations = [ ...this.declarations ];
-    const declarationUsers = declarations.filter(d => {
-      return d.isLeaf && d.origin && (d.origin.employeeId || d.origin.id) === user.id;
+
+  private updateEmployeeInInfomation(user) {
+
+    const informations = [ ...this.informations ];
+    informations.forEach(d => {
+      if(d.origin && d.origin.employeeId === user.id) {
+        Object.keys(d).forEach(key => {
+          if(user[key] !== undefined) {
+             d[key] = user[key];
+          }           
+        });
+
+        d.data = this.tableHeaderColumnsDocuments.map(column => {
+          if (!column.key || !d[column.key]) return '';
+          return d[column.key];
+        });
+        d.data.origin = d.origin;
+      }
     });
-    declarationUsers.forEach(declaration => {
-      declaration.origin = {
-        ...declaration.origin,
-        ...user
-      };
 
-      this.tableHeaderColumns.forEach((column, index) => {
-        if (user[column.key] !== null && typeof user[column.key] !== 'undefined') {
-          declaration.data[index] = user[column.key];
-        }
-      });
-    });
-
-    // update orders
-    this.updateOrders(declarations);
-
-    this.declarations = this.declarationService.updateFormula(declarations, this.tableHeaderColumns);
-
-    this.employeeSubject.next({
-      type: 'clean'
-    });
-    this.eventsSubject.next({ type: 'validate' });
-    this.familiesSubject.next('validate');
-    this.documentsSubject.next('validate');
-    eventEmitter.emit('unsaved-changed');
+    this.informations = informations;
   }
 
-  handleUserDeleted(user) {
-    this.eventsSubject.next({
-      type: 'deleteUser',
-      user,
-      deletedIndexes: []
-    });
-    eventEmitter.emit('unsaved-changed');
-  }
+  handleChangeTable(data, tableName) {
+    this.declarations.tables[tableName] = this.declarations[tableName] || {};
+    this.declarations.tables[data.tableName]= data.data;
 
-  handleSelectEmployees(employees) {
-    this.employeeSelected = employees;
-  }
-
-  handleFileSelected(files) {
-    const totalSize = files.reduce(
-      (total, file) => {
-        return total + (file.size || 0);
-      },
-      0
-    );
-
-    if (totalSize >= MAX_UPLOAD_SIZE) {
-      return this.modalService.error({
-        nzTitle: 'Lỗi quá dung lượng',
-        nzContent: 'Tổng dung lượng Tài liệu kèm theo phải nhỏ hơn 20MB'
-      });
+    if(tableName === 'increaselabor') {
+      this.sumCreateBHXH(data.data);
+    }
+    
+    if (data.action === ACTION.EDIT) {
+      this.setDateToInformationList(this.declarations.tables);
     }
 
-    this.files = files.map(file => ({
-      documentName: file.documentName,
-      fileName: file.fileName,
-      fullPathFile: file.fullPathFile,
-      data: file.data,
-      size: file.size,
-      id: file.id,
-      declarationId: this.declarationId,
-      declarationCode: this.declarationCode,
-      order: file.no
-    }));
-    eventEmitter.emit('unsaved-changed');
+    if (data.action === ACTION.DELETE) {
+      this.deleteEmployeeInInfomation(data.data, data.dataChange, data.columns);
+    }
+
+    this.notificeEventValidData('documentList');
+
+    if(tableName !== 'increaselabor') {
+      return '';
+    }
+
+    if (data.action === ACTION.DELETE) {
+      this.deleteEmployeeInFamilies(data.data, data.dataChange);
+    }
+
+    if (data.action === ACTION.ADD) {
+      this.setDataToFamilyEditor(data.data);
+    }
+
+    if (data.action === ACTION.MUNTILEADD) {
+      this.setDataToFamilyEditor(data.data);
+    }
+
+    this.notificeEventValidData('family');
   }
 
-  emitEventToChild(type) {
-    if (type === 'back') {
-      this.onSubmit.emit({
-        type
-      });
+  handleFormValuesChanged(data) {
+    this.declarations.form = data;
+  }
 
+  handleSelectTab({ index }) {
+    this.selectedTabIndex = index;
+    eventEmitter.emit('adjust-general:tab:change', index);
+    this.tabSubject.next({
+      type: 'change',
+      selected: TAB_NAMES[index]
+    });
+  }
+
+  handleHiddenSidebar(isHidden) {
+    this.isHiddenSidebar = isHidden;
+  }
+
+  saveAndView() {
+    if(!this.isTableValid) {
+      this.modalService.warning({
+        nzTitle: 'Bạn chưa kê khai'
+      });
       return;
     }
 
+    eventEmitter.emit('tableEditor:validFrom', {
+      tableName: 'documentList'
+    });
+
+    if(this.formError.length > 0) {
+      this.tableErrors['generalFomError'] = this.formError;
+    } else {
+      this.tableErrors['generalFomError'] = [];
+    }
+
+    const errorDocumentForm = this.validDocumentForm();
+    if (errorDocumentForm.length > 0) {
+      this.tableErrors['documentFomError'] = errorDocumentForm;
+    } else {
+      this.tableErrors['documentFomError'] = [];
+    }
+    console.log(this.tableErrors);
     let count = Object.keys(this.tableErrors).reduce(
       (total, key) => {
         const data = this.tableErrors[key];
-
         return total + data.length;
       },
       0
     );
-
+    
     if (count > 0) {
       return this.modalService.error({
         nzTitle: 'Lỗi dữ liệu. Vui lòng sửa!',
         nzContent: TableEditorErrorsComponent,
-        nzComponentParams: {
-          errors: Object.keys(this.tableErrors).reduce(
-            (combine, key) => {
-              if (this.tableErrors[key].length) {
-                return { ...combine, [key]: this.tableErrors[key] };
-              }
-
-              return { ...combine };
-            },
-            {}
-          )
+        nzComponentParams: {         
+          errors: this.getColumnErrror()
         }
       });
     }
 
-    this.eventsSubject.next({type});
-    // this.submitType = type;
-
-    // eventEmitter.emit('saveData:loading', true);
-
-    // this.fileUploadEmitter.emit('file:upload');
+    if (this.declarationId) {
+      this.update('saveAndView');
+    } else {
+      this.create('saveAndView');
+    }
   }
 
-  handleSubmit(event) {
-    const { number, month, year } = this.form.value;
+  rollback() {
+    if(!this.isTableValid) { 
+      this.router.navigate(['/declarations/increase-labor']);
+      return;
+    }
+    
+    this.modalService.confirm({
+      nzTitle: 'Bạn có muốn lưu lại thông tin thay đổi',
+      nzOkText: 'Có',
+      nzCancelText: 'Không',
+      nzOnOk: () => {
+        if (this.declarationId) {
+          this.update('save');
+        } else {
+          this.create('save');
+        }
+      },
+      nzOnCancel: () => {
+        this.router.navigate(['/declarations/increase-labor']);
+      }
+    });      
+  }
 
-    eventEmitter.emit('unsaved-changed', true);
+  private sumCreateBHXH(data) {
+    let totalCardInsurance = 0;
+    let totalNumberInsurance = 0;
+    data.forEach(d => {
+        d.declarations.forEach(e => {
+          const isSumCardInsurance = PLANCODECOUNTBHXH.findIndex(p => p === e.planCode) > -1;
+          const isSumNumberInsurance = PLANCODECOUNTBHYT.findIndex(p => p === e.planCode) > -1;
+          if(isSumCardInsurance) {
+            totalCardInsurance = totalCardInsurance + 1;
+          }
 
-    this.onSubmit.emit({
-      type: event.type,
+          if(isSumNumberInsurance) {
+            totalNumberInsurance = totalNumberInsurance + 1;
+          }
+
+        });
+    });
+    const declarationGeneralTemp = {...this.declarationGeneral};
+    declarationGeneralTemp.totalCardInsurance = totalCardInsurance;
+    declarationGeneralTemp.totalNumberInsurance = totalNumberInsurance;
+
+    this.declarationGeneral = declarationGeneralTemp;
+  }
+
+  save() {
+
+    if(!this.isTableValid) {
+      this.modalService.warning({
+        nzTitle: 'Bạn chưa kê khai'
+      });
+      return;
+    }
+
+    if (this.declarationId) {
+      this.update('save');
+    } else {
+      this.create('save');
+    }
+
+  }
+
+  private getColumnErrror() {
+    let tableErrorMessage = Object.keys(this.tableErrors).reduce(
+      (combine, key) => {
+        if (this.tableErrors[key].length) {
+          return { ...combine, [key]: this.tableErrors[key] };
+        }
+
+        return { ...combine };
+      },
+      {}
+    );
+    return tableErrorMessage;
+  }
+
+  private create(type: any) {
+    this.declarationService.create({
+      type: type,
       declarationCode: this.declarationCode,
       declarationName: this.getDeclaration(this.declarationCode).value,
-      documentNo: number,
-      createDate: `01/0${ month }/${ year }`,
       documentStatus: 0,
-      totalNumberInsurance: this.totalNumberInsurance,
-      totalCardInsurance: this.totalCardInsurance,
-      documentDetail: event.data,
+      status: type === 'saveAndView' ? 1: 0,
+      submitter: this.submitter,
+      mobile: this.mobile,
+      ...this.declarations.form,
+      ...this.declarations.formGenelral,
+      documentDetail: this.tablesToApi(this.declarations.tables),
       informations: this.reformatInformations(),
-      families: this.reformatFamilies(),
-      files: this.files
+      families: this.reformatFamilies()
+    }).subscribe(data => {
+      if (type === 'saveAndView') {
+        this.viewDocument(data);
+      } else{
+        this.router.navigate(['/declarations/increase-labor']);
+      }
     });
   }
 
-  handleChangeDataFamilies({ instance, cell, c, r, records, columns }) {
-    if (c !== null && c !== undefined) {
-      c = Number(c);
-      const column = this.tableHeaderColumnsFamilies[c];
-      if (column.key === 'isMaster') {
-        const employeeIsMaster = instance.jexcel.getValueFromCoords(c, r);
-
-        if(employeeIsMaster === true) {
-
-          this.employeeService.getEmployeeById(records[r].origin.employeeId).subscribe(emp => {
-            this.updateNextColumns(instance, r, emp.fullName, [ c + 1]);
-            this.updateNextColumns(instance, r, emp.relationshipMobile, [ c + 2]);
-            this.updateNextColumns(instance, r, emp.relationshipDocumentType, [ c + 3]);
-            this.updateNextColumns(instance, r, emp.relationshipBookNo, [ c + 4]);
-            this.updateNextColumns(instance, r, emp.recipientsCityCode, [ c + 5]);
-            this.updateNextColumns(instance, r, emp.recipientsDistrictCode, [ c + 6]);
-            this.updateNextColumns(instance, r, emp.recipientsWardsCode, [ c + 7]);
-            this.updateNextColumns(instance, r, emp.fullName, [ c + 10]);
-            this.updateNextColumns(instance, r, emp.isurranceCode, [ c + 11]);
-            this.updateNextColumns(instance, r, emp.typeBirthday, [ c + 12]);
-            this.updateNextColumns(instance, r, emp.birthday, [ c + 13]);
-            this.updateNextColumns(instance, r, emp.gender, [ c + 14]);
-            this.updateNextColumns(instance, r, emp.relationshipCityCode, [ c + 16]);
-            this.updateNextColumns(instance, r, emp.relationshipDistrictCode, [ c + 17]);
-            this.updateNextColumns(instance, r, emp.relationshipWardsCode, [ c + 18]);
-            this.updateNextColumns(instance, r, '00', [21]);
-            this.updateNextColumns(instance, r, emp.identityCar, [c + 20]);
-            this.updateSelectedValueDropDow(columns, instance, r);
-          });
-
-        }else {
-          this.updateNextColumns(instance, r, '', [ c + 1 , c + 2, c + 3, c + 4, c + 5, c + 6, c + 7, c + 8,
-          c + 10, c + 11, c + 11,c + 12,c + 13,c + 14,c + 15,c + 16,c + 17]);
-
-          const value = instance.jexcel.getValueFromCoords(1, r);
-          const numberColumn = this.tableHeaderColumnsFamilies.length;
-          this.updateNextColumns(instance, r,value, [(numberColumn -1)]);
-        }
-
+  private update(type: any) {
+     
+    this.declarationService.update(this.declarationId, {
+      type: type,
+      declarationCode: this.declarationCode,
+      declarationName: this.declarationName,
+      documentStatus: 0,
+      status: this.getStatus(type),
+      submitter: this.submitter,
+      mobile: this.mobile,
+      ...this.declarations.form,
+      ...this.declarations.formGenelral,
+      documentDetail: this.tablesToApi(this.declarations.tables),
+      informations: this.reformatInformations(),
+      families: this.reformatFamilies()
+    }).subscribe(data => {
+      if (type === 'saveAndView') {
+        this.viewDocument(data);
+      } else {
+        this.router.navigate(['/declarations/increase-labor']);
       }
-
-      if (column.key === 'sameAddress') {
-        const isSameAddress = instance.jexcel.getValueFromCoords(c, r);
-
-        if(isSameAddress === true)
-        {
-          this.updateNextColumns(instance, r, instance.jexcel.getValueFromCoords(7, r), [ c + 1]);
-          this.updateNextColumns(instance, r, instance.jexcel.getValueFromCoords(8, r), [ c + 2]);
-          this.updateNextColumns(instance, r, instance.jexcel.getValueFromCoords(9, r), [ c + 3]);
-          this.updateSelectedValueDropDow(columns, instance, r);
-
-        } else {
-          this.updateNextColumns(instance, r, '', [ c + 1]);
-          this.updateNextColumns(instance, r, '', [ c + 2]);
-          this.updateNextColumns(instance, r, '', [ c + 3]);
-        }
-      }
-
-      if (column.willBeValid) {
-        const value = instance.jexcel.getValueFromCoords(c, r);
-        const numberColumn = this.tableHeaderColumnsFamilies.length;
-        this.updateNextColumns(instance, r,value, [(numberColumn -1)]);
-      }
-    }
-    //update families
-    this.families.forEach((family: any, index) => {
-      const record = records[index];
-      //update data on Jexcel
-      Object.keys(record).forEach(index => {
-        family.data[index] = record[index];
-      });
-      //update data object source
-      columns.map((column, index) => {
-          family[column.key] = record[index];
-      });
-
     });
-
-    this.eventsSubject.next({ type: 'validate' });
-    this.familiesSubject.next('validate');
-    this.documentsSubject.next('validate');
-    eventEmitter.emit('unsaved-changed');
   }
-
-  private updateSelectedValueDropDow(columns, instance, r) {
-
-      columns.forEach((column, colIndex) => {
-        if (column.defaultLoad) {
-          instance.jexcel.updateDropdownValue(colIndex, r);
-        }
-      });
-  }
-
-  handleChangeTable({ instance, cell, c, r, records }) {
-    eventEmitter.emit('unsaved-changed');
-    if (c !== null && c !== undefined) {
-      c = Number(c);
-      const column = this.tableHeaderColumns[c];
-
-      if (column.key === 'hospitalFirstRegistCode') {
-        // const name = cell.getAttribute('data-name');
-        // const hospitalFirstRegistName = cell.innerText.split(' - ').pop();
-        const hospitalFirstCode = cell.innerText.split(' - ').shift();
-
-        this.hospitalService.getById(hospitalFirstCode).subscribe(data => {
-          const name = `${ data.id } - ${ data.name }`;
-          this.updateNextColumns(instance, r, name, [ c + 1 ]);
-        });
-
-        // this.updateNextColumns(instance, r, hospitalFirstRegistName, [ c + 1 ]);
-      } else if (column.key === 'registerCityCode') {
-        this.updateNextColumns(instance, r, '', [ c + 1, c + 2 ]);
-      } else if (column.key === 'recipientsCityCode') {
-        this.updateNextColumns(instance, r, '', [ c + 1, c + 2, c + 5, c + 6 ]);
-      }
-
-    }
-    // update declarations
-    this.declarations.forEach((declaration: any, index) => {
-      const record = records[index];
-      Object.keys(record).forEach(index => {
-        declaration.data[index] = record[index];
-      });
-      // declaration.data.options.isInitialize = false;
-      // declaration.isInitialize = false;
-    });
-
-    const rowChange: any = this.declarations[r];
-
-    rowChange.data.options.isInitialize = false;
-    rowChange.isInitialize = false;
-
-    const employeesInDeclaration = this.getEmployeeInDeclaration(records);
-    this.setDataToFamilies(employeesInDeclaration);
-    this.setDateToInformationList(employeesInDeclaration);
-    this.eventsSubject.next({ type: 'validate' });
-    this.familiesSubject.next('validate');
-    this.documentsSubject.next('validate');
-  }
-
-  handleAddRow({ rowNumber, options, origin, insertBefore }) {
-    const declarations = [ ...this.declarations ];
-    let row: any = {};
-
-    const beforeRow: any = declarations[insertBefore ? rowNumber - 1 : rowNumber];
-    const afterRow: any = declarations[insertBefore ? rowNumber : rowNumber + 1];
-
-    const data: any = [];
-
-    row.data = data;
-    row.isInitialize = true;
-    row.isLeaf = true;
-    row.origin = origin;
-    row.options = options;
-
-    if (beforeRow.isLeaf && !afterRow.isLeaf) {
-      row.parent = beforeRow.parent;
-      row.parentKey = beforeRow.parentKey;
-      row.planType = beforeRow.planType;
-    } else if (!beforeRow.isLeaf && afterRow.isLeaf) {
-      row.parent = afterRow.parent;
-      row.parentKey = afterRow.parentKey;
-      row.planType = afterRow.planType;
-    } else if (beforeRow.isLeaf && afterRow.isLeaf) {
-      row.parent = beforeRow.parent;
-      row.parentKey = beforeRow.parentKey;
-      row.planType = beforeRow.planType;
+ 
+  private getStatus(type) {
+    if(this.status > 0) {
+      return this.status;
     }
 
-    // if (beforeRow.isInitialize) {
-    //   beforeRow.isInitialize = false;
-    // }
-
-    // if (afterRow.isInitialize) {
-    //   afterRow.isInitialize = false;
-    // }
-
-    declarations.splice(insertBefore ? rowNumber : rowNumber + 1, 0, row);
-    this.updateOrders(declarations);
-
-    this.declarations = this.declarationService.updateFormula(declarations, this.tableHeaderColumns);
-    this.eventsSubject.next({ type: 'validate' });
-    this.familiesSubject.next('validate');
-    this.documentsSubject.next('validate');
-    eventEmitter.emit('unsaved-changed');
+    return (type === 'saveAndView' ) ? 1: 0;
   }
 
-  handleDeleteData({ rowNumber, numOfRows, records }) {
-    const declarations = [ ...this.declarations ];
-    let declarationsDeleted = [];
-
-    const beforeRow = records[rowNumber - 1];
-    const afterRow = records[rowNumber];
-
-    if (!((beforeRow.options && beforeRow.options.isLeaf) || (afterRow.options && afterRow.options.isLeaf))) {
-      const row: any = declarations[rowNumber];
-      const origin = { ...row.data.origin };
-      const options = { ...row.data.options };
-      origin.employeeId = 0;
-      origin.id = 0;
-      row.data = [];
-      row.origin = origin;
-      row.options = options;
-      row.isInitialize = true;
-
-      if (!(beforeRow.options && beforeRow.options.isLeaf) && !(afterRow.options && afterRow.options.isLeaf)) {
-        const nextRow: any = declarations[rowNumber + 1];
-
-        if (nextRow.isLeaf) {
-          declarationsDeleted.push(declarations.splice(rowNumber + 1, numOfRows - 1));
-        }
-      }
-    } else {
-      declarationsDeleted = declarations.splice(rowNumber, numOfRows);
-    }
-
-    this.updateOrders(declarations);
-
-    this.declarations = this.declarationService.updateFormula(declarations, this.tableHeaderColumns);
-    //this.deleteEmployeeInFamilies(declarationsDeleted);
-    this.eventsSubject.next({ type: 'validate' });
-    this.familiesSubject.next('validate');
-    this.documentsSubject.next('validate');
-    eventEmitter.emit('unsaved-changed');
-  }
-
-  handleAddMember({ rowNumber, numOfRows, beforeRowIndex, afterRowIndex, options, origin, insertBefore }) {
-    const families = [ ...this.families ];
-    let row: any = {};
-
-    const beforeRow: any = families[insertBefore ? beforeRowIndex - 1 : beforeRowIndex];
-    const afterRow: any = families[afterRowIndex];
-    const data: any = [];
-    row.data = data;
-    row.isMaster = false;
-
-    row.origin = {
-      employeeId: beforeRow.origin.employeeId,
-      isLeaf: true,
-      isMaster: false,
-    };
-    row.employeeId = beforeRow.employeeId;
-    families.splice(insertBefore ? rowNumber : rowNumber + 1, 0, row);
-
-    this.families = families;
-    this.eventsSubject.next({ type: 'validate' });
-    this.familiesSubject.next('validate');
-    this.documentsSubject.next('validate');
-    eventEmitter.emit('unsaved-changed');
-  }
-
-  handleFocus() {
-    if (!this.employeeSelected.length) return;
-
-    this.isBlinking = true;
-
-    setTimeout(() => this.isBlinking = false, 5000);
-  }
-
-  handleDeleteMember({ rowNumber, numOfRows, records }) {
-    const families = [ ...this.families ];
-
-    const familyDeleted = families.splice(rowNumber, numOfRows);
-    this.families = families;
-    this.eventsSubject.next({type: 'validate'});
-    this.familiesSubject.next('validate');
-    this.documentsSubject.next('validate');
-    eventEmitter.emit('unsaved-changed');
-  }
-
-
-  deleteEmployeeInFamilies(declarationsDeleted: any) {
-    const employeeIdDeleted = [];
-    declarationsDeleted.forEach(itemDeleted => {
-      const item = this.declarations.find(d => (d.origin && d.origin.employeeId) === (itemDeleted.origin && itemDeleted.origin.employeeId));
-
-      if(item){
-        return;
-      }
-      employeeIdDeleted.push(itemDeleted.origin.employeeId);
-    });
-    let families = [...this.families];
-    employeeIdDeleted.forEach(id => {
-      families = families.filter(fa => fa.employeeId !== id);
-    });
-
-    if(families.length === 0) {
-      families.push({
-        isMaster: false,
-      });
-    }
-    this.families = families;
-    eventEmitter.emit('unsaved-changed');
-  }
-
-  collapseChange(isActive, type) {
-    this.panel[type].active = isActive;
-  }
-
-  handleFormValuesChanged({ data, first }) {
-    this.totalNumberInsurance = data.totalNumberInsurance;
-    this.totalCardInsurance = data.totalNumberInsurance;
-
-    if (!first) {
-      eventEmitter.emit('unsaved-changed');
-    }
-  }
-
-  handleChangeForm() {
-    eventEmitter.emit('unsaved-changed');
-  }
-
-  checkInsurranceCode() {
-    const declarations = [...this.declarations];
-    const INSURRANCE_CODE_INDEX = 4;
-    const INSURRANCE_STATUS_INDEX = 5;
-    // const leafs = declarations.filter(d => !!d.isLeaf);
-    // const insurranceCodes = leafs.map(l => l.data[INSURRANCE_CODE_INDEX]);
-    const errors = {};
-
-    declarations.forEach((declaration, rowIndex) => {
-      const code = declaration.data[INSURRANCE_CODE_INDEX];
-
-      if (code && declaration.isLeaf) {
-        declaration.data[INSURRANCE_STATUS_INDEX] = `Không tìm thấy Mã số ${ declaration.data[INSURRANCE_CODE_INDEX] }`;
-
-        errors[rowIndex] = {
-          col: INSURRANCE_CODE_INDEX,
-          value: code,
-          valid: false
-        };
+  viewDocument(declarationInfo: any) {
+    const modal = this.modalService.create({
+      nzWidth: 680,
+      nzWrapClassName: 'document-modal',
+      nzTitle: 'Thông tin biểu mẫu, tờ khai đã xuất',
+      nzContent: DocumentFormComponent,
+      nzOnOk: (data) => console.log('Click ok', data),
+      nzComponentParams: {
+        declarationInfo
       }
     });
 
-    this.declarations = declarations;
-
-    setTimeout(() => {
-      this.validateSubject.next({
-        field: 'isurranceCode',
-        errors
-      });
-    }, 20);
+    modal.afterClose.subscribe(result => {
+    });
   }
 
-  private updateOrders(declarations) {
-    const order: { index: 0, key: string } = { index: 0, key: '' };
-
-    declarations.forEach((declaration, index) => {
-      if (declaration.hasLeaf) {
-        order.index = 0;
-        order.key = declaration.key;
-      }
-
-      if (declaration.isLeaf && declaration.parentKey === order.key) {
-        order.index += 1;
-
-        declaration.data[0] = order.index;
-      }
+  getDeclaration(declarationCode: string) {
+    const declarations = _.find(DECLARATIONS, {
+        key: declarationCode,
     });
+
+    return declarations;
+  }
+
+  get submitter() {
+    return this.documentForm.get('submitter').value;
+  }
+
+  get mobile() {
+    return this.documentForm.get('mobile').value;
+  }
+
+  private tablesToApi(tables) {
+    const data = [];
+    Object.keys(tables).forEach(key => {
+      const table = tables[key];
+      data.push(...table);
+    });
+
+    return data;
   }
 
   private updateSourceToColumn(tableHeaderColumns, key, sources) {
@@ -877,73 +558,295 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     }
   }
 
-  private getRegisterDistrictsByCityCode(instance, cell, c, r, source) {
-    const value = instance.jexcel.getValueFromCoords(c - 1, r);
+// families tab
+handleChangeDataFamilies({ instance, cell, c, r, records, columns }) {
+  if (c !== null && c !== undefined) {
+    c = Number(c);
+    const column = this.tableHeaderColumnsFamilies[c];
+    if (column.key === 'isMaster') {
+      const employeeIsMaster = instance.jexcel.getValueFromCoords(c, r);
 
-    if (!value) {
-      return [];
+      if(employeeIsMaster === true) {
+
+        this.employeeService.getEmployeeById(records[r].origin.employeeId).subscribe(emp => {
+          this.updateNextColumns(instance, r, emp.fullName, [ c + 1]);
+          this.updateNextColumns(instance, r, emp.relationshipMobile, [ c + 2]);
+          this.updateNextColumns(instance, r, emp.relationshipDocumentType, [ c + 3]);
+          this.updateNextColumns(instance, r, emp.relationshipBookNo, [ c + 4]);
+          this.updateNextColumns(instance, r, emp.recipientsCityCode, [ c + 5]);
+          this.updateNextColumns(instance, r, emp.recipientsDistrictCode, [ c + 6]);
+          this.updateNextColumns(instance, r, emp.recipientsWardsCode, [ c + 7]);
+          this.updateNextColumns(instance, r, emp.fullName, [ c + 10]);
+          this.updateNextColumns(instance, r, emp.isurranceCode, [ c + 11]);
+          this.updateNextColumns(instance, r, emp.typeBirthday, [ c + 12]);
+          this.updateNextColumns(instance, r, emp.birthday, [ c + 13]);
+          this.updateNextColumns(instance, r, emp.gender, [ c + 14]);
+          this.updateNextColumns(instance, r, emp.relationshipCityCode, [ c + 16]);
+          this.updateNextColumns(instance, r, emp.relationshipDistrictCode, [ c + 17]);
+          this.updateNextColumns(instance, r, emp.relationshipWardsCode, [ c + 18]);
+          this.updateNextColumns(instance, r, '00', [21]);
+          this.updateNextColumns(instance, r, emp.identityCar, [c + 20]);
+          this.updateSelectedValueDropDown(columns, instance, r);
+        });
+
+      }else {
+        this.updateNextColumns(instance, r, '', [ c + 1 , c + 2, c + 3, c + 4, c + 5, c + 6, c + 7, c + 8,
+        c + 10, c + 11, c + 11,c + 12,c + 13,c + 14,c + 15,c + 16,c + 17]);
+
+        const value = instance.jexcel.getValueFromCoords(1, r);
+        const numberColumn = this.tableHeaderColumnsFamilies.length;
+        this.updateNextColumns(instance, r,value, [(numberColumn -1)]);
+      }
+
     }
 
-    return this.districtService.getDistrict(value).toPromise().then(districts => {
-      this.updateSourceToColumn(this.tableHeaderColumns,'registerDistrictCode', districts);
+    if (column.key === 'sameAddress') {
+      const isSameAddress = instance.jexcel.getValueFromCoords(c, r);
 
-      return districts;
+      if(isSameAddress === true)
+      {
+        this.updateNextColumns(instance, r, instance.jexcel.getValueFromCoords(7, r), [ c + 1]);
+        this.updateNextColumns(instance, r, instance.jexcel.getValueFromCoords(8, r), [ c + 2]);
+        this.updateNextColumns(instance, r, instance.jexcel.getValueFromCoords(9, r), [ c + 3]);
+        this.updateSelectedValueDropDown(columns, instance, r);
+
+      } else {
+        this.updateNextColumns(instance, r, '', [ c + 1]);
+        this.updateNextColumns(instance, r, '', [ c + 2]);
+        this.updateNextColumns(instance, r, '', [ c + 3]);
+      }
+    }
+
+    if (column.willBeValid) {
+      const value = instance.jexcel.getValueFromCoords(c, r);
+      const numberColumn = this.tableHeaderColumnsFamilies.length;
+      this.updateNextColumns(instance, r,value, [(numberColumn -1)]);
+    }
+  }
+
+  //update families
+  this.families.forEach((family: any, index) => {
+    const record = records[index];
+    //update data on Jexcel
+    Object.keys(record).forEach(index => {
+      family.data[index] = record[index];
+    });
+    //update data object source
+    columns.map((column, index) => {
+        family[column.key] = record[index];
+    });
+
+  });
+
+  this.notificeEventValidData('family');
+
+}
+
+private updateSelectedValueDropDown(columns, instance, r) {
+
+  columns.forEach((column, colIndex) => {
+    if (column.defaultLoad) {
+      instance.jexcel.updateDropdownValue(colIndex, r);
+    }
+  });
+}
+
+private updateNextColumns(instance, r, value, nextColumns = []) {
+  nextColumns.forEach(columnIndex => {
+    const columnName = jexcel.getColumnNameFromId([columnIndex, r]);
+    instance.jexcel.setValue(columnName, value);
+  });
+}
+
+handleDeleteMember({ rowNumber, numOfRows, records }) {
+  const families = [ ...this.families ];
+
+  const familyDeleted = families.splice(rowNumber, numOfRows);
+  this.families = families;
+}
+
+handleAddMember({ rowNumber, numOfRows, beforeRowIndex, afterRowIndex, options, origin, insertBefore }) {
+  const families = [ ...this.families ];
+  let row: any = {};
+
+  const beforeRow: any = families[insertBefore ? beforeRowIndex - 1 : beforeRowIndex];
+  const afterRow: any = families[afterRowIndex];
+  const data: any = [];
+  row.data = data;
+  row.isMaster = false;
+
+  row.origin = {
+    employeeId: beforeRow.origin.employeeId,
+    isLeaf: true,
+    isMaster: false,
+  };
+
+  row.employeeId = beforeRow.employeeId;
+  families.splice(insertBefore ? rowNumber : rowNumber + 1, 0, row);
+
+  this.families = families;
+  this.notificeEventValidData('family');
+}
+
+
+private getEmployeeInDeclarations(records: any) {
+  const employeesInDeclaration = [];
+  records.forEach(record => {
+    const declarations = record.declarations;
+    declarations.forEach(declaration => {
+      if(declaration && declaration.employeeId) {
+
+        declaration.origin = {
+          employeeId: declaration.employeeId,
+          isLeaf:true,
+          isMaster: false,
+          declarationCode: record.code,
+          category: record.category,
+          planCode: declaration.planCode
+        };
+
+        declaration.conditionValid = declaration.relationshipFullName;
+        employeesInDeclaration.push(declaration);
+      }
+    });
+
+  });
+  return employeesInDeclaration;
+}
+
+handleValidForm(data) {
+  this.formError = data.errorMessage;
+}
+
+private setDataToFamilyEditor(records: any)
+  {
+    const currentFamilis = [...this.families]
+    const families = [];
+    const employees = [];
+    const employeesId = [];
+    const employeesInDeclaration = this.getEmployeeInDeclarations(records);
+    employeesInDeclaration.forEach(emp => {
+
+      const firstEmployee = currentFamilis.find(f => f.employeeId === emp.employeeId);
+      if(!firstEmployee) {
+        employees.push(emp);
+      } else {
+
+        const family = families.find(p => p.employeeId === emp.employeeId);
+        if(family) {
+          return;
+        }
+
+        const currentFamilies = currentFamilis.filter(fm => fm.employeeId === emp.employeeId);
+        if(currentFamilies){
+          currentFamilies.forEach(oldEmp => {
+            families.push(oldEmp);
+          });
+        }
+
+      }
+
+    });
+
+    forkJoin(
+      employees.map(emp => {
+        return this.employeeService.getEmployeeById(emp.employeeId)
+      })
+    ).subscribe(emps => {
+      const familiesNotExists = [];
+      emps.forEach(ep => {
+        const master = this.getMaster(ep.families);
+        master.isMaster = ep.isMaster;
+        master.employeeName = ep.fullName;
+        master.employeeId = ep.employeeId;
+        master.relationshipMobile = ep.relationshipMobile;
+        master.relationshipFullName = ep.relationshipFullName;
+        master.relationshipBookNo = ep.relationshipBookNo;
+        master.relationshipDocumentType =  ep.relationshipDocumentType;
+        master.relationshipCityCode = ep.relationshipCityCode;
+        master.relationshipDistrictCode = ep.relationshipDistrictCode;
+        master.relationshipWardsCode = ep.relationshipWardsCode;
+        master.relationshipVillageCode = ep.relationshipVillageCode;
+        master.relationshipCode = '00';
+        master.conditionValid = ep.relationshipFullName ? ep.relationshipFullName : ep.fullName;
+        master.origin = {
+          employeeId: ep.employeeId,
+          isLeaf: true,
+          isMaster: true,
+        };
+        familiesNotExists.push(master);
+        if(ep.families.length > 1) {
+          ep.families.forEach(fa => {
+            if(fa.relationshipCode === '00') {
+              return;
+            }
+
+            fa.isMaster = false;
+            fa.employeeId = ep.employeeId;
+            fa.conditionValid = ep.relationshipFullName;
+            fa.origin = {
+              employeeId: ep.employeeId,
+              isLeaf: true,
+              isMaster: false,
+            }
+            familiesNotExists.push(fa);
+          });
+        }else {
+          // nếu chưa có thông tin của gia đình thì add dòng trống
+          familiesNotExists.push(this.fakeEmployeeInFamilies(ep));
+          familiesNotExists.push(this.fakeEmployeeInFamilies(ep));
+        }
+
+      });
+
+      familiesNotExists.forEach(d => {
+        families.push(d);
+      });
+
+      families.forEach(p => {
+        p.data = this.tableHeaderColumnsFamilies.map(column => {
+          if (!column.key || !p[column.key]) return '';
+          return p[column.key];
+        });
+        p.data.origin = p.origin;
+      });
+
+      this.families = families;
     });
   }
 
-  private getRecipientsWardsByDistrictCode(instance, cell, c, r, source) {
-    const value = instance.jexcel.getValueFromCoords(c - 1, r);
+  fakeEmployeeInFamilies(employee) {
 
-    if (!value) {
-      return [];
+    return {
+      isMaster:false,
+      conditionValid: null,
+      employeeId: employee.employeeId,
+      origin: {
+        employeeId: employee.employeeId,
+        isLeaf: true,
+        isMaster: false,
+      }
     }
 
-    return this.wardService.getWards(value).toPromise().then(districts => {
-      this.updateSourceToColumn(this.tableHeaderColumns,'recipientsWardsCode', districts);
-
-      return districts;
-    });
   }
 
-  private getRelationshipDistrictsByCityCode(instance, cell, c, r, source) {
-    const value = instance.jexcel.getValueFromCoords(c - 1, r);
-
-    if (!value) {
-      return [];
-    }
-
-    return this.districtService.getDistrict(value).toPromise().then(districts => {
-      this.updateSourceToColumn(this.tableHeaderColumnsFamilies,'relationshipDistrictCode', districts);
-
-      return districts;
+  getMaster(families: any) {
+    const master = _.find(families, {
+      relationshipCode: '00',
     });
+    if(master) {
+      return master;
+    }
+    return {};
   }
 
-  private getRegisterWardsByDistrictCode(instance, cell, c, r, source) {
-    const value = instance.jexcel.getValueFromCoords(c - 1, r);
-
-    if (!value) {
-      return [];
+  private getRelationShips(instance, cell, c, r, source) {
+    const row = instance.jexcel.getRowFromCoords(r);
+    if (row.origin && row.origin.isMaster) {
+      return source;
     }
 
-    return this.wardService.getWards(value).toPromise().then(wards => {
-      this.updateSourceToColumn(this.tableHeaderColumns,'registerWardsCode', wards);
-      return wards;
-    });
-  }
-
-  private getRecipientsDistrictsByCityCode(instance, cell, c, r, source) {
-    const value = instance.jexcel.getValueFromCoords(c - 1, r);
-
-    if (!value) {
-      return [];
-    }
-
-    return this.districtService.getDistrict(value).toPromise().then(districts => {
-      this.updateSourceToColumn(this.tableHeaderColumns, 'recipientsDistrictCode', districts);
-
-      return districts;
-    });
+    return source.filter(s => s.id !== '00');;
   }
 
   private getDistrictsByCityCode(instance, cell, c, r, source) {
@@ -1000,139 +903,214 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     });
   }
 
-  private getHospitalsByCityCode(instance, cell, c, r, source) {
-    const value = instance.jexcel.getValueFromCoords(c - 5, r);
+  private getRelationshipDistrictsByCityCode(instance, cell, c, r, source) {
+    const value = instance.jexcel.getValueFromCoords(c - 1, r);
 
     if (!value) {
       return [];
     }
 
-    return this.hospitalService.getHospitals(value).toPromise();
-  }
+    return this.districtService.getDistrict(value).toPromise().then(districts => {
+      this.updateSourceToColumn(this.tableHeaderColumnsFamilies,'relationshipDistrictCode', districts);
 
-  private getPlanByParent(instance, cell, c, r, source) {
-    // const row = instance.jexcel.getRowFromCoords(r);
-    // return source.filter(s => s.type === row.options.planType);
-    const row = instance.jexcel.getRowFromCoords(r);
-    const planTypes = (row.options.planType || '').split(',');
-    return source.filter(s => planTypes.indexOf(s.id) > -1);
-  }
-
-  private getRelationShips(instance, cell, c, r, source) {
-    const row = instance.jexcel.getRowFromCoords(r);
-    if (row.origin && row.origin.isMaster) {
-      return source;
-    }
-
-    return source.filter(s => s.id !== '00');;
-  }
-
-  private updateNextColumns(instance, r, value, nextColumns = []) {
-    nextColumns.forEach(columnIndex => {
-      const columnName = jexcel.getColumnNameFromId([columnIndex, r]);
-      instance.jexcel.setValue(columnName, value);
+      return districts;
     });
   }
 
-  get usedocumentDT01() {
-    return this.documentForm.get('usedocumentDT01').value;
-  }
+  deleteEmployeeInInfomation(declarations, declarationsDeleted, columns) {
+    let informations = [...this.informations];
+   
+    declarationsDeleted.forEach(d => {
+        const employeeInfo = this.getDeclarationInData(d.data, columns);
+        informations = informations.filter(info => {
+            return info.employeeId + info.planCode !== employeeInfo.employeeId + employeeInfo.planCode;
+          });
+    });
 
-  handleChangeInfomation({ records, columns }) {
-
-    //update families
-    this.informations.forEach((d: any, index) => {
-      const record = records[index];
-      //update data on Jexcel
-      Object.keys(record).forEach(index => {
-        d.data[index] = record[index];
+    if(informations.length === 0) {
+      informations.push({
+        data: {
+          origin: {},
+        }
       });
-      //update data object source
-      columns.map((column, index) => {
-        d[column.key] = record[index];
+    }
+    this.informations = informations;
+  }
+
+  getDeclarationInData(record, columns) {
+    let declaration: any = {};
+    columns.map((column, index) => {
+      declaration[column.key] = record[index];
+    });
+    return declaration;
+  }
+
+  deleteEmployeeInFamilies(declarations, declarationsDeleted) {
+    const employees = this.getEmployeeInDeclarations(declarations);
+    const employeeIdDeleted = [];
+    declarationsDeleted.forEach(itemDeleted => {
+      const item = employees.find(d => (d.origin && d.origin.employeeId) === (itemDeleted.origin && itemDeleted.origin.employeeId));
+      if(item){
+        return;
+      }
+      employeeIdDeleted.push(itemDeleted.origin.employeeId);
+    });
+
+    let families = [...this.families];
+    employeeIdDeleted.forEach(id => {
+      families = families.filter(fa => fa.employeeId !== id);
+    });
+
+    if(families.length === 0) {
+      families.push({
+        isMaster: false,
       });
+    }
+    this.families = families;
+  }
 
+  handlersDeleteUseOnTree(user) {
+
+    let families = [...this.families];
+    families = families.filter(fa => fa.employeeId !== user.employeeId);
+    // Kiểm tra nếu danh sách nhân viên trông thì add  1 dòng
+    if(families.length === 0) {
+      families.push({
+        isMaster: false,
+      });
+    }
+
+    this.families = families;
+  }
+
+  private notificeEventValidData(tableName) {
+
+    this.tableSubject.next({
+      tableName: tableName,
+      type: 'validate',
+      tableEvent: this.eventValidData
     });
 
-    this.eventsSubject.next({ type: 'validate' });
-    this.familiesSubject.next('validate');
-    this.documentsSubject.next('validate');
-    eventEmitter.emit('unsaved-changed');
   }
 
-  handleDeleteInfomation({ rowNumber, numOfRows }) {
-    const infomations = [ ...this.informations ];
+  reformatFamilies() {
+    const families = [];
+    let familiescopy = [ ...this.families ];
+    familiescopy.forEach(family => {
+      const employeeName = family.fullName ? family.fullName : family.relationshipFullName;
+        if(employeeName) {
+          family.isMaster = family.origin.isMaster
+          family.id = family.id ? family.id : 0;
+          family.gender = family.gender ? 1: 0;
 
-    const infomaionDeleted = infomations.splice(rowNumber, numOfRows);
-    this.informations = infomations;
-    this.eventsSubject.next({ type: 'validate' });
-    this.familiesSubject.next('validate');
-    this.documentsSubject.next('validate');
-    eventEmitter.emit('unsaved-changed');
-  }
-
-  private arrayToProps(array, columns) {
-    const object: any = Object.keys(array).reduce(
-      (combine, current) => {
-        const column = columns[current];
-
-        if (current === 'origin' || current === 'options' || !column.key) {
-          return { ...combine };
-        }
-
-        if (column.type === 'numberic') {
-          return { ...combine, [ column.key ]: array[current].toString().split(' ').join('') };
-        }
-
-        return { ...combine, [ column.key ]: column.key === 'gender' ? +array[current] : array[current] };
-      },
-      {}
-    );
-    return object;
-  }
-
-  private arrayEmployeeToProps(array, columns, isGetInDeclatation) {
-    if(!array.options.isLeaf && isGetInDeclatation) {
-      return null;
-    }
-    const object: any = Object.keys(array).reduce(
-      (combine, current) => {
-        const column = columns[current];
-        if (current === 'origin' || current === 'options' || !column.key) {
-          return { ...combine };
-        }
-
-        if (column.type === 'numeric') {
-          return { ...combine, [ column.key ]: array[current].toString().split(' ').join('') };
-        }
-
-        return { ...combine, [ column.key ]: column.key === 'gender' ? +array[current] : array[current] };
-      },
-      {}
-    );
-
-    if (!array.origin) {
-      return object;
-    }
-
-    object.origin = array.origin;
-    if (array.origin.employeeId) {
-      object.employeeId = array.origin.employeeId;
-    }
-
-    return object;
-  }
-
-  reformatInformations() {
-    const informations = [];
-    let informationcopy = [ ...this.informations];
-    informationcopy.forEach(information => {
-        if(information.fullName) {
-          informations.push(information);
+          families.push(family);
         }
     });
+    return families;
+  }
 
-    return informations;
+  handleFormChange(data) {
+    this.declarations.formGenelral = data;
+  }
+
+// End Families tab
+
+// Document list tab
+reformatInformations() {
+  const informations = [];
+  let informationcopy = [ ...this.informations];
+  informationcopy.forEach(information => {
+      if(information.fullName) {
+        informations.push(information);
+      }
+  });
+
+  return informations;
+}
+
+getDocumentByPlancode(planCode: string) {
+  if(!planCode) {
+    return null;
+  }
+  const document = _.find(DOCUMENTBYPLANCODE, {
+    key: planCode,
+  });
+
+  if(document) {
+    return document.value;
+  }else {
+    return null;
+  }
+}
+
+
+private setDateToInformationList(records: any)
+{
+  const declarations = this.tablesToApi(records);
+  const employeesInDeclaration = this.getEmployeeInDeclarations(declarations);
+  const informations = [];
+
+  employeesInDeclaration.forEach(emp => {
+    emp.companyRelease = this.currentCredentials.companyInfo.name;
+    const fromDate = this.getFromDate(emp.fromDate);
+    const curentDate = new Date();
+    const  numberFromDate = (fromDate.getMonth() + 1 + fromDate.getFullYear());
+    const  numberCurentDate = (curentDate.getMonth() + 1 + curentDate.getFullYear());
+    
+
+    if(numberFromDate >= numberCurentDate)
+    {
+      return;
+    }
+
+    const documents = this.getDocumentByPlancode(emp.planCode);
+    if(!documents) {
+      return '';
+    }
+
+    documents.forEach(doc => {
+      let item = this.informations.find(i => (i.planCode === emp.planCode && i.employeeId === emp.employeeId && i.documentCode === doc.documentCode));
+      if (!item) {
+        item = {
+            documentNote: doc.documentNote,
+            documentType: doc.documentType,  
+            isurranceNo: emp.isurranceNo,           
+            isurranceCode: emp.isurranceCode,    
+            fullName: emp.fullName,
+            documentCode: doc.documentCode,
+            planCode: emp.planCode,
+            employeeId: emp.employeeId,
+            origin: {
+              employeeId: emp.employeeId,
+              isLeaf: true,
+              planCode: emp.planCode,
+              documentCode: doc.documentCode,
+            }
+        }; 
+      }
+
+      item.companyRelease = item.companyRelease ? item.companyRelease : this.buildMessgaeByConfig(doc.companyRelease,emp);
+      item.dateRelease = item.dateRelease ? item.dateRelease : this.buildMessgaeByConfig(doc.dateRelease,emp);
+      item.documentNo = this.buildMessgaeByConfig(doc.documentNo,emp);
+      item.documentAppraisal = this.buildMessgaeByConfig(doc.documentAppraisal,emp);
+      item.isurranceNo = emp.isurranceNo;
+      item.isurranceCode = emp.isurranceCode;
+      item.fullName = emp.fullName;
+      informations.push(item);
+    });
+
+    informations.forEach(p => {
+      p.data = this.tableHeaderColumnsDocuments.map(column => {
+        if (!column.key || !p[column.key]) return '';
+        return p[column.key];
+      });
+      p.data.origin = p.origin;
+    });
+
+  });
+
+
+  this.informations = informations;
   }
 
   fomatInfomation(infomations) {
@@ -1153,246 +1131,106 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     return infomationscopy;
   }
 
-  reformatFamilies() {
-    const families = [];
-    let familiescopy = [ ...this.families ];
-    familiescopy.forEach(family => {
-        if(family.fullName) {
-          family.isMaster = family.origin.isMaster
-          family.id = family.id ? family.id : 0;
-          family.gender = family.gender ? 1: 0;
+  fomatFamilies(families) {
+    
+    if(!families) {
+      return [];
+    }
 
-          families.push(family);
-        }
-    });
-
-    return families;
-  }
-
-
-  private setDataToFamilies(employeesInDeclaration: any)
-  {
-    const families = [];
-    const employees = [];
-    const employeesId = [];
-    employeesInDeclaration.forEach(emp => {
-
-      const empId = employeesId.find(c => c === emp.employeeId);
-      if(empId) {
-        return;
-      }
-
-      employeesId.push(empId);
-
-      const family = this.families.find(p => p.employeeId === emp.employeeId);
-
-        if (!family) {
-
-          const isContainsEmployee = employees.find(p => p.employeeId === emp.employeeId);
-          if(!isContainsEmployee)
-          {
-            employees.push(emp);
-          }
-
-        }else {
-
-          const currentFamilies = this.families.filter(fm => fm.employeeId === emp.employeeId);
-          if(currentFamilies){
-            currentFamilies.forEach(oldEmp => {
-              families.push(oldEmp);
-            });
-          }
-
-        }
-    });
-
-    forkJoin(
-      employees.map(emp => {
-        return this.employeeService.getEmployeeById(emp.employeeId)
-      })
-    ).subscribe(emps => {
-
-      emps.forEach(ep => {
-        const master = this.getMaster(ep.families);
-        master.isMaster = ep.isMaster;
-        master.employeeName = ep.fullName;
-        master.employeeId = ep.employeeId;
-        master.relationshipMobile = ep.relationshipMobile;
-        master.relationshipFullName = ep.relationshipFullName;
-        master.relationshipBookNo = ep.relationshipBookNo;
-        master.relationshipDocumentType =  ep.relationshipDocumentType;
-        master.relationshipCityCode = ep.relationshipCityCode;
-        master.relationshipDistrictCode = ep.relationshipDistrictCode;
-        master.relationshipWardsCode = ep.relationshipWardsCode;
-        master.relationshipVillageCode = ep.relationshipVillageCode;
-        master.relationshipCode = '00';
-        master.conditionValid = ep.relationshipFullName ? ep.relationshipFullName : ep.fullName;
-        master.origin = {
-          employeeId: ep.employeeId,
-          isLeaf: true,
-          isMaster: true,
-        };
-        families.push(master);
-
-        if(ep.families.length > 1) {
-          ep.families.forEach(fa => {
-            if(fa.relationshipCode === '00') {
-              return;
-            }
-
-            fa.isMaster = false;
-            fa.employeeId = ep.employeeId;
-            fa.conditionValid = ep.relationshipFullName;
-            fa.origin = {
-              employeeId: ep.employeeId,
-              isLeaf: true,
-              isMaster: false,
-            }
-            families.push(fa);
-          });
-        }else {
-          // nếu chưa có thông tin của gia đình thì add dòng trống
-          families.push(this.fakeEmployeeInFamilies(ep));
-          families.push(this.fakeEmployeeInFamilies(ep));
-        }
-
+    let familiesFomat = [];
+    families.forEach(p => {
+      p.conditionValid = p.relationshipFullName ? p.relationshipFullName : p.fullName;
+      p.data = this.tableHeaderColumnsFamilies.map(column => {
+        if (!column.key || !p[column.key]) return '';
+        return p[column.key];
       });
-
-      families.forEach(p => {
-        p.data = this.tableHeaderColumnsFamilies.map(column => {
-          if (!column.key || !p[column.key]) return '';
-          return p[column.key];
-        });
-        p.data.origin = p.origin;
-      });
-      this.families = families;
-    });
-  }
-
-  fakeEmployeeInFamilies(employee) {
-
-    return {
-      isMaster:false,
-      conditionValid: null, //employee.relationshipFullName,
-      employeeId: employee.employeeId,
-      origin: {
-        employeeId: employee.employeeId,
+     
+      p.data.origin = {
+        employeeId: p.employeeId,
         isLeaf: true,
-        isMaster: false,
+        isMaster: p.isMaster,
+      };
+
+      p.origin = {
+        employeeId: p.employeeId,
+        isLeaf: true,
+        isMaster: p.isMaster,
+      };
+
+      familiesFomat.push(p);
+      const containMember = families.findIndex(e => (!e.isMaster && e.employeeId  === p.employeeId)) > -1;
+      if(!containMember) {
+        familiesFomat.push(this.fakeEmployeeInFamilies(p));
+        familiesFomat.push(this.fakeEmployeeInFamilies(p));
       }
-    }
+      
+    });
+
+    return familiesFomat;
 
   }
 
-  private setDateToInformationList(employeesInDeclaration: any)
-  {
-    const informations = [];
-    employeesInDeclaration.forEach(emp => {
-      const documents = this.getDocumentByPlancode(emp.planCode);
+  handleChangeInfomation({ records, columns }) {
 
-      if(!documents) {
-        return;
-      }
-
-      documents.forEach(doc => {
-        let item = {
-          fullName: emp.fullName,
-          isurranceNo: emp.isurranceNo,
-          documentNo: '',
-          dateRelease: '',
-          isurranceCode: emp.isurranceCode,
-          documentType: doc.documentName,
-          companyRelease: this.currentCredentials.companyInfo.name,
-          documentNote: doc.documentNote,
-          documentAppraisal: ('Truy tăng ' + emp.fullName + ' từ ' + emp.fromDate),
-          origin: {
-            employeeId: emp.employeeId,
-            isLeaf: true,
-          }
-        };
-        if(doc.isContract) {
-          item.documentNo = emp.contractNo;
-          item.dateRelease =  emp.dateSign;
-        }else {
-          item.documentNo = emp.fromDate;
-        }
-        informations.push(item);
+    //update informations
+    this.informations.forEach((d: any, index) => {
+      const record = records[index];
+      //update data on Jexcel
+      Object.keys(record).forEach(index => {
+        d.data[index] = record[index];
+      });
+      //update data object source
+      columns.map((column, index) => {
+        d[column.key] = record[index];
       });
 
-      informations.forEach(p => {
-        p.data = this.tableHeaderColumnsDocuments.map(column => {
-          if (!column.key || !p[column.key]) return '';
-          return p[column.key];
+    });
+
+    this.notificeEventValidData('documentList');
+  }
+
+
+  private getFromDate(dateMonthYear) {
+    const fullDate = '01/' + dateMonthYear;
+    if(!moment(fullDate,"DD/MM/YYYY")) {
+      return new Date();
+    }
+    return moment(fullDate,"DD/MM/YYYY").toDate();
+  }
+// End Document list Tab
+
+  validDocumentForm() {
+      const formError: any[] = [];
+      if(this.documentForm.controls.submitter.errors) {
+        formError.push({
+          y: 'Người nộp',
+          columnName: 'Kiểm tra lại trường người nộp',
+          prefix: '',
+          subfix: 'Lỗi'
         });
-        p.data.origin = p.origin;
-      });
-
-    });
-
-    this.informations = informations;
-  }
-
-  private getEmployeeInDeclaration(records: any) {
-    const employeesInDeclaration = [];
-    records.forEach(record => {
-      const employee = this.arrayEmployeeToProps(record, this.tableHeaderColumns, true);
-      if(employee && employee.employeeId) {
-
-        employee.origin = {
-          employeeId: employee.employeeId,
-          isLeaf:true,
-          isMaster: false,
-        };
-
-        employee.conditionValid = employee.relationshipFullName;
-        employeesInDeclaration.push(employee);
       }
 
-    });
-    return employeesInDeclaration;
+      if(this.documentForm.controls.mobile.errors) {
+        formError.push({
+          y: 'Số điện thoại',
+          columnName: 'Kiểm tra lại trường số điện thoại',
+          prefix: '',
+          subfix: 'Lỗi'
+        });
+      }
+
+      return formError;
   }
 
-
-  handleToggleSidebar() {
-    this.isHiddenSidebar = !this.isHiddenSidebar;
-  }
-
-  getDeclaration(declarationCode: string) {
-    const declarations = _.find(DECLARATIONS, {
-        key: declarationCode,
-    });
-
-    return declarations;
-  }
-
-  getDocumentByPlancode(planCode: string) {
-    if(!planCode) {
-      return null;
-    }
-    const document = _.find(DOCUMENTBYPLANCODE, {
-      key: planCode,
+ private buildMessgaeByConfig(objConfig, employeeInfo) {
+    const argsColumn = objConfig.column || [] ;
+    const mesage = objConfig.mesage || '' ;
+    const argsMessgae = [];
+    argsColumn.forEach(column => { 
+      argsMessgae.push(employeeInfo[column]);
     });
 
-    if(document) {
-      return document.value;
-    }else {
-      return null;
-    }
-  }
-
-
-  getMaster(families: any) {
-    const master = _.find(families, {
-      relationshipCode: '00',
-    });
-    if(master) {
-      return master;
-    }
-    return {};
-  }
-
-  handleSelectTab(index) {
-    eventEmitter.emit('increase-labor:tab:change', index);
+    return this.formatNote(mesage, argsMessgae);;
   }
 
   protected formatNote(str, args) {
@@ -1400,4 +1238,9 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
        str = str.replace("{" + i + "}", args[i]);
     return str;
   }
+
+  private getFileByDeclarationCode(code) {
+     console.log(this.files);
+  }
+  
 }
