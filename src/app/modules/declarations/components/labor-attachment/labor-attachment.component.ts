@@ -15,11 +15,16 @@ export class LaborAttachmentComponent implements OnInit, OnChanges {
   rows: any[] = [];
 
   ngOnInit() {
-    this.loadDefaultData();
+    if (!this.rows.length) {
+      this.loadDefaultData();
+    }
   }
 
   ngOnChanges(changes) {
-    
+    if (!this.rows.length) {
+      this.loadDefaultData();
+    }
+
     if (changes.files && changes.files.currentValue && changes.files.currentValue.length) {
       changes.files.currentValue.forEach((file, index) => {
         this.rows[index].documentName = file.documentName;
