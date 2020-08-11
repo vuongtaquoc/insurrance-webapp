@@ -61,6 +61,7 @@
             (onChange)="handleChangeTable($event, 'increaselabor')"
             (onFormChange)="handleFormChange($event)"
             (onHiddenSidebar)="handleHiddenSidebar($event)"
+            (onChangedFile)="handleChangedFiles($event)"
           ></app-increase>
         </nz-tab>
         <nz-tab nzTitle="D02-TS Giảm">
@@ -73,6 +74,7 @@
             [tabEvents]="tabSubject.asObservable()"
             (onChange)="handleChangeTable($event, 'reductionlabor')"
             (onHiddenSidebar)="handleHiddenSidebar($event)"
+            (onChangedFile)="handleChangedFiles($event)"
           ></app-reduction>
         </nz-tab>
         <nz-tab nzTitle="D02-TS Điều chỉnh">
@@ -85,6 +87,7 @@
             [tabEvents]="tabSubject.asObservable()"
             (onChange)="handleChangeTable($event, 'adjustment')"
             (onHiddenSidebar)="handleHiddenSidebar($event)"
+            (onChangedFile)="handleChangedFiles($event)"
           ></app-adjustment>
         </nz-tab>
         <nz-tab nzTitle="PL TVHD-NLD" [nzDisabled]="!families || !families.length">

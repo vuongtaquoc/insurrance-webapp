@@ -27,6 +27,7 @@ export class GeneralBaseComponent {
   @Output() onChange: EventEmitter<any> = new EventEmitter();
   @Output() onHiddenSidebar: EventEmitter<any> = new EventEmitter();
   @Output() onFormChange: EventEmitter<any> = new EventEmitter();
+  @Output() onChangedFile: EventEmitter<any> = new EventEmitter();
   headers: any = {
     increaselabor: {
       nested: [],
@@ -857,6 +858,6 @@ handleUserUpdated(user, tableName) {
   }
 
   handleFileSelected(files) {
-    // console.log(files)
+    this.onChangedFile.emit(files);
   }
 }
