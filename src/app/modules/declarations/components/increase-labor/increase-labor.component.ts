@@ -342,7 +342,6 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     } else {
       this.tableErrors['documentFomError'] = [];
     }
-    console.log(this.tableErrors);
     let count = Object.keys(this.tableErrors).reduce(
       (total, key) => {
         const data = this.tableErrors[key];

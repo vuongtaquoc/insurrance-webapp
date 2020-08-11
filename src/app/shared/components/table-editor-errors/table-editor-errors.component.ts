@@ -11,10 +11,13 @@ const TABLES = {
   healthRecoveryPart1: 'Sức khỏe - Phần 1',
   healthRecoveryPart2: 'Sức khỏe - Phần 2',
   increaselabor601: 'D02-TS Tăng',
+  increaselabor600: 'D02-TS Tăng',
   reductionlabor601: 'D02-TS Giảm',
   adjustment601: 'D02-TS Điều chỉnh',
   family601: 'PL TVHGD-NLD',
+  family600: 'PL TVHGD-NLD',
   documentList601: 'Bảng kê hồ sơ',
+  documentList600: 'Bảng kê hồ sơ',
   generalFomError: 'Thông tin tờ khai',
   documentFomError: 'Danh mục tài liệu'
 };
