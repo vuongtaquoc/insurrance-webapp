@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 
 import { DeclarationService } from '@app/core/services';
 import { Declaration } from '@app/core/interfaces';
-import { NzModalService } from 'ng-zorro-antd/modal';
-import { PAGE_SIZE } from '@app/shared/constant';
+
+import { PAGE_SIZE, DECLARATIONS } from '@app/shared/constant';
 import { DocumentFormComponent } from '@app/shared/components';
+import { NzModalService } from 'ng-zorro-antd/modal';
 
 @Component({
   selector: 'app-reduction-labor-list',
@@ -21,6 +22,8 @@ export class ReductionLaborListComponent implements OnInit {
   total: number;
   skip: number;
   selectedPage: number = 1;
+  declarationCode: string = '600a';
+  declarationName: string;
 
   constructor(
     private declarationService: DeclarationService,
@@ -28,12 +31,13 @@ export class ReductionLaborListComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.declarationName = this.getDeclaration(this.declarationCode).value;
     this.getDeclarations();
   }
 
   getDeclarations(skip = 0, take = PAGE_SIZE) {
     this.declarationService.getDeclarations({
-      documentType: '600a',
+      documentType: this.declarationCode,
       skip,
       take
     }).subscribe(res => {
@@ -41,7 +45,6 @@ export class ReductionLaborListComponent implements OnInit {
       this.total = res.total;
       this.skip = skip;
 
-      // this.listOfDisplayData = [ ...declarations ];
       if (res.data.length === 0 && this.selectedPage > 1) {
         this.skip -= PAGE_SIZE;
         this.selectedPage -= 1;
@@ -57,21 +60,6 @@ export class ReductionLaborListComponent implements OnInit {
     this.getDeclarations(skip);
   }
 
-  refreshStatus(): void {
-    this.isAllDisplayDataChecked = this.listOfDisplayData.every(item => this.mapOfCheckedId[item.id]);
-    this.isIndeterminate =
-      this.listOfDisplayData.some(item => this.mapOfCheckedId[item.id]) && !this.isAllDisplayDataChecked;
-  }
-
-  checkAll(value: boolean): void {
-    this.listOfDisplayData.forEach(item => (this.mapOfCheckedId[item.id] = value));
-    this.refreshStatus();
-  }
-
-  onChange(value) {
-    console.log(value)
-  }
-
   delete(id) {
     this.declarationService.delete(id).subscribe(() => {
       this.getDeclarations(this.skip);
@@ -79,6 +67,15 @@ export class ReductionLaborListComponent implements OnInit {
   }
 
   viewDocument(declarationInfo: any) {
+
+    if(declarationInfo.status === 0) {
+      this.showMessageNotView();
+    } else {
+      this.showViewDeclarationFile(declarationInfo);
+    }
+  }
+
+  private showViewDeclarationFile(declarationInfo: any) {
     const modal = this.modalService.create({
       nzWidth: 680,
       nzWrapClassName: 'document-modal',
@@ -93,4 +90,17 @@ export class ReductionLaborListComponent implements OnInit {
     modal.afterClose.subscribe(result => {
     });
   }
+
+  private showMessageNotView() {
+    const modal = this.modalService.warning({
+      nzTitle: 'Thông báo',
+      nzContent: 'Hồ sơ đang ở trạng thái lưu tạm thời nên không thể xem tờ khai'
+    });
+  }
+
+  getDeclaration(declarationCode: string) {
+    const declarations = DECLARATIONS.find(d => d.key === declarationCode);
+    return declarations;
+  }
+
 }

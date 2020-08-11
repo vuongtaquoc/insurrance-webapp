@@ -13,11 +13,17 @@ const TABLES = {
   increaselabor601: 'D02-TS Tăng',
   increaselabor600: 'D02-TS Tăng',
   reductionlabor601: 'D02-TS Giảm',
+  reductionlabor600a: 'D02-TS Giảm',
   adjustment601: 'D02-TS Điều chỉnh',
+  adjustment600b: 'D02-TS Điều chỉnh',
+  adjustment601a: 'D02-TS Điều chỉnh',
   family601: 'PL TVHGD-NLD',
   family600: 'PL TVHGD-NLD',
   documentList601: 'Bảng kê hồ sơ',
   documentList600: 'Bảng kê hồ sơ',
+  documentList600a: 'Bảng kê hồ sơ',
+  documentList600b: 'Bảng kê hồ sơ',
+  documentList601a: 'Bảng kê hồ sơ',
   generalFomError: 'Thông tin tờ khai',
   documentFomError: 'Danh mục tài liệu'
 };

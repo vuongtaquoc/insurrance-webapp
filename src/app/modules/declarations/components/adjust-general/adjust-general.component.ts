@@ -360,7 +360,7 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
         }
       });
     }
-
+    
     if (this.declarationId) {
       this.update('saveAndView');
     } else {
@@ -423,7 +423,7 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
       });
       return;
     }
-
+     
     if (this.declarationId) {
       this.update('save');
     } else {
@@ -459,7 +459,8 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
       ...this.declarations.formGenelral,
       documentDetail: this.tablesToApi(this.declarations.tables),
       informations: this.reformatInformations(),
-      families: this.reformatFamilies()
+      families: this.reformatFamilies(),
+      flies: this.declarations.files,
     }).subscribe(data => {
       if (type === 'saveAndView') {
         this.viewDocument(data);
@@ -483,7 +484,8 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
       ...this.declarations.formGenelral,
       documentDetail: this.tablesToApi(this.declarations.tables),
       informations: this.reformatInformations(),
-      families: this.reformatFamilies()
+      families: this.reformatFamilies(),
+      flies: this.declarations.files,
     }).subscribe(data => {
       if (type === 'saveAndView') {
         this.viewDocument(data);

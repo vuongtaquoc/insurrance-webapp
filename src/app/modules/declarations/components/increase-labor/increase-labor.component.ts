@@ -458,7 +458,8 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
       ...this.declarations.formGenelral,
       documentDetail: this.tablesToApi(this.declarations.tables),
       informations: this.reformatInformations(),
-      families: this.reformatFamilies()
+      families: this.reformatFamilies(),
+      flies: this.declarations.files,
     }).subscribe(data => {
       if (type === 'saveAndView') {
         this.viewDocument(data);
@@ -482,7 +483,8 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
       ...this.declarations.formGenelral,
       documentDetail: this.tablesToApi(this.declarations.tables),
       informations: this.reformatInformations(),
-      families: this.reformatFamilies()
+      families: this.reformatFamilies(),
+      flies: this.declarations.files,
     }).subscribe(data => {
       if (type === 'saveAndView') {
         this.viewDocument(data);

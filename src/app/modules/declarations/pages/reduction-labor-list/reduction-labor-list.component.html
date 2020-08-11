@@ -1,6 +1,6 @@
 <div class="page-container">
   <div class="page-card page-increase-labor">
-    <h1>600a | Báo giảm lao động</h1>
+    <h1>{{declarationCode}} | {{declarationName}}</h1>
 
     <div class="page-increase-labor__menu-bar">
       <div class="page-increase-labor__filter">
@@ -36,15 +36,15 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let data of rowSelectionTable.data">
+        <tr *ngFor="let data of rowSelectionTable.data" class="status_{{data.status}}">
           <td class="text-center">{{ data.createDate }}</td>
           <td class="text-center">{{ data.documentNo }}</td>
           <td class="text-wrap">{{ data.declarationName }}</td>
           <td class="text-center">{{ data.sendDate }}</td>
           <td class="text-center">{{ data.documentStatusName }}</td>
           <td class="text-center">
-            <button nz-button nzType="link" nzBlock (click)="viewDocument(data)" >Xem</button>
-          </td>
+              <button nz-button nzType="link" nzBlock (click)="viewDocument(data)" >Xem</button>
+            </td>
           <td class="text-center">
             <a [routerLink]="['/declarations/reduction-labor/' + data.id + '/edit']" nz-button nzType="link">
               <i nz-icon nzType="edit" nzTheme="outline"></i>

@@ -74,9 +74,21 @@ export const DECLARATIONS =
     value:'Xét duyệt chế độ ốm đau'
   },
   {
+    key: '601a',
+    value:'Truy thu điều chỉnh chức danh mức đóng(trường hợp báo muộn)'
+  }, 
+  {
     key: '601',
     value:'Truy thu (Trường hợp vi phạm quy định của pháp luật vè đóng BHXH,BHYT,BHTN, BHTNLD,BNN)'
-  }
+  }, 
+  {
+    key: '600a',
+    value:'Báo giảm lao động'
+  },
+  {
+    key: '600b',
+    value:'Điều chỉnh chức danh mức đóng'
+  },
 ];
 
 export const CONSTPARENTDELETEAUTOROW =

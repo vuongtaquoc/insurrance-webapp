@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subject, forkJoin } from 'rxjs';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import findLastIndex from 'lodash/findLastIndex';
@@ -7,32 +7,36 @@ import findIndex from 'lodash/findIndex';
 import * as jexcel from 'jstable-editor/dist/jexcel.js';
 import * as moment from 'moment';
 import * as _ from 'lodash';
+import { REGEX } from '@app/shared/constant';
+import { PLANCODECOUNTBHXH, PLANCODECOUNTBHYT } from '@app/shared/constant-valid';
+import { DocumentFormComponent } from '@app/shared/components';
 
 import { Declaration, DocumentList } from '@app/core/models';
 import {
   CityService,
   DistrictService,
   DeclarationService,
-  HospitalService,
-  NationalityService,
-  PeopleService,
   WardsService,
-  SalaryAreaService,
-  PlanService,
   DocumentListService,
   AuthenticationService,
-  DepartmentService,
   EmployeeService,
   CategoryService,
   RelationshipService,
   VillageService,
 } from '@app/core/services';
-import { DATE_FORMAT, DECLARATIONS, DOCUMENTBYPLANCODE } from '@app/shared/constant';
+import { DATE_FORMAT, DECLARATIONS, DOCUMENTBYPLANCODE, ACTION } from '@app/shared/constant';
 import { eventEmitter } from '@app/shared/utils/event-emitter';
 
-import { TABLE_ADJUST_NESTED_HEADERS, TABLE_ADJUST_HEADER_COLUMNS } from '@app/modules/declarations/data/adjust';
+import { TableEditorErrorsComponent } from '@app/shared/components';
+import { TABLE_DOCUMENT_NESTED_HEADERS, TABLE_DOCUMENT_HEADER_COLUMNS } from '@app/modules/declarations/data/document-list-editor.data';
 
+import { Router } from '@angular/router';
 
+const TAB_NAMES = {
+  1: 'adjustment',
+  2: 'reduction',
+  3: 'increase'
+};
 
 @Component({
   selector: 'app-declaration-adjust',
@@ -42,136 +46,137 @@ import { TABLE_ADJUST_NESTED_HEADERS, TABLE_ADJUST_HEADER_COLUMNS } from '@app/m
 export class AdjustComponent implements OnInit, OnDestroy {
   @Input() declarationId: string;
   @Output() onSubmit: EventEmitter<any> = new EventEmitter();
+  @Output() onAddEmployee: EventEmitter<any> = new EventEmitter();
 
   form: FormGroup;
+  files: any;
   currentCredentials: any;
   documentForm: FormGroup;
-  declarations: Declaration[] = [];
-  tableNestedHeaders: any[] = TABLE_ADJUST_NESTED_HEADERS;
-  tableHeaderColumns: any[] = TABLE_ADJUST_HEADER_COLUMNS;
-  employeeSelected: any[] = [];
-  eventsSubject: Subject<string> = new Subject<string>();
-  validateSubject: Subject<any> = new Subject<any>();
   documentList: DocumentList[] = [];
-  families: any[] = [];
-  informations: any[] = [];
-  declaration: any;
-  declarationGeneral: any;
   isHiddenSidebar = false;
   declarationCode: string = '600b';
-  employeeSubject: Subject<any> = new Subject<any>();
+  declarationName: string;
+  selectedTabIndex: number = 1;
+  eventValidData = 'adjust-general:validate';
   handler: any;
   isTableValid = false;
+  status = 0;
+  tableErrors = {};
+  formError: any[] = [];
   panel: any = {
     general: { active: false },
     attachment: { active: false }
   };
-  totalNumberInsurance: any;
-  totalCardInsurance: any;
+  declarationGeneral: any;
+  allInitialize: any = {};
+  declarations: any = {
+    origin: {},
+    form: {},
+    formOrigin: {},
+    formGenelral: {},
+    tables: {}
+  };
+
+  informations: any[] = [];
+  tableNestedHeadersDocuments: any[] = TABLE_DOCUMENT_NESTED_HEADERS;
+  tableHeaderColumnsDocuments: any[] = TABLE_DOCUMENT_HEADER_COLUMNS;
+  tableSubject: Subject<any> = new Subject<any>();
+  tabSubject: Subject<any> = new Subject<any>();
+  handlers: any = [];
 
   constructor(
     private formBuilder: FormBuilder,
-    private cityService: CityService,
-    private districtService: DistrictService,
+    private router: Router,
     private declarationService: DeclarationService,
-    private hospitalService: HospitalService,
-    private nationalityService: NationalityService,
-    private peopleService: PeopleService,
-    private wardService: WardsService,
-    private salaryAreaService: SalaryAreaService,
-    private planService: PlanService,
-    private departmentService: DepartmentService,
-    private documentListService: DocumentListService,
-    private employeeService: EmployeeService,
     private authenticationService: AuthenticationService,
-    private categoryService: CategoryService,
+    private documentListService: DocumentListService,
     private modalService: NzModalService,
+    private employeeService: EmployeeService,
+    private cityService: CityService,
+    private categoryService: CategoryService,
     private relationshipService: RelationshipService,
-    private villageService: VillageService,
+    private districtService:  DistrictService,
+    private wardService: WardsService,
+    private villageService: VillageService
   ) {
-    this.getRecipientsDistrictsByCityCode = this.getRecipientsDistrictsByCityCode.bind(this);
-    this.getRecipientsWardsByDistrictCode = this.getRecipientsWardsByDistrictCode.bind(this);
-    this.getRegisterDistrictsByCityCode = this.getRegisterDistrictsByCityCode.bind(this);
-    this.getRegisterWardsByDistrictCode = this.getRegisterWardsByDistrictCode.bind(this);
-    this.getHospitalsByCityCode = this.getHospitalsByCityCode.bind(this);
-    this.getPlanByParent = this.getPlanByParent.bind(this);
-    this.getRegisterDistrictsByCityCode = this.getRegisterDistrictsByCityCode.bind(this);
-    this.getRelationshipDistrictsByCityCode = this.getRelationshipDistrictsByCityCode.bind(this);
-    this.getRelationshipWardsByDistrictCode = this.getRelationshipWardsByDistrictCode.bind(this);
-    this.getRecipientsVillageCodeByWarssCode = this.getRecipientsVillageCodeByWarssCode.bind(this);
-    this.getDistrictsByCityCode = this.getDistrictsByCityCode.bind(this);
-    this.getWardsByDistrictCode = this.getWardsByDistrictCode.bind(this);
-    this.getRelationShips = this.getRelationShips.bind(this);
   }
 
   ngOnInit() {
-    const date = new Date();
-    this.currentCredentials = this.authenticationService.currentCredentials;
-    this.form = this.formBuilder.group({
-      number: [ '1' ],
-      month: [ date.getMonth() + 1 ],
-      year: [ date.getFullYear() ]
-    });
-
     this.documentForm = this.formBuilder.group({
-      userAction: [this.currentCredentials.companyInfo.delegate],
-      mobile:[this.currentCredentials.companyInfo.mobile],
-      usedocumentDT01:[true],
+      submitter: ['', Validators.required],
+      mobile: ['',  [Validators.required, Validators.pattern(REGEX.ONLY_NUMBER)]],
     });
 
-    this.documentListService.getDocumentList(this.declarationCode).subscribe(documentList => {
-      this.documentList = documentList;
-    });
-
+    this.declarationName = this.getDeclaration(this.declarationCode).value;
+    //Init data families table editor
     forkJoin([
       this.cityService.getCities(),
-      this.nationalityService.getNationalities(),
-      this.peopleService.getPeoples(),
-      this.salaryAreaService.getSalaryAreas(),
-      this.planService.getPlanShowCode(this.declarationCode),
-      this.departmentService.getDepartments(),
-      this.categoryService.getCategories('relationshipDocumentType'),
-      this.relationshipService.getRelationships()
-    ]).subscribe(([ cities, nationalities, peoples, salaryAreas, plans, departments, relationshipDocumentTypies, relationShips ]) => {
-      this.updateSourceToColumn(this.tableHeaderColumns, 'peopleCode', peoples);
-      this.updateSourceToColumn(this.tableHeaderColumns, 'nationalityCode', nationalities);
-      this.updateSourceToColumn(this.tableHeaderColumns, 'registerCityCode', cities);
-      this.updateSourceToColumn(this.tableHeaderColumns, 'recipientsCityCode', cities);
-      this.updateSourceToColumn(this.tableHeaderColumns, 'salaryAreaCode', salaryAreas);
-      this.updateSourceToColumn(this.tableHeaderColumns, 'planCode', plans);
-      this.updateSourceToColumn(this.tableHeaderColumns, 'departmentId', departments);
+    ]).subscribe(([cities]) => {
 
-      // get filter columns
-      this.updateFilterToColumn(this.tableHeaderColumns, 'registerDistrictCode', this.getRegisterDistrictsByCityCode);
-      this.updateFilterToColumn(this.tableHeaderColumns, 'registerWardsCode', this.getRegisterWardsByDistrictCode);
-      this.updateFilterToColumn(this.tableHeaderColumns, 'recipientsDistrictCode', this.getRecipientsDistrictsByCityCode);
-      this.updateFilterToColumn(this.tableHeaderColumns, 'recipientsWardsCode', this.getRecipientsWardsByDistrictCode);
-      this.updateFilterToColumn(this.tableHeaderColumns, 'hospitalFirstRegistCode', this.getHospitalsByCityCode);
-      this.updateFilterToColumn(this.tableHeaderColumns, 'planCode', this.getPlanByParent);
-      //families filter columns
+    //End Init data families table editor
+      this.currentCredentials = this.authenticationService.currentCredentials;
 
       if (this.declarationId) {
-        this.declarationService.getDeclarationsByDocumentId(this.declarationId, this.tableHeaderColumns).subscribe(declarations => {
-          this.updateOrders(declarations.documentDetail);
-          this.declarations = declarations.documentDetail;
+        this.declarationService.getDeclarationsByDocumentIdByGroup(this.declarationId).subscribe(declarations => {
+          this.documentForm.patchValue({
+            submitter: declarations.submitter,
+            mobile: declarations.mobile
+          });
+
+          this.declarations.origin = declarations.documentDetail;
+          this.declarations.files = declarations.files;
+          this.informations = this.fomatInfomation(declarations.informations);
+          this.status = declarations.status;
+          this.declarations.formOrigin = {
+            batch: declarations.batch,
+            openAddress: declarations.openAddress,
+            branch: declarations.branch,
+            typeDocumentActtach: declarations.typeDocumentActtach,
+            reason: declarations.reason
+          };
+
+          this.declarationGeneral = {
+            totalNumberInsurance: declarations.totalNumberInsurance,
+            totalCardInsurance: declarations.totalCardInsurance
+          };
+
+        });
+      } else {
+        this.declarationService.getDeclarationInitialsByGroup(this.declarationCode).subscribe(data => {
+          this.declarations.origin = data;
         });
 
-        this.isTableValid = true;
-      } else {
-        this.declarationService.getDeclarationInitials(this.declarationCode, this.tableHeaderColumns).subscribe(declarations => {
-          this.declarations = declarations;
+        this.documentForm.patchValue({
+          submitter: this.currentCredentials.companyInfo.delegate,
+          mobile: this.currentCredentials.companyInfo.mobile
         });
 
         this.declarationGeneral = {
-          totalNumberInsurance: '',
-          totalCardInsurance: ''
+          totalNumberInsurance: 0,
+          totalCardInsurance: 0
         };
       }
-    });
-    this.handler = eventEmitter.on('labor-table-editor:validate', ({ name, isValid }) => {
-      if (name === 'increaseLabor') {
-        this.isTableValid = isValid;
-      }
+
+      this.documentListService.getDocumentList(this.declarationCode).subscribe(documentList => {
+        this.documentList = documentList;
+      });
+
+      this.handler = eventEmitter.on(this.eventValidData, ({ name, isValid, leaf, initialize, errors }) => {
+        this.allInitialize[name] = leaf.length === initialize.length;
+        this.isTableValid = Object.values(this.allInitialize).indexOf(false) === -1 ? false : true;
+        this.tableErrors[name + this.declarationCode] = errors;
+      });
+
+      this.tabSubject.next({
+        type: 'change',
+        selected: TAB_NAMES[1]
+      });
+
+
+      this.handlers.push(eventEmitter.on('tree-declaration:updateUser', (data) => {
+        this.updateEmployeeInInfomation(data.employee);
+      }));
+
     });
   }
 
@@ -179,249 +184,260 @@ export class AdjustComponent implements OnInit, OnDestroy {
     this.handler();
   }
 
-  handleAddEmployee(type) {
-    if (!this.employeeSelected.length) {
-      return this.modalService.warning({
-        nzTitle: 'Chưa có nhân viên nào được chọn',
-      });
-    }
+  private updateEmployeeInInfomation(user) {
 
-    const declarations = [ ...this.declarations ];
-    const parentIndex = findIndex(declarations, d => d.key === type);
-    const childLastIndex = findLastIndex(declarations, d => d.isLeaf && d.parentKey === type);
-
-    if (childLastIndex > -1) {
-      const employeeExists = declarations.filter(d => d.parentKey === type);
-
-      this.employeeSelected.forEach(employee => {
-        const accepted = employeeExists.findIndex(e => (e.origin && (e.origin.employeeId || e.origin.id)) === employee.id) === -1;
-
-        // replace
-        employee.gender = employee.gender === '1';
-        employee.workAddress = this.currentCredentials.companyInfo.address;
-        //
-        if (accepted) {
-          if (declarations[childLastIndex].isInitialize) {
-            // remove initialize data
-            declarations.splice(childLastIndex, 1);
-
-            declarations.splice(childLastIndex, 0, this.declarationService.getLeaf(declarations[parentIndex], employee, this.tableHeaderColumns));
-          } else {
-            declarations.splice(childLastIndex + 1, 0, this.declarationService.getLeaf(declarations[parentIndex], employee, this.tableHeaderColumns));
+    const informations = [ ...this.informations ];
+    informations.forEach(d => {
+      if(d.origin && d.origin.employeeId === user.id) {
+        Object.keys(d).forEach(key => {
+          if(user[key] !== undefined) {
+             d[key] = user[key];
           }
-        }
-      });
+        });
 
-      // update orders
-      this.updateOrders(declarations);
-
-      this.declarations = this.declarationService.updateFormula(declarations, this.tableHeaderColumns);
-    } else {
-      this.employeeSelected.forEach(employee => {
-        declarations.splice(parentIndex + 1, 0, this.declarationService.getLeaf(declarations[parentIndex], employee, this.tableHeaderColumns));
-      });
-
-      this.declarations = this.declarationService.updateFormula(declarations, this.tableHeaderColumns);
-    }
-
-    this.employeeSubject.next({
-      type: 'clean'
-    });
-    this.employeeSelected.length = 0;
-    this.eventsSubject.next('validate');
-  }
-
-  handleSelectEmployees(employees) {
-    this.employeeSelected = employees;
-  }
-
-  emitEventToChild(type) {
-    this.eventsSubject.next(type);
-  }
-
-  handleSubmit(event) {
-    const { number, month, year } = this.form.value;
-
-    this.onSubmit.emit({
-      type: event.type,
-      declarationCode: this.declarationCode,
-      declarationName: this.getDeclaration(this.declarationCode).value,
-      documentNo: number,
-      createDate: `01/0${ month }/${ year }`,
-      documentStatus: 0,
-      totalNumberInsurance: this.totalNumberInsurance,
-      totalCardInsurance: this.totalCardInsurance,
-      documentDetail: event.data,
-    });
-  }
-
-
-  private updateSelectedValueDropDow(columns, instance, r) {
-
-      columns.forEach((column, colIndex) => {
-        if (column.defaultLoad) {
-          instance.jexcel.updateDropdownValue(colIndex, r);
-        }
-      });
-  }
-
-  handleChangeTable({ instance, cell, c, r, records }) {
-    if (c !== null && c !== undefined) {
-      c = Number(c);
-      const column = this.tableHeaderColumns[c];
-
-      if (column.key === 'hospitalFirstRegistCode') {
-        const hospitalFirstRegistName = cell.innerText.split(' - ').pop();
-
-        this.updateNextColumns(instance, r, hospitalFirstRegistName, [ c + 1 ]);
-      } else if (column.key === 'registerCityCode') {
-        this.updateNextColumns(instance, r, '', [ c + 1, c + 2 ]);
-      } else if (column.key === 'recipientsCityCode') {
-        this.updateNextColumns(instance, r, '', [ c + 1, c + 2, c + 5, c + 6 ]);
+        d.data = this.tableHeaderColumnsDocuments.map(column => {
+          if (!column.key || !d[column.key]) return '';
+          return d[column.key];
+        });
+        d.data.origin = d.origin;
       }
-
-    }
-    // update declarations
-    this.declarations.forEach((declaration: any, index) => {
-      const record = records[index];
-      Object.keys(record).forEach(index => {
-        declaration.data[index] = record[index];
-      });
-      // declaration.data.options.isInitialize = false;
-      // declaration.isInitialize = false;
     });
 
-    const rowChange: any = this.declarations[r];
-
-    rowChange.data.options.isInitialize = false;
-    rowChange.isInitialize = false;
+    this.informations = informations;
   }
 
-  handleAddRow({ rowNumber, options, origin, insertBefore }) {
-    const declarations = [ ...this.declarations ];
-    let row: any = {};
+  handleChangeTable(data, tableName) {
+    this.declarations.tables[tableName] = this.declarations[tableName] || {};
+    this.declarations.tables[data.tableName]= data.data;
 
-    const beforeRow: any = declarations[insertBefore ? rowNumber - 1 : rowNumber];
-    const afterRow: any = declarations[insertBefore ? rowNumber : rowNumber + 1];
-
-    const data: any = [];
-
-    row.data = data;
-    row.isInitialize = true;
-    row.isLeaf = true;
-    row.origin = origin;
-    row.options = options;
-
-    if (beforeRow.isLeaf && !afterRow.isLeaf) {
-      row.parent = beforeRow.parent;
-      row.parentKey = beforeRow.parentKey;
-      row.planType = beforeRow.planType;
-    } else if (!beforeRow.isLeaf && afterRow.isLeaf) {
-      row.parent = afterRow.parent;
-      row.parentKey = afterRow.parentKey;
-      row.planType = afterRow.planType;
+    if (data.action === ACTION.EDIT) {
+      this.setDateToInformationList(this.declarations.tables);
     }
 
-    // if (beforeRow.isInitialize) {
-    //   beforeRow.isInitialize = false;
-    // }
-
-    // if (afterRow.isInitialize) {
-    //   afterRow.isInitialize = false;
-    // }
-
-    declarations.splice(insertBefore ? rowNumber : rowNumber + 1, 0, row);
-
-    this.updateOrders(declarations);
-
-    this.declarations = this.declarationService.updateFormula(declarations, this.tableHeaderColumns);
-    this.eventsSubject.next('validate');
-  }
-
-  handleDeleteData({ rowNumber, numOfRows, records }) {
-    const declarations = [ ...this.declarations ];
-
-    const beforeRow = records[rowNumber - 1];
-    const afterRow = records[rowNumber];
-    let declarationsDeleted = [];
-
-    if (!((beforeRow.options && beforeRow.options.isLeaf) || (afterRow.options && afterRow.options.isLeaf))) {
-      const row: any = declarations[rowNumber];
-      const origin = { ...row.data.origin };
-      const options = { ...row.data.options };
-      origin.employeeId = 0;
-      origin.id = 0;
-      row.data = [];
-      row.origin = origin;
-      row.options = options;
-      row.isInitialize = true;
-    } else {
-      declarationsDeleted = declarations.splice(rowNumber, numOfRows);
+    if (data.action === ACTION.DELETE) {
+      this.deleteEmployeeInInfomation(data.data, data.dataChange, data.columns);
     }
 
-    this.updateOrders(declarations);
-
-    this.declarations = this.declarationService.updateFormula(declarations, this.tableHeaderColumns);
-    //this.deleteEmployeeInFamilies(declarationsDeleted);
-    this.eventsSubject.next('validate');
-  }
-
-  collapseChange(isActive, type) {
-    this.panel[type].active = isActive;
+    this.notificeEventValidData('documentList');
+     
   }
 
   handleFormValuesChanged(data) {
-    this.totalNumberInsurance = data.totalNumberInsurance;
-    this.totalCardInsurance = data.totalNumberInsurance;
+    this.declarations.form = data;
   }
 
-  checkInsurranceCode() {
-    const declarations = [...this.declarations];
-    const INSURRANCE_CODE_INDEX = 4;
-    const INSURRANCE_STATUS_INDEX = 5;
-    // const leafs = declarations.filter(d => !!d.isLeaf);
-    // const insurranceCodes = leafs.map(l => l.data[INSURRANCE_CODE_INDEX]);
-    const errors = {};
-
-    declarations.forEach((declaration, rowIndex) => {
-      const code = declaration.data[INSURRANCE_CODE_INDEX];
-
-      if (code && declaration.isLeaf) {
-        declaration.data[INSURRANCE_STATUS_INDEX] = `Không tìm thấy Mã số ${ declaration.data[INSURRANCE_CODE_INDEX] }`;
-
-        errors[rowIndex] = {
-          col: INSURRANCE_CODE_INDEX,
-          value: code,
-          valid: false
-        };
-      }
+  handleSelectTab({ index }) {
+    this.selectedTabIndex = index;
+    eventEmitter.emit('adjust-general:tab:change', index);
+    this.tabSubject.next({
+      type: 'change',
+      selected: TAB_NAMES[index]
     });
+  }
 
-    this.declarations = declarations;
+  handleHiddenSidebar(isHidden) {
+    this.isHiddenSidebar = isHidden;
+  }
 
-    setTimeout(() => {
-      this.validateSubject.next({
-        field: 'isurranceCode',
-        errors
+  saveAndView() {
+    if(!this.isTableValid) {
+      this.modalService.warning({
+        nzTitle: 'Bạn chưa kê khai'
       });
-    }, 20);
+      return;
+    }
+
+    eventEmitter.emit('tableEditor:validFrom', {
+      tableName: 'documentList'
+    });
+
+    if(this.formError.length > 0) {
+      this.tableErrors['generalFomError'] = this.formError;
+    } else {
+      this.tableErrors['generalFomError'] = [];
+    }
+
+    const errorDocumentForm = this.validDocumentForm();
+    if (errorDocumentForm.length > 0) {
+      this.tableErrors['documentFomError'] = errorDocumentForm;
+    } else {
+      this.tableErrors['documentFomError'] = [];
+    }
+
+    let count = Object.keys(this.tableErrors).reduce(
+      (total, key) => {
+        const data = this.tableErrors[key];
+        return total + data.length;
+      },
+      0
+    );
+
+    if (count > 0) {
+      return this.modalService.error({
+        nzTitle: 'Lỗi dữ liệu. Vui lòng sửa!',
+        nzContent: TableEditorErrorsComponent,
+        nzComponentParams: {
+          errors: this.getColumnErrror()
+        }
+      });
+    }
+    
+    if (this.declarationId) {
+      this.update('saveAndView');
+    } else {
+      this.create('saveAndView');
+    }
   }
 
-  private updateOrders(declarations) {
-    const order: { index: 0, key: string } = { index: 0, key: '' };
+  rollback() {
+    if(!this.isTableValid) {
+      this.router.navigate(['/declarations/adjust']);
+      return;
+    }
 
-    declarations.forEach((declaration, index) => {
-      if (declaration.hasLeaf) {
-        order.index = 0;
-        order.key = declaration.key;
-      }
-
-      if (declaration.isLeaf && declaration.parentKey === order.key) {
-        order.index += 1;
-
-        declaration.data[0] = order.index;
+    this.modalService.confirm({
+      nzTitle: 'Bạn có muốn lưu lại thông tin thay đổi',
+      nzOkText: 'Có',
+      nzCancelText: 'Không',
+      nzOnOk: () => {
+        if (this.declarationId) {
+          this.update('save');
+        } else {
+          this.create('save');
+        }
+      },
+      nzOnCancel: () => {
+        this.router.navigate(['/declarations/adjust']);
       }
     });
+  }
+
+  save() {
+
+    if(!this.isTableValid) {
+      this.modalService.warning({
+        nzTitle: 'Bạn chưa kê khai'
+      });
+      return;
+    }
+     
+    if (this.declarationId) {
+      this.update('save');
+    } else {
+      this.create('save');
+    }
+
+  }
+
+  private getColumnErrror() {
+    let tableErrorMessage = Object.keys(this.tableErrors).reduce(
+      (combine, key) => {
+        if (this.tableErrors[key].length) {
+          return { ...combine, [key]: this.tableErrors[key] };
+        }
+
+        return { ...combine };
+      },
+      {}
+    );
+    return tableErrorMessage;
+  }
+
+  private create(type: any) {
+    this.declarationService.create({
+      type: type,
+      declarationCode: this.declarationCode,
+      declarationName: this.getDeclaration(this.declarationCode).value,
+      documentStatus: 0,
+      status: type === 'saveAndView' ? 1: 0,
+      submitter: this.submitter,
+      mobile: this.mobile,
+      ...this.declarations.form,
+      ...this.declarations.formGenelral,
+      documentDetail: this.tablesToApi(this.declarations.tables),
+      informations: this.reformatInformations(),
+      flies: this.declarations.files,
+    }).subscribe(data => {
+      if (type === 'saveAndView') {
+        this.viewDocument(data);
+      } else{
+        this.router.navigate(['/declarations/adjust']);
+      }
+    });
+  }
+
+  private update(type: any) {
+
+    this.declarationService.update(this.declarationId, {
+      type: type,
+      declarationCode: this.declarationCode,
+      declarationName: this.declarationName,
+      documentStatus: 0,
+      status: this.getStatus(type),
+      submitter: this.submitter,
+      mobile: this.mobile,
+      ...this.declarations.form,
+      ...this.declarations.formGenelral,
+      documentDetail: this.tablesToApi(this.declarations.tables),
+      informations: this.reformatInformations(),
+      flies: this.declarations.files,
+    }).subscribe(data => {
+      if (type === 'saveAndView') {
+        this.viewDocument(data);
+      } else {
+        this.router.navigate(['/declarations/adjust']);
+      }
+    });
+  }
+
+  private getStatus(type) {
+    if(this.status > 0) {
+      return this.status;
+    }
+
+    return (type === 'saveAndView' ) ? 1: 0;
+  }
+
+  viewDocument(declarationInfo: any) {
+    const modal = this.modalService.create({
+      nzWidth: 680,
+      nzWrapClassName: 'document-modal',
+      nzTitle: 'Thông tin biểu mẫu, tờ khai đã xuất',
+      nzContent: DocumentFormComponent,
+      nzOnOk: (data) => console.log('Click ok', data),
+      nzComponentParams: {
+        declarationInfo
+      }
+    });
+
+    modal.afterClose.subscribe(result => {
+    });
+  }
+
+  getDeclaration(declarationCode: string) {
+    const declarations = _.find(DECLARATIONS, {
+        key: declarationCode,
+    });
+
+    return declarations;
+  }
+
+  get submitter() {
+    return this.documentForm.get('submitter').value;
+  }
+
+  get mobile() {
+    return this.documentForm.get('mobile').value;
+  }
+
+  private tablesToApi(tables) {
+    const data = [];
+    Object.keys(tables).forEach(key => {
+      const table = tables[key];
+      data.push(...table);
+    });
+
+    return data;
   }
 
   private updateSourceToColumn(tableHeaderColumns, key, sources) {
@@ -439,230 +455,273 @@ export class AdjustComponent implements OnInit, OnDestroy {
     }
   }
 
-  private getRegisterDistrictsByCityCode(instance, cell, c, r, source) {
-    const value = instance.jexcel.getValueFromCoords(c - 1, r);
+// families tab
 
-    if (!value) {
-      return [];
-    }
+private getEmployeeInDeclarations(records: any) {
+  const employeesInDeclaration = [];
+  records.forEach(record => {
+    const declarations = record.declarations;
+    declarations.forEach(declaration => {
+      if(declaration && declaration.employeeId) {
 
-    return this.districtService.getDistrict(value).toPromise().then(districts => {
-      this.updateSourceToColumn(this.tableHeaderColumns,'registerDistrictCode', districts);
+        declaration.origin = {
+          employeeId: declaration.employeeId,
+          isLeaf:true,
+          isMaster: false,
+          declarationCode: record.code,
+          category: record.category,
+          planCode: declaration.planCode
+        };
 
-      return districts;
+        declaration.conditionValid = declaration.relationshipFullName;
+        employeesInDeclaration.push(declaration);
+      }
     });
+
+  });
+  return employeesInDeclaration;
+}
+
+  handleValidForm(data) {
+    this.formError = data.errorMessage;
   }
 
-  private getRecipientsWardsByDistrictCode(instance, cell, c, r, source) {
-    const value = instance.jexcel.getValueFromCoords(c - 1, r);
+  deleteEmployeeInInfomation(declarations, declarationsDeleted, columns) {
+    let informations = [...this.informations];
 
-    if (!value) {
-      return [];
-    }
-
-    return this.wardService.getWards(value).toPromise().then(districts => {
-      this.updateSourceToColumn(this.tableHeaderColumns,'recipientsWardsCode', districts);
-
-      return districts;
+    declarationsDeleted.forEach(d => {
+        const employeeInfo = this.getDeclarationInData(d.data, columns);
+        informations = informations.filter(info => {
+            return info.employeeId + info.planCode !== employeeInfo.employeeId + employeeInfo.planCode;
+          });
     });
-  }
 
-  private getRelationshipDistrictsByCityCode(instance, cell, c, r, source) {
-    const value = instance.jexcel.getValueFromCoords(c - 1, r);
-
-    if (!value) {
-      return [];
-    }
-  }
-
-  private getRegisterWardsByDistrictCode(instance, cell, c, r, source) {
-    const value = instance.jexcel.getValueFromCoords(c - 1, r);
-
-    if (!value) {
-      return [];
-    }
-
-    return this.wardService.getWards(value).toPromise().then(wards => {
-      this.updateSourceToColumn(this.tableHeaderColumns,'registerWardsCode', wards);
-      return wards;
-    });
-  }
-
-  private getRecipientsDistrictsByCityCode(instance, cell, c, r, source) {
-    const value = instance.jexcel.getValueFromCoords(c - 1, r);
-
-    if (!value) {
-      return [];
-    }
-
-    return this.districtService.getDistrict(value).toPromise().then(districts => {
-      this.updateSourceToColumn(this.tableHeaderColumns, 'recipientsDistrictCode', districts);
-
-      return districts;
-    });
-  }
-
-  private getDistrictsByCityCode(instance, cell, c, r, source) {
-    const value = instance.jexcel.getValueFromCoords(c - 1, r);
-
-    if (!value) {
-      return [];
-    }
-  }
-
-  private getWardsByDistrictCode(instance, cell, c, r, source) {
-    const value = instance.jexcel.getValueFromCoords(c - 1, r);
-
-    if (!value) {
-      return [];
-    }
-  }
-
-  private getRelationshipWardsByDistrictCode(instance, cell, c, r, source) {
-    const value = instance.jexcel.getValueFromCoords(c - 1, r);
-
-    if (!value) {
-      return [];
-    }
-  }
-
-  private getRecipientsVillageCodeByWarssCode(instance, cell, c, r, source) {
-    const value = instance.jexcel.getValueFromCoords(c - 1, r);
-
-    if (!value) {
-      return [];
-    }
-  }
-
-  private getHospitalsByCityCode(instance, cell, c, r, source) {
-    const value = instance.jexcel.getValueFromCoords(c - 5, r);
-
-    if (!value) {
-      return [];
-    }
-
-    return this.hospitalService.getHospitals(value).toPromise();
-  }
-
-  private getPlanByParent(instance, cell, c, r, source) {
-    const row = instance.jexcel.getRowFromCoords(r);
-    const planTypes = (row.options.planType || '').split(',');
-    console.log(planTypes);
-    console.log(source,'source');
-    return source.filter(s => planTypes.indexOf(s.id) > -1);
-  }
-
-  private getRelationShips(instance, cell, c, r, source) {
-    const row = instance.jexcel.getRowFromCoords(r);
-    if (row.origin && row.origin.isMaster) {
-      return source;
-    }
-
-    return source.filter(s => s.id !== '00');;
-  }
-
-  private updateNextColumns(instance, r, value, nextColumns = []) {
-    nextColumns.forEach(columnIndex => {
-      const columnName = jexcel.getColumnNameFromId([columnIndex, r]);
-      instance.jexcel.setValue(columnName, value);
-    });
-  }
-
-  get usedocumentDT01() {
-    return this.documentForm.get('usedocumentDT01').value;
-  }
-
-  private arrayToProps(array, columns) {
-    const object: any = Object.keys(array).reduce(
-      (combine, current) => {
-        const column = columns[current];
-
-        if (current === 'origin' || current === 'options' || !column.key) {
-          return { ...combine };
+    if(informations.length === 0) {
+      informations.push({
+        data: {
+          origin: {},
         }
-
-        if (column.type === 'numberic') {
-          return { ...combine, [ column.key ]: array[current].toString().split(' ').join('') };
-        }
-
-        return { ...combine, [ column.key ]: column.key === 'gender' ? +array[current] : array[current] };
-      },
-      {}
-    );
-    return object;
+      });
+    }
+    this.informations = informations;
   }
 
-  private arrayEmployeeToProps(array, columns, isGetInDeclatation) {
-    if(!array.options.isLeaf && isGetInDeclatation) {
-      return null;
-    }
-    const object: any = Object.keys(array).reduce(
-      (combine, current) => {
-        const column = columns[current];
-        if (current === 'origin' || current === 'options' || !column.key) {
-          return { ...combine };
-        }
-
-        if (column.type === 'numeric') {
-          return { ...combine, [ column.key ]: array[current].toString().split(' ').join('') };
-        }
-
-        return { ...combine, [ column.key ]: column.key === 'gender' ? +array[current] : array[current] };
-      },
-      {}
-    );
-
-    if (!array.origin) {
-      return object;
-    }
-
-    object.origin = array.origin;
-    if (array.origin.employeeId) {
-      object.employeeId = array.origin.employeeId;
-    }
-
-    return object;
+  getDeclarationInData(record, columns) {
+    let declaration: any = {};
+    columns.map((column, index) => {
+      declaration[column.key] = record[index];
+    });
+    return declaration;
   }
 
-  handleToggleSidebar() {
-    this.isHiddenSidebar = !this.isHiddenSidebar;
-  }
 
-  getDeclaration(declarationCode: string) {
-    const declarations = _.find(DECLARATIONS, {
-        key: declarationCode,
+  private notificeEventValidData(tableName) {
+
+    this.tableSubject.next({
+      tableName: tableName,
+      type: 'validate',
+      tableEvent: this.eventValidData
     });
 
-    return declarations;
   }
 
-  getDocumentByPlancode(planCode: string) {
-    if(!planCode) {
-      return null;
+  handleFormChange(data) {
+    this.declarations.formGenelral = data;
+  }
+
+// End Families tab
+
+// Document list tab
+reformatInformations() {
+  const informations = [];
+  let informationcopy = [ ...this.informations];
+  informationcopy.forEach(information => {
+      if(information.fullName) {
+        informations.push(information);
+      }
+  });
+
+  return informations;
+}
+
+getDocumentByPlancode(planCode: string) {
+  if(!planCode) {
+    return null;
+  }
+  const document = _.find(DOCUMENTBYPLANCODE, {
+    key: planCode,
+  });
+
+  if(document) {
+    return document.value;
+  }else {
+    return null;
+  }
+}
+
+
+private setDateToInformationList(records: any)
+{
+  const declarations = this.tablesToApi(records);
+  const employeesInDeclaration = this.getEmployeeInDeclarations(declarations);
+  const informations = [];
+
+  employeesInDeclaration.forEach(emp => {
+    emp.companyRelease = this.currentCredentials.companyInfo.name;
+    const fromDate = this.getFromDate(emp.fromDate);
+    const curentDate = new Date();
+    const  numberFromDate = (fromDate.getMonth() + 1 + fromDate.getFullYear());
+    const  numberCurentDate = (curentDate.getMonth() + 1 + curentDate.getFullYear());
+
+
+    if(numberFromDate >= numberCurentDate)
+    {
+      return;
     }
-    const document = _.find(DOCUMENTBYPLANCODE, {
-      key: planCode,
+
+    const documents = this.getDocumentByPlancode(emp.planCode);
+    if(!documents) {
+      return '';
+    }
+
+    documents.forEach(doc => {
+      let item = this.informations.find(i => (i.planCode === emp.planCode && i.employeeId === emp.employeeId && i.documentCode === doc.documentCode));
+      if (!item) {
+        item = {
+            documentNote: doc.documentNote,
+            documentType: doc.documentType,
+            isurranceNo: emp.isurranceNo,
+            isurranceCode: emp.isurranceCode,
+            fullName: emp.fullName,
+            documentCode: doc.documentCode,
+            planCode: emp.planCode,
+            employeeId: emp.employeeId,
+            origin: {
+              employeeId: emp.employeeId,
+              isLeaf: true,
+              planCode: emp.planCode,
+              documentCode: doc.documentCode,
+            }
+        };
+      }
+
+      item.companyRelease = item.companyRelease ? item.companyRelease : this.buildMessgaeByConfig(doc.companyRelease,emp);
+      item.dateRelease = item.dateRelease ? item.dateRelease : this.buildMessgaeByConfig(doc.dateRelease,emp);
+      item.documentNo = this.buildMessgaeByConfig(doc.documentNo,emp);
+      item.documentAppraisal = this.buildMessgaeByConfig(doc.documentAppraisal,emp);
+      item.isurranceNo = emp.isurranceNo;
+      item.isurranceCode = emp.isurranceCode;
+      item.fullName = emp.fullName;
+      informations.push(item);
     });
 
-    if(document) {
-      return document.value;
-    }else {
-      return null;
-    }
-  }
-
-
-  getMaster(families: any) {
-    const master = _.find(families, {
-      relationshipCode: '00',
+    informations.forEach(p => {
+      p.data = this.tableHeaderColumnsDocuments.map(column => {
+        if (!column.key || !p[column.key]) return '';
+        return p[column.key];
+      });
+      p.data.origin = p.origin;
     });
-    if(master) {
-      return master;
-    }
-    return {};
+
+  });
+
+
+  this.informations = informations;
   }
 
-  handleSelectTab(index) {
-    eventEmitter.emit('increase-labor:tab:change', index);
+  fomatInfomation(infomations) {
+    if(!infomations) {
+      return [];
+    }
+    let infomationscopy = [ ...infomations ];
+    infomationscopy.forEach(p => {
+      p.data = this.tableHeaderColumnsDocuments.map(column => {
+        if (!column.key || !p[column.key]) return '';
+        return p[column.key];
+      });
+      p.data.origin = {
+        employeeId: p.employeeId,
+        isLeaf: true,
+      }
+    });
+    return infomationscopy;
   }
+
+  handleChangeInfomation({ records, columns }) {
+
+    //update informations
+    this.informations.forEach((d: any, index) => {
+      const record = records[index];
+      //update data on Jexcel
+      Object.keys(record).forEach(index => {
+        d.data[index] = record[index];
+      });
+      //update data object source
+      columns.map((column, index) => {
+        d[column.key] = record[index];
+      });
+
+    });
+
+    this.notificeEventValidData('documentList');
+  }
+
+  handleChangedFiles(files) {
+    this.declarations.files = files;
+  }
+
+
+  private getFromDate(dateMonthYear) {
+    const fullDate = '01/' + dateMonthYear;
+    if(!moment(fullDate,"DD/MM/YYYY")) {
+      return new Date();
+    }
+    return moment(fullDate,"DD/MM/YYYY").toDate();
+  }
+// End Document list Tab
+
+  validDocumentForm() {
+      const formError: any[] = [];
+      if(this.documentForm.controls.submitter.errors) {
+        formError.push({
+          y: 'Người nộp',
+          columnName: 'Kiểm tra lại trường người nộp',
+          prefix: '',
+          subfix: 'Lỗi'
+        });
+      }
+
+      if(this.documentForm.controls.mobile.errors) {
+        formError.push({
+          y: 'Số điện thoại',
+          columnName: 'Kiểm tra lại trường số điện thoại',
+          prefix: '',
+          subfix: 'Lỗi'
+        });
+      }
+
+      return formError;
+  }
+
+ private buildMessgaeByConfig(objConfig, employeeInfo) {
+    const argsColumn = objConfig.column || [] ;
+    const mesage = objConfig.mesage || '' ;
+    const argsMessgae = [];
+    argsColumn.forEach(column => {
+      argsMessgae.push(employeeInfo[column]);
+    });
+
+    return this.formatNote(mesage, argsMessgae);;
+  }
+
+  protected formatNote(str, args) {
+    for (let i = 0; i < args.length; i++)
+       str = str.replace("{" + i + "}", args[i]);
+    return str;
+  }
+
+  private getFileByDeclarationCode(code) {
+     console.log(this.files);
+  }
+
 }
