@@ -11,7 +11,7 @@
           </button>
       </div>
   </div>
-    <div class="page-search">
+    <div class="page-search"> 
       <div nz-row nzGutter="30">
           <div nz-col nzMd="8">
             <nz-form-item>
@@ -80,6 +80,20 @@
         </tr>
       </thead>
       <tbody>
+
+        <tr class="ui-table-custom-filter">
+          <td></td>
+          <td><input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small" [(ngModel)]="filter.name"
+              (ngModelChange)="handleFilter('name')" /></td>
+          <td><input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small" [(ngModel)]="filter.tax"
+              (ngModelChange)="handleFilter('tax')" /></td>
+          <td><input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small" [(ngModel)]="filter.delegate"
+              (ngModelChange)="handleFilter('delegate')" /></td>
+          <td><input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small" [(ngModel)]="filter.active"
+              (ngModelChange)="handleFilter('active')" /></td>
+          <td></td>
+        </tr>
+
         <tr *ngFor="let data of ajaxTable.data;index as i">
           <td>{{i + 1}}</td>
           <td>{{ data.name }}</td>

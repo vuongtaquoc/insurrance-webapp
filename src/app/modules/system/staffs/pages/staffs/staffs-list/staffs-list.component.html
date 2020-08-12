@@ -105,6 +105,11 @@
                     </a>    
                 </ng-container>
                 <app-button-delete [id]="data.id" (delete)="delete($event)"></app-button-delete>
+                <ng-container>
+                  <a [routerLink]="['/staff/' + data.id + '/pemissions']" class="action-padding">
+                      <i nz-icon nzType="ordered-list" nzTheme="outline"></i>
+                  </a>    
+              </ng-container>
               </td>
             </tr>
           </tbody>

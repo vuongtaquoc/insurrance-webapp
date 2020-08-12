@@ -24,6 +24,15 @@ export class AgenciesListComponent implements OnInit, OnDestroy {
     value: ''
   };
 
+  filter: any = {
+    name: '',
+    tax: '',
+    delegate: '',
+    active: ''
+  };
+
+  keyword: string = '';
+
   agencies: any[] = [];
   constructor(
     private formBuilder: FormBuilder,
@@ -65,13 +74,14 @@ export class AgenciesListComponent implements OnInit, OnDestroy {
     });
   }
 
-  sort(event) {
-    this.shortColumn = event;
+  handleFilter(key) {
+    this.keyword = this.filter[key];
     this.getAgenCies();
   }
 
-  get keyword() {
-    return this.formSearch.get('keyword').value;
+  sort(event) {
+    this.shortColumn = event;
+    this.getAgenCies();
   }
 
   get dateTo() {
@@ -97,11 +107,11 @@ export class AgenciesListComponent implements OnInit, OnDestroy {
     this.agencieService.delete(id).subscribe(() => {
       this.getAgenCies(this.skip);
     },
-    (err) => {
-      this.translateService.get(err.message).subscribe(message => {
-        this.messageService.create('error', message);
+      (err) => {
+        this.translateService.get(err.message).subscribe(message => {
+          this.messageService.create('error', message);
+        });
       });
-    });
   }
 
   handleSearchBox() {

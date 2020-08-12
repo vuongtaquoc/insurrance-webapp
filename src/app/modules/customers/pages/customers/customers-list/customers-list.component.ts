@@ -10,8 +10,8 @@ import { CustomerService } from '@app/core/services/customer.service';
 @Component({
   selector: 'app-customers-list',
   templateUrl: './customers-list.component.html',
-  styleUrls: ['./customers-list.component.less']
-}) 
+  styleUrls: ['./customers-list.component.less', '../../../../agencies/pages/agencies/agencies-list/agencies-list.component.less']
+})
 export class CustomersListComponent implements OnInit, OnDestroy {
   total: number;
   skip: number;
@@ -40,6 +40,18 @@ export class CustomersListComponent implements OnInit, OnDestroy {
     });
 
     this.getCustomers();
+  }
+
+  filter: any = {
+    name: '',
+    tax: '',
+    delegate: '',
+    active: ''
+  };
+
+  handleFilter(key) {
+    // this.keyword = this.filter[key];
+    // this.getproducts();
   }
 
   private getCustomers(skip = 0, take = PAGE_SIZE) {
@@ -97,11 +109,11 @@ export class CustomersListComponent implements OnInit, OnDestroy {
     this.customerService.delete(id).subscribe(() => {
       this.getCustomers(this.skip);
     },
-    (err) => {
-      this.translateService.get(err.message).subscribe(message => {
-        this.messageService.create('error', message);
+      (err) => {
+        this.translateService.get(err.message).subscribe(message => {
+          this.messageService.create('error', message);
+        });
       });
-    });
   }
 
   handleSearchBox() {

@@ -17,7 +17,7 @@ import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { AuthenticationService } from '@app/core/services';
 import { SharedModule } from '@app/shared/shared.module';
 import { StaffsRoutingModule } from './staffs-routing.module';
-import { StaffsListComponent, StaffsSaveComponent } from './pages';
+import { StaffsListComponent, StaffsSaveComponent, StaffsPersmissonComponent } from './pages';
 
 
 @NgModule({
@@ -40,7 +40,8 @@ import { StaffsListComponent, StaffsSaveComponent } from './pages';
     ],
     declarations: [
         StaffsListComponent,
-        StaffsSaveComponent
+        StaffsSaveComponent,
+        StaffsPersmissonComponent
     ],
     providers: [
         AuthenticationService

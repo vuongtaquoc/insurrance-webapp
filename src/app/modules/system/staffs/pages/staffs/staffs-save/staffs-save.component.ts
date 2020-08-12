@@ -13,7 +13,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class StaffsSaveComponent implements OnInit, OnDestroy {
     isEdit: boolean = false;
     id: number;
-    loading = false;
+    loading = false; 
     form: FormGroup;
     constructor(
         private formBuilder: FormBuilder,
@@ -24,7 +24,6 @@ export class StaffsSaveComponent implements OnInit, OnDestroy {
 
     }
     ngOnInit() {
-        debugger;
         this.id = +this.route.snapshot.params.id;
         this.loadForm();
         if (this.id && this.id > 0) {

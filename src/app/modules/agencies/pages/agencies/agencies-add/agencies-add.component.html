@@ -6,7 +6,7 @@
             <h1>I. THÔNG TIN ĐẠI LÝ</h1> 
             <div nz-row nzGutter="10">
                 <div nz-col [nzSpan]="24">
-                    <nz-form-item>
+                    <nz-form-item> 
                         <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="6">{{ 'agencies.from.tax' | translate }}</nz-form-label>
                         <nz-form-control [nzSpan]="10" [nzErrorTip]="taxtpl" >
                             <nz-input-group nzSearch  [nzAddOnAfter]="suffixButton">
@@ -149,7 +149,7 @@
 
             <div nz-row nzGutter="8">
                 <div nz-col nzMd="24"  class="footer-botton">  
-                    <button class="employee-form__button-save"  nz-button nzType="primary" (click)="save()">Lưu</button>
+                    <button class="employee-form__button-save" [disabled]="!companyAgencies.valid" nz-button nzType="primary" (click)="save()">Lưu</button>
                     <button class="employee-form__button-back" nz-button nzType="default" [routerLink]="['/agencies/list']">Quay lại</button>
                 </div>
             </div>
