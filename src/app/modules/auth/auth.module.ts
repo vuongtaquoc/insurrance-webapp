@@ -5,6 +5,7 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzSelectModule } from 'ng-zorro-antd/select';
 
 import { AuthenticationService } from '@app/core/services';
 import { SharedModule } from '@app/shared/shared.module';
@@ -27,7 +28,8 @@ import {
     NzFormModule,
     NzInputModule,
     SharedModule,
-    AuthRoutingModule
+    AuthRoutingModule,
+    NzSelectModule 
   ],
   declarations: [
     AuthLoginComponent,
