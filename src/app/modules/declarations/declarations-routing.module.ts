@@ -23,6 +23,9 @@ import {
   AdjustGeneralListComponent,
   AdjustGeneralAddComponent,
   AdjustGeneralEditComponent,
+  CompanyChangetListComponent,
+  CompanyChangeAddComponent,
+  CompanyChangeEditComponent
 } from './pages';
 
 const routes: Routes = [
@@ -108,6 +111,18 @@ const routes: Routes = [
       {
         path: 'adjust-general/:id/edit',
         component: AdjustGeneralEditComponent
+      },
+      {
+        path: 'company-change',
+        component: CompanyChangetListComponent
+      },
+      {
+        path: 'company-change/add',
+        component: CompanyChangeAddComponent
+      },
+      {
+        path: 'company-change/:id/edit',
+        component: CompanyChangeEditComponent
       }
     ]
   }
