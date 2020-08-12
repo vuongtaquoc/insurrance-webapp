@@ -16,3 +16,6 @@ export * from './arrears-edit/arrears-edit.component';
 export * from './adjust-general-add/adjust-general-add.component';
 export * from './adjust-general-list/adjust-general-list.component';
 export * from './adjust-general-edit/adjust-general-edit.component';
+export * from './company-change-list/company-change-list.component';
+export * from './company-change-add/company-change-add.component';
+export * from './company-change-edit/company-change-edit.component';

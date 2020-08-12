@@ -1,6 +1,6 @@
 <div class="page-container">
   <div class="page-card page-increase-labor">
-    <h1>600 | Báo tăng lao động</h1>
+    <h1>{{declarationCode}} | {{declarationName}}</h1>
 
     <div class="page-increase-labor__menu-bar">
       <div class="page-increase-labor__filter">
@@ -18,7 +18,7 @@
 
     <nz-table
       #rowSelectionTable
-      [nzBordered]="false"
+      nzBordered
       [nzData]="declarations"
       [nzPageSize]="declarations.length"
       [nzShowPagination]="false"
@@ -36,26 +36,17 @@
         </tr>
       </thead>
       <tbody>
-        <tr class="ui-table-custom-filter">
-          <td><input nz-input placeholder="Tìm kiếm..." nzSize="small" [(ngModel)]="filter.createDate" (ngModelChange)="handleFilter('createDate')" /></td>
-          <td><input nz-input placeholder="Tìm kiếm..." nzSize="small" [(ngModel)]="filter.documentNo" (ngModelChange)="handleFilter('documentNo')" /></td>
-          <td><input nz-input placeholder="Tìm kiếm..." nzSize="small" [(ngModel)]="filter.declarationName" (ngModelChange)="handleFilter('declarationName')" /></td>
-          <td><input nz-input placeholder="Tìm kiếm..." nzSize="small" [(ngModel)]="filter.sendDate" (ngModelChange)="handleFilter('sendDate')" /></td>
-          <td><input nz-input placeholder="Tìm kiếm..." nzSize="small" [(ngModel)]="filter.documentStatusName" (ngModelChange)="handleFilter('documentStatusName')" /></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr *ngFor="let data of rowSelectionTable.data">
+        <tr *ngFor="let data of rowSelectionTable.data" class="status_{{data.status}}">
           <td class="text-center">{{ data.createDate }}</td>
           <td class="text-center">{{ data.documentNo }}</td>
           <td class="text-wrap">{{ data.declarationName }}</td>
           <td class="text-center">{{ data.sendDate }}</td>
           <td class="text-center">{{ data.documentStatusName }}</td>
           <td class="text-center">
-            <button nz-button nzType="link" nzBlock (click)="viewDocument(data)" >Xem</button>
-          </td>
+              <button nz-button nzType="link" nzBlock (click)="viewDocument(data)" >Xem</button>
+            </td>
           <td class="text-center">
-            <a [routerLink]="['/declarations/increase-labor/' + data.id + '/edit']" title="Sửa" nz-button nzType="link">
+            <a [routerLink]="['/declarations/increase-labor/' + data.id + '/edit']" nz-button nzType="link">
               <i nz-icon nzType="edit" nzTheme="outline"></i>
             </a>
             <app-button-delete [id]="data.id" (delete)="delete($event)"></app-button-delete>

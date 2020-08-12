@@ -42,6 +42,7 @@ export class EmployeeFamilyTableComponent implements OnInit, OnDestroy, OnChange
   ) {
     this.getDistrictsByCityCode = this.getDistrictsByCityCode.bind(this);
     this.getWardsByDistrictCode = this.getWardsByDistrictCode.bind(this);
+    this.getRelationShips = this.getRelationShips.bind(this);
   }
 
   ngOnInit() {
@@ -58,6 +59,7 @@ export class EmployeeFamilyTableComponent implements OnInit, OnDestroy, OnChange
       // add filter
       this.updateFilterToColumn('districtCode', this.getDistrictsByCityCode);
       this.updateFilterToColumn('wardsCode', this.getWardsByDistrictCode);
+      this.updateFilterToColumn('relationshipCode', this.getRelationShips);
     });
   }
 
@@ -167,6 +169,7 @@ export class EmployeeFamilyTableComponent implements OnInit, OnDestroy, OnChange
     }
 
     const data = [];
+    console.log(data);
     this.data.forEach((d, index) => {
       d.data = d.data || [];
       d.data.origin  = d.origin;
@@ -241,5 +244,14 @@ export class EmployeeFamilyTableComponent implements OnInit, OnDestroy, OnChange
 
       return wards;
     });
+  }
+
+  private getRelationShips(instance, cell, c, r, source) {
+    const row = instance.jexcel.getRowFromCoords(r);
+    if (row[c] === '00') {
+      this.spreadsheet.setReadonly(r, c);
+      return source;
+    }
+    return source.filter(s => s.id !== '00');;
   }
 }

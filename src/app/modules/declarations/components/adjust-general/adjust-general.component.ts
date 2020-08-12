@@ -179,8 +179,8 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
         this.documentForm.patchValue({
           submitter: this.currentCredentials.companyInfo.delegate,
           mobile: this.currentCredentials.companyInfo.mobile
-        });  
-        
+        });
+
         this.declarationGeneral = {
           totalNumberInsurance: 0,
           totalCardInsurance: 0
@@ -208,7 +208,7 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
 
       this.handlers.push(eventEmitter.on('tree-declaration:updateUser', (data) => {
         this.updateEmployeeInFamily(data.employee);
-        this.updateEmployeeInInfomation(data.employee);     
+        this.updateEmployeeInInfomation(data.employee);
       }));
 
     });
@@ -226,7 +226,7 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
         Object.keys(d).forEach(key => {
           if(user[key] !== undefined) {
              d[key] = user[key];
-          }           
+          }
         });
 
         d.employeeName = user.fullName;
@@ -250,7 +250,7 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
         Object.keys(d).forEach(key => {
           if(user[key] !== undefined) {
              d[key] = user[key];
-          }           
+          }
         });
 
         d.data = this.tableHeaderColumnsDocuments.map(column => {
@@ -271,7 +271,7 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
     if(tableName === 'increaselabor') {
       this.sumCreateBHXH(data.data);
     }
-    
+
     if (data.action === ACTION.EDIT) {
       this.setDateToInformationList(this.declarations.tables);
     }
@@ -350,17 +350,17 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
       },
       0
     );
-    
+
     if (count > 0) {
       return this.modalService.error({
         nzTitle: 'Lỗi dữ liệu. Vui lòng sửa!',
         nzContent: TableEditorErrorsComponent,
-        nzComponentParams: {         
+        nzComponentParams: {
           errors: this.getColumnErrror()
         }
       });
     }
-
+    
     if (this.declarationId) {
       this.update('saveAndView');
     } else {
@@ -369,11 +369,11 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
   }
 
   rollback() {
-    if(!this.isTableValid) { 
+    if(!this.isTableValid) {
       this.router.navigate(['/declarations/adjust-general']);
       return;
     }
-    
+
     this.modalService.confirm({
       nzTitle: 'Bạn có muốn lưu lại thông tin thay đổi',
       nzOkText: 'Có',
@@ -388,7 +388,7 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
       nzOnCancel: () => {
         this.router.navigate(['/declarations/adjust-general']);
       }
-    });      
+    });
   }
 
   private sumCreateBHXH(data) {
@@ -423,7 +423,7 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
       });
       return;
     }
-
+     
     if (this.declarationId) {
       this.update('save');
     } else {
@@ -459,7 +459,8 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
       ...this.declarations.formGenelral,
       documentDetail: this.tablesToApi(this.declarations.tables),
       informations: this.reformatInformations(),
-      families: this.reformatFamilies()
+      families: this.reformatFamilies(),
+      flies: this.declarations.files,
     }).subscribe(data => {
       if (type === 'saveAndView') {
         this.viewDocument(data);
@@ -470,7 +471,7 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
   }
 
   private update(type: any) {
-     
+
     this.declarationService.update(this.declarationId, {
       type: type,
       declarationCode: this.declarationCode,
@@ -483,7 +484,8 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
       ...this.declarations.formGenelral,
       documentDetail: this.tablesToApi(this.declarations.tables),
       informations: this.reformatInformations(),
-      families: this.reformatFamilies()
+      families: this.reformatFamilies(),
+      flies: this.declarations.files,
     }).subscribe(data => {
       if (type === 'saveAndView') {
         this.viewDocument(data);
@@ -492,7 +494,7 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
       }
     });
   }
- 
+
   private getStatus(type) {
     if(this.status > 0) {
       return this.status;
@@ -920,7 +922,7 @@ private setDataToFamilyEditor(records: any)
 
   deleteEmployeeInInfomation(declarations, declarationsDeleted, columns) {
     let informations = [...this.informations];
-   
+
     declarationsDeleted.forEach(d => {
         const employeeInfo = this.getDeclarationInData(d.data, columns);
         informations = informations.filter(info => {
@@ -1057,7 +1059,7 @@ private setDateToInformationList(records: any)
     const curentDate = new Date();
     const  numberFromDate = (fromDate.getMonth() + 1 + fromDate.getFullYear());
     const  numberCurentDate = (curentDate.getMonth() + 1 + curentDate.getFullYear());
-    
+
 
     if(numberFromDate >= numberCurentDate)
     {
@@ -1074,9 +1076,9 @@ private setDateToInformationList(records: any)
       if (!item) {
         item = {
             documentNote: doc.documentNote,
-            documentType: doc.documentType,  
-            isurranceNo: emp.isurranceNo,           
-            isurranceCode: emp.isurranceCode,    
+            documentType: doc.documentType,
+            isurranceNo: emp.isurranceNo,
+            isurranceCode: emp.isurranceCode,
             fullName: emp.fullName,
             documentCode: doc.documentCode,
             planCode: emp.planCode,
@@ -1087,7 +1089,7 @@ private setDateToInformationList(records: any)
               planCode: emp.planCode,
               documentCode: doc.documentCode,
             }
-        }; 
+        };
       }
 
       item.companyRelease = item.companyRelease ? item.companyRelease : this.buildMessgaeByConfig(doc.companyRelease,emp);
@@ -1133,7 +1135,7 @@ private setDateToInformationList(records: any)
   }
 
   fomatFamilies(families) {
-    
+
     if(!families) {
       return [];
     }
@@ -1145,7 +1147,7 @@ private setDateToInformationList(records: any)
         if (!column.key || !p[column.key]) return '';
         return p[column.key];
       });
-     
+
       p.data.origin = {
         employeeId: p.employeeId,
         isLeaf: true,
@@ -1164,7 +1166,7 @@ private setDateToInformationList(records: any)
         familiesFomat.push(this.fakeEmployeeInFamilies(p));
         familiesFomat.push(this.fakeEmployeeInFamilies(p));
       }
-      
+
     });
 
     return familiesFomat;
@@ -1188,6 +1190,10 @@ private setDateToInformationList(records: any)
     });
 
     this.notificeEventValidData('documentList');
+  }
+
+  handleChangedFiles(files) {
+    this.declarations.files = files;
   }
 
 
@@ -1227,7 +1233,7 @@ private setDateToInformationList(records: any)
     const argsColumn = objConfig.column || [] ;
     const mesage = objConfig.mesage || '' ;
     const argsMessgae = [];
-    argsColumn.forEach(column => { 
+    argsColumn.forEach(column => {
       argsMessgae.push(employeeInfo[column]);
     });
 
@@ -1243,5 +1249,5 @@ private setDateToInformationList(records: any)
   private getFileByDeclarationCode(code) {
      console.log(this.files);
   }
-  
+
 }

@@ -33,7 +33,7 @@ export class PlanService {
         return hospitals.map(plan => ({
           ...plan,
           name: `${ plan.id } - ${ plan.name }`,
-          shortName: plan.name
+          shortName: plan.id
         }));
       })
     );
@@ -61,7 +61,7 @@ export class PlanService {
         return hospitals.map(plan => ({
           ...plan,
           name: `${ plan.id } - ${ plan.name }`,
-          shortName: plan.name
+          shortName: plan.id
         }));
       })
     );

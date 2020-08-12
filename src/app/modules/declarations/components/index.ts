@@ -21,3 +21,4 @@ export * from './table-editor/increase-editor.component';
 export * from './reduction/reduction.component';
 export * from './declaration-sidebar/search.component';
 export * from './adjustment/adjustment.component';
+export * from './company-change/company-change.component';

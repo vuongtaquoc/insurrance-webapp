@@ -1,40 +1,58 @@
 import { Component, ViewEncapsulation, OnInit, OnChanges, Input, Output, EventEmitter } from '@angular/core';
 import uuid from 'uuid';
+import cloneDeep from 'lodash/cloneDeep';
 
 @Component({
   selector: 'app-labor-attachment',
   templateUrl: './labor-attachment.component.html',
-  styleUrls: ['./labor-attachment.component.less']
-  ,encapsulation: ViewEncapsulation.None
+  styleUrls: ['./labor-attachment.component.less'],
+  encapsulation: ViewEncapsulation.None
 })
 export class LaborAttachmentComponent implements OnInit, OnChanges {
   @Input() files: any = [];
+  @Input() declarationCode: any;
   @Output() onChangeName = new EventEmitter<any>();
   @Output() onSelectedFileChanged = new EventEmitter<any>();
 
   rows: any[] = [];
 
   ngOnInit() {
+    if (!this.rows.length) {
+      this.loadDefaultData();
+    }
+  }
+
+  ngOnChanges(changes) {
+    if (!this.rows.length) {
+      this.loadDefaultData();
+    }
+
+    if (changes.files && changes.files.currentValue && changes.files.currentValue.length) {
+
+      changes.files.currentValue
+        .filter(f => f.declarationCode === this.declarationCode)
+        .forEach((file, index) => {
+          this.rows[index].documentName = file.documentName;
+          this.rows[index].fileName = file.fileName;
+          this.rows[index].hasFile = true;
+        });
+    }
+  }
+
+  private loadDefaultData() {
     for (let i = 1; i <= 10; i++) {
       this.rows.push({
         no: i,
         rowId: uuid.v4(),
         documentName: '',
+        declarationCode: this.declarationCode,
         data: {},
         hasFile: false
       });
     }
   }
 
-  ngOnChanges(changes) {
-    if (changes.files && changes.files.currentValue && changes.files.currentValue.length) {
-      changes.files.currentValue.forEach((file, index) => {
-        this.rows[index].documentName = file.documentName;
-        this.rows[index].fileName = file.fileName;
-        this.rows[index].hasFile = true;
-      });
-    }
-  }
+
 
   handleFileSelected(file, rowId) {
     const row = this.rows.find(r => r.rowId === rowId);
@@ -46,7 +64,10 @@ export class LaborAttachmentComponent implements OnInit, OnChanges {
     row.size = file.metadata.size;
     row.hasFile = true;
 
-    this.onSelectedFileChanged.emit(this.rows.filter(row => row.hasFile));
+    const otherFiles = (this.files || []).filter(f => f.declarationCode !== this.declarationCode);
+    const files = this.rows.filter(row => row.hasFile);
+
+    this.onSelectedFileChanged.emit(cloneDeep([...files, ...otherFiles]));
   }
 
   handleChangeDocumentName(rowId) {
@@ -54,7 +75,10 @@ export class LaborAttachmentComponent implements OnInit, OnChanges {
 
     if (!row) return;
 
-    this.onSelectedFileChanged.emit(this.rows.filter(row => row.hasFile));
+    const otherFiles = (this.files || []).filter(f => f.declarationCode !== this.declarationCode);
+    const files = this.rows.filter(row => row.hasFile);
+
+    this.onSelectedFileChanged.emit(cloneDeep([...files, ...otherFiles]));
   }
 
   handleClearRow(rowId) {
@@ -66,7 +90,11 @@ export class LaborAttachmentComponent implements OnInit, OnChanges {
     row.fileName = null;
     row.size = null;
     row.hasFile = false;
+    row.documentName = '';
 
-    this.onSelectedFileChanged.emit(this.rows.filter(row => row.hasFile));
+    const otherFiles = (this.files || []).filter(f => f.declarationCode !== this.declarationCode);
+    const files = this.rows.filter(row => row.hasFile);
+
+    this.onSelectedFileChanged.emit(cloneDeep(cloneDeep([...files, ...otherFiles])));
   }
 }

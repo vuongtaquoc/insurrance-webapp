@@ -4,7 +4,7 @@
       <tr *ngFor="let row of rows">
         <td width="5%" class="text-center">{{ row.no }}</td>
         <td width="35%">
-          <input nz-input nzSize="small" [(ngModel)]="row.documentName" (change)="handleChangeDocumentName(row.rowId)" />
+          <input nz-input nzSize="small" placeholder="Nhập tên file tài liệu đính kèm" [(ngModel)]="row.documentName" (change)="handleChangeDocumentName(row.rowId)" />
         </td>
         <td width="60%" class="text-right">
           <div class="labor-attachment__content">

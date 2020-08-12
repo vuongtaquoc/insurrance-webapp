@@ -52,6 +52,9 @@ import {
   AdjustGeneralListComponent,
   AdjustGeneralAddComponent,
   AdjustGeneralEditComponent,
+  CompanyChangetListComponent,
+  CompanyChangeAddComponent,
+  CompanyChangeEditComponent,
 } from './pages';
 
 import {
@@ -77,7 +80,8 @@ import {
   IncreaseEditorComponent,
   ReductionComponent,
   AdjustmentComponent,
-  DeclarationSidebarSearchComponent
+  DeclarationSidebarSearchComponent,
+  CompanyChangeComponent,
 } from './components';
 
 import { RegimeAutoSizeDirective } from './directives';
@@ -147,7 +151,11 @@ import { RegimeAutoSizeDirective } from './directives';
     IncreaseEditorComponent,
     ReductionComponent,
 	  AdjustmentComponent,
-    DeclarationSidebarSearchComponent
+    DeclarationSidebarSearchComponent,
+    CompanyChangetListComponent,
+    CompanyChangeEditComponent,
+    CompanyChangeAddComponent,
+    CompanyChangeComponent,
   ],
   providers: [
     AuthenticationService,

@@ -20,7 +20,10 @@ export class StaffService {
   }
 
   public gets(filters = {}) {
+<<<<<<< HEAD
     // return this.http.getList('/users', {
+=======
+>>>>>>> 7dc12aedb5abcbcffce4dc080a531d86b78d07ad
     return this.http.getList('/customers', {
       params: {
         ...filters
@@ -29,15 +32,20 @@ export class StaffService {
   }
 
   public getDetailById(id: string) {
+<<<<<<< HEAD
     return this.http.get(`/users/${id}`, {
+=======
+    return this.http.get(`/customers/${ id }`, {
+>>>>>>> 7dc12aedb5abcbcffce4dc080a531d86b78d07ad
     });
   }
 
   public create(body, options = {}) {
-    return this.http.post('/users', body, options);
+    return this.http.post('/customers', body, options);
   }
 
   public update(id, body, options = {}) {
+<<<<<<< HEAD
     return this.http.post(`/users/${id}`, body, options);
   }
 
@@ -70,5 +78,14 @@ export class StaffService {
       }
     });
   }
+=======
+    return this.http.post(`/customers/${ id }`, body, options);
+  }
+
+  public delete(id) {
+    return this.http.delete(`/customers/${ id }`);
+  }
+  
+>>>>>>> 7dc12aedb5abcbcffce4dc080a531d86b78d07ad
 
 }

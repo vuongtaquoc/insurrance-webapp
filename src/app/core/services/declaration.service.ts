@@ -157,7 +157,6 @@ export class DeclarationService {
   public updateFormula(declarations, tableHeaderColumns) {
     const clone = cloneDeep(declarations);
     const sumColumnIndexes = this.getSumColumnIndexes(tableHeaderColumns);
-
     clone.forEach((declaration, index) => {
       if (declaration.formula) {
         const lastFormulaIndex = findLastIndex(clone, (d, i) => i < index && !!d.formula);
