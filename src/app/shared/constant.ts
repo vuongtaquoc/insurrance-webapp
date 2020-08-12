@@ -56,30 +56,6 @@ export const REGEX = {
 };
 
 export const DECLARATIONS =
-<<<<<<< HEAD
-  [
-    {
-      key: '600',
-      value: 'Báo tăng lao động'
-    },
-    {
-      key: '630',
-      value: 'Xét duyệt chế độ ốm đau, thai sản, phụ hồi sức khỏe'
-    },
-    {
-      key: '630a',
-      value: 'Xét duyệt chế độ ốm đau'
-    },
-    {
-      key: '630b',
-      value: 'Xét duyệt chế độ ốm đau'
-    },
-    {
-      key: '601',
-      value: 'Truy thu (Trường hợp vi phạm quy định của pháp luật vè đóng BHXH,BHYT,BHTN, BHTNLD,BNN)'
-    }
-  ];
-=======
 [
   {
   key: '600',
@@ -114,7 +90,6 @@ export const DECLARATIONS =
     value:'Điều chỉnh chức danh mức đóng'
   },
 ];
->>>>>>> 7dc12aedb5abcbcffce4dc080a531d86b78d07ad
 
 export const CONSTPARENTDELETEAUTOROW =
   [
