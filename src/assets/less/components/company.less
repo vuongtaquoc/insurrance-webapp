@@ -1,20 +1,25 @@
 .page-company {
   height: 100%;
-  background-color: #F8FBFF;
-  box-shadow: -3px 2px 2px rgba(13, 13, 13, .25);
+  display: grid;
+  grid-template-columns: 15% 1fr 15%;
+  grid-gap: 5px;
+  background-color: #ffffff;
+  box-shadow: -3px 2px 2px rgba(13, 13, 13, 0.25);
   border-radius: 10px;
-  padding: 5px;
-  width: 100%;
+  padding: 15px;
+  margin-bottom: 10px;
   overflow: hidden;
 
   h1 {
-    font-size: 13px;
-    font-weight: 400;
-    color: #4964EE;
+    font-size: 15px;
+    font-weight: 700;
+    color: #3266D3;
+    margin-bottom: 10px;
 
     strong {
       font-weight: 700;
     }
+
     // margin-bottom: 10px;
   }
 
@@ -93,6 +98,7 @@
     box-shadow: 0 3px 6px rgba(0, 0, 0, .16);
     height: 30px;
     padding: 0 10px;
+
     &:hover {
       background-color: #4964EE;
       border-color: #5382EF;
@@ -165,10 +171,12 @@
     margin-left: 5px;
   }
 
-  &__part1, &__part2 {
+  &__part1,
+  &__part2 {
     height: 100%;
     width: 100%;
   }
+
   .ant-tabs {
     height: 100%;
     display: flex;
@@ -187,23 +195,24 @@
     padding: 4px 10px;
   }
 
-  .ant-collapse > .ant-collapse-item > .ant-collapse-header {
+  .ant-collapse>.ant-collapse-item>.ant-collapse-header {
     background: #f1f1f1;
     padding: 2px 16px;
     padding-left: 40px;
     text-transform: uppercase;
   }
 
-  .ant-collapse-content > .ant-collapse-content-box {
+  .ant-collapse-content>.ant-collapse-content-box {
     padding: 0;
   }
 
-  .ant-collapse-borderless > .ant-collapse-item > .ant-collapse-content > .ant-collapse-content-box {
+  .ant-collapse-borderless>.ant-collapse-item>.ant-collapse-content>.ant-collapse-content-box {
     padding-top: 0;
     width: 100%;
   }
 
-  .nz-collapse-panel, nz-collapse-panel {
+  .nz-collapse-panel,
+  nz-collapse-panel {
     width: 100%;
   }
 
@@ -216,7 +225,8 @@
     height: 100%;
   }
 
-  nz-collapse, .ant-collapse {
+  nz-collapse,
+  .ant-collapse {
     height: 100%;
     width: 100%;
   }
@@ -226,7 +236,7 @@
     flex-direction: column;
   }
 
-  nz-collapse .ant-collapse > .ant-collapse-item {
+  nz-collapse .ant-collapse>.ant-collapse-item {
     border-bottom: 0;
   }
 
