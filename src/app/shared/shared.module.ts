@@ -119,7 +119,8 @@ import {
     TableEditorErrorsComponent,
     CardFullHeightDirective,
     EditorAutoSizeDirective,
-    PluploadDirective
+    PluploadDirective,
+    NzCheckboxModule
   ],
   providers: [
     AuthenticationService,

@@ -90,7 +90,8 @@
 			"wards": "Phường xã",
 			"object": "Đôi tượng cấp thẻ",
 			"studentLevelOne": "Học sinh(Lớp 1->12)",
-			"studentLevelTwo": "Sinh viên(Đại học, Cao đẳng, Trung học chuyên nghiệp, Nghề...)"
+			"studentLevelTwo": "Sinh viên(Đại học, Cao đẳng, Trung học chuyên nghiệp, Nghề...)",
+			"career":"Ngành nghề sản xuất kinh doanh chính"
 		}
 	},
 	"contract": {
