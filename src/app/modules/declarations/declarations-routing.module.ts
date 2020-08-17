@@ -25,7 +25,10 @@ import {
   AdjustGeneralEditComponent,
   CompanyChangetListComponent,
   CompanyChangeAddComponent,
-  CompanyChangeEditComponent
+  CompanyChangeEditComponent,
+  ReissueHealthCardListComponent,
+  ReissueHealthCardAddComponent,
+  ReissueHealthCardEditComponent
 } from './pages';
 
 const routes: Routes = [
@@ -123,6 +126,18 @@ const routes: Routes = [
       {
         path: 'company-change/:id/edit',
         component: CompanyChangeEditComponent
+      },
+      {
+        path: 'health-insurance-card',
+        component: ReissueHealthCardListComponent
+      },
+      {
+        path: 'health-insurance-card/add',
+        component: ReissueHealthCardAddComponent
+      },
+      {
+        path: 'health-insurance-card/:id/edit',
+        component: ReissueHealthCardEditComponent
       }
     ]
   }

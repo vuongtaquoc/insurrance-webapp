@@ -113,6 +113,7 @@ export const TABLE_DOCUMENT_HEADER_COLUMNS = [{
   type: 'text',
   width: 260,
   title: '(11)',
+  fieldName: 'Trích lược nội dung cần thẩm định',
   wordWrap: true,
   align: 'left',
   key: 'documentAppraisal',

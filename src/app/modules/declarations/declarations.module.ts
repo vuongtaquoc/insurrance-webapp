@@ -55,10 +55,15 @@ import {
   CompanyChangetListComponent,
   CompanyChangeAddComponent,
   CompanyChangeEditComponent,
+  ReissueHealthCardListComponent,
+  ReissueHealthCardAddComponent,
+  ReissueHealthCardEditComponent,
+  
 } from './pages';
 
 import {
   TableEditorComponent,
+  TableEditorNormalComponent,
   DocumentListTableComponent,
   DeclarationSidebarComponent,
   IncreaseLaborComponent,
@@ -82,6 +87,8 @@ import {
   AdjustmentComponent,
   DeclarationSidebarSearchComponent,
   CompanyChangeComponent,
+  ReissueHealthCardComponent,
+  
 } from './components';
 
 import { RegimeAutoSizeDirective } from './directives';
@@ -117,6 +124,7 @@ import { RegimeAutoSizeDirective } from './directives';
     ReductionLaborAddComponent,
     ReductionLaborEditComponent,
     TableEditorComponent,
+    TableEditorNormalComponent,
     DocumentListTableComponent,
     DeclarationSidebarComponent,
     IncreaseLaborComponent,
@@ -156,6 +164,10 @@ import { RegimeAutoSizeDirective } from './directives';
     CompanyChangeEditComponent,
     CompanyChangeAddComponent,
     CompanyChangeComponent,
+    ReissueHealthCardComponent,
+    ReissueHealthCardListComponent,
+    ReissueHealthCardAddComponent,
+    ReissueHealthCardEditComponent,
   ],
   providers: [
     AuthenticationService,

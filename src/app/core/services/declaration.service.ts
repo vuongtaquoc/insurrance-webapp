@@ -48,6 +48,19 @@ export class DeclarationService {
     );
   }
 
+  public getDeclarationsNormalByDocumentId(id, tableHeaderColumns) {
+    return this.http.get(`/declarations/normal/${ id }`).pipe(
+      map(detail => {       
+        const declaration = detail;
+        const declarationDetail = this.updateDeclarationsNormal(detail.declarationDetail, tableHeaderColumns);
+
+        declaration.declarationDetail = declarationDetail;
+
+        return declaration;
+      })
+    );
+  }
+
   public getDeclarationsByDocumentIdByGroup(id) {
     return this.http.get(`/declarations/${ id }`).pipe(
       map(detail => {
@@ -100,6 +113,30 @@ export class DeclarationService {
     });
 
     return this.updateFormula(data, tableHeaderColumns);
+  }
+
+  public updateDeclarationsNormal(declarations, tableHeaderColumns, hasEmployeeId = false) {
+    const data = [];
+    declarations.forEach((d, index) => {
+      data.push(this.getLeafRow(d, tableHeaderColumns))
+    });
+
+    const itemPerPage = 10 - data.length;
+    let numberItem = 5;
+    if(itemPerPage > 0) {
+      numberItem = itemPerPage;
+    }
+
+    for (let index = 0; index < numberItem; index++) {
+      data.push({
+        data: [],
+        origin: {},
+        isLeaf:true,
+        fullName: '',
+        isInitialize: false,
+      });
+    }
+    return data;
   }
 
   public updateDeclarationsGroupByPart(declarations, columns, hasEmployeeId = false) {
@@ -181,6 +218,23 @@ export class DeclarationService {
       isInitialize,
       planType: parent.planType,
       planDefault: parent.planDefault,
+      data: tableHeaderColumns.map(column => {
+        if (!column.key) return '';
+
+        if (column.key === 'gender') {
+          return employee[column.key] === true || employee[column.key] === '1';
+        }
+
+        return employee[column.key];
+      })
+    };
+  }
+
+  public getLeafRow(employee, tableHeaderColumns, isInitialize = false) {
+    return {
+      origin: employee,
+      isLeaf: true,
+      isInitialize,
       data: tableHeaderColumns.map(column => {
         if (!column.key) return '';
 

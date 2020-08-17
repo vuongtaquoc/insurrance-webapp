@@ -19,3 +19,6 @@ export * from './adjust-general-edit/adjust-general-edit.component';
 export * from './company-change-list/company-change-list.component';
 export * from './company-change-add/company-change-add.component';
 export * from './company-change-edit/company-change-edit.component';
+export * from './reissue-health-card-list/reissue-health-card-list.component';
+export * from './reissue-health-card-add/reissue-health-card-add.component';
+export * from './reissue-health-card-edit/reissue-health-card-edit.component';

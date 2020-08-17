@@ -49,6 +49,7 @@ export const TABLE_FAMILIES_HEADER_COLUMNS = [{
   title: '(2)',
   readOnly: true,
   key: 'employeeName',
+  keyMapping: 'fullName',
   willBeValid: true
 },
  {
@@ -170,7 +171,12 @@ export const TABLE_FAMILIES_HEADER_COLUMNS = [{
   type: 'text',
   width: 80,
   title: '(13)',
-  key: 'birthday'
+  key: 'birthday',
+  fieldName: 'Năm sinh',
+  validations: {
+    required: true,
+    lessThanNow: true
+  }
 }, {
   type: 'checkbox',
   width: 30,

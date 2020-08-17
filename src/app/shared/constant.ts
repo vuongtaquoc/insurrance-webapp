@@ -89,6 +89,14 @@ export const DECLARATIONS =
     key: '600b',
     value:'Điều chỉnh chức danh mức đóng'
   },
+  {
+    key: '607',
+    value:'Cấp lại thẻ BHXH do hỏng, do mất'
+  },
+  {
+    key: '612',
+    value:'Cấp lại thẻ BHYT do hỏng, do mất'
+  },
 ];
 
 export const CONSTPARENTDELETEAUTOROW =

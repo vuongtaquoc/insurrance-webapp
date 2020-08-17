@@ -169,7 +169,6 @@ export class EmployeeFamilyTableComponent implements OnInit, OnDestroy, OnChange
     }
 
     const data = [];
-    console.log(data);
     this.data.forEach((d, index) => {
       d.data = d.data || [];
       d.data.origin  = d.origin;

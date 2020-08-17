@@ -22,3 +22,5 @@ export * from './reduction/reduction.component';
 export * from './declaration-sidebar/search.component';
 export * from './adjustment/adjustment.component';
 export * from './company-change/company-change.component';
+export * from './health-insurance-card/health-insurance-card.component';
+export * from './table-editor/table-editor-normal.component';

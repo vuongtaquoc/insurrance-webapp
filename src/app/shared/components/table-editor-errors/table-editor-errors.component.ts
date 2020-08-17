@@ -3,6 +3,7 @@ import { Component, Input } from '@angular/core';
 const TABLES = {
   increaseLabor: 'D02-TS',
   families: 'PL TVHGD-NLD',
+  family: 'PL TVHGD-NLD',
   informations: 'Bảng kê hồ sơ',
   maternityPart1: 'Thai sản - Phần 1',
   maternityPart2: 'Thai sản - Phần 2',
@@ -19,7 +20,10 @@ const TABLES = {
   adjustment601a: 'D02-TS Điều chỉnh',
   family601: 'PL TVHGD-NLD',
   family600: 'PL TVHGD-NLD',
+  healthInsuranceCard: 'CLT-KTDTT',
+  healthFomError: 'Thông tin kê khai',
   documentList601: 'Bảng kê hồ sơ',
+  documentList: 'Bảng kê hồ sơ',
   documentList600: 'Bảng kê hồ sơ',
   documentList600a: 'Bảng kê hồ sơ',
   documentList600b: 'Bảng kê hồ sơ',
