@@ -436,7 +436,6 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
   }
 
   emitEventToChild(type) {
-    debugger;
     if (type === 'back') {
       this.onSubmit.emit({
         type

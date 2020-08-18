@@ -9,14 +9,14 @@
     [nzTotal]="total" class="table-editor">
     <thead (nzSortChange)="sort($event)" nzSortFn>
       <tr>
-        <th style="width: 50px;">{{'system.staffs.permission.stt' | translate}}</th>
-        <th nzColumnKey="name">{{'system.staffs.permission.name' | translate}}</th>
-        <th nzColumnKey="tax"><span>{{'system.staffs.permission.permission_READ' | translate}}</span></th>
-        <th nzColumnKey="delegate"><span>{{'system.staffs.permission.permission_UPDATE' | translate}}</span></th>
-        <th nzColumnKey="delegate"><span>{{'system.staffs.permission.permission_CREATE' | translate}}</span></th>
-        <th nzColumnKey="delegate"><span>{{'system.staffs.permission.permission_DELETE' | translate}}</span></th>
-        <th nzColumnKey="delegate"><span>{{'system.staffs.permission.permission_ACTIVATED' | translate}}</span></th>
-        <th nzColumnKey="delegate"><span>{{'system.staffs.permission.permission_APPROVAL' | translate}}</span>
+        <th class="cell-custom" style="width: 50px;">{{'system.staffs.permission.stt' | translate}}</th>
+        <th class="cell-custom" nzColumnKey="name">{{'system.staffs.permission.name' | translate}}</th>
+        <th class="cell-custom" nzColumnKey="tax"><span>{{'system.staffs.permission.permission_READ' | translate}}</span></th>
+        <th class="cell-custom" nzColumnKey="delegate"><span>{{'system.staffs.permission.permission_UPDATE' | translate}}</span></th>
+        <th class="cell-custom" nzColumnKey="delegate"><span>{{'system.staffs.permission.permission_CREATE' | translate}}</span></th>
+        <th class="cell-custom" nzColumnKey="delegate"><span>{{'system.staffs.permission.permission_DELETE' | translate}}</span></th>
+        <th class="cell-custom" nzColumnKey="delegate"><span>{{'system.staffs.permission.permission_ACTIVATED' | translate}}</span></th>
+        <th class="cell-custom" nzColumnKey="delegate"><span>{{'system.staffs.permission.permission_APPROVAL' | translate}}</span>
         </th>
       </tr>
     </thead>
@@ -54,10 +54,12 @@
 
   <div nz-row nzGutter="8">
     <div nz-col nzMd="24" class="footer-botton">
-      <button type="button" class="employee-form__button-save" nz-button nzType="primary"
-        (click)="save(ajaxTable.data)">Lưu</button>
-      <button class="employee-form__button-back" nz-button nzType="default" [routerLink]="['/staffs/list']">Quay
-        lại</button>
+      <button type="button" class="employee-form__button-save" nz-button nzType="primary" (click)="save(ajaxTable.data)">
+        <i nz-icon nzType="save"></i>Lưu
+      </button>
+      <button class="employee-form__button-back" nz-button nzType="default" [routerLink]="['/staffs/list']">
+        <i nz-icon nzType="stop"></i>Quay lại  
+      </button>
     </div>
   </div>
 </div>

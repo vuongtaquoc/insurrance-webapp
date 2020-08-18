@@ -1,120 +1,108 @@
 <div class="page-card">
-    <form  nz-form [formGroup]="formSearch" (ngSubmit)="handleSearchBox()">
-      <div class="page-title ">
-          <h1>{{'system.staffs.info.title' | translate}}</h1>
-          <div class="page-declarations__footer">
-              <button nz-button nzType="default">
-                <i nz-icon nzType="search"></i>{{ 'common.btnSearch' | translate }}
-              </button>
-              <button nz-button nzType="default" [routerLink]="['/staffs/add']">
-                <i nz-icon nzType="user-add" nzTheme="outline"></i>{{ 'common.btnCreate' | translate }}
-              </button>
-          </div>
+  <form nz-form [formGroup]="formSearch" (ngSubmit)="handleSearchBox()">
+    <div class="page-title ">
+      <h1>{{'system.staffs.info.title' | translate}}</h1>
+      <div class="page-declarations__footer">
+        <button class="element-form_button-search" nz-button nzType="default">
+          <i nz-icon nzType="search"></i>{{ 'common.btnSearch' | translate }}
+        </button>
+        <button class="element-form_button-add" nz-button nzType="default" [routerLink]="['/staffs/add']">
+          <i nz-icon nzType="user-add" nzTheme="outline"></i>{{ 'common.btnCreate' | translate }}
+        </button>
       </div>
-        <div class="page-search">
-          <div nz-row nzGutter="30">
-              <div nz-col nzMd="8">
-                <nz-form-item>
-                  <nz-form-label>{{ 'system.staffs.info.keyWords' | translate }}</nz-form-label>
-                  <nz-form-control>
-                    <input type="text" nz-input formControlName="keyword">
-                  </nz-form-control>
-                </nz-form-item >
-              </div>
-              <div nz-col nzMd="4">
-                <nz-form-item>
-                  <nz-form-label>{{ 'system.staffs.info.dateFrom' | translate }}</nz-form-label>
-                  <nz-form-control>
-                     <input nz-input
-                        placeholder="Từ ngày"
-                        formControlName="dateFrom"
-                        mask="00/00/0000"
-                        [showMaskTyped]="true"
-                        [validation]="true"
-                        [clearIfNotMatch]="true"
-                      />
-                  </nz-form-control>
-                </nz-form-item >
-              </div>
-              <div nz-col nzMd="4">
-                <nz-form-item>
-                  <nz-form-label>{{ 'system.staffs.info.dateTo' | translate }}</nz-form-label>
-                  <nz-form-control>
-                      <input nz-input
-                         placeholder="Đến ngày"
-                         formControlName="dateTo"
-                         mask="00/00/0000"
-                         [showMaskTyped]="true"
-                         [validation]="true"
-                         [clearIfNotMatch]="true"
-                       />
-                   </nz-form-control>
-                </nz-form-item >
-              </div>
-    
-          </div>
-        </div>
-      </form>
-    
-        <nz-table
-          nzBordered 
-          #ajaxTable
-          nzShowSizeChanger
-          [nzFrontPagination]="false"
-          [nzData]="staffs"
-          [nzLoading]="loading"
-          [nzPageSize]="staffs.length"
-          [nzShowPagination]="false"
-          [nzLoading]="loading"
-          [nzTotal]="total"
-          class="table-editor"
-        >
-          <thead (nzSortChange)="sort($event)" nzSortFn>
-            <tr>
-              <th style="width: 50px;">{{'system.staffs.table.stt' | translate}}</th>
-              <th nzShowSort  nzColumnKey="name">{{'system.staffs.table.fullName' | translate}}</th>
-              <th nzShowSort  nzColumnKey="tax"><span>{{'system.staffs.table.userName' | translate}}</span></th>
-              <th nzShowSort  nzColumnKey="delegate"><span>{{'system.staffs.table.tel' | translate}}</span></th>
-              <th nzShowSort  nzColumnKey="delegate"><span>{{'system.staffs.table.email' | translate}}</span></th>
-              <th style="width: 140px;" nzShowSort nzColumnKey="active"><span>{{'system.staffs.table.status' | translate}}</span></th>
-              <th style="width: 120px;"><span>{{'system.staffs.table.action' | translate}}</span></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="ui-table-custom-filter">
-                <td></td>
-                <td><input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small" [(ngModel)]="filter.fullName" (ngModelChange)="handleFilter('fullName')" /></td>
-                <td><input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small" [(ngModel)]="filter.userName" (ngModelChange)="handleFilter('userName')" /></td>
-                <td><input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small" [(ngModel)]="filter.tel" (ngModelChange)="handleFilter('tel')" /></td>
-                <td><input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small" [(ngModel)]="filter.email" (ngModelChange)="handleFilter('email')" /></td>
-                <td><input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small" [(ngModel)]="filter.status" (ngModelChange)="handleFilter('status')" /></td>
-                <td></td>
-              </tr>
-
-            <tr *ngFor="let data of ajaxTable.data;index as i">
-              <td>{{i + 1}}</td>
-              <td>{{ data.fullName }}</td>
-              <td>{{ data.userName }}</td>
-              <td>{{ data.tel }}</td>
-              <td>{{ data.email }}</td>
-              <td>{{ status[(data.active ? 1 : 0)] | translate }}</td>
-              <td>
-                <ng-container>
-                    <a [routerLink]="['/staff/' + data.id + '/edit']" class="action-padding">
-                        <i nz-icon nzType="edit" nzTheme="outline"></i>
-                    </a>    
-                </ng-container>
-                <app-button-delete [id]="data.id" (delete)="delete($event)"></app-button-delete>
-                <ng-container>
-                  <a [routerLink]="['/staff/' + data.id + '/pemissions']" class="action-padding">
-                      <i nz-icon nzType="ordered-list" nzTheme="outline"></i>
-                  </a>    
-              </ng-container>
-              </td>
-            </tr>
-          </tbody>
-        </nz-table>
-        <app-pagination [total]="total" [selected]="selectedPage" (onPageChange)="pageChange($event)"></app-pagination>
     </div>
-    
-    
+    <div class="page-search">
+      <div nz-row nzGutter="30">
+        <div nz-col nzMd="8">
+          <nz-form-item>
+            <nz-form-label>{{ 'system.staffs.info.keyWords' | translate }}</nz-form-label>
+            <nz-form-control>
+              <input type="text" nz-input formControlName="keyword">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzMd="4">
+          <nz-form-item>
+            <nz-form-label>{{ 'system.staffs.info.dateFrom' | translate }}</nz-form-label>
+            <nz-form-control>
+              <input nz-input placeholder="Từ ngày" formControlName="dateFrom" mask="00/00/0000" [showMaskTyped]="true"
+                [validation]="true" [clearIfNotMatch]="true" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzMd="4">
+          <nz-form-item>
+            <nz-form-label>{{ 'system.staffs.info.dateTo' | translate }}</nz-form-label>
+            <nz-form-control>
+              <input nz-input placeholder="Đến ngày" formControlName="dateTo" mask="00/00/0000" [showMaskTyped]="true"
+                [validation]="true" [clearIfNotMatch]="true" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+      </div>
+    </div>
+  </form>
+
+  <nz-table nzBordered #ajaxTable nzShowSizeChanger [nzFrontPagination]="false" [nzData]="staffs" [nzLoading]="loading"
+    [nzPageSize]="staffs.length" [nzShowPagination]="false" [nzLoading]="loading" [nzTotal]="total"
+    class="table-editor">
+    <thead (nzSortChange)="sort($event)" nzSortFn>
+      <tr class="ui-table-custom-header">
+        <th class="cell-custom" style="width: 50px;">{{'system.staffs.table.stt' | translate}}</th>
+        <th class="cell-custom" nzShowSort nzColumnKey="name">{{'system.staffs.table.fullName' | translate}}</th>
+        <th class="cell-custom" nzShowSort nzColumnKey="tax"><span>{{'system.staffs.table.userName' | translate}}</span>
+        </th>
+        <th class="cell-custom" nzShowSort nzColumnKey="delegate"><span>{{'system.staffs.table.tel' | translate}}</span>
+        </th>
+        <th class="cell-custom" nzShowSort nzColumnKey="delegate">
+          <span>{{'system.staffs.table.email' | translate}}</span></th>
+        <th class="cell-custom" style="width: 140px;" nzShowSort nzColumnKey="active">
+          <span>{{'system.staffs.table.status' | translate}}</span></th>
+        <th class="cell-custom" style="width: 120px;"><span>{{'system.staffs.table.action' | translate}}</span></th>
+      </tr>
+
+      <tr class="ui-table-custom-filter">
+        <td class="cell-custom"></td>
+        <td class="cell-custom"><input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small"
+            [(ngModel)]="filter.fullName" (ngModelChange)="handleFilter('fullName')" /></td>
+        <td class="cell-custom"><input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small"
+            [(ngModel)]="filter.userName" (ngModelChange)="handleFilter('userName')" /></td>
+        <td class="cell-custom"><input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small"
+            [(ngModel)]="filter.tel" (ngModelChange)="handleFilter('tel')" /></td>
+        <td class="cell-custom"><input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small"
+            [(ngModel)]="filter.email" (ngModelChange)="handleFilter('email')" /></td>
+        <td class="cell-custom"><input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small"
+            [(ngModel)]="filter.status" (ngModelChange)="handleFilter('status')" /></td>
+        <td class="cell-custom"></td>
+      </tr>
+
+    </thead>
+    <tbody>
+
+
+      <tr *ngFor="let data of ajaxTable.data;index as i">
+        <td>{{i + 1}}</td>
+        <td>{{ data.fullName }}</td>
+        <td>{{ data.userName }}</td>
+        <td>{{ data.tel }}</td>
+        <td>{{ data.email }}</td>
+        <td>{{ status[(data.active ? 1 : 0)] | translate }}</td>
+        <td>
+          <ng-container>
+            <a [routerLink]="['/staff/' + data.id + '/edit']" class="action-padding">
+              <i nz-icon nzType="edit" nzTheme="outline"></i>
+            </a>
+          </ng-container>
+          <app-button-delete [id]="data.id" (delete)="delete($event)"></app-button-delete>
+          <ng-container>
+            <a [routerLink]="['/staff/' + data.id + '/pemissions']" class="action-padding">
+              <i nz-icon nzType="ordered-list" nzTheme="outline"></i>
+            </a>
+          </ng-container>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+  <app-pagination [total]="total" [selected]="selectedPage" (onPageChange)="pageChange($event)"></app-pagination>
+</div>

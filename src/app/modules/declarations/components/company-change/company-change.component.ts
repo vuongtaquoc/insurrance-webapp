@@ -124,7 +124,6 @@ export class CompanyChangeComponent implements OnInit, OnDestroy {
   }
 
   emitEventToChild(action) {
-    debugger;
   }
 
 

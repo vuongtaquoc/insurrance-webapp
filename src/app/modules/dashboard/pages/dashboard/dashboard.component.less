@@ -1,6 +1,19 @@
+.dashboard-page-container {
+  height: 100%;
+  position: relative;
+}
+
 .dashboard-page-card {
   width: 100%;
   height: 570px;
+}
+
+.page-card--scrollable {
+  height: 72%;
+}
+
+.page-card h1 {
+  margin: 3px 0;
 }
 
 .table {
@@ -33,10 +46,40 @@
     text-decoration: underline;
     cursor: pointer;
   }
+
+  .table__header {
+    .cell__header {
+      font-weight: bold;
+      text-align: center;
+      color: white;
+      background: #3498db;
+      border: 1px solid #f0f0f0;
+      padding: 8px;
+    }
+
+    th {
+      border-bottom: 0px;
+    }
+  }
+
+  thead>tr>th,
+  tbody>tr>td {
+    border: 1px solid #f0f0f0;
+    border-bottom: 0px;
+    padding: 5px;
+  }
+
 }
 
 .scrollable-container {
-  height: 475px;
+  // height: 375px;
   width: 100%;
   overflow: auto;
+  height: 75%;
+}
+
+.custom-footer {
+  position: absolute;
+  bottom: 0;
+  height: 25%;
 }

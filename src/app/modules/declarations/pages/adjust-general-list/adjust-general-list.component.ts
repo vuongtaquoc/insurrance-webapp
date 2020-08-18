@@ -10,7 +10,7 @@ import { NzModalService } from 'ng-zorro-antd/modal';
 @Component({
   selector: 'app-adjust-general-list',
   templateUrl: './adjust-general-list.component.html',
-  styleUrls: ['./adjust-general-list.component.less']
+  styleUrls: ['./adjust-general-list.component.less','../reduction-labor-list/reduction-labor-list.component.less']
 })
 export class AdjustGeneralListComponent implements OnInit {
   isAllDisplayDataChecked = false;
@@ -24,6 +24,16 @@ export class AdjustGeneralListComponent implements OnInit {
   selectedPage: number = 1;
   declarationCode: string = '601';
   declarationName: string;
+
+  keyword: string = '';
+
+  filter: any = {
+    createDate: '',
+    documentNo: '',
+    declarationName: '',
+    sendDate: '',
+    documentStatusName: ''
+  };
 
   constructor(
     private declarationService: DeclarationService,
@@ -52,6 +62,11 @@ export class AdjustGeneralListComponent implements OnInit {
         this.getDeclarations(this.skip);
       }
     });
+  }
+
+  handleFilter(key) {
+    this.keyword = this.filter[key];
+    this.getDeclarations();
   }
 
   pageChange({ skip, page }) {

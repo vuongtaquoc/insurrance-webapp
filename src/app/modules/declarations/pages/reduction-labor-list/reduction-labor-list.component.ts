@@ -10,7 +10,7 @@ import { NzModalService } from 'ng-zorro-antd/modal';
 @Component({
   selector: 'app-reduction-labor-list',
   templateUrl: './reduction-labor-list.component.html',
-  styleUrls: ['./reduction-labor-list.component.less']
+  styleUrls: ['./reduction-labor-list.component.less', '../reduction-labor-list/reduction-labor-list.component.less']
 })
 export class ReductionLaborListComponent implements OnInit {
   isAllDisplayDataChecked = false;
@@ -24,11 +24,19 @@ export class ReductionLaborListComponent implements OnInit {
   selectedPage: number = 1;
   declarationCode: string = '600a';
   declarationName: string;
+  keyword: string = '';
+  filter: any = {
+    createDate: '',
+    documentNo: '',
+    declarationName: '',
+    sendDate: '',
+    documentStatusName: ''
+  };
 
   constructor(
     private declarationService: DeclarationService,
     private modalService: NzModalService,
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.declarationName = this.getDeclaration(this.declarationCode).value;
@@ -54,6 +62,11 @@ export class ReductionLaborListComponent implements OnInit {
     });
   }
 
+  handleFilter(key) {
+    this.keyword = this.filter[key];
+    this.getDeclarations();
+  }
+
   pageChange({ skip, page }) {
     this.selectedPage = page;
 
@@ -68,7 +81,7 @@ export class ReductionLaborListComponent implements OnInit {
 
   viewDocument(declarationInfo: any) {
 
-    if(declarationInfo.status === 0) {
+    if (declarationInfo.status === 0) {
       this.showMessageNotView();
     } else {
       this.showViewDeclarationFile(declarationInfo);

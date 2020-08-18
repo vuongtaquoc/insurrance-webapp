@@ -3,14 +3,14 @@
   <div class="page-title ">
       <h1>{{'customers.customers-list.title' | translate}}</h1>
       <div class="page-declarations__footer">
-          <button nz-button nzType="default">
+          <button class="element-form_button-search" nz-button nzType="default">
             <i nz-icon nzType="search"></i>{{ 'common.btnSearch' | translate }}
           </button>
-          <button nz-button nzType="default" [routerLink]="['/customers/add']">
+          <button class="element-form_button-add" nz-button nzType="default" [routerLink]="['/customers/add']">
             <i nz-icon nzType="user-add" nzTheme="outline"></i>{{ 'common.btnCreate' | translate }}
           </button>
       </div>
-  </div>
+  </div> 
     <div class="page-search"> 
       <div nz-row nzGutter="30">
           <div nz-col nzMd="8">
@@ -69,31 +69,30 @@
       [nzTotal]="total"
       class="table-editor"
     >
-      <thead (nzSortChange)="sort($event)" nzSortFn>
-        <tr>
-          <th style="width: 50px;">{{'customers.table.stt' | translate}}</th>
-          <th nzShowSort  nzColumnKey="name">{{'customers.table.company' | translate}}</th>
-          <th nzShowSort  nzColumnKey="tax"><span>{{'customers.table.taxCode' | translate}}</span></th>
-          <th nzShowSort  nzColumnKey="delegate"><span>{{'customers.table.personContact' | translate}}</span></th>
-          <th style="width: 140px;" nzShowSort nzColumnKey="active"><span>{{'customers.table.active' | translate}}</span></th>
-          <th style="width: 120px;"><span>{{'customers.table.action' | translate}}</span></th>
+      <thead (nzSortChange)="sort($event)" nzSortFn class="sort-custom">
+        <tr class="ui-table-custom-header">
+          <th class="cell-custom" style="width: 50px;">{{'customers.table.stt' | translate}}</th>
+          <th class="cell-custom" nzShowSort  nzColumnKey="name">{{'customers.table.company' | translate}}</th>
+          <th class="cell-custom" nzShowSort  nzColumnKey="tax"><span>{{'customers.table.taxCode' | translate}}</span></th>
+          <th class="cell-custom" nzShowSort  nzColumnKey="delegate"><span>{{'customers.table.personContact' | translate}}</span></th>
+          <th class="cell-custom" style="width: 140px;" nzShowSort nzColumnKey="active"><span>{{'customers.table.active' | translate}}</span></th>
+          <th class="cell-custom" style="width: 120px;"><span>{{'customers.table.action' | translate}}</span></th>
+        </tr>
+
+        <tr class="ui-table-custom-filter">
+          <td class="cell-custom"></td>
+          <td class="cell-custom"><input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small" [(ngModel)]="filter.name"
+              (ngModelChange)="handleFilter('name')" /></td>
+          <td class="cell-custom"><input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small" [(ngModel)]="filter.tax"
+              (ngModelChange)="handleFilter('tax')" /></td>
+          <td class="cell-custom"><input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small" [(ngModel)]="filter.delegate"
+              (ngModelChange)="handleFilter('delegate')" /></td>
+          <td class="cell-custom"><input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small" [(ngModel)]="filter.active"
+              (ngModelChange)="handleFilter('active')" /></td>
+          <td class="cell-custom"></td>
         </tr>
       </thead>
       <tbody>
-
-        <tr class="ui-table-custom-filter">
-          <td></td>
-          <td><input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small" [(ngModel)]="filter.name"
-              (ngModelChange)="handleFilter('name')" /></td>
-          <td><input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small" [(ngModel)]="filter.tax"
-              (ngModelChange)="handleFilter('tax')" /></td>
-          <td><input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small" [(ngModel)]="filter.delegate"
-              (ngModelChange)="handleFilter('delegate')" /></td>
-          <td><input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small" [(ngModel)]="filter.active"
-              (ngModelChange)="handleFilter('active')" /></td>
-          <td></td>
-        </tr>
-
         <tr *ngFor="let data of ajaxTable.data;index as i">
           <td>{{i + 1}}</td>
           <td>{{ data.name }}</td>

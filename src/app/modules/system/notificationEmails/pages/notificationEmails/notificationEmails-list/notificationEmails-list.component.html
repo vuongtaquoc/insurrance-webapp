@@ -3,10 +3,10 @@
     <div class="page-title ">
       <h1>{{'system.notificationEmails.info.title' | translate}}</h1>
       <div class="page-declarations__footer">
-        <button nz-button nzType="default">
+        <button class="element-form_button-search" nz-button nzType="default">
           <i nz-icon nzType="search"></i>{{ 'common.btnSearch' | translate }}
         </button>
-        <button nz-button nzType="default" [routerLink]="['/notificationEmails/add']">
+        <button class="element-form_button-add" nz-button nzType="default" [routerLink]="['/notificationEmails/add']">
           <i nz-icon nzType="user-add" nzTheme="outline"></i>{{ 'common.btnCreate' | translate }}
         </button>
       </div>
@@ -48,30 +48,32 @@
     [nzLoading]="loading" [nzPageSize]="notificationEmails.length" [nzShowPagination]="false" [nzLoading]="loading"
     [nzTotal]="total" class="table-editor">
     <thead (nzSortChange)="sort($event)" nzSortFn>
-      <tr>
-        <th style="width: 50px;">{{'system.notificationEmails.table.stt' | translate}}</th>
-        <th nzShowSort nzColumnKey="name">{{'system.notificationEmails.table.title' | translate}}</th>
-        <th nzShowSort nzColumnKey="tax"><span>{{'system.notificationEmails.table.to' | translate}}</span></th>
-        <th nzShowSort nzColumnKey="delegate"><span>{{'system.notificationEmails.table.createDate' | translate}}</span>
+      <tr class="ui-table-custom-header">
+        <th class="cell-custom" style="width: 50px;">{{'system.notificationEmails.table.stt' | translate}}</th>
+        <th class="cell-custom" nzShowSort nzColumnKey="name">{{'system.notificationEmails.table.title' | translate}}</th>
+        <th class="cell-custom" nzShowSort nzColumnKey="tax"><span>{{'system.notificationEmails.table.to' | translate}}</span></th>
+        <th class="cell-custom" nzShowSort nzColumnKey="delegate"><span>{{'system.notificationEmails.table.createDate' | translate}}</span>
         </th>
-        <th style="width: 140px;" nzShowSort nzColumnKey="active">
+        <th class="cell-custom" style="width: 140px;" nzShowSort nzColumnKey="active">
           <span>{{'system.notificationEmails.table.status' | translate}}</span></th>
-        <th style="width: 120px;"><span>{{'system.notificationEmails.table.action' | translate}}</span></th>
+        <th class="cell-custom" style="width: 120px;"><span>{{'system.notificationEmails.table.action' | translate}}</span></th>
+      </tr>
+
+      <tr class="ui-table-custom-filter">
+        <td class="cell-custom"></td>
+        <td class="cell-custom"><input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small" [(ngModel)]="filter.title"
+            (ngModelChange)="handleFilter('title')" /></td>
+        <td class="cell-custom"><input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small" [(ngModel)]="filter.to"
+            (ngModelChange)="handleFilter('to')" /></td>
+        <td class="cell-custom"><input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small" [(ngModel)]="filter.createDate"
+            (ngModelChange)="handleFilter('createDate')" /></td>
+        <td class="cell-custom"><input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small" [(ngModel)]="filter.status"
+            (ngModelChange)="handleFilter('status')" /></td>
+        <td class="cell-custom"></td>
       </tr>
     </thead>
     <tbody>
-      <tr class="ui-table-custom-filter">
-        <td></td>
-        <td><input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small" [(ngModel)]="filter.title"
-            (ngModelChange)="handleFilter('title')" /></td>
-        <td><input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small" [(ngModel)]="filter.to"
-            (ngModelChange)="handleFilter('to')" /></td>
-        <td><input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small" [(ngModel)]="filter.createDate"
-            (ngModelChange)="handleFilter('createDate')" /></td>
-        <td><input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small" [(ngModel)]="filter.status"
-            (ngModelChange)="handleFilter('status')" /></td>
-        <td></td>
-      </tr>
+      
 
       <tr *ngFor="let data of ajaxTable.data;index as i">
         <td>{{i + 1}}</td>

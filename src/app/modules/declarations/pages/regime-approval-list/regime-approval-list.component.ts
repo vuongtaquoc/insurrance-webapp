@@ -10,7 +10,7 @@ import { DocumentFormComponent } from '@app/shared/components';
 @Component({
   selector: 'app-regime-approval-list',
   templateUrl: './regime-approval-list.component.html',
-  styleUrls: ['./regime-approval-list.component.less']
+  styleUrls: ['./regime-approval-list.component.less', '../reduction-labor-list/reduction-labor-list.component.less']
 })
 export class RegimeApprovalListComponent implements OnInit {
   isAllDisplayDataChecked = false;
@@ -22,7 +22,14 @@ export class RegimeApprovalListComponent implements OnInit {
   total: number;
   skip: number;
   selectedPage: number = 1;
-
+  keyword: string = '';
+  filter: any = {
+    createDate: '',
+    documentNo: '',
+    declarationName: '',
+    sendDate: '',
+    documentStatusName: ''
+  };
   constructor(
     private declarationService: DeclarationService,
     private modalService: NzModalService,
@@ -50,7 +57,10 @@ export class RegimeApprovalListComponent implements OnInit {
       }
     });
   }
-
+  handleFilter(key) {
+    this.keyword = this.filter[key];
+    this.getDeclarations();
+  }
   pageChange({ skip, page }) {
     this.selectedPage = page;
 
