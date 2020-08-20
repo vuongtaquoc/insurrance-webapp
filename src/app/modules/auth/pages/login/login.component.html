@@ -7,7 +7,7 @@
   <nz-form-item>
     <nz-form-label>{{ 'auth.login.form.company' | translate }} <span class="required">*</span></nz-form-label>
     <nz-form-control>
-      <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="company">
+      <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="companyName">
         <nz-option *ngFor="let comp of companies" [nzLabel]="comp.value" [nzValue]="comp.id"></nz-option>
       </nz-select>
     </nz-form-control>
