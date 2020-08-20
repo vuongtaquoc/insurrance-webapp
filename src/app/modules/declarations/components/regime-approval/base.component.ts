@@ -19,6 +19,8 @@ export class RegimeApprovalBaseComponent {
   @Input() data: any;
   @Input() hasForm = false;
   @Input() declarationId: string;
+  @Input() pageName: string;
+  @Input() pageCode: string;
   @Input() form: any = {};
   @Output() onChange: EventEmitter<any> = new EventEmitter();
   @Output() onHiddenSidebar: EventEmitter<any> = new EventEmitter();

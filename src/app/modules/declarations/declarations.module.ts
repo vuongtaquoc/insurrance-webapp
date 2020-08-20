@@ -58,6 +58,18 @@ import {
   ReissueHealthCardListComponent,
   ReissueHealthCardAddComponent,
   ReissueHealthCardEditComponent,
+  ReissueInsuranceCardListComponent,
+  ReissueInsuranceCardAddComponent,
+  ReissueInsuranceCardEditComponent,
+  HealthRecoveryApprovalListComponent,
+  HealthRecoveryApprovalAddComponent,
+  HealthRecoveryApprovalEditComponent,
+  MaternityApprovalListComponent,
+  MaternityApprovalAddComponent,
+  MaternityApprovalEditComponent,
+  SicknessesApprovalListComponent,
+  SicknessesApprovalAddComponent,
+  SicknessesApprovalEditComponent,
   
 } from './pages';
 
@@ -88,6 +100,10 @@ import {
   DeclarationSidebarSearchComponent,
   CompanyChangeComponent,
   ReissueHealthCardComponent,
+  ReissueInsuranceCardComponent,
+  SicknessesApprovalComponent,
+  MaternityApprovalComponent,
+  HealthRecoveryApprovalComponent,
   
 } from './components';
 
@@ -168,6 +184,22 @@ import { RegimeAutoSizeDirective } from './directives';
     ReissueHealthCardListComponent,
     ReissueHealthCardAddComponent,
     ReissueHealthCardEditComponent,
+    ReissueInsuranceCardComponent,
+    ReissueInsuranceCardListComponent,
+    ReissueInsuranceCardAddComponent,
+    ReissueInsuranceCardEditComponent,
+    HealthRecoveryApprovalComponent,
+    HealthRecoveryApprovalListComponent,
+    HealthRecoveryApprovalAddComponent,
+    HealthRecoveryApprovalEditComponent,
+    MaternityApprovalComponent,
+    MaternityApprovalListComponent,
+    MaternityApprovalAddComponent,
+    MaternityApprovalEditComponent,
+    SicknessesApprovalComponent,
+    SicknessesApprovalListComponent,
+    SicknessesApprovalAddComponent,
+    SicknessesApprovalEditComponent,
   ],
   providers: [
     AuthenticationService,

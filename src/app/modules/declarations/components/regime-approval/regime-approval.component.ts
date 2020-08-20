@@ -26,7 +26,9 @@ export class RegimeApprovalComponent implements OnInit, OnDestroy {
     formOrigin: {},
     tables: {}
   };
+  
   declarationCode: string = '630';
+  declarationName: string = '';
   isHiddenSidebar: boolean;
   selectedTabIndex: number = 1;
   documentList: DocumentList[] = [];
@@ -49,6 +51,8 @@ export class RegimeApprovalComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+
+    this.declarationName = this.getDeclaration(this.declarationCode).value;
     this.documentForm = this.formBuilder.group({
       submitter: ['', Validators.required],
       mobile: ['',  [Validators.required, Validators.pattern(REGEX.ONLY_NUMBER)]],

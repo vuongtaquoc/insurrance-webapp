@@ -40,8 +40,8 @@ export const validationColumnsPlanCode: any = {
       lessThanNow: true
     },
     note: {
-      message: 'Điều chỉnh tiền lương',
-      argsColumn: []
+      message: 'Điều chỉnh tiền lương{0} {1}',
+      argsColumn: ['contractCancelNo$ .số VB','dateCancelSign$,ngày '],     
     }
   },
   'CD': {
@@ -56,8 +56,8 @@ export const validationColumnsPlanCode: any = {
       lessThanNow: true
     },
     note: {
-      message: 'Điều chỉnh chức danh', 
-      argsColumn: []      
+      message: 'Điều chỉnh chức danh{0} {1}', 
+      argsColumn: ['contractCancelNo$ .số VB','dateCancelSign$,ngày '],           
     }
   },
   'TV' : {
@@ -148,6 +148,12 @@ export const validationColumnsPlanCode: any = {
     },note: {
       message: 'Giảm do chuyển đơn vị', 
       argsColumn: []    
+    },
+    copy: {
+      type: 'I_1',      
+      tableName : 'reductionlabor',
+      note: 'Truy thu BHYT',
+      planCode : 'TT'
     }
   },
   'SB': {
@@ -198,7 +204,6 @@ export const validationColumnsPlanCode: any = {
   'TT': {
     toDate: {
       required: true,
-      lessThanNow: true
     },note: {
       message: 'Tăng BHYT', 
       argsColumn: []    
@@ -248,6 +253,24 @@ export const validationColumnsPlanCode: any = {
       message: 'Giảm BHYT', 
       argsColumn: []    
     }
-  } 
+  },
+  'GN': {
+    note: {
+      message: 'Giảm BHTN', 
+      argsColumn: []    
+    }
+  },
+  'GL': {
+    contractCancelNo: {
+      required: true,
+    },
+    dateCancelSign: {
+      required: true,
+    },
+    note: {
+      message: 'Giảm BHTNLĐ, BNN', 
+      argsColumn: []    
+    }
+  }
 };
  

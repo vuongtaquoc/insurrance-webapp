@@ -18,7 +18,7 @@ export const TABLE_NESTED_HEADERS = [
     { title: 'Mã số hộ gia đình', rowspan: '3' },
     { title: 'Địa chỉ đăng ký giấy khai sinh', subtitle: 'hoặc nguyên quán hoặc HKTT hoặc tạm trú', colspan: '3', rowspan: '2' },
     { title: 'Địa chỉ nhận hồ sơ', subtitle: 'nơi sinh sống', colspan: '4', rowspan: '2' },
-	{ title: 'Vùng sinh sống', rowspan: '3' },
+	  { title: 'Vùng sinh sống', rowspan: '3' },
     { title: 'Vùng lương tối thiểu', rowspan: '3' },
     { title: 'Nơi đăng ký KCB', colspan: '2' },
     { title: 'Cấp bập, chức vụ, chức danh nghề', rowspan: '3' },

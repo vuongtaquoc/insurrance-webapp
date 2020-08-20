@@ -472,7 +472,7 @@ export class ReissueHealthCardComponent implements OnInit, OnDestroy {
       });
     }
 
-    //this.tableSubject.next({type});
+    this.tableSubject.next({type});
   }
 
   validFormDeclaration() {

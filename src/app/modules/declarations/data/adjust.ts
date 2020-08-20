@@ -13,6 +13,7 @@ export const TABLE_ADJUST_NESTED_HEADERS = [
     { title: 'Quốc tịch', rowspan: '3' },
     { title: 'Địa chỉ đăng ký giấy khai sinh', subtitle: 'hoặc nguyên quán hoặc HKTT hoặc tạm trú', colspan: '3', rowspan: '2' },
     { title: 'Địa chỉ nhận hồ sơ', subtitle: 'nơi sinh sống', colspan: '4', rowspan: '2' },
+    { title: 'Vùng sinh sống', rowspan: '3' },
     { title: 'Vùng lương tối thiểu', rowspan: '3' },
     { title: 'Cấp bập, chức vụ, chức danh nghề', rowspan: '3' },
     { title: 'Nơi làm việc', rowspan: '3' },
@@ -194,36 +195,44 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   align: 'left',
   wordWrap: true,
   key: 'recipientsAddress'
-}, {
+},
+{
   type: 'dropdown',
   autocomplete: true,
   width: 75,
   title: '(13)',
   source: [],
+  key: 'livesAreaCode'
+}, {
+  type: 'dropdown',
+  autocomplete: true,
+  width: 75,
+  title: '(14)',
+  source: [],
   key: 'salaryAreaCode'
 },{
   type: 'text',
   width: 135,
-  title: '(14)',
+  title: '(15)',
   fieldName: 'Cấp bậc, chức vụ, chức danh nghề',
   key: 'levelWork'
 },{
   type: 'text',
   width: 135,
   wordWrap: true,
-  title: '(15)',
+  title: '(16)',
   key: 'workAddress'
 }, {
   type: 'dropdown',
   autocomplete: true,
   source: [ ],
   width: 135,
-  title: '(16)',
+  title: '(17)',
   key: 'departmentId'
 }, {
   type: 'numeric',
   width: 80,
-  title: '(17.1)',
+  title: '(18.1)',
   mask: '#,##0',
   // decimal: ',',
   sum: true,
@@ -233,12 +242,12 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
     number: true
   },
   format: (value) => {
-    return format.currency(value);
+    return format.currency(value, '0,0');
   }
 }, {
   type: 'numeric',
   width: 80,
-  title: '(17.2)',
+  title: '(18.2)',
   mask: '#,##0',
   // decimal: ',',
   sum: true,
@@ -253,7 +262,7 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
 }, {
   type: 'numeric',
   width: 80,
-  title: '(17.3)',
+  title: '(18.3)',
   mask: '#,##0',
   // decimal: ',',
   sum: true,
@@ -268,11 +277,14 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
 }, {
   type: 'numeric',
   width: 80,
-  title: '(17.4)',
+  title: '(18.4)',
   mask: '#,##0',
   // decimal: ',',
   sum: true,
   key: 'allowanceAdditional',
+  validations: {
+    number: true
+  },
   format: (value) => {
     return format.currency(value);
   }
@@ -280,15 +292,21 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
 }, {
   type: 'numeric',
   width: 80,
-  title: '(17.5)',
+  title: '(18.5)',
   mask: '#,##0',
   // decimal: ',',
   sum: true,
-  key: 'allowanceLevel'
+  key: 'allowanceLevel',
+  validations: {
+    number: true
+  },
+  format: (value) => {
+    return format.currency(value);
+  }
 }, {
   type: 'numeric',
   width: 70,
-  title: '(17.6)',
+  title: '(18.6)',
   fieldName: 'Thâm niên vK(%)',
   key: 'allowanceSeniority',
   suffix: '%',
@@ -300,7 +318,7 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
 }, {
   type: 'numeric',
   width: 70,
-  title: '(17.7)',
+  title: '(18.7)',
   key: 'allowanceSeniorityJob',
   fieldName: 'Thâm niên nghề(%)',
   suffix: '%',
@@ -312,7 +330,7 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
 }, {
   type: 'numeric',
   width: 80,
-  title: '(17.8)',
+  title: '(18.8)',
   fieldName: 'Chênh lệch bảo lưu',
   mask: '#,##0',
   // decimal: ',',
@@ -320,11 +338,14 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   key: 'allowanceOther',
   validations: {
     number: true
+  },
+  format: (value) => {
+    return format.currency(value);
   }
 },{
   type: 'numeric',
   width: 80,
-  title: '(18.1)',
+  title: '(19.1)',
   mask: '#,##0',
   // decimal: ',',
   sum: true,
@@ -339,7 +360,7 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
 }, {
   type: 'numeric',
   width: 80,
-  title: '(18.2)',
+  title: '(19.2)',
   mask: '#,##0',
   // decimal: ',',
   sum: true,
@@ -354,7 +375,7 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
 }, {
   type: 'numeric',
   width: 80,
-  title: '(18.3)',
+  title: '(19.3)',
   mask: '#,##0',
   // decimal: ',',
   sum: true,
@@ -369,7 +390,7 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
 }, {
   type: 'numeric',
   width: 80,
-  title: '(18.4)',
+  title: '(19.4)',
   mask: '#,##0',
   // decimal: ',',
   sum: true,
@@ -384,7 +405,7 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
 }, {
   type: 'numeric',
   width: 80,
-  title: '(18.5)',
+  title: '(19.5)',
   mask: '#,##0',
   // decimal: ',',
   sum: true,
@@ -399,7 +420,7 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
 }, {
   type: 'numeric',
   width: 70,
-  title: '(18.6)',
+  title: '(19.6)',
   key: 'allowanceSeniorityNew',
   suffix: '%',
   fieldName: 'Thâm niên VK lương mới',
@@ -411,7 +432,7 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
 }, {
   type: 'numeric',
   width: 70,
-  title: '(18.7)',
+  title: '(19.7)',
   key: 'allowanceSeniorityJobNew',
   suffix: '%',
   fieldName: 'Thâm niên nghề lương mới',
@@ -423,7 +444,7 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
 }, {
   type: 'numeric',
   width: 80,
-  title: '(18.8)',
+  title: '(19.8)',
   mask: '#,##0',
   // decimal: ',',
   sum: true,
@@ -431,11 +452,14 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   fieldName: 'Chênh lệch bảo lưu lương mới',
   validations: {
     number: true
+  },
+  format: (value) => {
+    return format.currency(value);
   }
 }, {
   type: 'text',
   width: 60,
-  title: '(19)',
+  title: '(20)',
   key: 'fromDate',
   fieldName: 'Từ tháng, năm',
   validations: {
@@ -445,14 +469,14 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
 }, {
   type: 'text',
   width: 60,
-  title: '(20)',
+  title: '(21)',
   key: 'toDate',
   isCalendar: true
 }, {
   type: 'dropdown',
   autocomplete: true,
   width: 60,
-  title: '(21)',
+  title: '(22)',
   source: [ ],
   key: 'planCode',
   fieldName: 'Phương án',
@@ -464,7 +488,7 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   mask: '#,##0',
   // decimal: ',',
   width: 50,
-  title: '(22)',
+  title: '(23)',
   key: 'ratio',
   validations: {
     number: true
@@ -476,7 +500,7 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
 {
   type: 'numeric',
   width: 100,
-  title: '(23.1)',
+  title: '(24.1)',
   key: 'contractCancelNo',
   fieldName: 'Số quyết định',
   validations: {
@@ -485,7 +509,7 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
 }, {
   type: 'text',
   width: 100,
-  title: '(23.2)',
+  title: '(24.2)',
   fieldName: 'Ngày quyết định',
   key: 'dateCancelSign',
   validations: {
@@ -495,7 +519,7 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
 {
   type: 'text',
   width: 180,
-  title: '(24)',
+  title: '(25)',
   wordWrap: true,
   key: 'note'
 },

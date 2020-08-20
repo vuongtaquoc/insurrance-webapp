@@ -28,7 +28,19 @@ import {
   CompanyChangeEditComponent,
   ReissueHealthCardListComponent,
   ReissueHealthCardAddComponent,
-  ReissueHealthCardEditComponent
+  ReissueHealthCardEditComponent,
+  ReissueInsuranceCardListComponent,
+  ReissueInsuranceCardAddComponent,
+  ReissueInsuranceCardEditComponent,
+  HealthRecoveryApprovalListComponent,
+  HealthRecoveryApprovalAddComponent,
+  HealthRecoveryApprovalEditComponent,
+  MaternityApprovalListComponent,
+  MaternityApprovalAddComponent,
+  MaternityApprovalEditComponent,
+  SicknessesApprovalListComponent,
+  SicknessesApprovalAddComponent,
+  SicknessesApprovalEditComponent,
 } from './pages';
 
 const routes: Routes = [
@@ -138,6 +150,42 @@ const routes: Routes = [
       {
         path: 'health-insurance-card/:id/edit',
         component: ReissueHealthCardEditComponent
+      },
+      {
+        path: 'sicknesses-approval',
+        component: SicknessesApprovalListComponent
+      },
+      {
+        path: 'sicknesses-approval/add',
+        component: SicknessesApprovalAddComponent
+      },
+      {
+        path: 'sicknesses-approval/:id/edit',
+        component: SicknessesApprovalEditComponent
+      },
+      {
+        path: 'health-recovery-approval',
+        component: HealthRecoveryApprovalListComponent
+      },
+      {
+        path: 'health-recovery-approval/add',
+        component: HealthRecoveryApprovalAddComponent
+      },
+      {
+        path: 'health-recovery-approval/:id/edit',
+        component: HealthRecoveryApprovalEditComponent
+      },
+      {
+        path: 'maternity-approval',
+        component: MaternityApprovalListComponent
+      },
+      {
+        path: 'maternity-approval/add',
+        component: MaternityApprovalAddComponent
+      },
+      {
+        path: 'maternity-approval/:id/edit',
+        component: MaternityApprovalEditComponent
       }
     ]
   }

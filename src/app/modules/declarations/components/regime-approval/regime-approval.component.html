@@ -5,7 +5,7 @@
         <nz-tab nzTitle="Danh mục tài liệu">
           <div class="page-document-list__container">
             <form nz-form [formGroup]="documentForm">
-              <h1>600 | Báo tăng lao động</h1>
+              <h1><strong>{{declarationCode}}</strong> | {{declarationName}}</h1>
               <div nz-row [nzGutter]="10">
                   <div nz-col [nzSpan]="12">
                     <nz-form-item>
@@ -59,6 +59,8 @@
 
         <nz-tab nzTitle="Ốm đau">
           <app-sicknesses
+            [pageName]="declarationName"
+            [pageCode]="declarationCode"
             [declarationId]="declarationId"
             [data]="regimeApproval.origin['630a']"
             (onChange)="handleTableChange($event, 'sicknesses')"
@@ -68,6 +70,8 @@
 
         <nz-tab nzTitle="Thai sản">
           <app-maternity
+            [pageName]="declarationName"
+            [pageCode]="declarationCode"
             [declarationId]="declarationId"
             [data]="regimeApproval.origin['630b']"
             (onChange)="handleTableChange($event, 'maternity')"
@@ -77,6 +81,8 @@
 
         <nz-tab nzTitle="Dưỡng sức">
           <app-health-recovery
+            [pageName]="declarationName"
+            [pageCode]="declarationCode"
             [declarationId]="declarationId"
             [data]="regimeApproval.origin['630c']"
             (onChange)="handleTableChange($event, 'healthRecovery')"

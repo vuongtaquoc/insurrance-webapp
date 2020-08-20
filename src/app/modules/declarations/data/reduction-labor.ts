@@ -1,3 +1,4 @@
+import format from '@app/shared/utils/format';
 export const TABLE_REDUCTION_NESTED_HEADERS = [
   [
     { title: 'STT', rowspan: '3' },
@@ -12,6 +13,7 @@ export const TABLE_REDUCTION_NESTED_HEADERS = [
     { title: 'Quốc tịch', rowspan: '3' },
     { title: 'Địa chỉ đăng ký giấy khai sinh', subtitle: 'hoặc nguyên quán hoặc HKTT hoặc tạm trú', colspan: '3', rowspan: '2' },
     { title: 'Địa chỉ nhận hồ sơ', subtitle: 'nơi sinh sống', colspan: '4', rowspan: '2' },
+	  { title: 'Vùng sinh sống', rowspan: '3' },
     { title: 'Vùng lương tối thiểu', rowspan: '3' },
     { title: 'Cấp bập, chức vụ, chức danh nghề', rowspan: '3' },
     { title: 'Nơi làm việc', rowspan: '3' },
@@ -190,82 +192,121 @@ export const TABLE_REDUCTION_HEADER_COLUMNS = [{
   align: 'left',
   wordWrap: true,
   key: 'recipientsAddress'
-}, {
+},
+{
   type: 'dropdown',
   autocomplete: true,
   width: 75,
   title: '(13)',
   source: [],
+  key: 'livesAreaCode'
+},
+ {
+  type: 'dropdown',
+  autocomplete: true,
+  width: 75,
+  title: '(14)',
+  source: [],
   key: 'salaryAreaCode'
 },{
   type: 'text',
   width: 135,
-  title: '(14)',
+  title: '(15)',
   key: 'levelWork'
 },{
   type: 'text',
   width: 135,
   wordWrap: true,
-  title: '(15)',
+  title: '(16)',
   key: 'workAddress'
 }, {
   type: 'dropdown',
   autocomplete: true,
   source: [ ],
   width: 135,
-  title: '(16)',
+  title: '(17)',
   key: 'departmentId'
 }, {
   type: 'text',
   width: 70,
-  title: '(17)',
+  title: '(18)',
   key: 'motherDayDead',
   fieldName: 'Ngày chết',
   isCalendar: true
 }, {
   type: 'numeric',
   width: 80,
-  title: '(18.1)',
+  title: '(19.1)',
   mask: '#,##0',
   // decimal: ',',
   sum: true,
-  key: 'salary'
+  key: 'salary',
+  validations: {
+    number: true
+  },
+  format: (value) => {
+    return format.currency(value);
+  }
 }, {
   type: 'numeric',
   width: 80,
-  title: '(18.2)',
+  title: '(19.2)',
   mask: '#,##0',
   // decimal: ',',
   sum: true,
-  key: 'ratio'
+  key: 'ratio',
+  validations: {
+    number: true
+  },
+  format: (value) => {
+    return format.currency(value, '0,0.000');
+  }
 }, {
   type: 'numeric',
   width: 80,
-  title: '(18.3)',
+  title: '(19.3)',
   mask: '#,##0',
   // decimal: ',',
   sum: true,
-  key: 'allowanceSalary'
+  key: 'allowanceSalary',
+  validations: {
+    number: true
+  },
+  format: (value) => {
+    return format.currency(value);
+  }
 }, {
   type: 'numeric',
   width: 80,
-  title: '(18.4)',
+  title: '(19.4)',
   mask: '#,##0',
   // decimal: ',',
   sum: true,
-  key: 'allowanceAdditional'
+  key: 'allowanceAdditional',
+  validations: {
+    number: true
+  },
+  format: (value) => {
+    return format.currency(value);
+  }
 }, {
   type: 'numeric',
   width: 80,
-  title: '(18.5)',
+  title: '(19.5)',
   mask: '#,##0',
   // decimal: ',',
   sum: true,
-  key: 'allowanceLevel'
+  key: 'allowanceLevel',
+  validations: {
+    number: true
+  },
+  format: (value) => {
+    return format.currency(value);
+  }
 }, {
   type: 'numeric',
   width: 70,
-  title: '(18.6)',
+  title: '(19.6)',
   key: 'allowanceSeniority',
   suffix: '%',
   validations: {
@@ -274,7 +315,7 @@ export const TABLE_REDUCTION_HEADER_COLUMNS = [{
 }, {
   type: 'numeric',
   width: 70,
-  title: '(18.7)',
+  title: '(19.7)',
   key: 'allowanceSeniorityJob',
   suffix: '%',
   validations: {
@@ -283,18 +324,21 @@ export const TABLE_REDUCTION_HEADER_COLUMNS = [{
 }, {
   type: 'numeric',
   width: 80,
-  title: '(18.8)',
+  title: '(19.8)',
   mask: '#,##0',
   // decimal: ',',
   sum: true,
   key: 'allowanceOther',
   validations: {
     number: true
+  },
+  format: (value) => {
+    return format.currency(value);
   }
 }, {
   type: 'text',
   width: 60,
-  title: '(19)',
+  title: '(20)',
   key: 'fromDate',
   fieldName: 'Từ tháng, năm',
   validations: {
@@ -304,7 +348,7 @@ export const TABLE_REDUCTION_HEADER_COLUMNS = [{
 }, {
   type: 'text',
   width: 60,
-  title: '(20)',
+  title: '(21)',
   key: 'toDate',
   isCalendar: true,
   fieldName: 'Đến tháng năm'
@@ -313,7 +357,7 @@ export const TABLE_REDUCTION_HEADER_COLUMNS = [{
   type: 'dropdown',
   autocomplete: true,
   width: 60,
-  title: '(21)',
+  title: '(22)',
   source: [ ],
   key: 'planCode',
   fieldName: 'Phương án',
@@ -325,26 +369,32 @@ export const TABLE_REDUCTION_HEADER_COLUMNS = [{
   mask: '#,##0',
   // decimal: ',',
   width: 50,
-  title: '(22)',
-  key: 'ratio'
+  title: '(23)',
+  key: 'ratio',
+  validations: {
+    number: true
+  },
+  format: (value) => {
+    return format.currency(value, '0,0.000');
+  }
 },
 {
   type: 'numeric',
   width: 100,
-  title: '(23.1)',
+  title: '(24.1)',
   key: 'contractCancelNo',
   fieldName: 'Số quyết định chấm dứt hợp đồng'
 }, {
   type: 'text',
   width: 100,
-  title: '(23.2)',
+  title: '(24.2)',
   key: 'dateCancelSign',
   fieldName: 'Ngày ký quyết định chấm dứt hợp đồng'
 },
 {
   type: 'text',
   width: 180,
-  title: '(24)',
+  title: '(25)',
   wordWrap: true,
   key: 'note'
 },{

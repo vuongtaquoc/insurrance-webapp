@@ -233,8 +233,15 @@ handleUserUpdated(user, tableName) {
           const argsColumn = planConfigInfo.note.argsColumn || [] ;
           const argsMessgae = [];
           argsColumn.forEach(column => {
-            argsMessgae.push(employee[column]);
+            const firstColumn = column.split('$').shift();
+            let messageBuilder = '';
+            if(employee[firstColumn] !== undefined && employee[firstColumn] !== '') {
+              messageBuilder =  column.split('$')[1] || '';
+              messageBuilder = messageBuilder + employee[firstColumn];
+            }
+            argsMessgae.push(messageBuilder);
           });
+
           employee.note = this.formatNote(planConfigInfo.note.message, argsMessgae);
         }
 
@@ -402,9 +409,9 @@ handleUserUpdated(user, tableName) {
       } else if (column.key === 'recipientsCityCode') {
         this.updateNextColumns(instance, r, '', [ c + 1, c + 2, c + 5, c + 6 ]);
       } else if (column.key === 'planCode') {
-        const indexOfPlanCode = this.headers[tableName].columns.findIndex(c => c.key === 'fromDate')
+        const indexOfFromDate = this.headers[tableName].columns.findIndex(c => c.key === 'fromDate')
         const planCode = records[r][c];
-        const fromDate = records[r][indexOfPlanCode];
+        const fromDate = records[r][indexOfFromDate];
         this.setDataByPlanCode(instance, records,r, planCode, tableName, fromDate);
 
       } else if (column.key === 'fromDate') {
@@ -414,15 +421,17 @@ handleUserUpdated(user, tableName) {
         const fromDate = records[r][indexOfFromDate];
         this.setDataByPlanCode(instance, records,r, planCode, tableName,fromDate);
 
-      } else if (column.key === 'contractNo') {
+      } else if (column.key === 'contractNo' || column.key === 'contractCancelNo') {
         const indexOfPlanCode = this.headers[tableName].columns.findIndex(c => c.key === 'planCode')
+        const indexOfFromDate = this.headers[tableName].columns.findIndex(c => c.key === 'fromDate')
         const planCode = records[r][indexOfPlanCode];
-        const fromDate = records[r][c];
+        const fromDate = records[r][indexOfFromDate];
         this.setDataByPlanCode(instance, records,r, planCode, tableName,fromDate);
-      } else if (column.key === 'dateSign') {
+      } else if (column.key === 'dateSign' || column.key === 'dateCancelSign') {
         const indexOfPlanCode = this.headers[tableName].columns.findIndex(c => c.key === 'planCode')
+        const indexOfFromDate = this.headers[tableName].columns.findIndex(c => c.key === 'fromDate')
         const planCode = records[r][indexOfPlanCode];
-        const fromDate = records[r][c];
+        const fromDate = records[r][indexOfFromDate];
         this.setDataByPlanCode(instance, records,r, planCode, tableName,fromDate);
      }  else if (column.key === 'hospitalFirstRegistCode') {
         const hospitalFirstCode = cell.innerText.split(' - ').shift();
@@ -473,8 +482,15 @@ handleUserUpdated(user, tableName) {
             const cloneEmployee = planConfigInfo.copy || { type: '', note: '', tableName: '' };
             const argsMessgae = [];
             argsColumn.forEach(column => {
-              const indexOfColumn = this.headers[tableName].columns.findIndex(c => c.key === column);
-              argsMessgae.push(records[r][indexOfColumn]);
+              const firstColumn = column.split('$').shift();
+              const indexOfColumn = this.headers[tableName].columns.findIndex(c => c.key === firstColumn);
+              const valueColunm = records[r][indexOfColumn];
+              let messageBuilder = '';
+              if(valueColunm !== undefined && valueColunm !== '') {
+                messageBuilder =  column.split('$')[1] || '';
+                messageBuilder = messageBuilder + valueColunm;
+              }
+              argsMessgae.push(messageBuilder);
             });
 
             const indexColumnNote = this.headers[tableName].columns.findIndex(c => c.key === 'note');

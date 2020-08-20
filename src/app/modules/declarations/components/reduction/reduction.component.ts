@@ -67,8 +67,9 @@ export class ReductionComponent extends GeneralBaseComponent implements OnInit, 
       this.planService.getPlanShowCode('600a'),
       this.departmentService.getDepartments(),
       this.categoryService.getCategories('relationshipDocumentType'),
-      this.relationshipService.getRelationships()
-    ]).subscribe(([ cities, nationalities, peoples, salaryAreas, plans, departments, relationshipDocumentTypies, relationShips ]) => {
+      this.relationshipService.getRelationships(),
+      this.categoryService.getCategories('livesAreaCode')
+    ]).subscribe(([ cities, nationalities, peoples, salaryAreas, plans, departments, relationshipDocumentTypies, relationShips, livesAreas ]) => {
       this.updateSourceToColumn(TABLE_REDUCTION_HEADER_COLUMNS, 'peopleCode', peoples);
       this.updateSourceToColumn(TABLE_REDUCTION_HEADER_COLUMNS, 'nationalityCode', nationalities);
       this.updateSourceToColumn(TABLE_REDUCTION_HEADER_COLUMNS, 'registerCityCode', cities);
@@ -76,6 +77,7 @@ export class ReductionComponent extends GeneralBaseComponent implements OnInit, 
       this.updateSourceToColumn(TABLE_REDUCTION_HEADER_COLUMNS, 'salaryAreaCode', salaryAreas);
       this.updateSourceToColumn(TABLE_REDUCTION_HEADER_COLUMNS, 'planCode', plans);
       this.updateSourceToColumn(TABLE_REDUCTION_HEADER_COLUMNS, 'departmentId', departments);
+      this.updateSourceToColumn(TABLE_REDUCTION_HEADER_COLUMNS, 'livesAreaCode', livesAreas);
 
       // // get filter columns
       this.updateFilterToColumn(TABLE_REDUCTION_HEADER_COLUMNS, 'registerDistrictCode', this.getRegisterDistrictsByCityCode);

@@ -71,7 +71,11 @@ export const DECLARATIONS =
   },
   {
     key: '630b',
-    value:'Xét duyệt chế độ ốm đau'
+    value:'Xét duyệt chế độ thai sản'
+  },
+  {
+    key: '630c',
+    value:'Xét duyệt chế độ dưỡng sức, phục hồi sức khỏe'
   },
   {
     key: '601a',
