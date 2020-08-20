@@ -18,8 +18,16 @@
       </div><!-- page-employees__menu-bar -->
     </div>
 
-    <nz-table nzBordered #rowSelectionTable nzShowSizeChanger [nzFrontPagination]="false" [nzData]="employees"
-      [nzLoading]="loading" [nzPageSize]="employees.length" [nzShowPagination]="false" [nzTotal]="total"
+    <nz-table 
+      nzBordered 
+      #rowSelectionTable 
+      nzShowSizeChanger 
+      [nzFrontPagination]="false" 
+      [nzData]="employees"
+      [nzLoading]="loading" 
+      [nzPageSize]="employees.length" 
+      [nzShowPagination]="false" 
+      [nzTotal]="total"
       class="table-editor">
       <thead>
         <tr class="ui-table-custom-header">
