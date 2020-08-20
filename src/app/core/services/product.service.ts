@@ -12,7 +12,8 @@ export class ProductService {
     }
 
     public gets(filters = {}) {
-        return this.http.getList('/products', {
+        // return this.http.getList('/products', {
+        return this.http.getList('/customers', {
             params: {
                 ...filters
             }

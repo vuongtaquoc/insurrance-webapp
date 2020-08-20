@@ -4,7 +4,7 @@ import { AuthorizeGuard, UnsavedChangesGuard, NavigationGuard } from '@app/core/
 import { PERMISSIONS } from '@app/shared/constant';
 
 import { LayoutComponent } from '@app/shared/layout';
-import { StaffsListComponent, StaffsSaveComponent } from './pages';
+import { StaffsListComponent, StaffsSaveComponent, StaffsPersmissonComponent } from './pages';
 
 const routes: Routes = [
   {
@@ -32,6 +32,15 @@ const routes: Routes = [
       {
         path: ':id/edit',
         component: StaffsSaveComponent,
+        canActivate: [ AuthorizeGuard ],
+        data: {
+          expectedPermission: PERMISSIONS.increase_labor.U
+        },
+        canDeactivate: [ UnsavedChangesGuard, NavigationGuard ]
+      },
+      {
+        path: ':id/permissions',
+        component: StaffsPersmissonComponent,
         canActivate: [ AuthorizeGuard ],
         data: {
           expectedPermission: PERMISSIONS.increase_labor.U

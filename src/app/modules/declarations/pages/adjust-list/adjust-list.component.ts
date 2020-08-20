@@ -10,7 +10,7 @@ import { NzModalService } from 'ng-zorro-antd/modal';
 @Component({
   selector: 'app-adjust-list',
   templateUrl: './adjust-list.component.html',
-  styleUrls: ['./adjust-list.component.less']
+  styleUrls: ['./adjust-list.component.less', '../reduction-labor-list/reduction-labor-list.component.less']
 })
 export class AdjustListComponent implements OnInit {
   isAllDisplayDataChecked = false;
@@ -24,6 +24,16 @@ export class AdjustListComponent implements OnInit {
   selectedPage: number = 1;
   declarationCode: string = '600b';
   declarationName: string;
+
+  keyword: string = '';
+
+  filter: any = {
+    createDate: '',
+    documentNo: '',
+    declarationName: '',
+    sendDate: '',
+    documentStatusName: ''
+  };
 
   constructor(
     private declarationService: DeclarationService,
@@ -52,6 +62,11 @@ export class AdjustListComponent implements OnInit {
         this.getDeclarations(this.skip);
       }
     });
+  }
+
+  handleFilter(key) {
+    this.keyword = this.filter[key];
+    this.getDeclarations();
   }
 
   pageChange({ skip, page }) {

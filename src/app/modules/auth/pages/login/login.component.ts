@@ -18,6 +18,17 @@ export class AuthLoginComponent implements OnInit, OnDestroy {
   loginForm: FormGroup;
   loading = false;
   private subscription: Subscription;
+  companies: any[] = [
+    {
+      id: "VP",
+      value: "VP"
+    },
+    {
+      id: "CH001",
+      value: "Chi nhánh 001"
+    }
+  ]
+
 
   constructor(
     private formBuilder: FormBuilder,
@@ -41,7 +52,8 @@ export class AuthLoginComponent implements OnInit, OnDestroy {
     this.loginForm = this.formBuilder.group({
       username: ['', Validators.required],
       password: ['', Validators.required],
-      remember: [ false ]
+      remember: [false],
+      companyName: ['', Validators.required]
     });
   }
 

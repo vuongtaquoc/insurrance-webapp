@@ -1,0 +1,65 @@
+<div class="page-card">
+  <div class="page-title ">
+    <h1>{{'system.staffs.permission.title' | translate}}</h1>
+    <div class="page-declarations__footer"></div>
+  </div>
+
+  <nz-table nzBordered #ajaxTable nzShowSizeChanger [nzFrontPagination]="false" [nzData]="permissions"
+    [nzLoading]="loading" [nzPageSize]="permissions.length" [nzShowPagination]="false" [nzLoading]="loading"
+    [nzTotal]="total" class="table-editor">
+    <thead (nzSortChange)="sort($event)" nzSortFn>
+      <tr>
+        <th class="cell-custom" style="width: 50px;">{{'system.staffs.permission.stt' | translate}}</th>
+        <th class="cell-custom" nzColumnKey="name">{{'system.staffs.permission.name' | translate}}</th>
+        <th class="cell-custom" nzColumnKey="tax"><span>{{'system.staffs.permission.permission_READ' | translate}}</span></th>
+        <th class="cell-custom" nzColumnKey="delegate"><span>{{'system.staffs.permission.permission_UPDATE' | translate}}</span></th>
+        <th class="cell-custom" nzColumnKey="delegate"><span>{{'system.staffs.permission.permission_CREATE' | translate}}</span></th>
+        <th class="cell-custom" nzColumnKey="delegate"><span>{{'system.staffs.permission.permission_DELETE' | translate}}</span></th>
+        <th class="cell-custom" nzColumnKey="delegate"><span>{{'system.staffs.permission.permission_ACTIVATED' | translate}}</span></th>
+        <th class="cell-custom" nzColumnKey="delegate"><span>{{'system.staffs.permission.permission_APPROVAL' | translate}}</span>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+
+      <tr class="ui-table-custom-filter">
+        <td></td>
+        <td></td>
+        <td [nzChecked]="false" (nzCheckedChange)="onAllChecked($event, 'permission_READ')"></td>
+        <td [nzChecked]="false" (nzCheckedChange)="onAllChecked($event, 'permission_UPDATE')"></td>
+        <td [nzChecked]="false" (nzCheckedChange)="onAllChecked($event, 'permission_CREATE')"></td>
+        <td [nzChecked]="false" (nzCheckedChange)="onAllChecked($event, 'permission_DELETE')"></td>
+        <td [nzChecked]="false" (nzCheckedChange)="onAllChecked($event, 'permission_ACTIVATED')"></td>
+        <td [nzChecked]="false" (nzCheckedChange)="onAllChecked($event, 'permission_APPROVAL')"></td>
+      </tr>
+
+      <tr *ngFor="let data of ajaxTable.data;index as i">
+        <td>{{i + 1}}</td>
+        <td>{{ data.name }}</td>
+        <td [nzChecked]="data.permission_READ"
+          (nzCheckedChange)="onItemChecked(data.actionId, $event, 'permission_READ')"></td>
+        <td [nzChecked]="data.permission_UPDATE"
+          (nzCheckedChange)="onItemChecked(data.actionId, $event, 'permission_UPDATE')"></td>
+        <td [nzChecked]="data.permission_CREATE"
+          (nzCheckedChange)="onItemChecked(data.actionId,  $event, 'permission_CREATE')"></td>
+        <td [nzChecked]="data.permission_DELETE"
+          (nzCheckedChange)="onItemChecked(data.actionId, $event, 'permission_DELETE')"></td>
+        <td [nzChecked]="data.permission_ACTIVATED"
+          (nzCheckedChange)="onItemChecked(data.actionId, $event, 'permission_ACTIVATED')"></td>
+        <td [nzChecked]="data.permission_APPROVAL"
+          (nzCheckedChange)="onItemChecked(data.actionId, $event, 'permission_APPROVAL')"></td>
+      </tr>
+    </tbody>
+  </nz-table>
+
+  <div nz-row nzGutter="8">
+    <div nz-col nzMd="24" class="footer-botton">
+      <button type="button" class="employee-form__button-save" nz-button nzType="primary" (click)="save(ajaxTable.data)">
+        <i nz-icon nzType="save"></i>Lưu
+      </button>
+      <button class="employee-form__button-back" nz-button nzType="default" [routerLink]="['/staffs/list']">
+        <i nz-icon nzType="stop"></i>Quay lại  
+      </button>
+    </div>
+  </div>
+</div>

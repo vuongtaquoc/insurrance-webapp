@@ -149,8 +149,12 @@
 
             <div nz-row nzGutter="8">
                 <div nz-col nzMd="24"  class="footer-botton">  
-                    <button class="employee-form__button-save"  nz-button nzType="primary" (click)="save()">Lưu</button>
-                    <button class="employee-form__button-back" nz-button nzType="default" [routerLink]="['/customers/list']">Quay lại</button>
+                    <button class="employee-form__button-save" [disabled]="!companyAgencies.valid" nz-button nzType="primary" (click)="save()">
+                        <i nz-icon nzType="save"></i>Lưu
+                    </button>
+                    <button class="employee-form__button-back" nz-button nzType="default" [routerLink]="['/customers/list']">
+                        <i nz-icon nzType="stop"></i>Quay lại
+                    </button>
                 </div>
             </div>
         </div>        

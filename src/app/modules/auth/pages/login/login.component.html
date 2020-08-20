@@ -1,31 +1,54 @@
 <form nz-form nzLayout="vertical" [formGroup]="loginForm" (ngSubmit)="handleSubmit()" class="login-page">
-  <h1>{{ 'auth.login.title' | translate }}</h1>
+  <!-- <h1>{{ 'auth.login.title' | translate }}</h1> -->
+
+  <div style="text-align: center;">
+    <img style="text-align: center;" src="../../../../../assets/img/logo_login.png" alt="m-invocie">
+  </div>
+  <nz-form-item>
+    <nz-form-label>{{ 'auth.login.form.company' | translate }} <span class="required">*</span></nz-form-label>
+    <nz-form-control>
+      <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="company">
+        <nz-option *ngFor="let comp of companies" [nzLabel]="comp.value" [nzValue]="comp.id"></nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
 
   <nz-form-item>
-    <nz-form-label [nzRequired]="true">{{ 'auth.login.form.username' | translate }}</nz-form-label>
+    <nz-form-label>{{ 'auth.login.form.username' | translate }} <span class="required">*</span></nz-form-label>
     <nz-form-control>
       <input nz-input formControlName="username">
     </nz-form-control>
-  </nz-form-item >
+  </nz-form-item>
 
   <nz-form-item>
-    <nz-form-label [nzRequired]="true">{{ 'auth.login.form.password' | translate }}</nz-form-label>
+    <nz-form-label>{{ 'auth.login.form.password' | translate }} <span class="required">*</span></nz-form-label>
     <nz-form-control>
       <input type="password" nz-input formControlName="password">
     </nz-form-control>
-  </nz-form-item >
+  </nz-form-item>
 
   <div class="form-group-remember">
     <label nz-checkbox formControlName="remember" class="form-group-remember__checkbox">
       <span>{{'auth.login.form.remember' | translate }}</span>
     </label>
-    <a [routerLink]="['/auth/forgot']" class="form-group-reset__forgot">
+    <!-- <a [routerLink]="['/auth/forgot']" class="form-group-reset__forgot">
       {{ 'auth.login.form.forgot' | translate }}
+    </a> -->
+  </div>
+
+  <div class="form-group">
+    <!-- <button nz-button nzType="default" class="ui-button-outline"
+      type="button">{{'auth.login.form.register' | translate}}</button> -->
+    <button class="btn-login" nz-button nzType="primary" type="submit">{{'auth.login.form.submit' | translate}}</button>
+  </div>
+
+  <div class="form-group">
+    <a [routerLink]="['/auth/forgot']" class="form-group-reset__forgot pull-left">
+      <i class="fa fa-key" aria-hidden="true"></i> {{ 'auth.login.form.forgot' | translate }}
+    </a>
+    <a [routerLink]="['/auth/resigter']" class="form-group-reset__forgot pull-right">
+      <i class="fa fa-long-arrow-right" aria-hidden="true"></i> {{ 'auth.login.form.register' | translate }}
     </a>
   </div>
 
-  <div class="form-group-button">
-    <button nz-button nzType="default" class="ui-button-outline" type="button">{{'auth.login.form.register' | translate}}</button>
-    <button nz-button nzType="primary" type="submit">{{'auth.login.form.submit' | translate}}</button>
-  </div>
 </form>

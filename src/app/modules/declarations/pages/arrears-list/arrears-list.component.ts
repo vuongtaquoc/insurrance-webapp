@@ -10,7 +10,7 @@ import { NzModalService } from 'ng-zorro-antd/modal';
 @Component({
   selector: 'app-arrears-list',
   templateUrl: './arrears-list.component.html',
-  styleUrls: ['./arrears-list.component.less']
+  styleUrls: ['./arrears-list.component.less','../reduction-labor-list/reduction-labor-list.component.less']
 })
 export class ArrearsListComponent implements OnInit {
   isAllDisplayDataChecked = false;
@@ -24,7 +24,15 @@ export class ArrearsListComponent implements OnInit {
   selectedPage: number = 1;
   declarationCode: string = '601a';
   declarationName: string;
+  keyword: string = '';
 
+  filter: any = {
+    createDate: '',
+    documentNo: '',
+    declarationName: '',
+    sendDate: '',
+    documentStatusName: ''
+  };
   constructor(
     private declarationService: DeclarationService,
     private modalService: NzModalService,
@@ -52,6 +60,11 @@ export class ArrearsListComponent implements OnInit {
         this.getDeclarations(this.skip);
       }
     });
+  }
+
+  handleFilter(key) {
+    this.keyword = this.filter[key];
+    this.getDeclarations();
   }
 
   pageChange({ skip, page }) {

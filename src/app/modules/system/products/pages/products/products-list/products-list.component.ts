@@ -17,7 +17,7 @@ export class ProductsListComponent implements OnInit, OnDestroy {
     skip: number;
     formSearch: FormGroup;
     products: any[] = [];
-
+    keyword: string = '';
     shortColumn: any = {
         key: '',
         value: ''
@@ -54,9 +54,13 @@ export class ProductsListComponent implements OnInit, OnDestroy {
 
     getProducts(skip = 0, take = PAGE_SIZE) {
         this.productService.gets({
-            keyWord: this.keyword,
+            name: this.keyword,
+            dateFrom: this.dateFrom,
+            dateTo: this.dateTo,
             skip,
-            take
+            take,
+            orderType: (this.shortColumn.value || ''),
+            orderby: (this.shortColumn.key || '')
         }).subscribe(res => {
             this.products = res.data;
             this.total = res.total;
@@ -72,8 +76,8 @@ export class ProductsListComponent implements OnInit, OnDestroy {
     }
 
     handleFilter(key) {
-        // this.keyword = this.filter[key];
-        // this.getproducts();
+        this.keyword = this.filter[key];
+        this.getProducts();
     }
 
 
@@ -83,9 +87,9 @@ export class ProductsListComponent implements OnInit, OnDestroy {
     }
 
 
-    get keyword() {
-        return this.formSearch.get('keyword').value;
-    }
+    // get keyword() {
+    //     return this.formSearch.get('keyword').value;
+    // }
 
     get dateTo() {
         const dateTo = this.formSearch.get('dateTo').value;
