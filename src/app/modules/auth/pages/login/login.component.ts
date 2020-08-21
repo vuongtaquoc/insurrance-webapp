@@ -53,7 +53,7 @@ export class AuthLoginComponent implements OnInit, OnDestroy {
       username: ['', Validators.required],
       password: ['', Validators.required],
       remember: [false],
-      companyName: ['', Validators.required]
+      // companyName: ['', Validators.required]
     });
   }
 

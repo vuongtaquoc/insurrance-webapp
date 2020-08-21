@@ -13,7 +13,7 @@
                                 <input type="text" formControlName="tax" nz-input placeholder="Tìm kiếm theo mã số thuế" />
                             </nz-input-group>
                             <ng-template #suffixButton>
-                                <button nz-button nzType="primary" (click)="handleSearchTax()"  nzSearch>tra cứu </button>
+                                <button nz-button class="employee-form__button-save" (click)="handleSearchTax()"  nzSearch>Tra cứu </button>
                             </ng-template>
                             <ng-template #taxtpl let-control>
                                 <ng-container *ngIf="control.hasError('required')">
