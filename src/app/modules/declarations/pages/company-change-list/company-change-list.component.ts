@@ -10,7 +10,7 @@ import { NzModalService } from 'ng-zorro-antd/modal';
 @Component({
   selector: 'app-company-change-list',
   templateUrl: './company-change-list.component.html',
-  styleUrls: ['./company-change-list.component.less']
+  styleUrls: ['./company-change-list.component.less', '../reduction-labor-list/reduction-labor-list.component.less']
 })
 export class CompanyChangetListComponent implements OnInit {
   isAllDisplayDataChecked = false;
@@ -25,6 +25,15 @@ export class CompanyChangetListComponent implements OnInit {
   declarationCode: string = '600b';
   declarationName: string;
 
+  keyword: string = '';
+
+  filter: any = {
+    createDate: '',
+    documentNo: '',
+    declarationName: '',
+    sendDate: '',
+    documentStatusName: ''
+  };
   constructor(
     private declarationService: DeclarationService,
     private modalService: NzModalService,
@@ -53,6 +62,12 @@ export class CompanyChangetListComponent implements OnInit {
       }
     });
   }
+
+  handleFilter(key) {
+    this.keyword = this.filter[key];
+    this.getDeclarations();
+  }
+
 
   pageChange({ skip, page }) {
     this.selectedPage = page;

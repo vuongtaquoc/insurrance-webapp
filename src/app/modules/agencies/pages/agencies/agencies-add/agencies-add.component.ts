@@ -7,7 +7,7 @@ import { DATE_FORMAT, REGEX } from '@app/shared/constant';
 import { NzModalService } from 'ng-zorro-antd/modal';
 
 @Component({
-  selector: 'app-agencies-add',
+  selector: 'app-agencies-add', 
   templateUrl: './agencies-add.component.html',
   styleUrls: ['./agencies-add.component.less']
 })

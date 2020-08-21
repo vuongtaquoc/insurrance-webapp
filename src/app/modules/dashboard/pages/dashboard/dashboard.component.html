@@ -1,36 +1,23 @@
 <div class="page-container dashboard-page-container">
-  <app-dashboard-search></app-dashboard-search>
-
   <div class="page-card page-card--scrollable">
-    <h1>Danh sách hồ sơ giao dịch điện tử</h1>
+    <app-dashboard-search></app-dashboard-search>
 
+    <h1>Danh sách hồ sơ giao dịch điện tử</h1>
     <div class="scrollable-container">
-      <nz-table
-        class="table ui-table-custom"
-        #basicTable
-        [nzData]="documents"
-        [nzShowPagination]="false"
-      >
+      <nz-table class="table" #basicTable [nzData]="documents" [nzShowPagination]="false">
         <thead>
-          <tr>
-            <th
-              style="width: 50px"
-              class="table__middle"
-              nzShowCheckbox
-            >
-            </th>
-            <th class="table__middle">Ngày gửi</th>
-            <th class="table__middle">Giấy tờ đi kèm</th>
-            <th class="table__middle">Lần gửi</th>
-            <th class="table__middle">Trạng thái</th>
-            <th class="table__middle">Kết quả xử lý HS của cơ quan BHXH</th>
+          <tr class="table__header">
+            <th style="width: 50px" class="table__middle cell__header" nzShowCheckbox> </th>
+            <th class="table__middle cell__header">Ngày gửi</th>
+            <th class="table__middle cell__header">Giấy tờ đi kèm</th>
+            <th class="table__middle cell__header">Lần gửi</th>
+            <th class="table__middle cell__header">Trạng thái</th>
+            <th class="table__middle cell__header">Kết quả xử lý HS của cơ quan BHXH</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let document of basicTable.data">
-            <td
-              nzShowCheckbox
-            ></td>
+            <td nzShowCheckbox></td>
             <td class="text-center table__middle">
               <span class="table__date">{{document.sendDate.date}}</span>
               <span class="table__time">{{document.sendDate.time}}</span>
@@ -64,7 +51,7 @@
     </div>
   </div>
 
-  <div nz-row [nzGutter]="20">
+  <div nz-row [nzGutter]="20" class="custom-footer">
     <div nz-col nzMd="12">
       <app-dashboard-ivan></app-dashboard-ivan>
     </div>

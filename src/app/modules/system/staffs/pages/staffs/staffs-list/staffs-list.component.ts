@@ -18,7 +18,7 @@ export class StaffsListComponent implements OnInit, OnDestroy {
     skip: number;
     formSearch: FormGroup;
     staffs: any[] = [];
-
+    keyword: string = '';
     shortColumn: any = {
         key: '',
         value: ''
@@ -40,7 +40,7 @@ export class StaffsListComponent implements OnInit, OnDestroy {
 
     }
     ngOnInit() {
-       
+
 
         this.formSearch = this.formBuilder.group({
             keyword: [''],
@@ -54,9 +54,13 @@ export class StaffsListComponent implements OnInit, OnDestroy {
 
     getStaffs(skip = 0, take = PAGE_SIZE) {
         this.staffService.gets({
-            keyWord: this.keyword,
+            name: this.keyword,
+            dateFrom: this.dateFrom,
+            dateTo: this.dateTo,
             skip,
-            take
+            take,
+            orderType: (this.shortColumn.value || ''),
+            orderby: (this.shortColumn.key || '')
         }).subscribe(res => {
             this.staffs = res.data;
             this.total = res.total;
@@ -72,8 +76,8 @@ export class StaffsListComponent implements OnInit, OnDestroy {
     }
 
     handleFilter(key) {
-        // this.keyword = this.filter[key];
-        // this.getStaffs();
+        this.keyword = this.filter[key];
+        this.getStaffs();
     }
 
 
@@ -83,9 +87,9 @@ export class StaffsListComponent implements OnInit, OnDestroy {
     }
 
 
-    get keyword() {
-        return this.formSearch.get('keyword').value;
-    }
+    // get keyword() {
+    //     return this.formSearch.get('keyword').value;
+    // }
 
     get dateTo() {
         const dateTo = this.formSearch.get('dateTo').value;

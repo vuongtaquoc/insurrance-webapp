@@ -11,6 +11,14 @@ export class StaffService {
   constructor(private http: ApplicationHttpClient) {
   }
 
+  public getPermission(id){
+    return this.http.getList('/customers', {
+      params: {
+        
+      }
+    });
+  }
+
   public gets(filters = {}) {
     return this.http.getList('/customers', {
       params: {

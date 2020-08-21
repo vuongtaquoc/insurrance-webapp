@@ -12,7 +12,8 @@ export class NotificationService {
   }
 
   public gets(filters = {}) {
-    return this.http.getList('/notifications', {
+    // return this.http.getList('/notifications', {
+    return this.http.getList('/customers', {
       params: {
         ...filters
       }
@@ -20,7 +21,7 @@ export class NotificationService {
   }
 
   public getDetailById(id: string) {
-    return this.http.get(`/notifications/${ id }`, {
+    return this.http.get(`/notifications/${id}`, {
     });
   }
 
@@ -29,11 +30,11 @@ export class NotificationService {
   }
 
   public update(id, body, options = {}) {
-    return this.http.post(`/notifications/${ id }`, body, options);
+    return this.http.post(`/notifications/${id}`, body, options);
   }
 
   public delete(id) {
-    return this.http.delete(`/notifications/${ id }`);
+    return this.http.delete(`/notifications/${id}`);
   }
 
 

@@ -1,33 +1,101 @@
+.page-container {
+  height: 100%;
+  padding: 0;
 
-.page-employees {
-  &__menu-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-  }
+  .page-employees {
+    background-color: #ffffff;
+    box-shadow: -3px 2px 2px rgba(13, 13, 13, 0.25);
+    border-radius: 10px;
+    //padding: 10px;
+    // margin: 5px;
+    height: 100%;
 
-  &__group-button {
-    button, a {
-      margin-left: 5px;
+    .page-title {
+      display: grid;
+      grid-template-columns: 1fr 25%;
+      grid-gap: 30px;
+    }
+
+    &__menu-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    &__group-button {
+      float: right;
+      width: 100%;
+
+      button,
+      a {
+        margin-left: 5px;
+      }
+
+      .element-form_button-add {
+        float: right;
+        background: #f07f33;
+        color: #fff;
+        border-color: #D1D5EE;
+      }
     }
   }
-}
-nz-date-picker,
-nz-month-picker,
-nz-year-picker,
-nz-range-picker,
-nz-week-picker {
-  margin: 0 8px 12px 0;
-  margin-top: 50px;
-}
 
-.table {
-  .text-left {
-    text-align: left !important;
+  nz-date-picker,
+  nz-month-picker,
+  nz-year-picker,
+  nz-range-picker,
+  nz-week-picker {
+    margin: 0 8px 12px 0;
+    margin-top: 50px;
   }
 
-  .text-center {
-    text-align: center !important;
+  .table-editor {
+    .text-left {
+      text-align: left !important;
+    }
+
+    .text-center {
+      text-align: center !important;
+    }
+
+    .cell-custom,
+    th.ant-table-column-has-sorters:hover {
+      font-weight: bold;
+      text-align: center;
+      padding: 5px;
+      color: white;
+      background: #3498db;
+      border-right: 1px solid #f0f0f0;
+
+      .ant-input {
+        font-weight: normal;
+      }
+    }
+
+    .ui-table-custom-header .cell-custom {
+      padding: 14px;
+    }
+
+    .input-filter {
+      border-radius: 4px;
+    }
+
+    thead>tr>th {
+      padding: 8px;
+    }
+
+    tbody>tr>td {
+      padding: 5px 16px;
+    }
   }
+
+  .width-9p {
+    width: 9%;
+  }
+
+  .width-1p {
+    width: 1%;
+  }
+
 }

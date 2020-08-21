@@ -2,7 +2,7 @@
   <header class="layout-header">
     <div class="layout-header__left">
       <a [routerLink]="['/']" class="logo">
-        <img src="/assets/img/logo-2.png" alt="{{'common.title' | translate}}">
+        <img src="/assets/img/logo_login1.png" alt="{{'common.title' | translate}}">
       </a>
       <div class="profile-item-container" nz-dropdown nzTrigger="click" [nzDropdownMenu]="menu">
         <span class="profile-image-wrapper">
@@ -62,8 +62,8 @@
 
               <li nz-submenu nzTitle="Hệ thống" nzIcon="setting">
                 <ul>
-                  <li nz-menu-item><a [routerLink]="['/staffs/list']"><i nz-icon nzType="user"
-                        nzTheme="outline"></i> Danh sách nhân viên</a></li>
+                  <li nz-menu-item><a [routerLink]="['/staffs/list']"><i nz-icon nzType="user" nzTheme="outline"></i>
+                      Danh sách nhân viên</a></li>
                   <li nz-menu-item><a [routerLink]="['/products/list']"><i nz-icon nzType="appstore"
                         nzTheme="outline"></i> Danh sách sản phẩm</a></li>
                 </ul>
@@ -108,8 +108,8 @@
                     nzTheme="outline"></i>Truy thu (Trường hợp vi phạp quy định của pháp luật về đóng BHXH.BHYT, BHTNLĐ,
                   BNN)</a></li>
               <li nz-menu-item [hidden]="!permissions[pmsConf.reduction_labor.R]"><a
-                [routerLink]="['/declarations/company-change']"><i nz-icon nzType="edit"
-                  nzTheme="outline"></i>Đăng ký thay đổi thông tin đơn vị</a></li>
+                  [routerLink]="['/declarations/company-change']"><i nz-icon nzType="edit" nzTheme="outline"></i>Đăng ký
+                  thay đổi thông tin đơn vị</a></li>
               <li nz-menu-item [hidden]="!permissions[pmsConf.reduction_labor.R]"><a
                 [routerLink]="['/declarations/reissue-insurance-card']"><i nz-icon nzType="arrow-down"
                   nzTheme="outline"></i>Cấp lại sổ BHXH do hỏng, do mất</a></li>
@@ -176,8 +176,10 @@
   </header><!-- layout-header -->
 
   <div class="layout-container">
-    <nz-spin [nzSpinning]="isLoading">
-      <router-outlet></router-outlet>
-    </nz-spin>
+    <!-- <nz-spin [nzSpinning]="isLoading" class="loading-custom">
+    
+    </nz-spin> -->
+
+    <router-outlet></router-outlet>
   </div>
 </div>

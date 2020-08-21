@@ -90,7 +90,8 @@
 			"wards": "Phường xã",
 			"object": "Đôi tượng cấp thẻ",
 			"studentLevelOne": "Học sinh(Lớp 1->12)",
-			"studentLevelTwo": "Sinh viên(Đại học, Cao đẳng, Trung học chuyên nghiệp, Nghề...)"
+			"studentLevelTwo": "Sinh viên(Đại học, Cao đẳng, Trung học chuyên nghiệp, Nghề...)",
+			"career":"Ngành nghề sản xuất kinh doanh chính"
 		}
 	},
 	"contract": {
@@ -210,6 +211,17 @@
 	},
 	"system": {
 		"staffs": {
+			"permission": {
+				"title": "Phân quyền chức năng",
+				"stt": "STT",
+				"name": "Tên màn hình",
+				"permission_READ": "Truy cập",
+				"permission_UPDATE": "Chỉnh sửa",
+				"permission_CREATE": "Tạo mới",
+				"permission_DELETE": "Xóa",
+				"permission_ACTIVATED": "Kích hoạt",
+				"permission_APPROVAL": "Duyệt"
+			},
 			"info": {
 				"title": "Danh sách nhân viên",
 				"dateFrom": "Từ ngày",
@@ -217,7 +229,7 @@
 				"keyWords": "Từ khóa"
 			},
 			"table": {
-				"stt": "STT", 
+				"stt": "STT",
 				"fullName": "Tên nhân viên",
 				"userName": "Tên đăng nhập",
 				"tel": "Số điện thoại",
@@ -265,7 +277,7 @@
 				"dateFrom": "Từ ngày",
 				"dateTo": "Đến ngày",
 				"keyWords": "Từ khóa"
-			}, 
+			},
 			"table": {
 				"stt": "STT",
 				"productName": "Tên hàng hóa, dịch vụ",

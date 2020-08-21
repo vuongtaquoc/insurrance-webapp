@@ -49,7 +49,7 @@ const MAX_UPLOAD_SIZE = 20 * 1024 * 1024; // ~ 20MB
 @Component({
   selector: 'app-declaration-increase-labor',
   templateUrl: './increase-labor.component.html',
-  styleUrls: [ './increase-labor.component.less' ]
+  styleUrls: ['./increase-labor.component.less']
 })
 export class IncreaseLaborComponent implements OnInit, OnDestroy {
   @Input() declarationId: string;
@@ -132,15 +132,15 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     const date = new Date();
     this.currentCredentials = this.authenticationService.currentCredentials;
     this.form = this.formBuilder.group({
-      number: [ '1' ],
-      month: [ date.getMonth() + 1 ],
-      year: [ date.getFullYear() ]
+      number: ['1'],
+      month: [date.getMonth() + 1],
+      year: [date.getFullYear()]
     });
 
     this.documentForm = this.formBuilder.group({
       userAction: [this.currentCredentials.companyInfo.delegate],
-      mobile:[this.currentCredentials.companyInfo.mobile],
-      usedocumentDT01:[true],
+      mobile: [this.currentCredentials.companyInfo.mobile],
+      usedocumentDT01: [true],
     });
 
     this.documentListService.getDocumentList(this.declarationCode).subscribe(documentList => {
@@ -156,7 +156,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
       this.departmentService.getDepartments(),
       this.categoryService.getCategories('relationshipDocumentType'),
       this.relationshipService.getRelationships()
-    ]).subscribe(([ cities, nationalities, peoples, salaryAreas, plans, departments, relationshipDocumentTypies, relationShips ]) => {
+    ]).subscribe(([cities, nationalities, peoples, salaryAreas, plans, departments, relationshipDocumentTypies, relationShips]) => {
       this.updateSourceToColumn(this.tableHeaderColumns, 'peopleCode', peoples);
       this.updateSourceToColumn(this.tableHeaderColumns, 'nationalityCode', nationalities);
       this.updateSourceToColumn(this.tableHeaderColumns, 'registerCityCode', cities);
@@ -248,7 +248,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
 
     eventEmitter.emit('unsaved-changed');
 
-    const declarations = [ ...this.declarations ];
+    const declarations = [...this.declarations];
     const parentIndex = findIndex(declarations, d => d.key === type);
     const childLastIndex = findLastIndex(declarations, d => d.isLeaf && d.parentKey === type);
     let isExist = false;
@@ -307,7 +307,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
   }
 
   handleSort({ direction, source, dist }) {
-    const declarations = [ ...this.declarations ];
+    const declarations = [...this.declarations];
     const current = declarations[source];
 
     // remove element
@@ -333,7 +333,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
   handleUserAdded({ tableName, y, employee }) {
     if (tableName !== 'increaseLabor') return;
 
-    const declarations = [ ...this.declarations ];
+    const declarations = [...this.declarations];
     const row = declarations[y];
 
     row.origin = {
@@ -362,7 +362,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
   }
 
   handleUserUpdated(user) {
-    const declarations = [ ...this.declarations ];
+    const declarations = [...this.declarations];
     const declarationUsers = declarations.filter(d => {
       return d.isLeaf && d.origin && (d.origin.employeeId || d.origin.id) === user.id;
     });
@@ -472,7 +472,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
       });
     }
 
-    this.eventsSubject.next({type});
+    this.eventsSubject.next({ type });
     // this.submitType = type;
 
     // eventEmitter.emit('saveData:loading', true);
@@ -490,7 +490,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
       declarationCode: this.declarationCode,
       declarationName: this.getDeclaration(this.declarationCode).value,
       documentNo: number,
-      createDate: `01/0${ month }/${ year }`,
+      createDate: `01/0${month}/${year}`,
       documentStatus: 0,
       totalNumberInsurance: this.totalNumberInsurance,
       totalCardInsurance: this.totalCardInsurance,
@@ -508,36 +508,36 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
       if (column.key === 'isMaster') {
         const employeeIsMaster = instance.jexcel.getValueFromCoords(c, r);
 
-        if(employeeIsMaster === true) {
+        if (employeeIsMaster === true) {
 
           this.employeeService.getEmployeeById(records[r].origin.employeeId).subscribe(emp => {
-            this.updateNextColumns(instance, r, emp.fullName, [ c + 1]);
-            this.updateNextColumns(instance, r, emp.relationshipMobile, [ c + 2]);
-            this.updateNextColumns(instance, r, emp.relationshipDocumentType, [ c + 3]);
-            this.updateNextColumns(instance, r, emp.relationshipBookNo, [ c + 4]);
-            this.updateNextColumns(instance, r, emp.recipientsCityCode, [ c + 5]);
-            this.updateNextColumns(instance, r, emp.recipientsDistrictCode, [ c + 6]);
-            this.updateNextColumns(instance, r, emp.recipientsWardsCode, [ c + 7]);
-            this.updateNextColumns(instance, r, emp.fullName, [ c + 10]);
-            this.updateNextColumns(instance, r, emp.isurranceCode, [ c + 11]);
-            this.updateNextColumns(instance, r, emp.typeBirthday, [ c + 12]);
-            this.updateNextColumns(instance, r, emp.birthday, [ c + 13]);
-            this.updateNextColumns(instance, r, emp.gender, [ c + 14]);
-            this.updateNextColumns(instance, r, emp.relationshipCityCode, [ c + 16]);
-            this.updateNextColumns(instance, r, emp.relationshipDistrictCode, [ c + 17]);
-            this.updateNextColumns(instance, r, emp.relationshipWardsCode, [ c + 18]);
+            this.updateNextColumns(instance, r, emp.fullName, [c + 1]);
+            this.updateNextColumns(instance, r, emp.relationshipMobile, [c + 2]);
+            this.updateNextColumns(instance, r, emp.relationshipDocumentType, [c + 3]);
+            this.updateNextColumns(instance, r, emp.relationshipBookNo, [c + 4]);
+            this.updateNextColumns(instance, r, emp.recipientsCityCode, [c + 5]);
+            this.updateNextColumns(instance, r, emp.recipientsDistrictCode, [c + 6]);
+            this.updateNextColumns(instance, r, emp.recipientsWardsCode, [c + 7]);
+            this.updateNextColumns(instance, r, emp.fullName, [c + 10]);
+            this.updateNextColumns(instance, r, emp.isurranceCode, [c + 11]);
+            this.updateNextColumns(instance, r, emp.typeBirthday, [c + 12]);
+            this.updateNextColumns(instance, r, emp.birthday, [c + 13]);
+            this.updateNextColumns(instance, r, emp.gender, [c + 14]);
+            this.updateNextColumns(instance, r, emp.relationshipCityCode, [c + 16]);
+            this.updateNextColumns(instance, r, emp.relationshipDistrictCode, [c + 17]);
+            this.updateNextColumns(instance, r, emp.relationshipWardsCode, [c + 18]);
             this.updateNextColumns(instance, r, '00', [21]);
             this.updateNextColumns(instance, r, emp.identityCar, [c + 20]);
             this.updateSelectedValueDropDow(columns, instance, r);
           });
 
-        }else {
-          this.updateNextColumns(instance, r, '', [ c + 1 , c + 2, c + 3, c + 4, c + 5, c + 6, c + 7, c + 8,
-          c + 10, c + 11, c + 11,c + 12,c + 13,c + 14,c + 15,c + 16,c + 17]);
+        } else {
+          this.updateNextColumns(instance, r, '', [c + 1, c + 2, c + 3, c + 4, c + 5, c + 6, c + 7, c + 8,
+          c + 10, c + 11, c + 11, c + 12, c + 13, c + 14, c + 15, c + 16, c + 17]);
 
           const value = instance.jexcel.getValueFromCoords(1, r);
           const numberColumn = this.tableHeaderColumnsFamilies.length;
-          this.updateNextColumns(instance, r,value, [(numberColumn -1)]);
+          this.updateNextColumns(instance, r, value, [(numberColumn - 1)]);
         }
 
       }
@@ -545,24 +545,23 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
       if (column.key === 'sameAddress') {
         const isSameAddress = instance.jexcel.getValueFromCoords(c, r);
 
-        if(isSameAddress === true)
-        {
-          this.updateNextColumns(instance, r, instance.jexcel.getValueFromCoords(7, r), [ c + 1]);
-          this.updateNextColumns(instance, r, instance.jexcel.getValueFromCoords(8, r), [ c + 2]);
-          this.updateNextColumns(instance, r, instance.jexcel.getValueFromCoords(9, r), [ c + 3]);
+        if (isSameAddress === true) {
+          this.updateNextColumns(instance, r, instance.jexcel.getValueFromCoords(7, r), [c + 1]);
+          this.updateNextColumns(instance, r, instance.jexcel.getValueFromCoords(8, r), [c + 2]);
+          this.updateNextColumns(instance, r, instance.jexcel.getValueFromCoords(9, r), [c + 3]);
           this.updateSelectedValueDropDow(columns, instance, r);
 
         } else {
-          this.updateNextColumns(instance, r, '', [ c + 1]);
-          this.updateNextColumns(instance, r, '', [ c + 2]);
-          this.updateNextColumns(instance, r, '', [ c + 3]);
+          this.updateNextColumns(instance, r, '', [c + 1]);
+          this.updateNextColumns(instance, r, '', [c + 2]);
+          this.updateNextColumns(instance, r, '', [c + 3]);
         }
       }
 
       if (column.willBeValid) {
         const value = instance.jexcel.getValueFromCoords(c, r);
         const numberColumn = this.tableHeaderColumnsFamilies.length;
-        this.updateNextColumns(instance, r,value, [(numberColumn -1)]);
+        this.updateNextColumns(instance, r, value, [(numberColumn - 1)]);
       }
     }
     //update families
@@ -574,7 +573,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
       });
       //update data object source
       columns.map((column, index) => {
-          family[column.key] = record[index];
+        family[column.key] = record[index];
       });
 
     });
@@ -587,11 +586,11 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
 
   private updateSelectedValueDropDow(columns, instance, r) {
 
-      columns.forEach((column, colIndex) => {
-        if (column.defaultLoad) {
-          instance.jexcel.updateDropdownValue(colIndex, r);
-        }
-      });
+    columns.forEach((column, colIndex) => {
+      if (column.defaultLoad) {
+        instance.jexcel.updateDropdownValue(colIndex, r);
+      }
+    });
   }
 
   handleChangeTable({ instance, cell, c, r, records }) {
@@ -606,15 +605,15 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
         const hospitalFirstCode = cell.innerText.split(' - ').shift();
 
         this.hospitalService.getById(hospitalFirstCode).subscribe(data => {
-          const name = `${ data.id } - ${ data.name }`;
-          this.updateNextColumns(instance, r, name, [ c + 1 ]);
+          const name = `${data.id} - ${data.name}`;
+          this.updateNextColumns(instance, r, name, [c + 1]);
         });
 
         // this.updateNextColumns(instance, r, hospitalFirstRegistName, [ c + 1 ]);
       } else if (column.key === 'registerCityCode') {
-        this.updateNextColumns(instance, r, '', [ c + 1, c + 2 ]);
+        this.updateNextColumns(instance, r, '', [c + 1, c + 2]);
       } else if (column.key === 'recipientsCityCode') {
-        this.updateNextColumns(instance, r, '', [ c + 1, c + 2, c + 5, c + 6 ]);
+        this.updateNextColumns(instance, r, '', [c + 1, c + 2, c + 5, c + 6]);
       }
 
     }
@@ -642,7 +641,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
   }
 
   handleAddRow({ rowNumber, options, origin, insertBefore }) {
-    const declarations = [ ...this.declarations ];
+    const declarations = [...this.declarations];
     let row: any = {};
 
     const beforeRow: any = declarations[insertBefore ? rowNumber - 1 : rowNumber];
@@ -689,7 +688,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
   }
 
   handleDeleteData({ rowNumber, numOfRows, records }) {
-    const declarations = [ ...this.declarations ];
+    const declarations = [...this.declarations];
     let declarationsDeleted = [];
 
     const beforeRow = records[rowNumber - 1];
@@ -728,7 +727,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
   }
 
   handleAddMember({ rowNumber, numOfRows, beforeRowIndex, afterRowIndex, options, origin, insertBefore }) {
-    const families = [ ...this.families ];
+    const families = [...this.families];
     let row: any = {};
 
     const beforeRow: any = families[insertBefore ? beforeRowIndex - 1 : beforeRowIndex];
@@ -761,11 +760,11 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
   }
 
   handleDeleteMember({ rowNumber, numOfRows, records }) {
-    const families = [ ...this.families ];
+    const families = [...this.families];
 
     const familyDeleted = families.splice(rowNumber, numOfRows);
     this.families = families;
-    this.eventsSubject.next({type: 'validate'});
+    this.eventsSubject.next({ type: 'validate' });
     this.familiesSubject.next('validate');
     this.documentsSubject.next('validate');
     eventEmitter.emit('unsaved-changed');
@@ -777,7 +776,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     declarationsDeleted.forEach(itemDeleted => {
       const item = this.declarations.find(d => (d.origin && d.origin.employeeId) === (itemDeleted.origin && itemDeleted.origin.employeeId));
 
-      if(item){
+      if (item) {
         return;
       }
       employeeIdDeleted.push(itemDeleted.origin.employeeId);
@@ -787,7 +786,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
       families = families.filter(fa => fa.employeeId !== id);
     });
 
-    if(families.length === 0) {
+    if (families.length === 0) {
       families.push({
         isMaster: false,
       });
@@ -825,7 +824,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
       const code = declaration.data[INSURRANCE_CODE_INDEX];
 
       if (code && declaration.isLeaf) {
-        declaration.data[INSURRANCE_STATUS_INDEX] = `Không tìm thấy Mã số ${ declaration.data[INSURRANCE_CODE_INDEX] }`;
+        declaration.data[INSURRANCE_STATUS_INDEX] = `Không tìm thấy Mã số ${declaration.data[INSURRANCE_CODE_INDEX]}`;
 
         errors[rowIndex] = {
           col: INSURRANCE_CODE_INDEX,
@@ -870,7 +869,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     }
   }
 
-  private updateFilterToColumn(tableHeaderColumns,key, filterCb) {
+  private updateFilterToColumn(tableHeaderColumns, key, filterCb) {
     const column = tableHeaderColumns.find(c => c.key === key);
     if (column) {
       column.filter = filterCb;
@@ -885,7 +884,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     }
 
     return this.districtService.getDistrict(value).toPromise().then(districts => {
-      this.updateSourceToColumn(this.tableHeaderColumns,'registerDistrictCode', districts);
+      this.updateSourceToColumn(this.tableHeaderColumns, 'registerDistrictCode', districts);
 
       return districts;
     });
@@ -899,7 +898,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     }
 
     return this.wardService.getWards(value).toPromise().then(districts => {
-      this.updateSourceToColumn(this.tableHeaderColumns,'recipientsWardsCode', districts);
+      this.updateSourceToColumn(this.tableHeaderColumns, 'recipientsWardsCode', districts);
 
       return districts;
     });
@@ -913,7 +912,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     }
 
     return this.districtService.getDistrict(value).toPromise().then(districts => {
-      this.updateSourceToColumn(this.tableHeaderColumnsFamilies,'relationshipDistrictCode', districts);
+      this.updateSourceToColumn(this.tableHeaderColumnsFamilies, 'relationshipDistrictCode', districts);
 
       return districts;
     });
@@ -927,7 +926,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     }
 
     return this.wardService.getWards(value).toPromise().then(wards => {
-      this.updateSourceToColumn(this.tableHeaderColumns,'registerWardsCode', wards);
+      this.updateSourceToColumn(this.tableHeaderColumns, 'registerWardsCode', wards);
       return wards;
     });
   }
@@ -968,7 +967,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     }
 
     return this.wardService.getWards(value).toPromise().then(wards => {
-      this.updateSourceToColumn(this.tableHeaderColumnsFamilies,'wardsCode', wards);
+      this.updateSourceToColumn(this.tableHeaderColumnsFamilies, 'wardsCode', wards);
       return wards;
     });
   }
@@ -981,7 +980,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     }
 
     return this.wardService.getWards(value).toPromise().then(wards => {
-      this.updateSourceToColumn(this.tableHeaderColumnsFamilies,'relationshipWardsCode', wards);
+      this.updateSourceToColumn(this.tableHeaderColumnsFamilies, 'relationshipWardsCode', wards);
       return wards;
     });
   }
@@ -1061,7 +1060,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
   }
 
   handleDeleteInfomation({ rowNumber, numOfRows }) {
-    const infomations = [ ...this.informations ];
+    const infomations = [...this.informations];
 
     const infomaionDeleted = infomations.splice(rowNumber, numOfRows);
     this.informations = infomations;
@@ -1081,10 +1080,10 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
         }
 
         if (column.type === 'numberic') {
-          return { ...combine, [ column.key ]: array[current].toString().split(' ').join('') };
+          return { ...combine, [column.key]: array[current].toString().split(' ').join('') };
         }
 
-        return { ...combine, [ column.key ]: column.key === 'gender' ? +array[current] : array[current] };
+        return { ...combine, [column.key]: column.key === 'gender' ? +array[current] : array[current] };
       },
       {}
     );
@@ -1092,7 +1091,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
   }
 
   private arrayEmployeeToProps(array, columns, isGetInDeclatation) {
-    if(!array.options.isLeaf && isGetInDeclatation) {
+    if (!array.options.isLeaf && isGetInDeclatation) {
       return null;
     }
     const object: any = Object.keys(array).reduce(
@@ -1103,10 +1102,10 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
         }
 
         if (column.type === 'numeric') {
-          return { ...combine, [ column.key ]: array[current].toString().split(' ').join('') };
+          return { ...combine, [column.key]: array[current].toString().split(' ').join('') };
         }
 
-        return { ...combine, [ column.key ]: column.key === 'gender' ? +array[current] : array[current] };
+        return { ...combine, [column.key]: column.key === 'gender' ? +array[current] : array[current] };
       },
       {}
     );
@@ -1125,21 +1124,21 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
 
   reformatInformations() {
     const informations = [];
-    let informationcopy = [ ...this.informations];
+    let informationcopy = [...this.informations];
     informationcopy.forEach(information => {
-        if(information.fullName) {
-          informations.push(information);
-        }
+      if (information.fullName) {
+        informations.push(information);
+      }
     });
 
     return informations;
   }
 
   fomatInfomation(infomations) {
-    if(!infomations) {
+    if (!infomations) {
       return [];
     }
-    let infomationscopy = [ ...infomations ];
+    let infomationscopy = [...infomations];
     infomationscopy.forEach(p => {
       p.data = this.tableHeaderColumnsDocuments.map(column => {
         if (!column.key || !p[column.key]) return '';
@@ -1155,30 +1154,29 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
 
   reformatFamilies() {
     const families = [];
-    let familiescopy = [ ...this.families ];
+    let familiescopy = [...this.families];
     familiescopy.forEach(family => {
-        if(family.fullName) {
-          family.isMaster = family.origin.isMaster
-          family.id = family.id ? family.id : 0;
-          family.gender = family.gender ? 1: 0;
+      if (family.fullName) {
+        family.isMaster = family.origin.isMaster
+        family.id = family.id ? family.id : 0;
+        family.gender = family.gender ? 1 : 0;
 
-          families.push(family);
-        }
+        families.push(family);
+      }
     });
 
     return families;
   }
 
 
-  private setDataToFamilies(employeesInDeclaration: any)
-  {
+  private setDataToFamilies(employeesInDeclaration: any) {
     const families = [];
     const employees = [];
     const employeesId = [];
     employeesInDeclaration.forEach(emp => {
 
       const empId = employeesId.find(c => c === emp.employeeId);
-      if(empId) {
+      if (empId) {
         return;
       }
 
@@ -1186,24 +1184,23 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
 
       const family = this.families.find(p => p.employeeId === emp.employeeId);
 
-        if (!family) {
+      if (!family) {
 
-          const isContainsEmployee = employees.find(p => p.employeeId === emp.employeeId);
-          if(!isContainsEmployee)
-          {
-            employees.push(emp);
-          }
-
-        }else {
-
-          const currentFamilies = this.families.filter(fm => fm.employeeId === emp.employeeId);
-          if(currentFamilies){
-            currentFamilies.forEach(oldEmp => {
-              families.push(oldEmp);
-            });
-          }
-
+        const isContainsEmployee = employees.find(p => p.employeeId === emp.employeeId);
+        if (!isContainsEmployee) {
+          employees.push(emp);
         }
+
+      } else {
+
+        const currentFamilies = this.families.filter(fm => fm.employeeId === emp.employeeId);
+        if (currentFamilies) {
+          currentFamilies.forEach(oldEmp => {
+            families.push(oldEmp);
+          });
+        }
+
+      }
     });
 
     forkJoin(
@@ -1220,7 +1217,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
         master.relationshipMobile = ep.relationshipMobile;
         master.relationshipFullName = ep.relationshipFullName;
         master.relationshipBookNo = ep.relationshipBookNo;
-        master.relationshipDocumentType =  ep.relationshipDocumentType;
+        master.relationshipDocumentType = ep.relationshipDocumentType;
         master.relationshipCityCode = ep.relationshipCityCode;
         master.relationshipDistrictCode = ep.relationshipDistrictCode;
         master.relationshipWardsCode = ep.relationshipWardsCode;
@@ -1234,9 +1231,9 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
         };
         families.push(master);
 
-        if(ep.families.length > 1) {
+        if (ep.families.length > 1) {
           ep.families.forEach(fa => {
-            if(fa.relationshipCode === '00') {
+            if (fa.relationshipCode === '00') {
               return;
             }
 
@@ -1250,7 +1247,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
             }
             families.push(fa);
           });
-        }else {
+        } else {
           // nếu chưa có thông tin của gia đình thì add dòng trống
           families.push(this.fakeEmployeeInFamilies(ep));
           families.push(this.fakeEmployeeInFamilies(ep));
@@ -1272,7 +1269,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
   fakeEmployeeInFamilies(employee) {
 
     return {
-      isMaster:false,
+      isMaster: false,
       conditionValid: null, //employee.relationshipFullName,
       employeeId: employee.employeeId,
       origin: {
@@ -1284,13 +1281,12 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
 
   }
 
-  private setDateToInformationList(employeesInDeclaration: any)
-  {
+  private setDateToInformationList(employeesInDeclaration: any) {
     const informations = [];
     employeesInDeclaration.forEach(emp => {
       const documents = this.getDocumentByPlancode(emp.planCode);
 
-      if(!documents) {
+      if (!documents) {
         return;
       }
 
@@ -1310,10 +1306,10 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
             isLeaf: true,
           }
         };
-        if(doc.isContract) {
+        if (doc.isContract) {
           item.documentNo = emp.contractNo;
-          item.dateRelease =  emp.dateSign;
-        }else {
+          item.dateRelease = emp.dateSign;
+        } else {
           item.documentNo = emp.fromDate;
         }
         informations.push(item);
@@ -1336,11 +1332,11 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     const employeesInDeclaration = [];
     records.forEach(record => {
       const employee = this.arrayEmployeeToProps(record, this.tableHeaderColumns, true);
-      if(employee && employee.employeeId) {
+      if (employee && employee.employeeId) {
 
         employee.origin = {
           employeeId: employee.employeeId,
-          isLeaf:true,
+          isLeaf: true,
           isMaster: false,
         };
 
@@ -1359,23 +1355,23 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
 
   getDeclaration(declarationCode: string) {
     const declarations = _.find(DECLARATIONS, {
-        key: declarationCode,
+      key: declarationCode,
     });
 
     return declarations;
   }
 
   getDocumentByPlancode(planCode: string) {
-    if(!planCode) {
+    if (!planCode) {
       return null;
     }
     const document = _.find(DOCUMENTBYPLANCODE, {
       key: planCode,
     });
 
-    if(document) {
+    if (document) {
       return document.value;
-    }else {
+    } else {
       return null;
     }
   }
@@ -1385,7 +1381,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     const master = _.find(families, {
       relationshipCode: '00',
     });
-    if(master) {
+    if (master) {
       return master;
     }
     return {};
@@ -1397,7 +1393,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
 
   protected formatNote(str, args) {
     for (let i = 0; i < args.length; i++)
-       str = str.replace("{" + i + "}", args[i]);
+      str = str.replace("{" + i + "}", args[i]);
     return str;
   }
 }

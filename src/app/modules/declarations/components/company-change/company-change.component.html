@@ -1,7 +1,8 @@
 <div class="page-container">
   <nz-spin [nzSpinning]="isSpinning">
-    <div class="page-company" [ngClass]="{'page-declarations-hide-last-tab': !usedocumentDT01}" cardFullHeight>
-      <nz-tabset nzSize="small" nzTabPosition="bottom" nzSelectedIndex="1" [nzTabBarExtraContent]="extraTemplate" (nzSelectChange)="handleSelectTab($event)">
+    <div class="page-company page-company-edit" [ngClass]="{'page-declarations-hide-last-tab': !usedocumentDT01}" cardFullHeight>
+      <nz-tabset nzSize="small" nzTabPosition="bottom" nzSelectedIndex="1" [nzTabBarExtraContent]="extraTemplate"
+        (nzSelectChange)="handleSelectTab($event)">
         <nz-tab nzTitle="Danh mục tài liệu">
           <div class="page-document-list__container">
             <form nz-form [formGroup]="documentForm">
@@ -11,44 +12,36 @@
                   <nz-form-item>
                     <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Người nộp</nz-form-label>
                     <nz-form-control [nzSpan]="14">
-                      <input nz-input
-                        placeholder="Người nộp"
-                        formControlName="userAction"
-                        (onChange)="handleChangeForm()"
-                      />
+                      <input nz-input placeholder="Người nộp" formControlName="userAction"
+                        (onChange)="handleChangeForm()" />
                     </nz-form-control>
                   </nz-form-item>
                 </div>
                 <div nz-col [nzSpan]="12">
-                    <nz-form-item>
-                      <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Số điện thoại</nz-form-label>
-                      <nz-form-control [nzSpan]="14">
-                        <input nz-input
-                          placeholder="Số điện thoại"
-                          formControlName="mobile"
-                          (onChange)="handleChangeForm()"
-                        />
-                      </nz-form-control>
-                    </nz-form-item>
-                  </div>
+                  <nz-form-item>
+                    <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Số điện thoại</nz-form-label>
+                    <nz-form-control [nzSpan]="14">
+                      <input nz-input placeholder="Số điện thoại" formControlName="mobile"
+                        (onChange)="handleChangeForm()" />
+                    </nz-form-control>
+                  </nz-form-item>
                 </div>
-                <h1>Thành phần hồ sơ</h1>
+              </div>
+              <h1>Thành phần hồ sơ</h1>
+              <div class="document-form__process-table">
                 <div class="document-form__process-table">
-                  <div class="document-form__process-table">
-                    <app-document-table
-                      [data]="documentList"
-                      (onChange)="handleChangeProcessTable($event)"
-                      (onDelete)="handleDeleteProcessData($event)"
-                    ></app-document-table>
-                  </div>
+                  <app-document-table [data]="documentList" (onChange)="handleChangeProcessTable($event)"
+                    (onDelete)="handleDeleteProcessData($event)"></app-document-table>
                 </div>
-                <div nz-row [nzGutter]="10">
-                  <div nz-col [nzSpan]="12">
-                    <nz-form-item>
-                      <label nz-checkbox  formControlName="usedocumentDT01">Phát sinh kê khai Mẫu D01T-TS Bảng kê thông tin</label>
-                    </nz-form-item>
-                  </div>
+              </div>
+              <div nz-row [nzGutter]="10">
+                <div nz-col [nzSpan]="12">
+                  <nz-form-item>
+                    <label nz-checkbox formControlName="usedocumentDT01">Phát sinh kê khai Mẫu D01T-TS Bảng kê thông
+                      tin</label>
+                  </nz-form-item>
                 </div>
+              </div>
             </form>
           </div><!-- page-declarations__container -->
         </nz-tab><!-- tab 1-->
@@ -57,295 +50,370 @@
             <div>&nbsp;</div>
             <div class="page-company__content">
               <div class="page-company__editor">
-                <form  nz-form [formGroup]="companyForm" (ngSubmit)="handleSubmit()" class="login-page">
-                  <div class="page-container">    
-                      
-                        <div class="page-company__blank"></div>
-                        <div class="page-company__main">
-                          <h1>A. Thông tin đơn vị</h1> 
-                          <div nz-row nzGutter="8">
-                              <div nz-col nzMd="6">
-                                  <nz-form-label class="black" [nzSpan]="24">{{ 'company.from.city' | translate }} <span class="required">*</span></nz-form-label>
-                              </div>
-                              <div nz-col nzMd="6">
-                                <nz-form-control
-                                  [nzSpan]="24"
-                                >
-                                  <nz-select formControlName="cityId" (ngModelChange)="changeCity($event);"  nzAllowClear nzPlaceHolder="Lựa chọn">
-                                    <nz-option [nzValue]="city.id" [nzLabel]="city.name" *ngFor="let city of cities"></nz-option>
-                                  </nz-select>
-                                </nz-form-control>
-                              </div>
-                              <div nz-col nzMd="6">
-                                  <nz-form-label class="black text-padding-left" [nzSpan]="24">{{ 'company.from.insurranceManagement' | translate }} <span class="required">*</span></nz-form-label>
-                              </div>
-                              <div nz-col nzMd="6">
-                                <nz-form-control
-                                  [nzSpan]="24"
-                                >
-                                  <nz-select formControlName="isurranceDepartmentId" nzAllowClear nzPlaceHolder="Lựa chọn">
-                                    <nz-option [nzValue]="isurranceDepartment.id" [nzLabel]="isurranceDepartment.name" *ngFor="let isurranceDepartment of isurranceDepartments"></nz-option>
-                                  </nz-select>
-                                </nz-form-control>
-                              </div>
-                          </div>
-                
-                          <div nz-row nzGutter="8">
-                              <div nz-col nzMd="6">
-                                  <nz-form-label class="black" [nzSpan]="24">{{ 'company.from.companyCode' | translate }} <span class="required">*</span></nz-form-label>
-                              </div>
-                              <div nz-col nzMd="6">
-                                  <nz-form-control
-                                  [nzSpan]="24"
-                                >
-                                <input formControlName="code" class="ant-input" placeholder="Nhập dữ liệu" />
-                                </nz-form-control>
-                              </div>
-                              <div nz-col nzMd="6">
-                                  <nz-form-label class="black text-padding-left" [nzSpan]="24">{{ 'company.from.area' | translate }} <span class="required">*</span></nz-form-label>
-                              </div>
-                              <div nz-col nzMd="6">
-                                <nz-form-control
-                                  [nzSpan]="24"
-                                >
-                                  <nz-select formControlName="salaryAreaId"  nzAllowClear nzPlaceHolder="Lựa chọn">
-                                    <nz-option [nzValue]="salaryArea.id" [nzLabel]="salaryArea.name" *ngFor="let salaryArea of salaryAreas"></nz-option>
-                                  </nz-select>
-                                </nz-form-control>
-                              </div>
-                          </div>
-                
-                          <div nz-row nzGutter="8">
-                              <div nz-col nzMd="6">
-                                  <nz-form-label class="black" [nzSpan]="24">{{ 'company.from.name' | translate }} <span class="required">*</span></nz-form-label>
-                              </div>
-                              <div nz-col nzMd="18">
-                                  <nz-form-control
-                                  [nzSpan]="24"
-                                >
-                                <input formControlName="name" class="ant-input" placeholder="Nhập dữ liệu" />
-                                </nz-form-control>
-                              </div>
-                          </div>
-                
-                          <div nz-row nzGutter="8">
-                              <div nz-col nzMd="6">
-                                  <nz-form-label class="black" [nzSpan]="24">{{ 'company.from.addressRegister' | translate }} <span class="required">*</span></nz-form-label>
-                              </div>
-                              <div nz-col nzMd="18">
-                                  <nz-form-control
-                                  [nzSpan]="24"
-                                >
-                                <input formControlName="addressRegister" class="ant-input" placeholder="Nhập dữ liệu"/>
-                                </nz-form-control>
-                              </div>
-                          </div>
-                
-                          <div nz-row nzGutter="8">
-                              <div nz-col nzMd="6">
-                                  <nz-form-label class="black" [nzSpan]="24">{{ 'company.from.address' | translate }} <span class="required">*</span></nz-form-label>
-                              </div>
-                              <div nz-col nzMd="18">
-                                  <nz-form-control
-                                  [nzSpan]="24"
-                                >
-                                <input formControlName="address" class="ant-input" placeholder="Nhập dữ liệu" />
-                                </nz-form-control>
-                              </div>
-                          </div>
-                
-                          <div nz-row nzGutter="8">
-                              <div nz-col nzMd="6">
-                                  <nz-form-label class="black" [nzSpan]="24">{{ 'company.from.taxCode' | translate }} <span class="required">*</span></nz-form-label>
-                              </div>
-                              <div nz-col nzMd="6">
-                                  <nz-form-control
-                                  [nzSpan]="24"
-                                >
-                                <input formControlName="taxCode" class="ant-input" placeholder="Nhập dữ liệu" [(ngModel)]="taxCode" />
-                                </nz-form-control>
-                              </div>
-                              <div nz-col nzMd="6">
-                                  <nz-form-label class="black text-padding-left" [nzSpan]="24">{{ 'company.from.delegate' | translate }} <span class="required">*</span></nz-form-label>
-                              </div>
-                              <div nz-col nzMd="6">
-                                  <nz-form-control
-                                  [nzSpan]="24"
-                                >
-                                <input formControlName="delegate" class="ant-input"  placeholder="Nhập dữ liệu" />
-                                </nz-form-control>
-                              </div>
-                          </div>
-                
-                          <div nz-row nzGutter="8">
-                              <div nz-col nzMd="6">
-                                  <nz-form-label class="black" [nzSpan]="24">{{ 'company.from.traders' | translate }} <span class="required">*</span></nz-form-label>
-                              </div>
-                              <div nz-col nzMd="6">
-                                  <nz-form-control
-                                  [nzSpan]="24"
-                                >
-                                <input formControlName="traders" class="ant-input" placeholder="Nhập dữ liệu" />
-                                </nz-form-control>
-                              </div>
-                              <div nz-col nzMd="6">
-                                  <nz-form-label class="black text-padding-left" [nzSpan]="24">{{ 'company.from.mobile' | translate }} <span class="required">*</span></nz-form-label>
-                              </div>
-                              <div nz-col nzMd="6">
-                                  <nz-form-control
-                                  [nzSpan]="24"
-                                >
-                                <input formControlName="mobile" class="ant-input"  placeholder="Nhập dữ liệu" />
-                                </nz-form-control>
-                              </div>
-                          </div>
-                
-                          <div nz-row nzGutter="8">
-                              <div nz-col nzMd="6">
-                                  <nz-form-label class="black" [nzSpan]="24">{{ 'company.from.emailContract' | translate }} <span class="required">*</span></nz-form-label>
-                              </div>
-                              <div nz-col nzMd="18">
-                                  <nz-form-control
-                                  [nzSpan]="24"
-                                >
-                                <input formControlName="emailOfContract" class="ant-input" placeholder="Nhập dữ liệu" />
-                                </nz-form-control>
-                              </div>
-                          </div>
-                
-                          <div nz-row nzGutter="8">
-                              <div nz-col nzMd="6">
-                                  <nz-form-label class="black" [nzSpan]="24">{{ 'company.from.methodPay' | translate }} <span class="required">*</span></nz-form-label>
-                              </div>
-                              <div nz-col nzMd="6">
-                                  <nz-form-control
-                                  [nzSpan]="24"
-                                >
-                                  <nz-select formControlName="paymentMethodId" nzAllowClear  nzPlaceHolder="Lựa chọn">
-                                    <nz-option [nzValue]="paymentMethod.id" [nzLabel]="paymentMethod.name" *ngFor="let paymentMethod of paymentMethods"></nz-option>
-                                  </nz-select>
-                                </nz-form-control>
-                              </div>
-                              <div nz-col nzMd="5">
-                                  <nz-form-label class="black text-padding-left" [nzSpan]="24">{{ 'company.from.responseResults' | translate }} <span class="required">*</span></nz-form-label>
-                              </div>
-                              <div nz-col nzMd="7">
-                                  <nz-form-control
-                                  [nzSpan]="24"
-                                >
-                                  <nz-radio-group formControlName="responseResults">
-                                    <label nz-radio nzValue="1">Nhận tại CQBH</label>
-                                    <label nz-radio nzValue="2">Nhận qua BĐ</label>
-                                  </nz-radio-group>
-                                </nz-form-control>
-                              </div>
-                          </div>
-                
-                          <div nz-row nzGutter="8">
-                              <div nz-col nzMd="24">
-                                  <nz-form-label class="black" [nzSpan]="24">Đơn vị cam kết hoàn toàn chịu trách nhiệm trước pháp luật về tính chính xác, trung thực của nội dung trên.</nz-form-label>
-                              </div>
-                          </div>
-                
-                        <h1>B. Cấu hình kê khai {{ companyForm.get('groupCompanyCode').value || 'note'}}</h1>
-                        
-                        <div nz-row nzGutter="8">
-                            <div nz-col nzMd="6">
-                                <nz-form-label class="black" [nzSpan]="24">{{ 'company.from.group' | translate }} <span class="required">*</span></nz-form-label>
-                            </div>
-                            <div nz-col nzMd="18">
-                                <nz-form-control
-                                  [nzSpan]="24"
-                                >
-                                  <nz-select formControlName="groupCompanyCode" nzAllowClear  nzPlaceHolder="Lựa chọn">
-                                    <nz-option [nzValue]="groupCompany.code" [nzLabel]="groupCompany.name" *ngFor="let groupCompany of groupCompanies"></nz-option>
-                                  </nz-select>
-                                </nz-form-control>
-                            </div>
+                <form nz-form [formGroup]="companyForm" (ngSubmit)="handleSubmit()" class="login-page">
+                  <div class="page-container">
+
+                    <div class="page-company__blank"></div>
+                    <div class="page-company__main">
+                      <h1>604. Đăng ký thay đổi thông tin đơn vị</h1>
+
+                      <div nz-row nzGutter="8" style="margin-bottom: 10px;">
+                        <div nz-col nzMd="8">
+                          <nz-form-item >
+                            <nz-form-control>
+                              <textarea class="text-center bold textarea-custom" formControlName="companyName" nz-input
+                                rows="2"></textarea>
+                            </nz-form-control>
+                          </nz-form-item>
                         </div>
-                
-                        <div nz-row nzGutter="8">
-                            <div nz-col nzMd="6">
-                                <nz-form-label class="black" [nzSpan]="24">{{ 'company.from.submission' | translate }} <span class="required">*</span></nz-form-label>
-                            </div>
-                            <div nz-col nzMd="18">
-                                <nz-form-control
-                                  [nzSpan]="24"
-                                >
-                                  <nz-radio-group formControlName="submissionType">
-                                    <label nz-radio nzValue="0">Ký và nộp luôn</label>
-                                    <label nz-radio nzValue="1">Phải trình ký</label>
-                                  </nz-radio-group>
-                                </nz-form-control>
-                            </div>
+
+                        <div nz-col nzMd="7">
                         </div>
-                
-                        <div nz-row nzGutter="8" *ngIf="(companyForm.get('groupCompanyCode').value === '02' || companyForm.get('groupCompanyCode').value === '04' || companyForm.get('groupCompanyCode').value === '05')">
-                            <div nz-col nzMd="6">
-                                <nz-form-label class="black" [nzSpan]="24">{{ 'company.from.district' | translate }} <span class="required">*</span></nz-form-label>
-                            </div>
-                            <div nz-col nzMd="6">
-                              <nz-form-control
-                                [nzSpan]="24"
-                              >
-                                <nz-select formControlName="districtId" (ngModelChange)="changeDistrict($event);" nzAllowClear nzPlaceHolder="Lựa chọn">
-                                  <nz-option [nzValue]="district.id" [nzLabel]="district.name" *ngFor="let district of districts"></nz-option>
-                                </nz-select>
-                              </nz-form-control>
-                            </div>
-                            <div nz-col nzMd="6" *ngIf="(companyForm.get('groupCompanyCode').value === '02' || companyForm.get('groupCompanyCode').value === '05')">
-                                <nz-form-label class="black text-padding-left" [nzSpan]="24">{{ 'company.from.wards' | translate }} <span class="required">*</span></nz-form-label>
-                            </div>
-                            <div nz-col nzMd="6" *ngIf="(companyForm.get('groupCompanyCode').value === '02' || companyForm.get('groupCompanyCode').value === '05')">
-                              <nz-form-control
-                                [nzSpan]="24"
-                              >
-                                <nz-select formControlName="wardsId" nzAllowClear nzPlaceHolder="Lựa chọn">
-                                  <nz-option [nzValue]="ward.id" [nzLabel]="ward.name" *ngFor="let ward of wards"></nz-option>
-                                </nz-select>
-                              </nz-form-control>
-                            </div>
-                        </div>
-                
-                        <div nz-row nzGutter="8" *ngIf="(companyForm.get('groupCompanyCode').value == '03')">
-                            <div nz-col nzMd="6">
-                                <nz-form-label class="black" [nzSpan]="24">{{ 'company.from.object' | translate }} <span class="required">*</span></nz-form-label>
-                            </div>
-                            <div nz-col nzMd="18">
-                                <nz-form-control
-                                  [nzSpan]="24"
-                                >
-                                  <nz-radio-group formControlName="object">
-                                    <label nz-radio nzValue="1">{{ 'company.from.studentLevelOne' | translate }}</label>
-                                    <label nz-radio nzValue="2">{{ 'company.from.studentLevelTwo' | translate }}</label>
-                                  </nz-radio-group>
-                                </nz-form-control>
-                            </div>
-                        </div>
-                
-                        <div nz-row nzGutter="8" *ngIf="(companyForm.get('groupCompanyCode').value == '01')">
-                            <div nz-col nzMd="24">
-                                <nz-form-label class="black" [nzSpan]="24">Danh sách phòng ban</nz-form-label>
-                            </div>
-                            <div nz-col nzMd="24">
-                                <div class="page-declarations__editor">
-                                    <app-table-editor
-                                      [headers]="tableHeader"
-                                      [columns]="tableColumnType"
-                                      [columnWidths]="tableColumnWidth"
-                                      [data]="department"
-                                    ></app-table-editor>
-                                  </div><!-- page-declarations__editor -->
-                            </div>
+
+                        <div nz-col nzMd="9">
+                          <nz-form-control [nzSpan]="24" class="text-center bold">
+                            <p>CÔNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</p>
+                            <p>Độc lập - Tự do - Hạnh phúc</p>
+                          </nz-form-control>
                         </div>
                       </div>
+
+                      <div nz-row nzGutter="8">
+                        <div nz-col nzMd="24">
+                          <nz-form-item >
+                            <nz-form-label class="subject" nz-col nzMd="8">{{ 'company.from.subject' | translate }}
+                            </nz-form-label>
+                            <nz-form-control nz-col nzMd="14">
+                              <input nz-input formControlName="subject" [nzErrorTip]="subjectError">
+
+                              <ng-template #subjectError let-control>
+                                <ng-container *ngIf="validateControl('subject') && hasError('subject', 'required')">
+                                  {{ 'company.from.subject' | translate }} không được để trống
+                                </ng-container>
+                              </ng-template>
+                            </nz-form-control>
+                          </nz-form-item>
+                        </div>
+                      </div>
+
+                      <div nz-row nzGutter="8">
+                        <div nz-col nzMd="24">
+                          <nz-form-item >
+                            <nz-form-label nz-col nzMd="8">{{ 'company.from.name' | translate }} <span
+                                class="required">*</span>
+                            </nz-form-label>
+                            <nz-form-control nz-col nzMd="16" [nzErrorTip]="nameError">
+                              <input nz-input formControlName="name" >
+                               <ng-template #nameError let-control>
+                                <ng-container *ngIf="validateControl('name') && hasError('name', 'required')">
+                                  {{ 'company.from.name' | translate }} không được để trống
+                                </ng-container>
+                              </ng-template>
+                            </nz-form-control>
+                          </nz-form-item>
+                        </div>
+                      </div>
+
+
+                      <div nz-row nzGutter="8">
+                        <div nz-col nzMd="24">
+                          <nz-form-item >
+                            <nz-form-label nz-col nzMd="8">{{ 'company.from.companyCode' | translate }} <span
+                                class="required">*</span>
+                            </nz-form-label>
+                            <nz-form-control nz-col nzMd="16" [nzErrorTip]="companyCodeError">
+                              <input nz-input formControlName="companyCode" >
+                              <ng-template #companyCodeError let-control>
+                                <ng-container
+                                  *ngIf="validateControl('companyCode') && hasError('companyCode', 'required')">
+                                  {{ 'company.from.companyCode' | translate }} không được để trống
+                                </ng-container>
+                              </ng-template>
+                            </nz-form-control>
+                          </nz-form-item>
+                        </div>
+                      </div>
+
+                      <div nz-row nzGutter="8">
+                        <div nz-col nzMd="24">
+                          <nz-form-item >
+                            <nz-form-label nz-col nzMd="8">{{ 'company.from.taxCode' | translate }} <span
+                                class="required">*</span>
+                            </nz-form-label>
+                            <nz-form-control nz-col nzMd="16" [nzErrorTip]="taxCodeError">
+                              <input nz-input formControlName="taxCode" >
+                              <ng-template #taxCodeError let-control>
+                                <ng-container *ngIf="validateControl('taxCode') && hasError('taxCode', 'required')">
+                                  {{ 'company.from.taxCode' | translate }} không được để trống
+                                </ng-container>
+                              </ng-template>
+                            </nz-form-control>
+                          </nz-form-item>
+                        </div>
+                      </div>
+
+                      <div nz-row nzGutter="8">
+                        <div nz-col nzMd="24">
+                          <nz-form-item >
+                            <nz-form-label nz-col nzMd="8">{{ 'company.from.addressRegister' | translate }} <span
+                                class="required">*</span>
+                            </nz-form-label>
+                            <nz-form-control nz-col nzMd="16" [nzErrorTip]="addressRegisterError">
+                              <input nz-input formControlName="addressRegister" >
+                              <ng-template #addressRegisterError let-control>
+                                <ng-container
+                                  *ngIf="validateControl('addressRegister') && hasError('addressRegister', 'required')">
+                                  {{ 'company.from.addressRegister' | translate }} không được để trống
+                                </ng-container>
+                              </ng-template>
+                            </nz-form-control>
+                          </nz-form-item>
+                        </div>
+                      </div>
+
+                      <div nz-row nzGutter="8">
+                        <div nz-col nzMd="24">
+                          <nz-form-item >
+                            <nz-form-label nz-col nzMd="8">{{ 'company.from.address' | translate }}
+                              <span class="required">*</span>
+                              <span class="icon-edit">
+                                <a nz-button nzType="primary" nzShape="circle"><i class="pd-b-8" nz-icon
+                                    nzType="info"></i></a>
+                              </span>
+                            </nz-form-label>
+                            <nz-form-control nz-col nzMd="16" [nzErrorTip]="addressError">
+                              <input nz-input formControlName="address" >
+                              <ng-template #addressError let-control>
+                                <ng-container *ngIf="validateControl('address') && hasError('address', 'required')">
+                                  {{ 'company.from.address' | translate }} không được để trống
+                                </ng-container>
+                              </ng-template>
+                            </nz-form-control>
+                          </nz-form-item>
+                        </div>
+                      </div>
+
+                      <div nz-row nzGutter="8">
+                        <div nz-col nzMd="24">
+                          <nz-form-item >
+                            <nz-form-label nz-col nzMd="8">{{ 'company.from.career' | translate }} <span
+                                class="required">*</span>
+                            </nz-form-label>
+                            <nz-form-control nz-col nzMd="16" [nzErrorTip]="careerError">
+                              <input nz-input formControlName="career">
+                              <ng-template #careerError let-control>
+                                <ng-container *ngIf="validateControl('career') && hasError('career', 'required')">
+                                  {{ 'company.from.career' | translate }} không được để trống
+                                </ng-container>
+                              </ng-template>
+                            </nz-form-control>
+                          </nz-form-item>
+                        </div>
+                      </div>
+
+                      <div nz-row nzGutter="8">
+                        <div nz-col [nzSpan]="14">
+                          <nz-form-item >
+                            <nz-form-label nz-col [nzSpan]="8">{{ 'company.from.mobile' | translate }} <span
+                                class="required">*</span>
+                            </nz-form-label>
+                            <nz-form-control nz-col [nzSpan]="16" nzOffset="6" class="ant-col-offset-6-edit" [nzErrorTip]="mobileError">
+                              <input nz-input formControlName="mobile" style="padding-left: 2px;">
+                              <ng-template #mobileError let-control>
+                                <ng-container *ngIf="validateControl('mobile') && hasError('mobile', 'required')">
+                                  {{ 'company.from.mobile' | translate }} không được để trống
+                                </ng-container>
+                                <ng-container *ngIf="validateControl('mobile') && hasError('mobile', 'pattern')">
+                                  {{ 'company.from.mobile' | translate }} không hợp lệ
+                                </ng-container>
+                              </ng-template>
+                            </nz-form-control>
+                          </nz-form-item>
+                        </div>
+
+                        <div nz-col [nzSpan]="10">
+                          <nz-form-item >
+                            <nz-form-label nz-col nzMd="8">{{ 'company.from.email' | translate }} <span
+                                class="required">*</span>
+                            </nz-form-label>
+                            <nz-form-control nz-col nzMd="16" [nzErrorTip]="emailError">
+                              <input nz-input formControlName="emailOfContract">
+                              <ng-template #emailError let-control>
+                                <div *ngIf="validateControl('emailOfContract') && hasError('emailOfContract', 'required')">
+                                  {{ 'company.from.email' | translate }} không được để trống
+                                </div>
+                                <ng-container *ngIf="validateControl('emailOfContract') && hasError('emailOfContract', 'pattern')">
+                                  {{ 'system.staffs.form.email' | translate }} không hợp lệ
+                                </ng-container>
+                              </ng-template>
+                            </nz-form-control>
+                          </nz-form-item>
+                        </div>
+                      </div>
+
+
+                      <div nz-row nzGutter="8">
+                        <div nz-col nzMd="14">
+                          <nz-form-item >
+                            <nz-form-label nz-col nzMd="11">{{ 'company.from.license' | translate }} <span
+                                class="required">*</span>
+                            </nz-form-label>
+                            <nz-form-control nz-col nzMd="13" nzOffset="3" class="ant-col-offset-3-edit"  [nzErrorTip]="licenseError">
+                              <input nz-input formControlName="license" style="padding-left: 2px;">
+                              <ng-template #licenseError let-control>
+                                <ng-container *ngIf="validateControl('license') && hasError('license', 'required')">
+                                  {{ 'company.from.license' | translate }} không được để trống
+                                </ng-container>
+                              </ng-template>
+                            </nz-form-control>
+                          </nz-form-item>
+                        </div>
+
+                        <div nz-col nzMd="10">
+                          <nz-form-item >
+                            <nz-form-label nz-col nzMd="8">{{ 'company.from.issued' | translate }} <span
+                                class="required">*</span>
+                            </nz-form-label>
+                            <nz-form-control nz-col nzMd="16" [nzErrorTip]="issuedError">
+                              <input nz-input formControlName="issued">
+                              <ng-template #issuedError let-control>
+                                <ng-container *ngIf="validateControl('issued') && hasError('issued', 'required')">
+                                  {{ 'company.from.issued' | translate }} không được để trống
+                                </ng-container>
+                              </ng-template>
+                            </nz-form-control>
+                          </nz-form-item>
+                        </div>
+                      </div>
+
+                      <div nz-row nzGutter="8">
+                        <div nz-col nzMd="24">
+                          <nz-form-item >
+                            <nz-form-label nz-col nzMd="8">{{ 'company.from.methodPayother' | translate }}
+                              <span class="required">*</span>
+                              <span class="icon-edit">
+                                <a nz-button nzType="primary" nzShape="circle"><i class="pd-b-8" nz-icon
+                                    nzType="info"></i></a>
+                              </span>
+                            </nz-form-label>
+                            <nz-form-control nz-col nzMd="16"  [nzErrorTip]="methodPayotherError">
+                              <nz-checkbox-wrapper style="width: 100%;">
+                                <div nz-row  >
+                                  <div nz-col nzSpan="6" *ngFor="let opt of checkOptionsOne">
+                                    <label nz-checkbox nzValue="opt.value">
+                                      {{ opt.label }}
+                                    </label>
+                                  </div>
+                                </div>
+                              </nz-checkbox-wrapper>
+                              <ng-template #methodPayotherError let-control>
+                                <ng-container
+                                  *ngIf="validateControl('methodPayother') && hasError('methodPayother', 'required')">
+                                  {{ 'company.from.methodPayother' | translate }} không được để trống
+                                </ng-container>
+                              </ng-template>
+                            </nz-form-control>
+                          </nz-form-item>
+                        </div>
+                      </div>
+
+                      <div nz-row nzGutter="8">
+                        <div nz-col nzMd="24">
+                          <nz-form-item >
+                            <nz-form-label nz-col nzMd="8">{{ 'company.from.noteChange' | translate }} <span
+                                class="required">*</span>
+                            </nz-form-label>
+                            <nz-form-control nz-col nzMd="16" [nzErrorTip]="noteChangeError">
+                              <input nz-input formControlName="noteChange" >
+                              <ng-template #noteChangeError let-control>
+                                <ng-container
+                                  *ngIf="validateControl('noteChange') && hasError('noteChange', 'required')">
+                                  {{ 'company.from.noteChange' | translate }} không được để trống
+                                </ng-container>
+                              </ng-template>
+                            </nz-form-control>
+                          </nz-form-item>
+                        </div>
+                      </div>
+
+                      <div nz-row nzGutter="8">
+                        <div nz-col nzMd="24">
+                          <nz-form-item >
+                            <nz-form-label nz-col nzMd="8">{{ 'company.from.documentFile' | translate }}</nz-form-label>
+                            <nz-form-control nz-col nzMd="16">
+                              <input nz-input formControlName="documentFile">
+                            </nz-form-control>
+                          </nz-form-item>
+                        </div>
+                      </div>
+
+                      <div nz-row nzGutter="8"
+                        *ngIf="(companyForm.get('groupCompanyCode').value === '02' || companyForm.get('groupCompanyCode').value === '04' || companyForm.get('groupCompanyCode').value === '05')">
+                        <div nz-col nzMd="6">
+                          <nz-form-label class="black" [nzSpan]="24">{{ 'company.from.district' | translate }} <span
+                              class="required">*</span></nz-form-label>
+                        </div>
+                        <div nz-col nzMd="6">
+                          <nz-form-control [nzSpan]="24">
+                            <nz-select formControlName="districtId" (ngModelChange)="changeDistrict($event);"
+                              nzAllowClear nzPlaceHolder="Lựa chọn">
+                              <nz-option [nzValue]="district.id" [nzLabel]="district.name"
+                                *ngFor="let district of districts"></nz-option>
+                            </nz-select>
+                          </nz-form-control>
+                        </div>
+                        <div nz-col nzMd="6"
+                          *ngIf="(companyForm.get('groupCompanyCode').value === '02' || companyForm.get('groupCompanyCode').value === '05')">
+                          <nz-form-label class="black text-padding-left" [nzSpan]="24">
+                            {{ 'company.from.wards' | translate }} <span class="required">*</span></nz-form-label>
+                        </div>
+                        <div nz-col nzMd="6"
+                          *ngIf="(companyForm.get('groupCompanyCode').value === '02' || companyForm.get('groupCompanyCode').value === '05')">
+                          <nz-form-control [nzSpan]="24">
+                            <nz-select formControlName="wardsId" nzAllowClear nzPlaceHolder="Lựa chọn">
+                              <nz-option [nzValue]="ward.id" [nzLabel]="ward.name" *ngFor="let ward of wards">
+                              </nz-option>
+                            </nz-select>
+                          </nz-form-control>
+                        </div>
+                      </div>
+
+                      <div nz-row nzGutter="8" *ngIf="(companyForm.get('groupCompanyCode').value == '03')">
+                        <div nz-col nzMd="6">
+                          <nz-form-label class="black" [nzSpan]="24">{{ 'company.from.object' | translate }} <span
+                              class="required">*</span></nz-form-label>
+                        </div>
+                        <div nz-col nzMd="18">
+                          <nz-form-control [nzSpan]="24">
+                            <nz-radio-group formControlName="object">
+                              <label nz-radio nzValue="1">{{ 'company.from.studentLevelOne' | translate }}</label>
+                              <label nz-radio nzValue="2">{{ 'company.from.studentLevelTwo' | translate }}</label>
+                            </nz-radio-group>
+                          </nz-form-control>
+                        </div>
+                      </div>
+
+                      <div nz-row nzGutter="8" *ngIf="(companyForm.get('groupCompanyCode').value == '01')">
+                        <div nz-col nzMd="24">
+                          <nz-form-label class="black" [nzSpan]="24">Danh sách phòng ban</nz-form-label>
+                        </div>
+                        <div nz-col nzMd="24">
+                          <div class="page-declarations__editor">
+                            <app-table-editor [headers]="tableHeader" [columns]="tableColumnType"
+                              [columnWidths]="tableColumnWidth" [data]="department"></app-table-editor>
+                          </div><!-- page-declarations__editor -->
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </form>
               </div><!-- page-declarations__editor -->
 
               <nz-collapse [nzBordered]="false">
-                <nz-collapse-panel class="collapse-attachment" [nzHeader]="attachmentHeader" [nzActive]="panel.attachment.active" (nzActiveChange)="collapseChange($event, 'attachment')">
-                    <app-labor-attachment  [files]="files" [declarationCode] = "'6000'" (onSelectedFileChanged)="handleFileSelected($event)"></app-labor-attachment>
+                <nz-collapse-panel class="collapse-attachment" [nzHeader]="attachmentHeader"
+                  [nzActive]="panel.attachment.active" (nzActiveChange)="collapseChange($event, 'attachment')">
+                  <app-labor-attachment [files]="files" [declarationCode]="'6000'"
+                    (onSelectedFileChanged)="handleFileSelected($event)"></app-labor-attachment>
                 </nz-collapse-panel>
               </nz-collapse>
               <ng-template #attachmentHeader>
@@ -357,13 +425,15 @@
       </nz-tabset>
       <ng-template #extraTemplate>
         <div class="page-declarations__footer">
-          <button nz-button class="page-declarations__footer-export" nzType="default" nzSize="small" (click)="emitEventToChild('saveAndView')">
+          <button nz-button class="page-declarations__footer-export" nzType="default" nzSize="small"
+            (click)="emitEventToChild('saveAndView')">
             <i nz-icon nzType="upload"></i>Xuất tờ khai
           </button>
-          <button nz-button nzType="default" nzSize="small" (click)="emitEventToChild('save')">
+          <button nz-button nzType="default" nzSize="small" [disabled]="!companyForm.valid" (click)="emitEventToChild('save')">
             <i nz-icon nzType="save"></i>Ghi lại
           </button>
-          <button nz-button class="page-declarations__footer-button" nzType="default" nzSize="small" (click)="emitEventToChild('back')">
+          <button nz-button class="page-declarations__footer-button" nzType="default" nzSize="small"
+            (click)="emitEventToChild('back')">
             <i nz-icon nzType="reload"></i>Quay lại
           </button>
         </div>

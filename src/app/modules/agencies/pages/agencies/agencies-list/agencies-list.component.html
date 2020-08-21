@@ -1,102 +1,97 @@
 <div class="page-card">
-<form  nz-form [formGroup]="formSearch" (ngSubmit)="handleSearchBox()">
-  <div class="page-title ">
+  <form nz-form [formGroup]="formSearch" (ngSubmit)="handleSearchBox()">
+    <div class="page-title ">
       <h1>{{'agencies.agencies-list.title' | translate}}</h1>
       <div class="page-declarations__footer">
-          <button nz-button nzType="default">
-            <i nz-icon nzType="search"></i>{{ 'common.btnSearch' | translate }}
-          </button>
-          <button nz-button nzType="default" [routerLink]="['/agencies/add']">
-            <i nz-icon nzType="user-add" nzTheme="outline"></i>{{ 'common.btnCreate' | translate }}
-          </button>
+        <button class="element-form_button-search" nz-button nzType="default">
+          <i nz-icon nzType="search"></i>{{ 'common.btnSearch' | translate }}
+        </button>
+        <button class="element-form_button-add" nz-button nzType="default" [routerLink]="['/agencies/add']">
+          <i nz-icon nzType="user-add" nzTheme="outline"></i>{{ 'common.btnCreate' | translate }}
+        </button>
       </div>
-  </div>
+    </div>
     <div class="page-search">
       <div nz-row nzGutter="30">
-          <div nz-col nzMd="8">
-            <nz-form-item>
-              <nz-form-label>{{ 'agencies.agencies-list.keyWords' | translate }}</nz-form-label>
-              <nz-form-control>
-                <input type="text" nz-input formControlName="keyword">
-              </nz-form-control>
-            </nz-form-item >
-          </div>
-          <div nz-col nzMd="4">
-            <nz-form-item>
-              <nz-form-label>{{ 'agencies.agencies-list.dateFrom' | translate }}</nz-form-label>
-              <nz-form-control>
-                 <input nz-input
-                    placeholder="Từ ngày"
-                    formControlName="dateFrom"
-                    mask="00/00/0000"
-                    [showMaskTyped]="true"
-                    [validation]="true"
-                    [clearIfNotMatch]="true"
-                  />
-              </nz-form-control>
-            </nz-form-item >
-          </div>
-          <div nz-col nzMd="4">
-            <nz-form-item>
-              <nz-form-label>{{ 'agencies.agencies-list.dateTo' | translate }}</nz-form-label>
-              <nz-form-control>
-                  <input nz-input
-                     placeholder="Đến ngày"
-                     formControlName="dateTo"
-                     mask="00/00/0000"
-                     [showMaskTyped]="true"
-                     [validation]="true"
-                     [clearIfNotMatch]="true"
-                   />
-               </nz-form-control>
-            </nz-form-item >
-          </div>
+        <div nz-col nzMd="8">
+          <nz-form-item>
+            <nz-form-label>{{ 'agencies.agencies-list.keyWords' | translate }}</nz-form-label>
+            <nz-form-control>
+              <input type="text" nz-input formControlName="keyword">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzMd="4">
+          <nz-form-item>
+            <nz-form-label>{{ 'agencies.agencies-list.dateFrom' | translate }}</nz-form-label>
+            <nz-form-control>
+              <input nz-input placeholder="Từ ngày" formControlName="dateFrom" mask="00/00/0000" [showMaskTyped]="true"
+                [validation]="true" [clearIfNotMatch]="true" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzMd="4">
+          <nz-form-item>
+            <nz-form-label>{{ 'agencies.agencies-list.dateTo' | translate }}</nz-form-label>
+            <nz-form-control>
+              <input nz-input placeholder="Đến ngày" formControlName="dateTo" mask="00/00/0000" [showMaskTyped]="true"
+                [validation]="true" [clearIfNotMatch]="true" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
 
       </div>
     </div>
   </form>
 
-    <nz-table
-      nzBordered 
-      #ajaxTable
-      nzShowSizeChanger
-      [nzFrontPagination]="false"
-      [nzData]="agencies"
-      [nzLoading]="loading"
-      [nzPageSize]="agencies.length"
-      [nzShowPagination]="false"
-      [nzLoading]="loading"
-      [nzTotal]="total"
-      class="table-editor"
-    >
-      <thead (nzSortChange)="sort($event)" nzSortFn>
-        <tr>
-          <th style="width: 50px;">{{'agencies.table.stt' | translate}}</th>
-          <th nzShowSort  nzColumnKey="name">{{'agencies.table.company' | translate}}</th>
-          <th nzShowSort  nzColumnKey="tax"><span>{{'agencies.table.taxCode' | translate}}</span></th>
-          <th nzShowSort  nzColumnKey="delegate"><span>{{'agencies.table.personContact' | translate}}</span></th>
-          <th style="width: 140px;" nzShowSort nzColumnKey="active"><span>{{'agencies.table.active' | translate}}</span></th>
-          <th style="width: 120px;"><span>{{'agencies.table.action' | translate}}</span></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let data of ajaxTable.data;index as i">
-          <td>{{i + 1}}</td>
-          <td>{{ data.name }}</td>
-          <td>{{ data.tax }}</td>
-          <td>{{ data.delegate }}</td>
-          <td>{{ status[(data.active ? 1 : 0)] | translate }}</td>
-          <td>
-            <ng-container>
-                <a [routerLink]="['/agencies/' + data.id + '/edit']" class="action-padding">
-                    <i nz-icon nzType="edit" nzTheme="outline"></i>
-                </a>    
-            </ng-container>
-            <app-button-delete [id]="data.id" (delete)="delete($event)"></app-button-delete>
-          </td>
-        </tr>
-      </tbody>
-    </nz-table>
-    <app-pagination [total]="total" [selected]="selectedPage" (onPageChange)="pageChange($event)"></app-pagination>
-</div>
+  <nz-table nzBordered #ajaxTable nzShowSizeChanger [nzFrontPagination]="false" [nzData]="agencies"
+    [nzLoading]="loading" [nzPageSize]="agencies.length" [nzShowPagination]="false" [nzTotal]="total"
+    class="table-editor">
+    <thead (nzSortChange)="sort($event)" nzSortFn class="sort-custom">
+      <tr class="ui-table-custom-header">
+        <th class="cell-custom">{{'agencies.table.stt' | translate}}</th>
+        <th class="cell-custom" nzShowSort nzColumnKey="name">{{'agencies.table.company' | translate}}</th>
+        <th class="cell-custom" nzShowSort nzColumnKey="tax"><span>{{'agencies.table.taxCode' | translate}}</span></th>
+        <th class="cell-custom" nzShowSort nzColumnKey="delegate">
+          <span>{{'agencies.table.personContact' | translate}}</span></th>
+        <th class="cell-custom" style="width: 140px;" nzShowSort nzColumnKey="active">
+          <span>{{'agencies.table.active' | translate}}</span>
+        </th>
+        <th class="cell-custom" style="width: 120px;"><span>{{'agencies.table.action' | translate}}</span></th>
+      </tr>
+      <tr class="ui-table-custom-filter">
+        <th class="cell-custom"></th>
+        <th class="cell-custom"><input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small"
+            [(ngModel)]="filter.name" (ngModelChange)="handleFilter('name')" /></th>
+        <th class="cell-custom"><input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small"
+            [(ngModel)]="filter.tax" (ngModelChange)="handleFilter('tax')" /></th>
+        <th class="cell-custom"><input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small"
+            [(ngModel)]="filter.delegate" (ngModelChange)="handleFilter('delegate')" /></th>
+        <th class="cell-custom"><input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small"
+            [(ngModel)]="filter.active" (ngModelChange)="handleFilter('active')" /></th>
+        <th class="cell-custom"></th>
+      </tr>
 
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of ajaxTable.data;index as i">
+        <td>{{i + 1}}</td>
+        <td>{{ data.name }}</td>
+        <td>{{ data.tax }}</td>
+        <td>{{ data.delegate }}</td>
+        <td>{{ status[(data.active ? 1 : 0)] | translate }}</td>
+        <td>
+          <ng-container>
+            <a [routerLink]="['/agencies/' + data.id + '/edit']" class="action-padding">
+              <i nz-icon nzType="edit" nzTheme="outline"></i>
+            </a>
+          </ng-container>
+          <app-button-delete [id]="data.id" (delete)="delete($event)"></app-button-delete>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+  <div class="pagination-custom">
+    <app-pagination [total]="total" [selected]="selectedPage" (onPageChange)="pageChange($event)"></app-pagination>
+  </div>
+</div>

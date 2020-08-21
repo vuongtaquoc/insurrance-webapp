@@ -10,7 +10,7 @@ import { getBirthDay } from '@app/shared/utils/custom-validation';
     selector: 'app-notification-list',
     templateUrl: './notifications-list.component.html',
     styleUrls: [
-        './notifications-list.component.less', 
+        './notifications-list.component.less',
         '../../../../../agencies/pages/agencies/agencies-list/agencies-list.component.less'
     ]
 })
@@ -20,7 +20,7 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
     total: number;
     skip: number;
     formSearch: FormGroup;
-
+    keyword: string = '';
     shortColumn: any = {
         key: '',
         value: ''
@@ -56,9 +56,13 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
 
     getNotification(skip = 0, take = PAGE_SIZE) {
         this.notificationService.gets({
-            keyWord: this.keyword,
+            name: this.keyword,
+            dateFrom: this.dateFrom,
+            dateTo: this.dateTo,
             skip,
-            take
+            take,
+            orderType: (this.shortColumn.value || ''),
+            orderby: (this.shortColumn.key || '')
         }).subscribe(res => {
             this.notifications = res.data;
             this.total = res.total;
@@ -74,8 +78,8 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
     }
 
     handleFilter(key) {
-        // this.keyword = this.filter[key];
-        // this.getNotification();
+        this.keyword = this.filter[key];
+        this.getNotification();
     }
 
 
@@ -84,10 +88,9 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
         this.getNotification();
     }
 
-
-    get keyword() {
-        return this.formSearch.get('keyword').value;
-    }
+    // get keyword() {
+    //     return this.formSearch.get('keyword').value;
+    // }
 
     get dateTo() {
         const dateTo = this.formSearch.get('dateTo').value;
