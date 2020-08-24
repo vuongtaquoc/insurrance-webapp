@@ -5,6 +5,7 @@ import { NzModalService } from 'ng-zorro-antd/modal';
 import { NotificationService } from '@app/core/services';
 import { DATE_FORMAT, REGEX, formatDateVn } from '@app/shared/constant';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+import { validateLessThanEqualNowBirthday, validateDateSign, getBirthDay, validateIdentifyCard } from '@app/shared/utils/custom-validation';
 
 @Component({
     selector: 'app-notifications-save',
@@ -22,7 +23,7 @@ export class NotificationsSaveComponent implements OnInit, OnDestroy {
         private route: ActivatedRoute,
         private router: Router,
         private modalService: NzModalService,
-        private notificationService: NotificationService
+        private notificationService: NotificationService 
     ) {
     }
 

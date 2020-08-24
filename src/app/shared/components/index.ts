@@ -10,3 +10,5 @@ export * from './pagination/pagination.component';
 export * from './button-delete/button-delete.component';
 export * from './table-editor-errors/table-editor-errors.component';
 export * from './pare-core.component';
+export * from './manage-unit-form/manage-unit-form.component';
+export * from './manage-unit-form/department/department.component';

@@ -75,7 +75,7 @@ export class AgenciesEditComponent implements OnInit, OnDestroy {
     } else {
       this.taxInvalid();
     }
-
+ 
   }
   
   getDetail(id) {

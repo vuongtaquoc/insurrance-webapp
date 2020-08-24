@@ -1,11 +1,9 @@
 <form nz-form [formGroup]="searchForm" class="search">
-  <div nz-row>
+  <div nz-row class="page-search">
     <div nz-col nzMd="12">
       <nz-form-item>
         <nz-form-label [nzSpan]="6">Loại hồ sơ</nz-form-label>
-        <nz-form-control
-          [nzSpan]="16"
-        >
+        <nz-form-control [nzSpan]="16">
           <nz-select formControlName="type" nzAllowClear nzPlaceHolder="Lựa chọn">
             <nz-option [nzValue]="type.value" [nzLabel]="type.label" *ngFor="let type of documentTypes"></nz-option>
           </nz-select>
@@ -15,22 +13,22 @@
 
     <div nz-col nzMd="6">
       <nz-form-item>
-        <nz-form-label [nzSpan]="8">Từ ngày</nz-form-label>
-        <nz-form-control
-          [nzSpan]="16"
-        >
-          <nz-date-picker nzPlaceHolder="--Chọn--" formControlName="dateFrom"></nz-date-picker>
+        <nz-form-label>Từ ngày</nz-form-label>
+        <nz-form-control>
+          <input nz-input formControlName="dateFrom" mask="00/00/0000" [showMaskTyped]="true" [validation]="true"
+            [clearIfNotMatch]="true" />
+          <!-- <nz-date-picker nzPlaceHolder="--Chọn--" formControlName="dateFrom"></nz-date-picker> -->
         </nz-form-control>
       </nz-form-item>
     </div>
 
     <div nz-col nzMd="6">
       <nz-form-item>
-        <nz-form-label [nzSpan]="8">Đến ngày</nz-form-label>
-        <nz-form-control
-          [nzSpan]="16"
-        >
-          <nz-date-picker nzPlaceHolder="--Chọn--" formControlName="dateTo"></nz-date-picker>
+        <nz-form-label>Đến ngày</nz-form-label>
+        <nz-form-control>
+          <input nz-input formControlName="dateTo" mask="00/00/0000" [showMaskTyped]="true" [validation]="true"
+            [clearIfNotMatch]="true" />
+          <!-- <nz-date-picker nzPlaceHolder="--Chọn--" formControlName="dateTo"></nz-date-picker> -->
         </nz-form-control>
       </nz-form-item>
     </div>

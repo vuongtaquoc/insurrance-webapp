@@ -370,7 +370,7 @@
                 <nz-form-control [nzSpan]="14" [nzErrorTip]="dateSignTpl">
                   <!-- <nz-date-picker nzPlaceHolder ="Ngày ký" formControlName="dateSign"></nz-date-picker> -->
                   <input nz-input
-                    placeholder="Ngày ký"
+                    placeholder="Ngày ký" 
                     formControlName="dateSign"
                     mask="00/00/0000"
                     [showMaskTyped]="true"
@@ -939,7 +939,11 @@
     <button class="employee-form__button-export" *ngIf="employee.id" nz-button nzType="primary" (click)="download()">
        Xuất KT1-TS
     </button>
-    <button class="employee-form__button-save" nz-button nzType="primary" (click)="save()">Lưu</button>
-    <button class="employee-form__button-back" nz-button nzType="default" (click)="dismiss()">Quay lại</button>
+    <button class="employee-form__button-save" nz-button nzType="primary" (click)="save()">
+      <i nz-icon nzType="save"></i>Lưu
+    </button>
+    <button class="employee-form__button-back" nz-button nzType="default" (click)="dismiss()">
+      <i nz-icon nzType="stop"></i>Quay lại
+    </button>
   </div>
 </div>
