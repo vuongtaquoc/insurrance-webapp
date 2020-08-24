@@ -6,7 +6,7 @@
         <nz-tab nzTitle="Danh mục tài liệu">
           <div class="page-document-list__container">
             <form nz-form [formGroup]="documentForm">
-              <h1><strong>600</strong> | Báo tăng lao động</h1>
+              <h1><strong>{{declarationCode}}</strong> | {{declarationName}}</h1>
               <div nz-row [nzGutter]="10">
                 <div nz-col [nzSpan]="12">
                   <nz-form-item>
@@ -55,7 +55,7 @@
 
                     <div class="page-company__blank"></div>
                     <div class="page-company__main">
-                      <h1>604. Đăng ký thay đổi thông tin đơn vị</h1>
+                      <h1><strong>{{declarationCode}}</strong> | {{declarationName}}</h1>
 
                       <div nz-row nzGutter="8" style="margin-bottom: 10px;">
                         <div nz-col nzMd="8">

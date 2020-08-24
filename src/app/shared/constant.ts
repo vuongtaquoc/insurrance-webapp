@@ -102,6 +102,10 @@ export const DECLARATIONS =
     key: '612',
     value:'Cấp lại thẻ BHYT do hỏng, do mất'
   },
+  {
+    key: '604',
+    value:'Đăng ký thau đổi thông tin đơn vị'
+  },
 ];
 
 export const CONSTPARENTDELETEAUTOROW =

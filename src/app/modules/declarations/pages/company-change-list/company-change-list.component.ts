@@ -22,7 +22,7 @@ export class CompanyChangetListComponent implements OnInit {
   total: number;
   skip: number;
   selectedPage: number = 1;
-  declarationCode: string = '600b';
+  declarationCode: string = '604';
   declarationName: string;
 
   keyword: string = '';

@@ -17,7 +17,7 @@ import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { AuthenticationService } from '@app/core/services';
 import { SharedModule } from '@app/shared/shared.module';
 import { CustomersRoutingModule } from './customers-routing.module';
-import { CustomersListComponent, CustomersAddComponent, CustomersEditComponent } from './pages';
+import { CustomersListComponent, CustomersAddComponent, CustomersEditComponent, CustomersComponent } from './pages';
 
 
 @NgModule({
@@ -39,6 +39,7 @@ import { CustomersListComponent, CustomersAddComponent, CustomersEditComponent }
     NgxMaskModule.forRoot()
   ],
   declarations: [
+    CustomersComponent,
     CustomersListComponent,
     CustomersAddComponent,
     CustomersEditComponent

@@ -6,7 +6,8 @@ import { Subject, forkJoin } from 'rxjs';
 import { eventEmitter } from '@app/shared/utils/event-emitter';
 import { log } from 'ng-zorro-antd';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { DATE_FORMAT, REGEX } from '@app/shared/constant';
+import { DATE_FORMAT, REGEX, DECLARATIONS } from '@app/shared/constant';
+import * as _ from 'lodash';
 
 
 @Component({
@@ -20,6 +21,8 @@ export class CompanyChangeComponent implements OnInit, OnDestroy {
 
   form: FormGroup;
   companyForm: FormGroup;
+  declarationCode: string = '604'
+  declarationName: string = ''
   currentCredentials: any;
   documentForm: FormGroup;
   panel: any = {
@@ -55,6 +58,7 @@ export class CompanyChangeComponent implements OnInit, OnDestroy {
   ngOnInit() {
 
     const date = new Date();
+    this.declarationName = this.getDeclaration(this.declarationCode).value;
     this.currentCredentials = this.authenticationService.currentCredentials;
     this.form = this.formBuilder.group({
       number: ['1'],
@@ -114,6 +118,14 @@ export class CompanyChangeComponent implements OnInit, OnDestroy {
       return true;
 
     return false;
+  }
+
+  getDeclaration(declarationCode: string) {
+    const declarations = _.find(DECLARATIONS, {
+        key: declarationCode,
+    });
+
+    return declarations;
   }
 
   public hasError = (controlName: string, errorName: string) => {

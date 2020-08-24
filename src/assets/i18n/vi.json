@@ -193,15 +193,25 @@
 			"action": "Thao tác"
 		},
 		"from": {
-			"tax": "Mã số thuế / Số CMTND",
-			"agenciesName": "Tên đại lý",
-			"address": "Địa chỉ",
-			"personContact": "Người đại diện",
-			"tel": "Điện thoại",
-			"email": "Địa chỉ email",
-			"Website": "Website",
-			"status": "Trạng thái"
-		}
+			"city": "Tỉnh/Thành Phố",
+			"isurranceDepartment": "Cơ quan BHXH quảng lý",
+			"companyCode": "Mã đơn vị",
+			"salaryAreaName": "Vùng",
+			"companyName": "Tên đơn vị",
+			"address": "Địa chỉ ĐKKD",
+			"addressOther": "Địa chỉ giao dịch(Nếu có)",
+			"tax": "Mã số thuế/ mã ngân sách",			
+			"tel": "Điện thoại cố định",			
+			"delegate": "Người đại diện",
+			"level": "Chức danh",
+			"personContact": "Người giao dịch BHXH",
+			"mobile": "Điện thoại di động",
+			"email": "Email liên hệ",
+			"paymentMethod": "Phương thức đóng",
+			"registerReception": "Đăng ký nhận kết quả",
+			"receptionInsurranceDepartment": "Nhận tại CQBH",
+			"receptionPostOffice": "Nhận qua bưu điện"
+		}		 
 	},
 	"documentTable": {
 		"list": {

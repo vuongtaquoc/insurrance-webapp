@@ -20,8 +20,7 @@ export class CustomerService {
   }
 
   public getDetailById(id: string) {
-    return this.http.get('/customers', {
-      params: { id }
+    return this.http.get(`/customers/${ id }`, {
     });
   }
 
