@@ -52,7 +52,9 @@ import {
   DocumentTableComponent,
   PaginationComponent,
   ButtonDeleteComponent,
-  TableEditorErrorsComponent
+  TableEditorErrorsComponent,
+  DepartmentComponent,
+  ManageUnitFormComponent
 } from './components';
 
 import {
@@ -103,7 +105,9 @@ import {
     TableEditorErrorsComponent,
     CardFullHeightDirective,
     EditorAutoSizeDirective,
-    PluploadDirective
+    PluploadDirective,
+    ManageUnitFormComponent,
+    DepartmentComponent
   ],
   exports: [
     FormsModule,
@@ -120,7 +124,9 @@ import {
     CardFullHeightDirective,
     EditorAutoSizeDirective,
     PluploadDirective,
-    NzCheckboxModule
+    NzCheckboxModule,
+    ManageUnitFormComponent,
+    DepartmentComponent
   ],
   providers: [
     AuthenticationService,
@@ -138,7 +144,8 @@ import {
     EmployeeFormComponent,
     EmployeeHospitalRegisterFormComponent,
     DocumentFormComponent,
-    TableEditorErrorsComponent
+    TableEditorErrorsComponent,
+    ManageUnitFormComponent
   ]
 })
-export class SharedModule {}
+export class SharedModule { }

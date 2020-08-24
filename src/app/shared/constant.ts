@@ -1062,6 +1062,7 @@ export function formatDateVn(date) {
   var month = date.getMonth() + 1;
   var day = date.getDate();
   var year = date.getFullYear();
+  month = month.toString().length == 1 ? `0${month}` : month;
   return day + "/" + month + "/" + year;
 }
 
