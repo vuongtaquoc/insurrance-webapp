@@ -10,9 +10,15 @@
               <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="6">
                 {{ 'system.notifications.form.title' | translate }}
               </nz-form-label>
-              <nz-form-control [nzSpan]="18">
+              <nz-form-control [nzSpan]="18" [nzErrorTip]="titleError">
                 <input nz-input placeholder="{{ 'system.notifications.form.title' | translate }}"
                   formControlName="title" />
+
+                <ng-template #titleError let-control>
+                  <ng-container *ngIf="validateControl('title') && hasError('title', 'required')">
+                    {{ 'system.notifications.form.title' | translate }} không được để trống
+                  </ng-container>
+                </ng-template>
               </nz-form-control>
             </nz-form-item>
           </div><!-- col -->
@@ -23,9 +29,9 @@
               <nz-form-label class="text-left" [nzSpan]="6">
                 {{ 'system.notifications.form.files' | translate }}
               </nz-form-label>
-              <nz-form-control [nzSpan]="18" >
+              <nz-form-control [nzSpan]="18">
                 <input type="file" nz-input placeholder="{{ 'system.notifications.form.files' | translate }}"
-                  formControlName="files" />               
+                  formControlName="files" />
               </nz-form-control>
             </nz-form-item>
           </div><!-- col -->
@@ -54,9 +60,11 @@
               <nz-form-label class="text-left" [nzSpan]="6">
                 {{ 'system.notifications.form.createDate' | translate }}
               </nz-form-label>
-              <nz-form-control [nzSpan]="18" >
+              <nz-form-control [nzSpan]="3">
                 <input readonly nz-input placeholder="{{ 'system.notifications.form.createDate' | translate }}"
-                  formControlName="createDate" />               
+                  formControlName="createDate" />
+
+
               </nz-form-control>
             </nz-form-item>
           </div><!-- col -->
@@ -68,10 +76,13 @@
               <nz-form-label class="text-left" [nzSpan]="6">
                 {{ 'system.notifications.form.notificationDate' | translate }}
               </nz-form-label>
-              <nz-form-control [nzSpan]="18" >
-                <nz-date-picker [nzSpan]="18" placeholder="{{ 'system.notifications.form.notificationDate' | translate }}"
-                formControlName="createDate"></nz-date-picker>
-            
+              <nz-form-control [nzSpan]="3">
+                <!-- <nz-date-picker [nzSpan]="18"
+                  placeholder="{{ 'system.notifications.form.notificationDate' | translate }}"
+                  formControlName="createDate"></nz-date-picker> -->
+                <input nz-input placeholder="{{ 'system.notifications.form.notificationDate' | translate }}"
+                  formControlName="notificationDate" mask="00/00/0000" [showMaskTyped]="true" [validation]="true"
+                  [clearIfNotMatch]="true" />
               </nz-form-control>
             </nz-form-item>
           </div><!-- col -->
@@ -88,10 +99,12 @@
 
         <div nz-row nzGutter="8">
           <div nz-col nzMd="24" class="footer-botton">
-            <button class="employee-form__button-save" [disabled]="!form.valid" nz-button nzType="primary" (click)="save()">
+            <button class="employee-form__button-save" [disabled]="!form.valid" nz-button nzType="primary"
+              (click)="save()">
               <i nz-icon nzType="save"></i>Lưu
             </button>
-            <button class="employee-form__button-back" nz-button nzType="default" [routerLink]="['/notifications/list']">
+            <button class="employee-form__button-back" nz-button nzType="default"
+              [routerLink]="['/notifications/list']">
               <i nz-icon nzType="stop"></i>Quay lại
             </button>
           </div>

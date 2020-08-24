@@ -57,52 +57,52 @@ export const REGEX = {
 
 
 export const DECLARATIONS =
-[
-  {
-  key: '600',
-  value:'Báo tăng lao động'
-  },
-  {
-    key: '630',
-    value:'Xét duyệt chế độ ốm đau, thai sản, phụ hồi sức khỏe'
-  },
-  {
-    key: '630a',
-    value:'Xét duyệt chế độ ốm đau'
-  },
-  {
-    key: '630b',
-    value:'Xét duyệt chế độ thai sản'
-  },
-  {
-    key: '630c',
-    value:'Xét duyệt chế độ dưỡng sức, phục hồi sức khỏe'
-  },
-  {
-    key: '601a',
-    value:'Truy thu điều chỉnh chức danh mức đóng(trường hợp báo muộn)'
-  }, 
-  {
-    key: '601',
-    value:'Truy thu (Trường hợp vi phạm quy định của pháp luật vè đóng BHXH,BHYT,BHTN, BHTNLD,BNN)'
-  }, 
-  {
-    key: '600a',
-    value:'Báo giảm lao động'
-  },
-  {
-    key: '600b',
-    value:'Điều chỉnh chức danh mức đóng'
-  },
-  {
-    key: '607',
-    value:'Cấp lại thẻ BHXH do hỏng, do mất'
-  },
-  {
-    key: '612',
-    value:'Cấp lại thẻ BHYT do hỏng, do mất'
-  },
-];
+  [
+    {
+      key: '600',
+      value: 'Báo tăng lao động'
+    },
+    {
+      key: '630',
+      value: 'Xét duyệt chế độ ốm đau, thai sản, phụ hồi sức khỏe'
+    },
+    {
+      key: '630a',
+      value: 'Xét duyệt chế độ ốm đau'
+    },
+    {
+      key: '630b',
+      value: 'Xét duyệt chế độ thai sản'
+    },
+    {
+      key: '630c',
+      value: 'Xét duyệt chế độ dưỡng sức, phục hồi sức khỏe'
+    },
+    {
+      key: '601a',
+      value: 'Truy thu điều chỉnh chức danh mức đóng(trường hợp báo muộn)'
+    },
+    {
+      key: '601',
+      value: 'Truy thu (Trường hợp vi phạm quy định của pháp luật vè đóng BHXH,BHYT,BHTN, BHTNLD,BNN)'
+    },
+    {
+      key: '600a',
+      value: 'Báo giảm lao động'
+    },
+    {
+      key: '600b',
+      value: 'Điều chỉnh chức danh mức đóng'
+    },
+    {
+      key: '607',
+      value: 'Cấp lại thẻ BHXH do hỏng, do mất'
+    },
+    {
+      key: '612',
+      value: 'Cấp lại thẻ BHYT do hỏng, do mất'
+    },
+  ];
 
 export const CONSTPARENTDELETEAUTOROW =
   [
@@ -1058,6 +1058,7 @@ export function formatDateVn(date) {
   var month = date.getMonth() + 1;
   var day = date.getDate();
   var year = date.getFullYear();
+  month = month.toString().length == 1 ? `0${month}` : month;
   return day + "/" + month + "/" + year;
 }
 

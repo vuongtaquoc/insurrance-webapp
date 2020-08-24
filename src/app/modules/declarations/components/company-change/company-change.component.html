@@ -409,8 +409,8 @@
                 </form>
               </div><!-- page-declarations__editor -->
 
-              <nz-collapse [nzBordered]="false">
-                <nz-collapse-panel class="collapse-attachment" [nzHeader]="attachmentHeader"
+              <nz-collapse [nzBordered]="false" style="position: relative;">
+                <nz-collapse-panel style="position: absolute; bottom: 0" class="collapse-attachment" [nzHeader]="attachmentHeader"
                   [nzActive]="panel.attachment.active" (nzActiveChange)="collapseChange($event, 'attachment')">
                   <app-labor-attachment [files]="files" [declarationCode]="'6000'"
                     (onSelectedFileChanged)="handleFileSelected($event)"></app-labor-attachment>

@@ -6,6 +6,8 @@ import { PAGE_SIZE, STATUS, ACTION } from '@app/shared/constant';
 import { getBirthDay } from '@app/shared/utils/custom-validation';
 import { TranslateService } from '@ngx-translate/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { NzModalService } from 'ng-zorro-antd/modal';
+import { ManageUnitFormComponent } from '@app/shared/components';
 
 @Component({
   selector: 'app-agencies-list',
@@ -24,6 +26,7 @@ export class AgenciesListComponent implements OnInit, OnDestroy {
     value: ''
   };
 
+ 
   filter: any = {
     name: '',
     tax: '',
@@ -38,7 +41,8 @@ export class AgenciesListComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private agencieService: AgencieService,
     private messageService: NzMessageService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private modalService: NzModalService
   ) {
   }
   ngOnInit() {
@@ -116,6 +120,26 @@ export class AgenciesListComponent implements OnInit, OnDestroy {
 
   handleSearchBox() {
     this.getAgenCies();
+  }
+
+  add(){
+    const manageUnit  = {
+
+    }
+    const modal = this.modalService.create({
+      nzWidth: 980,
+      nzWrapClassName: 'manage-unit-modal',
+      nzTitle: 'Cập nhật thông tin đại lý',
+      nzContent: ManageUnitFormComponent,
+      nzOnOk: (data) => console.log('Click ok', data),
+      nzComponentParams: {
+        manageUnit
+      }
+    });
+
+    modal.afterClose.subscribe(result => {
+      this.getAgenCies();
+    });
   }
 
   ngOnDestroy() {
