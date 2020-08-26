@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
+import { NgxMaskModule } from 'ngx-mask';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
@@ -32,7 +33,8 @@ import {
     NzSelectModule,
     NzTableModule,
     DashboardRoutingModule,
-    SharedModule
+    SharedModule,
+    NgxMaskModule.forRoot()
   ],
   declarations: [
     DashboardComponent,
