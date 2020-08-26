@@ -1,36 +1,30 @@
-<!-- <div class="department">
-  <table class="department-table">
-    <tbody>
-      <tr *ngFor="let row of rows">
-        <td width="5%" class="text-center">{{ row.no }}</td>
-        <td width="35%">
-          <input nz-input nzSize="small" placeholder="Nhập mã phòng ban" [(ngModel)]="row.departmentCode" />
-        </td>
-        <td width="60%" class="text-right">
-          <input nz-input nzSize="small" placeholder="Nhập tên phòng ban" [(ngModel)]="row.departmentName" />
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div> -->
 
-<nz-table #basicTable nzBordered [nzData]="rows" class="editable-row">
+<nz-table 
+#fixedTable  
+nzBordered [nzData]="departments"
+[nzShowPagination]="false"
+class="editable-row">
   <thead>
     <tr>
-      <th>STT</th>
-      <th>Mã phòng ban</th>
-      <th>Tên phòng ban</th>
+      <th  style="width: 50px;"> STT</th>
+      <th  style="width: 200px;">Mã phòng ban</th>
+      <th  style="width: 660px;"> Tên phòng ban</th>
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let row of rows">
-      <td class="text-center">{{ row.no }}</td>
+    <tr *ngFor="let row of departments;index as i">
+      <td class="text-center">{{ i +1}}</td>
       <td>
-        <input nz-input nzSize="small" placeholder="Nhập mã phòng ban" [(ngModel)]="row.departmentCode" />
+        <input nz-input nzSize="small" placeholder="Nhập mã phòng ban" [(ngModel)]="row.code" />
       </td>
       <td>
-        <input nz-input nzSize="small" placeholder="Nhập tên phòng ban" [(ngModel)]="row.departmentName" />
+        <input nz-input nzSize="small" placeholder="Nhập tên phòng ban" [(ngModel)]="row.name" />
       </td>
     </tr>
   </tbody>
 </nz-table>
+<div nz-col nzMd="24"  class="footer-botton">  
+    <button class="manage-unit-form__button-save"  nz-button (click)="addRow()">
+        <i nz-icon nzType="plus" nzTheme="outline"></i>
+    </button>
+</div>

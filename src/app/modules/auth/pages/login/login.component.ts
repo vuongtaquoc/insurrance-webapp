@@ -18,18 +18,6 @@ export class AuthLoginComponent implements OnInit, OnDestroy {
   loginForm: FormGroup;
   loading = false;
   private subscription: Subscription;
-  companies: any[] = [
-    {
-      id: "VP",
-      value: "VP"
-    },
-    {
-      id: "CH001",
-      value: "Chi nhánh 001"
-    }
-  ]
-
-
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,

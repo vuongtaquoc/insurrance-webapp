@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { TranslateService } from '@ngx-translate/core';
-import { EmployeeService } from '@app/core/services';
+import { EmployeeService,AuthenticationService, DepartmentService } from '@app/core/services';
 import { EmployeeFormComponent } from '@app/shared/components';
-
+import { ManageUnitFormComponent } from '@app/shared/components';
 import { PAGE_SIZE, GENDER } from '@app/shared/constant';
 
 @Component({
@@ -33,10 +33,12 @@ export class EmployeeListComponent implements OnInit {
   tableHeight: number;
 
   constructor(
+    private authenticationService: AuthenticationService,
     private modalService: NzModalService,
     private messageService: NzMessageService,
     private employeeService: EmployeeService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private departmentService: DepartmentService
   ) {}
 
   ngOnInit() {
@@ -107,6 +109,50 @@ export class EmployeeListComponent implements OnInit {
       modal.afterClose.subscribe(result => {
         this.getEmployees();
       });
+    });
+  }
+
+  changeCompanyInfo() {
+    const companyInfo  =  this.authenticationService.currentCredentials.companyInfo;
+    if(companyInfo.groupCode === '01') {
+      this.getDepartment((data) => {
+        companyInfo.departments =  data,
+        this.showDialogChangeCompany(companyInfo);
+      });
+    }
+     else {
+      this.showDialogChangeCompany(companyInfo);
+    }
+  }
+
+  
+
+  getDepartment(callback) {
+    this.departmentService.getDepartmentShortName().subscribe(data => {
+      callback(data);
+    });
+  }
+
+  showDialogChangeCompany(companyInfo) {
+    const modal = this.modalService.create({
+      nzWidth: 980,
+      nzWrapClassName: 'manage-unit-modal',
+      nzTitle: 'Cập nhật thông tin đơn vị',
+      nzContent: ManageUnitFormComponent,
+      nzOnOk: (data) => console.log('Click ok', data),
+      nzComponentParams: {
+        companyInfo
+      }
+    });
+
+    modal.afterClose.subscribe(result => {
+      if(!result) {
+        return;
+      }
+      this.modalService.success({
+        nzTitle: 'Cập nhập thông tin thành công'
+      });
+      this.authenticationService.updateCompanyInStorage(result);
     });
   }
 

@@ -24,5 +24,11 @@ export class CompanyService {
       params: { id }
     });
   }
+
+
+  public update(id, body, options: any = {}) {
+    options.displayLoading = true;
+    return this.http.post(`/companies/updatemycompany/${ id }`, body, options);
+  }
   
 }

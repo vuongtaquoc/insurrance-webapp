@@ -10,10 +10,10 @@ import cloneDeep from 'lodash/cloneDeep';
 })
 export class DepartmentComponent implements OnInit, OnChanges {
   @Input() departments: any = [];
-  rows: any[] = [];
+   
 
   ngOnInit() {
-    if (!this.rows.length) {
+    if (!this.departments.length) {
       this.loadDefaultData();
     }
   }
@@ -23,14 +23,21 @@ export class DepartmentComponent implements OnInit, OnChanges {
   }
 
   private loadDefaultData() {
-    for (let i = 1; i <= 10; i++) {
-      this.rows.push({
-        no: i,
-        rowId: uuid.v4(),
-        departmentCode: '',
-        departmentName: ''
+    for (let i = 1; i <= 4; i++) {
+      this.departments.push({
+        code: '',
+        name: ''
       });
     }
   }
+
+  addRow() {
+
+    this.departments.push({
+      code: '',
+      name: ''
+    });
+  }
+
 
 }

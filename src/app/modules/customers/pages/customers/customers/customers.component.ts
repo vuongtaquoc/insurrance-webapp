@@ -50,9 +50,20 @@ export class CustomersComponent implements OnInit, OnDestroy {
 
   }
 
-  InitializeData() {   
+  InitializeData() {  
 
-    this.getDetail((data) => {
+    if (this.customerId) {
+      this.getDetail();
+    } else {
+      this.getCities();
+      this.getSalaryAreas();
+      this.loading = true;
+    }
+     
+  }
+
+  getDetail() {
+    this.customerService.getDetailById(this.customerId).subscribe(data => {
       this.loading = false;
       const fork = [
         this.cityService.getCities(),
@@ -71,15 +82,15 @@ export class CustomersComponent implements OnInit, OnDestroy {
     });
   }
 
-  getDetail(callback) {
+  // getData(callback) {
      
-    if(this.customerId) {
-      this.customerService.getDetailById(this.customerId).subscribe(data => {
-        callback(data);
-      });
-    }
+  //   if(this.customerId) {
+  //     this.customerService.getDetailById(this.customerId).subscribe(data => {
+  //       callback(data);
+  //     });
+  //   }
 
-  }
+  // }
 
   setDataToForm(data) {
     this.companyAgencies.patchValue({
@@ -119,7 +130,6 @@ export class CustomersComponent implements OnInit, OnDestroy {
       delegate: ['', Validators.required],
       active: ['1', Validators.required],
     });
-
    
   }
 
@@ -157,6 +167,7 @@ export class CustomersComponent implements OnInit, OnDestroy {
             this.companyAgencies.patchValue({
               name: data['Title'],
               address: data['DiaChiCongTy'],
+              addressRegister: data['DiaChiCongTy'],
               delegate: data['GiamDoc'],
               tel:data['NoiNopThue_DienThoai']
             });
@@ -166,6 +177,7 @@ export class CustomersComponent implements OnInit, OnDestroy {
               name: '',
               address: '',
               delegate: '',
+              addressRegister: '',
               tel:'',
             });
 

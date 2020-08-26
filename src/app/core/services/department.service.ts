@@ -17,7 +17,18 @@ export class DepartmentService {
       map(departments => {
         return departments.map(department => ({
           ...department,
-          name: `${ department.code } - ${ department.name }`
+          name: `${ department.code } - ${ department.name }`,
+          shortName: department.name
+        }));
+      })
+    );
+  }
+
+  public getDepartmentShortName(): Observable<any> {
+    return this.http.get('/department').pipe(
+      map(departments => {
+        return departments.map(department => ({
+          ...department,
         }));
       })
     );

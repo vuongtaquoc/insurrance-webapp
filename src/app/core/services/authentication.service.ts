@@ -82,4 +82,11 @@ export class AuthenticationService {
 
     return credentials;
   }
+
+  public updateCompanyInStorage(companyInfo) {
+    const credentials = JSON.parse(localStorage.getItem(CREDENTIAL_STORAGE));
+    credentials.companyInfo = companyInfo;
+    localStorage.setItem(CREDENTIAL_STORAGE, JSON.stringify(credentials));
+    this.credentialSubject.next(credentials);
+  }
 }

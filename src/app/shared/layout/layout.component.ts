@@ -27,12 +27,10 @@ export class LayoutComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.handlers = [
       eventEmitter.on('loading:open', (isLoading = false) => {
-        console.log(isLoading, 'isLoading');
         this.isLoading = isLoading;
       }),
       eventEmitter.on('saveData:loading', (display) => {
         this.isLoading = display;
-        console.log(display, 'display');
       }),
       eventEmitter.on('authencation:error', (show) => {
         this.modalService.warning({
