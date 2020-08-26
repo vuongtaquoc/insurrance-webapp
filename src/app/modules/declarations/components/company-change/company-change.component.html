@@ -57,7 +57,7 @@
                     <div class="page-company__main">
                       <h1><strong>{{declarationCode}}</strong> | {{declarationName}}</h1>
 
-                      <div nz-row nzGutter="8" style="margin-bottom: 15px;">
+                      <div nz-row nzGutter="8" style="margin-bottom: 5px;">
                         <div nz-col nzMd="8">
                           <nz-form-item >
                             <nz-form-control>
@@ -409,7 +409,7 @@
                 </form>
               </div><!-- page-declarations__editor -->
 
-              <nz-collapse [nzBordered]="false" style="position: relative;">
+              <nz-collapse [nzBordered]="false" style="position: relative;" class="collapse-attachment-files">
                 <nz-collapse-panel style="position: absolute; bottom: 0" class="collapse-attachment" [nzHeader]="attachmentHeader"
                   [nzActive]="panel.attachment.active" (nzActiveChange)="collapseChange($event, 'attachment')">
                   <app-labor-attachment [files]="files" [declarationCode]="'6000'"
