@@ -17,7 +17,7 @@ export class GeneralBaseComponent {
   @Input() data: any;
   @Input() NzPageHeaderContentDirective: string;
   @Input() hasForm = false;
-  @Input() files: any[] = [];;
+  @Input() files: any[] = [];
   @Input() declarationId: string;
   @Input() pageName: string;
   @Input() pageCode: string;

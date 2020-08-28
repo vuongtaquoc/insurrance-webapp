@@ -19,9 +19,11 @@ export class IsurranceDepartmentService {
   }
   
   public getDetailById(id: string) {
-    return this.http.get('/isurrance-department', {
-      params: { id }
-    });
+    return this.http.get(`/isurrance-department/${id}`);
+  }
+
+  public getDetailByCode(code: string) {
+    return this.http.get(`/isurrance-department/code/${code}`);
   }
   
 }

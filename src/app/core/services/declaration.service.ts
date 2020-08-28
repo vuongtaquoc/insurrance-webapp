@@ -48,6 +48,16 @@ export class DeclarationService {
     );
   }
 
+  public getDeclarationsChangeCompanyById(id) {
+    return this.http.get(`/declarations/change-company/${ id }`).pipe(
+      map(detail => {
+        const declaration = detail;
+        return declaration;
+      })
+    );
+  }
+
+
   public getDeclarationsNormalByDocumentId(id, tableHeaderColumns) {
     return this.http.get(`/declarations/normal/${ id }`).pipe(
       map(detail => {       
@@ -83,6 +93,18 @@ export class DeclarationService {
     options.displayLoading = true;
 
     return this.http.post(`/declarations/${ id }`, body, options);
+  }
+
+  public updateChangeCompany(id, body, options: any = {}) {
+    options.displayLoading = true;
+
+    return this.http.post(`/declarations/change-company/${ id }`, body, options);
+  }
+
+  public createChangeCompany(body, options: any = {}) {
+    options.displayLoading = true;
+
+    return this.http.post('/declarations/change-company', body, options);
   }
 
   public delete(id) {

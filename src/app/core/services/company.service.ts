@@ -20,11 +20,12 @@ export class CompanyService {
   }
 
   public getDetailById(id: string) {
-    return this.http.get('/companies', {
-      params: { id }
-    });
+    return this.http.get(`/companies/${id}`);
   }
 
+  public getDetailByCode(code: string) {
+    return this.http.get(`/companies/code/${code}`);
+  }
 
   public update(id, body, options: any = {}) {
     options.displayLoading = true;

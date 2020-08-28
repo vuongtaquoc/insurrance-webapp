@@ -3,7 +3,7 @@
     <div class="page-company page-company-edit" [ngClass]="{'page-declarations-hide-last-tab': !usedocumentDT01}" cardFullHeight>
       <nz-tabset nzSize="small" nzTabPosition="bottom" nzSelectedIndex="1" [nzTabBarExtraContent]="extraTemplate"
         (nzSelectChange)="handleSelectTab($event)">
-        <nz-tab nzTitle="Danh mục tài liệu">
+        <nz-tab nzTitle="Danh mục tài liệu" class="test1">
           <div class="page-document-list__container">
             <form nz-form [formGroup]="documentForm">
               <h1><strong>{{declarationCode}}</strong> | {{declarationName}}</h1>
@@ -11,41 +11,45 @@
                 <div nz-col [nzSpan]="12">
                   <nz-form-item>
                     <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Người nộp</nz-form-label>
-                    <nz-form-control [nzSpan]="14">
-                      <input nz-input placeholder="Người nộp" formControlName="userAction"
-                        (onChange)="handleChangeForm()" />
+                    <nz-form-control [nzSpan]="14" [nzErrorTip]="submitterTpl">
+                      <input nz-input placeholder="Người nộp" formControlName="submitter"/>
+                      <ng-template #submitterTpl let-control>
+                        <ng-container *ngIf="control.hasError('required')">
+                          <p class="regime-approval-form__error">Người nộp không được để trống</p>
+                        </ng-container>
+                      </ng-template>
                     </nz-form-control>
                   </nz-form-item>
                 </div>
                 <div nz-col [nzSpan]="12">
-                  <nz-form-item>
-                    <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Số điện thoại</nz-form-label>
-                    <nz-form-control [nzSpan]="14">
-                      <input nz-input placeholder="Số điện thoại" formControlName="mobile"
-                        (onChange)="handleChangeForm()" />
-                    </nz-form-control>
-                  </nz-form-item>
+                    <nz-form-item>
+                      <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Số điện thoại</nz-form-label>
+                      <nz-form-control [nzSpan]="14" [nzErrorTip]="mobileTpl">
+                        <input nz-input formControlName="mobile" placeholder="Số điện thoại">
+                        <ng-template #mobileTpl let-control>
+                          <ng-container *ngIf="control.hasError('required')">
+                            <p class="regime-approval-form__error">Số điện thoại không được để trống</p>
+                          </ng-container>
+                          <ng-container *ngIf="control.hasError('pattern')">
+                            <p class="regime-approval-form__error">Số điện thoại phải là số</p>
+                          </ng-container>
+                        </ng-template>
+                      </nz-form-control>
+                    </nz-form-item>
+                  </div>
                 </div>
-              </div>
-              <h1>Thành phần hồ sơ</h1>
-              <div class="document-form__process-table">
+                <h1>THÀNH PHẦN HỒ SƠ</h1>
                 <div class="document-form__process-table">
-                  <app-document-table [data]="documentList" (onChange)="handleChangeProcessTable($event)"
-                    (onDelete)="handleDeleteProcessData($event)"></app-document-table>
+                  <div class="document-form__process-table">
+                    <app-document-table
+                      [data]="documentList"
+                    ></app-document-table>
+                  </div>
                 </div>
-              </div>
-              <div nz-row [nzGutter]="10">
-                <div nz-col [nzSpan]="12">
-                  <nz-form-item>
-                    <label nz-checkbox formControlName="usedocumentDT01">Phát sinh kê khai Mẫu D01T-TS Bảng kê thông
-                      tin</label>
-                  </nz-form-item>
-                </div>
-              </div>
             </form>
           </div><!-- page-declarations__container -->
         </nz-tab><!-- tab 1-->
-        <nz-tab nzTitle="KT3-TS">
+        <nz-tab nzTitle="KT3-TS" class="page-company__container">
           <div class="page-company__container">
             <div>&nbsp;</div>
             <div class="page-company__content">
@@ -83,11 +87,10 @@
                           <nz-form-item >
                             <nz-form-label class="subject" nz-col nzMd="8">{{ 'company.from.subject' | translate }}
                             </nz-form-label>
-                            <nz-form-control nz-col nzMd="14">
-                              <input nz-input formControlName="subject" [nzErrorTip]="subjectError">
-
+                            <nz-form-control nz-col nzMd="14" [nzErrorTip]="subjectError">
+                              <input nz-input formControlName="isurranceDepartmentName" >
                               <ng-template #subjectError let-control>
-                                <ng-container *ngIf="validateControl('subject') && hasError('subject', 'required')">
+                                <ng-container *ngIf="control.hasError('required')">
                                   {{ 'company.from.subject' | translate }} không được để trống
                                 </ng-container>
                               </ng-template>
@@ -104,8 +107,8 @@
                             </nz-form-label>
                             <nz-form-control nz-col nzMd="16" [nzErrorTip]="nameError">
                               <input nz-input formControlName="name" >
-                               <ng-template #nameError let-control>
-                                <ng-container *ngIf="validateControl('name') && hasError('name', 'required')">
+                              <ng-template #nameError let-control>
+                                <ng-container *ngIf="control.hasError('required')">
                                   {{ 'company.from.name' | translate }} không được để trống
                                 </ng-container>
                               </ng-template>
@@ -114,7 +117,6 @@
                         </div>
                       </div>
 
-
                       <div nz-row nzGutter="8">
                         <div nz-col nzMd="24">
                           <nz-form-item >
@@ -122,10 +124,9 @@
                                 class="required">*</span>
                             </nz-form-label>
                             <nz-form-control nz-col nzMd="16" [nzErrorTip]="companyCodeError">
-                              <input nz-input formControlName="companyCode" >
+                              <input nz-input formControlName="code" >
                               <ng-template #companyCodeError let-control>
-                                <ng-container
-                                  *ngIf="validateControl('companyCode') && hasError('companyCode', 'required')">
+                                <ng-container *ngIf="control.hasError('required')">
                                   {{ 'company.from.companyCode' | translate }} không được để trống
                                 </ng-container>
                               </ng-template>
@@ -143,8 +144,29 @@
                             <nz-form-control nz-col nzMd="16" [nzErrorTip]="taxCodeError">
                               <input nz-input formControlName="taxCode" >
                               <ng-template #taxCodeError let-control>
-                                <ng-container *ngIf="validateControl('taxCode') && hasError('taxCode', 'required')">
+                                <ng-container *ngIf="control.hasError('required')">
                                   {{ 'company.from.taxCode' | translate }} không được để trống
+                                </ng-container>
+                              </ng-template>
+                            </nz-form-control>
+                          </nz-form-item>
+                        </div>
+                      </div>
+                      <div nz-row nzGutter="8">
+                        <div nz-col nzMd="24">
+                          <nz-form-item >
+                            <nz-form-label nz-col nzMd="8">{{ 'company.from.address' | translate }}
+                              <span class="required">*</span>
+                              <span class="icon-edit">
+                                <a nz-button nzType="primary" nzShape="circle"><i class="pd-b-8" nz-icon
+                                    nzType="info"></i></a>
+                              </span>
+                            </nz-form-label>
+                            <nz-form-control nz-col nzMd="16" [nzErrorTip]="addressError">
+                              <input nz-input formControlName="address" >
+                              <ng-template #addressError let-control>
+                                <ng-container *ngIf="control.hasError('required')">
+                                  {{ 'company.from.address' | translate }} không được để trống
                                 </ng-container>
                               </ng-template>
                             </nz-form-control>
@@ -161,31 +183,8 @@
                             <nz-form-control nz-col nzMd="16" [nzErrorTip]="addressRegisterError">
                               <input nz-input formControlName="addressRegister" >
                               <ng-template #addressRegisterError let-control>
-                                <ng-container
-                                  *ngIf="validateControl('addressRegister') && hasError('addressRegister', 'required')">
+                                <ng-container *ngIf="control.hasError('required')">
                                   {{ 'company.from.addressRegister' | translate }} không được để trống
-                                </ng-container>
-                              </ng-template>
-                            </nz-form-control>
-                          </nz-form-item>
-                        </div>
-                      </div>
-
-                      <div nz-row nzGutter="8">
-                        <div nz-col nzMd="24">
-                          <nz-form-item >
-                            <nz-form-label nz-col nzMd="8">{{ 'company.from.address' | translate }}
-                              <span class="required">*</span>
-                              <span class="icon-edit">
-                                <a nz-button nzType="primary" nzShape="circle"><i class="pd-b-8" nz-icon
-                                    nzType="info"></i></a>
-                              </span>
-                            </nz-form-label>
-                            <nz-form-control nz-col nzMd="16" [nzErrorTip]="addressError">
-                              <input nz-input formControlName="address" >
-                              <ng-template #addressError let-control>
-                                <ng-container *ngIf="validateControl('address') && hasError('address', 'required')">
-                                  {{ 'company.from.address' | translate }} không được để trống
                                 </ng-container>
                               </ng-template>
                             </nz-form-control>
@@ -200,9 +199,9 @@
                                 class="required">*</span>
                             </nz-form-label>
                             <nz-form-control nz-col nzMd="16" [nzErrorTip]="careerError">
-                              <input nz-input formControlName="career">
+                              <input nz-input formControlName="careers">
                               <ng-template #careerError let-control>
-                                <ng-container *ngIf="validateControl('career') && hasError('career', 'required')">
+                                <ng-container *ngIf="control.hasError('required')">
                                   {{ 'company.from.career' | translate }} không được để trống
                                 </ng-container>
                               </ng-template>
@@ -220,11 +219,14 @@
                             <nz-form-control nz-col [nzSpan]="16" nzOffset="6" class="ant-col-offset-6-edit" [nzErrorTip]="mobileError">
                               <input nz-input formControlName="mobile" style="padding-left: 2px;">
                               <ng-template #mobileError let-control>
-                                <ng-container *ngIf="validateControl('mobile') && hasError('mobile', 'required')">
+                                <ng-container *ngIf="control.hasError('required')">
                                   {{ 'company.from.mobile' | translate }} không được để trống
                                 </ng-container>
-                                <ng-container *ngIf="validateControl('mobile') && hasError('mobile', 'pattern')">
-                                  {{ 'company.from.mobile' | translate }} không hợp lệ
+                                <ng-container *ngIf="control.hasError('maxlength')">
+                                  {{ 'customers.from.mobile' | translate }} chỉ được tối đa 15 ký tự
+                                </ng-container>
+                                <ng-container *ngIf="control.hasError('pattern')">
+                                    {{ 'customers.from.mobile' | translate }} liên hệ phải là số
                                 </ng-container>
                               </ng-template>
                             </nz-form-control>
@@ -237,20 +239,19 @@
                                 class="required">*</span>
                             </nz-form-label>
                             <nz-form-control nz-col nzMd="16" [nzErrorTip]="emailError">
-                              <input nz-input formControlName="emailOfContract">
+                              <input nz-input formControlName="email">
                               <ng-template #emailError let-control>
-                                <div *ngIf="validateControl('emailOfContract') && hasError('emailOfContract', 'required')">
+                                <ng-container *ngIf="control.hasError('required')">
                                   {{ 'company.from.email' | translate }} không được để trống
-                                </div>
-                                <ng-container *ngIf="validateControl('emailOfContract') && hasError('emailOfContract', 'pattern')">
-                                  {{ 'system.staffs.form.email' | translate }} không hợp lệ
+                                </ng-container>
+                                <ng-container *ngIf="control.hasError('pattern')">
+                                  {{ 'company.from.email' | translate }} không hợp lệ
                                 </ng-container>
                               </ng-template>
                             </nz-form-control>
                           </nz-form-item>
                         </div>
                       </div>
-
 
                       <div nz-row nzGutter="8">
                         <div nz-col nzMd="14">
@@ -261,7 +262,7 @@
                             <nz-form-control nz-col nzMd="13" nzOffset="3" class="ant-col-offset-3-edit"  [nzErrorTip]="licenseError">
                               <input nz-input formControlName="license" style="padding-left: 2px;">
                               <ng-template #licenseError let-control>
-                                <ng-container *ngIf="validateControl('license') && hasError('license', 'required')">
+                                <ng-container *ngIf="control.hasError('required')">
                                   {{ 'company.from.license' | translate }} không được để trống
                                 </ng-container>
                               </ng-template>
@@ -277,7 +278,7 @@
                             <nz-form-control nz-col nzMd="16" [nzErrorTip]="issuedError">
                               <input nz-input formControlName="issued">
                               <ng-template #issuedError let-control>
-                                <ng-container *ngIf="validateControl('issued') && hasError('issued', 'required')">
+                                <ng-container *ngIf="control.hasError('required')">
                                   {{ 'company.from.issued' | translate }} không được để trống
                                 </ng-container>
                               </ng-template>
@@ -297,18 +298,14 @@
                               </span>
                             </nz-form-label>
                             <nz-form-control nz-col nzMd="16"  [nzErrorTip]="methodPayotherError">
-                              <nz-checkbox-wrapper style="width: 100%;">
-                                <div nz-row  >
-                                  <div nz-col nzSpan="6" *ngFor="let opt of checkOptionsOne">
-                                    <label nz-checkbox nzValue="opt.value">
-                                      {{ opt.label }}
-                                    </label>
-                                  </div>
-                                </div>
-                              </nz-checkbox-wrapper>
+                              <nz-radio-group formControlName="paymentMethodCode">
+                                <label nz-radio nzValue="01">Hàng tháng</label>
+                                <label nz-radio nzValue="02">Hàng Quý</label>
+                                <label nz-radio nzValue="03">6 Tháng</label>
+                              </nz-radio-group>
+
                               <ng-template #methodPayotherError let-control>
-                                <ng-container
-                                  *ngIf="validateControl('methodPayother') && hasError('methodPayother', 'required')">
+                                <ng-container *ngIf="control.hasError('required')">
                                   {{ 'company.from.methodPayother' | translate }} không được để trống
                                 </ng-container>
                               </ng-template>
@@ -324,10 +321,9 @@
                                 class="required">*</span>
                             </nz-form-label>
                             <nz-form-control nz-col nzMd="16" [nzErrorTip]="noteChangeError">
-                              <input nz-input formControlName="noteChange" >
+                              <input nz-input formControlName="note" >
                               <ng-template #noteChangeError let-control>
-                                <ng-container
-                                  *ngIf="validateControl('noteChange') && hasError('noteChange', 'required')">
+                                <ng-container *ngIf="control.hasError('required')">
                                   {{ 'company.from.noteChange' | translate }} không được để trống
                                 </ng-container>
                               </ng-template>
@@ -341,67 +337,9 @@
                           <nz-form-item >
                             <nz-form-label nz-col nzMd="8">{{ 'company.from.documentFile' | translate }}</nz-form-label>
                             <nz-form-control nz-col nzMd="16">
-                              <input nz-input formControlName="documentFile">
+                              <input nz-input formControlName="documentAttached">
                             </nz-form-control>
                           </nz-form-item>
-                        </div>
-                      </div>
-
-                      <div nz-row nzGutter="8"
-                        *ngIf="(companyForm.get('groupCompanyCode').value === '02' || companyForm.get('groupCompanyCode').value === '04' || companyForm.get('groupCompanyCode').value === '05')">
-                        <div nz-col nzMd="6">
-                          <nz-form-label class="black" [nzSpan]="24">{{ 'company.from.district' | translate }} <span
-                              class="required">*</span></nz-form-label>
-                        </div>
-                        <div nz-col nzMd="6">
-                          <nz-form-control [nzSpan]="24">
-                            <nz-select formControlName="districtId" (ngModelChange)="changeDistrict($event);"
-                              nzAllowClear nzPlaceHolder="Lựa chọn">
-                              <nz-option [nzValue]="district.id" [nzLabel]="district.name"
-                                *ngFor="let district of districts"></nz-option>
-                            </nz-select>
-                          </nz-form-control>
-                        </div>
-                        <div nz-col nzMd="6"
-                          *ngIf="(companyForm.get('groupCompanyCode').value === '02' || companyForm.get('groupCompanyCode').value === '05')">
-                          <nz-form-label class="black text-padding-left" [nzSpan]="24">
-                            {{ 'company.from.wards' | translate }} <span class="required">*</span></nz-form-label>
-                        </div>
-                        <div nz-col nzMd="6"
-                          *ngIf="(companyForm.get('groupCompanyCode').value === '02' || companyForm.get('groupCompanyCode').value === '05')">
-                          <nz-form-control [nzSpan]="24">
-                            <nz-select formControlName="wardsId" nzAllowClear nzPlaceHolder="Lựa chọn">
-                              <nz-option [nzValue]="ward.id" [nzLabel]="ward.name" *ngFor="let ward of wards">
-                              </nz-option>
-                            </nz-select>
-                          </nz-form-control>
-                        </div>
-                      </div>
-
-                      <div nz-row nzGutter="8" *ngIf="(companyForm.get('groupCompanyCode').value == '03')">
-                        <div nz-col nzMd="6">
-                          <nz-form-label class="black" [nzSpan]="24">{{ 'company.from.object' | translate }} <span
-                              class="required">*</span></nz-form-label>
-                        </div>
-                        <div nz-col nzMd="18">
-                          <nz-form-control [nzSpan]="24">
-                            <nz-radio-group formControlName="object">
-                              <label nz-radio nzValue="1">{{ 'company.from.studentLevelOne' | translate }}</label>
-                              <label nz-radio nzValue="2">{{ 'company.from.studentLevelTwo' | translate }}</label>
-                            </nz-radio-group>
-                          </nz-form-control>
-                        </div>
-                      </div>
-
-                      <div nz-row nzGutter="8" *ngIf="(companyForm.get('groupCompanyCode').value == '01')">
-                        <div nz-col nzMd="24">
-                          <nz-form-label class="black" [nzSpan]="24">Danh sách phòng ban</nz-form-label>
-                        </div>
-                        <div nz-col nzMd="24">
-                          <div class="page-declarations__editor">
-                            <app-table-editor [headers]="tableHeader" [columns]="tableColumnType"
-                              [columnWidths]="tableColumnWidth" [data]="department"></app-table-editor>
-                          </div><!-- page-declarations__editor -->
                         </div>
                       </div>
                     </div>
@@ -426,14 +364,14 @@
       <ng-template #extraTemplate>
         <div class="page-declarations__footer">
           <button nz-button class="page-declarations__footer-export" nzType="default" nzSize="small"
-            (click)="emitEventToChild('saveAndView')">
+            (click)="saveAndView()">
             <i nz-icon nzType="upload"></i>Xuất tờ khai
           </button>
-          <button nz-button nzType="default" nzSize="small" [disabled]="!companyForm.valid" (click)="emitEventToChild('save')">
+          <button nz-button nzType="default" nzSize="small" (click)="save()">
             <i nz-icon nzType="save"></i>Ghi lại
           </button>
           <button nz-button class="page-declarations__footer-button" nzType="default" nzSize="small"
-            (click)="emitEventToChild('back')">
+            (click)="rollback()">
             <i nz-icon nzType="reload"></i>Quay lại
           </button>
         </div>
