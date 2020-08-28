@@ -4,7 +4,7 @@ import { AuthorizeGuard, UnsavedChangesGuard, NavigationGuard } from '@app/core/
 import { PERMISSIONS } from '@app/shared/constant';
 
 import { LayoutComponent } from '@app/shared/layout';
-import { StaffsListComponent, StaffsSaveComponent, StaffsPersmissonComponent } from './pages';
+import { AccountsListComponent, AccountsSaveComponent } from './pages';
 
 const routes: Routes = [
   {
@@ -13,7 +13,7 @@ const routes: Routes = [
     children: [
       {
         path: 'list',
-        component: StaffsListComponent,
+        component: AccountsListComponent,
         canActivate: [ AuthorizeGuard ],
         data: {
           expectedPermission: PERMISSIONS.increase_labor.R
@@ -22,7 +22,7 @@ const routes: Routes = [
       },
       {
         path: 'add',
-        component: StaffsSaveComponent,
+        component: AccountsSaveComponent,
         canActivate: [ AuthorizeGuard ],
         data: {
           expectedPermission: PERMISSIONS.increase_labor.C
@@ -31,16 +31,7 @@ const routes: Routes = [
       },
       {
         path: ':id/edit',
-        component: StaffsSaveComponent,
-        canActivate: [ AuthorizeGuard ],
-        data: {
-          expectedPermission: PERMISSIONS.increase_labor.U
-        },
-        canDeactivate: [ UnsavedChangesGuard, NavigationGuard ]
-      },
-      {
-        path: ':id/permissions',
-        component: StaffsPersmissonComponent,
+        component: AccountsSaveComponent,
         canActivate: [ AuthorizeGuard ],
         data: {
           expectedPermission: PERMISSIONS.increase_labor.U
@@ -55,4 +46,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class StaffsRoutingModule { }
+export class AccountsRoutingModule { }

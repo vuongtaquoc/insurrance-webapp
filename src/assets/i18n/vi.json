@@ -220,7 +220,7 @@
 		}
 	},
 	"system": {
-		"staffs": {
+		"accounts": {
 			"permission": {
 				"title": "Phân quyền chức năng",
 				"stt": "STT",

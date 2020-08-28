@@ -4,7 +4,7 @@ import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxMaskModule } from 'ngx-mask';
-
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
@@ -60,7 +60,8 @@ import {
 import {
   CardFullHeightDirective,
   EditorAutoSizeDirective,
-  PluploadDirective
+  PluploadDirective,
+  TooltipDirective
 } from './directives';
 
 @NgModule({
@@ -87,6 +88,7 @@ import {
     NzTabsModule,
     NzTreeModule,
     NzTableModule,
+    NzToolTipModule,
     NgxMaskModule.forRoot()
   ],
   declarations: [
@@ -107,7 +109,8 @@ import {
     EditorAutoSizeDirective,
     PluploadDirective,
     ManageUnitFormComponent,
-    DepartmentComponent
+    DepartmentComponent,
+    TooltipDirective
   ],
   exports: [
     FormsModule,
@@ -125,8 +128,10 @@ import {
     EditorAutoSizeDirective,
     PluploadDirective,
     NzCheckboxModule,
+    NzToolTipModule,
     ManageUnitFormComponent,
-    DepartmentComponent
+    DepartmentComponent,
+    TooltipDirective
   ],
   providers: [
     AuthenticationService,

@@ -8,16 +8,16 @@ import { getBirthDay } from '@app/shared/utils/custom-validation';
 import { StaffService } from '@app/core/services';
 
 @Component({
-    selector: 'app-staff-list',
-    templateUrl: './staffs-list.component.html',
-    styleUrls: ['./staffs-list.component.less', '../../../../../agencies/pages/agencies/agencies-list/agencies-list.component.less']
+    selector: 'app-account-list',
+    templateUrl: './accounts-list.component.html',
+    styleUrls: ['./accounts-list.component.less', '../../../../../agencies/pages/agencies/agencies-list/agencies-list.component.less']
 })
-export class StaffsListComponent implements OnInit, OnDestroy {
+export class AccountsListComponent implements OnInit, OnDestroy {
     selectedPage: number = 1;
     total: number;
     skip: number;
     formSearch: FormGroup;
-    staffs: any[] = [];
+    accounts: any[] = [];
     keyword: string = '';
     shortColumn: any = {
         key: '',
@@ -48,11 +48,11 @@ export class StaffsListComponent implements OnInit, OnDestroy {
             dateTo: ['']
         });
 
-        this.getStaffs();
+        this.getAccounts();
     }
 
 
-    getStaffs(skip = 0, take = PAGE_SIZE) {
+    getAccounts(skip = 0, take = PAGE_SIZE) {
         this.staffService.gets({
             name: this.keyword,
             dateFrom: this.dateFrom,
@@ -62,7 +62,7 @@ export class StaffsListComponent implements OnInit, OnDestroy {
             orderType: (this.shortColumn.value || ''),
             orderby: (this.shortColumn.key || '')
         }).subscribe(res => {
-            this.staffs = res.data;
+            this.accounts = res.data;
             this.total = res.total;
             this.skip = skip;
 
@@ -70,20 +70,20 @@ export class StaffsListComponent implements OnInit, OnDestroy {
                 this.skip -= PAGE_SIZE;
                 this.selectedPage -= 1;
 
-                this.getStaffs(this.skip);
+                this.getAccounts(this.skip);
             }
         });
     }
 
     handleFilter(key) {
         this.keyword = this.filter[key];
-        this.getStaffs();
+        this.getAccounts();
     }
 
 
     sort(event) {
         this.shortColumn = event;
-        this.getStaffs();
+        this.getAccounts();
     }
 
 
@@ -112,7 +112,7 @@ export class StaffsListComponent implements OnInit, OnDestroy {
 
     delete(id) {
         this.staffService.delete(id).subscribe(() => {
-            this.getStaffs(this.skip);
+            this.getAccounts(this.skip);
         },
             (err) => {
                 this.translateService.get(err.message).subscribe(message => {
@@ -122,7 +122,7 @@ export class StaffsListComponent implements OnInit, OnDestroy {
     }
 
     handleSearchBox() {
-        this.getStaffs();
+        this.getAccounts();
     }
 
     ngOnDestroy() {
