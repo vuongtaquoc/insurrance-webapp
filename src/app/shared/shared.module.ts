@@ -111,7 +111,8 @@ import {
     PluploadDirective,
     ManageUnitFormComponent,
     DepartmentComponent,
-    TooltipDirective
+    TooltipDirective,
+    AcountFormComponent
   ],
   exports: [
     FormsModule,
