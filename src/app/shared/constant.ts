@@ -1097,6 +1097,12 @@ export const PERMISSIONS = {
     U: 'account_U',
     D: 'account_D',
   },
+  product: {
+    C: 'product_C',
+    R: 'product_R',
+    U: 'product_U',
+    D: 'product_D',
+  },
   emailServer: {
     C: 'emailServer_C',
     R: 'emailServer_R',

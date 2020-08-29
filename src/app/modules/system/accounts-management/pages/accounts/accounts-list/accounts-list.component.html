@@ -1,12 +1,12 @@
 <div class="page-card">
   <form nz-form [formGroup]="formSearch" (ngSubmit)="handleSearchBox()">
     <div class="page-title ">
-      <h1>{{'system.staffs.info.title' | translate}}</h1>
+      <h1>{{'system.accounts.info.title' | translate}}</h1>
       <div class="page-declarations__footer">
         <button class="element-form_button-search" nz-button nzType="default">
           <i nz-icon nzType="search"></i>{{ 'common.btnSearch' | translate }}
         </button>
-        <button class="element-form_button-add" nz-button nzType="default" [routerLink]="['/staffs/add']">
+        <button class="element-form_button-add" nz-button nzType="default" [routerLink]="['/accounts/add']">
           <i nz-icon nzType="user-add" nzTheme="outline"></i>{{ 'common.btnCreate' | translate }}
         </button>
       </div>
@@ -15,7 +15,7 @@
       <div nz-row nzGutter="30">
         <div nz-col nzMd="8">
           <nz-form-item>
-            <nz-form-label>{{ 'system.staffs.info.keyWords' | translate }}</nz-form-label>
+            <nz-form-label>{{ 'system.accounts.info.keyWords' | translate }}</nz-form-label>
             <nz-form-control>
               <input type="text" nz-input formControlName="keyword">
             </nz-form-control>
@@ -23,7 +23,7 @@
         </div>
         <div nz-col nzMd="4">
           <nz-form-item>
-            <nz-form-label>{{ 'system.staffs.info.dateFrom' | translate }}</nz-form-label>
+            <nz-form-label>{{ 'system.accounts.info.dateFrom' | translate }}</nz-form-label>
             <nz-form-control>
               <input nz-input placeholder="Từ ngày" formControlName="dateFrom" mask="00/00/0000" [showMaskTyped]="true"
                 [validation]="true" [clearIfNotMatch]="true" />
@@ -32,7 +32,7 @@
         </div>
         <div nz-col nzMd="4">
           <nz-form-item>
-            <nz-form-label>{{ 'system.staffs.info.dateTo' | translate }}</nz-form-label>
+            <nz-form-label>{{ 'system.accounts.info.dateTo' | translate }}</nz-form-label>
             <nz-form-control>
               <input nz-input placeholder="Đến ngày" formControlName="dateTo" mask="00/00/0000" [showMaskTyped]="true"
                 [validation]="true" [clearIfNotMatch]="true" />
@@ -44,22 +44,22 @@
     </div>
   </form>
 
-  <nz-table nzBordered #ajaxTable nzShowSizeChanger [nzFrontPagination]="false" [nzData]="staffs" [nzLoading]="loading"
-    [nzPageSize]="staffs.length" [nzShowPagination]="false" [nzLoading]="loading" [nzTotal]="total"
+  <nz-table nzBordered #ajaxTable nzShowSizeChanger [nzFrontPagination]="false" [nzData]="accounts" [nzLoading]="loading"
+    [nzPageSize]="accounts.length" [nzShowPagination]="false" [nzLoading]="loading" [nzTotal]="total"
     class="table-editor">
     <thead (nzSortChange)="sort($event)" nzSortFn>
       <tr class="ui-table-custom-header">
-        <th class="cell-custom" style="width: 50px;">{{'system.staffs.table.stt' | translate}}</th>
-        <th class="cell-custom" nzShowSort nzColumnKey="name">{{'system.staffs.table.fullName' | translate}}</th>
-        <th class="cell-custom" nzShowSort nzColumnKey="tax"><span>{{'system.staffs.table.userName' | translate}}</span>
+        <th class="cell-custom" style="width: 50px;">{{'system.accounts.table.stt' | translate}}</th>
+        <th class="cell-custom" nzShowSort nzColumnKey="name">{{'system.accounts.table.fullName' | translate}}</th>
+        <th class="cell-custom" nzShowSort nzColumnKey="tax"><span>{{'system.accounts.table.userName' | translate}}</span>
         </th>
-        <th class="cell-custom" nzShowSort nzColumnKey="delegate"><span>{{'system.staffs.table.tel' | translate}}</span>
+        <th class="cell-custom" nzShowSort nzColumnKey="delegate"><span>{{'system.accounts.table.tel' | translate}}</span>
         </th>
         <th class="cell-custom" nzShowSort nzColumnKey="delegate">
-          <span>{{'system.staffs.table.email' | translate}}</span></th>
+          <span>{{'system.accounts.table.email' | translate}}</span></th>
         <th class="cell-custom" style="width: 140px;" nzShowSort nzColumnKey="active">
-          <span>{{'system.staffs.table.status' | translate}}</span></th>
-        <th class="cell-custom" style="width: 120px;"><span>{{'system.staffs.table.action' | translate}}</span></th>
+          <span>{{'system.accounts.table.status' | translate}}</span></th>
+        <th class="cell-custom" style="width: 120px;"><span>{{'system.accounts.table.action' | translate}}</span></th>
       </tr>
 
       <tr class="ui-table-custom-filter">
@@ -83,9 +83,9 @@
 
       <tr *ngFor="let data of ajaxTable.data;index as i">
         <td>{{i + 1}}</td>
-        <td>{{ data.fullName }}</td>
-        <td>{{ data.userName }}</td>
-        <td>{{ data.tel }}</td>
+        <td>{{ data.name }}</td>
+        <td>{{ data.loginId }}</td>
+        <td>{{ data.mobile }}</td>
         <td>{{ data.email }}</td>
         <td>{{ status[(data.active ? 1 : 0)] | translate }}</td>
         <td>

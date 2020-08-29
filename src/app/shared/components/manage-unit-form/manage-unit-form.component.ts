@@ -1,9 +1,11 @@
 import { Component, OnInit, OnDestroy, ViewEncapsulation, Input, AfterViewInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { City, District} from '@app/core/models';
+import { City, District } from '@app/core/models';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
-import { CityService, IsurranceDepartmentService, SalaryAreaService, CompanyService,
-     PaymentMethodServiced, GroupCompanyService, DepartmentService, DistrictService, WardsService  } from '@app/core/services';
+import {
+    CityService, IsurranceDepartmentService, SalaryAreaService, CompanyService,
+    PaymentMethodServiced, GroupCompanyService, DepartmentService, DistrictService, WardsService
+} from '@app/core/services';
 import { forkJoin } from 'rxjs';
 import { REGEX } from '@app/shared/constant';
 
@@ -49,15 +51,15 @@ export class ManageUnitFormComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.loading = false;
         const companyInfo = this.companyInfo;
-        this.departments = companyInfo.departments;
+        this.departments = companyInfo.departments ? companyInfo.departments : [];
         this.form = this.formBuilder.group({
-            cityCode: [companyInfo.cityCode,[Validators.required]],
+            cityCode: [companyInfo.cityCode, [Validators.required]],
             isurranceDepartmentId: [companyInfo.isurranceDepartmentId, [Validators.required]],
             salaryAreaCode: [companyInfo.salaryAreaCode, [Validators.required]],
             code: [companyInfo.code, [Validators.required]],
             name: [companyInfo.name, [Validators.required]],
             address: [companyInfo.address, [Validators.required]],
-            addressRegister: [companyInfo.addressRegister, [Validators.required]],            
+            addressRegister: [companyInfo.addressRegister, [Validators.required]],
             taxCode: [companyInfo.taxCode, [Validators.required]],
             tel: [companyInfo.tel, [Validators.required, Validators.pattern(REGEX.PHONE_NUMBER)]],
             delegate: [companyInfo.delegate, [Validators.required]],
@@ -88,14 +90,14 @@ export class ManageUnitFormComponent implements OnInit, OnDestroy {
             this.wardsService.getWards(companyInfo.districtCode)
         ];
 
-        forkJoin(jobs).subscribe(([cities, salaryAreas,isurranceDepartments, groupCompanies, paymentMethods, districts, wards ]) => {
+        forkJoin(jobs).subscribe(([cities, salaryAreas, isurranceDepartments, groupCompanies, paymentMethods, districts, wards]) => {
             this.cities = cities;
             this.salaryAreas = salaryAreas;
             this.isurranceDepartments = isurranceDepartments;
             this.groupCompanies = groupCompanies;
             this.paymentMethods = paymentMethods;
             this.wards = wards;
-            this.districts =  districts;
+            this.districts = districts;
         });
 
         this.loading = true;
@@ -106,10 +108,16 @@ export class ManageUnitFormComponent implements OnInit, OnDestroy {
     }
 
     save(): void {
+        debugger;
         for (const i in this.form.controls) {
             this.form.controls[i].markAsDirty();
             this.form.controls[i].updateValueAndValidity();
         }
+
+        if (this.checkDuplicateDepartment()) {
+            return;
+        }
+
         if (this.form.invalid) {
             return;
         }
@@ -118,6 +126,7 @@ export class ManageUnitFormComponent implements OnInit, OnDestroy {
     }
 
     updateCompanyInfo() {
+        debugger;
         const companyInfo = this.getData();
         this.companyService.update(this.companyInfo.id, this.getData()).subscribe(data => {
             this.modal.destroy(companyInfo);
@@ -131,20 +140,18 @@ export class ManageUnitFormComponent implements OnInit, OnDestroy {
             companyId: this.companyInfo.companyId,
         }
 
-        if(this.groupCode === '02' || this.groupCode === '05') {
+        if (this.groupCode === '02' || this.groupCode === '05') {
             currentCopmanyInfo.subjectsCard = null;
             currentCopmanyInfo.departments = [];
-        }else if (this.groupCode === '03')
-        {
+        } else if (this.groupCode === '03') {
             currentCopmanyInfo.departments = [];
             currentCopmanyInfo.districtCode = null;
             currentCopmanyInfo.wardsCode = null;
-        } else if (this.groupCode === '04')
-        {
+        } else if (this.groupCode === '04') {
             currentCopmanyInfo.departments = [];
             currentCopmanyInfo.subjectsCard = null;
             currentCopmanyInfo.wardsCode = null;
-        }else {
+        } else {
             currentCopmanyInfo.departments = this.departments;
             currentCopmanyInfo.districtCode = null;
             currentCopmanyInfo.subjectsCard = null;
@@ -160,7 +167,7 @@ export class ManageUnitFormComponent implements OnInit, OnDestroy {
 
 
     changeRegisterCity(value) {
-        if(!this.loading) {
+        if (!this.loading) {
             return;
         }
 
@@ -179,7 +186,7 @@ export class ManageUnitFormComponent implements OnInit, OnDestroy {
 
     changeDistricts(value) {
 
-        if(!this.loading) {
+        if (!this.loading) {
             return;
         }
         this.wards = [];
@@ -200,8 +207,8 @@ export class ManageUnitFormComponent implements OnInit, OnDestroy {
             this.isurranceDepartments = data;
         });
     }
-    
-    
+
+
     getCertification() {
 
     }
@@ -215,40 +222,38 @@ export class ManageUnitFormComponent implements OnInit, OnDestroy {
     get groupCode() {
         return this.form.get('groupCode').value;
     }
-    
+
 
     changeGroup(value) {
-        if(value === '01'||  value === '06' || value === '07')
-        {
+        if (value === '01' || value === '06' || value === '07') {
             this.form.get('districtCode').clearValidators();
             this.form.get('districtCode').markAsPristine();
             this.form.get('wardsCode').clearValidators();
             this.form.get('wardsCode').markAsPristine();
             this.form.get('subjectsCard').clearValidators();
             this.form.get('subjectsCard').markAsPristine();
-        } else if(value === '02' || value === '05')
-        {
+        } else if (value === '02' || value === '05') {
             this.form.get('districtCode').setValidators(Validators.required);
             this.form.get('wardsCode').setValidators(Validators.required);
-             
+
             this.form.get('subjectsCard').clearValidators();
             this.form.get('subjectsCard').markAsPristine();
-        }else if(value === '03') {
+        } else if (value === '03') {
             this.form.get('subjectsCard').setValidators(Validators.required);
-           
+
             this.form.get('districtCode').clearValidators();
             this.form.get('districtCode').markAsPristine();
             this.form.get('wardsCode').clearValidators();
             this.form.get('wardsCode').markAsPristine();
         }
-        else if(value === '04') {
+        else if (value === '04') {
             this.form.get('districtCode').setValidators(Validators.required);
 
             this.form.get('wardsCode').clearValidators();
             this.form.get('wardsCode').markAsPristine();
             this.form.get('subjectsCard').clearValidators();
             this.form.get('subjectsCard').markAsPristine();
-           
+
         }
         else {
             this.form.get('districtCode').clearValidators();
@@ -264,10 +269,28 @@ export class ManageUnitFormComponent implements OnInit, OnDestroy {
 
     handleUpperCase(key) {
         const value = this.form.value[key];
-    
-        this.form.patchValue({
-          [key]: value.toUpperCase()
-        });
-      }
 
+        this.form.patchValue({
+            [key]: value.toUpperCase()
+        });
+    }
+
+
+    checkDuplicateDepartment() {
+        let isDup = false;
+        let code_values = [];
+
+        //iterate the source data
+        for (let x of this.departments) {
+
+            if (code_values.indexOf(x.code) != -1) {
+                isDup = true;
+                break;
+            } else {
+                code_values.push(x.code)
+            }
+        }
+
+        return !isDup;
+    }
 }

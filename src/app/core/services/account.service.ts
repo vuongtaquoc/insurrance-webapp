@@ -11,7 +11,7 @@ export class AccountService {
   constructor(private http: ApplicationHttpClient) {
   }
 
-  public getAgencies(filters = {}) {
+  public getList(filters = {}) {
     return this.http.getList('/accounts', {
       params: {
         ...filters

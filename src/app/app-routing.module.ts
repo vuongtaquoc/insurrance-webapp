@@ -57,8 +57,8 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
-    path: 'staffs',
-    loadChildren: './modules/system/staffs/staffs.module#StaffsModule',
+    path: 'account-management',
+    loadChildren: './modules/system/accounts-management/accounts.module#AccountsModule',
     canActivate: [AuthGuard],
   },
   {
