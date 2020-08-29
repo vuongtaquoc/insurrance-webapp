@@ -2,12 +2,12 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AgencieService } from '@app/core/services';
 import { NzTableQueryParams } from 'ng-zorro-antd/table';
-import { PAGE_SIZE, STATUS, ACTION } from '@app/shared/constant';
+import { PAGE_SIZE, STATUS, ACTION, ROLE } from '@app/shared/constant';
 import { getBirthDay } from '@app/shared/utils/custom-validation';
 import { TranslateService } from '@ngx-translate/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalService } from 'ng-zorro-antd/modal';
-
+import { AcountFormComponent } from '@app/shared/components';
 
 @Component({
   selector: 'app-agencies-list',
@@ -122,6 +122,40 @@ export class AgenciesListComponent implements OnInit, OnDestroy {
     this.getAgenCies();
   }
 
- ngOnDestroy() {
+  ngOnDestroy() {
+
+  }
+
+  viewAccount(agency) {
+    const accountInfo = {
+      ...agency,
+      roleLevel: ROLE.SALE,
+    };
+
+    this.showDialogAccountManagement(accountInfo);
+  }
+
+  private showDialogAccountManagement(companyInfo: any) {
+    const modal = this.modalService.create({
+      nzWidth: 760,
+      nzWrapClassName: 'account-modal',
+      nzTitle: `Tạo tài khoản đaiy lý ${ companyInfo.name }`,
+      nzContent: AcountFormComponent,
+      nzOnOk: (data) => console.log('Click ok', data),
+      nzComponentParams: {
+        companyInfo
+      }
+    });
+
+    modal.afterClose.subscribe(result => {
+      
+      if(result && result.isSuccess) {
+
+        this.modalService.success({
+          nzTitle: 'Tạo tài khoản thành công'
+        });
+
+      }
+    });
   }
 }

@@ -36,7 +36,13 @@ export class LayoutComponent implements OnInit, OnDestroy {
         this.modalService.warning({
           nzTitle: 'Bạn không có quyền truy cập trang này'
         });
+      }),
+      eventEmitter.on('saveData:error', (message) => {
+        this.modalService.warning({
+          nzTitle: message
+        });
       })
+
     ];
 
     this.setPermissions();

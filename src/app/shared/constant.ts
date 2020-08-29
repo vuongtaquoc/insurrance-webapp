@@ -4,6 +4,13 @@ export const DATE_FORMAT = {
   FULL: 'DD/MM/YYYY'
 };
 
+export const ROLE = {
+  SYSTEMADMIN: 'SYSTEMADMIN',
+  SALE: 'SALE',
+  CUSTOMER: 'CUSTOMER'
+};
+
+
 export const PAGE_SIZE = 10;
 
 export const GENDER = {
@@ -1054,7 +1061,11 @@ export const errorMessages = {
   8: 'Dữ liệu không hợp lệ',
   2040: 'NLĐ đã có hồ sơ, bạn không thể xóa',
   2001: 'Sai Tên đăng nhập hoặc Mật khẩu. Vui lòng thử lại!',
-  3018: 'Email đã tồn tại trong hệ thống'
+  3018: 'Email đã tồn tại trong hệ thống',
+  2030: 'Email đã tồn tại trong hệ thống',
+  2028: 'Tên đăng nhập không được để trống',
+  2027: 'Tên đăng nhập đã tồn tại',
+  2020: 'Tài khoản vượt quá số lượng cho phép'
 }
 
 

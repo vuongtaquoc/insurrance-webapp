@@ -1,11 +1,14 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NzTableQueryParams } from 'ng-zorro-antd/table';
-import { PAGE_SIZE, STATUS, ACTION } from '@app/shared/constant';
+import { PAGE_SIZE, STATUS, ACTION, ROLE } from '@app/shared/constant';
 import { getBirthDay } from '@app/shared/utils/custom-validation';
 import { TranslateService } from '@ngx-translate/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { CustomerService } from '@app/core/services/customer.service';
+import { AcountFormComponent } from '@app/shared/components';
+import { NzModalService } from 'ng-zorro-antd/modal';
+ 
 
 @Component({
   selector: 'app-customers-list',
@@ -29,7 +32,9 @@ export class CustomersListComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private customerService: CustomerService,
     private messageService: NzMessageService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private modalService: NzModalService,
+
   ) {
   }
   ngOnInit() {
@@ -121,5 +126,38 @@ export class CustomersListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+  }
+
+  viewAccount(agency) {
+    const accountInfo = {
+      ...agency,
+      roleLevel: ROLE.CUSTOMER,
+    };
+
+    this.showDialogAccountManagement(accountInfo);
+  }
+
+  private showDialogAccountManagement(companyInfo: any) {
+    const modal = this.modalService.create({
+      nzWidth: 760,
+      nzWrapClassName: 'account-modal',
+      nzTitle: `Tạo tài khoản khách hàng ${ companyInfo.name }`,
+      nzContent: AcountFormComponent,
+      nzOnOk: (data) => console.log('Click ok', data),
+      nzComponentParams: {
+        companyInfo
+      }
+    });
+
+    modal.afterClose.subscribe(result => {
+      
+      if(result && result.isSuccess) {
+
+        this.modalService.success({
+          nzTitle: 'Tạo tài khoản thành công'
+        });
+
+      }
+    });
   }
 }

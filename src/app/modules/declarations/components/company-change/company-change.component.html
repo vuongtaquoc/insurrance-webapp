@@ -3,7 +3,7 @@
     <div class="page-company page-company-edit" [ngClass]="{'page-declarations-hide-last-tab': !usedocumentDT01}" cardFullHeight>
       <nz-tabset nzSize="small" nzTabPosition="bottom" nzSelectedIndex="1" [nzTabBarExtraContent]="extraTemplate"
         (nzSelectChange)="handleSelectTab($event)">
-        <nz-tab nzTitle="Danh mục tài liệu" class="test1">
+        <nz-tab nzTitle="Danh mục tài liệu">
           <div class="page-document-list__container">
             <form nz-form [formGroup]="documentForm">
               <h1><strong>{{declarationCode}}</strong> | {{declarationName}}</h1>
@@ -49,7 +49,7 @@
             </form>
           </div><!-- page-declarations__container -->
         </nz-tab><!-- tab 1-->
-        <nz-tab nzTitle="KT3-TS" class="page-company__container">
+        <nz-tab nzTitle="KT3-TS">
           <div class="page-company__container">
             <div>&nbsp;</div>
             <div class="page-company__content">

@@ -49,7 +49,7 @@
     class="table-editor">
     <thead (nzSortChange)="sort($event)" nzSortFn class="sort-custom">
       <tr class="ui-table-custom-header">
-        <th class="cell-custom">{{'agencies.table.stt' | translate}}</th>
+        <th class="cell-custom" style="width: 50px;">{{'agencies.table.stt' | translate}}</th>
         <th class="cell-custom" nzShowSort nzColumnKey="name">{{'agencies.table.company' | translate}}</th>
         <th class="cell-custom" nzShowSort nzColumnKey="tax"><span>{{'agencies.table.taxCode' | translate}}</span></th>
         <th class="cell-custom" nzShowSort nzColumnKey="delegate">
@@ -82,8 +82,13 @@
         <td>{{ status[(data.active ? 1 : 0)] | translate }}</td>
         <td>
           <ng-container>
-            <a [routerLink]="['/agencies/' + data.id + '/edit']" class="action-padding">
+            <a [routerLink]="['/agencies/' + data.id + '/edit']" title ="Chỉnh sửa" class="action-padding">
               <i nz-icon nzType="edit" nzTheme="outline"></i>
+            </a>
+          </ng-container>
+          <ng-container>
+            <a (click)="viewAccount(data)" title ="Tạo account" class="action-padding">
+              <i nz-icon nzType="user-add" nzTheme="outline"></i>
             </a>
           </ng-container>
           <app-button-delete [id]="data.id" (delete)="delete($event)"></app-button-delete>

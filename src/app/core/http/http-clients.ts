@@ -139,11 +139,11 @@ export class ApplicationHttpClient {
     const message = errorMessages[errorCode];
 
     if (!message) {
-      toastr.error(errorMessages[8]);
+      eventEmitter.emit('saveData:error', errorMessages[8]);
       return errorMessages[8];
     }
-
-    toastr.error(message);
+     
+    eventEmitter.emit('saveData:error', message);
     return message;
   }
 }

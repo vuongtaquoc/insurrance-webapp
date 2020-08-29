@@ -54,7 +54,8 @@ import {
   ButtonDeleteComponent,
   TableEditorErrorsComponent,
   DepartmentComponent,
-  ManageUnitFormComponent
+  ManageUnitFormComponent,
+  AcountFormComponent,
 } from './components';
 
 import {
@@ -107,7 +108,8 @@ import {
     EditorAutoSizeDirective,
     PluploadDirective,
     ManageUnitFormComponent,
-    DepartmentComponent
+    DepartmentComponent,
+    AcountFormComponent,
   ],
   exports: [
     FormsModule,
@@ -145,7 +147,8 @@ import {
     EmployeeHospitalRegisterFormComponent,
     DocumentFormComponent,
     TableEditorErrorsComponent,
-    ManageUnitFormComponent
+    ManageUnitFormComponent,
+    AcountFormComponent,
   ]
 })
 export class SharedModule { }
