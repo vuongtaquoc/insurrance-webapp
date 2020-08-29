@@ -108,7 +108,7 @@ export class ManageUnitFormComponent implements OnInit, OnDestroy {
     }
 
     save(): void {
-        debugger;
+        
         for (const i in this.form.controls) {
             this.form.controls[i].markAsDirty();
             this.form.controls[i].updateValueAndValidity();
@@ -126,7 +126,7 @@ export class ManageUnitFormComponent implements OnInit, OnDestroy {
     }
 
     updateCompanyInfo() {
-        debugger;
+        
         const companyInfo = this.getData();
         this.companyService.update(this.companyInfo.id, this.getData()).subscribe(data => {
             this.modal.destroy(companyInfo);

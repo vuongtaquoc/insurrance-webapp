@@ -9,7 +9,7 @@ import { ProductService } from '@app/core/services';
 @Component({
     selector: 'app-products-list',
     templateUrl: './products-list.component.html',
-    styleUrls: ['./products-list.component.less', '../../../../../agencies/pages/agencies/agencies-list/agencies-list.component.less']
+    styleUrls: ['./products-list.component.less']
 })
 export class ProductsListComponent implements OnInit, OnDestroy {
     selectedPage: number = 1;

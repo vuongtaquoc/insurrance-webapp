@@ -9,10 +9,7 @@ import { getBirthDay } from '@app/shared/utils/custom-validation';
 @Component({
     selector: 'app-staff-list',
     templateUrl: './notificationEmails-list.component.html',
-    styleUrls: [
-        './notificationEmails-list.component.less',
-        '../../../../../agencies/pages/agencies/agencies-list/agencies-list.component.less'
-    ]
+    styleUrls: ['./notificationEmails-list.component.less']
 })
 export class NotificationEmailsListComponent implements OnInit, OnDestroy {
     notificationEmails: any[] = [];

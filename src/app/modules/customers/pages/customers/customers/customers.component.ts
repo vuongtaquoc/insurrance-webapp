@@ -53,7 +53,7 @@ export class CustomersComponent implements OnInit, OnDestroy {
   }
 
   InitializeData() {
-    debugger;
+    
     if (this.customerId) {
       this.getDetail();
     } else {

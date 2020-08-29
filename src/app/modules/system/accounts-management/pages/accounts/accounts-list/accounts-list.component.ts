@@ -10,7 +10,7 @@ import { AccountService } from '@app/core/services';
 @Component({
     selector: 'app-account-list',
     templateUrl: './accounts-list.component.html',
-    styleUrls: ['/accounts-list.component.less']
+    styleUrls: ['./accounts-list.component.less']
 })
 export class AccountsListComponent implements OnInit, OnDestroy {
     selectedPage: number = 1;

@@ -13,7 +13,7 @@ import { NzModalService } from 'ng-zorro-antd/modal';
 @Component({
   selector: 'app-customers-list',
   templateUrl: './customers-list.component.html',
-  styleUrls: ['./customers-list.component.less', '../../../../agencies/pages/agencies/agencies-list/agencies-list.component.less']
+  styleUrls: ['./customers-list.component.less']
 })
 export class CustomersListComponent implements OnInit, OnDestroy {
   total: number;

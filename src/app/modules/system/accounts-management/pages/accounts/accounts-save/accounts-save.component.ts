@@ -8,7 +8,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 @Component({
     selector: 'app-accounts-save',
     templateUrl: './accounts-save.component.html',
-    styleUrls: ['./accounts-save.component.less', '../../../../../agencies/pages/agencies/agencies-add/agencies-add.component.less']
+    styleUrls: ['./accounts-save.component.less']
 })
 export class AccountsSaveComponent implements OnInit, OnDestroy {
     isEdit: boolean = false;

@@ -10,7 +10,7 @@ import { validateLessThanEqualNowBirthday, validateDateSign, getBirthDay, valida
 @Component({
     selector: 'app-notifications-save',
     templateUrl: './notifications-save.component.html',
-    styleUrls: ['./notifications-save.component.less', '../../../../../agencies/pages/agencies/agencies-add/agencies-add.component.less']
+    styleUrls: ['./notifications-save.component.less']
 })
 export class NotificationsSaveComponent implements OnInit, OnDestroy {
     isEdit: boolean = false;
@@ -23,7 +23,7 @@ export class NotificationsSaveComponent implements OnInit, OnDestroy {
         private route: ActivatedRoute,
         private router: Router,
         private modalService: NzModalService,
-        private notificationService: NotificationService 
+        private notificationService: NotificationService
     ) {
     }
 
