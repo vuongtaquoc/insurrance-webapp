@@ -8,7 +8,7 @@ import { DATE_FORMAT, REGEX } from '@app/shared/constant';
 @Component({
     selector: 'app-products-save',
     templateUrl: './products-save.component.html',
-    styleUrls: ['./products-save.component.less', '../../../../../agencies/pages/agencies/agencies-add/agencies-add.component.less']
+    styleUrls: ['./products-save.component.less']
 })
 export class ProductsSaveComponent implements OnInit, OnDestroy {
     isEdit: boolean = false;

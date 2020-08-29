@@ -2,21 +2,22 @@ import { OnDestroy, OnInit, Component } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { getBirthDay } from '@app/shared/utils/custom-validation';
+
 import { PAGE_SIZE, GENDER } from '@app/shared/constant';
-import { ProductService } from '@app/core/services';
+import { getBirthDay } from '@app/shared/utils/custom-validation';
+import { AccountService } from '@app/core/services';
 
 @Component({
-    selector: 'app-products-list',
-    templateUrl: './products-list.component.html',
-    styleUrls: ['./products-list.component.less']
+    selector: 'app-account-list',
+    templateUrl: './accounts-list.component.html',
+    styleUrls: ['./accounts-list.component.less']
 })
-export class ProductsListComponent implements OnInit, OnDestroy {
+export class AccountsListComponent implements OnInit, OnDestroy {
     selectedPage: number = 1;
     total: number;
     skip: number;
     formSearch: FormGroup;
-    products: any[] = [];
+    accounts: any[] = [];
     keyword: string = '';
     shortColumn: any = {
         key: '',
@@ -24,36 +25,34 @@ export class ProductsListComponent implements OnInit, OnDestroy {
     };
 
     filter: any = {
-        productName: '',
-        unitCode: '',
-        useTime: '',
-        productPrice: '',
+        fullName: '',
+        userName: '',
+        tel: '',
+        email: '',
         status: ''
     };
 
     constructor(
         private formBuilder: FormBuilder,
-        private productService: ProductService,
+        private accountService: AccountService,
         private messageService: NzMessageService,
-        private translateService: TranslateService
-    ) {
+        private translateService: TranslateService) {
 
     }
     ngOnInit() {
+
         this.formSearch = this.formBuilder.group({
             keyword: [''],
             dateFrom: [''],
             dateTo: ['']
         });
 
-        this.getProducts();
-
-
+        this.getAccounts();
     }
 
 
-    getProducts(skip = 0, take = PAGE_SIZE) {
-        this.productService.gets({
+    getAccounts(skip = 0, take = PAGE_SIZE) {
+        this.accountService.getList({
             name: this.keyword,
             dateFrom: this.dateFrom,
             dateTo: this.dateTo,
@@ -62,7 +61,7 @@ export class ProductsListComponent implements OnInit, OnDestroy {
             orderType: (this.shortColumn.value || ''),
             orderby: (this.shortColumn.key || '')
         }).subscribe(res => {
-            this.products = res.data;
+            this.accounts = res.data;
             this.total = res.total;
             this.skip = skip;
 
@@ -70,27 +69,22 @@ export class ProductsListComponent implements OnInit, OnDestroy {
                 this.skip -= PAGE_SIZE;
                 this.selectedPage -= 1;
 
-                this.getProducts(this.skip);
+                this.getAccounts(this.skip);
             }
         });
     }
 
     handleFilter(key) {
         this.keyword = this.filter[key];
-        this.getProducts();
+        this.getAccounts();
     }
 
 
     sort(event) {
         this.shortColumn = event;
-        this.getProducts();
+        this.getAccounts();
     }
-
-
-    // get keyword() {
-    //     return this.formSearch.get('keyword').value;
-    // }
-
+ 
     get dateTo() {
         const dateTo = this.formSearch.get('dateTo').value;
 
@@ -111,8 +105,8 @@ export class ProductsListComponent implements OnInit, OnDestroy {
     }
 
     delete(id) {
-        this.productService.delete(id).subscribe(() => {
-            this.getProducts(this.skip);
+        this.accountService.delete(id).subscribe(() => {
+            this.getAccounts(this.skip);
         },
             (err) => {
                 this.translateService.get(err.message).subscribe(message => {
@@ -122,7 +116,7 @@ export class ProductsListComponent implements OnInit, OnDestroy {
     }
 
     handleSearchBox() {
-        this.getProducts();
+        this.getAccounts();
     }
 
     ngOnDestroy() {

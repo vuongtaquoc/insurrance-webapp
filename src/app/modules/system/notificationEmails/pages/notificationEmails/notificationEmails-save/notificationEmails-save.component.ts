@@ -8,7 +8,7 @@ import { DATE_FORMAT, REGEX } from '@app/shared/constant';
 @Component({
     selector: 'app-notification-emails-save',
     templateUrl: './notificationEmails-save.component.html',
-    styleUrls: ['./notificationEmails-save.component.less', '../../../../../agencies/pages/agencies/agencies-add/agencies-add.component.less']
+    styleUrls: ['./notificationEmails-save.component.less']
 })
 export class NotificationEmailsSaveComponent implements OnInit, OnDestroy {
     isEdit: boolean = false;

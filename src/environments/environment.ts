@@ -6,13 +6,13 @@ import all from './all';
 export const environment = {
   ...all,
   production: false,
-  //apiUrl: 'http://localhost:1380'
-  apiUrl: 'http://103.141.144.156:8082'
+  apiUrl: 'http://localhost:1380'
+  //apiUrl: 'http://103.145.62.255:8082'
 };
 
 /*
  * For easier debugging in development mode, you can import the following file
- * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.
+ * to ignore zone related error stack frsames such as `zone.run`, `zoneDelegate.invokeTask`.
  *
  * This import should be commented out in production mode because it will have a negative impact
  * on performance if an error is thrown.
