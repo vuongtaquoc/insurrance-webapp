@@ -1,20 +1,23 @@
 import { OnDestroy, OnInit, Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { DATE_FORMAT, REGEX } from '@app/shared/constant';
+import { DATE_FORMAT, REGEX, PERMISSON_DATA_TEST } from '@app/shared/constant';
 import { StaffService } from '@app/core/services';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
-    selector: 'app-staffs-list',
-    templateUrl: './staffs-save.component.html',
-    styleUrls: ['./staffs-save.component.less', '../../../../../agencies/pages/agencies/agencies-add/agencies-add.component.less']
+    selector: 'app-accounts-save',
+    templateUrl: './accounts-save.component.html',
+    styleUrls: ['./accounts-save.component.less', '../../../../../agencies/pages/agencies/agencies-add/agencies-add.component.less']
 })
-export class StaffsSaveComponent implements OnInit, OnDestroy {
+export class AccountsSaveComponent implements OnInit, OnDestroy {
     isEdit: boolean = false;
     id: number;
-    loading = false; 
+    loading = false;
     form: FormGroup;
+
+    permissions: any[] = [];
+
     constructor(
         private formBuilder: FormBuilder,
         private route: ActivatedRoute,
@@ -30,6 +33,8 @@ export class StaffsSaveComponent implements OnInit, OnDestroy {
             this.isEdit = true;
             this.getDetail(this.id);
         }
+
+        this.getPermission();
     }
 
     ngOnDestroy() {
@@ -45,6 +50,12 @@ export class StaffsSaveComponent implements OnInit, OnDestroy {
             email: ['', [Validators.required, Validators.pattern(REGEX.EMAIL)]],
             status: ['1', Validators.required],
         });
+    }
+
+    getPermission() {
+        this.staffService.getPermission(this.id).subscribe(res => {
+            this.permissions = PERMISSON_DATA_TEST;
+        })
     }
 
     public getDetail = (id) => {
@@ -88,15 +99,33 @@ export class StaffsSaveComponent implements OnInit, OnDestroy {
 
         if (this.isEdit) {
             this.staffService.update(this.id, this.form.value).subscribe(data => {
-                this.router.navigate(['/staffs/list']);
+                this.router.navigate(['/accounts/list']);
             });
         } else {
             this.staffService.create(this.form.value).subscribe(data => {
-                this.router.navigate(['/staffs/list']);
+                this.router.navigate(['/accounts/list']);
             });
         }
 
     }
 
+    onItemChecked(id: number, checked: boolean, action: string) {
+        let item = this.permissions.find(x => x.actionId == id);
+        if (item) {
+            for (let key in item) {
+                if (key == action) {
+                    item[key] = checked;
+                    break;
+                }
+            }
+        }
+
+    }
+
+    onAllChecked(checked: boolean, action: string) {
+        this.permissions.forEach((item) => {
+            this.onItemChecked(item.actionId, checked, action);
+        });
+    }
 
 }

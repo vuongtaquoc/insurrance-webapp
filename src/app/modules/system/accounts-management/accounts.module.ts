@@ -16,15 +16,15 @@ import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 
 import { AuthenticationService } from '@app/core/services';
 import { SharedModule } from '@app/shared/shared.module';
-import { StaffsRoutingModule } from './staffs-routing.module';
-import { StaffsListComponent, StaffsSaveComponent, StaffsPersmissonComponent } from './pages';
+import { AccountsRoutingModule } from './accounts-routing.module';
+import { AccountsListComponent, AccountsSaveComponent } from './pages';
 
 
 @NgModule({
     imports: [
         CommonModule,
         ReactiveFormsModule,
-        StaffsRoutingModule,
+        AccountsRoutingModule,
         NzButtonModule,
         NzDatePickerModule,
         NzFormModule,
@@ -39,13 +39,12 @@ import { StaffsListComponent, StaffsSaveComponent, StaffsPersmissonComponent } f
         NgxMaskModule.forRoot()
     ],
     declarations: [
-        StaffsListComponent,
-        StaffsSaveComponent,
-        StaffsPersmissonComponent
+        AccountsListComponent,
+        AccountsSaveComponent
     ],
     providers: [
         AuthenticationService
     ],
     entryComponents: []
 })
-export class StaffsModule { }
+export class AccountsModule { }

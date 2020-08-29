@@ -1,8 +1,10 @@
-import { Input,Component, OnInit, OnDestroy } from '@angular/core';
+import { Input, Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthenticationService, CustomerService,CityService, DistrictService,
-   WardsService, IsurranceDepartmentService, SalaryAreaService, AgencieService} from '@app/core/services';
-import {Company, Customer } from '@app/core/models';
+import {
+  AuthenticationService, CustomerService, CityService, DistrictService,
+  WardsService, IsurranceDepartmentService, SalaryAreaService, AgencieService
+} from '@app/core/services';
+import { Company, Customer } from '@app/core/models';
 import { Router } from '@angular/router';
 import { DATE_FORMAT, REGEX } from '@app/shared/constant';
 import { NzModalService } from 'ng-zorro-antd/modal';
@@ -18,7 +20,7 @@ export class CustomersComponent implements OnInit, OnDestroy {
 
   item: Company;
   companyAgencies: FormGroup;
- 
+
   loading = false;
   groupCompanies: any;
   cities: any;
@@ -41,17 +43,17 @@ export class CustomersComponent implements OnInit, OnDestroy {
   ) {
   }
 
-  ngOnInit() {    
-    this.loadForm(); 
-    this.InitializeData();    
+  ngOnInit() {
+    this.loadForm();
+    this.InitializeData();
   }
 
   ngOnDestroy() {
 
   }
 
-  InitializeData() {  
-
+  InitializeData() {
+    debugger;
     if (this.customerId) {
       this.getDetail();
     } else {
@@ -59,7 +61,7 @@ export class CustomersComponent implements OnInit, OnDestroy {
       this.getSalaryAreas();
       this.loading = true;
     }
-     
+
   }
 
   getDetail() {
@@ -67,8 +69,8 @@ export class CustomersComponent implements OnInit, OnDestroy {
       this.loading = false;
       const fork = [
         this.cityService.getCities(),
-        this.salaryAreaService.getSalaryAreas(),  
-        this.isurranceDepartmentService.getIsurranceDepartments(data.cityCode)  
+        this.salaryAreaService.getSalaryAreas(),
+        this.isurranceDepartmentService.getIsurranceDepartments(data.cityCode)
       ];
 
       forkJoin(fork).subscribe(([cities, salaryAreas, isurranceDepartments]) => {
@@ -83,7 +85,7 @@ export class CustomersComponent implements OnInit, OnDestroy {
   }
 
   // getData(callback) {
-     
+
   //   if(this.customerId) {
   //     this.customerService.getDetailById(this.customerId).subscribe(data => {
   //       callback(data);
@@ -120,17 +122,17 @@ export class CustomersComponent implements OnInit, OnDestroy {
       cityCode: ['', Validators.required],
       salaryAreaCode: ['', Validators.required],
       tax: ['', Validators.required],
-      address: ['',Validators.required],
-      addressRegister: ['',Validators.required],
+      address: ['', Validators.required],
+      addressRegister: ['', Validators.required],
       personContact: ['', Validators.required],
-      tel: ['', [Validators.required, Validators.maxLength(15), Validators.pattern(REGEX.PHONE_NUMBER) ]],
+      tel: ['', [Validators.required, Validators.maxLength(15), Validators.pattern(REGEX.PHONE_NUMBER)]],
       email: ['', [Validators.required, Validators.pattern(REGEX.EMAIL)]],
       position: ['', Validators.required],
-      mobile: ['', Validators.required],
+      mobile: ['', [Validators.required, Validators.pattern(REGEX.PHONE_NUMBER)]],
       delegate: ['', Validators.required],
       active: ['1', Validators.required],
     });
-   
+
   }
 
   getCities() {
@@ -146,7 +148,7 @@ export class CustomersComponent implements OnInit, OnDestroy {
   }
 
   changeCity(item) {
-    if(!this.loading) {
+    if (!this.loading) {
       return;
     }
     this.isurranceDepartments = [];
@@ -154,80 +156,80 @@ export class CustomersComponent implements OnInit, OnDestroy {
       isurranceDepartmentId: null
     });
 
-    if(item) {
+    if (item) {
       this.getIsurranceDepartments(item)
     }
   }
 
   handleSearchTax() {
-  
+
     if (this.tax) {
       this.agencieService.getOrganizationByTax(this.tax).then((data) => {
-          if (data['MaSoThue']) {
-            this.companyAgencies.patchValue({
-              name: data['Title'],
-              address: data['DiaChiCongTy'],
-              addressRegister: data['DiaChiCongTy'],
-              delegate: data['GiamDoc'],
-              tel:data['NoiNopThue_DienThoai']
-            });
-          } else {
+        if (data['MaSoThue']) {
+          this.companyAgencies.patchValue({
+            name: data['Title'],
+            address: data['DiaChiCongTy'],
+            addressRegister: data['DiaChiCongTy'],
+            delegate: data['GiamDoc'],
+            tel: data['NoiNopThue_DienThoai']
+          });
+        } else {
 
-            this.companyAgencies.patchValue({
-              name: '',
-              address: '',
-              delegate: '',
-              addressRegister: '',
-              tel:'',
-            });
+          this.companyAgencies.patchValue({
+            name: '',
+            address: '',
+            delegate: '',
+            addressRegister: '',
+            tel: '',
+          });
 
-            this.taxInvalid();
-          }
+          this.taxInvalid();
+        }
       });
     } else {
       this.taxInvalid();
     }
 
   }
-  
+
   taxInvalid() {
     this.modalService.warning({
       nzTitle: 'Không tìm thấy mã số thuế cần tìm'
     });
   }
-           
+
   get tax() {
     return this.companyAgencies.get('tax').value;
   }
-  
+
   private save() {
-    
+
     for (const i in this.companyAgencies.controls) {
       this.companyAgencies.controls[i].markAsDirty();
       this.companyAgencies.controls[i].updateValueAndValidity();
     }
-    
+
     if (this.companyAgencies.invalid) {
       return;
     }
 
-    if(this.customerId) {
+    if (this.customerId) {
       this.update();
     } else {
       this.create();
     }
-    
-      
+
+
   }
   create() {
     this.customerService.create(this.companyAgencies.value).subscribe(data => {
       this.router.navigate(['/customers/list']);
-    });  
+    });
   }
   update() {
     this.customerService.update(this.customerId, this.companyAgencies.value).subscribe(data => {
       this.router.navigate(['/customers/list']);
-    });  
+    });
   }
 
   getIsurranceDepartments(cityId: string) {

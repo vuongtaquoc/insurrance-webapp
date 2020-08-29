@@ -1131,5 +1131,273 @@ export const PERMISSON_DATA_TEST = [
     permission_DELETE: false,
     permission_ACTIVATED: false,
     permission_APPROVAL: false
-  }
+  },
+  {
+    actionId: 5,
+    name: "Thay thế hóa đơn",
+    permission_READ: true,
+    permission_UPDATE: true,
+    permission_CREATE: false,
+    permission_DELETE: false,
+    permission_ACTIVATED: false,
+    permission_APPROVAL: false
+  },
+  {
+    actionId: 5,
+    name: "Thay thế hóa đơn",
+    permission_READ: true,
+    permission_UPDATE: true,
+    permission_CREATE: false,
+    permission_DELETE: false,
+    permission_ACTIVATED: false,
+    permission_APPROVAL: false
+  },
+  {
+    actionId: 5,
+    name: "Thay thế hóa đơn",
+    permission_READ: true,
+    permission_UPDATE: true,
+    permission_CREATE: false,
+    permission_DELETE: false,
+    permission_ACTIVATED: false,
+    permission_APPROVAL: false
+  },{
+    actionId: 5,
+    name: "Thay thế hóa đơn",
+    permission_READ: true,
+    permission_UPDATE: true,
+    permission_CREATE: false,
+    permission_DELETE: false,
+    permission_ACTIVATED: false,
+    permission_APPROVAL: false
+  },{
+    actionId: 5,
+    name: "Thay thế hóa đơn",
+    permission_READ: true,
+    permission_UPDATE: true,
+    permission_CREATE: false,
+    permission_DELETE: false,
+    permission_ACTIVATED: false,
+    permission_APPROVAL: false
+  },
+  {
+    actionId: 5,
+    name: "Thay thế hóa đơn",
+    permission_READ: true,
+    permission_UPDATE: true,
+    permission_CREATE: false,
+    permission_DELETE: false,
+    permission_ACTIVATED: false,
+    permission_APPROVAL: false
+  },
+  {
+    actionId: 5,
+    name: "Thay thế hóa đơn",
+    permission_READ: true,
+    permission_UPDATE: true,
+    permission_CREATE: false,
+    permission_DELETE: false,
+    permission_ACTIVATED: false,
+    permission_APPROVAL: false
+  },
+  {
+    actionId: 5,
+    name: "Thay thế hóa đơn",
+    permission_READ: true,
+    permission_UPDATE: true,
+    permission_CREATE: false,
+    permission_DELETE: false,
+    permission_ACTIVATED: false,
+    permission_APPROVAL: false
+  },
+  {
+    actionId: 5,
+    name: "Thay thế hóa đơn",
+    permission_READ: true,
+    permission_UPDATE: true,
+    permission_CREATE: false,
+    permission_DELETE: false,
+    permission_ACTIVATED: false,
+    permission_APPROVAL: false
+  },
+  {
+    actionId: 5,
+    name: "Thay thế hóa đơn",
+    permission_READ: true,
+    permission_UPDATE: true,
+    permission_CREATE: false,
+    permission_DELETE: false,
+    permission_ACTIVATED: false,
+    permission_APPROVAL: false
+  },
+  {
+    actionId: 5,
+    name: "Thay thế hóa đơn",
+    permission_READ: true,
+    permission_UPDATE: true,
+    permission_CREATE: false,
+    permission_DELETE: false,
+    permission_ACTIVATED: false,
+    permission_APPROVAL: false
+  },
+  {
+    actionId: 1,
+    name: "Đăng ký mẫu hóa đơn",
+    permission_READ: true,
+    permission_UPDATE: true,
+    permission_CREATE: true,
+    permission_DELETE: true,
+    permission_ACTIVATED: true,
+    permission_APPROVAL: false
+  },
+  {
+    actionId: 2,
+    name: "Quyết định phát hành hóa đơn",
+    permission_READ: true,
+    permission_UPDATE: true,
+    permission_CREATE: true,
+    permission_DELETE: true,
+    permission_ACTIVATED: false,
+    permission_APPROVAL: false
+
+  },
+  {
+    actionId: 3,
+    name: "Thông báo phát hành hóa đơn",
+    permission_READ: true,
+    permission_UPDATE: true,
+    permission_CREATE: true,
+    permission_DELETE: true,
+    permission_ACTIVATED: false,
+    permission_APPROVAL: false
+
+  },
+  {
+    actionId: 4,
+    name: "Quản lý hóa đơn",
+    permission_READ: true,
+    permission_UPDATE: true,
+    permission_CREATE: false,
+    permission_DELETE: false,
+    permission_ACTIVATED: false,
+    permission_APPROVAL: true
+
+  },
+  {
+    actionId: 5,
+    name: "Thay thế hóa đơn",
+    permission_READ: true,
+    permission_UPDATE: true,
+    permission_CREATE: false,
+    permission_DELETE: false,
+    permission_ACTIVATED: false,
+    permission_APPROVAL: false
+  },
+  {
+    actionId: 1,
+    name: "Đăng ký mẫu hóa đơn",
+    permission_READ: true,
+    permission_UPDATE: true,
+    permission_CREATE: true,
+    permission_DELETE: true,
+    permission_ACTIVATED: true,
+    permission_APPROVAL: false
+  },
+  {
+    actionId: 2,
+    name: "Quyết định phát hành hóa đơn",
+    permission_READ: true,
+    permission_UPDATE: true,
+    permission_CREATE: true,
+    permission_DELETE: true,
+    permission_ACTIVATED: false,
+    permission_APPROVAL: false
+
+  },
+  {
+    actionId: 3,
+    name: "Thông báo phát hành hóa đơn",
+    permission_READ: true,
+    permission_UPDATE: true,
+    permission_CREATE: true,
+    permission_DELETE: true,
+    permission_ACTIVATED: false,
+    permission_APPROVAL: false
+
+  },
+  {
+    actionId: 4,
+    name: "Quản lý hóa đơn",
+    permission_READ: true,
+    permission_UPDATE: true,
+    permission_CREATE: false,
+    permission_DELETE: false,
+    permission_ACTIVATED: false,
+    permission_APPROVAL: true
+
+  },
+  {
+    actionId: 5,
+    name: "Thay thế hóa đơn",
+    permission_READ: true,
+    permission_UPDATE: true,
+    permission_CREATE: false,
+    permission_DELETE: false,
+    permission_ACTIVATED: false,
+    permission_APPROVAL: false
+  },
+  {
+    actionId: 1,
+    name: "Đăng ký mẫu hóa đơn",
+    permission_READ: true,
+    permission_UPDATE: true,
+    permission_CREATE: true,
+    permission_DELETE: true,
+    permission_ACTIVATED: true,
+    permission_APPROVAL: false
+  },
+  {
+    actionId: 2,
+    name: "Quyết định phát hành hóa đơn",
+    permission_READ: true,
+    permission_UPDATE: true,
+    permission_CREATE: true,
+    permission_DELETE: true,
+    permission_ACTIVATED: false,
+    permission_APPROVAL: false
+
+  },
+  {
+    actionId: 3,
+    name: "Thông báo phát hành hóa đơn",
+    permission_READ: true,
+    permission_UPDATE: true,
+    permission_CREATE: true,
+    permission_DELETE: true,
+    permission_ACTIVATED: false,
+    permission_APPROVAL: false
+
+  },
+  {
+    actionId: 4,
+    name: "Quản lý hóa đơn",
+    permission_READ: true,
+    permission_UPDATE: true,
+    permission_CREATE: false,
+    permission_DELETE: false,
+    permission_ACTIVATED: false,
+    permission_APPROVAL: true
+
+  },
+  {
+    actionId: 5,
+    name: "Thay thế hóa đơn",
+    permission_READ: true,
+    permission_UPDATE: true,
+    permission_CREATE: false,
+    permission_DELETE: false,
+    permission_ACTIVATED: false,
+    permission_APPROVAL: false
+  },
+
 ]

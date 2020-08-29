@@ -1,30 +1,50 @@
-
-<nz-table 
-#fixedTable  
-nzBordered [nzData]="departments"
-[nzShowPagination]="false"
-class="editable-row">
+<nz-table #fixedTable nzBordered [nzData]="departments" [nzShowPagination]="false" class="editable-row">
   <thead>
     <tr>
-      <th  style="width: 50px;"> STT</th>
-      <th  style="width: 200px;">Mã phòng ban</th>
-      <th  style="width: 660px;"> Tên phòng ban</th>
+      <th style="width: 50px;"> STT</th>
+      <th style="width: 200px;">Mã phòng ban</th>
+      <th style="width: 660px;"> Tên phòng ban</th>
     </tr>
   </thead>
   <tbody>
     <tr *ngFor="let row of departments;index as i">
       <td class="text-center">{{ i +1}}</td>
       <td>
-        <input nz-input nzSize="small" placeholder="Nhập mã phòng ban" [(ngModel)]="row.code" />
+        <input 
+          (change)="codeChange($event, i)" 
+          [ngClass]="{ 'error_border': (isError && editIndex == i) }" 
+          nz-input
+          nzSize="small" 
+          placeholder="Nhập mã phòng ban" 
+          [(ngModel)]="row.code" 
+          [nzTooltipTitle]="codeTemplate"
+          nzTooltipPlacement="right" 
+          [nzTooltipTrigger]="click"
+          nz-tooltip 
+
+        />
+
+          <ng-template #codeTemplate>
+            {{ (isError && editIndex == i) ? errorTitleCode : '' }}
+          </ng-template>
+
       </td>
       <td>
-        <input nz-input nzSize="small" placeholder="Nhập tên phòng ban" [(ngModel)]="row.name" />
+        <input         
+          nz-input nzSize="small" 
+          placeholder="Nhập tên phòng ban" 
+          [(ngModel)]="row.name" 
+        />
+        <ng-template #nameTemplate>
+          {{ (isError && editIndex == i) ? errorTitleName : '' }}
+        </ng-template>
+
       </td>
     </tr>
   </tbody>
 </nz-table>
-<div nz-col nzMd="24"  class="footer-botton">  
-    <button class="manage-unit-form__button-save"  nz-button (click)="addRow()">
-        <i nz-icon nzType="plus" nzTheme="outline"></i>
-    </button>
+<div nz-col nzMd="24" class="footer-botton">
+  <button class="manage-unit-form__button-save" nz-button (click)="addRow()">
+    <i nz-icon nzType="plus" nzTheme="outline"></i>
+  </button>
 </div>
