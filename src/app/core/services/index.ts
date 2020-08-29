@@ -32,3 +32,4 @@ export * from './staff.service';
 export * from './product.service';
 export * from './notification.service';
 export * from './account.service';
+export * from './role.service';
