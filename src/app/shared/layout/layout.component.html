@@ -55,16 +55,16 @@
           </a>
           <nz-dropdown-menu #categoryMenu="nzDropdownMenu">
             <ul nz-menu>
-              <li nz-menu-item><a [routerLink]="['/agencies/list']"><i nz-icon nzType="team" nzTheme="outline"></i>Danh
+              <li nz-menu-item [hidden]="!permissions[pmsConf.agencies_R]" ><a [routerLink]="['/agencies/list']"><i nz-icon nzType="team" nzTheme="outline"></i>Danh
                   sách đại lý</a></li>
-              <li nz-menu-item><a [routerLink]="['/customers/list']"><i nz-icon nzType="team" nzTheme="outline"></i>Danh
+              <li nz-menu-item [hidden]="!permissions[pmsConf.customer_R]"><a [routerLink]="['/customers/list']"><i nz-icon nzType="team" nzTheme="outline"></i>Danh
                   sách khách hàng</a></li>
 
-              <li nz-submenu nzTitle="Hệ thống" nzIcon="setting">
+              <li nz-submenu nzTitle="Hệ thống" nzIcon="setting" [hidden]="!permissions[pmsConf.employees_R] && !permissions[pmsConf.product_R]">
                 <ul>
-                  <li nz-menu-item><a [routerLink]="['/staffs/list']"><i nz-icon nzType="user" nzTheme="outline"></i>
-                      Danh sách nhân viên</a></li>
-                  <li nz-menu-item><a [routerLink]="['/products/list']"><i nz-icon nzType="appstore"
+                  <li nz-menu-item [hidden]="!permissions[pmsConf.account_R]"><a [routerLink]="['/staffs/list']"><i nz-icon nzType="user" nzTheme="outline"></i>
+                      Danh sách tài khoản</a></li>
+                  <li nz-menu-item [hidden]="!permissions[pmsConf.product_R]"><a [routerLink]="['/products/list']"><i nz-icon nzType="appstore"
                         nzTheme="outline"></i> Danh sách sản phẩm</a></li>
                 </ul>
               </li>

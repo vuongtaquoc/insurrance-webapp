@@ -1043,11 +1043,71 @@ export const PERMISSIONS = {
     U: 'adjustGeneral_U',
     D: 'adjustGeneral_D',
   },
+  company_change: {
+    C: 'companyChange_C',
+    R: 'companyChange_R',
+    U: 'companyChange_U',
+    D: 'companyChange_D',
+  },
+  health_insurance_card: {
+    C: 'healthInsuranceCard_C',
+    R: 'healthInsuranceCard_R',
+    U: 'healthInsuranceCard_U',
+    D: 'healthInsuranceCard_D',
+  },
+  sicknesses_approval: {
+    C: 'sicknessesApproval_C',
+    R: 'sicknessesApproval_R',
+    U: 'sicknessesApproval_U',
+    D: 'sicknessesApproval_D',
+  },
+  maternity_approval: {
+    C: 'maternityApproval_C',
+    R: 'maternityApproval_R',
+    U: 'maternityApproval_U',
+    D: 'maternityApproval_D',
+  },
+  healthRecovery_approval: {
+    C: 'healthRecoveryApproval_C',
+    R: 'healthRecoveryApproval_R',
+    U: 'healthRecoveryApproval_U',
+    D: 'healthRecoveryApproval_D',
+  },
   employees: {
     C: 'employees_C',
     R: 'employees_R',
     U: 'employees_U',
     D: 'employees_D',
+  },
+  agencies: {
+    C: 'agencies_C',
+    R: 'agencies_R',
+    U: 'agencies_U',
+    D: 'agencies_D',
+  },
+  customer: {
+    C: 'customer_C',
+    R: 'customer_R',
+    U: 'customer_U',
+    D: 'customer_D',
+  },
+  account: {
+    C: 'account_C',
+    R: 'account_R',
+    U: 'account_U',
+    D: 'account_D',
+  },
+  emailServer: {
+    C: 'emailServer_C',
+    R: 'emailServer_R',
+    U: 'emailServer_U',
+    D: 'emailServer_D',
+  },
+  emailActive: {
+    C: 'emailActive_C',
+    R: 'emailActive_R',
+    U: 'emailActive_U',
+    D: 'emailActive_D',
   }
 }
 export const ErrorMessage = {
