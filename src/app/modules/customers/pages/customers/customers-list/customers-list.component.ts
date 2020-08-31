@@ -150,11 +150,15 @@ export class CustomersListComponent implements OnInit, OnDestroy {
     });
 
     modal.afterClose.subscribe(result => {
-      
       if(result && result.isSuccess) {
+        
+        let message = 'Tạo tài khoản thành công';
+        if(result.type === 'sendEmail') {
+          message = 'Gửi email thành công';
+        }
 
         this.modalService.success({
-          nzTitle: 'Tạo tài khoản thành công'
+          nzTitle: message
         });
 
       }

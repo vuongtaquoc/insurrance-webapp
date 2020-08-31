@@ -87,9 +87,12 @@
             </a>
           </ng-container>
           <ng-container>
-            <a (click)="viewAccount(data)" title ="Tạo account" class="action-padding">
+            <a (click)="viewAccount(data)" *ngIf="(data.hasAccount)"  title ="Tạo account" class="action-padding">
               <i nz-icon nzType="user-add" nzTheme="outline"></i>
             </a>
+            <a (click)="viewAccount(data)" *ngIf="(data.hasAccount)"  title ="Gửi email thông tin tài khoản" class="action-padding">
+                <i nz-icon nzType="mail" nzTheme="outline"></i>
+              </a>
           </ng-container>
           <app-button-delete [id]="data.id" (delete)="delete($event)"></app-button-delete>
         </td>

@@ -27,9 +27,9 @@ import {
   CustomerService,
   StaffService,
   ProductService,
-  NotificationService,
   FileUploadEmitter,
   RoleService,
+  EmailNotificationService,
 
 } from './services';
 
@@ -63,9 +63,9 @@ import {
     CustomerService,
     StaffService,
     ProductService,
-    NotificationService,
     FileUploadEmitter,
-    RoleService
+    RoleService,
+    EmailNotificationService,
   ],
   declarations: []
 })

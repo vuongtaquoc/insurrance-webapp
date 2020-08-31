@@ -2,7 +2,7 @@ import { OnDestroy, OnInit, Component } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { NotificationService } from '@app/core/services';
+import { EmailNotificationService } from '@app/core/services';
 import { PAGE_SIZE, GENDER } from '@app/shared/constant';
 import { getBirthDay } from '@app/shared/utils/custom-validation';
 
@@ -32,7 +32,7 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
 
     constructor(
         private formBuilder: FormBuilder,
-        private notificationService: NotificationService,
+        private emailNotificationService: EmailNotificationService,
         private messageService: NzMessageService,
         private translateService: TranslateService
     ) {
@@ -52,7 +52,7 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
 
 
     getNotification(skip = 0, take = PAGE_SIZE) {
-        this.notificationService.gets({
+        this.emailNotificationService.getList({
             name: this.keyword,
             dateFrom: this.dateFrom,
             dateTo: this.dateTo,
@@ -109,14 +109,9 @@ export class NotificationsListComponent implements OnInit, OnDestroy {
     }
 
     delete(id) {
-        this.notificationService.delete(id).subscribe(() => {
+        this.emailNotificationService.delete(id).subscribe(() => {
             this.getNotification(this.skip);
-        },
-            (err) => {
-                this.translateService.get(err.message).subscribe(message => {
-                    this.messageService.create('error', message);
-                });
-            });
+        });
     }
 
     handleSearchBox() {

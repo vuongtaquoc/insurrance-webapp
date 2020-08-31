@@ -3,19 +3,20 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
 
-import { PAGE_SIZE, GENDER } from '@app/shared/constant';
+import { PAGE_SIZE, GENDER, STATUS } from '@app/shared/constant';
 import { getBirthDay } from '@app/shared/utils/custom-validation';
 import { AccountService } from '@app/core/services';
 
 @Component({
     selector: 'app-account-list',
-    templateUrl: './accounts-list.component.html',
-    styleUrls: ['./accounts-list.component.less']
+    templateUrl: './account-list.component.html',
+    styleUrls: ['./account-list.component.less']
 })
-export class AccountsListComponent implements OnInit, OnDestroy {
+export class AccountListComponent implements OnInit, OnDestroy {
     selectedPage: number = 1;
     total: number;
     skip: number;
+    status: any = STATUS;
     formSearch: FormGroup;
     accounts: any[] = [];
     keyword: string = '';
@@ -107,12 +108,7 @@ export class AccountsListComponent implements OnInit, OnDestroy {
     delete(id) {
         this.accountService.delete(id).subscribe(() => {
             this.getAccounts(this.skip);
-        },
-            (err) => {
-                this.translateService.get(err.message).subscribe(message => {
-                    this.messageService.create('error', message);
-                });
-            });
+        });
     }
 
     handleSearchBox() {

@@ -17,6 +17,8 @@
 		},
 		"notActive": "Chưa kích hoạt",
 		"active": "Đã kích hoạt",
+		"emailSented": "Chưa kích hoạt",
+		"emailError": "Đã kích hoạt",
 		"gender": {
 			"male": "Nam",
 			"female": "Nữ"

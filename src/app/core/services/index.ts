@@ -30,6 +30,7 @@ export * from './agencie.service';
 export * from './customer.service';
 export * from './staff.service';
 export * from './product.service';
-export * from './notification.service';
 export * from './account.service';
 export * from './role.service';
+export * from './email-notification.service';
+

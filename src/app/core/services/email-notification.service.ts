@@ -6,7 +6,7 @@ import { ApplicationHttpClient } from '@app/core/http';
 
 
 @Injectable({ providedIn: 'root' })
-export class AccountService {
+export class EmailNotificationService {
 
   constructor(private http: ApplicationHttpClient) {
   }

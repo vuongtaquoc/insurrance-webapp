@@ -2,7 +2,7 @@ import { OnDestroy, OnInit, Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NzModalService } from 'ng-zorro-antd/modal';
-import { NotificationService } from '@app/core/services';
+import { EmailNotificationService } from '@app/core/services';
 import { DATE_FORMAT, REGEX } from '@app/shared/constant';
 
 @Component({
@@ -21,7 +21,7 @@ export class NotificationEmailsSaveComponent implements OnInit, OnDestroy {
         private route: ActivatedRoute,
         private router: Router,
         private modalService: NzModalService,
-        private notificationService: NotificationService
+        private notificationService: EmailNotificationService
     ) {
     }
 

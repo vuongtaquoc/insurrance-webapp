@@ -20,14 +20,11 @@ import { DATE_FORMAT, MIME_TYPE } from '@app/shared/constant';
 export class AcountFormComponent implements OnInit {
   @Input() companyInfo: any;
   accountForm: FormGroup;
-  declarationFiles: any[] = [];
-  categoryCode?: string;
-  categoryName?: string;
-  createdDate?: string;
   documentForm: FormGroup;
   passwordVisible = false;
   password?: string;
   isExitsAccount: boolean = false;
+  accountInfo: any = {};
 
   constructor(
     private formBuilder: FormBuilder,
@@ -40,6 +37,7 @@ export class AcountFormComponent implements OnInit {
   ngOnInit() {
 
     this.accountForm = this.formBuilder.group({
+      email: [''],
       delegate: [''],
       mobile: [''],
       loginId: [''],
@@ -65,6 +63,7 @@ export class AcountFormComponent implements OnInit {
 
       this.accountService.createUserAgency(agencyData).subscribe(data => {
         const result = {
+          type: 'createAccount',
           isSuccess: true,
         }
         this.modal.destroy(result);
@@ -74,6 +73,7 @@ export class AcountFormComponent implements OnInit {
 
       this.accountService.createUserCustomer(agencyData).subscribe(data => {
         const result = {
+          type: 'createAccount',
           isSuccess: true,
         }
         this.modal.destroy(result);
@@ -86,12 +86,27 @@ export class AcountFormComponent implements OnInit {
     this.modal.destroy();
   }
 
+  private sendEmail() {
+    this.accountInfo.email = this.emailContract;
+    this.accountService.sendEmail(this.accountInfo).subscribe(data => {
+      const result = {
+        type: 'sendEmail',
+        isSuccess: true,
+      }
+      this.modal.destroy(result);
+    });
+
+  }
+
+  get emailContract() {
+    return this.accountForm.get('email').value;
+  }
+
   getData() {
     
     const formData = {
       ...this.companyInfo,
       ...this.accountForm.value,
-      email: null,
       companyId: this.companyInfo.id
     };
 
@@ -101,8 +116,9 @@ export class AcountFormComponent implements OnInit {
     this.accountService.getAccountOfCompany(this.companyInfo.id).subscribe(data => {
       this.isExitsAccount = data.id > 0;
       if(data.id > 0) {
-
+        this.accountInfo = data;
         this.accountForm.patchValue({
+          email: data.email,
           delegate: data.name,
           mobile: data.mobile,
           loginId: data.loginId,
@@ -112,6 +128,7 @@ export class AcountFormComponent implements OnInit {
       }else {
 
         this.accountForm.patchValue({
+          email: this.companyInfo.email,
           delegate: this.companyInfo.delegate,
           mobile: this.companyInfo.tel,
           loginId: this.companyInfo.tax,

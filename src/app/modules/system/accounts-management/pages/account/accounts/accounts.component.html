@@ -1,19 +1,20 @@
-<form nz-form [formGroup]="form" class="companyAgencies-form">
+
   <div class="page-container-form-custom">
     <div class="page-company" cardFullHeight>
       <div class="page-company__blank"></div>
       <div class="page-company__main">
+      <form nz-form [formGroup]="form" class="companyAgencies-form"> 
         <h1>I. Thông tin nhân viên</h1>
         <div nz-row nzGutter="10">
           <div nz-col [nzSpan]="12">
             <nz-form-item>
               <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="6">
                 {{ 'system.accounts.form.fullName' | translate }}</nz-form-label>
-              <nz-form-control [nzSpan]="18" [nzErrorTip]="fullNameError">
+              <nz-form-control [nzSpan]="18" [nzErrorTip]="nameTempl">
                 <input nz-input placeholder="{{ 'system.accounts.form.fullName' | translate }}"
-                  formControlName="fullName" />
-                <ng-template #fullNameError let-control>
-                  <ng-container *ngIf="validateControl('fullName') && hasError('fullName', 'required')">
+                  formControlName="name" />
+                <ng-template #nameTempl let-control>
+                  <ng-container *ngIf="control.hasError('required')">
                     {{ 'system.accounts.form.fullName' | translate }} không được để trống
                   </ng-container>
                 </ng-template>
@@ -25,13 +26,13 @@
             <nz-form-item>
               <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="6">
                 {{ 'system.accounts.form.tel' | translate }}</nz-form-label>
-              <nz-form-control [nzSpan]="18" [nzErrorTip]="telError">
-                <input nz-input placeholder="{{ 'system.accounts.form.tel' | translate }}" formControlName="tel" />
-                <ng-template #telError let-control>
-                  <ng-container *ngIf="validateControl('tel') && hasError('tel', 'required')">
+              <nz-form-control [nzSpan]="18" [nzErrorTip]="mobileTpl">
+                <input nz-input placeholder="{{ 'system.accounts.form.tel' | translate }}" formControlName="mobile" />
+                <ng-template #mobileTpl let-control>
+                  <ng-container *ngIf="control.hasError('required')">
                     {{ 'system.accounts.form.tel' | translate }} không được để trống
                   </ng-container>
-                  <ng-container *ngIf="validateControl('tel') && hasError('tel', 'pattern')">
+                  <ng-container *ngIf="control.hasError('pattern')">
                     {{ 'system.accounts.form.tel' | translate }} số điện thoại không hợp lệ
                   </ng-container>
                 </ng-template>
@@ -45,14 +46,14 @@
             <nz-form-item>
               <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="6">
                 {{ 'system.accounts.form.userName' | translate }}</nz-form-label>
-              <nz-form-control [nzSpan]="18" [nzErrorTip]="userNameError">
+              <nz-form-control [nzSpan]="18" [nzErrorTip]="loginIdTemp">
                 <input nz-input placeholder="{{ 'system.accounts.form.userName' | translate }}"
-                  formControlName="userName" />
-                <ng-template #userNameError let-control>
-                  <ng-container *ngIf="validateControl('userName') && hasError('userName', 'required')">
+                  formControlName="loginId" />
+                <ng-template #loginIdTemp let-control>
+                  <ng-container *ngIf="control.hasError('required')">
                     {{ 'system.accounts.form.userName' | translate }} không được để trống
                   </ng-container>
-                  <ng-container *ngIf="validateControl('userName') && hasError('userName', 'minlength')">
+                  <ng-container *ngIf="control.hasError('minlength')">
                     {{ 'system.accounts.form.userName' | translate }} tối thiểu 6 ký tự
                   </ng-container>
                 </ng-template>
@@ -64,14 +65,14 @@
             <nz-form-item>
               <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="6">
                 {{ 'system.accounts.form.passWord' | translate }}</nz-form-label>
-              <nz-form-control [nzSpan]="18" [nzErrorTip]="nametpl">
+              <nz-form-control [nzSpan]="18" [nzErrorTip]="passwordTemp">
                 <input [readonly]="isEdit" type="password" nz-input
                   placeholder="{{ 'system.accounts.form.passWord' | translate }}" formControlName="passWord" />
-                <ng-template #nametpl let-control>
-                  <ng-container *ngIf="validateControl('passWord') && hasError('passWord', 'required')">
+                <ng-template #passwordTemp let-control>
+                  <ng-container *ngIf="control.hasError('required')">
                     {{ 'system.accounts.form.passWord' | translate }} không được để trống
                   </ng-container>
-                  <ng-container *ngIf="validateControl('passWord') && hasError('passWord', 'minlength')">
+                  <ng-container *ngIf="control.hasError('minlength')">
                     {{ 'system.accounts.form.passWord' | translate }} tối thiểu 6 ký tự
                   </ng-container>
                 </ng-template>
@@ -88,10 +89,10 @@
               <nz-form-control [nzSpan]="18" [nzErrorTip]="emailError">
                 <input nz-input placeholder="{{ 'system.accounts.form.email' | translate }}" formControlName="email" />
                 <ng-template #emailError let-control>
-                  <ng-container *ngIf="validateControl('email') && hasError('email', 'required')">
+                  <ng-container *ngIf="control.hasError('required')">
                     {{ 'system.accounts.form.email' | translate }} không được để trống
                   </ng-container>
-                  <ng-container *ngIf="validateControl('email') && hasError('email', 'pattern')">
+                  <ng-container *ngIf="control.hasError('pattern')">
                     {{ 'system.accounts.form.email' | translate }} không đúng định dạng
                   </ng-container>
                 </ng-template>
@@ -104,17 +105,24 @@
             </nz-checkbox-wrapper>
           </div>
         </div>
-
-        <div class="page-company__permission" style="margin-bottom: 20px;">
+      </form>
+      <!-- Table permission -->
+      <div class="page-company__permission" style="margin-bottom: 20px;">
           <div class="page-title ">
             <h1>II. {{'system.accounts.permission.title' | translate}}</h1>
             <div class="page-declarations__footer"></div>
           </div>
 
-          <nz-table nzBordered #ajaxTable nzShowSizeChanger [nzFrontPagination]="false" [nzData]="permissions"
-            [nzLoading]="loading" [nzPageSize]="permissions.length" [nzShowPagination]="false" [nzLoading]="loading"
-            [nzTotal]="total" class="table-editor table-permission" [nzScroll]="{ y: '300px' }">
-            <thead (nzSortChange)="sort($event)" nzSortFn>
+          <nz-table nzBordered #ajaxTable nzShowSizeChanger [nzFrontPagination]="false" 
+            [nzData]="roles"
+            [nzLoading]="loading" 
+            [nzPageSize]="roles.length" 
+            [nzShowPagination]="false"
+            [nzLoading]="loading"
+            [nzTotal]="total" 
+            class="table-editor table-permission"
+            [nzScroll]="{ y: '300px' }">
+            <thead>
               <tr>
                 <th nzWidth="60px" class="cell-custom" style="width: 50px;">{{'system.accounts.permission.stt' | translate}}</th>
                 <th class="cell-custom" nzColumnKey="name">{{'system.accounts.permission.name' | translate}}</th>
@@ -134,46 +142,52 @@
               </tr>
             </thead>
             <tbody>
-
-              <tr class="ui-table-custom-filter">
-                <td></td>
-                <td></td>
-                <td [nzChecked]="false" (nzCheckedChange)="onAllChecked($event, 'permission_READ')"></td>
-                <td [nzChecked]="false" (nzCheckedChange)="onAllChecked($event, 'permission_UPDATE')"></td>
-                <td [nzChecked]="false" (nzCheckedChange)="onAllChecked($event, 'permission_CREATE')"></td>
-                <td [nzChecked]="false" (nzCheckedChange)="onAllChecked($event, 'permission_DELETE')"></td>
-                <td [nzChecked]="false" (nzCheckedChange)="onAllChecked($event, 'permission_ACTIVATED')"></td>
-                <td [nzChecked]="false" (nzCheckedChange)="onAllChecked($event, 'permission_APPROVAL')"></td>
-              </tr>
-
-              <tr *ngFor="let data of ajaxTable.data;index as i">
+              <tr *ngFor="let role of ajaxTable.data;index as i">
                 <td>{{i + 1}}</td>
-                <td>{{ data.name }}</td>
-                <td [nzChecked]="data.permission_READ"
-                  (nzCheckedChange)="onItemChecked(data.actionId, $event, 'permission_READ')"></td>
-                <td [nzChecked]="data.permission_UPDATE"
-                  (nzCheckedChange)="onItemChecked(data.actionId, $event, 'permission_UPDATE')"></td>
-                <td [nzChecked]="data.permission_CREATE"
-                  (nzCheckedChange)="onItemChecked(data.actionId,  $event, 'permission_CREATE')"></td>
-                <td [nzChecked]="data.permission_DELETE"
-                  (nzCheckedChange)="onItemChecked(data.actionId, $event, 'permission_DELETE')"></td>
-                <td [nzChecked]="data.permission_ACTIVATED"
-                  (nzCheckedChange)="onItemChecked(data.actionId, $event, 'permission_ACTIVATED')"></td>
-                <td [nzChecked]="data.permission_APPROVAL"
-                  (nzCheckedChange)="onItemChecked(data.actionId, $event, 'permission_APPROVAL')"></td>
+                <td>{{ role.screenName }}</td>
+                <td>
+                    <ng-container *ngIf="role && role.read !== 2">
+                        <input type="checkbox" [(ngModel)]="role.read" name="role-read-{{ i + 1 }}">
+                    </ng-container>
+                </td>
+                <td>
+                    <ng-container *ngIf="role && role.update !== 2">
+                        <input type="checkbox" [(ngModel)]="role.update" name="role-update-{{ i + 1 }}">
+                    </ng-container>
+                </td>
+                <td>
+                    <ng-container *ngIf="role && role.create !== 2">
+                        <input type="checkbox" [(ngModel)]="role.create" name="role-create-{{ i + 1 }}">
+                    </ng-container>
+                </td>
+                <td>
+                    <ng-container *ngIf="role && role.delete !== 2">
+                        <input type="checkbox" [(ngModel)]="role.delete" name="role-delete-{{ i + 1 }}">
+                    </ng-container>
+                </td>
+                <td>
+                    <ng-container *ngIf="role && role.active !== 2">
+                        <input type="checkbox" [(ngModel)]="role.active" name="role-active-{{ i + 1 }}">
+                    </ng-container>
+                </td>
+                <td>
+                    <ng-container *ngIf="role && role.approve !== 2">
+                        <input type="checkbox" [(ngModel)]="role.approve" name="role-approve-{{ i + 1 }}">
+                    </ng-container>
+                </td>
               </tr>
             </tbody>
           </nz-table>
         </div>
-
+      <!-- Table permission -->
 
         <div nz-row nzGutter="8">
           <div nz-col nzMd="24" class="footer-botton">
-            <button type="submit" [disabled]="!form.valid" class="employee-form__button-save" nz-button nzType="primary"
+            <button type="submit" class="employee-form__button-save" nz-button nzType="primary"
               (click)="save()">
               <i nz-icon nzType="save"></i>Lưu
             </button>
-            <button class="employee-form__button-back" nz-button nzType="default" [routerLink]="['/accounts/list']">
+            <button class="employee-form__button-back" nz-button nzType="default" [routerLink]="['/account-management/list']">
               <i nz-icon nzType="stop"></i>Quay lại
             </button>
           </div>
@@ -181,4 +195,4 @@
       </div>
     </div>
   </div>
-</form>
+

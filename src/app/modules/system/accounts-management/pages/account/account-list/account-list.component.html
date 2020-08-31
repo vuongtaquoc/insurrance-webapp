@@ -6,7 +6,7 @@
         <button class="element-form_button-search" nz-button nzType="default">
           <i nz-icon nzType="search"></i>{{ 'common.btnSearch' | translate }}
         </button>
-        <button class="element-form_button-add" nz-button nzType="default" [routerLink]="['/accounts/add']">
+        <button class="element-form_button-add" nz-button nzType="default" [routerLink]="['/account-management/add']">
           <i nz-icon nzType="user-add" nzTheme="outline"></i>{{ 'common.btnCreate' | translate }}
         </button>
       </div>
@@ -90,13 +90,13 @@
         <td>{{ status[(data.active ? 1 : 0)] | translate }}</td>
         <td>
           <ng-container>
-            <a [routerLink]="['/staff/' + data.id + '/edit']" class="action-padding">
+            <a [routerLink]="['/account-management/' + data.id + '/edit']" class="action-padding">
               <i nz-icon nzType="edit" nzTheme="outline"></i>
             </a>
           </ng-container>
           <app-button-delete [id]="data.id" (delete)="delete($event)"></app-button-delete>
           <ng-container>
-            <a [routerLink]="['/staff/' + data.id + '/pemissions']" class="action-padding">
+            <a [routerLink]="['/account-management/' + data.id + '/pemissions']" class="action-padding">
               <i nz-icon nzType="ordered-list" nzTheme="outline"></i>
             </a>
           </ng-container>

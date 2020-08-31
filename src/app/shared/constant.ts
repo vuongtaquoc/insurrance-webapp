@@ -23,6 +23,11 @@ export const STATUS = {
   1: 'common.active',
 };
 
+export const STATUSENDEMAIL = {
+  0: 'common.emailSented',
+  1: 'common.emailError',
+};
+
 
 export const ACTION = {
   ADD: 'Add',
@@ -1131,7 +1136,8 @@ export const errorMessages = {
   2030: 'Email đã tồn tại trong hệ thống',
   2028: 'Tên đăng nhập không được để trống',
   2027: 'Tên đăng nhập đã tồn tại',
-  2020: 'Tài khoản vượt quá số lượng cho phép'
+  2020: 'Tài khoản vượt quá số lượng cho phép',
+  2035: 'Không thể xóa tài khoản mặc định của đơn vị'
 }
 
 
@@ -1142,60 +1148,4 @@ export function formatDateVn(date) {
   month = month.toString().length == 1 ? `0${month}` : month;
   return day + "/" + month + "/" + year;
 }
-
-
-export const PERMISSON_DATA_TEST = [
-  {
-    actionId: 1,
-    name: "Đăng ký mẫu hóa đơn",
-    permission_READ: true,
-    permission_UPDATE: true,
-    permission_CREATE: true,
-    permission_DELETE: true,
-    permission_ACTIVATED: true,
-    permission_APPROVAL: false
-  },
-  {
-    actionId: 2,
-    name: "Quyết định phát hành hóa đơn",
-    permission_READ: true,
-    permission_UPDATE: true,
-    permission_CREATE: true,
-    permission_DELETE: true,
-    permission_ACTIVATED: false,
-    permission_APPROVAL: false
-
-  },
-  {
-    actionId: 3,
-    name: "Thông báo phát hành hóa đơn",
-    permission_READ: true,
-    permission_UPDATE: true,
-    permission_CREATE: true,
-    permission_DELETE: true,
-    permission_ACTIVATED: false,
-    permission_APPROVAL: false
-
-  },
-  {
-    actionId: 4,
-    name: "Quản lý hóa đơn",
-    permission_READ: true,
-    permission_UPDATE: true,
-    permission_CREATE: false,
-    permission_DELETE: false,
-    permission_ACTIVATED: false,
-    permission_APPROVAL: true
-
-  },
-  {
-    actionId: 5,
-    name: "Thay thế hóa đơn",
-    permission_READ: true,
-    permission_UPDATE: true,
-    permission_CREATE: false,
-    permission_DELETE: false,
-    permission_ACTIVATED: false,
-    permission_APPROVAL: false
-  }
-]
+ 
