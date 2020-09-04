@@ -3,20 +3,23 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { EmailNotificationService } from '@app/core/services';
-import { PAGE_SIZE, GENDER, STATUSENDEMAIL } from '@app/shared/constant';
+import { PAGE_SIZE, GENDER, STATUSENDEMAIL, EMAILTYPE } from '@app/shared/constant';
 import { getBirthDay } from '@app/shared/utils/custom-validation';
+import { NzModalService } from 'ng-zorro-antd/modal';
+import { EmailFormComponent } from '@app/shared/components';
 
 @Component({
-    selector: 'app-staff-list',
-    templateUrl: './notificationEmails-list.component.html',
-    styleUrls: ['./notificationEmails-list.component.less']
+    selector: 'app-emails-notification-list',
+    templateUrl: './emails-notification-list.component.html',
+    styleUrls: ['./emails-notification-list.component.less']
 })
-export class NotificationEmailsListComponent implements OnInit, OnDestroy {
+export class EmailsNotificationListComponent implements OnInit, OnDestroy {
     notificationEmails: any[] = [];
     selectedPage: number = 1;
     total: number;
     skip: number;
     status: any = STATUSENDEMAIL;
+    emailType: any = EMAILTYPE;
     formSearch: FormGroup;
     keyword: string = '';
 
@@ -36,7 +39,8 @@ export class NotificationEmailsListComponent implements OnInit, OnDestroy {
         private formBuilder: FormBuilder,
         private emailNotificationService: EmailNotificationService,
         private messageService: NzMessageService,
-        private translateService: TranslateService
+        private translateService: TranslateService,
+        private modalService: NzModalService,
     ) {
 
     }
@@ -124,4 +128,35 @@ export class NotificationEmailsListComponent implements OnInit, OnDestroy {
     ngOnDestroy() {
 
     }
+
+    sendEmail(data) {
+        this.showDialogAccountManagement(data);
+    }
+
+    private showDialogAccountManagement(emailInfo: any) {
+        const modal = this.modalService.create({
+          nzWidth: 960,
+          nzWrapClassName: 'account-modal',
+          nzTitle: `Tiêu đề:  ${ emailInfo.title }`,
+          nzContent: EmailFormComponent,
+          nzOnOk: (data) => console.log('Click ok', data),
+          nzComponentParams: {
+            emailInfo
+          }
+        });
+    
+        modal.afterClose.subscribe(result => {
+
+          if(result && result.isSuccess) {
+
+            this.modalService.success({
+              nzTitle: 'Gửi email thành công'
+            });
+            this.getNotification();
+    
+          }
+        });      
+    }
+
+    
 }

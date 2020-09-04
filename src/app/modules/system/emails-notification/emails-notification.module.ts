@@ -16,15 +16,15 @@ import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 
 import { AuthenticationService } from '@app/core/services';
 import { SharedModule } from '@app/shared/shared.module';
-import { NotificationEmailsRoutingModule } from './notification-emails-routing.module';
-import { NotificationEmailsListComponent, NotificationEmailsSaveComponent } from './pages';
+import { EmailsNotificationRoutingModule } from './emails-notification-routing.module';
+import { EmailsNotificationListComponent } from './pages';
 
 
 @NgModule({
     imports: [
         CommonModule,
         ReactiveFormsModule,
-        NotificationEmailsRoutingModule,
+        EmailsNotificationRoutingModule,
         NzButtonModule,
         NzDatePickerModule,
         NzFormModule,
@@ -39,12 +39,11 @@ import { NotificationEmailsListComponent, NotificationEmailsSaveComponent } from
         NgxMaskModule.forRoot()
     ],
     declarations: [
-        NotificationEmailsListComponent,
-        NotificationEmailsSaveComponent
+        EmailsNotificationListComponent,
     ],
     providers: [
         AuthenticationService
     ],
     entryComponents: []
 })
-export class NotificationEmailsModule { }
+export class EmailsNotificationModule { }

@@ -1,0 +1,95 @@
+<div class="acount-form">
+  <div class="acount-form__content">
+    <form nz-form [formGroup]="accountForm">
+        <div nz-row [nzGutter]="10">
+            <div nz-col [nzSpan]="24">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="5">{{'system.notificationEmails.table.title' | translate}}</nz-form-label>
+                <nz-form-control [nzSpan]="19" class="margin-left-1p" [nzErrorTip]="errorRepresentation">
+                    <input nz-input placeholder="{{'system.notificationEmails.table.title' | translate}}" formControlName="title" />
+                    <ng-template #errorRepresentation let-control>
+                      <ng-container *ngIf="control.hasError('required')">
+                        {{'system.notificationEmails.table.title' | translate}} không được trống
+                      </ng-container>
+                    </ng-template>
+                  </nz-form-control>
+              </nz-form-item>
+            </div>
+        </div>
+        <div nz-row [nzGutter]="10">
+            <div nz-col [nzSpan]="24">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="5">{{'system.notificationEmails.table.to' | translate}}</nz-form-label>
+                <nz-form-control [nzSpan]="19" class="margin-left-1p" [nzErrorTip]="errorRepresentation">
+                    <input nz-input placeholder="{{'system.notificationEmails.table.to' | translate}}" formControlName="emailTo" />
+                    <ng-template #errorRepresentation let-control>
+                      <ng-container *ngIf="control.hasError('required')">
+                        {{'system.notificationEmails.table.to' | translate}} không được trống
+                      </ng-container>
+                    </ng-template>
+                  </nz-form-control>
+              </nz-form-item>
+            </div>
+        </div>   
+          <div nz-row [nzGutter]="10">
+            <div nz-col [nzSpan]="5"> 
+                <label class="ant-form-item-required lable-content">{{'system.notificationEmails.table.content' | translate}}</label>
+            </div>
+            <div nz-col [nzSpan]="19">
+              <div name="content"  class="div-as-textarea" [innerHTML]="content"></div>
+            </div>
+        </div>
+          <!-- ROW START -->
+          <div nz-row [nzGutter]="10">
+            <div nz-col [nzSpan]="12">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">{{'system.notificationEmails.table.createDate' | translate}}</nz-form-label>
+                <nz-form-control [nzSpan]="14" nzErrorTip="{{'system.notificationEmails.table.createDate' | translate}} không để trống">
+                  <input nz-input
+                    placeholder="{{'system.notificationEmails.table.createDate' | translate}}"
+                    formControlName="createdDate"
+                  />
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+              <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                  <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">{{'system.notificationEmails.table.sendDate' | translate}}</nz-form-label>
+                  <nz-form-control [nzSpan]="14" nzErrorTip="{{'system.notificationEmails.table.sendDate' | translate}} không để trống">
+                      <input nz-input
+                        placeholder="{{'system.notificationEmails.table.sendDate' | translate}}"
+                        formControlName="sendtedDate"
+                      />
+                    </nz-form-control>
+                </nz-form-item>
+              </div>
+           </div><!-- END ROW -->
+            <!-- ROW START -->
+          <div nz-row [nzGutter]="10">
+              <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                  <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">{{'system.notificationEmails.table.status' | translate}}</nz-form-label>
+                  <nz-form-control [nzSpan]="14" nzErrorTip="{{'system.notificationEmails.table.status' | translate}} không để trống">
+                    <input nz-input
+                      placeholder="{{'system.notificationEmails.table.status' | translate}}"
+                      formControlName="status"
+                    />
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+                <div nz-col [nzSpan]="12">
+                </div>
+          </div><!-- END ROW -->
+           
+    </form>
+        <!-- ROW START -->
+  </div>
+  <div class="acount-form__footer" *nzModalFooter>
+    <button nz-button nzType="primary" (click)="sendEmail()">
+        <i nz-icon nzType="mail" nzTheme="outline"></i>Gửi tài khoản
+    </button>
+    <button nz-button nzType="default" (click)="dismiss()">
+        <i nz-icon nzType="rollback"></i>Quay lại
+    </button>
+  </div>
+</div>

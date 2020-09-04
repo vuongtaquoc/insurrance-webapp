@@ -17,8 +17,8 @@
 		},
 		"notActive": "Chưa kích hoạt",
 		"active": "Đã kích hoạt",
-		"emailSented": "Chưa kích hoạt",
-		"emailError": "Đã kích hoạt",
+		"emailSented": "Thành công ",
+		"emailError": "Gửi lỗi",
 		"gender": {
 			"male": "Nam",
 			"female": "Nữ"
@@ -28,6 +28,10 @@
 			"dataInvalid": "Dữ liệu không hợp lệ",
 			"employeeIsExistDeclatation": "NLĐ đã có hồ sơ, bạn không thể xóa",
 			"loginFailed": "Sai Tên đăng nhập hoặc Mật khẩu. Vui lòng thử lại!"
+		},
+		"emailType" : {
+			"customerAccount" : "Tài khoản khách hàng",
+			"sellerAccount" : "Tài khoản đại lý"
 		}
 	},
 	"auth": {
@@ -260,6 +264,7 @@
 		},
 		"notificationEmails": {
 			"info": {
+				"type": "Loại email",
 				"title": "Danh sách Email thông báo",
 				"dateFrom": "Từ ngày",
 				"dateTo": "Đến ngày",
@@ -267,10 +272,13 @@
 			},
 			"table": {
 				"stt": "STT",
+				"type": "Loại email",
 				"title": "Tiêu đề Email",
 				"to": "Email nhận",
+				"content": "Nội dung",
 				"status": "Trạng thái",
 				"createDate": "Ngày tạo",
+				"sendDate": "Ngày gửi",
 				"action": "Thao tác"
 			},
 			"form": {

@@ -28,6 +28,11 @@ export const STATUSENDEMAIL = {
   1: 'common.emailError',
 };
 
+export const EMAILTYPE = {
+  1: 'common.emailType.customerAccount',
+  2: 'common.emailType.sellerAccount',
+};
+
 
 export const ACTION = {
   ADD: 'Add',

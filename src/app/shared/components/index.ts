@@ -13,3 +13,4 @@ export * from './pare-core.component';
 export * from './manage-unit-form/manage-unit-form.component';
 export * from './manage-unit-form/department/department.component';
 export * from './account-form/account-form.component';
+export * from './email-form/email-form.component';

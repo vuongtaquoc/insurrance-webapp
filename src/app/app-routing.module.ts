@@ -67,15 +67,11 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
-    path: 'notificationEmails',
-    loadChildren: './modules/system/notificationEmails/notification-emails.module#NotificationEmailsModule',
+    path: 'emails-notification',
+    loadChildren: './modules/system/emails-notification/emails-notification.module#EmailsNotificationModule',
     canActivate: [AuthGuard],
   },
-  {
-    path: 'notifications',
-    loadChildren: './modules/system/notifications/notifications.module#NotificationsModule',
-    canActivate: [AuthGuard],
-  },
+   
 ];
 
 @NgModule({

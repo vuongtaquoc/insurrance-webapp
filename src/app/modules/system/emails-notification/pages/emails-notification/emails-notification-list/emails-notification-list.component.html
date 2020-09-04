@@ -44,31 +44,35 @@
     </div>
   </form>
 
-  <nz-table nzBordered #ajaxTable nzShowSizeChanger [nzFrontPagination]="false" [nzData]="notificationEmails"
-    [nzLoading]="loading" [nzPageSize]="notificationEmails.length" [nzShowPagination]="false" [nzLoading]="loading"
-    [nzTotal]="total" class="table-editor">
+  <nz-table 
+    nzBordered #ajaxTable 
+    nzShowSizeChanger 
+    [nzFrontPagination]="false" 
+    [nzData]="notificationEmails"
+    [nzLoading]="loading" 
+    [nzPageSize]="notificationEmails.length" 
+    [nzShowPagination]="false" 
+    [nzLoading]="loading"
+    [nzTotal]="total" 
+    class="table-editor">
     <thead (nzSortChange)="sort($event)" nzSortFn>
       <tr class="ui-table-custom-header">
         <th class="cell-custom" style="width: 50px;">{{'system.notificationEmails.table.stt' | translate}}</th>
+        <th class="cell-custom" nzShowSort nzColumnKey="name">{{'system.notificationEmails.table.type' | translate}}</th>
         <th class="cell-custom" nzShowSort nzColumnKey="name">{{'system.notificationEmails.table.title' | translate}}</th>
         <th class="cell-custom" nzShowSort nzColumnKey="tax"><span>{{'system.notificationEmails.table.to' | translate}}</span></th>
-        <th class="cell-custom" nzShowSort nzColumnKey="delegate"><span>{{'system.notificationEmails.table.createDate' | translate}}</span>
-        </th>
-        <th class="cell-custom" style="width: 140px;" nzShowSort nzColumnKey="active">
-          <span>{{'system.notificationEmails.table.status' | translate}}</span></th>
+        <th class="cell-custom" nzShowSort nzColumnKey="delegate"><span>{{'system.notificationEmails.table.createDate' | translate}}</span></th>
+        <th class="cell-custom" style="width: 140px;" nzShowSort nzColumnKey="active"><span>{{'system.notificationEmails.table.status' | translate}}</span></th>
         <th class="cell-custom" style="width: 120px;"><span>{{'system.notificationEmails.table.action' | translate}}</span></th>
       </tr>
 
       <tr class="ui-table-custom-filter">
         <td class="cell-custom"></td>
-        <td class="cell-custom"><input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small" [(ngModel)]="filter.title"
-            (ngModelChange)="handleFilter('title')" /></td>
-        <td class="cell-custom"><input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small" [(ngModel)]="filter.to"
-            (ngModelChange)="handleFilter('to')" /></td>
-        <td class="cell-custom"><input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small" [(ngModel)]="filter.createDate"
-            (ngModelChange)="handleFilter('createDate')" /></td>
-        <td class="cell-custom"><input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small" [(ngModel)]="filter.status"
-            (ngModelChange)="handleFilter('status')" /></td>
+        <td class="cell-custom"></td>
+        <td class="cell-custom"><input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small" [(ngModel)]="filter.title" (ngModelChange)="handleFilter('title')" /></td>
+        <td class="cell-custom"><input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small" [(ngModel)]="filter.to" (ngModelChange)="handleFilter('to')" /></td>
+        <td class="cell-custom"><input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small" [(ngModel)]="filter.createDate" (ngModelChange)="handleFilter('createDate')" /></td>
+        <td class="cell-custom"><input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small" [(ngModel)]="filter.status" (ngModelChange)="handleFilter('status')" /></td>
         <td class="cell-custom"></td>
       </tr>
     </thead>
@@ -77,15 +81,15 @@
 
       <tr *ngFor="let data of ajaxTable.data;index as i">
         <td>{{i + 1}}</td>
+        <td>{{ emailType[(data.typeEmail ? 1 : data.typeEmail)] | translate }}</td>
         <td>{{ data.title }}</td>
-        <td>{{ data.to }}</td>
-        <td>{{ data.createDate }}</td>
-        <td>{{ data.status | date: 'dd/MM/yyyy' }}</td>
+        <td>{{ data.emailTo }}</td>
+        <td>{{ data.createdDate }}</td>
         <td>{{ status[(data.active ? 1 : 0)] | translate }}</td>
         <td>
           <ng-container>
-            <a [routerLink]="['/notificationEmails/' + data.id + '/edit']" class="action-padding">
-              <i nz-icon nzType="edit" nzTheme="outline"></i>
+            <a (click)="sendEmail(data)" title="Gửi tài khoản" class="action-padding">
+              <i nz-icon nzType="mail" nzTheme="outline"></i>
             </a>
           </ng-container>
           <app-button-delete [id]="data.id" (delete)="delete($event)"></app-button-delete>

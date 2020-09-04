@@ -66,18 +66,10 @@
                       Danh sách tài khoản</a></li>
                   <li nz-menu-item [hidden]="!permissions[pmsConf.product.R]"><a [routerLink]="['/products/list']"><i nz-icon nzType="appstore"
                         nzTheme="outline"></i> Danh sách sản phẩm</a></li>
+                  <li nz-menu-item><a [routerLink]="['/emails-notification/list']"><i nz-icon nzType="notification"
+                    nzTheme="outline"></i> Thông báo gửi Email</a></li>
                 </ul>
               </li>
-
-              <li nz-submenu nzTitle="Thông báo" nzIcon="notification">
-                <ul>
-                  <li nz-menu-item><a [routerLink]="['/notifications/list']"><i nz-icon nzType="notification"
-                        nzTheme="outline"></i> Thông báo tin tức</a></li>
-                  <li nz-menu-item><a [routerLink]="['/notificationEmails/list']"><i nz-icon nzType="notification"
-                        nzTheme="outline"></i> Thông báo gửi Email</a></li>
-                </ul>
-              </li>
-
             </ul>
           </nz-dropdown-menu>
         </li>
