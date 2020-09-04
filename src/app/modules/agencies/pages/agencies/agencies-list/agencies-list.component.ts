@@ -139,7 +139,7 @@ export class AgenciesListComponent implements OnInit, OnDestroy {
     const modal = this.modalService.create({
       nzWidth: 760,
       nzWrapClassName: 'account-modal',
-      nzTitle: `Tạo tài khoản đaiy lý ${ companyInfo.name }`,
+      nzTitle: `Tạo tài khoản đại lý ${ companyInfo.name }`,
       nzContent: AcountFormComponent,
       nzOnOk: (data) => console.log('Click ok', data),
       nzComponentParams: {
@@ -159,6 +159,7 @@ export class AgenciesListComponent implements OnInit, OnDestroy {
           nzTitle: message
         });
 
+        this.getAgenCies();
       }
     });
   }

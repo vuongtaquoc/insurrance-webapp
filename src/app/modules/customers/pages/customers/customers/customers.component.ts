@@ -19,10 +19,8 @@ export class CustomersComponent implements OnInit, OnDestroy {
   @Input() customerId: string;
 
   item: Company;
-  companyAgencies: FormGroup;
-
+  formCustomer: FormGroup;
   loading = false;
-  groupCompanies: any;
   cities: any;
   wards: any;
   districts: any;
@@ -84,18 +82,8 @@ export class CustomersComponent implements OnInit, OnDestroy {
     });
   }
 
-  // getData(callback) {
-
-  //   if(this.customerId) {
-  //     this.customerService.getDetailById(this.customerId).subscribe(data => {
-  //       callback(data);
-  //     });
-  //   }
-
-  // }
-
   setDataToForm(data) {
-    this.companyAgencies.patchValue({
+    this.formCustomer.patchValue({
       name: data.name,
       code: data.code,
       isurranceDepartmentId: data.isurranceDepartmentId,
@@ -115,7 +103,7 @@ export class CustomersComponent implements OnInit, OnDestroy {
   }
 
   private loadForm() {
-    this.companyAgencies = this.formBuilder.group({
+    this.formCustomer = this.formBuilder.group({
       name: ['', Validators.required],
       code: ['', Validators.required],
       isurranceDepartmentId: ['', Validators.required],
@@ -152,7 +140,7 @@ export class CustomersComponent implements OnInit, OnDestroy {
       return;
     }
     this.isurranceDepartments = [];
-    this.companyAgencies.patchValue({
+    this.formCustomer.patchValue({
       isurranceDepartmentId: null
     });
 
@@ -166,7 +154,7 @@ export class CustomersComponent implements OnInit, OnDestroy {
     if (this.tax) {
       this.agencieService.getOrganizationByTax(this.tax).then((data) => {
         if (data['MaSoThue']) {
-          this.companyAgencies.patchValue({
+          this.formCustomer.patchValue({
             name: data['Title'],
             address: data['DiaChiCongTy'],
             addressRegister: data['DiaChiCongTy'],
@@ -175,7 +163,7 @@ export class CustomersComponent implements OnInit, OnDestroy {
           });
         } else {
 
-          this.companyAgencies.patchValue({
+          this.formCustomer.patchValue({
             name: '',
             address: '',
             delegate: '',
@@ -199,17 +187,17 @@ export class CustomersComponent implements OnInit, OnDestroy {
   }
 
   get tax() {
-    return this.companyAgencies.get('tax').value;
+    return this.formCustomer.get('tax').value;
   }
 
   private save() {
 
-    for (const i in this.companyAgencies.controls) {
-      this.companyAgencies.controls[i].markAsDirty();
-      this.companyAgencies.controls[i].updateValueAndValidity();
+    for (const i in this.formCustomer.controls) {
+      this.formCustomer.controls[i].markAsDirty();
+      this.formCustomer.controls[i].updateValueAndValidity();
     }
 
-    if (this.companyAgencies.invalid) {
+    if (this.formCustomer.invalid) {
       return;
     }
 
@@ -219,15 +207,14 @@ export class CustomersComponent implements OnInit, OnDestroy {
       this.create();
     }
 
-
   }
   create() {
-    this.customerService.create(this.companyAgencies.value).subscribe(data => {
+    this.customerService.create(this.formCustomer.value).subscribe(data => {
       this.router.navigate(['/customers/list']);
     });
   }
   update() {
-    this.customerService.update(this.customerId, this.companyAgencies.value).subscribe(data => {
+    this.customerService.update(this.customerId, this.formCustomer.value).subscribe(data => {
       this.router.navigate(['/customers/list']);
     });
   }

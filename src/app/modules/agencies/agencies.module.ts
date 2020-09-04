@@ -17,7 +17,7 @@ import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { AuthenticationService } from '@app/core/services';
 import { SharedModule } from '@app/shared/shared.module';
 import { AgenciesRoutingModule } from './agencies-routing.module';
-import { AgenciesListComponent, AgenciesAddComponent, AgenciesEditComponent } from './pages';
+import { AgenciesListComponent, AgenciesAddComponent, AgenciesEditComponent, AgenciesComponent } from './pages';
 
 
 @NgModule({
@@ -41,7 +41,8 @@ import { AgenciesListComponent, AgenciesAddComponent, AgenciesEditComponent } fr
   declarations: [
     AgenciesListComponent,
     AgenciesAddComponent,
-    AgenciesEditComponent
+    AgenciesEditComponent,
+    AgenciesComponent
   ],
   providers: [
     AuthenticationService

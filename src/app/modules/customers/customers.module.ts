@@ -42,7 +42,7 @@ import { CustomersListComponent, CustomersAddComponent, CustomersEditComponent, 
     CustomersComponent,
     CustomersListComponent,
     CustomersAddComponent,
-    CustomersEditComponent
+    CustomersEditComponent,
   ],
   providers: [
     AuthenticationService
