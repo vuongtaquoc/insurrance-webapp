@@ -10,7 +10,7 @@ import { DocumentFormComponent } from '@app/shared/components';
 @Component({
   selector: 'app-maternity-approval-list',
   templateUrl: './maternity-approval-list.component.html',
-  styleUrls: ['./maternity-approval-list.component.less']
+  styleUrls: ['./maternity-approval-list.component.less', '../reduction-labor-list/reduction-labor-list.component.less']
 })
 export class MaternityApprovalListComponent implements OnInit {
   isAllDisplayDataChecked = false;
@@ -18,17 +18,25 @@ export class MaternityApprovalListComponent implements OnInit {
   listOfDisplayData: Declaration[] = [];
   mapOfCheckedId: { [key: string]: boolean } = {};
   year: any = null;
-  declarationCode: string ='630b';
-  declarationName: string;
   declarations: Declaration[] = [];
   total: number;
   skip: number;
   selectedPage: number = 1;
+  declarationCode: string = '630b';
+  declarationName: string;
+  keyword: string = '';
+  filter: any = {
+    createDate: '',
+    documentNo: '',
+    declarationName: '',
+    sendDate: '',
+    documentStatusName: ''
+  };
 
   constructor(
     private declarationService: DeclarationService,
     private modalService: NzModalService,
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.declarationName = this.getDeclaration(this.declarationCode).value;
@@ -37,7 +45,7 @@ export class MaternityApprovalListComponent implements OnInit {
 
   getDeclarations(skip = 0, take = PAGE_SIZE) {
     this.declarationService.getDeclarations({
-      documentType:  this.declarationCode,
+      documentType: this.declarationCode,
       skip,
       take
     }).subscribe(res => {
@@ -54,6 +62,11 @@ export class MaternityApprovalListComponent implements OnInit {
     });
   }
 
+  handleFilter(key) {
+    this.keyword = this.filter[key];
+    this.getDeclarations();
+  }
+
   pageChange({ skip, page }) {
     this.selectedPage = page;
 
@@ -67,7 +80,8 @@ export class MaternityApprovalListComponent implements OnInit {
   }
 
   viewDocument(declarationInfo: any) {
-    if(declarationInfo.status === 0) {
+
+    if (declarationInfo.status === 0) {
       this.showMessageNotView();
     } else {
       this.showViewDeclarationFile(declarationInfo);

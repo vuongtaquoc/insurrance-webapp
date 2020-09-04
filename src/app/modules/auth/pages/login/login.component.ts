@@ -6,8 +6,9 @@ import { Subscription } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
-
+import { eventEmitter } from '@app/shared/utils/event-emitter';
 import { AuthenticationService } from '@app/core/services';
+import { NzModalService } from 'ng-zorro-antd/modal';
 
 @Component({
   selector: 'app-auth-login',
@@ -18,13 +19,15 @@ export class AuthLoginComponent implements OnInit, OnDestroy {
   loginForm: FormGroup;
   loading = false;
   private subscription: Subscription;
+  private handlers: any = [];
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
     private authService: AuthenticationService,
     private titleService: Title,
     private translateService: TranslateService,
-    private messageService: NzMessageService
+    private messageService: NzMessageService,
+    private modalService: NzModalService,
   ) {
     if (this.authService.currentCredentials) {
       this.router.navigate(['/']);
@@ -32,6 +35,7 @@ export class AuthLoginComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+ 
     // set page title
     this.subscription = this.translateService.get('auth.login.pageTitle').subscribe(text => {
       this.titleService.setTitle(text);
@@ -63,6 +67,11 @@ export class AuthLoginComponent implements OnInit, OnDestroy {
       .subscribe(
         () => {
           this.router.navigate(['/'], { replaceUrl: true });
+        },
+        (error) => {
+          this.modalService.warning({
+            nzTitle: error.message
+          });
         }
       );
   }

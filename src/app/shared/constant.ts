@@ -1065,6 +1065,12 @@ export const PERMISSIONS = {
     U: 'healthInsuranceCard_U',
     D: 'healthInsuranceCard_D',
   },
+  reissue_insurance_card: {
+    C: 'reissueInsuranceCard_C',
+    R: 'reissueInsuranceCard_R',
+    U: 'reissueInsuranceCard_U',
+    D: 'reissueInsuranceCard_D',
+  },
   sicknesses_approval: {
     C: 'sicknessesApproval_C',
     R: 'sicknessesApproval_R',
@@ -1124,7 +1130,13 @@ export const PERMISSIONS = {
     R: 'emailActive_R',
     U: 'emailActive_U',
     D: 'emailActive_D',
-  }
+  },
+   contract: {
+    C: 'contract_C',
+    R: 'contract_R',
+    U: 'contract_U',
+    D: 'contract_D',
+  },
 }
 export const ErrorMessage = {
   0: 'common.gender.male',

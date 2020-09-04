@@ -10,7 +10,7 @@ import { DocumentFormComponent } from '@app/shared/components';
 @Component({
   selector: 'app-health-recovery-approval-list',
   templateUrl: './health-recovery-approval-list.component.html',
-  styleUrls: ['./health-recovery-approval-list.component.less']
+  styleUrls: ['./health-recovery-approval-list.component.less', '../reduction-labor-list/reduction-labor-list.component.less']
 })
 export class HealthRecoveryApprovalListComponent implements OnInit {
   isAllDisplayDataChecked = false;
@@ -19,20 +19,28 @@ export class HealthRecoveryApprovalListComponent implements OnInit {
   mapOfCheckedId: { [key: string]: boolean } = {};
   year: any = null;
   declarations: Declaration[] = [];
-  declarationCode: string ='630c';
-  declarationName: string;
   total: number;
   skip: number;
   selectedPage: number = 1;
+  declarationCode: string = '630c';
+  declarationName: string;
+  keyword: string = '';
+  filter: any = {
+    createDate: '',
+    documentNo: '',
+    declarationName: '',
+    sendDate: '',
+    documentStatusName: ''
+  };
 
   constructor(
     private declarationService: DeclarationService,
     private modalService: NzModalService,
-  ) {}
+  ) { }
 
   ngOnInit() {
-    this.getDeclarations();
     this.declarationName = this.getDeclaration(this.declarationCode).value;
+    this.getDeclarations();
   }
 
   getDeclarations(skip = 0, take = PAGE_SIZE) {
@@ -54,6 +62,11 @@ export class HealthRecoveryApprovalListComponent implements OnInit {
     });
   }
 
+  handleFilter(key) {
+    this.keyword = this.filter[key];
+    this.getDeclarations();
+  }
+
   pageChange({ skip, page }) {
     this.selectedPage = page;
 
@@ -67,7 +80,8 @@ export class HealthRecoveryApprovalListComponent implements OnInit {
   }
 
   viewDocument(declarationInfo: any) {
-    if(declarationInfo.status === 0) {
+
+    if (declarationInfo.status === 0) {
       this.showMessageNotView();
     } else {
       this.showViewDeclarationFile(declarationInfo);

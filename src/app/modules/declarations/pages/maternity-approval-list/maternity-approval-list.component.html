@@ -18,21 +18,48 @@
 
     <nz-table
       #rowSelectionTable
+      nzBordered
       [nzData]="declarations"
       [nzPageSize]="declarations.length"
       [nzShowPagination]="false"
-      class="table ui-table-custom ui-table-custom--center"
+      class="table ui-table-custom--center table-editor"
     >
       <thead>
-        <tr>
-          <th>Ngày lập</th>
-          <th>Số hồ sơ</th>
-          <th>Giấy tờ, biểu mẫu</th>
-          <th>Ngày nộp</th>
-          <th>Kết quả giải quyết</th>
-          <th>Tờ khai</th>
-          <th>Thao tác</th>
+        <tr class="ui-table-custom-header">
+          <th class="cell-custom-reduction width-12p">Ngày lập</th>
+          <th class="cell-custom-reduction width-7p">Số hồ sơ</th>
+          <th class="cell-custom-reduction">Giấy tờ, biểu mẫu</th>
+          <th class="cell-custom-reduction width-7p">Ngày nộp</th>
+          <th class="cell-custom-reduction width-12p">Kết quả giải quyết</th>
+          <th class="cell-custom-reduction width-7p">Tờ khai</th>
+          <th class="cell-custom-reduction width-7p">Thao tác</th>
         </tr>
+
+        <tr class="ui-table-custom-filter">
+          <th class="cell-custom-reduction">
+            <input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small"
+            [(ngModel)]="filter.createDate" (ngModelChange)="handleFilter('createDate')" />
+          </th>
+          <th class="cell-custom-reduction">
+            <input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small"
+              [(ngModel)]="filter.documentNo" (ngModelChange)="handleFilter('documentNo')" />
+          </th>
+          <th class="cell-custom-reduction">
+            <input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small"
+              [(ngModel)]="filter.declarationName" (ngModelChange)="handleFilter('declarationName')" />
+          </th>
+          <th class="cell-custom-reduction">
+            <input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small"
+              [(ngModel)]="filter.sendDate" (ngModelChange)="handleFilter('sendDate')" />
+          </th>
+          <th class="cell-custom-reduction">
+            <input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small"
+            [(ngModel)]="filter.documentStatusName" (ngModelChange)="handleFilter('documentStatusName')" />
+          </th>
+          <th class="cell-custom-reduction"></th>
+          <th class="cell-custom-reduction"></th>
+        </tr>
+
       </thead>
       <tbody>
         <tr *ngFor="let data of rowSelectionTable.data" class="status_{{data.status}}">

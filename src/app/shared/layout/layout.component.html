@@ -30,7 +30,7 @@
             <span class="layout-menu__text">Trang chủ</span>
           </a>
         </li>
-        <li class="layout-menu__item" [hidden]="!permissions[pmsConf.employees.R]">
+        <li class="layout-menu__item" [hidden]="!permissions[pmsConf.employees.R] && !permissions[pmsConf.account.R] && !permissions[pmsConf.emailActive.R]">
           <a class="layout-menu__link" nz-dropdown nzTrigger="click" [nzDropdownMenu]="systemMenu"
             [nzOverlayClassName]="'header-dropdown-menu'">
             <span class="layout-menu__icon">
@@ -42,10 +42,14 @@
             <ul nz-menu>
               <li nz-menu-item [hidden]="!permissions[pmsConf.employees.R]"><a [routerLink]="['/employees']"><i nz-icon
                     nzType="user" nzTheme="outline"></i>Quản lý người lao động</a></li>
+              <li nz-menu-item [hidden]="!permissions[pmsConf.account.R]"><a [routerLink]="['/account-management/list']"><i nz-icon nzType="user" nzTheme="outline"></i>
+                Danh sách tài khoản</a></li>
+              <li nz-menu-item [hidden]="!permissions[pmsConf.emailActive.R]"><a [routerLink]="['/emails-notification/list']"><i nz-icon nzType="notification"
+                nzTheme="outline"></i> Thông báo gửi Email</a></li>
             </ul>
           </nz-dropdown-menu>
         </li>
-        <li class="layout-menu__item">
+        <li class="layout-menu__item" [hidden]="!permissions[pmsConf.customer.R] && !permissions[pmsConf.agencies.R]">
           <a class="layout-menu__link" nz-dropdown nzTrigger="click" [nzDropdownMenu]="categoryMenu"
             [nzOverlayClassName]="'header-dropdown-menu'">
             <span class="layout-menu__icon">
@@ -55,21 +59,10 @@
           </a>
           <nz-dropdown-menu #categoryMenu="nzDropdownMenu">
             <ul nz-menu>
-              <li nz-menu-item [hidden]="!permissions[pmsConf.customer.R]" ><a [routerLink]="['/agencies/list']"><i nz-icon nzType="team" nzTheme="outline"></i>Danh
+              <li nz-menu-item [hidden]="!permissions[pmsConf.agencies.R]" ><a [routerLink]="['/agencies/list']"><i nz-icon nzType="team" nzTheme="outline"></i>Danh
                   sách đại lý</a></li>
               <li nz-menu-item [hidden]="!permissions[pmsConf.customer.R]"><a [routerLink]="['/customers/list']"><i nz-icon nzType="team" nzTheme="outline"></i>Danh
                   sách khách hàng</a></li>
-
-              <li nz-submenu nzTitle="Hệ thống" nzIcon="setting">
-                <ul>
-                  <li nz-menu-item ><a [routerLink]="['/account-management/list']"><i nz-icon nzType="user" nzTheme="outline"></i>
-                      Danh sách tài khoản</a></li>
-                  <li nz-menu-item [hidden]="!permissions[pmsConf.product.R]"><a [routerLink]="['/products/list']"><i nz-icon nzType="appstore"
-                        nzTheme="outline"></i> Danh sách sản phẩm</a></li>
-                  <li nz-menu-item><a [routerLink]="['/emails-notification/list']"><i nz-icon nzType="notification"
-                    nzTheme="outline"></i> Thông báo gửi Email</a></li>
-                </ul>
-              </li>
             </ul>
           </nz-dropdown-menu>
         </li>
@@ -78,7 +71,7 @@
           <a class="layout-menu__link" nz-dropdown nzTrigger="click" [nzDropdownMenu]="declarationMenu"
             [nzOverlayClassName]="'header-dropdown-menu'">
             <span class="layout-menu__icon">
-              <i nz-icon nzType="file" nzTheme="fill"></i>
+              <i nz-icon nzType="delivered-procedure" nzTheme="outline"></i>
             </span>
             <span class="layout-menu__text">Kê khai</span>
           </a>
@@ -99,50 +92,39 @@
                   [routerLink]="['/declarations/adjust-general']"><i nz-icon nzType="dribbble-square"
                     nzTheme="outline"></i>Truy thu (Trường hợp vi phạp quy định của pháp luật về đóng BHXH.BHYT, BHTNLĐ,
                   BNN)</a></li>
-              <li nz-menu-item [hidden]="!permissions[pmsConf.reduction_labor.R]"><a
+              <li nz-menu-item [hidden]="!permissions[pmsConf.company_change.R]"><a
                   [routerLink]="['/declarations/company-change']"><i nz-icon nzType="edit" nzTheme="outline"></i>Đăng ký
                   thay đổi thông tin đơn vị</a></li>
-              <li nz-menu-item [hidden]="!permissions[pmsConf.reduction_labor.R]"><a
+              <li nz-menu-item [hidden]="!permissions[pmsConf.reissue_insurance_card.R]"><a
                 [routerLink]="['/declarations/reissue-insurance-card']"><i nz-icon nzType="account-book"
                   nzTheme="outline"></i>Cấp lại sổ BHXH do hỏng, do mất</a></li>
-              <li nz-menu-item [hidden]="!permissions[pmsConf.reduction_labor.R]"><a
+              <li nz-menu-item [hidden]="!permissions[pmsConf.health_insurance_card.R]"><a
                 [routerLink]="['/declarations/health-insurance-card']"><i nz-icon nzType="idcard"
                   nzTheme="outline"></i>Cấp lại thẻ BHYT do hỏng, do mất</a></li>
               <li nz-menu-item [hidden]="!permissions[pmsConf.regime_approval.R]"><a
                   [routerLink]="['/declarations/regime-approval']"><i nz-icon nzType="diff" nzTheme="outline"></i>Xét
                   duyệt chế độ ôm đau, Thai sản và Dưỡng sức, phục hồi sức khỏe</a></li>
-              <li nz-menu-item [hidden]="!permissions[pmsConf.regime_approval.R]"><a
+              <li nz-menu-item [hidden]="!permissions[pmsConf.sicknesses_approval.R]"><a
                     [routerLink]="['/declarations/sicknesses-approval']"><i nz-icon nzType="safety" nzTheme="outline"></i>Xét
                     duyệt chế độ ôm đau</a></li>
-              <li nz-menu-item [hidden]="!permissions[pmsConf.regime_approval.R]"><a
+              <li nz-menu-item [hidden]="!permissions[pmsConf.maternity_approval.R]"><a
                     [routerLink]="['/declarations/maternity-approval']"><i nz-icon nzType="heart" nzTheme="outline"></i>Xét
                     duyệt chế độ thai sản</a></li>
-              <li nz-menu-item [hidden]="!permissions[pmsConf.regime_approval.R]"><a
+              <li nz-menu-item [hidden]="!permissions[pmsConf.healthRecovery_approval.R]"><a
                 [routerLink]="['/declarations/health-recovery-approval']"><i nz-icon nzType="user-add" nzTheme="outline"></i>Xét
                 duyệt chế độ dưỡng sức, phục hồi sức khỏe</a></li>
             </ul>
           </nz-dropdown-menu>
         </li>
-        <li class="layout-menu__item">
-          <a class="layout-menu__link" nz-dropdown nzTrigger="click" [nzDropdownMenu]="contractMenu"
-            [nzOverlayClassName]="'header-dropdown-menu'">
+        <li class="layout-menu__item" [hidden]="!permissions[pmsConf.contract.R]">
+          <a [routerLink]="['/contract/list']" class="layout-menu__link">
             <span class="layout-menu__icon">
-              <i nz-icon nzType="file" nzTheme="fill"></i>
+              <i nz-icon nzType="contacts" nzTheme="outline"></i>
             </span>
             <span class="layout-menu__text">Quản lý hợp đồng</span>
           </a>
-          <nz-dropdown-menu #contractMenu="nzDropdownMenu">
-            <ul nz-menu>
-              <li nz-menu-item><a [routerLink]="['/customer/list']"><i nz-icon nzType="file" nzTheme="outline"></i>Danh
-                  sách khách hàng</a></li>
-              <li nz-menu-item><a [routerLink]="['/contract/new']"><i nz-icon nzType="file" nzTheme="outline"></i>Tạo
-                  mới hợp đồng</a></li>
-              <li nz-menu-item><a [routerLink]="['/contract/list']"><i nz-icon nzType="book" nzTheme="outline"></i>Danh
-                  sách hợp đồng</a></li>
-            </ul>
-          </nz-dropdown-menu>
         </li>
-        <li class="layout-menu__item">
+        <li class="layout-menu__item" [hidden]="!permissions[pmsConf.increase_labor.R] && !permissions[pmsConf.reduction_labor.R] && !permissions[pmsConf.adjust.R] && !permissions[pmsConf.arrears.R] && !permissions[pmsConf.adjust_general.R] && !permissions[pmsConf.regime_approval.R]">
           <a href="" class="layout-menu__link">
             <span class="layout-menu__icon">
               <i nz-icon nzType="search" nzTheme="outline"></i>

@@ -10,7 +10,7 @@ import { DocumentFormComponent } from '@app/shared/components';
 @Component({
   selector: 'app-sicknesses-approval-list',
   templateUrl: './sicknesses-approval-list.component.html',
-  styleUrls: ['./sicknesses-approval-list.component.less']
+  styleUrls: ['./sicknesses-approval-list.component.less', '../reduction-labor-list/reduction-labor-list.component.less']
 })
 export class SicknessesApprovalListComponent implements OnInit {
   isAllDisplayDataChecked = false;
@@ -18,12 +18,22 @@ export class SicknessesApprovalListComponent implements OnInit {
   listOfDisplayData: Declaration[] = [];
   mapOfCheckedId: { [key: string]: boolean } = {};
   year: any = null;
-  declarationCode: string ='630a';
-  declarationName: string;
   declarations: Declaration[] = [];
   total: number;
   skip: number;
   selectedPage: number = 1;
+  declarationCode: string = '630a';
+  declarationName: string;
+
+  keyword: string = '';
+
+  filter: any = {
+    createDate: '',
+    documentNo: '',
+    declarationName: '',
+    sendDate: '',
+    documentStatusName: ''
+  };
 
   constructor(
     private declarationService: DeclarationService,
@@ -54,6 +64,11 @@ export class SicknessesApprovalListComponent implements OnInit {
     });
   }
 
+  handleFilter(key) {
+    this.keyword = this.filter[key];
+    this.getDeclarations();
+  }
+
   pageChange({ skip, page }) {
     this.selectedPage = page;
 
@@ -67,6 +82,7 @@ export class SicknessesApprovalListComponent implements OnInit {
   }
 
   viewDocument(declarationInfo: any) {
+
     if(declarationInfo.status === 0) {
       this.showMessageNotView();
     } else {
