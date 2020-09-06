@@ -5,6 +5,7 @@ import { LayoutComponent } from '@app/shared/layout';
 import { ContractComponent, ContractEditComponent } from './pages';
 import { PERMISSIONS } from '@app/shared/constant';
 
+
 const routes: Routes = [
   {
     path: '',
@@ -20,7 +21,7 @@ const routes: Routes = [
         canDeactivate: [ UnsavedChangesGuard, NavigationGuard ]
       },
       {
-        path: 'edit',
+        path: ':id/edit',
         component: ContractEditComponent,
         canActivate: [ AuthorizeGuard ],
         data: {

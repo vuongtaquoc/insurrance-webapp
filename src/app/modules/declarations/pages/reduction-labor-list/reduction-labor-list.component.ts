@@ -10,7 +10,7 @@ import { NzModalService } from 'ng-zorro-antd/modal';
 @Component({
   selector: 'app-reduction-labor-list',
   templateUrl: './reduction-labor-list.component.html',
-  styleUrls: ['./reduction-labor-list.component.less', '../reduction-labor-list/reduction-labor-list.component.less']
+  styleUrls: ['./reduction-labor-list.component.less','../reduction-labor-list/reduction-labor-list.component.less']
 })
 export class ReductionLaborListComponent implements OnInit {
   isAllDisplayDataChecked = false;

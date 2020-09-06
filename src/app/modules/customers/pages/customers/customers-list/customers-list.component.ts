@@ -21,6 +21,7 @@ export class CustomersListComponent implements OnInit, OnDestroy {
   formSearch: FormGroup;
   sortName: string = '';
   selectedPage: number = 1;
+  keyword: string ='';
   status: any = STATUS;
   shortColumn: any = {
     key: '',
@@ -55,8 +56,8 @@ export class CustomersListComponent implements OnInit, OnDestroy {
   };
 
   handleFilter(key) {
-    // this.keyword = this.filter[key];
-    // this.getproducts();
+    this.keyword = this.filter[key];
+    this.getCustomers();
   }
 
   private getCustomers(skip = 0, take = PAGE_SIZE) {
@@ -87,9 +88,6 @@ export class CustomersListComponent implements OnInit, OnDestroy {
     this.getCustomers();
   }
 
-  get keyword() {
-    return this.formSearch.get('keyword').value;
-  }
 
   get dateTo() {
     const dateTo = this.formSearch.get('dateTo').value;

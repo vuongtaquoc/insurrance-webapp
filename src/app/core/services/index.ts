@@ -33,4 +33,5 @@ export * from './product.service';
 export * from './account.service';
 export * from './role.service';
 export * from './email-notification.service';
+export * from './contract.service';
 

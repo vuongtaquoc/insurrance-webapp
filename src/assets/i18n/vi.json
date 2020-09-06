@@ -117,6 +117,7 @@
 			"contractType": "Loại hợp đồng",
 			"createDate": "Ngay tạo",
 			"action": "Thao tác"
+			
 		},
 		"from": {
 			"subject": "Kính gửi",
@@ -152,7 +153,16 @@
 			"wards": "Phường xã",
 			"object": "Đôi tượng cấp thẻ",
 			"studentLevelOne": "Học sinh(Lớp 1->12)",
-			"studentLevelTwo": "Sinh viên(Đại học, Cao đẳng, Trung học chuyên nghiệp, Nghề...)"
+			"studentLevelTwo": "Sinh viên(Đại học, Cao đẳng, Trung học chuyên nghiệp, Nghề...)",
+			"expiryDate" : "Hạn sử dụng",
+			"block" : "Gói dịch vụ",
+			"totalVAN" : "Thành tiền I-VAN",
+			"totalToken" : "Thành tiền CKS",
+			"useDate" : "Tổng thời gian sử dụng",
+			"dataStandard" : "Số tháng niêm yết",
+			"dataBonus" : "Số tháng khuyến mại",
+			"paymentMethod" : "Hình thức thanh toán",
+			"totalAmount" : "Tổng tiền thanh toán"
 		}
 	},
 	"agencies": {

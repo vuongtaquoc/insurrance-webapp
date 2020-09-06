@@ -1,18 +1,20 @@
-<div class="page-card">
-  <div class="page-title ">
-    <h1>{{'contract.contract-list.title' | translate}}</h1>
-    <div class="page-declarations__footer">
-      <button nz-button nzType="default" (click)="emitEventToChild('save')">
-        <i nz-icon nzType="search"></i>Search
-      </button>
-      <button class="element-form_button-add" nz-button nzType="default">
-        <i nz-icon nzType="user-add" nzTheme="outline"></i>{{ 'common.btnCreate' | translate }}
-      </button>
+<div class="page-card-custom">
+  <form nz-form [formGroup]="formSearch" (ngSubmit)="handleSearchBox()">
+    <div class="page-title ">
+      <h1>{{'contract.contract-list.title' | translate}}</h1>
+      <div class="page-declarations__footer">
+        
+        <button class="element-form_button-search" nz-button nzType="default">
+          <i nz-icon nzType="search"></i>{{ 'common.btnSearch' | translate }}
+        </button>
+        <button class="element-form_button-add" nz-button nzType="default">
+          <i nz-icon nzType="user-add" nzTheme="outline"></i>{{ 'common.btnCreate' | translate }}
+        </button>
+      </div>
     </div>
-  </div>
   <div class="page-search">
     <div nz-row nzGutter="30">
-      <div nz-col nzMd="4">
+      <div nz-col nzMd="8">
         <nz-form-item>
           <nz-form-label>{{ 'contract.contract-list.keyWords' | translate }}</nz-form-label>
           <nz-form-control>
@@ -20,35 +22,25 @@
           </nz-form-control>
         </nz-form-item>
       </div>
-      <div nz-col nzMd="3">
+      <div nz-col nzMd="4">
         <nz-form-item>
           <nz-form-label>{{ 'contract.contract-list.dateFrom' | translate }}</nz-form-label>
           <nz-form-control>
-            <nz-date-picker nzPlaceHolder="--Chọn--" formControlName="dateFrom"></nz-date-picker>
-          </nz-form-control>
+              <input nz-input placeholder="Từ ngày" formControlName="dateFrom" mask="00/00/0000" [showMaskTyped]="true"
+                [validation]="true" [clearIfNotMatch]="true" />
+            </nz-form-control>
         </nz-form-item>
       </div>
-      <div nz-col nzMd="3">
+      <div nz-col nzMd="4">
         <nz-form-item>
           <nz-form-label>{{ 'contract.contract-list.dateTo' | translate }}</nz-form-label>
           <nz-form-control>
-            <nz-date-picker nzPlaceHolder="--Chọn--" formControlName="dateTo"></nz-date-picker>
-          </nz-form-control>
+              <input nz-input placeholder="Đến ngày" formControlName="dateTo" mask="00/00/0000" [showMaskTyped]="true"
+                [validation]="true" [clearIfNotMatch]="true" />
+            </nz-form-control>
         </nz-form-item>
       </div>
-
       <div nz-col nzMd="4">
-        <nz-form-item>
-          <nz-form-label>{{ 'contract.contract-list.companyType' | translate }}</nz-form-label>
-          <nz-form-control [nzSpan]="24">
-            <nz-select formControlName="type" nzAllowClear nzPlaceHolder="Lựa chọn">
-              <nz-option [nzValue]="type.value" [nzLabel]="type.label" *ngFor="let type of documentTypes"></nz-option>
-            </nz-select>
-          </nz-form-control>
-        </nz-form-item>
-      </div>
-
-      <div nz-col nzMd="3">
         <nz-form-item>
           <nz-form-label [nzRequired]="true">{{ 'contract.contract-list.contractStatus' | translate }}</nz-form-label>
           <nz-form-control [nzSpan]="24">
@@ -61,14 +53,23 @@
 
     </div>
   </div>
-  <nz-table nzBordered #ajaxTable nzShowSizeChanger [nzFrontPagination]="false" [nzData]="listOfData"
-    [nzLoading]="loading" [nzTotal]="total" [(nzPageIndex)]="pageIndex" [(nzPageSize)]="pageSize"
-    (nzPageIndexChange)="searchData()" (nzPageSizeChange)="searchData(true)"
+  </form>
+  <nz-table nzBordered 
+    #ajaxTable 
+    nzShowSizeChanger 
+    [nzFrontPagination]="false"
+    [nzData]="contracts"
+    [nzLoading]="loading"
+    [nzTotal]="total"
+    [(nzPageIndex)]="pageIndex" 
+    [(nzPageSize)]="pageSize"
+    (nzPageIndexChange)="searchData()" 
+    (nzPageSizeChange)="searchData(true)"
     class="table ui-table-custom--center table-editor">
     <thead (nzSortChange)="sort($event)" nzSingleSort>
       <tr class="ui-table-custom-header">
         <th class="cell-custom">{{'contract.table.stt' | translate}}</th>
-        <th class="cell-custom" nzShowFilter [nzFilters]="filterGender" (nzFilterChange)="updateFilter($event)">
+        <th class="cell-custom" nzShowSort nzSortKey="email">
           {{'contract.table.company' | translate}}</th>
         <th class="cell-custom" nzShowSort nzSortKey="email">
           <span>{{'contract.table.contractNo' | translate}}</span>
@@ -82,7 +83,7 @@
         <th class="cell-custom" nzShowSort nzSortKey="email">
           <span>{{'contract.table.createDate' | translate}}</span>
         </th>
-        <th class="cell-custom" nzShowSort nzSortKey="email">
+        <th class="cell-custom">
           <span>{{'contract.table.action' | translate}}</span>
         </th>
       </tr>
@@ -122,9 +123,11 @@
         <td>{{ data.createDate }}</td>
         <td>
           <ng-container>
-            <a (click)="startEdit(data.id)" class="action-padding">
-              <i nz-icon nzType="edit" nzTheme="outline"></i>
-            </a>
+            <ng-container>
+              <a [routerLink]="['/contract/' + i + '/edit']" title ="Chỉnh sửa" class="action-padding">
+                <i nz-icon nzType="edit" nzTheme="outline"></i>
+              </a>
+            </ng-container>
           </ng-container>
           <ng-container>
             <a (click)="startEdit(data.id)" class="action-padding" style="color: red;">
@@ -132,11 +135,10 @@
             </a>
           </ng-container>
           <ng-container>
-            <a (click)="startEdit(data.id)" class="action-padding" style="color: blue;">
-              <i nz-icon nzType="eye" nzTheme="outline"></i>
+            <a (click)="download(data.id)" class="action-padding" style="color: blue;">
+              <i nz-icon nzType="download" nzTheme="outline"></i>
             </a>
           </ng-container>
-
         </td>
       </tr>
     </tbody>

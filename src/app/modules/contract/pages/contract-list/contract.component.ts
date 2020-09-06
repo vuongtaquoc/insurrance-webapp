@@ -1,16 +1,30 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ContractService } from '@app/core/services';
+import { PAGE_SIZE, STATUS, ACTION, ROLE } from '@app/shared/constant';
+import { getBirthDay } from '@app/shared/utils/custom-validation';
 
 @Component({
   selector: 'app-contract',
   templateUrl: './contract.component.html',
-  styleUrls: ['./contract.component.scss', '../../../agencies/pages/agencies/agencies-list/agencies-list.component.less']
+  styleUrls: ['./contract.component.less']
 })
 export class ContractComponent implements OnInit, OnDestroy {
-  loginForm: FormGroup;
-  loading = false;
-  listOfData: any;
 
+  total: number;
+  skip: number;
+  formSearch: FormGroup;
+  sortName: string = '';
+  selectedPage: number = 1;
+  status: any = STATUS;
+  loading = false;
+  contracts: any;
+
+  shortColumn: any = {
+    key: '',
+    value: ''
+  };
+  
   filter: any = {
     company: '',
     contractNo: '',
@@ -18,16 +32,24 @@ export class ContractComponent implements OnInit, OnDestroy {
     contractType: '',
     createDate: '',
   };
+
   keyword: string = '';
 
   constructor(
     private formBuilder: FormBuilder,
+    private contractService: ContractService,
   ) {
   }
+
   ngOnInit() {
-    this.loginForm = this.formBuilder.group({
+    this.formSearch = this.formBuilder.group({
+      keyword: [''],
+      dateFrom: [''],
+      dateTo: [''],
+      type: [''],
     });
-    this.listOfData = [
+    
+    this.contracts = [
       {
         company: 'CÔNG TY TNHH MỘT THÀNH VIÊN TỔNG CÔNG TY TRUYỀN HÌNH CÁP VIỆT NAM',
         contractNo: 'MBXH-00002',
@@ -64,18 +86,65 @@ export class ContractComponent implements OnInit, OnDestroy {
       }
     ];
   }
+
+  handleSearchBox() {
+    this.getContracts();
+  }
+
+  private getContracts(skip = 0, take = PAGE_SIZE) {
+    this.contractService.getList({
+      name: this.keyword,
+      dateFrom: this.dateFrom,
+      dateTo: this.dateTo,
+      skip,
+      take,
+      orderType: (this.shortColumn.value || ''),
+      orderby: (this.shortColumn.key || '')
+
+    }).subscribe(res => {
+      this.contracts = res.data;
+      this.total = res.total;
+      this.skip = skip;
+
+      if (res.data.length === 0 && this.selectedPage > 1) {
+        this.skip -= PAGE_SIZE;
+        this.selectedPage -= 1;
+        this.getContracts(this.skip);
+      }
+    });
+  }
+   
   handleFilter(key) {
     this.keyword = this.filter[key];
 
-    //this.getEmployees();
+    this.getContracts();
   }
 
 
   ngOnDestroy() {
   }
 
-  get form() {
-    return this.loginForm.controls;
+  get dateTo() {
+    const dateTo = this.formSearch.get('dateTo').value;
+
+    if (!dateTo) return '';
+
+    const birth = getBirthDay(dateTo, false, false);
+
+    return birth.format;
+  }
+
+  get dateFrom() {
+    const dateFrom = this.formSearch.get('dateFrom').value;
+    if (!dateFrom) return '';
+
+    const birth = getBirthDay(dateFrom, false, false);
+
+    return birth.format;
+  }
+
+  download(contractId) {
+    
   }
 }
 

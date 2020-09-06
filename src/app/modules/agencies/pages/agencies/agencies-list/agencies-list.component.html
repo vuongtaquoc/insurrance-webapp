@@ -44,8 +44,16 @@
     </div>
   </form>
 
-  <nz-table nzBordered #ajaxTable nzShowSizeChanger [nzFrontPagination]="false" [nzData]="agencies"
-    [nzLoading]="loading" [nzPageSize]="agencies.length" [nzShowPagination]="false" [nzTotal]="total"
+  <nz-table 
+    nzBordered 
+    #ajaxTable 
+    nzShowSizeChanger 
+    [nzFrontPagination]="false" 
+    [nzData]="agencies"
+    [nzLoading]="loading" 
+    [nzPageSize]="agencies.length" 
+    [nzShowPagination]="false" 
+    [nzTotal]="total"
     class="table-editor">
     <thead (nzSortChange)="sort($event)" nzSortFn class="sort-custom">
       <tr class="ui-table-custom-header">
