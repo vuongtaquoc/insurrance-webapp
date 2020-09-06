@@ -1,23 +1,89 @@
-<form  nz-form [formGroup]="formAgencies"  class="companyAgencies-form">
+<form  nz-form [formGroup]="formContract"  class="companyAgencies-form">
   <div class="page-container-form-custom">  
-      <div class="page-company" cardFullHeight>
+      <div class="page-company">
         <div class="page-company__blank"></div>
         <div class="page-company__main">
-            <h1>I. THÔNG TIN KHÁCH HÀNG</h1> 
+          <h1>I. THÔNG TIN KHÁCH HÀNG</h1> 
+          <div nz-row nzGutter="10">
+              <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                  <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="12">{{ 'customers.from.city' | translate }}
+                  </nz-form-label>
+                  <nz-form-control [nzSpan]="12" [nzErrorTip]="citytempl" class="item-left-2">
+                    <nz-select formControlName="cityCode" nzShowSearch (ngModelChange)="changeCity($event);" nzAllowClear
+                      nzPlaceHolder="Lựa chọn">
+                      <nz-option [nzValue]="city.id" [nzLabel]="city.name" *ngFor="let city of cities"></nz-option>
+                    </nz-select>
+                    <ng-template #citytempl let-control>
+                      <ng-container *ngIf="control.hasError('required')">
+                        {{ 'customers.from.city' | translate }} không để trống
+                      </ng-container>
+                    </ng-template>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                  <nz-form-label class="text-left item-padding-left-2" [nzRequired]="true" [nzSpan]="12">
+                    {{ 'customers.from.isurranceDepartment' | translate }}</nz-form-label>
+                  <nz-form-control [nzSpan]="12" [nzErrorTip]="isurranceDepartmentTpl">
+                    <nz-select nzShowSearch formControlName="isurranceDepartmentId" nzAllowClear nzPlaceHolder="Lựa chọn">
+                      <nz-option [nzValue]="isurranceDepartment.id" [nzLabel]="isurranceDepartment.name"
+                        *ngFor="let isurranceDepartment of isurranceDepartments"></nz-option>
+                    </nz-select>
+                    <ng-template #isurranceDepartmentTpl let-control>
+                      <ng-container *ngIf="control.hasError('required')">
+                        {{ 'customers.from.isurranceDepartment' | translate }} không để trống
+                      </ng-container>
+                    </ng-template>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+            </div>
+          <div nz-row nzGutter="10">
+              <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                  <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="12">
+                    {{ 'customers.from.companyCode' | translate }}</nz-form-label>
+                  <nz-form-control [nzSpan]="12" [nzErrorTip]="companyCodetempl" class="item-left-2">
+                    <input nz-input placeholder="{{ 'customers.from.companyCode' | translate }}" formControlName="code" />
+                    <ng-template #companyCodetempl let-control>
+                      <ng-container *ngIf="control.hasError('required')">
+                        {{ 'customers.from.companyCode' | translate }} không để trống
+                      </ng-container>
+                    </ng-template>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                  <nz-form-label class="text-left item-padding-left-2" [nzRequired]="true" [nzSpan]="12">
+                    {{ 'customers.from.salaryAreaName' | translate }}</nz-form-label>
+                  <nz-form-control [nzSpan]="12" [nzErrorTip]="salaryAreaNametpl">
+                    <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="salaryAreaCode">
+                      <nz-option *ngFor="let salaryArea of salaryAreas" [nzLabel]="salaryArea.name"
+                        [nzValue]="salaryArea.id"></nz-option>
+                    </nz-select>
+                    <ng-template #salaryAreaNametpl let-control>
+                      <ng-container *ngIf="control.hasError('required')">
+                        {{ 'customers.from.salaryAreaName' | translate }} không để trống
+                      </ng-container>
+                    </ng-template>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+            </div>
             <div nz-row nzGutter="10">
                 <div nz-col [nzSpan]="24">
                     <nz-form-item>
-                        <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="6">{{ 'agencies.from.agenciesName' | translate }}</nz-form-label>
+                        <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="6">{{ 'contract.from.name' | translate }}</nz-form-label>
                         <nz-form-control [nzSpan]="18" [nzErrorTip]="nametpl" >
                         <input nz-input
-                            placeholder="{{ 'agencies.from.agenciesName' | translate }}"
+                            placeholder="{{ 'contract.from.name' | translate }}"
                             formControlName="name" />
                         <ng-template #nametpl let-control>
                             <ng-container *ngIf="control.hasError('required')">
-                            Tên đại lý không được để trống
-                            </ng-container>
-                            <ng-container *ngIf="control.hasError('maxlength')">
-                            Mã nhân viên chỉ được tối đa 50 ký tự
+                                {{ 'contract.from.name' | translate }} không được để trống
                             </ng-container>
                         </ng-template>
                         </nz-form-control>
@@ -125,9 +191,9 @@
                                 <nz-form-item>
                                     <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="12">{{ 'contract.from.expiryDate' | translate }}</nz-form-label>
                                     <nz-form-control [nzSpan]="12" [nzErrorTip]="nametpl" >
-                                        <nz-select formControlName="cityCode" nzShowSearch (ngModelChange)="changeCity($event);" nzAllowClear
+                                        <nz-select formControlName="productIVAN" nzShowSearch (ngModelChange)="changeCity($event);" nzAllowClear
                                         nzPlaceHolder="Lựa chọn">
-                                           <nz-option [nzValue]="city.id" [nzLabel]="city.name" *ngFor="let city of cities"></nz-option>
+                                          <nz-option [nzValue]="product.id" [nzLabel]="product.name" *ngFor="let product of productIVAN"></nz-option>
                                         </nz-select>
                                       <ng-template #nametpl let-control>
                                         <ng-container *ngIf="control.hasError('required')">
@@ -182,9 +248,9 @@
                                   <nz-form-item>
                                       <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="12">{{ 'contract.from.expiryDate' | translate }}</nz-form-label>
                                       <nz-form-control [nzSpan]="12" [nzErrorTip]="nametpl" >
-                                          <nz-select formControlName="cityCode" nzShowSearch (ngModelChange)="changeCity($event);" nzAllowClear
+                                          <nz-select formControlName="productIVAN" nzShowSearch (ngModelChange)="changeCity($event);" nzAllowClear
                                           nzPlaceHolder="Lựa chọn">
-                                            <nz-option [nzValue]="city.id" [nzLabel]="city.name" *ngFor="let city of cities"></nz-option>
+                                            <nz-option [nzValue]="product.id" [nzLabel]="product.name" *ngFor="let product of productIVAN"></nz-option>
                                           </nz-select>
                                         <ng-template #nametpl let-control>
                                           <ng-container *ngIf="control.hasError('required')">
@@ -200,9 +266,9 @@
                                 <nz-form-item>
                                     <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="12">{{ 'contract.from.block' | translate }}</nz-form-label>
                                     <nz-form-control [nzSpan]="12" [nzErrorTip]="nametpl" >
-                                        <nz-select formControlName="cityCode" nzShowSearch (ngModelChange)="changeCity($event);" nzAllowClear
+                                        <nz-select formControlName="productCKS" nzShowSearch (ngModelChange)="changeCity($event);" nzAllowClear
                                         nzPlaceHolder="Lựa chọn">
-                                          <nz-option [nzValue]="city.id" [nzLabel]="city.name" *ngFor="let city of cities"></nz-option>
+                                          <nz-option [nzValue]="product.id" [nzLabel]="product.name" *ngFor="let product of productCKS"></nz-option>
                                         </nz-select>
                                       <ng-template #nametpl let-control>
                                         <ng-container *ngIf="control.hasError('required')">
@@ -237,12 +303,12 @@
                 <div nz-col [nzSpan]="24">
                     <nz-form-item>
                         <nz-form-label [nzRequired]="true" class="text-left font-bold" [nzSpan]="6">{{ 'contract.from.paymentMethod' | translate }}</nz-form-label>
-                        <nz-form-control [nzSpan]="6" [nzErrorTip]="errorRegisterResult">
-                          <nz-radio-group formControlName="responseResults">
+                        <nz-form-control [nzSpan]="6" [nzErrorTip]="paymentMethodTemp">
+                          <nz-radio-group formControlName="paymentMethod">
                             <label nz-radio nzValue="0">Tiền mặt</label>
                             <label nz-radio nzValue="1">Chuyển khoản</label>
                           </nz-radio-group>
-                          <ng-template #errorRegisterResult let-control>
+                          <ng-template #paymentMethodTemp let-control>
                             <ng-container *ngIf="control.hasError('required')">
                               Chọn {{ 'contract.from.paymentMethod' | translate }}
                             </ng-container>

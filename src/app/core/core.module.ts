@@ -31,6 +31,7 @@ import {
   RoleService,
   EmailNotificationService,
   ContractService,
+  PriceService,
 
 } from './services';
 
@@ -68,6 +69,7 @@ import {
     RoleService,
     EmailNotificationService,
     ContractService,
+    PriceService,
   ],
   declarations: []
 })

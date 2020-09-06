@@ -53,7 +53,7 @@ export class ProductsListComponent implements OnInit, OnDestroy {
 
 
     getProducts(skip = 0, take = PAGE_SIZE) {
-        this.productService.gets({
+        this.productService.getList({
             name: this.keyword,
             dateFrom: this.dateFrom,
             dateTo: this.dateTo,
