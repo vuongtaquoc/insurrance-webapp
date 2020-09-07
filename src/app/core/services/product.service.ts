@@ -11,9 +11,8 @@ export class ProductService {
     constructor(private http: ApplicationHttpClient) {
     }
 
-    public gets(filters = {}) {
-        // return this.http.getList('/products', {
-        return this.http.getList('/customers', {
+    public getList(filters = {}) {
+        return this.http.getList('/products', {
             params: {
                 ...filters
             }

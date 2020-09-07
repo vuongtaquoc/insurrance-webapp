@@ -15,3 +15,5 @@ export * from './plan';
 export * from './document-list';
 export * from './category';
 export * from './customer';
+export * from './product';
+export * from './price';

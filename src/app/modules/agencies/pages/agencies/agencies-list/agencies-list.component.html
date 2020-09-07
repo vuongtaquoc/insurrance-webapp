@@ -44,8 +44,16 @@
     </div>
   </form>
 
-  <nz-table nzBordered #ajaxTable nzShowSizeChanger [nzFrontPagination]="false" [nzData]="agencies"
-    [nzLoading]="loading" [nzPageSize]="agencies.length" [nzShowPagination]="false" [nzTotal]="total"
+  <nz-table 
+    nzBordered 
+    #ajaxTable 
+    nzShowSizeChanger 
+    [nzFrontPagination]="false" 
+    [nzData]="agencies"
+    [nzLoading]="loading" 
+    [nzPageSize]="agencies.length" 
+    [nzShowPagination]="false" 
+    [nzTotal]="total"
     class="table-editor">
     <thead (nzSortChange)="sort($event)" nzSortFn class="sort-custom">
       <tr class="ui-table-custom-header">
@@ -87,7 +95,7 @@
             </a>
           </ng-container>
           <ng-container>
-            <a (click)="viewAccount(data)" *ngIf="(data.hasAccount)"  title ="Tạo account" class="action-padding">
+            <a (click)="viewAccount(data)" *ngIf="!(data.hasAccount)"  title ="Tạo account" class="action-padding">
               <i nz-icon nzType="user-add" nzTheme="outline"></i>
             </a>
             <a (click)="viewAccount(data)" *ngIf="(data.hasAccount)"  title ="Gửi email thông tin tài khoản" class="action-padding">

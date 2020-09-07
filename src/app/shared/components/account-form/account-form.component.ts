@@ -88,6 +88,7 @@ export class AcountFormComponent implements OnInit {
 
   private sendEmail() {
     this.accountInfo.email = this.emailContract;
+    this.accountInfo.customerId = this.companyInfo.id
     this.accountService.sendEmail(this.accountInfo).subscribe(data => {
       const result = {
         type: 'sendEmail',

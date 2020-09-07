@@ -30,6 +30,8 @@ import {
   FileUploadEmitter,
   RoleService,
   EmailNotificationService,
+  ContractService,
+  PriceService,
 
 } from './services';
 
@@ -66,6 +68,8 @@ import {
     FileUploadEmitter,
     RoleService,
     EmailNotificationService,
+    ContractService,
+    PriceService,
   ],
   declarations: []
 })

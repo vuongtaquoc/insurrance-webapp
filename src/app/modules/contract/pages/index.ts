@@ -1,2 +1,2 @@
-export * from './list/contract.component';
-export * from './edit/contract-edit.component';
+export * from './contract-list/contract.component';
+export * from './contract-edit/contract-edit.component';

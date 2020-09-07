@@ -10,7 +10,7 @@ import { NzModalService } from 'ng-zorro-antd/modal';
 @Component({
   selector: 'app-reissue-insurance-card-list',
   templateUrl: './reissue-insurance-card-list.component.html',
-  styleUrls: ['./reissue-insurance-card-list.component.less']
+  styleUrls: ['./reissue-insurance-card-list.component.less', '../reduction-labor-list/reduction-labor-list.component.less']
 })
 export class ReissueInsuranceCardListComponent implements OnInit {
   isAllDisplayDataChecked = false;
@@ -24,6 +24,16 @@ export class ReissueInsuranceCardListComponent implements OnInit {
   selectedPage: number = 1;
   declarationCode: string = '607';
   declarationName: string;
+
+  keyword: string = '';
+
+  filter: any = {
+    createDate: '',
+    documentNo: '',
+    declarationName: '',
+    sendDate: '',
+    documentStatusName: ''
+  };
 
   constructor(
     private declarationService: DeclarationService,
@@ -52,6 +62,11 @@ export class ReissueInsuranceCardListComponent implements OnInit {
         this.getDeclarations(this.skip);
       }
     });
+  }
+
+  handleFilter(key) {
+    this.keyword = this.filter[key];
+    this.getDeclarations();
   }
 
   pageChange({ skip, page }) {

@@ -47,7 +47,7 @@ export class AccountsComponent implements OnInit, OnDestroy {
             passWord: ['', [Validators.required, Validators.minLength(6)]],
             mobile: ['', [Validators.required, Validators.maxLength(15), Validators.pattern(REGEX.PHONE_NUMBER)]],
             email: ['', [Validators.required, Validators.pattern(REGEX.EMAIL)]],
-            status: [false, Validators.required],
+            active: [false, Validators.required],
         });
     }
 
@@ -66,6 +66,7 @@ export class AccountsComponent implements OnInit, OnDestroy {
                 password: data.password,
                 email: data.email,
                 mobile: data.mobile,
+                active: data.active,
             });
             this.roles = data.roles;
         });

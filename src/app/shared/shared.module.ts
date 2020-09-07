@@ -56,6 +56,7 @@ import {
   DepartmentComponent,
   ManageUnitFormComponent,
   AcountFormComponent,
+  EmailFormComponent,
 } from './components';
 
 import {
@@ -112,7 +113,8 @@ import {
     ManageUnitFormComponent,
     DepartmentComponent,
     TooltipDirective,
-    AcountFormComponent
+    AcountFormComponent,
+    EmailFormComponent,
   ],
   exports: [
     FormsModule,
@@ -154,6 +156,7 @@ import {
     TableEditorErrorsComponent,
     ManageUnitFormComponent,
     AcountFormComponent,
+    EmailFormComponent,
   ]
 })
 export class SharedModule { }

@@ -12,7 +12,7 @@ export class EmailNotificationService {
   }
 
   public getList(filters = {}) {
-    return this.http.getList('/accounts', {
+    return this.http.getList('/emailActive', {
       params: {
         ...filters
       }
@@ -20,37 +20,24 @@ export class EmailNotificationService {
   }
 
   public getDetailById(id: string) {
-    return this.http.get(`/accounts/${ id }`, {
+    return this.http.get(`/emailActive/${ id }`, {
     });
   }
 
   public create(body, options = {}) {
-    return this.http.post('/accounts', body, options);
+    return this.http.post('/emailActive', body, options);
   }
 
   public update(id, body, options = {}) {
-    return this.http.post(`/accounts/${ id }`, body, options);
+    return this.http.post(`/emailActive/${ id }`, body, options);
+  }
+
+  public sendEmail(id, body, options = {}) {
+    return this.http.post(`/emailActive/sendemail/${ id }`, body, options);
   }
 
   public delete(id) {
-    return this.http.delete(`/accounts/${ id }`);
-  }
-
-  public getAccountOfCompany(companyId: string) {
-    return this.http.get(`/accounts/account-default/${ companyId }`, {
-    });
-  }
-
-  public createUserAgency(body, options = {}) {
-    return this.http.post('/accounts/agency-account', body, options);
-  }
-
-  public createUserCustomer(body, options = {}) {
-    return this.http.post('/accounts/customer-account', body, options);
-  }
-
-  public sendEmail(body, options = {}) {
-    return this.http.post('/accounts/send-mail-account', body, options);
+    return this.http.delete(`/emailActive/${ id }`);
   }
    
 }

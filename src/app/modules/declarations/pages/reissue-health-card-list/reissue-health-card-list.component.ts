@@ -10,7 +10,7 @@ import { NzModalService } from 'ng-zorro-antd/modal';
 @Component({
   selector: 'app-declaration-reissue-health-card-list',
   templateUrl: './reissue-health-card-list.component.html',
-  styleUrls: ['./reissue-health-card-list.component.less']
+  styleUrls: ['./reissue-health-card-list.component.less','../reduction-labor-list/reduction-labor-list.component.less']
 })
 export class ReissueHealthCardListComponent implements OnInit {
   isAllDisplayDataChecked = false;
@@ -24,11 +24,19 @@ export class ReissueHealthCardListComponent implements OnInit {
   selectedPage: number = 1;
   declarationCode: string = '612';
   declarationName: string;
+  keyword: string = '';
+  filter: any = {
+    createDate: '',
+    documentNo: '',
+    declarationName: '',
+    sendDate: '',
+    documentStatusName: ''
+  };
 
   constructor(
     private declarationService: DeclarationService,
     private modalService: NzModalService,
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.declarationName = this.getDeclaration(this.declarationCode).value;
@@ -54,6 +62,11 @@ export class ReissueHealthCardListComponent implements OnInit {
     });
   }
 
+  handleFilter(key) {
+    this.keyword = this.filter[key];
+    this.getDeclarations();
+  }
+
   pageChange({ skip, page }) {
     this.selectedPage = page;
 
@@ -68,7 +81,7 @@ export class ReissueHealthCardListComponent implements OnInit {
 
   viewDocument(declarationInfo: any) {
 
-    if(declarationInfo.status === 0) {
+    if (declarationInfo.status === 0) {
       this.showMessageNotView();
     } else {
       this.showViewDeclarationFile(declarationInfo);

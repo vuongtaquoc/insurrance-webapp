@@ -61,23 +61,46 @@ const routes: Routes = [
       {
         path: 'increase-labor/:id/edit',
         component: IncreaseLaborEditComponent,
+         // check permission
+         canActivate: [ AuthorizeGuard ],
+         data: {
+           expectedPermission: PERMISSIONS.increase_labor.U
+         },
         canDeactivate: [ UnsavedChangesGuard, NavigationGuard ]
       },
       {
         path: 'increase-labor',
-        component: IncreaseLaborListComponent
+        component: IncreaseLaborListComponent,
+        canActivate: [ AuthorizeGuard ],
+        data: {
+          expectedPermission: PERMISSIONS.increase_labor.R
+        },
+        canDeactivate: [ UnsavedChangesGuard, NavigationGuard ]
       },
       {
         path: 'reduction-labor',
-        component: ReductionLaborListComponent
+        component: ReductionLaborListComponent,
+        canActivate: [ AuthorizeGuard ],
+        data: {
+          expectedPermission: PERMISSIONS.reduction_labor.R
+        },
+        canDeactivate: [ UnsavedChangesGuard, NavigationGuard ]
       },
       {
         path: 'reduction-labor/add',
-        component: ReductionLaborAddComponent
+        component: ReductionLaborAddComponent,
+        data: {
+          expectedPermission: PERMISSIONS.reduction_labor.C
+        },
+        canDeactivate: [ UnsavedChangesGuard, NavigationGuard ]
       },
       {
         path: 'reduction-labor/:id/edit',
-        component: ReductionLaborEditComponent
+        component: ReductionLaborEditComponent,
+        data: {
+          expectedPermission: PERMISSIONS.reduction_labor.U
+        },
+        canDeactivate: [ UnsavedChangesGuard, NavigationGuard ]
       },
       {
         path: 'regime-approval',
@@ -150,6 +173,18 @@ const routes: Routes = [
       {
         path: 'health-insurance-card/:id/edit',
         component: ReissueHealthCardEditComponent
+      },
+      {
+        path: 'reissue-insurance-card',
+        component: ReissueInsuranceCardListComponent
+      },
+      {
+        path: 'reissue-insurance-card/add',
+        component: ReissueInsuranceCardAddComponent
+      },
+      {
+        path: 'reissue-insurance-card/:id/edit',
+        component: ReissueInsuranceCardEditComponent
       },
       {
         path: 'sicknesses-approval',

@@ -11,6 +11,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NgxMaskModule } from 'ngx-mask';
 
 import { AuthenticationService } from '@app/core/services';
 import { SharedModule } from '@app/shared/shared.module';
@@ -35,7 +36,8 @@ import {
     NzTableModule,
     NzRadioModule,
     NzIconModule,
-    SharedModule     
+    SharedModule,
+    NgxMaskModule.forRoot() 
   ],
   declarations: [
     ContractComponent,
