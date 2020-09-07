@@ -13,6 +13,7 @@
 		},
 		"headerMenu": {
 			"setting": "Cài đặt",
+			"register": "Đăng ký IVAN",
 			"logout": "Đăng xuất"
 		},
 		"notActive": "Chưa kích hoạt",

@@ -12,7 +12,8 @@
       </div>
       <nz-dropdown-menu #menu="nzDropdownMenu">
         <ul nz-menu>
-          <li nz-menu-item><i nz-icon nzType="setting" nzTheme="outline"></i>{{'common.headerMenu.setting' | translate}}
+          <li nz-menu-item>
+            <a [routerLink]="['/register-ivan']"><i nz-icon nzType="setting" nzTheme="outline"></i> {{'common.headerMenu.register' | translate}}</a>
           </li>
           <li nz-menu-item (click)="handleLogout()"><i nz-icon nzType="logout"
               nzTheme="outline"></i>{{'common.headerMenu.logout' | translate}}</li>
