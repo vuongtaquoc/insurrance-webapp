@@ -191,7 +191,7 @@
                                 <nz-form-item>
                                     <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="12">{{ 'contract.from.expiryDate' | translate }}</nz-form-label>
                                     <nz-form-control [nzSpan]="12" [nzErrorTip]="nametpl" >
-                                        <nz-select formControlName="productIVAN" nzShowSearch (ngModelChange)="changeCity($event);" nzAllowClear
+                                        <nz-select formControlName="productIVAN" nzShowSearch (ngModelChange)="changeProductIVAN($event);" nzAllowClear
                                         nzPlaceHolder="Lựa chọn">
                                           <nz-option [nzValue]="product.id" [nzLabel]="product.name" *ngFor="let product of productIVAN"></nz-option>
                                         </nz-select>
@@ -209,9 +209,9 @@
                               <nz-form-item>
                                   <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="12">{{ 'contract.from.block' | translate }}</nz-form-label>
                                   <nz-form-control [nzSpan]="12" [nzErrorTip]="nametpl" >
-                                      <nz-select formControlName="cityCode" nzShowSearch (ngModelChange)="changeCity($event);" nzAllowClear
+                                      <nz-select formControlName="blockServiceIVAN" nzShowSearch (ngModelChange)="changeBlockServiceIVAN($event);" nzAllowClear
                                       nzPlaceHolder="Lựa chọn">
-                                         <nz-option [nzValue]="city.id" [nzLabel]="city.name" *ngFor="let city of cities"></nz-option>
+                                         <nz-option [nzValue]="block.id" [nzLabel]="block.name" *ngFor="let block of blockServiceIVAN"></nz-option>
                                       </nz-select>
                                     <ng-template #nametpl let-control>
                                       <ng-container *ngIf="control.hasError('required')">
@@ -224,19 +224,19 @@
                       </div><!--END ROW-->
                       <div nz-row nzGutter="10"><!--sTART ROW-->
                             <div  nz-col [nzSpan]="12" class="lable_text_left">{{ 'contract.from.totalVAN' | translate }}</div>
-                            <div  nz-col [nzSpan]="12" class="lable_text_right">980.000 VNĐ</div>
+                            <div  nz-col [nzSpan]="12" class="lable_text_right"> {{ amountIVAN}} VNĐ</div>
                       </div><!--END ROW-->  
                       <div nz-row nzGutter="10"><!--sTART ROW-->
                         <div  nz-col [nzSpan]="12" class="lable_text_left">{{ 'contract.from.useDate' | translate }}</div>
-                        <div  nz-col [nzSpan]="12" class="lable_text_right">24 tháng </div>
+                        <div  nz-col [nzSpan]="12" class="lable_text_right">{{ useDateIVAN}} </div>
                       </div><!--END ROW--> 
                       <div nz-row nzGutter="10"><!--sTART ROW-->
                         <div  nz-col [nzSpan]="12" class="lable_text_left">{{ 'contract.from.dataStandard' | translate }}</div>
-                        <div  nz-col [nzSpan]="12" class="lable_text_right">24 tháng </div>
+                        <div  nz-col [nzSpan]="12" class="lable_text_right">{{ dataStandardIVAN}} </div>
                       </div><!--END ROW--> 
                       <div nz-row nzGutter="10"><!--sTART ROW-->
                         <div  nz-col [nzSpan]="12" class="lable_text_left">{{ 'contract.from.dataBonus' | translate }}</div>
-                        <div  nz-col [nzSpan]="12" class="lable_text_right">0 tháng </div>
+                        <div  nz-col [nzSpan]="12" class="lable_text_right"> {{dataBonusIVAN}} tháng </div>
                       </div><!--END ROW--> 
                       
                    </div>
@@ -248,9 +248,9 @@
                                   <nz-form-item>
                                       <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="12">{{ 'contract.from.expiryDate' | translate }}</nz-form-label>
                                       <nz-form-control [nzSpan]="12" [nzErrorTip]="nametpl" >
-                                          <nz-select formControlName="productIVAN" nzShowSearch (ngModelChange)="changeCity($event);" nzAllowClear
+                                          <nz-select formControlName="productCKS" nzShowSearch (ngModelChange)="changeProductCKS($event);" nzAllowClear
                                           nzPlaceHolder="Lựa chọn">
-                                            <nz-option [nzValue]="product.id" [nzLabel]="product.name" *ngFor="let product of productIVAN"></nz-option>
+                                            <nz-option [nzValue]="product.id" [nzLabel]="product.name" *ngFor="let product of productCKS"></nz-option>
                                           </nz-select>
                                         <ng-template #nametpl let-control>
                                           <ng-container *ngIf="control.hasError('required')">
@@ -264,11 +264,11 @@
                           <div nz-row nzGutter="10"><!--sTART ROW-->
                             <div nz-col [nzSpan]="24">
                                 <nz-form-item>
-                                    <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="12">{{ 'contract.from.block' | translate }}</nz-form-label>
+                                    <nz-form-label class="text-left"  [nzSpan]="12">{{ 'contract.from.block' | translate }}</nz-form-label>
                                     <nz-form-control [nzSpan]="12" [nzErrorTip]="nametpl" >
-                                        <nz-select formControlName="productCKS" nzShowSearch (ngModelChange)="changeCity($event);" nzAllowClear
+                                        <nz-select formControlName="blockServiceCKS" nzShowSearch (ngModelChange)="changeBlockServiceCKS($event);" nzAllowClear
                                         nzPlaceHolder="Lựa chọn">
-                                          <nz-option [nzValue]="product.id" [nzLabel]="product.name" *ngFor="let product of productCKS"></nz-option>
+                                          <nz-option [nzValue]="block.id" [nzLabel]="block.name" *ngFor="let block of blockServiceCKS"></nz-option>
                                         </nz-select>
                                       <ng-template #nametpl let-control>
                                         <ng-container *ngIf="control.hasError('required')">
@@ -281,19 +281,19 @@
                         </div><!--END ROW-->
                         <div nz-row nzGutter="10"><!--sTART ROW-->
                               <div  nz-col [nzSpan]="12" class="lable_text_left">{{ 'contract.from.totalToken' | translate }}</div>
-                              <div  nz-col [nzSpan]="12" class="lable_text_right">980.000 VNĐ</div>
+                              <div  nz-col [nzSpan]="12" class="lable_text_right">{{ amountCKS }} VNĐ</div>
                         </div><!--END ROW-->  
                         <div nz-row nzGutter="10"><!--sTART ROW-->
                           <div  nz-col [nzSpan]="12" class="lable_text_left">{{ 'contract.from.useDate' | translate }}</div>
-                          <div  nz-col [nzSpan]="12" class="lable_text_right">24 tháng </div>
+                          <div  nz-col [nzSpan]="12" class="lable_text_right">{{ useDateCKS}}  </div>
                         </div><!--END ROW--> 
                         <div nz-row nzGutter="10"><!--sTART ROW-->
                           <div  nz-col [nzSpan]="12" class="lable_text_left">{{ 'contract.from.dataStandard' | translate }}</div>
-                          <div  nz-col [nzSpan]="12" class="lable_text_right">24 tháng </div>
+                          <div  nz-col [nzSpan]="12" class="lable_text_right">{{ dataStandardCKS}} </div>
                         </div><!--END ROW--> 
                         <div nz-row nzGutter="10"><!--sTART ROW-->
                           <div  nz-col [nzSpan]="12" class="lable_text_left">{{ 'contract.from.dataBonus' | translate }}</div>
-                          <div  nz-col [nzSpan]="12" class="lable_text_right">0 tháng </div>
+                          <div  nz-col [nzSpan]="12" class="lable_text_right">{{dataBonusCKS}} tháng </div>
                         </div><!--END ROW--> 
                       </div>                   
                  </div>
@@ -319,7 +319,7 @@
             </div>
             <div nz-row nzGutter="10">
                 <div nz-col [nzSpan]="6" class="lable_text_left font-bold">{{ 'contract.from.totalAmount' | translate }}</div><!-- col -->
-                <div nz-col [nzSpan]="18"class="lable_text_right font-bold" >190.000.000 VNĐ</div><!-- col -->
+                <div nz-col [nzSpan]="18"class="lable_text_right font-bold" >{{ totalAmount}} VNĐ</div><!-- col -->
             </div>
             <div nz-row nzGutter="8">
                 <div nz-col nzMd="24"  class="footer-botton">  

@@ -3,12 +3,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthenticationService, SalaryAreaService,} from '@app/core/services';
 import { CityService, ContractService, IsurranceDepartmentService,
 ProductService, PriceService } from '@app/core/services';
-import { Department, Company } from '@app/core/models';
+import { Department, Company, Price } from '@app/core/models';
 import { Router, ActivatedRoute } from '@angular/router';
-import findLastIndex from 'lodash/findLastIndex';
-import findIndex from 'lodash/findIndex';
-import * as moment from 'moment';
-import * as _ from 'lodash';
+import format from '@app/shared/utils/format';
 
 @Component({
   selector: 'app-contract-edit',
@@ -16,7 +13,6 @@ import * as _ from 'lodash';
   styleUrls: ['./contract-edit.component.less']
 })
 export class ContractEditComponent implements OnInit, OnDestroy {
-  item: Company;
   formContract: FormGroup;
   loading = false;
   groupCompanies: any;
@@ -29,6 +25,19 @@ export class ContractEditComponent implements OnInit, OnDestroy {
   isurranceDepartments: any;
   productIVAN: any;
   productCKS: any;
+  blockServiceIVAN: any;
+  blockServiceCKS: any;
+  
+  amountIVAN: number;
+  dataStandardIVAN: string;
+  useDateIVAN: string;
+  dataBonusIVAN: string;
+
+  amountCKS: number;
+  dataStandardCKS: string;
+  useDateCKS: string;
+  dataBonusCKS: string;
+  totalAmount?: number;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -78,7 +87,9 @@ export class ContractEditComponent implements OnInit, OnDestroy {
       website: ['', Validators.required],
       paymentMethod: ['0', Validators.required],
       productIVAN: ['', Validators.required],
-      productCKS: ['', Validators.required]
+      productCKS: ['', Validators.required],
+      blockServiceIVAN: ['',  Validators.required],
+      blockServiceCKS: ['']
     });
 
   }
@@ -105,18 +116,69 @@ export class ContractEditComponent implements OnInit, OnDestroy {
   }
 
   private getProducts() {
-    this.productService.getList().subscribe(data => {
-      this.productIVAN = this.getProductByType(data, 'IVAN');
-      this.productCKS = this.getProductByType(data, 'CKS');
+    this.productService.getList().subscribe(products => {
+      this.productIVAN = this.getProductByType(products, 'IVAN');
+      this.productCKS = this.getProductByType(products, 'CKS');
     });
   }
 
-  private getProductByType(data, type) {
-    console.log(data, type);
-    return data.filter(d => {
+  private getProductByType(products, type) {
+
+    return products.data.filter(d => {
       return d.type === type;
     });
+
   }
+
+  private changeProductIVAN(productId) {
+    this.blockServiceIVAN = [];
+    this.formContract.patchValue({
+      blockServiceIVAN: ''
+    });
+    this.priceService.getList({
+      productId
+    }).subscribe(prices => {
+      this.blockServiceIVAN = prices.data;
+    });
+
+  }
+  private changeProductCKS(productId) {
+    this.blockServiceCKS = [];
+    this.formContract.patchValue({
+      blockServiceCKS: ''
+    });
+    this.priceService.getList({
+      productId
+    }).subscribe(prices => {
+      this.blockServiceCKS = prices.data;
+    });
+
+  }
+
+
+  private changeBlockServiceIVAN(id) {
+     this.priceService.getById(id).subscribe(data => {
+        this.amountIVAN = format.currency(data.amount);
+        this.dataStandardIVAN = data.dataStandard;
+        this.useDateIVAN = data.useDate;
+        this.dataBonusIVAN = data.dataBonus;
+        this.getTotalAmount();
+     });
+  }
+
+  private changeBlockServiceCKS(id) {
+    this.priceService.getById(id).subscribe(data => {
+       this.amountCKS = format.currency(data.amount);
+       this.dataStandardCKS = data.dataStandard;
+       this.useDateCKS = data.useDate;
+       this.dataBonusCKS= data.dataBonus;
+       this.getTotalAmount();
+    });
+ }
+
+ private getTotalAmount() {
+   this.totalAmount = (this.amountCKS || 0) + ((this.amountIVAN || 0));
+ }
 
   changeCity(item) {
 
