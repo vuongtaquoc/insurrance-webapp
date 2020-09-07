@@ -1,0 +1,36 @@
+<div class="page-container">
+  <nz-spin [nzSpinning]="isSpinning">
+
+    <div class="page-card page-card-register-ivan" cardFullHeight>
+      <div class="register-ivan-header">
+        <div class="register-ivan-header-title">
+          <h1 class="text-center">ĐĂNG KÝ SỬ DỤNG DỊCH VỤ I-VAN CỦA M-BHXH</h1>
+        </div>
+
+        <div class="choose">
+          <label nz-checkbox [(ngModel)]="checked">Chuyển từ nhà I-VAN khác sang M-BHXH</label>
+        </div>
+      </div>
+
+      <div class="register-ivan-form">
+        <div class="register-ivan-form__content">
+          <nz-tabset class="register-ivan-tabset" [nzSelectedIndex]="2">
+            <nz-tab nzTitle="Điều khoản">
+              <app-register-ivan-proviso class="app-register-ivan-proviso"></app-register-ivan-proviso>
+            </nz-tab><!-- Tab 1 -->
+
+            <nz-tab nzTitle="Ngừng dịch vụ I-VAN" [nzDisabled]="!checked">
+              <app-register-ivan-stop-service></app-register-ivan-stop-service>
+            </nz-tab><!-- Tab 2 -->
+
+            <nz-tab nzTitle="Đăng ký mới">
+
+              <app-register-ivan-register class="app-register-ivan-register">
+              </app-register-ivan-register>
+            </nz-tab><!-- Tab 3 -->
+          </nz-tabset>
+        </div>
+      </div>
+    </div>
+  </nz-spin>
+</div>

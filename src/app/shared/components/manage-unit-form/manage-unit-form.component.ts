@@ -108,7 +108,7 @@ export class ManageUnitFormComponent implements OnInit, OnDestroy {
     }
 
     save(): void {
-        
+
         for (const i in this.form.controls) {
             this.form.controls[i].markAsDirty();
             this.form.controls[i].updateValueAndValidity();
@@ -126,7 +126,7 @@ export class ManageUnitFormComponent implements OnInit, OnDestroy {
     }
 
     updateCompanyInfo() {
-        
+
         const companyInfo = this.getData();
         this.companyService.update(this.companyInfo.id, this.getData()).subscribe(data => {
             this.modal.destroy(companyInfo);
@@ -283,14 +283,17 @@ export class ManageUnitFormComponent implements OnInit, OnDestroy {
         //iterate the source data
         for (let x of this.departments) {
 
-            if (code_values.indexOf(x.code) != -1) {
-                isDup = true;
-                break;
-            } else {
-                code_values.push(x.code)
+            if (x.code != "") {
+                if (code_values.indexOf(x.code) != -1) {
+                    isDup = true;
+                    break;
+                } else {
+                    code_values.push(x.code)
+                }
             }
+
         }
 
-        return !isDup;
+        return isDup;
     }
 }

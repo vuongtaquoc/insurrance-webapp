@@ -26,7 +26,7 @@ const routes: Routes = [
   {
     path: 'declarations',
     loadChildren: './modules/declarations/declarations.module#DeclarationsModule',
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard],  
   },
   {
     path: 'company',
@@ -75,6 +75,11 @@ const routes: Routes = [
     path: 'notifications',
     loadChildren: './modules/system/notifications/notifications.module#NotificationsModule',
     canActivate: [AuthGuard],
+  },
+  {
+    path: 'register-ivan',
+    loadChildren: './modules/register-ivan/register-ivan.module#RegisterIvanModule',
+    // canActivate: [AuthGuard],
   },
 ];
 

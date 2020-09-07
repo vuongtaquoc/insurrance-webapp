@@ -10,35 +10,16 @@
     <tr *ngFor="let row of departments;index as i">
       <td class="text-center">{{ i +1}}</td>
       <td>
-        <input 
-          (change)="codeChange($event, i)" 
-          [ngClass]="{ 'error_border': (isError && editIndex == i) }" 
-          nz-input
-          nzSize="small" 
-          placeholder="Nhập mã phòng ban" 
-          [(ngModel)]="row.code" 
-          [nzTooltipTitle]="codeTemplate"
-          nzTooltipPlacement="right" 
-          [nzTooltipTrigger]="click"
-          nz-tooltip 
+        <input (change)="codeChange($event, i)" [ngClass]="{ 'error_border': (isError && editIndex == i) }" nz-input
+          nzSize="small" placeholder="Nhập mã phòng ban" [(ngModel)]="row.code" />
 
-        />
-
-          <ng-template #codeTemplate>
-            {{ (isError && editIndex == i) ? errorTitleCode : '' }}
-          </ng-template>
+        <p class="error-text" *ngIf="(isError && editIndex == i)">
+          {{ errorTitleCode }}
+        </p>
 
       </td>
       <td>
-        <input         
-          nz-input nzSize="small" 
-          placeholder="Nhập tên phòng ban" 
-          [(ngModel)]="row.name" 
-        />
-        <ng-template #nameTemplate>
-          {{ (isError && editIndex == i) ? errorTitleName : '' }}
-        </ng-template>
-
+        <input nz-input nzSize="small" placeholder="Nhập tên phòng ban" [(ngModel)]="row.name" />
       </td>
     </tr>
   </tbody>

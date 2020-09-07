@@ -6,8 +6,8 @@ import all from './all';
 export const environment = {
   ...all,
   production: false,
-  apiUrl: 'http://localhost:1380'
-  //apiUrl: 'http://103.145.62.255:8082'
+  //apiUrl: 'http://localhost:1380'
+  apiUrl: 'http://103.145.62.255:8082'
 };
 
 /*
