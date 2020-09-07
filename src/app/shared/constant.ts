@@ -1,3 +1,5 @@
+import { FormGroup } from '@angular/forms';
+
 export const DATE_FORMAT = {
   ONLY_MONTH_YEAR: 'MM/YYYY',
   ONLY_YEAR: 'YYYY',
@@ -74,56 +76,56 @@ export const REGEX = {
 
 
 export const DECLARATIONS =
-[
-  {
-  key: '600',
-  value:'Báo tăng lao động'
-  },
-  {
-    key: '630',
-    value:'Xét duyệt chế độ ốm đau, thai sản, phụ hồi sức khỏe'
-  },
-  {
-    key: '630a',
-    value:'Xét duyệt chế độ ốm đau'
-  },
-  {
-    key: '630b',
-    value:'Xét duyệt chế độ thai sản'
-  },
-  {
-    key: '630c',
-    value:'Xét duyệt chế độ dưỡng sức, phục hồi sức khỏe'
-  },
-  {
-    key: '601a',
-    value:'Truy thu điều chỉnh chức danh mức đóng(trường hợp báo muộn)'
-  }, 
-  {
-    key: '601',
-    value:'Truy thu (Trường hợp vi phạm quy định của pháp luật vè đóng BHXH,BHYT,BHTN, BHTNLD,BNN)'
-  }, 
-  {
-    key: '600a',
-    value:'Báo giảm lao động'
-  },
-  {
-    key: '600b',
-    value:'Điều chỉnh chức danh mức đóng'
-  },
-  {
-    key: '607',
-    value:'Cấp lại thẻ BHXH do hỏng, do mất'
-  },
-  {
-    key: '612',
-    value:'Cấp lại thẻ BHYT do hỏng, do mất'
-  },
-  {
-    key: '604',
-    value:'Đăng ký thau đổi thông tin đơn vị'
-  },
-];
+  [
+    {
+      key: '600',
+      value: 'Báo tăng lao động'
+    },
+    {
+      key: '630',
+      value: 'Xét duyệt chế độ ốm đau, thai sản, phụ hồi sức khỏe'
+    },
+    {
+      key: '630a',
+      value: 'Xét duyệt chế độ ốm đau'
+    },
+    {
+      key: '630b',
+      value: 'Xét duyệt chế độ thai sản'
+    },
+    {
+      key: '630c',
+      value: 'Xét duyệt chế độ dưỡng sức, phục hồi sức khỏe'
+    },
+    {
+      key: '601a',
+      value: 'Truy thu điều chỉnh chức danh mức đóng(trường hợp báo muộn)'
+    },
+    {
+      key: '601',
+      value: 'Truy thu (Trường hợp vi phạm quy định của pháp luật vè đóng BHXH,BHYT,BHTN, BHTNLD,BNN)'
+    },
+    {
+      key: '600a',
+      value: 'Báo giảm lao động'
+    },
+    {
+      key: '600b',
+      value: 'Điều chỉnh chức danh mức đóng'
+    },
+    {
+      key: '607',
+      value: 'Cấp lại thẻ BHXH do hỏng, do mất'
+    },
+    {
+      key: '612',
+      value: 'Cấp lại thẻ BHYT do hỏng, do mất'
+    },
+    {
+      key: '604',
+      value: 'Đăng ký thau đổi thông tin đơn vị'
+    },
+  ];
 
 export const CONSTPARENTDELETEAUTOROW =
   [
@@ -1165,4 +1167,57 @@ export function formatDateVn(date) {
   month = month.toString().length == 1 ? `0${month}` : month;
   return day + "/" + month + "/" + year;
 }
- 
+
+export const DataRegisterIvan = [
+  {
+    ivan_title: "Hạn sử dụng (*)",
+    ivan_value: "01 năm",
+    ivan_type: "combo",
+    register_certificate_title: "Đăng ký mua",
+    register_certificate_value: "Không mua",
+    register_certificate_type: "combo",
+    isColSpan: false
+  },
+  {
+    ivan_title: "Số tháng niêm yết",
+    ivan_value: "0 tháng",
+    register_certificate_title: "Thành tiền I-VAN",
+    register_certificate_value: "0 tháng",
+    isColSpan: false
+  },
+  {
+    ivan_title: "Số tháng khuyến mại",
+    ivan_value: "0 tháng",
+    register_certificate_title: "Hình thức thanh toán (*)",
+    register_certificate_value: "0 tháng",
+    isColSpan: false,
+  },
+  {
+    ivan_title: "Tổng thời gian sử dụng",
+    ivan_value: "0 tháng",
+    register_certificate_title: "Tổng thanh toán",
+    register_certificate_value: "0 tháng",
+    isColSpan: false
+  },
+]
+
+
+// custom validator to check that two fields match
+export function MustMatch(controlName: string, matchingControlName: string) {
+  return (formGroup: FormGroup) => {
+    const control = formGroup.controls[controlName];
+    const matchingControl = formGroup.controls[matchingControlName];
+
+    if (matchingControl.errors && !matchingControl.errors.mustMatch) {
+      // return if another validator has already found an error on the matchingControl
+      return;
+    }
+
+    // set error on matchingControl if validation fails
+    if (control.value !== matchingControl.value) {
+      matchingControl.setErrors({ mustMatch: true });
+    } else {
+      matchingControl.setErrors(null);
+    }
+  }
+}
