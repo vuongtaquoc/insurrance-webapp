@@ -45,10 +45,14 @@ export class RegisterIvanRegisterComponent implements OnInit {
       vendorToken: ['', [Validators.required]],
       fromDate: ['', [Validators.required]],
       expired: ['', [Validators.required]],
+      expiryDate: ['', [Validators.required]],
+      servicePack: ['', [Validators.required]],
+      paymentMethodCodeIvan: [, [Validators.required]]
+
     },
-    {
-      validator: MustMatch('emailOfContract', 'emailOfContractConfirm')
-    })
+      {
+        validator: MustMatch('emailOfContract', 'emailOfContractConfirm')
+      })
   }
 
   handleUpperCase(key) {
