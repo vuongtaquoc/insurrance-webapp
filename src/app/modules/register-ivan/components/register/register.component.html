@@ -19,12 +19,12 @@
               <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">
                 Tỉnh/TP
               </nz-form-label>
-              <nz-form-control [nzSpan]="14" [nzErrorTip]="registerCityCodeError">
-                <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="registerCityCode">
+              <nz-form-control [nzSpan]="14" [nzErrorTip]="cityCodeError">
+                <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="cityCode">
                   <nz-option *ngFor="let city of cities" [nzLabel]="city.name" [nzValue]="city.id"></nz-option>
                 </nz-select>
 
-                <ng-template #registerCityCodeError let-control>
+                <ng-template #cityCodeError let-control>
                   <ng-container *ngIf="control.hasError('required')">
                     Tỉnh/TP không để trống
                   </ng-container>
@@ -61,12 +61,11 @@
               <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">
                 Cơ quan BHXH quản lý
               </nz-form-label>
-              <nz-form-control [nzSpan]="14" [nzErrorTip]="registerCompanyError">
-                <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="registerCompany">
-                  <nz-option *ngFor="let company of registerCompanies" [nzLabel]="company.name" [nzValue]="company.id">
-                  </nz-option>
+              <nz-form-control [nzSpan]="14" [nzErrorTip]="isurranceDepartmentIdError">
+                <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="isurranceDepartmentId">
+                  <nz-option [nzValue]="isurranceDepartment.id" [nzLabel]="isurranceDepartment.name" *ngFor="let isurranceDepartment of isurranceDepartments"></nz-option>
                 </nz-select>
-                <ng-template #registerCompanyError let-control>
+                <ng-template #isurranceDepartmentIdError let-control>
                   <ng-container *ngIf="control.hasError('required')">
                     Cơ quan BHXH không để trống
                   </ng-container>
@@ -133,7 +132,7 @@
               </nz-form-label>
               <nz-form-control [nzSpan]="14" [nzErrorTip]="taxtpl">
                 <nz-input-group nzSearch [nzAddOnAfter]="suffixButton">
-                  <input type="text" formControlName="tax" nz-input placeholder="Tìm kiếm theo mã số thuế" />
+                  <input type="text" formControlName="taxCode" nz-input placeholder="Tìm kiếm theo mã số thuế" />
                 </nz-input-group>
                 <ng-template #suffixButton>
                   <button class="employee-form__button-save" nz-button nzType="success" (click)="handleSearchTax()"
@@ -222,7 +221,7 @@
               <nz-form-control class="ant-col-offset-1-edit" [nzSpan]="19" nzOffset="1" [nzErrorTip]="companyTypeError">
                 <input nz-input placeholder="Vui lòng kích vào biểu tượng (i) để lấy chính xác loại hình đơn vị"
                   formControlName="companyType" />
-                <ng-template #groupCodeError let-control>
+                <ng-template #companyTypeError let-control>
                   <ng-container *ngIf="control.hasError('required')">
                     Loại hình đơn vị không để trống
                   </ng-container>
@@ -274,7 +273,7 @@
               <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="4">
                 Tên đơn vị
               </nz-form-label>
-              <nz-form-control class="ant-col-offset-1-edit" [nzSpan]="19" nzOffset="1"
+              <nz-form-control class="ant-col-offset-1-edit ant-col-19-custom" [nzSpan]="19" nzOffset="1"
                 [nzErrorTip]="errorManageUnitName">
                 <input nz-input placeholder="Tên đơn vị" formControlName="name" />
                 <ng-template #errorManageUnitName let-control>
@@ -294,7 +293,7 @@
               <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="4">
                 Địa chỉ đăng ký kinh doanh
               </nz-form-label>
-              <nz-form-control class="ant-col-offset-1-edit" [nzSpan]="19" nzOffset="1" [nzErrorTip]="errorAddress">
+              <nz-form-control class="ant-col-offset-1-edit ant-col-19-custom" [nzSpan]="19" nzOffset="1" [nzErrorTip]="errorAddress">
                 <input nz-input placeholder="Địa chỉ đăng ký kinh doanh" formControlName="address" />
                 <ng-template #errorAddress let-control>
                   <ng-container *ngIf="control.hasError('required')">
@@ -314,7 +313,7 @@
               <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="4">
                 Địa chỉ giao dịch
               </nz-form-label>
-              <nz-form-control class="ant-col-offset-1-edit" [nzSpan]="19" nzOffset="1"
+              <nz-form-control class="ant-col-offset-1-edit ant-col-19-custom" [nzSpan]="19" nzOffset="1"
                 [nzErrorTip]="errorTradingAddress">
                 <input nz-input placeholder="Địa chỉ giao dịch" formControlName="addressRegister" />
                 <ng-template #errorTradingAddress let-control>
@@ -365,7 +364,7 @@
         <div nz-row [nzGutter]="8">
           <div nz-col [nzSpan]="12">
             <nz-form-item>
-              <nz-form-label class="text-left" [nzSpan]="10">Giấy ủy quyền số (nếu có)</nz-form-label>
+              <nz-form-label class="text-left padding-left-2p" [nzSpan]="10">Giấy ủy quyền số (nếu có)</nz-form-label>
               <nz-form-control [nzSpan]="14" class="margin-left-1p">
                 <input nz-input placeholder="Giấy ủy quyền số" formControlName="delegatePage" />
               </nz-form-control>
@@ -373,7 +372,7 @@
           </div><!-- col -->
           <div nz-col [nzSpan]="12">
             <nz-form-item>
-              <nz-form-label class="text-left" nzOffset="2" [nzSpan]="8">
+              <nz-form-label class="text-left padding-left-2p" nzOffset="2" [nzSpan]="8">
                 Cấp ngày
               </nz-form-label>
               <nz-form-control [nzSpan]="14">
@@ -490,7 +489,7 @@
             <nz-form-item>
               <nz-form-label [nzRequired]="true" class="text-left" nzOffset="2" [nzSpan]="8">Đăng ký nhận kết quả
               </nz-form-label>
-              <nz-form-control [nzSpan]="14" [nzErrorTip]="errorRegisterResult">
+              <nz-form-control class="text-center" [nzSpan]="14" [nzErrorTip]="errorRegisterResult">
                 <nz-radio-group formControlName="responseResults">
                   <label nz-radio nzValue="0">Tại CQBH</label>
                   <label nz-radio nzValue="1">Qua bưu điện</label>
@@ -565,7 +564,7 @@
         <div nz-row [nzGutter]="8">
           <div nz-col [nzSpan]="8">
             <nz-form-item>
-              <nz-radio-group formControlName="isHasCertificate" class="radio-group-custom">
+              <nz-radio-group class="radio-group-custom">
                 <label nz-radio nzValue="A">Đã có chữ ký số</label>
                 <label nz-radio nzValue="B">Chưa có chữ ký số</label>
               </nz-radio-group>
@@ -593,7 +592,7 @@
               <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="5">
                 Số chứng thư số
               </nz-form-label>
-              <nz-form-control [nzSpan]="19" [nzErrorTip]="errorTokenSerial">
+              <nz-form-control class="mg-lef-minus-2 ant-col-19-custom" [nzSpan]="19" [nzErrorTip]="errorTokenSerial">
                 <nz-input-group nzSearch [nzAddOnAfter]="suffixButtonToken">
                   <input nz-input readonly formControlName="privateKey" />
                 </nz-input-group>
@@ -618,7 +617,7 @@
               <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="5">
                 Tổ chức chứng thực chữ ký số
               </nz-form-label>
-              <nz-form-control [nzSpan]="19" [nzErrorTip]="errorVendorToken">
+              <nz-form-control class="mg-lef-minus-2 ant-col-19-custom" [nzSpan]="19" [nzErrorTip]="errorVendorToken">
                 <input nz-input readonly formControlName="vendorToken" />
 
                 <ng-template #errorVendorToken let-control>
@@ -638,7 +637,7 @@
             <nz-form-item>
               <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">
                 Hiệu lực
-                <span>Từ ngày</span>
+                <span class="padding-left-2p"> Từ ngày </span>
               </nz-form-label>
               <nz-form-control [nzSpan]="14" class="margin-left-1p" [nzErrorTip]="errorFromDate">
                 <input nz-input readonly formControlName="fromDate" />
@@ -654,8 +653,8 @@
 
           <div nz-col [nzSpan]="12">
             <nz-form-item>
-              <nz-form-label class="text-left" [nzSpan]="6" [nzErrorTip]="errorExpired">Đến ngày</nz-form-label>
-              <nz-form-control [nzSpan]="18">
+              <nz-form-label class="text-left padding-left-2p" nzOffset="2" [nzSpan]="8" [nzErrorTip]="errorExpired">Đến ngày</nz-form-label>
+              <nz-form-control [nzSpan]="14">
                 <input nz-input readonly formControlName="expired" />
                 <ng-template #errorExpired let-control>
                   <ng-container *ngIf="control.hasError('required')">
@@ -735,7 +734,7 @@
                 <td>Hình thức thanh toán</td>
                 <td>
                   <nz-form-item>
-                    <nz-form-control [nzErrorTip]="errorPaymentMethodCodeIvan">
+                    <nz-form-control class="text-center"  [nzErrorTip]="errorPaymentMethodCodeIvan">
                       <nz-radio-group formControlName="paymentMethodCodeIvan">
                         <label nz-radio nzValue="TM">Tiền mặt</label>
                         <label nz-radio nzValue="CK">Chuyển khoản</label>
