@@ -1,12 +1,12 @@
 .register {
-  height: 36%;
+  // height: 32%;
   overflow-y: scroll;
 
   .page-company__content {
 
     .ant-row,
     .ant-table-row {
-      margin-bottom: 5px;
+      margin-bottom: 3px;
 
       .radio-group-custom {
         margin-top: 5px;
@@ -63,9 +63,48 @@
     }
 
   }
+}
+
+
+.collapse-attachment-files {
+  width: 100%;
+
+  .collapse-attachment {
+    border-bottom: 0;
+    background: #ffffff;
+
+    .app-labor-attachment {
+      .labor-attachment {
+        width: 100px;
+      }
+    }
+  }
 
 }
 
+:host ::ng-deep nz-collapse-panel {
+  .ant-collapse-header {
+    background: #fafafa;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+
+  .ant-collapse-content {
+    .ant-collapse-content-box {
+      padding: 16px 0;
+    }
+  }
+}
+
+
+:host ::ng-deep app-labor-attachment {
+  .labor-attachment {
+    height: 90px;
+    background: #ffffff;
+  }
+}
 
 
 .employee-form__group-title {

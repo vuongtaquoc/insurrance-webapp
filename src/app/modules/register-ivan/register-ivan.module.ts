@@ -14,6 +14,7 @@ import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
+import { NzCollapseModule } from 'ng-zorro-antd/collapse';
 
 import { AuthenticationService } from '@app/core/services';
 import { SharedModule } from '@app/shared/shared.module';
@@ -23,6 +24,7 @@ import {
 } from './pages';
 
 import { RegisterIvanProvisoComponent, RegisterIvanRegisterComponent, RegisterIvanStopServiceComponent, RegisterIvanGuideComponent } from "./components";
+import { LaborAttachmentComponent } from '../declarations/components';
 
 @NgModule({
   imports: [
@@ -41,6 +43,7 @@ import { RegisterIvanProvisoComponent, RegisterIvanRegisterComponent, RegisterIv
     NzSelectModule,
     NzGridModule,
     NzRadioModule,
+    NzCollapseModule,
     NgxMaskModule.forRoot()
   ],
   declarations: [
@@ -48,7 +51,8 @@ import { RegisterIvanProvisoComponent, RegisterIvanRegisterComponent, RegisterIv
     RegisterIvanProvisoComponent,
     RegisterIvanStopServiceComponent,
     RegisterIvanRegisterComponent,
-    RegisterIvanGuideComponent
+    RegisterIvanGuideComponent,
+    LaborAttachmentComponent
   ],
   providers: [
     AuthenticationService

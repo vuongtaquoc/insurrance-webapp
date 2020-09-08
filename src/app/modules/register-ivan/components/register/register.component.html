@@ -1,4 +1,4 @@
-<div class="page-company__container register">
+<div class="page-company__container register" [ngStyle]="{'height': getFullHeight()}">
   <div>&nbsp;</div>
   <div class="page-company__content">
     <form nz-form [formGroup]="registerForm">
@@ -152,6 +152,7 @@
           </div><!-- col -->
         </div><!-- END ROW -->
 
+        <!-- ROW START -->
         <div nz-row [nzGutter]="8">
           <div nz-col [nzSpan]="12">
             <nz-form-item>
@@ -190,10 +191,11 @@
 
         </div><!-- END ROW -->
 
+        <!-- ROW START -->
         <div nz-row [nzGutter]="8">
           <div nz-col nzSpan="24" nzOffset="5">
             <nz-form-item>
-              <label class="text-left" nz-checkbox formControlName="checked">
+              <label class="text-left" nz-checkbox formControlName="checked" (ngModelChange)="changeChecked($event)">
                 Đơn vị tham gia BHXH lần đầu (chưa có mã đơn vị)
                 <span class="icon-edit">
                   <a nz-button nzType="primary" nzShape="circle">
@@ -203,7 +205,67 @@
               </label>
             </nz-form-item>
           </div><!-- col -->
-        </div>
+        </div><!-- END ROW -->
+
+        <!-- ROW START -->
+        <div nz-row [nzGutter]="8" *ngIf="checked">
+          <div nz-col [nzSpan]="24">
+            <nz-form-item>
+              <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="4">
+                Loại hình đơn vị
+                <span class="icon-edit">
+                  <a nz-button nzType="primary" nzShape="circle">
+                    <i class="pd-b-8" nz-icon nzType="info"></i>
+                  </a>
+                </span>
+              </nz-form-label>
+              <nz-form-control class="ant-col-offset-1-edit" [nzSpan]="19" nzOffset="1" [nzErrorTip]="companyTypeError">
+                <input nz-input placeholder="Vui lòng kích vào biểu tượng (i) để lấy chính xác loại hình đơn vị"
+                  formControlName="companyType" />
+                <ng-template #groupCodeError let-control>
+                  <ng-container *ngIf="control.hasError('required')">
+                    Loại hình đơn vị không để trống
+                  </ng-container>
+                </ng-template>
+
+              </nz-form-control>
+            </nz-form-item>
+          </div><!-- col -->
+        </div><!-- END ROW -->
+
+        <div nz-row [nzGutter]="8" *ngIf="checked">
+          <div nz-col [nzSpan]="12">
+            <nz-form-item>
+              <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">
+                Số QĐ thành lập/giấy phép ĐKKD
+              </nz-form-label>
+              <nz-form-control [nzSpan]="14" class="margin-left-1p" [nzErrorTip]="errorLicense">
+                <input nz-input placeholder="Số QĐ thành lập/giấy phép ĐKKD" formControlName="license" />
+                <ng-template #errorLicense let-control>
+                  <ng-container *ngIf="control.hasError('required')">
+                    Số QĐ không được trống
+                  </ng-container>
+                </ng-template>
+              </nz-form-control>
+            </nz-form-item>
+          </div><!-- col -->
+          <div nz-col [nzSpan]="12">
+            <nz-form-item>
+              <nz-form-label class="text-left" [nzRequired]="true" nzOffset="2" [nzSpan]="8">
+                Nơi cấp
+              </nz-form-label>
+              <nz-form-control [nzSpan]="14" [nzErrorTip]="errorIssued">
+                <input nz-input placeholder="Nơi cấp" formControlName="issued" />
+                <ng-template #errorIssued let-control>
+                  <ng-container *ngIf="control.hasError('required')">
+                    Nơi cấp không được trống
+                  </ng-container>
+                </ng-template>
+              </nz-form-control>
+            </nz-form-item>
+          </div><!-- col -->
+        </div><!-- END ROW -->
+
 
         <!-- ROW START -->
         <div nz-row [nzGutter]="8">
@@ -408,6 +470,7 @@
           </div>
         </div>
 
+        <!-- ROW START -->
         <div nz-row [nzGutter]="8">
           <div nz-col [nzSpan]="12">
             <nz-form-item>
@@ -440,6 +503,56 @@
               </nz-form-control>
             </nz-form-item>
           </div><!-- col -->
+        </div><!-- END ROW -->
+
+        <!-- ROW START -->
+        <div nz-row [nzGutter]="8" *ngIf="checked">
+          <div nz-col [nzSpan]="24">
+            <nz-form-item>
+              <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="4">
+                Nội dung thay đổi, yêu cầu
+              </nz-form-label>
+              <nz-form-control class="ant-col-offset-1-edit" [nzSpan]="19" nzOffset="1" [nzErrorTip]="errorNoteChange">
+                <input nz-input placeholder="Địa chỉ giao dịch" formControlName="noteChange" />
+                <ng-template #errorNoteChange let-control>
+                  <ng-container *ngIf="control.hasError('required')">
+                    Nội dung không để trống
+                  </ng-container>
+                </ng-template>
+              </nz-form-control>
+            </nz-form-item>
+          </div><!-- col -->
+        </div><!-- END ROW -->
+
+        <!-- ROW START -->
+        <div nz-row [nzGutter]="8" *ngIf="checked">
+          <div nz-col [nzSpan]="24">
+            <nz-form-item>
+              <nz-form-label class="text-left" [nzSpan]="4">
+                Địa chỉ giao nhận hs bưu chính
+              </nz-form-label>
+              <nz-form-control class="ant-col-offset-1-edit" [nzSpan]="19" nzOffset="1">
+                <input nz-input placeholder=" Địa chỉ giao nhận hs bưu chính" formControlName="addressOther" />
+              </nz-form-control>
+            </nz-form-item>
+          </div><!-- col -->
+        </div><!-- END ROW -->
+
+        <!-- ROW START -->
+        <div nz-row [nzGutter]="8" *ngIf="checked">
+          <nz-collapse [nzBordered]="false" class="collapse-attachment-files">
+            <nz-collapse-panel [nzActive]="true" class="collapse-attachment" [nzHeader]="attachmentHeader">
+              <app-labor-attachment class="app-labor-attachment" [files]="files" [declarationCode]="'6000'"
+                (onSelectedFileChanged)="handleFileSelected($event)"></app-labor-attachment>
+            </nz-collapse-panel>
+          </nz-collapse>
+
+          <div class="attachment-header-custom">
+            <ng-template #attachmentHeader>
+              Tài liệu kèm theo
+            </ng-template>
+          </div>
+
         </div><!-- END ROW -->
       </div>
 

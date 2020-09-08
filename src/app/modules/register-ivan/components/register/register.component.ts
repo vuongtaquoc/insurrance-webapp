@@ -11,6 +11,14 @@ import { DATE_FORMAT, REGEX } from '@app/shared/constant';
 export class RegisterIvanRegisterComponent implements OnInit {
   registerIvanData: any[] = [];
   registerForm: FormGroup;
+  checked: boolean = false;
+  files: any[] = [];
+  isSubmit: boolean = false;
+
+  panel: any = {
+    general: { active: false },
+    attachment: { active: false }
+  };
   constructor(private formBuilder: FormBuilder) {
 
   }
@@ -31,7 +39,6 @@ export class RegisterIvanRegisterComponent implements OnInit {
       delegate: ['', [Validators.required]],
       position: ['', [Validators.required]],
       delegatePage: [''],
-      checked: [''],
       isHasCertificate: [''],
       dateFrom: [''],
       tel: ['', [Validators.required, Validators.pattern(REGEX.PHONE_NUMBER)]],
@@ -47,8 +54,13 @@ export class RegisterIvanRegisterComponent implements OnInit {
       expired: ['', [Validators.required]],
       expiryDate: ['', [Validators.required]],
       servicePack: ['', [Validators.required]],
-      paymentMethodCodeIvan: [, [Validators.required]]
-
+      paymentMethodCodeIvan: ['', [Validators.required]],
+      companyType: ['', [Validators.required]],
+      license: ['', [Validators.required]],
+      issued: ['', [Validators.required]],
+      noteChange: ['', [Validators.required]],
+      addressOther: [''],
+      checked: [false]
     },
       {
         validator: MustMatch('emailOfContract', 'emailOfContractConfirm')
@@ -63,15 +75,29 @@ export class RegisterIvanRegisterComponent implements OnInit {
     });
   }
 
+  changeChecked(value) {
+    this.checked = value;
+  }
+
   save() {
-    console.log(this.registerForm, 'this.registerForm');
+    this.isSubmit = true;
+
     for (const i in this.registerForm.controls) {
       this.registerForm.controls[i].markAsDirty();
       this.registerForm.controls[i].updateValueAndValidity();
     }
 
+    this.getFullHeight();
+
     // if (this.registerForm.invalid) {
     //   return;
     // }
   }
+
+  getFullHeight() {
+    debugger;
+    if (this.isSubmit && this.checked) return '25%';
+    return this.isSubmit ? '31%' : this.checked ? '32%' : '40%';
+  }
+
 }
