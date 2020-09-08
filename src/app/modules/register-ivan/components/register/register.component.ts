@@ -95,7 +95,6 @@ export class RegisterIvanRegisterComponent implements OnInit {
   }
 
   getFullHeight() {
-    debugger;
     if (this.isSubmit && this.checked) return '25%';
     return this.isSubmit ? '31%' : this.checked ? '32%' : '40%';
   }
