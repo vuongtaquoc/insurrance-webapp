@@ -1,0 +1,85 @@
+<div class="service-pack-table">
+  <form nz-form [formGroup]="contractForm">
+  <table class="table table-bordered">
+    <tbody>
+      <tr>
+        <td style="width: 20%;">Hạn sử dụng (*)</td>
+        <td style="width: 30%;">
+          <nz-form-item>
+            <nz-form-control [nzErrorTip]="errorProducts">
+              <nz-select (ngModelChange)="changeProduct($event)" nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="productId">
+              <nz-option *ngFor="let product of products" [nzLabel]="product.name"
+                [nzValue]="product.id">
+              </nz-option>
+            </nz-select>
+
+              <ng-template #errorProducts let-control>
+                <ng-container *ngIf="control.hasError('required')">
+                  Hạn sử dụng không được để trống
+                </ng-container>
+              </ng-template>
+            </nz-form-control>
+          </nz-form-item>
+
+        </td>
+        <td style="width: 20%;">Gói dịch vụ (*)</td>
+        <td style="width: 30%;">
+          <nz-form-item>
+            <nz-form-control [nzErrorTip]="errorPrice">
+              <nz-select (ngModelChange)="changePrice($event)" nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="priceId">
+                <nz-option *ngFor="let price of prices" [nzLabel]="price.name"
+                  [nzValue]="price.id">
+                </nz-option>
+              </nz-select>
+
+              <ng-template #errorPrice let-control>
+                <ng-container *ngIf="control.hasError('required')">
+                  Gói dịch vụ không được để trống
+                </ng-container>
+              </ng-template>
+            </nz-form-control>
+          </nz-form-item>
+
+        </td>
+      </tr>
+
+      <tr>
+        <td>Số tháng niêm yết</td>
+        <td>{{ dataStandard}}</td>
+        <td>Thành tiền I-VAN</td>
+        <td>{{ amount}} VNĐ</td>
+      </tr>
+
+      <tr>
+        <td>Số tháng khuyến mại</td>
+        <td>{{ dataBonus}} tháng</td>
+        <td>Hình thức thanh toán</td>
+        <td>
+          <nz-form-item>
+            <nz-form-control class="text-center"  [nzErrorTip]="errorPaymentMethodCodeIvan">
+              <nz-radio-group formControlName="paymentMethodCodeIvan">
+                <label nz-radio nzValue="TM">Tiền mặt</label>
+                <label nz-radio nzValue="CK">Chuyển khoản</label>
+              </nz-radio-group>
+
+              <ng-template #errorPaymentMethodCodeIvan let-control>
+                <ng-container *ngIf="control.hasError('required')">
+                  Hình thức thanh toán không để trống
+                </ng-container>
+              </ng-template>
+            </nz-form-control>
+          </nz-form-item>
+
+        </td>
+      </tr>
+
+      <tr>
+        <td>Số thời gian sử dụng</td>
+        <td>{{ useDate}}</td>
+        <td>Tổng thanh toán</td>
+        <td>{{ amount}} VNĐ</td>
+      </tr>
+    </tbody>
+  </table>
+</form>
+</div>
