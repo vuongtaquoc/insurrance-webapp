@@ -57,9 +57,9 @@
         <td>
           <nz-form-item>
             <nz-form-control class="text-center"  [nzErrorTip]="errorPaymentMethodCodeIvan">
-              <nz-radio-group formControlName="paymentMethodCodeIvan">
-                <label nz-radio nzValue="TM">Tiền mặt</label>
-                <label nz-radio nzValue="CK">Chuyển khoản</label>
+              <nz-radio-group formControlName="paymentMethodCode">
+                <label nz-radio nzValue="0">Tiền mặt</label>
+                <label nz-radio nzValue="1">Chuyển khoản</label>
               </nz-radio-group>
 
               <ng-template #errorPaymentMethodCodeIvan let-control>

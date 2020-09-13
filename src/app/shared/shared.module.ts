@@ -58,6 +58,7 @@ import {
   AcountFormComponent,
   EmailFormComponent,
   ContractComponent,
+  FileAttachmentComponent,
 } from './components';
 
 import {
@@ -117,6 +118,7 @@ import {
     AcountFormComponent,
     EmailFormComponent,
     ContractComponent,
+    FileAttachmentComponent,
   ],
   exports: [
     FormsModule,
@@ -138,7 +140,8 @@ import {
     ManageUnitFormComponent,
     DepartmentComponent,
     TooltipDirective,
-    ContractComponent
+    ContractComponent,
+    FileAttachmentComponent
   ],
   providers: [
     AuthenticationService,
@@ -161,6 +164,7 @@ import {
     AcountFormComponent,
     EmailFormComponent,
     ContractComponent,
+    FileAttachmentComponent,
   ]
 })
 export class SharedModule { }

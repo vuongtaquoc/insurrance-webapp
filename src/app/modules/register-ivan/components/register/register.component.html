@@ -1,8 +1,7 @@
-<div class="page-company__container register" [ngStyle]="{'height': getFullHeight()}">
+<div class="page-company__container register" [ngStyle]="{'height': getFullHeight()}"> 
+   
   <div>&nbsp;</div>
   <div class="page-company__content">
-    
-
       <div class="register-info">
         <h3 class="employee-form__group-title employee-form__group-title--disabled"> A. Thông tin đơn vị:</h3>
         <p class="mg-bottom-10 text-color-red">Đơn vị vui lòng nhập chính xác các thông tin dưới đây để đảm bảo giao dịch  được với cơ quan BHXH và lập hợp đồng, hóa đơn</p>
@@ -17,8 +16,7 @@
                 <nz-form-control [nzSpan]="14" [nzErrorTip]="cityCodeError">
                   <nz-select  (ngModelChange)="changeRegisterCity($event)" nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="cityCode">
                     <nz-option *ngFor="let city of cities" [nzLabel]="city.name" [nzValue]="city.id"></nz-option>
-                  </nz-select>
-  
+                  </nz-select>  
                   <ng-template #cityCodeError let-control>
                     <ng-container *ngIf="control.hasError('required')">
                       Tỉnh/TP không để trống
@@ -161,7 +159,7 @@
             </div><!-- col -->
             <div nz-col [nzSpan]="12">
               <nz-form-item>
-                <label class="text-left padding-left-checkbook" nz-checkbox formControlName="isFirst" (ngModelChange)="changeChecked($event)">
+                <label class="text-left padding-left-checkbook" nz-checkbox formControlName="isFirst" (ngModelChange)="changeIsFirst($event)">
                   Đơn vị tham gia BHXH lần đầu (chưa có mã đơn vị)
                   <span class="icon-edit">
                     <a nz-button nzType="primary" nzShape="circle">
@@ -198,7 +196,7 @@
             </div><!-- col -->
           </div><!-- END ROW -->
           <!-- ROW START -->
-            <div nz-row [nzGutter]="8" *ngIf="checked">
+            <div nz-row [nzGutter]="8" *ngIf="isFirst">
               <div nz-col [nzSpan]="12">
                 <nz-form-item>
                   <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">
@@ -315,8 +313,11 @@
                       Cấp ngày
                     </nz-form-label>
                     <nz-form-control [nzSpan]="14">
-                      <input nz-input formControlName="authorityDate" mask="00/00/0000" [showMaskTyped]="true" [validation]="true"
-                        [clearIfNotMatch]="true" />
+                      <input nz-input formControlName="authorityDate" 
+                      mask="00/00/0000" 
+                      [showMaskTyped]="true" 
+                      [validation]="true"
+                      [clearIfNotMatch]="true" />
                     </nz-form-control>
                   </nz-form-item>
                 </div><!-- col -->
@@ -437,7 +438,7 @@
             </div><!-- col -->
           </div><!-- END ROW -->
           <!-- ROW START -->
-          <div nz-row [nzGutter]="8" *ngIf="checked">
+          <div nz-row [nzGutter]="8" *ngIf="isFirst">
             <div nz-col [nzSpan]="24">
               <nz-form-item>
                 <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="4">
@@ -456,7 +457,7 @@
           </div><!-- END ROW -->
   
           <!-- ROW START -->
-          <div nz-row [nzGutter]="8" *ngIf="checked">
+          <div nz-row [nzGutter]="8" *ngIf="isFirst">
             <div nz-col [nzSpan]="24">
               <nz-form-item>
                 <nz-form-label class="text-left" [nzSpan]="4">
@@ -468,11 +469,11 @@
               </nz-form-item>
             </div><!-- col -->
           </div><!-- END ROW -->
-          <div nz-row [nzGutter]="8" *ngIf="checked">
+          <div nz-row [nzGutter]="8" *ngIf="isFirst">
               <nz-collapse [nzBordered]="false" class="collapse-attachment-files">
                 <nz-collapse-panel [nzActive]="true" class="collapse-attachment" [nzHeader]="attachmentHeader">
-                  <app-labor-attachment class="app-labor-attachment" [files]="files" [declarationCode]="'6000'"
-                    (onSelectedFileChanged)="handleFileSelected($event)"></app-labor-attachment>
+                  <app-file-attachment class="app-file-attachment" [files]="files" [rowDefault]="'6000'"
+                    (onSelectedFileChanged)="handleFileSelected($event)"></app-file-attachment>
                 </nz-collapse-panel>
               </nz-collapse>
     
@@ -491,7 +492,7 @@
               <div nz-row [nzGutter]="8">
                 <div nz-col [nzSpan]="8">
                   <nz-form-item>
-                    <nz-radio-group formControlName="hasToken" class="radio-group-custom">
+                    <nz-radio-group  formControlName="hasToken" (ngModelChange)="changeHasToken($event)" class="radio-group-custom">
                       <label nz-radio nzValue="1">Đã có chữ ký số</label>
                       <label nz-radio nzValue="0">Chưa có chữ ký số</label>
                     </nz-radio-group>
@@ -551,8 +552,7 @@
                     </nz-form-control>
                   </nz-form-item>
                 </div><!-- col -->
-              </div><!-- END ROW -->
-      
+              </div><!-- END ROW -->     
       
               <!-- ROW START -->
               <div nz-row [nzGutter]="8" *ngIf="!(hasToken === '0')">
@@ -596,7 +596,7 @@
         <div class="service-pack-title">
           <h3 class="employee-form__group-title employee-form__group-title--disabled">C. Lựa chọn gói dịch vụ I-VAN và Chữ ký số dự kiến mua (đã bao gồm thuế):</h3>
         </div>
-        <app-contract></app-contract>
+        <app-contract [data]="contract" (onFormValid) = "handleValidForm($event)" (onFormValuesChanged)="handleFormValuesChanged($event)"></app-contract>
       </div>
 
       <div style="margin-bottom: 5px;">
@@ -610,9 +610,9 @@
         </button>
       </div>
 
-      <div nz-row [nzGutter]="8" class="register-ivan-guide">
+      <!-- <div nz-row [nzGutter]="8" class="register-ivan-guide">
         <app-register-ivan-guide class="app-register-ivan-guide"></app-register-ivan-guide>
-      </div>  
+      </div>   -->
 
   </div>
 

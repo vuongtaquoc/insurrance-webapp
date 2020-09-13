@@ -3,14 +3,14 @@ import uuid from 'uuid';
 import cloneDeep from 'lodash/cloneDeep';
 
 @Component({
-  selector: 'app-labor-attachment',
-  templateUrl: './labor-attachment.component.html',
-  styleUrls: ['./labor-attachment.component.less'],
+  selector: 'app-file-attachment',
+  templateUrl: './file-attachment.component.html',
+  styleUrls: ['./file-attachment.component.less'],
   encapsulation: ViewEncapsulation.None
 })
-export class LaborAttachmentComponent implements OnInit, OnChanges {
+export class FileAttachmentComponent implements OnInit, OnChanges {
   @Input() files: any = [];
-  @Input() declarationCode: any;
+  @Input() rowDefault: string;
   @Output() onChangeName = new EventEmitter<any>();
   @Output() onSelectedFileChanged = new EventEmitter<any>();
 
@@ -29,7 +29,6 @@ export class LaborAttachmentComponent implements OnInit, OnChanges {
 
     if (changes.files && changes.files.currentValue && changes.files.currentValue.length) {
       changes.files.currentValue
-        .filter(f => f.declarationCode === this.declarationCode)
         .forEach((file, index) => {
           this.rows[index].documentName = file.documentName;
           this.rows[index].fileName = file.fileName;
@@ -39,19 +38,28 @@ export class LaborAttachmentComponent implements OnInit, OnChanges {
   }
 
   private loadDefaultData() {
+    
     for (let i = 1; i <= 10; i++) {
-      this.rows.push({
-        no: i,
-        rowId: uuid.v4(),
-        documentName: '',
-        declarationCode: this.declarationCode,
-        data: {},
-        hasFile: false
-      });
+      if (i === 1 && this.rowDefault !== '') {
+        this.rows.push({
+          no: i,
+          rowId: uuid.v4(),
+          documentName: this.rowDefault,
+          data: {},
+          hasFile: true
+        });
+      } else {
+        this.rows.push({
+          no: i,
+          rowId: uuid.v4(),
+          documentName: '',
+          data: {},
+          hasFile: false
+        });
+      }
+        
     }
   }
-
-
 
   handleFileSelected(file, rowId) {
     const row = this.rows.find(r => r.rowId === rowId);
@@ -63,10 +71,9 @@ export class LaborAttachmentComponent implements OnInit, OnChanges {
     row.size = file.metadata.size;
     row.hasFile = true;
 
-    const otherFiles = (this.files || []).filter(f => f.declarationCode !== this.declarationCode);
     const files = this.rows.filter(row => row.hasFile);
 
-    this.onSelectedFileChanged.emit(cloneDeep([...files, ...otherFiles]));
+    this.onSelectedFileChanged.emit(cloneDeep([...files]));
   }
 
   handleChangeDocumentName(rowId) {
@@ -74,10 +81,9 @@ export class LaborAttachmentComponent implements OnInit, OnChanges {
 
     if (!row) return;
 
-    const otherFiles = (this.files || []).filter(f => f.declarationCode !== this.declarationCode);
     const files = this.rows.filter(row => row.hasFile);
 
-    this.onSelectedFileChanged.emit(cloneDeep([...files, ...otherFiles]));
+    this.onSelectedFileChanged.emit(cloneDeep([...files]));
   }
 
   handleClearRow(rowId) {
@@ -91,9 +97,8 @@ export class LaborAttachmentComponent implements OnInit, OnChanges {
     row.hasFile = false;
     row.documentName = '';
 
-    const otherFiles = (this.files || []).filter(f => f.declarationCode !== this.declarationCode);
     const files = this.rows.filter(row => row.hasFile);
 
-    this.onSelectedFileChanged.emit(cloneDeep(cloneDeep([...files, ...otherFiles])));
+    this.onSelectedFileChanged.emit(cloneDeep(cloneDeep([...files])));
   }
 }

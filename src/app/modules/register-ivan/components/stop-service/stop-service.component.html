@@ -10,13 +10,13 @@
           </h3>
           <!-- ROW START -->
           <div nz-row [nzGutter]="10">
-            <div nz-col [nzSpan]="24">
+            <div nz-col [nzSpan]="12">
               <nz-form-item>
-                <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="4">
+                <nz-form-label class="text-left" [nzRequired]="true"  [nzSpan]="10">
                   Tỉnh/thành phố
                 </nz-form-label>
-                <nz-form-control class="ant-col-offset-1-edit" [nzSpan]="19" nzOffset="1" [nzErrorTip]="registerCityCodeError">
-                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="registerCityCode">
+                <nz-form-control [nzSpan]="14" [nzErrorTip]="registerCityCodeError">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="cityCode">
                     <nz-option *ngFor="let city of cities" [nzLabel]="city.name" [nzValue]="city.id"></nz-option>
                   </nz-select>
 
@@ -29,33 +29,26 @@
                 </nz-form-control>
               </nz-form-item>
             </div><!-- col -->
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                  <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">
+                    Cơ quan BHXH quản lý
+                  </nz-form-label>
+                  <nz-form-control [nzSpan]="14"
+                    [nzErrorTip]="registerCompanyError">
+                    <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="isurranceDepartmentId">
+                        <nz-option [nzValue]="isurranceDepartment.id" [nzLabel]="isurranceDepartment.name" *ngFor="let isurranceDepartment of isurranceDepartments"></nz-option>
+                    </nz-select>
+                    <ng-template #registerCompanyError let-control>
+                      <ng-container *ngIf="control.hasError('required')">
+                        Cơ quan BHXH không để trống
+                      </ng-container>
+                    </ng-template>
+  
+                  </nz-form-control>
+                </nz-form-item>
+              </div><!-- col -->
           </div><!-- END ROW -->
-
-          <!-- ROW START -->
-          <div nz-row [nzGutter]="10">
-            <div nz-col [nzSpan]="24">
-              <nz-form-item>
-                <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="4">
-                  Cơ quan BHXH quản lý
-                </nz-form-label>
-                <nz-form-control class="ant-col-offset-1-edit" [nzSpan]="19" nzOffset="1"
-                  [nzErrorTip]="registerCompanyError">
-                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="registerCompany">
-                    <nz-option *ngFor="let company of registerCompanies" [nzLabel]="company.name"
-                      [nzValue]="company.id">
-                    </nz-option>
-                  </nz-select>
-                  <ng-template #registerCompanyError let-control>
-                    <ng-container *ngIf="control.hasError('required')">
-                      Cơ quan BHXH không để trống
-                    </ng-container>
-                  </ng-template>
-
-                </nz-form-control>
-              </nz-form-item>
-            </div><!-- col -->
-          </div><!-- END ROW -->
-
           <div nz-row [nzGutter]="10">
             <div nz-col [nzSpan]="12">
               <nz-form-item>

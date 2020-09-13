@@ -24,6 +24,11 @@ export class ContractService {
     });
   }
 
+  public getContractOfCompany() {
+    return this.http.get('/contract/withcompany', {
+    });
+  }
+
   public create(body, options = {}) {
     return this.http.post('/contract', body, options);
   }

@@ -1,0 +1,27 @@
+<div class="labor-attachment">
+  <table class="labor-attachment-table">
+    <tbody>
+      <tr *ngFor="let row of rows">
+        <td width="5%" class="text-center">{{ row.no }}</td>
+        <td width="35%">
+          <input nz-input nzSize="small" placeholder="Nhập tên file tài liệu đính kèm" [(ngModel)]="row.documentName" (change)="handleChangeDocumentName(row.rowId)" />
+        </td>
+        <td width="60%" class="text-right">
+          <div class="labor-attachment__content">
+            <div class="labor-attachment__filename">{{row.fileName}}</div>
+            <div class="labor-attachment__button">
+              <button
+                nz-button nzType="default"
+                nzSize="small"
+                [disabled]="!row.documentName"
+                plupload
+                (onSelectedFileChanged)="handleFileSelected($event, row.rowId)"
+              ><i nz-icon nzType="paper-clip" nzTheme="outline"></i>File đính kèm</button>
+              <button nz-button nzType="default" nzSize="small" [disabled]="!row.documentName" (click)="handleClearRow(row.rowId)"><i nz-icon nzType="close"></i></button>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
