@@ -8,9 +8,9 @@
         <div nz-row nzGutter="10">
           <div nz-col [nzSpan]="12">
             <nz-form-item>
-              <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="6">
+              <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="7">
                 {{ 'system.accounts.form.fullName' | translate }}</nz-form-label>
-              <nz-form-control [nzSpan]="18" [nzErrorTip]="nameTempl">
+              <nz-form-control [nzSpan]="17" [nzErrorTip]="nameTempl">
                 <input nz-input placeholder="{{ 'system.accounts.form.fullName' | translate }}"
                   formControlName="name" />
                 <ng-template #nameTempl let-control>
@@ -24,9 +24,9 @@
 
           <div nz-col [nzSpan]="12">
             <nz-form-item>
-              <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="6">
+              <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="6" nzOffset="1">
                 {{ 'system.accounts.form.tel' | translate }}</nz-form-label>
-              <nz-form-control [nzSpan]="18" [nzErrorTip]="mobileTpl">
+              <nz-form-control [nzSpan]="17" [nzErrorTip]="mobileTpl">
                 <input nz-input placeholder="{{ 'system.accounts.form.tel' | translate }}" formControlName="mobile" />
                 <ng-template #mobileTpl let-control>
                   <ng-container *ngIf="control.hasError('required')">
@@ -44,9 +44,9 @@
         <div nz-row nzGutter="10">
           <div nz-col [nzSpan]="12">
             <nz-form-item>
-              <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="6">
+              <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="7">
                 {{ 'system.accounts.form.userName' | translate }}</nz-form-label>
-              <nz-form-control [nzSpan]="18" [nzErrorTip]="loginIdTemp">
+              <nz-form-control [nzSpan]="17" [nzErrorTip]="loginIdTemp">
                 <input nz-input placeholder="{{ 'system.accounts.form.userName' | translate }}"
                   formControlName="loginId" />
                 <ng-template #loginIdTemp let-control>
@@ -63,9 +63,9 @@
 
           <div nz-col [nzSpan]="12">
             <nz-form-item>
-              <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="6">
+              <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="6" nzOffset="1">
                 {{ 'system.accounts.form.passWord' | translate }}</nz-form-label>
-              <nz-form-control [nzSpan]="18" [nzErrorTip]="passwordTemp">
+              <nz-form-control [nzSpan]="17" [nzErrorTip]="passwordTemp">
                 <input [readonly]="isEdit" type="password" nz-input
                   placeholder="{{ 'system.accounts.form.passWord' | translate }}" formControlName="passWord" />
                 <ng-template #passwordTemp let-control>
@@ -84,9 +84,9 @@
         <div nz-row nzGutter="10">
           <div nz-col [nzSpan]="12">
             <nz-form-item>
-              <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="6">
+              <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="7">
                 {{ 'system.accounts.form.email' | translate }}</nz-form-label>
-              <nz-form-control [nzSpan]="18" [nzErrorTip]="emailError">
+              <nz-form-control [nzSpan]="17" [nzErrorTip]="emailError">
                 <input nz-input placeholder="{{ 'system.accounts.form.email' | translate }}" formControlName="email" />
                 <ng-template #emailError let-control>
                   <ng-container *ngIf="control.hasError('required')">
@@ -99,7 +99,7 @@
               </nz-form-control>
             </nz-form-item>
           </div><!-- col -->
-          <div nz-col [nzSpan]="12">
+          <div nz-col [nzSpan]="12" class="active-status">
             <nz-checkbox-wrapper>
               <label nz-checkbox formControlName="active">{{ 'system.accounts.form.status' | translate }} </label>
             </nz-checkbox-wrapper>
@@ -130,9 +130,9 @@
                   <span>{{'system.accounts.permission.permission_READ' | translate}}</span></th>
                 <th nzWidth="100px" class="cell-custom" nzColumnKey="delegate">
                   <span>{{'system.accounts.permission.permission_UPDATE' | translate}}</span></th>
-                <th nzWidth="100px" class="cell-custom" nzColumnKey="delegate">
+                <th nzWidth="95px" class="cell-custom" nzColumnKey="delegate">
                   <span>{{'system.accounts.permission.permission_CREATE' | translate}}</span></th>
-                <th nzWidth="100px" class="cell-custom" nzColumnKey="delegate">
+                <th nzWidth="80px" class="cell-custom" nzColumnKey="delegate">
                   <span>{{'system.accounts.permission.permission_DELETE' | translate}}</span></th>
                 <th nzWidth="100px" class="cell-custom" nzColumnKey="delegate">
                   <span>{{'system.accounts.permission.permission_ACTIVATED' | translate}}</span></th>
@@ -145,32 +145,32 @@
               <tr *ngFor="let role of ajaxTable.data;index as i">
                 <td>{{i + 1}}</td>
                 <td>{{ role.screenName }}</td>
-                <td>
+                <td class="text-center">
                     <ng-container *ngIf="role && role.read !== 2">
                         <input type="checkbox" [(ngModel)]="role.read" name="role-read-{{ i + 1 }}">
                     </ng-container>
                 </td>
-                <td>
+                <td class="text-center">
                     <ng-container *ngIf="role && role.update !== 2">
                         <input type="checkbox" [(ngModel)]="role.update" name="role-update-{{ i + 1 }}">
                     </ng-container>
                 </td>
-                <td>
+                <td class="text-center">
                     <ng-container *ngIf="role && role.create !== 2">
                         <input type="checkbox" [(ngModel)]="role.create" name="role-create-{{ i + 1 }}">
                     </ng-container>
                 </td>
-                <td>
+                <td class="text-center">
                     <ng-container *ngIf="role && role.delete !== 2">
                         <input type="checkbox" [(ngModel)]="role.delete" name="role-delete-{{ i + 1 }}">
                     </ng-container>
                 </td>
-                <td>
+                <td class="text-center">
                     <ng-container *ngIf="role && role.active !== 2">
                         <input type="checkbox" [(ngModel)]="role.active" name="role-active-{{ i + 1 }}">
                     </ng-container>
                 </td>
-                <td>
+                <td class="text-center">
                     <ng-container *ngIf="role && role.approve !== 2">
                         <input type="checkbox" [(ngModel)]="role.approve" name="role-approve-{{ i + 1 }}">
                     </ng-container>

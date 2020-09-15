@@ -1,16 +1,51 @@
 .table-editor {
-    height: auto;
-    width: 100%;
-    .ant-table-thead > tr > th {
-        padding: 7px 11px;
-    }
-}
-.footer-botton {
-    padding: 10px 16px;
-    text-align: right;
-    background: transparent;
+  height: auto;
+  width: 100%;
 
-    button {
-        margin: 0px 2px;
-    }
+  .ant-table-thead>tr>th {
+    padding: 7px 11px;
+  }
+
+  .ant-table-tbody>tr>td {
+    padding: 5px 16px;
+  }
+
+  .cell-custom {
+    font-weight: bold;
+    text-align: center;
+    color: white;
+    background: #3498db;
+  }
+
+}
+
+.footer-botton {
+  padding: 10px 16px;
+  text-align: right;
+  background: transparent;
+
+  button {
+    margin: 0px 2px;
+  }
+
+  .employee-form__button-save,
+  .employee-form__button-save:hover {
+    background: #27ae60;
+    color: white;
+    border-color: #27ae60;
+  }
+
+  .employee-form__button-back,
+  .employee-form__button-back:hover {
+    background: #ce5545;
+    border: 1px solid #ce5545;
+    border-bottom: 1px solid #b13e2f;
+    color: #fff;
+  }
+}
+
+.active-status {
+  margin-left: 25px;
+  flex: 0 0 40%;
+  line-height: 30px;
 }
