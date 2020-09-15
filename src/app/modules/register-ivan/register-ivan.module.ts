@@ -24,7 +24,6 @@ import {
 } from './pages';
 
 import { RegisterIvanProvisoComponent, RegisterIvanRegisterComponent, RegisterIvanStopServiceComponent, RegisterIvanGuideComponent } from "./components";
-import { LaborAttachmentComponent } from '../declarations/components';
 
 @NgModule({
   imports: [
@@ -52,7 +51,6 @@ import { LaborAttachmentComponent } from '../declarations/components';
     RegisterIvanStopServiceComponent,
     RegisterIvanRegisterComponent,
     RegisterIvanGuideComponent,
-    LaborAttachmentComponent
   ],
   providers: [
     AuthenticationService

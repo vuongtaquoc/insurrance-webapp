@@ -31,5 +31,10 @@ export class CompanyService {
     options.displayLoading = true;
     return this.http.post(`/companies/updatemycompany/${ id }`, body, options);
   }
+
+  public getCompanyInfo(id: string) {
+    return this.http.get(`/companies/mycompany/${id}`);
+  }
+
   
 }

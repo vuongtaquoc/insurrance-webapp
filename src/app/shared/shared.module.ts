@@ -57,6 +57,8 @@ import {
   ManageUnitFormComponent,
   AcountFormComponent,
   EmailFormComponent,
+  ContractComponent,
+  FileAttachmentComponent,
 } from './components';
 
 import {
@@ -115,6 +117,8 @@ import {
     TooltipDirective,
     AcountFormComponent,
     EmailFormComponent,
+    ContractComponent,
+    FileAttachmentComponent,
   ],
   exports: [
     FormsModule,
@@ -135,7 +139,9 @@ import {
     NzToolTipModule,
     ManageUnitFormComponent,
     DepartmentComponent,
-    TooltipDirective
+    TooltipDirective,
+    ContractComponent,
+    FileAttachmentComponent
   ],
   providers: [
     AuthenticationService,
@@ -157,6 +163,8 @@ import {
     ManageUnitFormComponent,
     AcountFormComponent,
     EmailFormComponent,
+    ContractComponent,
+    FileAttachmentComponent,
   ]
 })
 export class SharedModule { }
