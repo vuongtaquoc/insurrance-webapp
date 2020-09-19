@@ -307,7 +307,6 @@ export class TableEditorNormalComponent implements AfterViewInit, OnInit, OnDest
   }
 
   private handleEvent({ type, user, deletedIndexes }) {
-    console.log( type, user, deletedIndexes);
     if (type === 'validate') {
       setTimeout(() => {
         eventEmitter.emit('adjust-general:validate', {

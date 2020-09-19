@@ -238,7 +238,6 @@ export class RegisterIvanRegisterComponent implements OnInit {
         this.loading = true;
         this.files = data.files;
         this.contract = data.contractDetail;
-        console.log(this.files, this.contract);
       });
 
     });
