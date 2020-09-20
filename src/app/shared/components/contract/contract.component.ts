@@ -126,6 +126,12 @@ export class ContractComponent implements OnInit, OnChanges {
   }
 
   validForm() {
+    
+    for (const i in this.contractForm.controls) {
+      this.contractForm.controls[i].markAsDirty();
+      this.contractForm.controls[i].updateValueAndValidity();
+    }
+
     this.onFormValid.emit({result: this.contractForm.invalid});
   }
 }
