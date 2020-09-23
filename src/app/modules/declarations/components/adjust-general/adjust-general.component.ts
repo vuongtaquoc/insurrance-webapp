@@ -360,7 +360,7 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
         }
       });
     }
-    
+
     if (this.declarationId) {
       this.update('saveAndView');
     } else {
@@ -423,7 +423,7 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
       });
       return;
     }
-     
+
     if (this.declarationId) {
       this.update('save');
     } else {
