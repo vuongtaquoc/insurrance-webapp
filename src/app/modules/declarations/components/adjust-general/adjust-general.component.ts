@@ -63,6 +63,8 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
   isTableValid = false;
   status = 0;
   tableErrors = {};
+  tableSubmitErrors = {};
+  tableSubmitErrorCount = 0;
   formError: any[] = [];
   panel: any = {
     general: { active: false },
@@ -77,6 +79,7 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
     formGenelral: {},
     tables: {}
   };
+  isSpinning = false;
 
   families: any[] = [];
   informations: any[] = [];
@@ -195,6 +198,7 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
         this.allInitialize[name] = leaf.length === initialize.length;
         this.isTableValid = Object.values(this.allInitialize).indexOf(false) === -1 ? false : true;
         this.tableErrors[name + this.declarationCode] = errors;
+        // console.log(name + this.declarationCode, errors)
       });
 
       this.tabSubject.next({
@@ -319,6 +323,9 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
   }
 
   saveAndView() {
+    this.tableSubmitErrors = {};
+    this.tableSubmitErrorCount = 0;
+
     if(!this.isTableValid) {
       this.modalService.warning({
         nzTitle: 'Bạn chưa kê khai'
@@ -352,12 +359,25 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
     );
 
     if (count > 0) {
+      this.tableSubmitErrors = Object.keys(this.tableErrors).reduce(
+        (combine, key) => {
+          const data = this.tableErrors[key];
+
+          return {...combine, [key]: data.length};
+        },
+        {}
+      );
+
+      this.tableSubmitErrorCount = count;
+
       return this.modalService.error({
         nzTitle: 'Lỗi dữ liệu. Vui lòng sửa!',
         nzContent: TableEditorErrorsComponent,
         nzComponentParams: {
           errors: this.getColumnErrror()
-        }
+        },
+        // nzOnOk: () => this.tableSubmitErrors = {},
+        // nzOnCancel: () => this.tableSubmitErrors = {}
       });
     }
 
@@ -447,6 +467,8 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
   }
 
   private create(type: any) {
+    this.isSpinning = true;
+
     this.declarationService.create({
       type: type,
       declarationCode: this.declarationCode,
@@ -462,6 +484,8 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
       families: this.reformatFamilies(),
       flies: this.declarations.files,
     }).subscribe(data => {
+      this.isSpinning = false;
+
       if (type === 'saveAndView') {
         this.viewDocument(data);
       } else{
@@ -471,6 +495,7 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
   }
 
   private update(type: any) {
+    this.isSpinning = true;
 
     this.declarationService.update(this.declarationId, {
       type: type,
@@ -487,6 +512,8 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
       families: this.reformatFamilies(),
       flies: this.declarations.files,
     }).subscribe(data => {
+      this.isSpinning = false;
+
       if (type === 'saveAndView') {
         this.viewDocument(data);
       } else {
