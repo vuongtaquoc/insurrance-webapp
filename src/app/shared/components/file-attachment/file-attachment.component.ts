@@ -34,6 +34,9 @@ export class FileAttachmentComponent implements OnInit, OnChanges {
           this.rows[index].fileName = file.fileName;
           this.rows[index].hasFile = true;
         });
+
+       const files = this.rows.filter(row => row.hasFile);
+       this.onSelectedFileChanged.emit(cloneDeep([...files]));
     }
   }
 
@@ -45,7 +48,7 @@ export class FileAttachmentComponent implements OnInit, OnChanges {
           no: i,
           rowId: uuid.v4(),
           documentName: this.rowDefault,
-          data: {},
+          data: null,
           hasFile: true
         });
       } else {
@@ -53,7 +56,7 @@ export class FileAttachmentComponent implements OnInit, OnChanges {
           no: i,
           rowId: uuid.v4(),
           documentName: '',
-          data: {},
+          data: null,
           hasFile: false
         });
       }

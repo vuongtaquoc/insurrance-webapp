@@ -16,7 +16,7 @@
                   Tỉnh/thành phố
                 </nz-form-label>
                 <nz-form-control [nzSpan]="14" [nzErrorTip]="registerCityCodeError">
-                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="cityCode">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" (ngModelChange)="changeRegisterCity($event)" formControlName="cityCode">
                     <nz-option *ngFor="let city of cities" [nzLabel]="city.name" [nzValue]="city.id"></nz-option>
                   </nz-select>
 
@@ -138,7 +138,7 @@
             <button class="btn-register" nz-button nzType="primary" (click)="save()">
               <i nz-icon nzType="form"></i>Đăng ký ngừng
             </button>
-            <button class="employee-form__button-back" nz-button nzType="default" [routerLink]="['/agencies/list']">
+            <button class="employee-form__button-back" nz-button nzType="default" (click)="rollback()">
               <i nz-icon nzType="stop"></i>Quay lại
           </button>
           </div>

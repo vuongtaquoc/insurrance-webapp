@@ -47,7 +47,7 @@ export class ContractComponent implements OnInit, OnChanges {
     this.contractForm = this.formBuilder.group({
       productId: [null,[Validators.required]],
       priceId: [null , [Validators.required]],
-      paymentMethodCode: ['0', [Validators.required]],
+      typePayment: ['0', [Validators.required]],
     });
     
     this.formChanges();
@@ -69,7 +69,7 @@ export class ContractComponent implements OnInit, OnChanges {
       this.contractForm.patchValue({
         productId: data.productId,
         priceId: data.priceId,
-        paymentMethodCode: data.paymentMethodCode,
+        typePayment: data.typePayment.toString(),
       });
 
       this.products = products.data;

@@ -64,8 +64,7 @@ import {
 import {
   CardFullHeightDirective,
   EditorAutoSizeDirective,
-  PluploadDirective,
-  TooltipDirective
+  PluploadDirective
 } from './directives';
 
 @NgModule({
@@ -114,7 +113,6 @@ import {
     PluploadDirective,
     ManageUnitFormComponent,
     DepartmentComponent,
-    TooltipDirective,
     AcountFormComponent,
     EmailFormComponent,
     ContractComponent,
@@ -139,7 +137,6 @@ import {
     NzToolTipModule,
     ManageUnitFormComponent,
     DepartmentComponent,
-    TooltipDirective,
     ContractComponent,
     FileAttachmentComponent
   ],

@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { Router } from '@angular/router';
 import { DataRegisterIvan, MustMatch } from "@app/shared/constant";
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DATE_FORMAT, REGEX } from '@app/shared/constant';
@@ -53,6 +54,7 @@ export class RegisterIvanRegisterComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private cityService: CityService,
+    private router: Router,
     private isurranceDepartmentService: IsurranceDepartmentService,
     private salaryAreaService: SalaryAreaService,
     private paymentMethodServiced: PaymentMethodServiced,
@@ -154,7 +156,6 @@ export class RegisterIvanRegisterComponent implements OnInit {
     if (this.registerForm.invalid || this.formContractIsvalid) {
       return;
     }
-
     if(this.isFirst && this.fileUpload.length < 1) {
       this.modalService.error({
         nzTitle: 'Lỗi đăng ký',
@@ -169,11 +170,10 @@ export class RegisterIvanRegisterComponent implements OnInit {
         nzTitle: 'Đăng ký thành công',
         nzContent: 'Chúng tôi sẽ liên hệ lại đơn vị để xác nhận thông tin lập hợp đồng, hóa đơn'
       });
+      this.router.navigate([this.authenticationService.currentCredentials.role.defaultUrl]);
     });
 
   }
-
-  
 
   private getFullHeight() {
     if(this.isFirst) {
@@ -188,9 +188,9 @@ export class RegisterIvanRegisterComponent implements OnInit {
     this.currentCompanyId = this.authenticationService.currentCredentials.companyInfo.id;
     this.getDetail();
     this.contract = {
-      productId: 1,
-      priceId: 2,
-      paymentMethodCode: '0',
+      productId: null,
+      priceId: null,
+      typePayment: '0',
     };
   }
 
