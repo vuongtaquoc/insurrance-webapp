@@ -32,7 +32,7 @@ import {
   EmailNotificationService,
   ContractService,
   PriceService,
-
+  SwitchVendorService,
 } from './services';
 
 @NgModule({
@@ -70,6 +70,7 @@ import {
     EmailNotificationService,
     ContractService,
     PriceService,
+    SwitchVendorService,
   ],
   declarations: []
 })
