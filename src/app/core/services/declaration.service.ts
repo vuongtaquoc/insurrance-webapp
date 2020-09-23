@@ -60,7 +60,7 @@ export class DeclarationService {
 
   public getDeclarationsNormalByDocumentId(id, tableHeaderColumns) {
     return this.http.get(`/declarations/normal/${ id }`).pipe(
-      map(detail => {       
+      map(detail => {
         const declaration = detail;
         const declarationDetail = this.updateDeclarationsNormal(detail.declarationDetail, tableHeaderColumns);
 
@@ -126,6 +126,7 @@ export class DeclarationService {
         key: d.code,
         data: [ d.codeView, d.name ],
         hasLeaf: d.hasChildren,
+        isOther: d.isOther,
         isParent: true
       });
 
@@ -178,7 +179,8 @@ export class DeclarationService {
         key: d.code,
         data: [ d.codeView, d.name ],
         hasLeaf: d.hasChildren,
-        isParent: true
+        isParent: true,
+        isOther: d.isOther
       };
 
       parts.part1.push({ ...data });
@@ -218,12 +220,21 @@ export class DeclarationService {
     const sumColumnIndexes = this.getSumColumnIndexes(tableHeaderColumns);
     clone.forEach((declaration, index) => {
       if (declaration.formula) {
-        const lastFormulaIndex = findLastIndex(clone, (d, i) => i < index && !!d.formula);
+        const fromIndex = findLastIndex(clone, (d, i) => i < index && !!d.formula);
+        let toIndex = index;
+        for (let i = fromIndex; i <= index; i++) {
+          const other = clone[i];
+
+          if (other && (other.isOther || (other.parent && other.parent.isOther))) {
+            toIndex = i;
+            break;
+          }
+        }
 
         sumColumnIndexes.forEach(i => {
           const columnName = jexcel.getColumnName(i);
 
-          declaration.data[i] = `=SUM(${ columnName }${ lastFormulaIndex + 2 }:${ columnName }${ index })`;
+          declaration.data[i] = `=SUM(${ columnName }${ fromIndex + 2 }:${ columnName }${ toIndex })`;
         });
       }
     });
