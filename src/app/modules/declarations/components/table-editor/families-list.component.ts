@@ -18,6 +18,7 @@ export class FamiliesListTableComponent implements OnInit, OnDestroy, OnChanges,
   @Input() events: Observable<void>;
   @Input() columns: any[] = [];
   @Input() tableName: string;
+  @Input() tableEvent: string;
   @Input() nestedHeaders: any[] = [];
   @Output() onChange: EventEmitter<any> = new EventEmitter();
   @Output() onSubmit: EventEmitter<any> = new EventEmitter();
@@ -150,14 +151,14 @@ export class FamiliesListTableComponent implements OnInit, OnDestroy, OnChanges,
   }
 
   private updateTable() {
-    
+
     const data = [];
     this.data.forEach((d, index) => {
       d.data = d.data || [];
       d.origin = d.origin;
       data.push(d.data);
     });
-    
+
     let i = 1;
     let numberOfMember = 1;
     data.forEach(d => {
@@ -260,6 +261,13 @@ export class FamiliesListTableComponent implements OnInit, OnDestroy, OnChanges,
           instance.jexcel.setCellError(fieldName, x, y, { duplicateOtherField: otherXValue }, { duplicateOtherField: true }, false);
           instance.jexcel.setCellError(fieldName, otherX, y, { duplicateOtherField: xValue }, { duplicateOtherField: true }, false);
         }
+      }
+
+      if (this.tableEvent) {
+        this.handleEvent({
+          type: 'validate',
+          tableEvent: this.tableEvent
+        });
       }
     }, 10)
 

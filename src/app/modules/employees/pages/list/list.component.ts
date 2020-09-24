@@ -125,7 +125,7 @@ export class EmployeeListComponent implements OnInit {
     }
   }
 
-  
+
 
   getDepartment(callback) {
     this.departmentService.getDepartmentShortName().subscribe(data => {
@@ -175,6 +175,8 @@ export class EmployeeListComponent implements OnInit {
       modal.afterClose.subscribe(result => {
         this.getEmployees();
       });
+    }, () => {
+      this.isSpinning = false;
     });
   }
 

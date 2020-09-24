@@ -23,7 +23,7 @@
                 <div nz-col [nzSpan]="12">
                     <nz-form-item>
                       <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Số điện thoại</nz-form-label>
-                      <nz-form-control [nzSpan]="14" [nzErrorTip]="mobileTpl">                         
+                      <nz-form-control [nzSpan]="14" [nzErrorTip]="mobileTpl">
                         <input nz-input formControlName="mobile" placeholder="Số điện thoại">
                         <ng-template #mobileTpl let-control>
                           <ng-container *ngIf="control.hasError('required')">
@@ -171,6 +171,7 @@
             <div class="document-form__process-table">
               <app-families-list-table
                 tableName="family"
+                [tableEvent]="eventValidData"
                 [data]="families"
                 [nestedHeaders]="tableNestedHeadersFamilies"
                 [columns]="tableHeaderColumnsFamilies"
@@ -181,7 +182,7 @@
               ></app-families-list-table>
             </div>
           </div>
-        </nz-tab><!-- tab 3-->     
+        </nz-tab><!-- tab 3-->
         <nz-tab nzTitle="Bảng kê hồ sơ">
           <div class="page-document-list__container">
             <form nz-form [formGroup]="documentForm">
