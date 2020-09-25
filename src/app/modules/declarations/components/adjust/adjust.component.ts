@@ -62,6 +62,8 @@ export class AdjustComponent implements OnInit, OnDestroy {
   isTableValid = false;
   status = 0;
   tableErrors = {};
+  tableSubmitErrors = {};
+  tableSubmitErrorCount = 0;
   formError: any[] = [];
   panel: any = {
     general: { active: false },
@@ -83,6 +85,7 @@ export class AdjustComponent implements OnInit, OnDestroy {
   tableSubject: Subject<any> = new Subject<any>();
   tabSubject: Subject<any> = new Subject<any>();
   handlers: any = [];
+  isSpinning = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -240,6 +243,9 @@ export class AdjustComponent implements OnInit, OnDestroy {
   }
 
   saveAndView() {
+    this.tableSubmitErrors = {};
+    this.tableSubmitErrorCount = 0;
+
     if(!this.isTableValid) {
       this.modalService.warning({
         nzTitle: 'Bạn chưa kê khai'
@@ -273,6 +279,16 @@ export class AdjustComponent implements OnInit, OnDestroy {
     );
 
     if (count > 0) {
+
+      this.tableSubmitErrors = Object.keys(this.tableErrors).reduce(
+        (combine, key) => {
+          const data = this.tableErrors[key];
+
+          return {...combine, [key]: data.length};
+        },
+        {}
+      );
+      this.tableSubmitErrorCount = count;
       return this.modalService.error({
         nzTitle: 'Lỗi dữ liệu. Vui lòng sửa!',
         nzContent: TableEditorErrorsComponent,
@@ -344,6 +360,7 @@ export class AdjustComponent implements OnInit, OnDestroy {
   }
 
   private create(type: any) {
+    this.isSpinning = true;
     this.declarationService.create({
       type: type,
       declarationCode: this.declarationCode,
@@ -358,6 +375,7 @@ export class AdjustComponent implements OnInit, OnDestroy {
       informations: this.reformatInformations(),
       flies: this.declarations.files,
     }).subscribe(data => {
+      this.isSpinning = false;
       if (type === 'saveAndView') {
         this.viewDocument(data);
       } else{
@@ -367,7 +385,7 @@ export class AdjustComponent implements OnInit, OnDestroy {
   }
 
   private update(type: any) {
-
+    this.isSpinning = true;
     this.declarationService.update(this.declarationId, {
       type: type,
       declarationCode: this.declarationCode,
@@ -382,6 +400,7 @@ export class AdjustComponent implements OnInit, OnDestroy {
       informations: this.reformatInformations(),
       flies: this.declarations.files,
     }).subscribe(data => {
+      this.isSpinning = false;
       if (type === 'saveAndView') {
         this.viewDocument(data);
       } else {

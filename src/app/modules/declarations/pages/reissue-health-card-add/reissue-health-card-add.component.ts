@@ -13,7 +13,7 @@ import { eventEmitter } from '@app/shared/utils/event-emitter';
 })
 export class ReissueHealthCardAddComponent extends PageCoreComponent {
   handlers: any[] = [];
-
+  isSpinning = false;
   constructor(
     private router: Router,
     private declarationService: DeclarationService,
@@ -43,15 +43,17 @@ export class ReissueHealthCardAddComponent extends PageCoreComponent {
   }
 
   private save(data: any) {
-    console.log(data);
+    this.isSpinning = true;
     this.declarationService.create(data).subscribe(() => {
+      this.isSpinning = false;
       this.router.navigate(['/declarations/health-insurance-card']);
     });
   }
 
   private saveAndViewDocument(data: any) {
-    console.log(data);
+    this.isSpinning = true;
     this.declarationService.create(data).subscribe((declarationResult) => {
+      this.isSpinning = false;
       this.viewDocument(declarationResult);
     });
   }

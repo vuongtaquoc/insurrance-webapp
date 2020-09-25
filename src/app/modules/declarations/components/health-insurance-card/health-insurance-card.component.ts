@@ -47,6 +47,7 @@ const MAX_UPLOAD_SIZE = 20 * 1024 * 1024; // ~ 20MB
 })
 export class ReissueHealthCardComponent implements OnInit, OnDestroy {
   @Input() declarationId: string;
+  @Input() isSpinning: boolean;
   @Output() onSubmit: EventEmitter<any> = new EventEmitter();
 
   form: FormGroup;
@@ -74,8 +75,11 @@ export class ReissueHealthCardComponent implements OnInit, OnDestroy {
   handlers: any[] = [];
   handler;
   isTableValid = false;
+  dataIsValid = true;
   eventValidData = 'adjust-general:validate';
   tableErrors = {};
+  tableSubmitErrors = {};
+  tableSubmitErrorCount = 0;
   panel: any = {
     general: { active: false },
     attachment: { active: false }
@@ -86,6 +90,7 @@ export class ReissueHealthCardComponent implements OnInit, OnDestroy {
   submitType: string;
   files: any[] = [];
   timer: any;
+  status = 0;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -189,7 +194,8 @@ export class ReissueHealthCardComponent implements OnInit, OnDestroy {
           this.declarations = declarations.declarationDetail;
           this.informations = this.fomatInfomation(declarations.informations);
           this.families = this.fomatFamilies(declarations.families);
-          this.files = declarations.files;   
+          this.files = declarations.files;
+          this.status = declarations.status;
           this.documentForm.patchValue({
             submitter: declarations.submitter,
             mobile: declarations.mobile,
@@ -218,7 +224,7 @@ export class ReissueHealthCardComponent implements OnInit, OnDestroy {
 
     this.handler = eventEmitter.on(this.eventValidData, ({ name, isValid, errors }) => {
         this.tableErrors[name] = errors;
-        this.isTableValid = isValid;
+        this.isTableValid = true;
     });
 
     this.handler = this.fileUploadEmitter.on('file:uploaded', (file) => {
@@ -421,16 +427,53 @@ export class ReissueHealthCardComponent implements OnInit, OnDestroy {
       });
       return;
     }
-
+    this.dataIsValid = this.invalidData();
     this.tableSubject.next({type});
   }
   saveAndView(type) {
+    this.tableSubmitErrors = {};
+    this.tableSubmitErrorCount = 0;
     if(!this.isTableValid) {
       this.modalService.warning({
         nzTitle: 'Bạn chưa kê khai'
       });
       return;
     }
+    
+    this.dataIsValid = this.invalidData();
+    if (this.dataIsValid) {
+
+      this.tableSubmitErrors = Object.keys(this.tableErrors).reduce(
+        (combine, key) => {
+          const data = this.tableErrors[key];
+
+          return {...combine, [key]: data.length};
+        },
+        {}
+      );
+
+      return this.modalService.error({
+        nzTitle: 'Lỗi dữ liệu. Vui lòng sửa!',
+        nzContent: TableEditorErrorsComponent,
+        nzComponentParams: {
+          errors: Object.keys(this.tableErrors).reduce(
+            (combine, key) => {
+              if (this.tableErrors[key].length) {
+                return { ...combine, [key]: this.tableErrors[key] };
+              }
+
+              return { ...combine };
+            },
+            {}
+          )
+        }
+      });
+    }
+
+    this.tableSubject.next({type});
+  }
+
+  invalidData() { 
     const errorDocumentForm = this.validDocumentForm();
     if (errorDocumentForm.length > 0) {
       this.tableErrors['documentFomError'] = errorDocumentForm;
@@ -452,27 +495,9 @@ export class ReissueHealthCardComponent implements OnInit, OnDestroy {
       },
       0
     );
-    
-    if (count > 0) {
-      return this.modalService.error({
-        nzTitle: 'Lỗi dữ liệu. Vui lòng sửa!',
-        nzContent: TableEditorErrorsComponent,
-        nzComponentParams: {
-          errors: Object.keys(this.tableErrors).reduce(
-            (combine, key) => {
-              if (this.tableErrors[key].length) {
-                return { ...combine, [key]: this.tableErrors[key] };
-              }
 
-              return { ...combine };
-            },
-            {}
-          )
-        }
-      });
-    }
-
-    this.tableSubject.next({type});
+    this.tableSubmitErrorCount = count;
+    return count > 0;
   }
 
   validFormDeclaration() {
@@ -539,7 +564,7 @@ export class ReissueHealthCardComponent implements OnInit, OnDestroy {
       declarationCode: this.declarationCode,
       declarationName: this.getDeclaration(this.declarationCode).value,
       documentStatus: 0,
-      status: event.type === 'saveAndView' ? 1: 0,
+      status: this.getStatus(event.type),
       documentNo: number,
       submitter: this.submitter,
       mobile: this.mobile,
@@ -551,6 +576,18 @@ export class ReissueHealthCardComponent implements OnInit, OnDestroy {
       families: this.reformatFamilies(),
       files: this.files
     });
+  }
+
+  private getStatus(type) {
+    if (this.dataIsValid) {
+      return 0;
+    }
+
+    if (this.status > 0) {
+      return this.status;
+    }
+
+    return (type === 'saveAndView' ) ? 1: 0;
   }
 
   get submitter() {

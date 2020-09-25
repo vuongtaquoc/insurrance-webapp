@@ -1,8 +1,13 @@
 <div class="page-container">
   <nz-spin [nzSpinning]="isSpinning">
     <div class="page-declarations" [ngClass]="{'page-declarations-hide-last-tab': !usedocumentDT01}" cardFullHeight>
-      <nz-tabset nzSize="small" nzTabPosition="bottom" nzSelectedIndex="1" [nzTabBarExtraContent]="extraTemplate" (nzSelectChange)="handleSelectTab($event)">
-        <nz-tab nzTitle="Danh mục tài liệu">
+      <nz-tabset nzSize="small" [ngClass]="{'page-adjust-general__tabs-error': tableSubmitErrorCount > 0}" nzTabPosition="bottom" nzSelectedIndex="1" [nzTabBarExtraContent]="extraTemplate" (nzSelectChange)="handleSelectTab($event)">
+          <nz-tab [nzTitle]="tabDocument">
+          <ng-template #tabDocument>
+            <div class="page-adjust-general__tab-title" [ngClass]="{'page-adjust-general__tab-title--error': tableSubmitErrors.documentFomError > 0}">
+              Danh mục tài liệu
+            </div>
+          </ng-template>
           <div class="page-document-list__container">
             <form nz-form [formGroup]="documentForm">
               <h1><strong>{{declarationCode}}</strong> | {{declarationName}}</h1>
@@ -58,7 +63,12 @@
           </div><!-- page-declarations__container -->
         </nz-tab><!-- tab 1-->
 
-        <nz-tab nzTitle="CLSO-KTDTT">
+        <nz-tab [nzTitle]="increaseLabor">
+          <ng-template #increaseLabor>
+            <div class="page-adjust-general__tab-title" [ngClass]="{'page-adjust-general__tab-title--error': tableSubmitErrors.healthInsuranceCard  > 0}">
+                CLSO-KTDTT
+            </div>
+          </ng-template>
           <div class="page-declarations__container" [ngClass]="{ 'page-declarations__container--hidden': isHiddenSidebar }">
             <app-declaration-sidebar
               tableName="increaseLabor"
@@ -165,7 +175,12 @@
           </div><!-- page-declarations__container -->
         </nz-tab><!-- tab 2 -->
        <!-- tab 3-->     
-        <nz-tab nzTitle="Bảng kê hồ sơ">
+        <nz-tab [nzTitle]="tabDocumentList">
+          <ng-template #tabDocumentList>
+            <div class="page-adjust-general__tab-title" [ngClass]="{'page-adjust-general__tab-title--error': tableSubmitErrors.documentList > 0}">
+                Bảng kê hồ sơ
+            </div>
+          </ng-template>
           <div class="page-document-list__container">
             <form nz-form [formGroup]="documentForm">
               <h1><strong>{{declarationCode}}</strong> | {{declarationName}}</h1>

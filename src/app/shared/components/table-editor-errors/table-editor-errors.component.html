@@ -1,6 +1,12 @@
+<div class="message-editors-error" *ngIf="(showDetail)">
+    Lỗi dữ liệu vui lòng kiêm tra lại dữ liệu trên các tab bôi đỏ 
+    <a class="more" (click)="showMore()">Xem chi tiết</a>
+</div>
 <div *ngFor="let error of keys()" class="table-editors-error">
-  <div class="table-editors-error__title">Bảng <strong>{{ getTableName(error) }}</strong></div>
-  <div class="table-editors-error__item" *ngFor="let item of errors[error]">
-    - {{item.subfix}} [{{ item.y }}], {{item.prefix}}  [{{ item.columnName }}]
+  <div *ngIf="!(showDetail)">
+      <div class="table-editors-error__title">Bảng <strong>{{ getTableName(error) }}</strong></div>
+      <div class="table-editors-error__item" *ngFor="let item of errors[error]">
+        - {{item.subfix}} [{{ item.y }}], {{item.prefix}}  [{{ item.columnName }}]
+      </div>
   </div>
 </div>

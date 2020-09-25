@@ -280,6 +280,12 @@ export class TableEditorNormalComponent implements AfterViewInit, OnInit, OnDest
         }
       });
     });
+    
+    this.handleEvent({
+      type: 'validate',
+      deletedIndexes: [],
+      user: {}
+    });
   }
 
   private handleDeleteUser(user) {

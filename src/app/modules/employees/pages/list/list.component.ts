@@ -113,6 +113,7 @@ export class EmployeeListComponent implements OnInit {
   }
 
   changeCompanyInfo() {
+   
     const companyInfo  =  this.authenticationService.currentCredentials.companyInfo;
     if(companyInfo.groupCode === '01') {
       this.getDepartment((data) => {
@@ -123,6 +124,7 @@ export class EmployeeListComponent implements OnInit {
      else {
       this.showDialogChangeCompany(companyInfo);
     }
+    
   }
 
 
@@ -134,6 +136,7 @@ export class EmployeeListComponent implements OnInit {
   }
 
   showDialogChangeCompany(companyInfo) {
+    this.isSpinning = true;
     const modal = this.modalService.create({
       nzWidth: 980,
       nzWrapClassName: 'manage-unit-modal',
@@ -144,7 +147,7 @@ export class EmployeeListComponent implements OnInit {
         companyInfo
       }
     });
-
+    this.isSpinning = false;
     modal.afterClose.subscribe(result => {
       if(!result) {
         return;

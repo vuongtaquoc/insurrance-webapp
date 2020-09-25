@@ -1,7 +1,8 @@
 <div class="page-company__container register" [ngStyle]="{'height': getFullHeight()}"> 
-   
+  
   <div>&nbsp;</div>
   <div class="page-company__content">
+      <nz-spin [nzSpinning]="isSpinning" class="page-container__spinning">
       <div class="register-info">
         <h3 class="employee-form__group-title employee-form__group-title--disabled"> A. Thông tin đơn vị:</h3>
         <p class="mg-bottom-10 text-color-red">Đơn vị vui lòng nhập chính xác các thông tin dưới đây để đảm bảo giao dịch  được với cơ quan BHXH và lập hợp đồng, hóa đơn</p>
@@ -609,11 +610,11 @@
           <i nz-icon nzType="form"></i>Đăng ký
         </button>
       </div>
-
+     </nz-spin>
       <!-- <div nz-row [nzGutter]="8" class="register-ivan-guide">
         <app-register-ivan-guide class="app-register-ivan-guide"></app-register-ivan-guide>
       </div>   -->
 
   </div>
-
+ 
 </div>

@@ -78,6 +78,9 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     tables: {}
   };
 
+  tableSubmitErrors = {};
+  tableSubmitErrorCount = 0;
+
   families: any[] = [];
   informations: any[] = [];
   tableNestedHeadersFamilies: any[] = TABLE_FAMILIES_NESTED_HEADERS;
@@ -87,6 +90,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
   tableSubject: Subject<any> = new Subject<any>();
   tabSubject: Subject<any> = new Subject<any>();
   handlers: any = [];
+  isSpinning = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -267,7 +271,6 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
   handleChangeTable(data, tableName) {
     this.declarations.tables[tableName] = this.declarations[tableName] || {};
     this.declarations.tables[data.tableName]= data.data;
-
     if(tableName === 'increaselabor') {
       this.sumCreateBHXH(data.data);
     }
@@ -319,6 +322,10 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
   }
 
   saveAndView() {
+
+    this.tableSubmitErrors = {};
+    this.tableSubmitErrorCount = 0;
+
     if(!this.isTableValid) {
       this.modalService.warning({
         nzTitle: 'Bạn chưa kê khai'
@@ -351,6 +358,18 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     );
     
     if (count > 0) {
+
+      this.tableSubmitErrors = Object.keys(this.tableErrors).reduce(
+        (combine, key) => {
+          const data = this.tableErrors[key];
+
+          return {...combine, [key]: data.length};
+        },
+        {}
+      );
+
+      this.tableSubmitErrorCount = count;
+      console.log(this.tableSubmitErrors, 'XXXXXX');
       return this.modalService.error({
         nzTitle: 'Lỗi dữ liệu. Vui lòng sửa!',
         nzContent: TableEditorErrorsComponent,
@@ -446,6 +465,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
   }
 
   private create(type: any) {
+    this.isSpinning = true;
     this.declarationService.create({
       type: type,
       declarationCode: this.declarationCode,
@@ -461,6 +481,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
       families: this.reformatFamilies(),
       flies: this.declarations.files,
     }).subscribe(data => {
+       this.isSpinning = false;
       if (type === 'saveAndView') {
         this.viewDocument(data);
       } else{
@@ -470,7 +491,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
   }
 
   private update(type: any) {
-     
+    this.isSpinning = true;
     this.declarationService.update(this.declarationId, {
       type: type,
       declarationCode: this.declarationCode,
@@ -486,6 +507,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
       families: this.reformatFamilies(),
       flies: this.declarations.files,
     }).subscribe(data => {
+      this.isSpinning = false;
       if (type === 'saveAndView') {
         this.viewDocument(data);
       } else {

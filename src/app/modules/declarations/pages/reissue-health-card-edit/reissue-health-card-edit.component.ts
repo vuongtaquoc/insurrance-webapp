@@ -14,7 +14,7 @@ import { eventEmitter } from '@app/shared/utils/event-emitter';
 export class ReissueHealthCardEditComponent extends PageCoreComponent implements OnInit {
   declarationId: string;
   handlers: any[] = [];
-
+  isSpinning = false;
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -45,13 +45,17 @@ export class ReissueHealthCardEditComponent extends PageCoreComponent implements
   }
 
   private save(data: any) {
+    this.isSpinning = true;
     this.declarationService.update(this.declarationId, data).subscribe((declarationResult) => {
+      this.isSpinning = false;
       this.router.navigate(['/declarations/health-insurance-card']);
     });
   }
 
   private saveAndViewDocument(data: any) {
+    this.isSpinning = true;
     this.declarationService.update(this.declarationId, data).subscribe((declarationResult) => {
+      this.isSpinning = false;
       this.viewDocument(declarationResult);
     });
   }

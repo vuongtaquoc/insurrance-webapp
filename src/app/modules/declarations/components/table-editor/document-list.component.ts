@@ -93,6 +93,9 @@ export class DocumentListTableComponent implements OnInit, OnDestroy, OnChanges,
 
     this.data = data;
     this.spreadsheet.setData(this.data);
+    this.handleEvent({
+      type: 'validate',      
+    });
   }
 
   private handleEvent(eventData) {
@@ -101,7 +104,7 @@ export class DocumentListTableComponent implements OnInit, OnDestroy, OnChanges,
         const data = Object.values(this.spreadsheet.getJson());
         const leaf = true;
         const initialize = true;
-        eventEmitter.emit(eventData.tableEvent, {
+        eventEmitter.emit('adjust-general:validate', {
           name: this.tableName,
           isValid: this.spreadsheet.isTableValid(),
           errors: this.getColumnNameValid(this.spreadsheet.getTableErrors()),

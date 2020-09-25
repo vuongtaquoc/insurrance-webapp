@@ -22,6 +22,8 @@ export class ReissueInsuranceCardAddComponent extends PageCoreComponent {
   ) {
     super(injector);
   }
+  
+  isSpinning = false;
 
   ngOnInit() {
     this.handlers.push(eventEmitter.on('unsaved-changed', (isSubmit) => this.setIsUnsavedChanges(!isSubmit)));
@@ -42,13 +44,17 @@ export class ReissueInsuranceCardAddComponent extends PageCoreComponent {
   }
 
   private save(data: any) {
+    this.isSpinning = true;
     this.declarationService.create(data).subscribe(() => {
+      this.isSpinning = false;
       this.router.navigate(['/declarations/reissue-insurance-card']);
     });
   }
 
   private saveAndViewDocument(data: any) {
+    this.isSpinning = true;
     this.declarationService.create(data).subscribe((declarationResult) => {
+      this.isSpinning = false;
       this.viewDocument(declarationResult);
     });
   }

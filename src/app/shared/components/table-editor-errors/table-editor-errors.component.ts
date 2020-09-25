@@ -38,6 +38,7 @@ const TABLES = {
   styleUrls: ['./table-editor-errors.component.less']
 })
 export class TableEditorErrorsComponent {
+  showDetail: boolean = true;
   @Input() errors: any = {};
 
   keys() {
@@ -46,5 +47,9 @@ export class TableEditorErrorsComponent {
 
   getTableName(key) {
     return TABLES[key];
+  }
+  
+  showMore() {
+    this.showDetail = false;
   }
 }

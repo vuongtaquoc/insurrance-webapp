@@ -376,8 +376,6 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
         nzComponentParams: {
           errors: this.getColumnErrror()
         },
-        // nzOnOk: () => this.tableSubmitErrors = {},
-        // nzOnCancel: () => this.tableSubmitErrors = {}
       });
     }
 
@@ -474,7 +472,7 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
       declarationCode: this.declarationCode,
       declarationName: this.getDeclaration(this.declarationCode).value,
       documentStatus: 0,
-      status: type === 'saveAndView' ? 1: 0,
+      status: this.getStatus(type),
       submitter: this.submitter,
       mobile: this.mobile,
       ...this.declarations.form,

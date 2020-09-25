@@ -1,8 +1,13 @@
 <div class="page-container">
   <nz-spin [nzSpinning]="isSpinning">
     <div class="page-declarations" [ngClass]="{'page-declarations-hide-last-tab': !usedocumentDT01}" cardFullHeight>
-      <nz-tabset nzSize="small" nzTabPosition="bottom" nzSelectedIndex="1" [nzTabBarExtraContent]="extraTemplate" (nzSelectChange)="handleSelectTab($event)">
-        <nz-tab nzTitle="Danh mục tài liệu">
+      <nz-tabset nzSize="small" [ngClass]="{'page-adjust-general__tabs-error': tableSubmitErrorCount > 0}" nzTabPosition="bottom" nzSelectedIndex="1" [nzTabBarExtraContent]="extraTemplate" (nzSelectChange)="handleSelectTab($event)">
+          <nz-tab [nzTitle]="tabDocument">
+            <ng-template #tabDocument>
+              <div class="page-adjust-general__tab-title" [ngClass]="{'page-adjust-general__tab-title--error': tableSubmitErrors.documentFomError > 0}">
+                Danh mục tài liệu
+              </div>
+            </ng-template>
           <div class="page-document-list__container">
             <form nz-form [formGroup]="documentForm">
               <h1><strong>{{declarationCode}}</strong> | {{declarationName}}</h1>
@@ -58,8 +63,13 @@
           </div><!-- page-declarations__container -->
         </nz-tab><!-- tab 1-->
 
-        <nz-tab nzTitle="CLT-KTDTT">
-          <div class="page-declarations__container" [ngClass]="{ 'page-declarations__container--hidden': isHiddenSidebar }">
+        <nz-tab [nzTitle]="healthInsuranceCard">
+            <ng-template #healthInsuranceCard>
+              <div class="page-adjust-general__tab-title" [ngClass]="{'page-adjust-general__tab-title--error': tableSubmitErrors.healthInsuranceCard > 0}">
+                  CLT-KTDTT
+              </div>
+            </ng-template>
+            <div class="page-declarations__container" [ngClass]="{ 'page-declarations__container--hidden': isHiddenSidebar }">
             <app-declaration-sidebar
               tableName="increaseLabor"
               [isHiddenSidebar]="isHiddenSidebar"
@@ -164,7 +174,12 @@
             </div><!-- page-declarations__content -->
           </div><!-- page-declarations__container -->
         </nz-tab><!-- tab 2 -->
-        <nz-tab nzTitle="PL TVHD-NLD"> <!--  [nzDisabled]="!families || !families.length">-->
+        <nz-tab [nzTitle]="tabFamily"> <!--[nzDisabled]="!families || !families.length">-->
+            <ng-template #tabFamily>
+              <div class="page-adjust-general__tab-title" [ngClass]="{'page-adjust-general__tab-title--error': tableSubmitErrors.family > 0}">
+                PL TVHD-NLD
+              </div>
+            </ng-template>
           <div class="page-document-list__container page-document-list__container--note">
             <h1>{{declarationCode}} | {{declarationName}}</h1>
             <h2>PHỤ LỤC THÀNH VIÊN GIA ĐÌNH</h2>
@@ -183,7 +198,12 @@
             </div>
           </div>
         </nz-tab><!-- tab 3-->
-        <nz-tab nzTitle="Bảng kê hồ sơ">
+        <nz-tab [nzTitle]="tabDocumentList">
+          <ng-template #tabDocumentList>
+              <div class="page-adjust-general__tab-title" [ngClass]="{'page-adjust-general__tab-title--error': tableSubmitErrors.documentList > 0}">
+                Bảng kê hồ sơ
+              </div>
+          </ng-template>
           <div class="page-document-list__container">
             <form nz-form [formGroup]="documentForm">
               <h1><strong>{{declarationCode}}</strong> | {{declarationName}}</h1>

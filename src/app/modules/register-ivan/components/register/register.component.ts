@@ -45,6 +45,7 @@ export class RegisterIvanRegisterComponent implements OnInit {
   dataBonus: string;
   contract: any = {};
   contractDetail: any = {};
+  isSpinning: boolean;
   panel: any = {
     general: { active: false },
     attachment: { active: false }
@@ -218,6 +219,7 @@ export class RegisterIvanRegisterComponent implements OnInit {
   }
 
   getDetail() {
+    this.isSpinning = true;
     this.contractService.getContractOfCompany().subscribe(data => {
       this.loading = false;
       const fork = [
@@ -238,6 +240,7 @@ export class RegisterIvanRegisterComponent implements OnInit {
         this.loading = true;
         this.files = data.files;
         this.contract = data.contractDetail;
+        this.isSpinning = false;
       });
 
     });
