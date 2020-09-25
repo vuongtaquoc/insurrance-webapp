@@ -1,8 +1,13 @@
 <div class="page-container">
   <nz-spin [nzSpinning]="isSpinning">
     <div class="page-regime-approval" [ngClass]="{'page-regime-approval--hidden': isHiddenSidebar}" cardFullHeight>
-      <nz-tabset nzSize="small" nzTabPosition="bottom" [nzSelectedIndex]="1" [nzAnimated]="false" [nzTabBarExtraContent]="extraTemplate" (nzSelectChange)="handleSelectTab($event)">
-        <nz-tab nzTitle="Danh mục tài liệu">
+      <nz-tabset nzSize="small" [ngClass]="{'page-adjust-general__tabs-error': tableSubmitErrorCount > 0}" nzTabPosition="bottom" [nzSelectedIndex]="1" [nzAnimated]="false" [nzTabBarExtraContent]="extraTemplate" (nzSelectChange)="handleSelectTab($event)">
+        <nz-tab [nzTitle]="tabDocument">
+          <ng-template #tabDocument>
+            <div class="page-adjust-general__tab-title" [ngClass]="{'page-adjust-general__tab-title--error': tableSubmitErrors.documentFomError > 0}">
+              Danh mục tài liệu
+            </div>
+          </ng-template>
           <div class="page-document-list__container">
             <form nz-form [formGroup]="documentForm">
               <h1><strong>{{declarationCode}}</strong> | {{declarationName}}</h1>
@@ -56,7 +61,12 @@
             </form>
           </div><!-- page-declarations__container -->
         </nz-tab>
-        <nz-tab nzTitle="Dưỡng sức">
+        <nz-tab [nzTitle]="healthRecovery">
+          <ng-template #healthRecovery>
+            <div class="page-adjust-general__tab-title" [ngClass]="{'page-adjust-general__tab-title--error': (tableSubmitErrors.healthRecoveryPart1 > 0 || tableSubmitErrors.healthRecoveryPart2 > 0)}">
+              Dưỡng sức
+            </div>
+          </ng-template>
           <app-health-recovery
             [pageName]="declarationName"
             [pageCode]="declarationCode"

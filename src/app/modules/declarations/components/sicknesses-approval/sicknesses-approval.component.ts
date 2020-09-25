@@ -37,8 +37,12 @@ export class SicknessesApprovalComponent implements OnInit, OnDestroy {
   isTableValid = false;
   formError: any[] = [];
   tableErrors = {};
-  isValid: any = {};
+  tableSubmitErrors = {};
+  tableSubmitErrorCount = 0;
   allInitialize: any = {};
+  status = 0;
+  isSpinning = false;
+  dataIsValid = true;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -64,6 +68,7 @@ export class SicknessesApprovalComponent implements OnInit, OnDestroy {
           mobile: declarations.mobile
         });
         this.regimeApproval.origin = declarations.documentDetail;
+        this.status = declarations.status;
         this.regimeApproval.formOrigin = {
           batch: declarations.batch,
           openAddress: declarations.openAddress,
@@ -89,7 +94,6 @@ export class SicknessesApprovalComponent implements OnInit, OnDestroy {
 
     this.handler = eventEmitter.on('regime-approval:validate', ({ name, isValid, leaf, initialize, errors }) => {
       this.allInitialize[name] = leaf.length === initialize.length;
-      // this.isValid[name] = isValid;
       this.isTableValid = Object.values(this.allInitialize).indexOf(false) === -1 ? false : true;
       this.tableErrors[name] = errors;
     });
@@ -128,6 +132,9 @@ export class SicknessesApprovalComponent implements OnInit, OnDestroy {
 
   saveAndView() {
 
+    this.tableSubmitErrors = {};
+    this.tableSubmitErrorCount = 0;
+
     if(!this.isTableValid) {
       this.modalService.warning({
         nzTitle: 'Bạn chưa kê khai'
@@ -139,28 +146,18 @@ export class SicknessesApprovalComponent implements OnInit, OnDestroy {
       tableName: 'documentList'
     });
 
-    if(this.formError.length > 0) {
-      this.tableErrors['generalFomError'] = this.formError;
-    } else {
-      this.tableErrors['generalFomError'] = [];
-    }
+    this.dataIsValid = this.invalidData();
+    if (this.dataIsValid) {
 
-    const errorDocumentForm = this.validDocumentForm();
-    if (errorDocumentForm.length > 0) {
-      this.tableErrors['documentFomError'] = errorDocumentForm;
-    } else {
-      this.tableErrors['documentFomError'] = [];
-    }
+      this.tableSubmitErrors = Object.keys(this.tableErrors).reduce(
+        (combine, key) => {
+          const data = this.tableErrors[key];
 
-    let count = Object.keys(this.tableErrors).reduce(
-      (total, key) => {
-        const data = this.tableErrors[key];
-        return total + data.length;
-      },
-      0
-    );
+          return {...combine, [key]: data.length};
+        },
+        {}
+      );
 
-    if (count > 0) {
       return this.modalService.error({
         nzTitle: 'Lỗi dữ liệu. Vui lòng sửa!',
         nzContent: TableEditorErrorsComponent,
@@ -187,6 +184,32 @@ export class SicknessesApprovalComponent implements OnInit, OnDestroy {
     }
   }
 
+  invalidData() {
+
+    if(this.formError.length > 0) {
+      this.tableErrors['generalFomError'] = this.formError;
+    } else {
+      this.tableErrors['generalFomError'] = [];
+    }
+
+    const errorDocumentForm = this.validDocumentForm();
+    if (errorDocumentForm.length > 0) {
+      this.tableErrors['documentFomError'] = errorDocumentForm;
+    } else {
+      this.tableErrors['documentFomError'] = [];
+    }
+
+    let count = Object.keys(this.tableErrors).reduce(
+      (total, key) => {
+        const data = this.tableErrors[key];
+        return total + data.length;
+      },
+      0
+    );
+    this.tableSubmitErrorCount = count;
+    return count > 0;
+  }
+
   save() {
 
     if(!this.isTableValid) {
@@ -195,7 +218,7 @@ export class SicknessesApprovalComponent implements OnInit, OnDestroy {
       });
       return;
     }
-
+    this.dataIsValid = this.invalidData();
     eventEmitter.emit('unsaved-changed', true);
     if (this.declarationId) {
       this.update('save');
@@ -204,18 +227,33 @@ export class SicknessesApprovalComponent implements OnInit, OnDestroy {
     }
   }
 
+  private getStatus(type) {
+    if (this.dataIsValid) {
+      return 0;
+    }
+
+    if (this.status > 0) {
+      return this.status;
+    }
+
+    return (type === 'saveAndView' ) ? 1: 0;
+  }
+
   private update(type: any) {
+    this.isSpinning = true;
     this.declarationService.update(this.declarationId, {
       type: type,
       declarationCode: this.declarationCode,
       declarationName: this.getDeclaration(this.declarationCode).value,
       documentStatus: 0,
+      status: this.getStatus(type),
       submitter: this.submitter,
       mobile: this.mobile,
       ...this.regimeApproval.form,
       documentDetail: this.tablesToApi(this.regimeApproval.tables),
       informations: []
     }).subscribe(data => {
+      this.isSpinning = false;
       if (type === 'saveAndView') {
         this.viewDocument(data);
       } else {
@@ -225,17 +263,20 @@ export class SicknessesApprovalComponent implements OnInit, OnDestroy {
   }
 
   private create(type: any) {
+    this.isSpinning = true;
     this.declarationService.create({
       type: type,
       declarationCode: this.declarationCode,
       declarationName: this.getDeclaration(this.declarationCode).value,
       documentStatus: 0,
+      status: this.getStatus(type),
       submitter: this.submitter,
       mobile: this.mobile,
       ...this.regimeApproval.form,
       documentDetail: this.tablesToApi(this.regimeApproval.tables),
       informations: []
     }).subscribe(data => {
+      this.isSpinning = false;
       if (data.type === 'saveAndView') {
         this.viewDocument(data);
       } else {
