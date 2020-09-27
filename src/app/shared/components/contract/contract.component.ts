@@ -9,7 +9,7 @@ import format from '@app/shared/utils/format';
 import { forkJoin } from 'rxjs';
 
 @Component({
-  selector: 'app-contract',
+  selector: 'app-contract-component',
   templateUrl: './contract.component.html',
   styleUrls: ['./contract.component.less'],
   encapsulation: ViewEncapsulation.None
@@ -17,6 +17,7 @@ import { forkJoin } from 'rxjs';
 export class ContractComponent implements OnInit, OnChanges {
   @Input() contractForm: FormGroup;
   @Input() events: Observable<any>;
+  @Input() readOnly: boolean = false;
   @Input() data: any = {};
   @Output() onFormValuesChanged: EventEmitter<any> = new EventEmitter();
   @Output() onFormValid: EventEmitter<any> = new EventEmitter();
@@ -69,7 +70,7 @@ export class ContractComponent implements OnInit, OnChanges {
       this.contractForm.patchValue({
         productId: data.productId,
         priceId: data.priceId,
-        typePayment: data.typePayment.toString(),
+        typePayment: (data.typePayment || 0).toString(),
       });
 
       this.products = products.data;

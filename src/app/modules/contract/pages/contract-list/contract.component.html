@@ -1,4 +1,5 @@
 <div class="page-card-custom">
+  <nz-spin [nzSpinning]="isSpinning" class="page-card__spinning">
   <form nz-form [formGroup]="formSearch" (ngSubmit)="handleSearchBox()">
     <div class="page-title ">
       <h1>{{'contract.contract-list.title' | translate}}</h1>
@@ -40,16 +41,6 @@
             </nz-form-control>
         </nz-form-item>
       </div>
-      <div nz-col nzMd="4">
-        <nz-form-item>
-          <nz-form-label [nzRequired]="true">{{ 'contract.contract-list.contractStatus' | translate }}</nz-form-label>
-          <nz-form-control [nzSpan]="24">
-            <nz-select formControlName="type" nzAllowClear nzPlaceHolder="Lựa chọn">
-              <nz-option [nzValue]="type.value" [nzLabel]="type.label" *ngFor="let type of documentTypes"></nz-option>
-            </nz-select>
-          </nz-form-control>
-        </nz-form-item>
-      </div>
 
     </div>
   </div>
@@ -59,31 +50,38 @@
     nzShowSizeChanger 
     [nzFrontPagination]="false"
     [nzData]="contracts"
+    [nzFrontPagination]="false"
+    [nzLoading]="loading"
+    [nzPageSize]="contracts.length"
+    [nzShowPagination]="false"
     [nzLoading]="loading"
     [nzTotal]="total"
-    [(nzPageIndex)]="pageIndex" 
-    [(nzPageSize)]="pageSize"
-    (nzPageIndexChange)="searchData()" 
-    (nzPageSizeChange)="searchData(true)"
-    class="table ui-table-custom--center table-editor">
-    <thead (nzSortChange)="sort($event)" nzSingleSort>
+    class="table-editor"
+    >
+    <thead (nzSortChange)="sort($event)" nzSortFn>
       <tr class="ui-table-custom-header">
-        <th class="cell-custom">{{'contract.table.stt' | translate}}</th>
-        <th class="cell-custom" nzShowSort nzSortKey="email">
+        <th class="cell-custom" style="width: 50px">{{'contract.table.stt' | translate}}</th>
+        <th class="cell-custom" nzSortFn nzColumnKey="email">
           {{'contract.table.company' | translate}}</th>
-        <th class="cell-custom" nzShowSort nzSortKey="email">
+        <th class="cell-custom"  nzSortFn nzColumnKey="email">
           <span>{{'contract.table.contractNo' | translate}}</span>
         </th>
-        <th class="cell-custom" nzShowSort nzSortKey="email">
+        <th class="cell-custom" style="width: 140px" nzSortFn nzColumnKey="email">
+          <span>{{'contract.table.productCode' | translate}}</span>
+        </th>
+        <th class="cell-custom" style="width: 150px" nzSortFn nzColumnKey="email">
+          <span>{{'contract.table.priceCode' | translate}}</span>
+        </th>
+        <th class="cell-custom" style="width: 165px" nzSortFn nzColumnKey="email">
           <span>{{'contract.table.numberMonth' | translate}}</span>
         </th>
-        <th class="cell-custom" nzShowSort nzSortKey="email">
-          <span>{{'contract.table.contractType' | translate}}</span>
-        </th>
-        <th class="cell-custom" nzShowSort nzSortKey="email">
+        <th class="cell-custom" style="width: 120px" nzSortFn nzColumnKey="email">
           <span>{{'contract.table.createDate' | translate}}</span>
         </th>
-        <th class="cell-custom">
+        <th class="cell-custom"  style="width: 120px" nzSortFn nzColumnKey="email">
+            <span>{{'contract.table.contractStatus' | translate}}</span>
+          </th>
+        <th class="cell-custom" style="width: 140px">
           <span>{{'contract.table.action' | translate}}</span>
         </th>
       </tr>
@@ -99,48 +97,66 @@
             (ngModelChange)="handleFilter('contractNo')" />
         </td>
         <td class="cell-custom">
-          <input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small" [(ngModel)]="filter.numberMonth"
-            (ngModelChange)="handleFilter('numberMonth')" />
+          <input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small" [(ngModel)]="filter.productCode"
+            (ngModelChange)="handleFilter('productCode')" />
+        </td>
+        <td class="cell-custom">
+          <input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small" [(ngModel)]="filter.priceCode"
+            (ngModelChange)="handleFilter('priceCode')" />
         </td>
         <td class="cell-custom">
           <input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small"
-            [(ngModel)]="filter.contractType" (ngModelChange)="handleFilter('contractType')" />
+            [(ngModel)]="filter.numberMonth" (ngModelChange)="handleFilter('numberMonth')" />
         </td>
         <td class="cell-custom">
           <input class="input-filter" nz-input createDate="Tìm kiếm..." nzSize="small" [(ngModel)]="filter.createDate"
             (ngModelChange)="handleFilter('createDate')" />
         </td>
+        <td class="cell-custom">
+            <input class="input-filter" nz-input createDate="Tìm kiếm..." nzSize="small" [(ngModel)]="filter.status"
+              (ngModelChange)="handleFilter('status')" />
+          </td>
         <td class="cell-custom"></td>
 
     </thead>
     <tbody>
       <tr *ngFor="let data of ajaxTable.data;index as i">
         <td>{{i + 1}}</td>
-        <td>{{ data.company }}</td>
-        <td>{{ data.contractNo }}</td>
-        <td>{{ data.numberMonth }}</td>
-        <td>{{ data.contractType}}</td>
-        <td>{{ data.createDate }}</td>
+        <td>{{ data.customerName }}</td>
+        <td>{{ data.no }}</td>
+        <td>{{ data.productName }}</td>
+        <td>{{ data.priceName}}</td>
+        <td>{{ data.numberMonth}}</td>
+        <td>{{ data.createdDate }}</td>
+        <td>{{ status[data.status] | translate }}</td>
         <td>
           <ng-container>
             <ng-container>
-              <a [routerLink]="['/contract/' + i + '/edit']" title ="Chỉnh sửa" class="action-padding">
+              <a [routerLink]="['/contract/' + data.id + '/edit']" title ="Xem hợp đồng" class="action-padding">
                 <i nz-icon nzType="edit" nzTheme="outline"></i>
               </a>
             </ng-container>
           </ng-container>
+          
           <ng-container>
-            <a (click)="startEdit(data.id)" class="action-padding" style="color: red;">
-              <i nz-icon nzType="delete" nzTheme="outline"></i>
-            </a>
-          </ng-container>
-          <ng-container>
-            <a (click)="download(data.id)" class="action-padding" style="color: blue;">
+            <a (click)="download(data.id)"  *ngIf="(data.status === 3)" title ="Tải hợp đồng" class="action-padding" style="color: blue;">
               <i nz-icon nzType="download" nzTheme="outline"></i>
             </a>
           </ng-container>
+          <ng-container>
+              <a (click)="redNew(data.id)"  *ngIf="(data.status === 4)" title ="Làm mới hợp đồng" class="action-padding" style="color: blue;">
+                  <i nz-icon nzType="sync" nzTheme="outline"></i>
+              </a>
+          </ng-container>
+          <app-button-delete [id]="data.id" *ngIf="(data.status === 4)" (delete)="delete($event)"></app-button-delete>
+          <ng-container>
+              <a (click)="download(data.id)"  *ngIf="(data.status === 1)" class="action-padding" title ="Nộp tờ khai" style="color: blue;">
+                <i nz-icon nzType="thunderbolt" nzTheme="outline"></i>
+              </a>
+            </ng-container>
         </td>
       </tr>
     </tbody>
   </nz-table>
+  </nz-spin>
 </div>

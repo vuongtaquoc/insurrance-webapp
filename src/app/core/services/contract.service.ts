@@ -37,6 +37,14 @@ export class ContractService {
     return this.http.post(`/contract/${ id }`, body, options);
   }
 
+  public cancel(id, options = {}) {
+    return this.http.post(`/contract/cancel/${ id }`, options);
+  }
+
+  public rednew(id, options = {}) {
+    return this.http.post(`/contract/rednew/${ id }`, options);
+  }
+
   public delete(id) {
     return this.http.delete(`/contract/${ id }`);
   }

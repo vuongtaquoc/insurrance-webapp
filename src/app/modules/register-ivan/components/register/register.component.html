@@ -2,7 +2,7 @@
   
   <div>&nbsp;</div>
   <div class="page-company__content">
-      <nz-spin [nzSpinning]="isSpinning" class="page-container__spinning">
+      <nz-spin [nzSpinning]="isSpinning" class="register__spinning">
       <div class="register-info">
         <h3 class="employee-form__group-title employee-form__group-title--disabled"> A. Thông tin đơn vị:</h3>
         <p class="mg-bottom-10 text-color-red">Đơn vị vui lòng nhập chính xác các thông tin dưới đây để đảm bảo giao dịch  được với cơ quan BHXH và lập hợp đồng, hóa đơn</p>
@@ -597,7 +597,7 @@
         <div class="service-pack-title">
           <h3 class="employee-form__group-title employee-form__group-title--disabled">C. Lựa chọn gói dịch vụ I-VAN và Chữ ký số dự kiến mua (đã bao gồm thuế):</h3>
         </div>
-        <app-contract [data]="contract" (onFormValid) = "handleValidForm($event)" (onFormValuesChanged)="handleFormValuesChanged($event)"></app-contract>
+        <app-contract-component [data]="contract" (onFormValid) = "handleValidForm($event)" (onFormValuesChanged)="handleFormValuesChanged($event)"></app-contract-component>
       </div>
 
       <div style="margin-bottom: 5px;">

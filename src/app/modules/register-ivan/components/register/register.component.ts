@@ -90,10 +90,10 @@ export class RegisterIvanRegisterComponent implements OnInit {
       emailConfirm: ['', [Validators.required, Validators.pattern(REGEX.EMAIL)]],
       paymentMethodCode: ['', [Validators.required]],
       responseResults: ['', [Validators.required]],
-      privateKey: ['', [Validators.required]],
-      vendorToken: ['', [Validators.required]],
-      fromDate: ['', [Validators.required]],
-      expired: ['', [Validators.required]],      
+      privateKey: [''],
+      vendorToken: [''],
+      fromDate: [''],
+      expired: [''],      
       companyType: [''],
       license: [''],
       issued: ['', [Validators.required]],
@@ -101,8 +101,8 @@ export class RegisterIvanRegisterComponent implements OnInit {
       addressReception: [''],
       authorityNo:[''],
       authorityDate:[''],
-      hasToken: [false],
-      isFirst: [false]
+      hasToken: ['0'],
+      isFirst: ['0']
     },
       {
         validator: MustMatch('email', 'emailConfirm')
@@ -110,6 +110,8 @@ export class RegisterIvanRegisterComponent implements OnInit {
     
     this.getFullHeight();
     this.InitializeData();
+    this.changeHasToken('0');
+    this.changeIsFirst(true);
   }
 
   handleUpperCase(key) {
@@ -196,7 +198,7 @@ export class RegisterIvanRegisterComponent implements OnInit {
   }
 
   changeHasToken(value) {
-    if (value === '0') {
+    if (value === '1') {
       this.registerForm.get('privateKey').setValidators(Validators.required);
       this.registerForm.get('privateKey').setValidators(Validators.required);
       this.registerForm.get('vendorToken').setValidators(Validators.required);

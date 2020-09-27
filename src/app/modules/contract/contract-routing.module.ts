@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AuthorizeGuard, UnsavedChangesGuard, NavigationGuard } from '@app/core/guards';
 import { LayoutComponent } from '@app/shared/layout';
-import { ContractComponent, ContractEditComponent } from './pages';
+import { ContractListComponent, ContractEditComponent } from './pages';
 import { PERMISSIONS } from '@app/shared/constant';
 
 
@@ -13,7 +13,7 @@ const routes: Routes = [
     children: [
       {
         path: 'list',
-        component: ContractComponent,
+        component: ContractListComponent,
         canActivate: [ AuthorizeGuard ],
         data: {
           expectedPermission: PERMISSIONS.contract.R

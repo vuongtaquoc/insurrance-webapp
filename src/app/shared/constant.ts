@@ -20,6 +20,13 @@ export const GENDER = {
   1: 'common.gender.female',
 };
 
+export const CONTRACTSTATUS = {
+  1: 'common.contract.new',
+  2: 'common.contract.approved',
+  3: 'common.contract.sended',
+  4: 'common.contract.cancel',
+};
+
 export const STATUS = {
   0: 'common.notActive',
   1: 'common.active',

@@ -11,16 +11,13 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NgxMaskModule } from 'ngx-mask';
 
 import { AuthenticationService } from '@app/core/services';
 import { SharedModule } from '@app/shared/shared.module';
 import { ContractRoutingModule } from './contract-routing.module';
-import { ContractComponent, ContractEditComponent } from './pages';
-
-import {
-  TableEditorComponent
-} from './components';
+import { ContractListComponent, ContractEditComponent, ContractComponent } from './pages';
 
 @NgModule({
   imports: [
@@ -37,12 +34,13 @@ import {
     NzRadioModule,
     NzIconModule,
     SharedModule,
+    NzSpinModule,
     NgxMaskModule.forRoot() 
   ],
   declarations: [
-    ContractComponent,
+    ContractListComponent,
     ContractEditComponent,
-    TableEditorComponent
+    ContractComponent,
   ],
   providers: [
     AuthenticationService

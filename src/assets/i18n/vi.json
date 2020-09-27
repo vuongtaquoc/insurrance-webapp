@@ -24,6 +24,12 @@
 			"male": "Nam",
 			"female": "Nữ"
 		},
+		"contract": {
+			"new": "Tạo mới",
+			"approved": "Đã duyệt",
+			"sended": "Đã nộp tờ khai",
+			"cancel": "Đã hủy hợp đồng"
+		},
 		"errorMessenger": {
 			"success": "",
 			"dataInvalid": "Dữ liệu không hợp lệ",
@@ -114,9 +120,11 @@
 			"stt": "STT",
 			"company": "Tên đơn vị",
 			"contractNo": "Số hợp đồng",
+			"productCode": "Hạn sử dụng",
+			"priceCode": "Gói dịch vụ",
 			"numberMonth": "Số tháng đăng ký",
-			"contractType": "Loại hợp đồng",
 			"createDate": "Ngay tạo",
+			"contractStatus": "Trạng thái",
 			"action": "Thao tác"
 			
 		},

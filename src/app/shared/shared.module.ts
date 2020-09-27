@@ -58,7 +58,7 @@ import {
   AcountFormComponent,
   EmailFormComponent,
   ContractComponent,
-  FileAttachmentComponent,
+  FileAttachmentComponent,  
 } from './components';
 
 import {
