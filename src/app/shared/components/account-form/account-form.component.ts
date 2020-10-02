@@ -108,6 +108,7 @@ export class AcountFormComponent implements OnInit {
     const formData = {
       ...this.companyInfo,
       ...this.accountForm.value,
+      name: this.delegate,
       companyId: this.companyInfo.id
     };
 
@@ -140,4 +141,8 @@ export class AcountFormComponent implements OnInit {
 
     });
   }
+  get delegate() {
+    return this.accountForm.get('delegate').value;
+  }
+   
 }

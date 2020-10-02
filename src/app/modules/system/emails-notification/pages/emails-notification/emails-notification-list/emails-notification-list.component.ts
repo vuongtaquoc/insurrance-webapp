@@ -91,11 +91,6 @@ export class EmailsNotificationListComponent implements OnInit, OnDestroy {
         this.getNotification();
     }
 
-
-    // get keyword() {
-    //     return this.formSearch.get('keyword').value;
-    // }
-
     get dateTo() {
         const dateTo = this.formSearch.get('dateTo').value;
 

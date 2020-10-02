@@ -3,6 +3,7 @@
       <div class="page-company" cardFullHeight>
         <div class="page-company__blank"></div>
         <div class="page-company__main">
+            <nz-spin [nzSpinning]="isSpinning" class="register__spinning">
             <h1>I. THÔNG TIN ĐẠI LÝ</h1> 
             <div nz-row nzGutter="10">
                 <div nz-col [nzSpan]="24">
@@ -157,7 +158,8 @@
                     </button>
                 </div>
             </div>
-        </div>        
+            </nz-spin>
+        </div>    
       </div>      
   </div>
 </form>

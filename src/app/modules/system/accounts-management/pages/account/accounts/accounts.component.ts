@@ -17,7 +17,7 @@ export class AccountsComponent implements OnInit, OnDestroy {
     loading = false;
     form: FormGroup;
     roles: any[] = [];
-
+    isSpinning: boolean = false;
     constructor(
         private formBuilder: FormBuilder,
         private route: ActivatedRoute,
@@ -43,8 +43,8 @@ export class AccountsComponent implements OnInit, OnDestroy {
     public loadForm() {
         this.form = this.formBuilder.group({
             name: ['', Validators.required],
-            loginId: ['', [Validators.required, Validators.minLength(6)]],
-            passWord: ['', [Validators.required, Validators.minLength(6)]],
+            loginId: ['', [Validators.required]],
+            passWord: ['', [Validators.required]],
             mobile: ['', [Validators.required, Validators.maxLength(15), Validators.pattern(REGEX.PHONE_NUMBER)]],
             email: ['', [Validators.required, Validators.pattern(REGEX.EMAIL)]],
             active: [false, Validators.required],
@@ -52,13 +52,15 @@ export class AccountsComponent implements OnInit, OnDestroy {
     }
 
     private getRoles() {
+        this.isSpinning = true;
         this.roleService.getList().subscribe(data => {
             this.roles = data;
+            this.isSpinning = false;
         })
     }
 
     private getDetail(id) {
-
+        this.isSpinning = true;
         this.accountService.getDetailById(id).subscribe(data => {
             this.form.patchValue({
                 name: data.name,
@@ -69,6 +71,7 @@ export class AccountsComponent implements OnInit, OnDestroy {
                 active: data.active,
             });
             this.roles = data.roles;
+            this.isSpinning = false;
         });
 
     }
@@ -98,13 +101,17 @@ export class AccountsComponent implements OnInit, OnDestroy {
  
     }
     private createAccount(account) {
+        this.isSpinning = true;
         this.accountService.create(account).subscribe(data => {
+            this.isSpinning = false;
             this.router.navigate(['/account-management/list']);
         });
     }
 
     private updateAccount(id, account) {
+        this.isSpinning = true;
         this.accountService.update(id,account).subscribe(data => {
+            this.isSpinning = false;
             this.router.navigate(['/account-management/list']);
         });
     }
@@ -128,6 +135,5 @@ export class AccountsComponent implements OnInit, OnDestroy {
 
         return rolefomats;
     }
-     
 
 }

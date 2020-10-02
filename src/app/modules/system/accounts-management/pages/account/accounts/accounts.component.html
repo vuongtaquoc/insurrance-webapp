@@ -3,6 +3,7 @@
     <div class="page-company" cardFullHeight>
       <div class="page-company__blank"></div>
       <div class="page-company__main">
+      <nz-spin [nzSpinning]="isSpinning" class="page-company__main__spinning">
       <form nz-form [formGroup]="form" class="companyAgencies-form"> 
         <h1>I. Thông tin nhân viên</h1>
         <div nz-row nzGutter="10">
@@ -53,9 +54,6 @@
                   <ng-container *ngIf="control.hasError('required')">
                     {{ 'system.accounts.form.userName' | translate }} không được để trống
                   </ng-container>
-                  <ng-container *ngIf="control.hasError('minlength')">
-                    {{ 'system.accounts.form.userName' | translate }} tối thiểu 6 ký tự
-                  </ng-container>
                 </ng-template>
               </nz-form-control>
             </nz-form-item>
@@ -71,10 +69,7 @@
                 <ng-template #passwordTemp let-control>
                   <ng-container *ngIf="control.hasError('required')">
                     {{ 'system.accounts.form.passWord' | translate }} không được để trống
-                  </ng-container>
-                  <ng-container *ngIf="control.hasError('minlength')">
-                    {{ 'system.accounts.form.passWord' | translate }} tối thiểu 6 ký tự
-                  </ng-container>
+                  </ng-container>                   
                 </ng-template>
               </nz-form-control>
             </nz-form-item>
@@ -183,8 +178,7 @@
 
         <div nz-row nzGutter="8">
           <div nz-col nzMd="24" class="footer-botton">
-            <button type="submit" class="employee-form__button-save" nz-button nzType="primary"
-              (click)="save()">
+            <button type="submit" class="employee-form__button-save" nz-button nzType="primary" (click)="save()">
               <i nz-icon nzType="save"></i>Lưu
             </button>
             <button class="employee-form__button-back" nz-button nzType="default" [routerLink]="['/account-management/list']">
@@ -192,6 +186,7 @@
             </button>
           </div>
         </div>
+        </nz-spin>
       </div>
     </div>
   </div>

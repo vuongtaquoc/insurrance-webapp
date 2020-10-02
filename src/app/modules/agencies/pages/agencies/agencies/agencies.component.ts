@@ -16,6 +16,7 @@ export class AgenciesComponent implements OnInit, OnDestroy {
   item: Company;
   formAgencies: FormGroup;
   loading = false;
+  isSpinning: boolean = false;
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
@@ -59,13 +60,15 @@ export class AgenciesComponent implements OnInit, OnDestroy {
   handleSearchTax() {
   
     if (this.tax) {
+      this.isSpinning = true;
       this.agencieService.getOrganizationByTax(this.tax).then((data) => {
           if (data['MaSoThue']) {
             this.formAgencies.patchValue({
               name: data['Title'],
               address: data['DiaChiCongTy'],
               delegate: data['GiamDoc'],
-              tel:data['NoiNopThue_DienThoai']
+              tel:data['NoiNopThue_DienThoai'],
+              active: true,
             });
           } else {
 
@@ -74,6 +77,7 @@ export class AgenciesComponent implements OnInit, OnDestroy {
               address: '',
               delegate: '',
               tel:'',
+              active: false,
             });
 
             this.taxInvalid();
@@ -82,11 +86,13 @@ export class AgenciesComponent implements OnInit, OnDestroy {
     } else {
       this.taxInvalid();
     }
+
+   this.isSpinning = false;
  
   }
   
   getDetail() {
-
+    this.isSpinning = true;
     this.agencieService.getDetailById(this.agenciesId).subscribe(data => {
 
       this.formAgencies.patchValue({
@@ -99,7 +105,7 @@ export class AgenciesComponent implements OnInit, OnDestroy {
         website:data.website,
         active:data.active,
       });
-
+      this.isSpinning = false;
     });
 
   }
@@ -135,16 +141,18 @@ export class AgenciesComponent implements OnInit, OnDestroy {
   }
 
   create() {
-
+    this.isSpinning = true;
     this.agencieService.create(this.formAgencies.value).subscribe(data => {
+      this.isSpinning = false;
       this.router.navigate(['/agencies/list']);
     });
 
   }
 
   update() {
-
+    this.isSpinning = true;
     this.agencieService.update(this.agenciesId, this.formAgencies.value).subscribe(data => {
+      this.isSpinning = false;
       this.router.navigate(['/agencies/list']);
     });
 

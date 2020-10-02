@@ -29,6 +29,7 @@ export class CustomersComponent implements OnInit, OnDestroy {
   groupCompanyCode: any;
   isurranceDepartments: any;
   customer: Customer;
+  isSpinning: boolean = false;
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
@@ -63,6 +64,7 @@ export class CustomersComponent implements OnInit, OnDestroy {
   }
 
   getDetail() {
+    this.isSpinning = true;
     this.customerService.getDetailById(this.customerId).subscribe(data => {
       this.loading = false;
       const fork = [
@@ -77,6 +79,7 @@ export class CustomersComponent implements OnInit, OnDestroy {
         this.salaryAreas = salaryAreas;
         this.isurranceDepartments = isurranceDepartments;
         this.loading = true;
+        this.isSpinning = false;
       });
 
     });
@@ -152,6 +155,7 @@ export class CustomersComponent implements OnInit, OnDestroy {
   handleSearchTax() {
 
     if (this.tax) {
+      this.isSpinning = true;
       this.agencieService.getOrganizationByTax(this.tax).then((data) => {
         if (data['MaSoThue']) {
           this.formCustomer.patchValue({
@@ -159,7 +163,8 @@ export class CustomersComponent implements OnInit, OnDestroy {
             address: data['DiaChiCongTy'],
             addressRegister: data['DiaChiCongTy'],
             delegate: data['GiamDoc'],
-            tel: data['NoiNopThue_DienThoai']
+            tel: data['NoiNopThue_DienThoai'],
+            active: true,
           });
         } else {
 
@@ -169,6 +174,7 @@ export class CustomersComponent implements OnInit, OnDestroy {
             delegate: '',
             addressRegister: '',
             tel: '',
+            active: false,
           });
 
           this.taxInvalid();
@@ -177,6 +183,7 @@ export class CustomersComponent implements OnInit, OnDestroy {
     } else {
       this.taxInvalid();
     }
+    this.isSpinning = false;
 
   }
 
@@ -209,12 +216,16 @@ export class CustomersComponent implements OnInit, OnDestroy {
 
   }
   create() {
+    this.isSpinning = true;
     this.customerService.create(this.formCustomer.value).subscribe(data => {
+      this.isSpinning = false;
       this.router.navigate(['/customers/list']);
     });
   }
   update() {
+    this.isSpinning = true;
     this.customerService.update(this.customerId, this.formCustomer.value).subscribe(data => {
+      this.isSpinning = false;
       this.router.navigate(['/customers/list']);
     });
   }

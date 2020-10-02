@@ -153,6 +153,8 @@ export class CustomersListComponent implements OnInit, OnDestroy {
         let message = 'Tạo tài khoản thành công';
         if(result.type === 'sendEmail') {
           message = 'Gửi email thành công';
+        }else {
+          this.getCustomers(this.skip);
         }
 
         this.modalService.success({
