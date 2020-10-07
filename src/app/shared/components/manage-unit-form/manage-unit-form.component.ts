@@ -4,10 +4,11 @@ import { City, District } from '@app/core/models';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import {
     CityService, IsurranceDepartmentService, SalaryAreaService, CompanyService,
-    PaymentMethodServiced, GroupCompanyService, DepartmentService, DistrictService, WardsService
+    PaymentMethodServiced, GroupCompanyService, DepartmentService, DistrictService, WardsService,
+    AuthenticationService
 } from '@app/core/services';
 import { forkJoin } from 'rxjs';
-import { REGEX } from '@app/shared/constant';
+import { REGEX, CRON_TIMES, schemaSign } from '@app/shared/constant';
 
 
 @Component({
@@ -31,6 +32,12 @@ export class ManageUnitFormComponent implements OnInit, OnDestroy {
     districts: City[] = [];
     wards: City[] = [];
     private saveTimer;
+    authenticationToken: string;
+    shemaUrl: any;
+    times: any[] = [];
+    timer: any;
+    loaddingToken: boolean = false;
+
 
     constructor(
         private formBuilder: FormBuilder,
@@ -45,6 +52,7 @@ export class ManageUnitFormComponent implements OnInit, OnDestroy {
         private districtService: DistrictService,
         private wardsService: WardsService,
         private companyService: CompanyService,
+        private authenticationService: AuthenticationService,
 
     ) { }
 
@@ -54,7 +62,7 @@ export class ManageUnitFormComponent implements OnInit, OnDestroy {
         this.departments = companyInfo.departments ? companyInfo.departments : [];
         this.form = this.formBuilder.group({
             cityCode: [companyInfo.cityCode, [Validators.required]],
-            isurranceDepartmentId: [companyInfo.isurranceDepartmentId, [Validators.required]],
+            isurranceDepartmentCode: [companyInfo.isurranceDepartmentCode, [Validators.required]],
             salaryAreaCode: [companyInfo.salaryAreaCode, [Validators.required]],
             code: [companyInfo.code, [Validators.required]],
             name: [companyInfo.name, [Validators.required]],
@@ -99,8 +107,9 @@ export class ManageUnitFormComponent implements OnInit, OnDestroy {
             this.wards = wards;
             this.districts = districts;
         });
-
+        
         this.loading = true;
+        this.buildShemaURL();
     }
 
     ngOnDestroy() {
@@ -175,7 +184,7 @@ export class ManageUnitFormComponent implements OnInit, OnDestroy {
         this.isurranceDepartments = [];
         this.wards = [];
         this.form.patchValue({
-            isurranceDepartmentId: null,
+            isurranceDepartmentCode: null,
             districtCode: null,
             wardsCode: null
         });
@@ -210,7 +219,11 @@ export class ManageUnitFormComponent implements OnInit, OnDestroy {
 
 
     getCertification() {
-
+        const link = document.createElement('a');
+        link.href = this.shemaUrl;
+        link.click();
+        this.loaddingToken = true;
+        this.cronJob();
     }
 
     getwards(districtCode) {
@@ -296,4 +309,42 @@ export class ManageUnitFormComponent implements OnInit, OnDestroy {
 
         return isDup;
     }
+
+    private buildShemaURL() {
+        this.authenticationToken = this.authenticationService.currentCredentials.token;
+        let shemaSign = window['schemaSign'] || schemaSign;
+        shemaSign = shemaSign.replace('token', this.authenticationToken);
+        this.shemaUrl = shemaSign.replace('declarationId', 'sign');
+      }
+    
+    cronJob() {
+
+        if(this.loaddingToken) {
+
+            this.timer = setTimeout(() => {
+            this.getTokenInfo();
+            this.cronJob();
+        
+            },CRON_TIMES);
+        
+        }else {
+            clearTimeout(this.timer);
+        }
+    }
+
+    private getTokenInfo() {
+    
+        const companyId = this.authenticationService.currentCredentials.companyInfo.id;
+        this.companyService.getCompanyInfo(companyId).subscribe(data => {
+          this.form.patchValue({
+            privateKey: data.privateKey,
+            vendorToken: data.vendorToken,
+            fromDate: data.fromDate,
+            expired: data.expired,       
+          });  
+    
+          this.loaddingToken = false;
+        });
+    
+      }
 }

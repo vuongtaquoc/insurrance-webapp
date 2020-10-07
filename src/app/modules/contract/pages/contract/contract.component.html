@@ -28,7 +28,7 @@
                   <nz-form-label class="text-left item-padding-left-2" [nzRequired]="true" [nzSpan]="10">
                     {{ 'customers.from.isurranceDepartment' | translate }}</nz-form-label>
                   <nz-form-control [nzSpan]="14" [nzErrorTip]="isurranceDepartmentTpl">
-                    <nz-select nzShowSearch  formControlName="isurranceDepartmentId" nzAllowClear nzPlaceHolder="Lựa chọn">
+                    <nz-select nzShowSearch  formControlName="isurranceDepartmentCode" nzAllowClear nzPlaceHolder="Lựa chọn">
                       <nz-option [nzValue]="isurranceDepartment.id" [nzLabel]="isurranceDepartment.name"
                         *ngFor="let isurranceDepartment of isurranceDepartments"></nz-option>
                     </nz-select>

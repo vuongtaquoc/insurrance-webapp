@@ -1,5 +1,5 @@
 export default {
   defaultLanguage: 'vi',
-  //  apiPrefix: ''
-   apiPrefix: '/api'
+   apiPrefix: ''
+   //apiPrefix: '/api'
 };

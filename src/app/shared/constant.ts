@@ -14,6 +14,7 @@ export const ROLE = {
 
 
 export const PAGE_SIZE = 10;
+export const schemaSign = 'mbhxh:token,declarationId';
 
 export const GENDER = {
   0: 'common.gender.male',
@@ -70,7 +71,7 @@ export const MIME_TYPE =
       value: 'application/xml'
     }
   ];
-
+export const CRON_TIMES = 0.05 * 60 * 1000; // ~ 0.5 minutes
 export const REGEX = {
   ONLY_CHARACTER_NUMBER: '^[a-zA-Z0-9]+$',
   ONLY_NUMBER: '^[0-9]*$',
@@ -1145,6 +1146,9 @@ export const PERMISSIONS = {
     R: 'contract_R',
     U: 'contract_U',
     D: 'contract_D',
+  },
+  downloadSignXMl: {
+    R: 'downloadSignXMl_R',
   },
 }
 export const ErrorMessage = {

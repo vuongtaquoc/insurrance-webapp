@@ -33,7 +33,7 @@
                   Cơ quan BHXH quản lý
                 </nz-form-label>
                 <nz-form-control [nzSpan]="14" [nzErrorTip]="isurranceDepartmentIdError">
-                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="isurranceDepartmentId">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="isurranceDepartmentCode">
                     <nz-option [nzValue]="isurranceDepartment.id" [nzLabel]="isurranceDepartment.name" *ngFor="let isurranceDepartment of isurranceDepartments"></nz-option>
                   </nz-select>
                   <ng-template #isurranceDepartmentIdError let-control>
@@ -103,7 +103,7 @@
                   Mã số BHXH (mã đơn vị)
                 </nz-form-label>
                 <nz-form-control class="margin-left-1p" [nzSpan]="14" [nzErrorTip]="errorManageUnitCode">
-                  <input nz-input placeholder="Mã đơn vị" formControlName="code" (keyup)="handleUpperCase('code')" />
+                  <input nz-input placeholder="Mã đơn vị" [disabled] = "isFirst" formControlName="isurranceCode" (keyup)="handleUpperCase('isurranceCode')" />
                   <ng-template #errorManageUnitCode let-control>
                     <ng-container *ngIf="control.hasError('required')">
                       Mã đơn vị không để trống
@@ -113,19 +113,12 @@
               </nz-form-item>
             </div><!-- col -->
             <div nz-col [nzSpan]="12">
-  
               <nz-form-item>
                 <nz-form-label class="text-left" [nzRequired]="true" nzOffset="2" [nzSpan]="8">
                   {{ 'agencies.from.tax' | translate }}
                 </nz-form-label>
-                <nz-form-control [nzSpan]="14" [nzErrorTip]="taxtpl">
-                  <nz-input-group nzSearch [nzAddOnAfter]="suffixButton">
-                    <input type="text" formControlName="taxCode" nz-input placeholder="Tìm kiếm theo mã số thuế" />
-                  </nz-input-group>
-                  <ng-template #suffixButton>
-                    <button class="employee-form__button-save" nz-button nzType="success" (click)="handleSearchTax()"
-                      nzSearch>Tra cứu </button>
-                  </ng-template>
+                <nz-form-control class="margin-left-1p" [nzSpan]="14" [nzErrorTip]="taxtpl">
+                  <input nz-input placeholder="mã số thuế" formControlName="taxCode" (keyup)="handleUpperCase('code')" />
                   <ng-template #taxtpl let-control>
                     <ng-container *ngIf="control.hasError('required')">
                       Mã số thuế không để trống
@@ -522,7 +515,8 @@
                         <input nz-input readonly formControlName="privateKey" />
                       </nz-input-group>
                       <ng-template #suffixButtonToken>
-                        <button class="employee-form__button-save" nz-button nzType="success" nzSearch>Đọc CKS </button>
+                        <button class="employee-form__button-save" nz-button nzType="success"  (click) ="readToken()" nzSearch>Đọc CKS </button>
+                        <!-- <a type="button" [href]="sanitize('mbhxh:' + authenticationToken + ',sign')" class="employee-form__button-save" >Đọc CKS</a> -->
                       </ng-template>
                       <ng-template #errorTokenSerial let-control>
                         <ng-container *ngIf="control.hasError('required')">

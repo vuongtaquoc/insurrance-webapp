@@ -36,4 +36,5 @@ export * from './email-notification.service';
 export * from './contract.service';
 export * from './price.service';
 export * from './switch-vendor.service';
+export * from './external.service';
 

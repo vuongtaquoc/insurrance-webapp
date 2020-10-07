@@ -4,6 +4,7 @@ import { DataRegisterIvan, MustMatch } from "@app/shared/constant";
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DATE_FORMAT, REGEX } from '@app/shared/constant';
 import { City, District } from '@app/core/models';
+import { schemaSign, CRON_TIMES } from '@app/shared/constant';
 import {
   CityService, IsurranceDepartmentService, SalaryAreaService, CompanyService,
   PaymentMethodServiced, GroupCompanyService, DepartmentService, DistrictService, WardsService,
@@ -13,12 +14,16 @@ import { eventEmitter } from '@app/shared/utils/event-emitter';
 import { getBirthDay } from '@app/shared/utils/custom-validation';
 import { forkJoin } from 'rxjs';
 import { NzModalService } from 'ng-zorro-antd/modal';
+import { DomSanitizer } from '@angular/platform-browser';
+
+
 
 @Component({
   selector: 'app-register-ivan-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.less']
 })
+
 export class RegisterIvanRegisterComponent implements OnInit {
   
   registerIvanData: any[] = [];
@@ -43,9 +48,15 @@ export class RegisterIvanRegisterComponent implements OnInit {
   dataStandard: string;
   useDate: string;
   dataBonus: string;
+  authenticationToken: string;
   contract: any = {};
   contractDetail: any = {};
   isSpinning: boolean;
+  shemaUrl: any;
+  times: any[] = [];
+  timer: any;
+  loaddingToken: boolean = false;
+
   panel: any = {
     general: { active: false },
     attachment: { active: false }
@@ -67,17 +78,18 @@ export class RegisterIvanRegisterComponent implements OnInit {
     private authenticationService: AuthenticationService,
     private contractService: ContractService,
     private modalService: NzModalService,
+    private sanitizer: DomSanitizer,
   ) {}
 
   ngOnInit() {
     this.registerIvanData = DataRegisterIvan;
     this.registerForm = this.formBuilder.group({
       cityCode: ['', [Validators.required]],
-      isurranceDepartmentId: ['', [Validators.required]],
+      isurranceDepartmentCode: ['', [Validators.required]],
       groupCode: ['', [Validators.required]],
       salaryAreaCode: ['', [Validators.required]],
       taxCode: ['', [Validators.required]],
-      code: ['', [Validators.required]],
+      isurranceCode: [''],
       name: ['', [Validators.required]],
       address: ['', [Validators.required]],
       addressRegister: ['', [Validators.required]],
@@ -111,7 +123,9 @@ export class RegisterIvanRegisterComponent implements OnInit {
     this.getFullHeight();
     this.InitializeData();
     this.changeHasToken('0');
-    this.changeIsFirst(true);
+    this.changeIsFirst(true);  
+    this.buildShemaURL();
+    
   }
 
   handleUpperCase(key) {
@@ -134,6 +148,13 @@ export class RegisterIvanRegisterComponent implements OnInit {
       this.registerForm.get('issued').setValidators(Validators.required);
       this.registerForm.get('note').setValidators(Validators.required);
       this.registerForm.get('note').setValidators(Validators.required);
+      this.registerForm.get('isurranceCode').clearValidators();
+      this.registerForm.get('isurranceCode').markAsPristine();
+      
+      this.registerForm.patchValue({
+        isurranceCode: null,
+      });
+      
     } else {
       this.registerForm.get('companyType').clearValidators();
       this.registerForm.get('companyType').markAsPristine();
@@ -143,6 +164,9 @@ export class RegisterIvanRegisterComponent implements OnInit {
       this.registerForm.get('issued').markAsPristine();
       this.registerForm.get('note').clearValidators();
       this.registerForm.get('note').markAsPristine();
+      this.registerForm.get('isurranceCode').setValidators(Validators.required);
+      this.registerForm.get('isurranceCode').setValidators(Validators.required);
+      
     }
 
     this.getFullHeight();
@@ -252,11 +276,11 @@ export class RegisterIvanRegisterComponent implements OnInit {
 
     this.registerForm.patchValue({
       cityCode: data.cityCode,
-      isurranceDepartmentId: data.isurranceDepartmentId,
+      isurranceDepartmentCode: data.isurranceDepartmentCode,
       groupCode: data.groupCode,
       salaryAreaCode: data.salaryAreaCode,
       taxCode: data.taxCode,
-      code: data.code,
+      isurranceCode: data.isurranceCode,
       name: data.name,
       address: data.address,
       addressRegister: data.addressRegister,
@@ -291,7 +315,7 @@ export class RegisterIvanRegisterComponent implements OnInit {
     this.isurranceDepartments = [];
     this.wards = [];
     this.registerForm.patchValue({
-        isurranceDepartmentId: null,
+        isurranceDepartmentCode: null,
         districtCode: null,
         wardsCode: null
     });
@@ -319,7 +343,8 @@ export class RegisterIvanRegisterComponent implements OnInit {
       ...this.registerForm.value,
       companyId: this.companyId,
       customerId: this.currentCompanyId,
-      authorityDate: this.authorityDate,   
+      authorityDate: this.authorityDate,
+      isurranceDepartmentName: this.getNameOfDropdown(this.isurranceDepartments, this.registerForm.value.isurranceDepartmentCode),   
       contractDetail: this.contractDetail,
       hasToken: this.hasToken == 1 ? true : false,
       files: this.fileUpload
@@ -332,6 +357,8 @@ export class RegisterIvanRegisterComponent implements OnInit {
       contracInfo.note = null;
       contracInfo.addressReception = null;
       contracInfo.files = [];
+    }else {
+      contracInfo.isurranceCode = null;
     }
 
     if(this.hasToken === '0') {
@@ -362,4 +389,63 @@ export class RegisterIvanRegisterComponent implements OnInit {
   handleValidForm(data) {
     this.formContractIsvalid = data.result;
   }
+
+  
+  private readToken() {
+    const link = document.createElement('a');
+    link.href = this.shemaUrl;
+    link.click();
+    this.loaddingToken = true;
+    this.cronJob();
+  }
+
+  private buildShemaURL() {
+    this.authenticationToken = this.authenticationService.currentCredentials.token;
+    let shemaSign = window['schemaSign'] || schemaSign;
+    shemaSign = shemaSign.replace('token', this.authenticationToken);
+    this.shemaUrl = shemaSign.replace('declarationId', 'sign');
+  }
+
+  cronJob() {
+
+    this.isSpinning = this.loaddingToken;
+    if(this.loaddingToken) {
+
+      this.timer = setTimeout(() => {
+        this.getTokenInfo();
+        this.cronJob();
+  
+      },CRON_TIMES);
+  
+    }else {
+      clearTimeout(this.timer);
+    }
+  }
+
+  private getTokenInfo() {
+    
+    const companyId = this.authenticationService.currentCredentials.companyInfo.id;
+    this.companyService.getCompanyInfo(companyId).subscribe(data => {
+      this.registerForm.patchValue({
+        privateKey: data.privateKey,
+        vendorToken: data.vendorToken,
+        fromDate: data.fromDate,
+        expired: data.expired,       
+      });  
+
+      this.loaddingToken = false;
+    });
+
+  }
+
+  getNameOfDropdown(sourceOfDropdown: any, id: string) {
+    let name = '';
+    const item = sourceOfDropdown.find(r => r.id === id);
+    if (item) {
+      name = item.name;
+    }
+    return name;
+  }
+
+
 }

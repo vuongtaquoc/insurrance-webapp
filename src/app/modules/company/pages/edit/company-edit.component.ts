@@ -42,7 +42,7 @@ export class CompanyEditComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.companyForm = this.formBuilder.group({
       cityId: ['', Validators.required],
-      isurranceDepartmentId: ['', Validators.required],
+      isurranceDepartmentCode: ['', Validators.required],
       code: ['', Validators.required],
       salaryAreaId: ['', Validators.required],
       name: ['', Validators.required],
@@ -140,7 +140,7 @@ export class CompanyEditComponent implements OnInit, OnDestroy {
     this.companyForm.get('delegate').setValue(currentCredentials.companyInfo.delegate);
     this.companyForm.get('traders').setValue(currentCredentials.companyInfo.traders);
     this.companyForm.get('cityId').setValue(currentCredentials.companyInfo.cityId);
-    this.companyForm.get('isurranceDepartmentId').setValue(currentCredentials.companyInfo.isurranceDepartmentId);
+    this.companyForm.get('isurranceDepartmentCode').setValue(currentCredentials.companyInfo.isurranceDepartmentCode);
     this.companyForm.get('salaryAreaId').setValue(currentCredentials.companyInfo.salaryAreaId);
     this.companyForm.get('mobile').setValue(currentCredentials.companyInfo.mobile);
     this.companyForm.get('emailOfContract').setValue(currentCredentials.companyInfo.emailOfContract);

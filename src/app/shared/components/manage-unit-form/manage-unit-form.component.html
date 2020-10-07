@@ -21,7 +21,7 @@
               <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Cơ quan BHXH quản lý
               </nz-form-label>
               <nz-form-control [nzSpan]="14" nzErrorTip="Cơ quan BHXH quản lý">
-                <nz-select  nzShowSearch formControlName="isurranceDepartmentId" nzAllowClear nzPlaceHolder="Lựa chọn">
+                <nz-select  nzShowSearch formControlName="isurranceDepartmentCode" nzAllowClear nzPlaceHolder="Lựa chọn">
                   <nz-option [nzValue]="isurranceDepartment.id" [nzLabel]="isurranceDepartment.name" *ngFor="let isurranceDepartment of isurranceDepartments"></nz-option>
                </nz-select>
               </nz-form-control>

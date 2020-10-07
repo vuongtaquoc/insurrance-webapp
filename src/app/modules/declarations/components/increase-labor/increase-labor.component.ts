@@ -215,6 +215,10 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
         this.updateEmployeeInInfomation(data.employee);     
       }));
 
+      this.handlers.push(eventEmitter.on('action:loadding', (data) => {
+        this.showLoading(data.isShow);
+      }));
+
     });
   }
 
@@ -243,6 +247,10 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     });
 
     this.families = families;
+  }
+
+  private showLoading(isShow) {
+    this.isSpinning = isShow;
   }
 
 
@@ -369,7 +377,6 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
       );
 
       this.tableSubmitErrorCount = count;
-      console.log(this.tableSubmitErrors, 'XXXXXX');
       return this.modalService.error({
         nzTitle: 'Lỗi dữ liệu. Vui lòng sửa!',
         nzContent: TableEditorErrorsComponent,

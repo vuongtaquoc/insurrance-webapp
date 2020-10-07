@@ -4,7 +4,7 @@ import { NzModalService } from 'ng-zorro-antd/modal';
 import { DeclarationService, CategoryService, BankService,
   CityService,DistrictService,HospitalService,NationalityService,PeopleService,WardsService,
   SalaryAreaService,PlanService,DepartmentService,EmployeeService,AuthenticationService,
-  RelationshipService,VillageService } from '@app/core/services';
+  RelationshipService,VillageService, ExternalService } from '@app/core/services';
 
 import { GeneralBaseComponent } from '@app/modules/declarations/components/adjust-general/base.component';
 
@@ -44,6 +44,8 @@ export class IncreaseComponent extends GeneralBaseComponent implements OnInit, O
     private authenticationService: AuthenticationService,
     private relationshipService: RelationshipService,
     private villageService: VillageService,
+    private externalService: ExternalService,
+
   ) {
     super(declarationService, modalService, hospitalService);
     this.getRecipientsDistrictsByCityCode = this.getRecipientsDistrictsByCityCode.bind(this);
@@ -110,40 +112,58 @@ export class IncreaseComponent extends GeneralBaseComponent implements OnInit, O
   }
 
   checkInsurranceCode() {
+    eventEmitter.emit('action:loadding', {
+      isShow: true,
+    });
     const declarations = [...this.declarations.increaselabor.table];
     const INSURRANCE_CODE_INDEX = 4;
     const INSURRANCE_STATUS_INDEX = 5;
-    // const leafs = declarations.filter(d => !!d.isLeaf);
-    // const insurranceCodes = leafs.map(l => l.data[INSURRANCE_CODE_INDEX]);
     const errors = {};
+    const leafs = declarations.filter(d => d.isLeaf && d.data[INSURRANCE_CODE_INDEX]);
+     
+    forkJoin(
+      leafs.map(item => {        
+        const code = item.data[INSURRANCE_CODE_INDEX];
+        return this.externalService.getEmployeeByIsurranceCode(code);
+      })
+    ).subscribe(results => {
+      
+      declarations.forEach((declaration, rowIndex) => {
+        const code = declaration.data[INSURRANCE_CODE_INDEX];
+        if (code && declaration.isLeaf) {
 
-    declarations.forEach((declaration, rowIndex) => {
-      const code = declaration.data[INSURRANCE_CODE_INDEX];
-
-      if (code && declaration.isLeaf) {
-        declaration.data[INSURRANCE_STATUS_INDEX] = `Không tìm thấy Mã số ${ declaration.data[INSURRANCE_CODE_INDEX] }`;
-
-        errors[rowIndex] = {
-          col: INSURRANCE_CODE_INDEX,
-          value: code,
-          valid: false
-        };
-      }
-    });
-
-    this.declarations.increaselabor.table = declarations;
-
-    setTimeout(() => {
-      this.validateSubject.next({
-        field: 'isurranceCode',
-        errors
+            const item = results.find(r => r.isurranceCodeCheck === code);
+            if (item.fullName === "" || item.fullName === undefined){
+                declaration.data[INSURRANCE_STATUS_INDEX] = `Không tìm thấy Mã số ${ declaration.data[INSURRANCE_CODE_INDEX] }`;
+                errors[rowIndex] = {
+                  col: INSURRANCE_CODE_INDEX,
+                  value: code,
+                  valid: false
+                };
+            }
+        }
+        
       });
-    }, 20);
 
-    this.tableSubject.next({
-      tableName: 'increaselabor',
-      type: 'validate'
+      this.declarations.increaselabor.table = declarations;
+      eventEmitter.emit('action:loadding', {
+        isShow: false,
+      });
+      setTimeout(() => {
+        this.validateSubject.next({
+          field: 'isurranceCode',
+          errors
+        });
+      }, 20);
+
+      this.tableSubject.next({
+        tableName: 'increaselabor',
+        type: 'validate'
+      });
+
     });
+
+    
   }
 
   private getRegisterDistrictsByCityCode(instance, cell, c, r, source) {

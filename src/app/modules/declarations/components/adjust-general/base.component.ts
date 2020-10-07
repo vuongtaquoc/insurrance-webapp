@@ -1,6 +1,6 @@
 import { Input, Output, EventEmitter } from '@angular/core';
 import { NzModalService } from 'ng-zorro-antd/modal';
-import { Subject, Subscription, Observable } from 'rxjs';
+import { Subject, forkJoin, Subscription, Observable } from 'rxjs';
 import findLastIndex from 'lodash/findLastIndex';
 import findIndex from 'lodash/findIndex';
 import * as jexcel from 'jstable-editor/dist/jexcel.js';
@@ -8,7 +8,7 @@ import * as moment from 'moment';
 
 import {
   DeclarationService,
-  HospitalService
+  HospitalService,
 } from '@app/core/services';
 import { ACTION } from '@app/shared/constant';
 import { validationColumnsPlanCode, PLANCODECOUNTBHXH } from '@app/shared/constant-valid';
@@ -72,7 +72,6 @@ export class GeneralBaseComponent {
     protected declarationService: DeclarationService,
     protected modalService: NzModalService,
     protected hospitalService: HospitalService,
-
   ) {}
 
   initializeTableColumns(nested, columns, tableName, currentCredentials) {
@@ -876,4 +875,6 @@ handleUserUpdated(user, tableName) {
   handleFileSelected(files) {
     this.onChangedFile.emit(files);
   }
+
+   
 }

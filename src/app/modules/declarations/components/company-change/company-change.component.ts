@@ -93,9 +93,9 @@ export class CompanyChangeComponent implements OnInit, OnDestroy {
   getCompanyInfo() {
     const companyId = this.currentCredentials.companyInfo.id;
     this.companyService.getDetailById(companyId).subscribe(data => {
-      this.getIsurranceDepartment(data.isurranceDepartmentId);
+      this.getIsurranceDepartment(data.isurranceDepartmentCode);
       this.companyForm.patchValue({
-        isurranceDepartmentId: data.isurranceDepartmentId,
+        isurranceDepartmentCode: data.isurranceDepartmentCode,
         companyName: data.name,
         name: data.name,
         code: data.code,
@@ -141,8 +141,8 @@ export class CompanyChangeComponent implements OnInit, OnDestroy {
     });
   }
 
-  getIsurranceDepartment(isurranceDepartmentId) {
-    this.isurranceDepartmentService.getDetailById(isurranceDepartmentId).subscribe(data => {
+  getIsurranceDepartment(isurranceDepartmentCode) {
+    this.isurranceDepartmentService.getDetailByCode(isurranceDepartmentCode).subscribe(data => {
       this.companyForm.patchValue({
         isurranceDepartmentCode: data.code,
         isurranceDepartmentName: data.name,

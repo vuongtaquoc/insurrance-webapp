@@ -2,7 +2,7 @@ export class Customer {
   public id: number;
   public name: string;   
   public code: string;
-  public isurranceDepartmentId?: number;
+  public isurranceDepartmentCode?: string;
   public cityCode: string;
   public salaryAreaCode: string;
   public tax: string;

@@ -88,8 +88,8 @@ export class CustomersComponent implements OnInit, OnDestroy {
   setDataToForm(data) {
     this.formCustomer.patchValue({
       name: data.name,
-      code: data.code,
-      isurranceDepartmentId: data.isurranceDepartmentId,
+      isurranceCode: data.isurranceCode,
+      isurranceDepartmentCode: data.isurranceDepartmentCode,
       cityCode: data.cityCode,
       salaryAreaCode: data.salaryAreaCode,
       tax: data.tax,
@@ -108,8 +108,8 @@ export class CustomersComponent implements OnInit, OnDestroy {
   private loadForm() {
     this.formCustomer = this.formBuilder.group({
       name: ['', Validators.required],
-      code: ['', Validators.required],
-      isurranceDepartmentId: ['', Validators.required],
+      isurranceCode: [''],
+      isurranceDepartmentCode: ['', Validators.required],
       cityCode: ['', Validators.required],
       salaryAreaCode: ['', Validators.required],
       tax: ['', Validators.required],
@@ -144,7 +144,7 @@ export class CustomersComponent implements OnInit, OnDestroy {
     }
     this.isurranceDepartments = [];
     this.formCustomer.patchValue({
-      isurranceDepartmentId: null
+      isurranceDepartmentCode: null
     });
 
     if (item) {
@@ -215,16 +215,28 @@ export class CustomersComponent implements OnInit, OnDestroy {
     }
 
   }
+  getData() {
+
+    return {
+      ...this.formCustomer.value,
+      isurranceDepartmentName: this.getNameOfDropdown(this.isurranceDepartments, this.formCustomer.value.isurranceDepartmentCode),   
+    };
+    
+  }
+
   create() {
     this.isSpinning = true;
-    this.customerService.create(this.formCustomer.value).subscribe(data => {
+    const customerData = this.getData();
+    this.customerService.create(customerData).subscribe(data => {
       this.isSpinning = false;
       this.router.navigate(['/customers/list']);
     });
   }
   update() {
     this.isSpinning = true;
-    this.customerService.update(this.customerId, this.formCustomer.value).subscribe(data => {
+    const customerData = this.getData();
+    console.log(customerData);
+    this.customerService.update(this.customerId, customerData).subscribe(data => {
       this.isSpinning = false;
       this.router.navigate(['/customers/list']);
     });
@@ -234,6 +246,15 @@ export class CustomersComponent implements OnInit, OnDestroy {
     this.isurranceDepartmentService.getIsurranceDepartments(cityId).subscribe(datas => {
       this.isurranceDepartments = datas;
     });
+  }
+
+  getNameOfDropdown(sourceOfDropdown: any, id: string) {
+    let name = '';
+    const item = sourceOfDropdown.find(r => r.id === id);
+    if (item) {
+      name = item.name;
+    }
+    return name;
   }
 }
 

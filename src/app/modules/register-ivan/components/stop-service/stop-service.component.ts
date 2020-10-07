@@ -36,8 +36,8 @@ export class RegisterIvanStopServiceComponent implements OnInit {
 
     this.registerForm = this.formBuilder.group({
       cityCode: ['', [Validators.required]],
-      isurranceDepartmentId: ['', [Validators.required]],
-      code: ['', [Validators.required]],
+      isurranceDepartmentCode: ['', [Validators.required]],
+      isurranceCode: ['', [Validators.required]],
       name: ['', [Validators.required]],
       taxCode: ['', [Validators.required]],
       reason: ['', [Validators.required]],
@@ -78,9 +78,9 @@ export class RegisterIvanStopServiceComponent implements OnInit {
   private setDataToForm(data) {
     this.registerForm.patchValue({
       cityCode: data.cityCode,
-      isurranceDepartmentId: data.isurranceDepartmentId,
+      isurranceDepartmentCode: data.isurranceDepartmentCode,
       taxCode: data.taxCode,
-      code: data.code,
+      isurranceCode: data.isurranceCode,
       name: data.name,
       reason: 'Chuyên đổi đơn vị cung cấp',
     });
@@ -112,7 +112,7 @@ export class RegisterIvanStopServiceComponent implements OnInit {
   changeRegisterCity(value) {
     this.isurranceDepartments = [];
     this.registerForm.patchValue({
-        isurranceDepartmentId: null,
+      isurranceDepartmentCode: null,
     });
 
     this.getIsurranceDepartments(value);
@@ -127,8 +127,18 @@ export class RegisterIvanStopServiceComponent implements OnInit {
   private getData() {
     return {
       companyId: this.companyId,
+      isurranceDepartmentName: this.getNameOfDropdown(this.isurranceDepartments, this.registerForm.value.isurranceDepartmentCode),
       ...this.registerForm.value,
     };
+  }
+
+  getNameOfDropdown(sourceOfDropdown: any, id: string) {
+    let name = '';
+    const item = sourceOfDropdown.find(r => r.id === id);
+    if (item) {
+      name = item.name;
+    }
+    return name;
   }
 
 

@@ -4,7 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { AuthenticationService } from '@app/core/services';
 import { eventEmitter } from '@app/shared/utils/event-emitter';
-import { PERMISSIONS } from '@app/shared/constant';
+import { PERMISSIONS, ROLE } from '@app/shared/constant';
 @Component({
   selector: 'app-layout',
   templateUrl: './layout.component.html',
@@ -52,11 +52,14 @@ export class LayoutComponent implements OnInit, OnDestroy {
     const authServiceOfUser = this.authService.currentCredentials.role;
     if (authServiceOfUser) {
         const userPermissions = authServiceOfUser.permission;
-
         this.permissions = {};
         userPermissions.forEach((screenName) => {
             this.permissions[screenName] = true;
         });
+
+        if (authServiceOfUser.level === ROLE.CUSTOMER) {
+          this.permissions[PERMISSIONS.downloadSignXMl.R] = true;
+        }
     }
   }
   ngOnDestroy() {
@@ -67,4 +70,5 @@ export class LayoutComponent implements OnInit, OnDestroy {
     this.authService.logout();
     this.router.navigate(['/auth/login'], { replaceUrl: true });
   }
+   
 }

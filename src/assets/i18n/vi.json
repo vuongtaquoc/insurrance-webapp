@@ -220,7 +220,7 @@
 		"from": {
 			"city": "Tỉnh/Thành Phố",
 			"isurranceDepartment": "Cơ quan BHXH quản lý",
-			"companyCode": "Mã đơn vị",
+			"isurranceCode": "Mã số BHXH (mã đơn vị)",
 			"salaryAreaName": "Vùng",
 			"companyName": "Tên đơn vị",
 			"address": "Địa chỉ ĐKKD",

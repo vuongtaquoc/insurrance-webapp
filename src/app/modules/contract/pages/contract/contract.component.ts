@@ -60,7 +60,7 @@ export class ContractComponent implements OnInit, OnDestroy {
 
     this.formContract = this.formBuilder.group({
       cityCode: ['', Validators.required],
-      isurranceDepartmentId: ['', Validators.required],
+      isurranceDepartmentCode: ['', Validators.required],
       code: ['', Validators.required],
       salaryAreaCode: ['', Validators.required],
       name: ['', Validators.required],
@@ -115,7 +115,7 @@ export class ContractComponent implements OnInit, OnDestroy {
   setDataToForm(data) {
     this.formContract.patchValue({
       cityCode: data.cityCode,
-      isurranceDepartmentId: data.isurranceDepartmentId,
+      isurranceDepartmentCode: data.isurranceDepartmentCode,
       code: data.code,
       salaryAreaCode: data.salaryAreaCode,
       name: data.name,
@@ -173,6 +173,15 @@ export class ContractComponent implements OnInit, OnDestroy {
     }, () => {
       this.isSpinning = false;
     });
+  }
+
+  getNameOfDropdown(sourceOfDropdown: any, id: string) {
+    let name = '';
+    const item = sourceOfDropdown.find(r => r.id === id);
+    if (item) {
+      name = item.name;
+    }
+    return name;
   }
    
 }

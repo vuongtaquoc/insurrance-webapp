@@ -26,7 +26,8 @@ import {
   EmployeeService,
   DepartmentService,
   VillageService,
-  CategoryService
+  CategoryService,
+  ExternalService,
 } from '@app/core/services';
 
 import { DATE_FORMAT, REGEX } from '@app/shared/constant';
@@ -95,7 +96,8 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
     private employeeService: EmployeeService,
     private departmentService: DepartmentService,
     private villageService: VillageService,
-    private categoryService: CategoryService
+    private categoryService: CategoryService,
+    private externalService: ExternalService,
   ) {}
 
   ngOnInit() {
@@ -874,5 +876,18 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
       return mimeType.value;
     }
     return MIME_TYPE[0].value
+  }
+
+  getIsurranceCode() {
+    const employee = {
+      ...this.employeeForm.value,
+      isRegiester: 1,
+      typeBirthday: 0,
+    };
+    
+    console.log(employee);
+    this.externalService.getIsurranceCode(employee).subscribe(data => 
+      console.log(data)
+    );
   }
 }
