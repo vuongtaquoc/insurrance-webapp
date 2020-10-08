@@ -4,13 +4,13 @@ import { forkJoin, Subject } from 'rxjs';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 import * as moment from 'moment';
 import * as _ from 'lodash';
-import { DeclarationFileService } from '@app/core/services';
+import { DeclarationFileService,AuthenticationService } from '@app/core/services';
 
 import { DropdownItem } from '@app/core/interfaces';
 import { City, District, Wards } from '@app/core/models';
 
 import { download } from '@app/shared/utils/download-file';
-import { DATE_FORMAT, MIME_TYPE } from '@app/shared/constant';
+import { DATE_FORMAT, MIME_TYPE, schemaSign } from '@app/shared/constant';
 
 @Component({
   selector: 'app-document-form',
@@ -25,18 +25,36 @@ export class DocumentFormComponent implements OnInit {
   categoryName?: string;
   createdDate?: string;
   documentForm: FormGroup;
-
+  authenticationToken: string;
+  shemaUrl: any;
   constructor(
     private formBuilder: FormBuilder,
     private modal: NzModalRef,
     private declarationFileService: DeclarationFileService,
+    private authenticationService: AuthenticationService,
   ) {}
 
   ngOnInit() {
     this.loadDeclarationFiles();
+    this.buildShemaURL();
   }
 
-  save(): void {
+  signDeclaration(): void {
+    const link = document.createElement('a');
+    link.href = this.shemaUrl;
+    link.click();
+
+    setTimeout(() => {
+      this.modal.destroy();
+    }, 500);
+    
+  }
+
+  private buildShemaURL() {
+    this.authenticationToken = this.authenticationService.currentCredentials.token;
+    let shemaSign = window['schemaSign'] || schemaSign;
+    shemaSign = shemaSign.replace('token', this.authenticationToken);
+    this.shemaUrl = shemaSign.replace('declarationId', this.declarationInfo.id);
   }
 
   dismiss(): void {
