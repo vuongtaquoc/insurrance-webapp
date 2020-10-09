@@ -212,7 +212,7 @@ export const TABLE_ARREARS_HEADER_COLUMNS = [{
   source: [ ],
   width: 135,
   title: '(16)',
-  key: 'departmentId'
+  key: 'departmentCode'
 }, {
   type: 'numeric',
   width: 80,

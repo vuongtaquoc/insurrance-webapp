@@ -225,7 +225,7 @@ export const TABLE_REDUCTION_HEADER_COLUMNS = [{
   source: [ ],
   width: 135,
   title: '(17)',
-  key: 'departmentId'
+  key: 'departmentCode'
 }, {
   type: 'text',
   width: 70,

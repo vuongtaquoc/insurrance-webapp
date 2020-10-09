@@ -228,7 +228,7 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   source: [ ],
   width: 135,
   title: '(17)',
-  key: 'departmentId'
+  key: 'departmentCode'
 }, {
   type: 'numeric',
   width: 80,

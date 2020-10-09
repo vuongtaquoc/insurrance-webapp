@@ -259,7 +259,7 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   type: 'checkbox',
   width: 65,
   align: 'center',
-  title: '(11..6)',
+  title: '(11.6)',
   key: 'isSurgeryOrPremature'
 }, {
   type: 'text',
@@ -274,21 +274,21 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   key: 'cotherConclusionDate',
   isCalendar: true
 }, {
-  type: 'text',
+  type: 'numeric',
   width: 100,
   title: '(11.9)',
+  key: 'examinationCost',
+}, {
+  type: 'text',  
+  width: 140,
+  title: '(12)',
   key: 'sponsorIsurranceCode',
 }, {
   type: 'checkbox',
   align: 'center',
-  width: 140,
-  title: '(12)',
-  key: 'parentsOffWork',
-}, {
-  type: 'numeric',
   width: 40,
   title: '(13)',
-  key: 'examinationCost',
+  key: 'parentsOffWork',
 }, {
   type: 'dropdown',
   autocomplete: true,
@@ -324,7 +324,7 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   autocomplete: true,
   width: 280,
   title: '(C.4)',
-  key: 'bankId',
+  key: 'bankCode',
   source: [ ],
 }, {
   type: 'dropdown',
@@ -510,7 +510,7 @@ export const TABLE_HEADER_COLUMNS_PART_2 = [{
   source: [],
   width: 240,
   title: '(C.4)',
-  key: 'bankId'
+  key: 'bankCode'
 }, {
   type: 'text',
   width: 150,

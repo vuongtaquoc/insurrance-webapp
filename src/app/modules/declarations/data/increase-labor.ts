@@ -337,7 +337,7 @@ export const TABLE_HEADER_COLUMNS = [{
   source: [ ],
   width: 135,
   title: '(22)',
-  key: 'departmentId'
+  key: 'departmentCode'
 }, {
   type: 'numeric',
   align: 'right',

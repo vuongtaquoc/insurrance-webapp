@@ -122,7 +122,7 @@
               <nz-form-item>
                 <nz-form-label class="text-left" [nzSpan]="10">Phòng ban</nz-form-label>
                 <nz-form-control [nzSpan]="14">
-                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn phòng ban" formControlName="departmentId">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn phòng ban" formControlName="departmentCode">
                       <nz-option *ngFor="let department of departments" [nzLabel]="department.name" [nzValue]="department.id"></nz-option>
                   </nz-select>
                 </nz-form-control>
@@ -707,7 +707,7 @@
               <nz-form-item>
                 <nz-form-label class="text-left" [nzSpan]="10">Ngân hàng</nz-form-label>
                 <nz-form-control [nzSpan]="14">
-                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="bankId">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="bankCode">
                     <nz-option *ngFor="let bank of banks" [nzLabel]="bank.name" [nzValue]="bank.id"></nz-option>
                   </nz-select>
                 </nz-form-control>

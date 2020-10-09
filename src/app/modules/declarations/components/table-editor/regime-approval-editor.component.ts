@@ -725,25 +725,25 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
       } else if (column.key === 'subsidizeReceipt') {
         const bankAccountColumn = this.columns[Number(cell) + 1];
         const accountHolderColumn = this.columns[Number(cell) + 2];
-        const bankIdColumn = this.columns[Number(cell) + 3];
+        const bankCodeColumn = this.columns[Number(cell) + 3];
 
         if (cellValue === 'ATM') {
           bankAccountColumn.validations = { required: true };
           accountHolderColumn.validations = { required: true };
-          bankIdColumn.validations = { required: true };
+          bankCodeColumn.validations = { required: true };
         } else {
           bankAccountColumn.validations = { };
           accountHolderColumn.validations = { };
-          bankIdColumn.validations = { };
+          bankCodeColumn.validations = { };
         }
 
         bankAccountColumn.fieldName = 'Số tài khoản';
         accountHolderColumn.fieldName = 'Tên chủ tài khoản';
-        bankIdColumn.fieldName = 'Ngân hàng';
+        bankCodeColumn.fieldName = 'Ngân hàng';
 
         instance.jexcel.validationCell(y, Number(cell) + 1, bankAccountColumn.fieldName, bankAccountColumn.validations);
         instance.jexcel.validationCell(y, Number(cell) + 2, accountHolderColumn.fieldName, accountHolderColumn.validations);
-        instance.jexcel.validationCell(y, Number(cell) + 3, bankIdColumn.fieldName, bankIdColumn.validations);
+        instance.jexcel.validationCell(y, Number(cell) + 3, bankCodeColumn.fieldName, bankCodeColumn.validations);
       }
     }, 50);
   }

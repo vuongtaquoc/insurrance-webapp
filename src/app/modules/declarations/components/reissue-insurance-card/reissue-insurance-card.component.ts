@@ -150,7 +150,7 @@ export class ReissueInsuranceCardComponent implements OnInit, OnDestroy {
       this.updateSourceToColumn(this.tableHeaderColumns, 'recipientsCityCode', cities);
       this.updateSourceToColumn(this.tableHeaderColumns, 'salaryAreaCode', salaryAreas);
       this.updateSourceToColumn(this.tableHeaderColumns, 'planCode', plans);
-      this.updateSourceToColumn(this.tableHeaderColumns, 'departmentId', departments);
+      this.updateSourceToColumn(this.tableHeaderColumns, 'departmentCode', departments);
 
       // get filter columns
       this.updateFilterToColumn(this.tableHeaderColumns, 'registerDistrictCode', this.getRegisterDistrictsByCityCode);

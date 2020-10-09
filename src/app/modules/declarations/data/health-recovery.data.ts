@@ -179,7 +179,7 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   autocomplete: true,
   width: 280,
   title: '(C.4)',
-  key: 'bankId',
+  key: 'bankCode',
   source: [ ],
 }, {
   type: 'text',
@@ -352,7 +352,7 @@ export const TABLE_HEADER_COLUMNS_PART_2 = [{
   autocomplete: true,
   width: 280,
   title: '(C.4)',
-  key: 'bankId',
+  key: 'bankCode',
   source: [ ],
 }, {
   type: 'text',

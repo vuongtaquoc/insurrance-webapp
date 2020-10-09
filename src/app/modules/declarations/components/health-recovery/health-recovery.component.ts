@@ -42,8 +42,8 @@ export class HealthRecoveryComponent extends RegimeApprovalBaseComponent impleme
       this.updateSourceToColumn(TABLE_HEADER_COLUMNS_PART_1, 'subsidizeReceipt', subsidizeReceipts);
       this.updateSourceToColumn(TABLE_HEADER_COLUMNS_PART_1, 'recruitmentNumber', recruitmentNumbers);
       this.updateSourceToColumn(TABLE_HEADER_COLUMNS_PART_1, 'recordSolvedNumber', recruitmentNumbers);
-      this.updateSourceToColumn(TABLE_HEADER_COLUMNS_PART_1, 'bankId', banks);
-      this.updateSourceToColumn(TABLE_HEADER_COLUMNS_PART_2, 'bankId', banks);
+      this.updateSourceToColumn(TABLE_HEADER_COLUMNS_PART_1, 'bankCode', banks);
+      this.updateSourceToColumn(TABLE_HEADER_COLUMNS_PART_2, 'bankCode', banks);
       this.updateSourceToColumn(TABLE_HEADER_COLUMNS_PART_2, 'subsidizeReceipt', subsidizeReceipts);
       this.updateSourceToColumn(TABLE_HEADER_COLUMNS_PART_2, 'recordSolvedNumber', recruitmentNumbers);
     });

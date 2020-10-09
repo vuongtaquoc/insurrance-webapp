@@ -52,8 +52,8 @@ export class SicknessesComponent extends RegimeApprovalBaseComponent implements 
       this.updateSourceToColumn(TABLE_HEADER_COLUMNS_PART_1, 'subsidizeReceipt', subsidizeReceipts);
       this.updateSourceToColumn(TABLE_HEADER_COLUMNS_PART_2, 'subsidizeReceipt', subsidizeReceipts);
       this.updateSourceToColumn(TABLE_HEADER_COLUMNS_PART_1, 'diagnosticCode', diagnosticCodes);
-      this.updateSourceToColumn(TABLE_HEADER_COLUMNS_PART_1, 'bankId', banks);
-      this.updateSourceToColumn(TABLE_HEADER_COLUMNS_PART_2, 'bankId', banks);
+      this.updateSourceToColumn(TABLE_HEADER_COLUMNS_PART_1, 'bankCode', banks);
+      this.updateSourceToColumn(TABLE_HEADER_COLUMNS_PART_2, 'bankCode', banks);
     });
 
     this.handlers.push(eventEmitter.on('tree-declaration:deleteUser', (data) => {

@@ -76,7 +76,7 @@ export class ReductionComponent extends GeneralBaseComponent implements OnInit, 
       this.updateSourceToColumn(TABLE_REDUCTION_HEADER_COLUMNS, 'recipientsCityCode', cities);
       this.updateSourceToColumn(TABLE_REDUCTION_HEADER_COLUMNS, 'salaryAreaCode', salaryAreas);
       this.updateSourceToColumn(TABLE_REDUCTION_HEADER_COLUMNS, 'planCode', plans);
-      this.updateSourceToColumn(TABLE_REDUCTION_HEADER_COLUMNS, 'departmentId', departments);
+      this.updateSourceToColumn(TABLE_REDUCTION_HEADER_COLUMNS, 'departmentCode', departments);
       this.updateSourceToColumn(TABLE_REDUCTION_HEADER_COLUMNS, 'livesAreaCode', livesAreas);
 
       // // get filter columns
