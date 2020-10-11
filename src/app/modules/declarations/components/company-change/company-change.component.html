@@ -124,7 +124,7 @@
                                 class="required">*</span>
                             </nz-form-label>
                             <nz-form-control nz-col nzMd="16" [nzErrorTip]="companyCodeError">
-                              <input nz-input formControlName="code" >
+                              <input nz-input formControlName="isurranceCode"  (keyup)="handleUpperCase('isurranceCode')"  >
                               <ng-template #companyCodeError let-control>
                                 <ng-container *ngIf="control.hasError('required')">
                                   {{ 'company.from.companyCode' | translate }} không được để trống
@@ -185,6 +185,24 @@
                               <ng-template #addressRegisterError let-control>
                                 <ng-container *ngIf="control.hasError('required')">
                                   {{ 'company.from.addressRegister' | translate }} không được để trống
+                                </ng-container>
+                              </ng-template>
+                            </nz-form-control>
+                          </nz-form-item>
+                        </div>
+                      </div>
+
+                      <div nz-row nzGutter="8">
+                        <div nz-col nzMd="24">
+                          <nz-form-item >
+                            <nz-form-label nz-col nzMd="8">{{ 'company.from.companyType' | translate }} <span
+                                class="required">*</span>
+                            </nz-form-label>
+                            <nz-form-control nz-col nzMd="16" [nzErrorTip]="companyTypeError">
+                              <input nz-input formControlName="companyType" >
+                              <ng-template #companyTypeError let-control>
+                                <ng-container *ngIf="control.hasError('required')">
+                                  {{ 'company.from.companyType' | translate }} không được để trống
                                 </ng-container>
                               </ng-template>
                             </nz-form-control>

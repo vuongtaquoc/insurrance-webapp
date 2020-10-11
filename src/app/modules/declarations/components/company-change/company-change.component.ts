@@ -75,7 +75,7 @@ export class CompanyChangeComponent implements OnInit, OnDestroy {
       isurranceDepartmentName: ['', Validators.required],
       companyName: ['', Validators.required],
       name: ['', Validators.required],
-      code: ['', Validators.required],
+      isurranceCode: ['', Validators.required],
       taxCode: ['', Validators.required],
       address: ['', Validators.required],
       addressRegister: ['', Validators.required],
@@ -98,7 +98,7 @@ export class CompanyChangeComponent implements OnInit, OnDestroy {
         isurranceDepartmentCode: data.isurranceDepartmentCode,
         companyName: data.name,
         name: data.name,
-        code: data.code,
+        isurranceCode: data.isurranceCode,
         taxCode: data.taxCode,
         address: data.address,
         addressRegister: data.addressRegister,
@@ -124,7 +124,7 @@ export class CompanyChangeComponent implements OnInit, OnDestroy {
         isurranceDepartmentName: data.changeCompanyInfo.isurranceDepartmentName,
         companyName: data.changeCompanyInfo.name,
         name: data.changeCompanyInfo.name,
-        code: data.changeCompanyInfo.code,
+        isurranceCode: data.changeCompanyInfo.isurranceCode,
         taxCode: data.changeCompanyInfo.taxCode,
         address: data.changeCompanyInfo.address,
         addressRegister: data.changeCompanyInfo.addressRegister,
@@ -226,7 +226,7 @@ export class CompanyChangeComponent implements OnInit, OnDestroy {
       declarationCode: this.declarationCode,
       declarationName: this.getDeclaration(this.declarationCode).value,
       documentStatus: 0,
-      status: type === 'saveAndView' ? 1: 0,
+      status: this.getStatus(type),
       submitter: this.submitter,
       mobile: this.mobile,
       changeCompanyInfo: this.companyForm.value,
@@ -289,4 +289,12 @@ export class CompanyChangeComponent implements OnInit, OnDestroy {
   get mobile() {
     return this.documentForm.get('mobile').value;
   }
+
+  handleUpperCase(key) {
+    const value = this.documentForm.value[key];
+
+    this.documentForm.patchValue({
+        [key]: value.toUpperCase()
+    });
+}
 }

@@ -64,7 +64,7 @@ export class ManageUnitFormComponent implements OnInit, OnDestroy {
             cityCode: [companyInfo.cityCode, [Validators.required]],
             isurranceDepartmentCode: [companyInfo.isurranceDepartmentCode, [Validators.required]],
             salaryAreaCode: [companyInfo.salaryAreaCode, [Validators.required]],
-            code: [companyInfo.code, [Validators.required]],
+            isurranceCode: [companyInfo.isurranceCode, [Validators.required]],
             name: [companyInfo.name, [Validators.required]],
             address: [companyInfo.address, [Validators.required]],
             addressRegister: [companyInfo.addressRegister, [Validators.required]],

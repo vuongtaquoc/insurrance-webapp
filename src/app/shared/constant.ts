@@ -71,7 +71,7 @@ export const MIME_TYPE =
       value: 'application/xml'
     }
   ];
-export const CRON_TIMES = 0.05 * 60 * 1000; // ~ 0.5 minutes
+export const CRON_TIMES = 0.15 * 60 * 1000; // ~ 1.5 minutes
 export const REGEX = {
   ONLY_CHARACTER_NUMBER: '^[a-zA-Z0-9]+$',
   ONLY_NUMBER: '^[0-9]*$',
@@ -131,7 +131,7 @@ export const DECLARATIONS =
     },
     {
       key: '604',
-      value: 'Đăng ký thau đổi thông tin đơn vị'
+      value: 'Đăng ký thay đổi thông tin đơn vị'
     },
   ];
 

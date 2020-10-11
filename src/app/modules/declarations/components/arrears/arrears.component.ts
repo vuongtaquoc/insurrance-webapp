@@ -309,7 +309,7 @@ export class ArrearsComponent implements OnInit, OnDestroy {
 
   rollback() {
     if(!this.isTableValid) {
-      this.router.navigate(['/declarations/adjust']);
+      this.router.navigate(['/declarations/arrears']);
       return;
     }
 
@@ -325,7 +325,7 @@ export class ArrearsComponent implements OnInit, OnDestroy {
         }
       },
       nzOnCancel: () => {
-        this.router.navigate(['/declarations/adjust']);
+        this.router.navigate(['/declarations/arrears']);
       }
     });
   }
@@ -381,7 +381,7 @@ export class ArrearsComponent implements OnInit, OnDestroy {
       if (type === 'saveAndView') {
         this.viewDocument(data);
       } else{
-        this.router.navigate(['/declarations/adjust']);
+        this.router.navigate(['/declarations/arrears']);
       }
     });
   }
@@ -406,7 +406,7 @@ export class ArrearsComponent implements OnInit, OnDestroy {
       if (type === 'saveAndView') {
         this.viewDocument(data);
       } else {
-        this.router.navigate(['/declarations/adjust']);
+        this.router.navigate(['/declarations/arrears']);
       }
     });
   }
