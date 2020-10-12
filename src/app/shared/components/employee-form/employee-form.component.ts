@@ -111,7 +111,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
       nationalityCode: [employee.nationalityCode, Validators.required],
       peopleCode: [employee.peopleCode, Validators.required],
       code: [employee.code, [ Validators.required, Validators.maxLength(50), Validators.pattern(REGEX.ONLY_CHARACTER_NUMBER) ]],
-      departmentCode: [employee.departmentCode ? Number(employee.departmentCode) : ''],
+      departmentCode: employee.departmentCode,
       registerCityCode: [employee.registerCityCode, Validators.required],
       registerDistrictCode: [employee.registerDistrictCode, Validators.required],
       registerWardsCode: [employee.registerWardsCode, Validators.required],
@@ -172,17 +172,25 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
       this.bankService.getBanks(),
       this.departmentService.getDepartments(),
       this.categoryService.getCategories('relationshipDocumentType'),
-      this.categoryService.getCategories('typeBirthday')
+      this.categoryService.getCategories('typeBirthday'),
+      this.districtService.getDistrict(employee.registerCityCode),
+      this.wardService.getWards(employee.registerDistrictCode),
+      this.districtService.getDistrict(employee.recipientsCityCode),
+      this.wardService.getWards(employee.recipientsDistrictCode),
+      this.hospitalService.searchHospital(employee.cityFirstRegistCode,''),
+      this.districtService.getDistrict(employee.relationshipCityCode),
+      this.wardService.getWards(employee.relationshipDistrictCode),
+      this.villageService.getVillage(employee.relationshipWardsCode)      
     ];
 
-    if (employee.registerCityCode) jobs.push(this.districtService.getDistrict(employee.registerCityCode));
-    if (employee.registerDistrictCode) jobs.push(this.wardService.getWards(employee.registerDistrictCode));
-    if (employee.recipientsCityCode) jobs.push(this.districtService.getDistrict(employee.recipientsCityCode));
-    if (employee.recipientsDistrictCode) jobs.push(this.wardService.getWards(employee.recipientsDistrictCode));
-    if (employee.cityFirstRegistCode) jobs.push(this.hospitalService.searchHospital(employee.cityFirstRegistCode,''));
-    if (employee.relationshipCityCode) jobs.push(this.districtService.getDistrict(employee.relationshipCityCode));
-    if (employee.relationshipDistrictCode) jobs.push(this.wardService.getWards(employee.relationshipDistrictCode));
-    if (employee.relationshipWardsCode) jobs.push(this.villageService.getVillage(employee.relationshipWardsCode));
+    // if (employee.registerCityCode) jobs.push(this.districtService.getDistrict(employee.registerCityCode));
+    // if (employee.registerDistrictCode) jobs.push(this.wardService.getWards(employee.registerDistrictCode));
+    // if (employee.recipientsCityCode) jobs.push(this.districtService.getDistrict(employee.recipientsCityCode));
+    // if (employee.recipientsDistrictCode) jobs.push(this.wardService.getWards(employee.recipientsDistrictCode));
+    // if (employee.cityFirstRegistCode) jobs.push(this.hospitalService.searchHospital(employee.cityFirstRegistCode,''));
+    // if (employee.relationshipCityCode) jobs.push(this.districtService.getDistrict(employee.relationshipCityCode));
+    // if (employee.relationshipDistrictCode) jobs.push(this.wardService.getWards(employee.relationshipDistrictCode));
+    // if (employee.relationshipWardsCode) jobs.push(this.villageService.getVillage(employee.relationshipWardsCode));
 
     forkJoin(jobs).subscribe(([ cities, nationalities, peoples, salaryAreas, paymentStatus,
        paymentMethods, relationships, banks, departments,relationshipDocumentTypies, typeBirthdays,
@@ -890,4 +898,20 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
       console.log(data)
     );
   }
+
+  changeCityFirstRegistCode(value) {
+    this.hospitals = [];
+    this.employeeForm.patchValue({
+      hospitalFirstRegistCode: null,
+    });
+
+    this.getHospital(value);
+  }
+  
+  getHospital(cityCode) {
+    this.hospitalService.searchHospital(cityCode,'').subscribe(data => {
+      this.hospitals = data;
+    });
+  }
+  
 }
