@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
 import { SelectItem } from '@app/core/interfaces';
+import { SubmitDeclarationService } from '@app/core/services';
+import { PAGE_SIZE, DECLARATIONRESULT} from '@app/shared/constant';
 
 @Component({
   selector: 'app-dashboard',
@@ -8,8 +10,19 @@ import { SelectItem } from '@app/core/interfaces';
   styleUrls: ['./dashboard.component.less']
 })
 export class DashboardComponent implements OnInit {
-  documents: any[] = [];
+  total: number;
+  skip: number;
+  selectedPage: number = 1;
+  declarations: any[] = [];
   pageNumbers: SelectItem[];
+  declarationCode: string = '';
+  fromDate: any;
+  toDate: any;
+  status: any = DECLARATIONRESULT;
+  constructor(
+    private submitDeclarationService: SubmitDeclarationService,
+  ) {
+  }
 
   ngOnInit() {
     this.pageNumbers = [{
@@ -22,45 +35,35 @@ export class DashboardComponent implements OnInit {
       label: '15',
       value: 15
     }];
+    
+    this.getDeclarations(this.skip);
+  }
 
-    this.documents = [{
-      id: 1,
-      sendDate: {
-        date: '17/03/2020',
-        time: '12:02'
-      },
-      attachment: {
-        title: 'Báo tăng lao động',
-        data: [{
-          title: '- 1: Danh sách lao động tham gia BHXH, BHYT, BHTN, BHTNLĐ, BNN (Mẫu D02-TS)',
-          link: ''
-        }]
-      },
-      sendTimes: 1,
-      status: 'Đã có kết quả',
-      result: {
-        documentNumber: '27885/2020/00108',
-        detailLink: ''
+  private getDeclarations(skip = 0, take = PAGE_SIZE) {
+    this.submitDeclarationService.filter({
+      declarationCode: this.declarationCode,
+      fromDate: this.fromDate,
+      toDate: this.toDate,
+      skip,
+      take
+    }).subscribe(res => {
+      this.declarations = res.data;
+      this.total = res.total;
+      this.skip = skip;
+
+      if (res.data.length === 0 && this.selectedPage > 1) {
+        this.skip -= PAGE_SIZE;
+        this.selectedPage -= 1;
+        this.getDeclarations(this.skip);
       }
-    }, {
-      id: 2,
-      sendDate: {
-        date: '17/03/2020',
-        time: '12:02'
-      },
-      attachment: {
-        title: 'Báo tăng lao động',
-        data: [{
-          title: '- 1: Danh sách lao động tham gia BHXH, BHYT, BHTN, BHTNLĐ, BNN (Mẫu D02-TS)',
-          link: ''
-        }]
-      },
-      sendTimes: 1,
-      status: 'Đã có kết quả',
-      result: {
-        documentNumber: '27885/2020/00108',
-        detailLink: ''
-      }
-    }]
+    });
+  }
+
+  handleFormSearch(data) {
+
+    this.declarationCode = data.declarationCode;
+    this.fromDate = data.fromDate;
+    this.toDate = data.toDate;
+    this.getDeclarations(this.skip);
   }
 }

@@ -24,6 +24,11 @@
 			"male": "Nam",
 			"female": "Nữ"
 		},
+		"result": {
+			"draft": "Đã gửi",
+			"success": "Gửi thành công",
+			"hasRessult": "Đã có kết quả"
+		},
 		"contract": {
 			"new": "Tạo mới",
 			"approved": "Đã duyệt",

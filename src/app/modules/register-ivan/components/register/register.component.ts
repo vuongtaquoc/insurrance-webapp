@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import { DataRegisterIvan, MustMatch } from "@app/shared/constant";
+import { MustMatch } from "@app/shared/constant";
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DATE_FORMAT, REGEX } from '@app/shared/constant';
 import { City, District } from '@app/core/models';
@@ -82,7 +82,6 @@ export class RegisterIvanRegisterComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.registerIvanData = DataRegisterIvan;
     this.registerForm = this.formBuilder.group({
       cityCode: ['', [Validators.required]],
       isurranceDepartmentCode: ['', [Validators.required]],
@@ -124,7 +123,6 @@ export class RegisterIvanRegisterComponent implements OnInit {
     this.InitializeData();
     this.changeHasToken('0');
     this.changeIsFirst(true);  
-    this.buildShemaURL();
     
   }
 
@@ -191,12 +189,27 @@ export class RegisterIvanRegisterComponent implements OnInit {
 
       return;
     } 
-    const data = this.getData();
-    this.contractService.create(data).subscribe(data => {
-      this.modalService.success({
-        nzTitle: 'Đăng ký thành công',
-        nzContent: 'Chúng tôi sẽ liên hệ lại đơn vị để xác nhận thông tin lập hợp đồng, hóa đơn'
-      });
+    const fromData = this.getData();
+    this.contractService.create(fromData).subscribe(data => {
+      if (fromData.privateKey === '' || fromData.privateKey === undefined) {
+        
+        this.modalService.success({
+          nzTitle: 'Đăng ký thành công',
+          nzContent: 'Chúng tôi sẽ liên hệ lại đơn vị để xác nhận thông tin lập hợp đồng, hóa đơn'
+        });
+
+      } else {
+        this.modalService.confirm({
+          nzTitle: 'Đăng ký thành công, Bạn có muốn nộp tờ khai đăng ký với Cở Quan BHXH?',
+          nzOkText: 'Nộp tờ khai',
+          nzCancelText: 'Không',
+          nzOkType: 'danger',
+          nzOnOk: () => {
+            this.signDeclaration(data);
+          }
+        });
+      }
+      
       this.router.navigate([this.authenticationService.currentCredentials.role.defaultUrl]);
     });
 
@@ -392,18 +405,32 @@ export class RegisterIvanRegisterComponent implements OnInit {
 
   
   private readToken() {
-    const link = document.createElement('a');
-    link.href = this.shemaUrl;
-    link.click();
+    this.buildShemaURL('sign');
+    this.createLink();
     this.loaddingToken = true;
     this.cronJob();
   }
 
-  private buildShemaURL() {
+  private createLink() {
+    const link = document.createElement('a');
+    link.href = this.shemaUrl;
+    link.click();
+  }
+
+  private buildShemaURL(suffix) {
+
     this.authenticationToken = this.authenticationService.currentCredentials.token;
     let shemaSign = window['schemaSign'] || schemaSign;
     shemaSign = shemaSign.replace('token', this.authenticationToken);
-    this.shemaUrl = shemaSign.replace('declarationId', 'sign');
+    this.shemaUrl = shemaSign.replace('declarationId', suffix);
+
+  }
+
+  signDeclaration(data) {
+
+    this.buildShemaURL(data.id);
+    this.createLink();
+
   }
 
   cronJob() {
@@ -439,13 +466,14 @@ export class RegisterIvanRegisterComponent implements OnInit {
   }
 
   getNameOfDropdown(sourceOfDropdown: any, id: string) {
+
     let name = '';
     const item = sourceOfDropdown.find(r => r.id === id);
     if (item) {
       name = item.name;
     }
     return name;
-  }
 
+  }
 
 }

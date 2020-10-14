@@ -37,4 +37,5 @@ export * from './contract.service';
 export * from './price.service';
 export * from './switch-vendor.service';
 export * from './external.service';
+export * from './submit-declaration.service';
 

@@ -33,6 +33,12 @@ export const STATUS = {
   1: 'common.active',
 };
 
+export const DECLARATIONRESULT = {
+  0: 'common.result.draft',
+  1: 'common.result.success',
+  2: 'common.result.hasRessult',
+};
+
 export const STATUSENDEMAIL = {
   0: 'common.emailSented',
   1: 'common.emailError',
@@ -1178,40 +1184,6 @@ export function formatDateVn(date) {
   month = month.toString().length == 1 ? `0${month}` : month;
   return day + "/" + month + "/" + year;
 }
-
-export const DataRegisterIvan = [
-  {
-    ivan_title: "Hạn sử dụng (*)",
-    ivan_value: "01 năm",
-    ivan_type: "combo",
-    register_certificate_title: "Đăng ký mua",
-    register_certificate_value: "Không mua",
-    register_certificate_type: "combo",
-    isColSpan: false
-  },
-  {
-    ivan_title: "Số tháng niêm yết",
-    ivan_value: "0 tháng",
-    register_certificate_title: "Thành tiền I-VAN",
-    register_certificate_value: "0 tháng",
-    isColSpan: false
-  },
-  {
-    ivan_title: "Số tháng khuyến mại",
-    ivan_value: "0 tháng",
-    register_certificate_title: "Hình thức thanh toán (*)",
-    register_certificate_value: "0 tháng",
-    isColSpan: false,
-  },
-  {
-    ivan_title: "Tổng thời gian sử dụng",
-    ivan_value: "0 tháng",
-    register_certificate_title: "Tổng thanh toán",
-    register_certificate_value: "0 tháng",
-    isColSpan: false
-  },
-]
-
 
 // custom validator to check that two fields match
 export function MustMatch(controlName: string, matchingControlName: string) {

@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
 import { NzModalService } from 'ng-zorro-antd/modal';
-import { DataRegisterIvan, MustMatch } from "@app/shared/constant";
+import { MustMatch } from "@app/shared/constant";
 import { DeclarationService, AuthenticationService, CompanyService, IsurranceDepartmentService, DocumentListService } from '@app/core/services';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
@@ -11,7 +11,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class RegisterIvanComponent implements OnInit, OnDestroy {
     checked: boolean = false;
-    registerIvanData: any[] = [];
     registerForm: FormGroup;
 
     panel: any = {
@@ -26,7 +25,6 @@ export class RegisterIvanComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.registerIvanData = DataRegisterIvan;
     }
 
 
@@ -34,24 +32,6 @@ export class RegisterIvanComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-    }
 
-    handleUpperCase(key) {
-        const value = this.registerForm.value[key];
-    
-        this.registerForm.patchValue({
-          [key]: value.toUpperCase()
-        });
-      }
-    
-      save() {
-        for (const i in this.registerForm.controls) {
-          this.registerForm.controls[i].markAsDirty();
-          this.registerForm.controls[i].updateValueAndValidity();
-        }
-    
-        // if (this.registerForm.invalid) {
-        //   return;
-        // }
-      }
+    }
 }
