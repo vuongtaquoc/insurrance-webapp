@@ -16,7 +16,7 @@
         <div class="register-ivan-form__content" [ngClass]="{'page-declarations-hide-last-tab': !checked}">
           <nz-tabset class="register-ivan-tabset" [nzSelectedIndex]="2">
             <nz-tab nzTitle="Điều khoản">
-              <app-register-ivan-proviso class="app-register-ivan-proviso"></app-register-ivan-proviso>
+              <app-register-ivan-proviso  class="app-register-ivan-proviso"></app-register-ivan-proviso>
             </nz-tab><!-- Tab 1 -->
 
             <nz-tab nzTitle="Ngừng dịch vụ I-VAN" [nzDisabled]="!checked">
@@ -24,7 +24,7 @@
             </nz-tab><!-- Tab 2 -->
 
             <nz-tab nzTitle="Đăng ký mới">
-              <app-register-ivan-register class="app-register-ivan-register">
+              <app-register-ivan-register [isSwichVendor] = "checked" class="app-register-ivan-register">
               </app-register-ivan-register>
             </nz-tab><!-- Tab 3 -->
           </nz-tabset>

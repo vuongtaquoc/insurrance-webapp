@@ -8,6 +8,7 @@ import {
 import { forkJoin } from 'rxjs';
 import { City, District } from '@app/core/models';
 import { NzModalService } from 'ng-zorro-antd/modal';
+import { schemaSign } from '@app/shared/constant';
 
 @Component({
   selector: 'app-register-ivan-stop-service',
@@ -18,6 +19,8 @@ export class RegisterIvanStopServiceComponent implements OnInit {
   registerForm: FormGroup;
   companyId: string = '0';
   cities: City[] = [];
+  shemaUrl: any;
+  authenticationToken: string;
   isurranceDepartments: any;
 
   constructor(
@@ -98,9 +101,14 @@ export class RegisterIvanStopServiceComponent implements OnInit {
 
     const data = this.getData();
     this.switchVendorService.create(data).subscribe(data => {
-      this.modalService.success({
-        nzTitle: 'Đăng ký ngừng dịch vụ ',
-        nzContent: 'Đăng ký ngừng dịch vụ thành công, vui lòng điền đầy đủ thông tin tab đăng ký mới'
+      this.modalService.confirm({
+        nzTitle: 'Đăng ký ngừng dịch vụ thành công, Bạn có muốn nộp Hồ sơ đăng ký ngừng sử dụng dịch vụ I-VAN?',
+        nzOkText: 'Nộp tờ khai',
+        nzCancelText: 'Không',
+        nzOkType: 'danger',
+        nzOnOk: () => {
+          this.signDeclaration(data);
+        }
       });
     });
   }
@@ -139,6 +147,28 @@ export class RegisterIvanStopServiceComponent implements OnInit {
       name = item.name;
     }
     return name;
+  }
+
+  private createLink() {
+    const link = document.createElement('a');
+    link.href = this.shemaUrl;
+    link.click();
+  }
+
+  private buildShemaURL(suffix) {
+
+    this.authenticationToken = this.authenticationService.currentCredentials.token;
+    let shemaSign = window['schemaSign'] || schemaSign;
+    shemaSign = shemaSign.replace('token', this.authenticationToken);
+    this.shemaUrl = shemaSign.replace('declarationId', suffix);
+
+  }
+
+  signDeclaration(data) {
+
+    this.buildShemaURL(data.id);
+    this.createLink();
+
   }
 
 

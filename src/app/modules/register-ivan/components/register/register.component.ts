@@ -25,7 +25,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 })
 
 export class RegisterIvanRegisterComponent implements OnInit {
-  
+  @Input() isSwichVendor: boolean;
   registerIvanData: any[] = [];
   registerForm: FormGroup;
   isFirst: boolean = false;
@@ -189,6 +189,7 @@ export class RegisterIvanRegisterComponent implements OnInit {
 
       return;
     } 
+    
     const fromData = this.getData();
     this.contractService.create(fromData).subscribe(data => {
       if (fromData.privateKey === '' || fromData.privateKey === undefined) {
@@ -356,6 +357,7 @@ export class RegisterIvanRegisterComponent implements OnInit {
       ...this.registerForm.value,
       companyId: this.companyId,
       customerId: this.currentCompanyId,
+      isSiwchVendor: this.isSwichVendor,
       authorityDate: this.authorityDate,
       isurranceDepartmentName: this.getNameOfDropdown(this.isurranceDepartments, this.registerForm.value.isurranceDepartmentCode),   
       contractDetail: this.contractDetail,
