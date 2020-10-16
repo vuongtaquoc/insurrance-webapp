@@ -43,6 +43,10 @@ export class DepartmentComponent implements OnInit, OnChanges {
     });
   }
 
+  remove(index) {
+    this.departments.splice(index, 1);
+  }
+
   codeChange(event, index) {
     let code = event.target.value;
     if (code) {
