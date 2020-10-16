@@ -7,7 +7,7 @@ export const environment = {
   ...all,
   production: false,
    apiUrl: 'http://localhost:1380'
-   //apiUrl: 'http://api.mbhxh.com.vn'
+  //  apiUrl: 'http://api.mbhxh.com.vn'
 };
 
 /*
