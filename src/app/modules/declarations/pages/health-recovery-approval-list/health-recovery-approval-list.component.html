@@ -8,7 +8,8 @@
       </div>
 
       <div class="page-increase-labor__group-button">
-        <a [routerLink]="['/declarations/health-recovery-approval/add']" class="page-card__declaration-button" nz-button nzType="default">
+        <a [routerLink]="['/declarations/health-recovery-approval/add']" class="page-card__declaration-button" nz-button
+          nzType="default">
           Lập tờ khai<i nz-icon nzType="container"></i>
         </a>
         <!-- <a nz-button nzType="default"><i nz-icon nzType="edit"></i>Sửa</a>
@@ -16,29 +17,23 @@
       </div>
     </div><!-- page-increase-labor__menu-bar -->
 
-    <nz-table
-      #rowSelectionTable
-      nzBordered
-      [nzData]="declarations"
-      [nzPageSize]="declarations.length"
-      [nzShowPagination]="false"
-      class="table ui-table-custom--center table-editor"
-    >
+    <nz-table #rowSelectionTable nzBordered [nzData]="declarations" [nzPageSize]="declarations.length"
+      [nzShowPagination]="false" class="table ui-table-custom--center table-editor" [nzScroll]="{ y: '400px' }">
       <thead>
         <tr class="ui-table-custom-header">
-          <th class="cell-custom-reduction width-12p">Ngày lập</th>
-          <th class="cell-custom-reduction width-7p">Số hồ sơ</th>
+          <th nzWidth="120px" class="cell-custom-reduction width-12p">Ngày lập</th>
+          <th nzWidth="100px" class="cell-custom-reduction width-7p">Số hồ sơ</th>
           <th class="cell-custom-reduction">Giấy tờ, biểu mẫu</th>
-          <th class="cell-custom-reduction width-7p">Ngày nộp</th>
-          <th class="cell-custom-reduction width-12p">Kết quả giải quyết</th>
-          <th class="cell-custom-reduction width-7p">Tờ khai</th>
-          <th class="cell-custom-reduction width-7p">Thao tác</th>
+          <th nzWidth="120px" class="cell-custom-reduction width-7p">Ngày nộp</th>
+          <th nzWidth="150px" class="cell-custom-reduction width-12p">Kết quả giải quyết</th>
+          <th nzWidth="80px" class="cell-custom-reduction width-7p">Tờ khai</th>
+          <th nzWidth="100px" class="cell-custom-reduction width-7p">Thao tác</th>
         </tr>
 
         <tr class="ui-table-custom-filter">
           <th class="cell-custom-reduction">
             <input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small"
-            [(ngModel)]="filter.createDate" (ngModelChange)="handleFilter('createDate')" />
+              [(ngModel)]="filter.createDate" (ngModelChange)="handleFilter('createDate')" />
           </th>
           <th class="cell-custom-reduction">
             <input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small"
@@ -49,12 +44,12 @@
               [(ngModel)]="filter.declarationName" (ngModelChange)="handleFilter('declarationName')" />
           </th>
           <th class="cell-custom-reduction">
-            <input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small"
-              [(ngModel)]="filter.sendDate" (ngModelChange)="handleFilter('sendDate')" />
+            <input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small" [(ngModel)]="filter.sendDate"
+              (ngModelChange)="handleFilter('sendDate')" />
           </th>
           <th class="cell-custom-reduction">
             <input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small"
-            [(ngModel)]="filter.documentStatusName" (ngModelChange)="handleFilter('documentStatusName')" />
+              [(ngModel)]="filter.documentStatusName" (ngModelChange)="handleFilter('documentStatusName')" />
           </th>
           <th class="cell-custom-reduction"></th>
           <th class="cell-custom-reduction"></th>
@@ -69,8 +64,8 @@
           <td class="text-center">{{ data.sendDate }}</td>
           <td class="text-center">{{ data.documentStatusName }}</td>
           <td class="text-center">
-              <button nz-button nzType="link" nzBlock (click)="viewDocument(data)" >Xem</button>
-            </td>
+            <button nz-button nzType="link" nzBlock (click)="viewDocument(data)">Xem</button>
+          </td>
           <td class="text-center">
             <a [routerLink]="['/declarations/health-recovery-approval/' + data.id + '/edit']" nz-button nzType="link">
               <i nz-icon nzType="edit" nzTheme="outline"></i>

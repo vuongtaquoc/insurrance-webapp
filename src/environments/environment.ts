@@ -8,6 +8,7 @@ export const environment = {
   production: false,
    apiUrl: 'http://localhost:1380'
   //  apiUrl: 'http://api.mbhxh.com.vn'
+ 
 };
 
 /*
