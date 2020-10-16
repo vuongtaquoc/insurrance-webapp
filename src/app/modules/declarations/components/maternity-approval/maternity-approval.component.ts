@@ -71,13 +71,16 @@ export class MaternityApprovalComponent implements OnInit, OnDestroy {
         this.status = declarations.status;
         this.regimeApproval.formOrigin = {
           batch: declarations.batch,
+          month: declarations.month,
+          year: declarations.year,
           openAddress: declarations.openAddress,
           branch: declarations.branch,
           typeDocumentActtach: declarations.typeDocumentActtach,
-          reason: declarations.reason
+          reason: declarations.reason,
         };
       });
     } else {
+
       this.declarationService.getDeclarationInitialsByGroup(this.declarationCode).subscribe(data => {
         this.regimeApproval.origin = data;
       });
@@ -86,7 +89,20 @@ export class MaternityApprovalComponent implements OnInit, OnDestroy {
         submitter: currentCredentials.companyInfo.delegate,
         mobile: currentCredentials.companyInfo.mobile
       });
-    }
+
+      this.declarationService.getHeaderDeclaration(this.declarationCode).subscribe(data => {
+        this.regimeApproval.formOrigin = {
+          batch: data.batch,
+          month: data.month,
+          quarter: data.quarter,
+          year: data.year,
+          openAddress: '',
+          branch: '',
+          typeDocumentActtach: '',
+          reason: '',
+        };
+      });
+   }
 
     this.documentListService.getDocumentList(this.declarationCode).subscribe(documentList => {
       this.documentList = documentList;

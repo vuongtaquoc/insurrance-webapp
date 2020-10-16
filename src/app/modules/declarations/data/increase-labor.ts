@@ -87,8 +87,7 @@ export const TABLE_HEADER_COLUMNS = [{
   width: 45,
   title: '(3)',
   align: 'center',
-  key: 'hasBookIsurrance',
-  readOnly: true
+  key: 'hasBookIsurrance'
 }, {
   type: 'text',
   width: 120,

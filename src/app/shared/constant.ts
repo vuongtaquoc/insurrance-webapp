@@ -49,6 +49,12 @@ export const EMAILTYPE = {
   2: 'common.emailType.sellerAccount',
 };
 
+export const RESULTSUBMIT = {
+  0: 'common.resultSubmit.draft',
+  1: 'common.resultSubmit.notSend',
+  2: 'common.resultSubmit.sendError',
+  3: 'common.resultSubmit.sendSuceesfull',
+};
 
 export const ACTION = {
   ADD: 'Add',

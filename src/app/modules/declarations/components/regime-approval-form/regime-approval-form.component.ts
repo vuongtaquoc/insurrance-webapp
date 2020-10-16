@@ -54,7 +54,10 @@ export class RegimeApprovalFormComponent implements OnInit, OnChanges {
         openAddress: changes.data.currentValue.openAddress,
         branch: changes.data.currentValue.branch,
         typeDocumentActtach: changes.data.currentValue.typeDocumentActtach,
-        reason: changes.data.currentValue.reason
+        reason: changes.data.currentValue.reason,
+        batch: changes.data.currentValue.batch,
+        month: changes.data.currentValue.month,
+        year: changes.data.currentValue.year,
       });
     }
   }

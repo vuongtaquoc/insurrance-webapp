@@ -97,9 +97,9 @@
                 <form nz-form [formGroup]="form" class="page-declarations__search">
                   <nz-form-item>
                     <nz-form-label [nzNoColon]="true" [nzSpan]="10">Số</nz-form-label>
-                    <nz-form-control [nzSpan]="14" [nzErrorTip]="numberTpl">
-                      <input nz-input formControlName="number" (onChange)="handleChangeForm()">
-                      <ng-template #numberTpl let-control>
+                    <nz-form-control [nzSpan]="14" [nzErrorTip]="batchTpl">
+                      <input nz-input formControlName="batch" (onChange)="handleChangeForm()">
+                      <ng-template #batchTpl let-control>
                         <ng-container *ngIf="control.hasError('required')">
                           <p class="regime-approval-form__error">Số tờ khai không để trống</p>
                         </ng-container>

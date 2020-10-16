@@ -132,10 +132,9 @@ export class AdjustComponent implements OnInit, OnDestroy {
           this.status = declarations.status;
           this.declarations.formOrigin = {
             batch: declarations.batch,
-            openAddress: declarations.openAddress,
-            branch: declarations.branch,
-            typeDocumentActtach: declarations.typeDocumentActtach,
-            reason: declarations.reason
+            month: declarations.month,
+            quarter: declarations.quarter,
+            year: declarations.year,
           };
 
           this.declarationGeneral = {
@@ -147,6 +146,15 @@ export class AdjustComponent implements OnInit, OnDestroy {
       } else {
         this.declarationService.getDeclarationInitialsByGroup(this.declarationCode).subscribe(data => {
           this.declarations.origin = data;
+        });
+
+        this.declarationService.getHeaderDeclaration(this.declarationCode).subscribe(data => {
+          this.declarations.formOrigin = {
+            batch: data.batch,
+            month: data.month,
+            quarter: data.quarter,
+            year: data.year,
+          };
         });
 
         this.documentForm.patchValue({

@@ -6,7 +6,7 @@
       <!-- <nz-input-number
          formControlName="number"
       ></nz-input-number> -->
-      <input nz-input formControlName="number">
+      <input nz-input formControlName="batch">
       <ng-template #numberTpl let-control>
         <ng-container *ngIf="control.hasError('required')">
           <p class="regime-approval-form__error">Số tờ khai không để trống</p>
@@ -28,6 +28,21 @@
         </ng-container>
         <ng-container *ngIf="control.hasError('pattern')">
           <p class="regime-approval-form__error">Tháng tờ khai phải số</p>
+        </ng-container>
+      </ng-template>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzNoColon]="true" [nzSpan]="10">Quý</nz-form-label>
+    <nz-form-control [nzSpan]="14" [nzErrorTip]="quarterTpl">
+      <!-- <input nz-input formControlName="month"> -->
+      <input nz-input formControlName="quarter">
+      <ng-template #quarterTpl let-control>
+        <ng-container *ngIf="control.hasError('required')">
+          <p class="regime-approval-form__error">Quý khai không để trống</p>
+        </ng-container>
+        <ng-container *ngIf="control.hasError('pattern')">
+          <p class="regime-approval-form__error">Quý tờ khai phải số</p>
         </ng-container>
       </ng-template>
     </nz-form-control>

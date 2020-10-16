@@ -27,6 +27,10 @@ export class DeclarationService {
     );
   }
 
+  public getHeaderDeclaration(declarationCode: string) {
+    return this.http.get(`/declarations/header-declaration/${ declarationCode }`)
+  }
+
   public getDeclarations(filters = {}) {
     return this.http.getList('/declarations', {
       params: {
@@ -77,7 +81,6 @@ export class DeclarationService {
         const declaration = detail;
 
         declaration.documentDetail = groupBy(detail.documentDetail, 'category');
-        //declaration.files = detail.files;// groupBy(detail.files, 'declarationCode');
         return declaration;
       })
     );

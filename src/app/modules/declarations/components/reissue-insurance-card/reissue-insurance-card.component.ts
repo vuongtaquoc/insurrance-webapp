@@ -120,7 +120,7 @@ export class ReissueInsuranceCardComponent implements OnInit, OnDestroy {
     const date = new Date();
     this.currentCredentials = this.authenticationService.currentCredentials;
     this.form = this.formBuilder.group({
-      number: [ '1',[Validators.required, Validators.pattern(REGEX.ONLY_NUMBER)] ],
+      batch: [ '1',[Validators.required, Validators.pattern(REGEX.ONLY_NUMBER)] ],
       month: [ date.getMonth() + 1 , [Validators.required, Validators.pattern(REGEX.ONLY_NUMBER)]],
       year: [ date.getFullYear(), [Validators.required, Validators.pattern(REGEX.ONLY_NUMBER)] ]
     });
@@ -171,15 +171,16 @@ export class ReissueInsuranceCardComponent implements OnInit, OnDestroy {
           });
           const date = new Date();
           this.form.patchValue({
-            number: declarations.documentNo,
-            month: date.getMonth() + 1, 
-            year: date.getFullYear(),
+            batch: declarations.batch,
+            month: declarations.month,
+            year: declarations.year,
           });
 
         });
 
         this.isTableValid = true;
       } else {
+
         this.declarations = this.loadDataDefault();
         this.informations = this.loadDefaultInformations();
         this.documentForm.patchValue({
@@ -187,6 +188,15 @@ export class ReissueInsuranceCardComponent implements OnInit, OnDestroy {
           mobile: this.currentCredentials.companyInfo.mobile,
           usedocumentDT01: false,
         });
+
+        this.declarationService.getHeaderDeclaration(this.declarationCode).subscribe(data => {
+          this.form.patchValue({
+            batch: data.batch,
+            month: data.month,
+            year: data.year,
+          });
+        });
+
       }
       this.handler = eventEmitter.on(this.eventValidData, ({ name,use, isValid, errors }) => {
         this.tableErrors[name] = errors;
@@ -472,7 +482,7 @@ export class ReissueInsuranceCardComponent implements OnInit, OnDestroy {
 
   validFormDeclaration() {
     const formError: any[] = [];
-    if(this.form.controls.number.errors) {
+    if(this.form.controls.batch.errors) {
       formError.push({
         y: 'Số ',
         columnName: 'Kiểm tra lại trường số tờ khai',

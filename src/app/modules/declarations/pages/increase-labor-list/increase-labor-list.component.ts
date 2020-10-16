@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { DeclarationService } from '@app/core/services';
 import { Declaration } from '@app/core/interfaces';
 
-import { PAGE_SIZE, DECLARATIONS } from '@app/shared/constant';
+import { PAGE_SIZE, DECLARATIONS, RESULTSUBMIT } from '@app/shared/constant';
 import { DocumentFormComponent } from '@app/shared/components';
 import { NzModalService } from 'ng-zorro-antd/modal';
 
@@ -26,7 +26,7 @@ export class IncreaseLaborListComponent implements OnInit {
   declarationName: string;
 
   keyword: string = '';
-
+  status: any = RESULTSUBMIT;
   filter: any = {
     createDate: '',
     documentNo: '',
@@ -116,6 +116,10 @@ export class IncreaseLaborListComponent implements OnInit {
   getDeclaration(declarationCode: string) {
     const declarations = DECLARATIONS.find(d => d.key === declarationCode);
     return declarations;
+  }
+
+  onChange () {
+    this.getDeclarations();
   }
 
 }

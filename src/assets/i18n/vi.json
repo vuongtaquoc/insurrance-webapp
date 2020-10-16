@@ -29,6 +29,12 @@
 			"success": "Gửi thành công",
 			"hasRessult": "Đã có kết quả"
 		},
+		"resultSubmit": {
+			"draft": "Chưa nộp",
+			"notSend": "Chưa nộp",
+			"sendError": "Gửi lỗi",
+			"sendSuceesfull": "Gửi thành công"
+		},
 		"contract": {
 			"new": "Tạo mới",
 			"approved": "Đã duyệt",

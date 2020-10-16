@@ -32,7 +32,6 @@ export class ReissueHealthCardAddComponent extends PageCoreComponent {
   }
 
   handleSubmit(data) {
-    console.log(data, 'Dataa');
     if (data.type === 'saveAndView') {
       this.saveAndViewDocument(data);
     } else if(data.type === 'save') {

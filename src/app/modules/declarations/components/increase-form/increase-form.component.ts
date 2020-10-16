@@ -35,7 +35,8 @@ export class IncreaseFormComponent implements OnInit, OnChanges {
     ];
     
     this.form = this.formBuilder.group({
-      number: [ '1',[Validators.required, Validators.pattern(REGEX.ONLY_NUMBER)] ],
+      batch: [ '1',[Validators.required, Validators.pattern(REGEX.ONLY_NUMBER)] ],
+      quarter: [ '1',[Validators.required, Validators.pattern(REGEX.ONLY_NUMBER)] ],
       month: [ date.getMonth() + 1 , [Validators.required, Validators.pattern(REGEX.ONLY_NUMBER)]],
       year: [ date.getFullYear(), [Validators.required, Validators.pattern(REGEX.ONLY_NUMBER)] ]
     });
@@ -46,14 +47,17 @@ export class IncreaseFormComponent implements OnInit, OnChanges {
   ngOnChanges(changes) {
     if (changes.data && !isEmpty(changes.data.currentValue) && this.form) {
       this.form.patchValue({
-        
+        batch: changes.data.currentValue.batch,
+        month: changes.data.currentValue.month,
+        quarter: changes.data.currentValue.quarter,
+        year: changes.data.currentValue.year,
       });
     }
   }
 
   validForm() {
     const formError: any[] = [];
-    if(this.form.controls.number.errors) {
+    if(this.form.controls.batch.errors) {
       formError.push({
         y: 'Số',
         columnName: 'Kiểm tra lại trường số tờ khai',
@@ -70,6 +74,15 @@ export class IncreaseFormComponent implements OnInit, OnChanges {
         subfix: 'Lỗi'
       });
     }
+  
+    if(this.form.controls.quarter.errors) {
+      formError.push({
+        y: 'Quý',
+        columnName: 'Kiểm tra lại trường quý kê khai',
+        prefix: '',
+        subfix: 'Lỗi'
+      });
+    }
 
     if(this.form.controls.year.errors) {
       formError.push({
@@ -79,6 +92,7 @@ export class IncreaseFormComponent implements OnInit, OnChanges {
         subfix: 'Lỗi'
       });
     }
+
 
     this.onFormValid.emit({
       tableName: 'validFrom',

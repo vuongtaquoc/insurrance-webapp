@@ -72,16 +72,32 @@ export class HealthRecoveryApprovalComponent implements OnInit, OnDestroy {
         this.status = declarations.status;
         this.regimeApproval.formOrigin = {
           batch: declarations.batch,
+          month: declarations.month,
+          year: declarations.year,
           openAddress: declarations.openAddress,
           branch: declarations.branch,
           typeDocumentActtach: declarations.typeDocumentActtach,
-          reason: declarations.reason
+          reason: declarations.reason,
         };
       });
     } else {
       this.declarationService.getDeclarationInitialsByGroup(this.declarationCode).subscribe(data => {
         this.regimeApproval.origin = data;
       });
+
+      this.declarationService.getHeaderDeclaration(this.declarationCode).subscribe(data => {
+        this.regimeApproval.formOrigin = {
+          batch: data.batch,
+          month: data.month,
+          quarter: data.quarter,
+          year: data.year,
+          openAddress: '',
+          branch: '',
+          typeDocumentActtach: '',
+          reason: '',
+        };
+      });
+
       const currentCredentials = this.authenticationService.currentCredentials;
       this.documentForm.patchValue({
         submitter: currentCredentials.companyInfo.delegate,
