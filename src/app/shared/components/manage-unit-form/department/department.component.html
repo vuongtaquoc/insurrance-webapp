@@ -4,6 +4,7 @@
       <th style="width: 50px;"> STT</th>
       <th style="width: 200px;">Mã phòng ban</th>
       <th style="width: 660px;"> Tên phòng ban</th>
+      <th style="width: 100px">Thao tác</th>
     </tr>
   </thead>
   <tbody>
@@ -20,6 +21,9 @@
       </td>
       <td>
         <input nz-input nzSize="small" placeholder="Nhập tên phòng ban" [(ngModel)]="row.name" />
+      </td>
+      <td>
+        <button class="btn btn-danger">Xóa</button>
       </td>
     </tr>
   </tbody>

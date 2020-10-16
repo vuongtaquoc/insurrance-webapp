@@ -4,15 +4,15 @@
 
     <h1>Danh sách hồ sơ giao dịch điện tử</h1>
     <div class="scrollable-container">
-      <nz-table class="table" #basicTable [nzData]="declarations" [nzShowPagination]="false">
+      <nz-table class="table" #basicTable [nzData]="declarations" [nzShowPagination]="false"  [nzScroll]="{ y: '250px' }">
         <thead>
           <tr class="table__header">
-            <th style="width: 50px" class="table__middle cell__header" nzShowCheckbox> </th>
-            <th class="table__middle cell__header">Ngày gửi</th>
+            <th nzWidth="50px" style="width: 50px" class="table__middle cell__header" nzShowCheckbox> </th>
+            <th nzWidth="150px" class="table__middle cell__header">Ngày gửi</th>
             <th class="table__middle cell__header">Giấy tờ đi kèm</th>
-            <th class="table__middle cell__header">Lần gửi</th>
-            <th class="table__middle cell__header">Trạng thái</th>
-            <th class="table__middle cell__header">Kết quả xử lý HS của cơ quan BHXH</th>
+            <th nzWidth="80px" class="table__middle cell__header">Lần gửi</th>
+            <th nzWidth="100px" class="table__middle cell__header">Trạng thái</th>
+            <th nzWidth="300px" class="table__middle cell__header">Kết quả xử lý HS của cơ quan BHXH</th>
           </tr>
         </thead>
         <tbody>

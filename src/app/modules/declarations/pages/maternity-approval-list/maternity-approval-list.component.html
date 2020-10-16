@@ -23,16 +23,17 @@
       [nzPageSize]="declarations.length"
       [nzShowPagination]="false"
       class="table ui-table-custom--center table-editor"
+      [nzScroll]="{ y: '400px' }"
     >
       <thead>
         <tr class="ui-table-custom-header">
-          <th class="cell-custom-reduction width-12p">Ngày lập</th>
-          <th class="cell-custom-reduction width-7p">Số hồ sơ</th>
+          <th nzWidth="120px" class="cell-custom-reduction width-12p">Ngày lập</th>
+          <th nzWidth="100px" class="cell-custom-reduction width-7p">Số hồ sơ</th>
           <th class="cell-custom-reduction">Giấy tờ, biểu mẫu</th>
-          <th class="cell-custom-reduction width-7p">Ngày nộp</th>
-          <th class="cell-custom-reduction width-12p">Kết quả giải quyết</th>
-          <th class="cell-custom-reduction width-7p">Tờ khai</th>
-          <th class="cell-custom-reduction width-7p">Thao tác</th>
+          <th nzWidth="120px" class="cell-custom-reduction width-7p">Ngày nộp</th>
+          <th nzWidth="150px" class="cell-custom-reduction width-12p">Kết quả giải quyết</th>
+          <th nzWidth="80px" class="cell-custom-reduction width-7p">Tờ khai</th>
+          <th nzWidth="100px" class="cell-custom-reduction width-7p">Thao tác</th>
         </tr>
 
         <tr class="ui-table-custom-filter">
