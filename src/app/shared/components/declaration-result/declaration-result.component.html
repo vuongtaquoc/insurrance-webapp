@@ -1,0 +1,43 @@
+<div class="declaration-result">
+  <div class="declaration-result__content">
+  <h2><span>Hồ sơ</span> : {{declarationFileInfo.declarationCode}} | {{declarationFileInfo.declarationName}}</h2>
+  <h1>KẾT QUẢ CÁ BƯỚC XỬ LÝ HỒ SƠ</h1>
+  <nz-table
+      nzBordered
+      #ajaxTable
+      nzShowSizeChanger
+      [nzFrontPagination]="false"
+      [nzData]="declarationFileInfo.resultResearch.detail"
+      [nzLoading]="loading"
+      [nzTotal]="total"
+      [(nzPageIndex)]="pageIndex"
+      [(nzPageSize)]="pageSize"
+      class="table-editor "
+    >
+      <thead>
+        <tr>
+          <th style="width: 50px;">Bước</th>
+          <th>Cơ quan bảo hiểm</th>
+          <th style="width: 200px;">Phòng ban</th>
+          <th style="width: 150px;">Nhân viên xử lý</th>
+          <th style="width: 220px;">Kết quả</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of ajaxTable.data;">
+          <td>{{ data.step }}</td>
+          <td>{{ data.isurranceDepartmentName }}</td>
+          <td>{{ data.department }}</td>
+          <td>{{ data.employeeHandler }}</td>
+          <td>{{ data.status }}</td>
+        </tr>
+      </tbody>
+    </nz-table>
+        <!-- ROW START -->
+  </div>
+  <div class="declaration-result__footer" *nzModalFooter>
+    <button nz-button nzType="default" (click)="dismiss()">
+      <i nz-icon nzType="rollback"></i>Đóng
+    </button>
+  </div>
+</div>

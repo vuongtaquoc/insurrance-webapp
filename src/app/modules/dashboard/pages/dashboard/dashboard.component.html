@@ -4,6 +4,7 @@
 
     <h1>Danh sách hồ sơ giao dịch điện tử</h1>
     <div class="scrollable-container">
+      <nz-spin [nzSpinning]="isSpinning" class="dashboard-page-container__spinning">
       <nz-table class="table" #basicTable [nzData]="declarations" [nzShowPagination]="false"  [nzScroll]="{ y: '250px' }">
         <thead>
           <tr class="table__header">
@@ -31,11 +32,12 @@
             <td class="text-center">{{ status[document.satus] | translate }}</td>
             <td>
               <span class="table__document-number">Số hồ sơ: {{document.documentNo}}</span>
-              Tiến độ xử lý: <a class="table__label-detail">Chi tiết</a>
+              Tiến độ xử lý: <a class="table__label-detail" (click)="viewResult(document)" >Chi tiết</a>
             </td>
           </tr>
         </tbody>
       </nz-table>
+    </nz-spin>
     </div>
 
     <div class="ui-table-paging-custom">
@@ -58,4 +60,5 @@
       <app-dashboard-news></app-dashboard-news>
     </div>
   </div>
+  <!-- </nz-spin> -->
 </div>

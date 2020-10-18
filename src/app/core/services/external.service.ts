@@ -21,4 +21,12 @@ export class ExternalService {
     return this.http.post('/external-sevice/isurrance-code', body, options);
   }
 
+  public getResultReceptionDocment(documentNo: string): Observable<any> {
+    return this.http.get(`/external-sevice/result-declaration/${documentNo}`);
+  }
+
+  public getProcessDeclaration(declarationFileId: string): Observable<any> {
+    return this.http.get(`/external-sevice/process-document/${declarationFileId}`);
+  }
+
 }

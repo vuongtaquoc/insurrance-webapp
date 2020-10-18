@@ -10,6 +10,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzTableModule } from 'ng-zorro-antd/table';
+import { NzSpinModule } from 'ng-zorro-antd/spin';
 
 import { AuthenticationService } from '@app/core/services';
 import { SharedModule } from '@app/shared/shared.module';
@@ -31,6 +32,7 @@ import {
     NzInputModule,
     NzGridModule,
     NzSelectModule,
+    NzSpinModule,
     NzTableModule,
     DashboardRoutingModule,
     SharedModule,

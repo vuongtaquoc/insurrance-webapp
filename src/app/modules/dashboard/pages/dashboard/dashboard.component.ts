@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
 import { SelectItem } from '@app/core/interfaces';
-import { SubmitDeclarationService } from '@app/core/services';
+import { SubmitDeclarationService, ExternalService } from '@app/core/services';
 import { PAGE_SIZE, DECLARATIONRESULT} from '@app/shared/constant';
+import { NzModalService } from 'ng-zorro-antd/modal';
+import { DeclarationResultComponent } from '@app/shared/components';
 
 @Component({
   selector: 'app-dashboard',
@@ -17,10 +19,13 @@ export class DashboardComponent implements OnInit {
   pageNumbers: SelectItem[];
   declarationCode: string = '';
   fromDate: any;
+  isSpinning: boolean;
   toDate: any;
   status: any = DECLARATIONRESULT;
   constructor(
     private submitDeclarationService: SubmitDeclarationService,
+    private modalService: NzModalService,
+    private externalService: ExternalService,
   ) {
   }
 
@@ -65,5 +70,32 @@ export class DashboardComponent implements OnInit {
     this.fromDate = data.fromDate;
     this.toDate = data.toDate;
     this.getDeclarations(this.skip);
+  }
+
+  viewResult(data) {
+    this.loadDeclarationFiles(data);
+  }
+
+  private loadDeclarationFiles(declaration) {
+    this.isSpinning = true;
+
+    this.externalService.getProcessDeclaration(declaration.id).subscribe(data => {
+      const modal = this.modalService.create({
+        nzWidth: 980,
+        nzWrapClassName: 'document-modal',
+        nzTitle: 'Kết quả xử lý hồ sơ số: ' + data.documentNo,
+        nzContent: DeclarationResultComponent,
+        nzOnOk: (data) => console.log('Click ok', data),
+        nzComponentParams: {
+          declarationFileInfo: data,
+        }
+      });
+  
+      modal.afterClose.subscribe(result => {
+      });
+
+      this.isSpinning = false;
+
+    });
   }
 }
