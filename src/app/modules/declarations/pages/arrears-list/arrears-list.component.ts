@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { DeclarationService } from '@app/core/services';
 import { Declaration } from '@app/core/interfaces';
 
-import { PAGE_SIZE, DECLARATIONS } from '@app/shared/constant';
+import { PAGE_SIZE, DECLARATIONS, RESULTSUBMIT } from '@app/shared/constant';
 import { DocumentFormComponent } from '@app/shared/components';
 import { NzModalService } from 'ng-zorro-antd/modal';
 
@@ -25,7 +25,7 @@ export class ArrearsListComponent implements OnInit {
   declarationCode: string = '601a';
   declarationName: string;
   keyword: string = '';
-
+  status: any = RESULTSUBMIT;
   filter: any = {
     createDate: '',
     documentNo: '',

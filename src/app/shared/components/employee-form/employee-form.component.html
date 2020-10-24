@@ -936,9 +936,6 @@
   </div>
 
   <div class="employee-form__footer" *nzModalFooter>
-      <button class="employee-form__button-export" nz-button nzType="primary" (click)="getIsurranceCode()">
-          Lấy XSBH
-       </button>
     <button class="employee-form__button-export" *ngIf="employee.id" nz-button nzType="primary" (click)="download()">
        Xuất KT1-TS
     </button>

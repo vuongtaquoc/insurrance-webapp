@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { DeclarationService } from '@app/core/services';
 import { Declaration } from '@app/core/interfaces';
 
-import { PAGE_SIZE } from '@app/shared/constant';
+import { PAGE_SIZE, RESULTSUBMIT } from '@app/shared/constant';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { DocumentFormComponent } from '@app/shared/components';
 
@@ -23,6 +23,7 @@ export class RegimeApprovalListComponent implements OnInit {
   skip: number;
   selectedPage: number = 1;
   keyword: string = '';
+  status: any = RESULTSUBMIT;
   filter: any = {
     createDate: '',
     documentNo: '',

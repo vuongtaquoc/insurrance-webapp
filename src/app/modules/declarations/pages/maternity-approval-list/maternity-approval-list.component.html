@@ -27,13 +27,13 @@
     >
       <thead>
         <tr class="ui-table-custom-header">
-          <th nzWidth="120px" class="cell-custom-reduction width-12p">Ngày lập</th>
-          <th nzWidth="100px" class="cell-custom-reduction width-7p">Số hồ sơ</th>
-          <th class="cell-custom-reduction">Giấy tờ, biểu mẫu</th>
-          <th nzWidth="120px" class="cell-custom-reduction width-7p">Ngày nộp</th>
-          <th nzWidth="150px" class="cell-custom-reduction width-12p">Kết quả giải quyết</th>
-          <th nzWidth="80px" class="cell-custom-reduction width-7p">Tờ khai</th>
-          <th nzWidth="100px" class="cell-custom-reduction width-7p">Thao tác</th>
+            <th nzWidth="140px" class="cell-custom-reduction width-12p">Ngày lập</th>
+            <th nzWidth="140px" class="cell-custom-reduction width-7p">Số hồ sơ</th>
+            <th class="cell-custom-reduction">Giấy tờ, biểu mẫu</th>
+            <th nzWidth="140px" class="cell-custom-reduction width-7p">Ngày nộp</th>
+            <th nzWidth="180px" class="cell-custom-reduction  width-12p">Kết quả giải quyết</th>
+            <th nzWidth="80px" class="cell-custom-reduction  width-7p">Tờ khai</th>
+            <th nzWidth="100px" class="cell-custom-reduction width-7p">Thao tác</th>
         </tr>
 
         <tr class="ui-table-custom-filter">
@@ -68,7 +68,7 @@
           <td class="text-center">{{ data.documentNo }}</td>
           <td class="text-wrap">{{ data.declarationName }}</td>
           <td class="text-center">{{ data.sendDate }}</td>
-          <td class="text-center">{{ data.documentStatusName }}</td>
+          <td class="text-center"> {{ status[data.status] | translate }}</td>
           <td class="text-center">
               <button nz-button nzType="link" nzBlock (click)="viewDocument(data)" >Xem</button>
             </td>

@@ -512,7 +512,7 @@ export class ReissueHealthCardComponent implements OnInit, OnDestroy {
 
   validFormDeclaration() {
     const formError: any[] = [];
-    if(this.form.controls.number.errors) {
+    if(this.form.controls.batch.errors) {
       formError.push({
         y: 'Số ',
         columnName: 'Kiểm tra lại trường số tờ khai',

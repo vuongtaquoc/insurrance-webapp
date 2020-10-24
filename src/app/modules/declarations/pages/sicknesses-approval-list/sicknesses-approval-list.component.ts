@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { DeclarationService } from '@app/core/services';
 import { Declaration } from '@app/core/interfaces';
 
-import { PAGE_SIZE,DECLARATIONS } from '@app/shared/constant';
+import { PAGE_SIZE,DECLARATIONS, RESULTSUBMIT } from '@app/shared/constant';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { DocumentFormComponent } from '@app/shared/components';
 
@@ -24,7 +24,7 @@ export class SicknessesApprovalListComponent implements OnInit {
   selectedPage: number = 1;
   declarationCode: string = '630a';
   declarationName: string;
-
+  status: any = RESULTSUBMIT;
   keyword: string = '';
 
   filter: any = {
