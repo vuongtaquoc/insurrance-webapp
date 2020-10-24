@@ -16,10 +16,13 @@ export class EmployeeListComponent implements OnInit {
   employees: any[] = [];
   total: number;
   skip: number;
+  orderby: string = '';
+  orderType: string = '';
   selectedPage: number = 1;
   isSpinning: boolean;
   gender: any = GENDER;
-  filter: any = {
+  filter: any = {};
+  param: any = {
     fullName: '',
     code: '',
     isurranceCode: '',
@@ -29,7 +32,6 @@ export class EmployeeListComponent implements OnInit {
     gender: '',
     hospitalFirstRegistName: ''
   };
-  keyword: string = '';
   tableHeight: number;
 
   constructor(
@@ -53,7 +55,9 @@ export class EmployeeListComponent implements OnInit {
 
   getEmployees(skip = 0, take = PAGE_SIZE) {
     this.employeeService.getEmployees({
-      keyWord: this.keyword,
+      ...this.filter,
+      orderby: this.orderby,
+      orderType: this.orderType,
       skip,
       take
     }).subscribe(res => {
@@ -64,22 +68,27 @@ export class EmployeeListComponent implements OnInit {
       if (res.data.length === 0 && this.selectedPage > 1) {
         this.skip -= PAGE_SIZE;
         this.selectedPage -= 1;
-
         this.getEmployees(this.skip);
       }
     });
   }
 
   handleFilter(key) {
-    this.keyword = this.filter[key];
-
+    this.filter[key] = this.param[key];
+    this.selectedPage = 1;
     this.getEmployees();
   }
 
   pageChange({ skip, page }) {
     this.selectedPage = page;
-
+    this.skip = skip;
     this.getEmployees(skip, PAGE_SIZE);
+  }
+
+  sort(event) {
+    this.orderby = event.key;
+    this.orderType = event.value;
+    this.getEmployees();
   }
 
   add() {
@@ -107,7 +116,7 @@ export class EmployeeListComponent implements OnInit {
       });
 
       modal.afterClose.subscribe(result => {
-        this.getEmployees();
+        this.getEmployees(this.skip);
       });
     });
   }
@@ -124,10 +133,7 @@ export class EmployeeListComponent implements OnInit {
      else {
       this.showDialogChangeCompany(companyInfo);
     }
-    
   }
-
-
 
   getDepartment(callback) {
     this.departmentService.getDepartmentShortName().subscribe(data => {
@@ -176,7 +182,7 @@ export class EmployeeListComponent implements OnInit {
       });
 
       modal.afterClose.subscribe(result => {
-        this.getEmployees();
+        this.getEmployees(this.skip);
       });
     }, () => {
       this.isSpinning = false;

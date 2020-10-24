@@ -299,6 +299,11 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
     }
 
     if (this.employeeForm.invalid) {
+       this.modalService.error({
+        nzTitle: 'Lỗi dữ liệu',
+        nzContent: 'Vui lòng kiểm tra trường dữ liệu được cảnh báo lỗi hoặc yêu cầu nhập'
+      });
+
       return;
     }
 
@@ -628,6 +633,8 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
     master.typeBirthday = this.typeBirthday;
     master.gender = this.gender == 1 ? true : false;
     master.identityCar = this.identityCar;
+    master.peopleCode = this.peopleCode;
+    master.nationalityCode = this.nationalityCode,
     master.data = this.tableHeaderColumnsFamilies.map(column => {
         if (!column.key || !master[column.key]) return '';
         return master[column.key];
@@ -741,6 +748,14 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
 
   get identityCar() {
     return this.employeeForm.get('identityCar').value;
+  }
+
+  get peopleCode() {
+    return this.employeeForm.get('peopleCode').value;
+  }
+
+  get nationalityCode() {
+    return this.employeeForm.get('nationalityCode').value;
   }
 
   get typeBirthday() {
@@ -884,19 +899,6 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
       return mimeType.value;
     }
     return MIME_TYPE[0].value
-  }
-
-  getIsurranceCode() {
-    const employee = {
-      ...this.employeeForm.value,
-      isRegiester: 1,
-      typeBirthday: 0,
-    };
-    
-    console.log(employee);
-    this.externalService.getIsurranceCode(employee).subscribe(data => 
-      console.log(data)
-    );
   }
 
   changeCityFirstRegistCode(value) {

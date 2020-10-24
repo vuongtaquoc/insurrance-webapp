@@ -185,10 +185,10 @@ export class FamiliesListTableComponent implements OnInit, OnDestroy, OnChanges,
           this.spreadsheet.setReadonlyCellAndClear(index, colIndex);
         }
 
-        if(d[21] === '00') {
-          this.spreadsheet.setReadonly(index, 21);
+        if(d[23] === '00') {
+          this.spreadsheet.setReadonly(index, 23);
         }else {
-          this.spreadsheet.setReadonlyCellAndClear(index, 17);
+          this.spreadsheet.setReadonlyCellAndClear(index, 19);
         }
 
         if (d.origin && d.origin.isMaster) {

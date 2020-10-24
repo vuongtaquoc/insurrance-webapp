@@ -18,6 +18,8 @@ export const TABLE_FAMILIES_NESTED_HEADERS = [
     { title: 'Chỉ có năm sinh hoặc tháng/năm', rowspan: '2'},
     { title: 'Ngày tháng năm sinh', rowspan: '2'},
     { title: 'Nữ', rowspan: '2'},
+    { title: 'Quốc tịch', rowspan: '2'},
+    { title: 'Dân tộc', rowspan: '2'},
     { title: 'Nơi cấp giấy khai sinh', colspan: '4'},
     { title: 'Mối quan hệ với chủ hộ', rowspan: '2'},
     { title: 'Số CMND/ thẻ căn cước/ Hộ chiếu', rowspan: '2'},
@@ -183,7 +185,30 @@ export const TABLE_FAMILIES_HEADER_COLUMNS = [{
   title: '(14)',
   key: 'gender',
   align: 'center',
-}, {
+},
+{
+  type: 'dropdown',
+  autocomplete: true,
+  width: 100,
+  title: '(7)',
+  fieldName: 'Quốc tịch',
+  key: 'nationalityCode',
+  source: [],
+  validations: {
+    required: true
+  }
+},{
+  type: 'dropdown',
+  autocomplete: true,
+  width: 100,
+  title: '(8)',
+  fieldName: 'Dân tộc',
+  key: 'peopleCode',
+  source: [],
+  validations: {
+    required: true
+  }
+},{
   type: 'checkbox',
   width: 100,
   title: '(15)',

@@ -8,7 +8,7 @@ import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
-
+import { NzSelectModule } from 'ng-zorro-antd/select';
 import { AuthenticationService, EmployeeService } from '@app/core/services';
 import { SharedModule } from '@app/shared/shared.module';
 import { EmployeesRoutingModule } from './employees-routing.module';
@@ -26,6 +26,7 @@ import {
     NzTableModule,
     NzDatePickerModule,
     NzInputModule,
+    NzSelectModule,
     SharedModule,
     EmployeesRoutingModule,
   ],

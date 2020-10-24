@@ -7,7 +7,9 @@ import {
   CityService,
   DistrictService,
   WardsService,
-  RelationshipService
+  RelationshipService,
+  PeopleService,
+  NationalityService,
 } from '@app/core/services';
 
 
@@ -38,7 +40,10 @@ export class EmployeeFamilyTableComponent implements OnInit, OnDestroy, OnChange
     private cityService: CityService,
     private districtService: DistrictService,
     private wardsService: WardsService,
-    private relationshipService: RelationshipService
+    private relationshipService: RelationshipService,
+    private peopleService: PeopleService,
+    private nationalityService: NationalityService,
+
   ) {
     this.getDistrictsByCityCode = this.getDistrictsByCityCode.bind(this);
     this.getWardsByDistrictCode = this.getWardsByDistrictCode.bind(this);
@@ -50,11 +55,15 @@ export class EmployeeFamilyTableComponent implements OnInit, OnDestroy, OnChange
 
     forkJoin([
       this.cityService.getCities(),
-      this.relationshipService.getRelationships()
-    ]).subscribe(([ cities, relationships ]) => {
+      this.relationshipService.getRelationships(),
+      this.peopleService.getPeoples(),
+      this.nationalityService.getNationalities()
+    ]).subscribe(([ cities, relationships, peoples,nationalities  ]) => {
       // add sources
       this.updateSourceToColumn('cityCode', cities);
       this.updateSourceToColumn('relationshipCode', relationships);
+      this.updateSourceToColumn('peopleCode', peoples);
+      this.updateSourceToColumn('nationalityCode', nationalities);
 
       // add filter
       this.updateFilterToColumn('districtCode', this.getDistrictsByCityCode);
@@ -132,17 +141,17 @@ export class EmployeeFamilyTableComponent implements OnInit, OnDestroy, OnChange
       }
 
       if(event.columName === 'cityCode') {
-        const columnCityCode = jexcel.getColumnNameFromId([6,event.index]);
+        const columnCityCode = jexcel.getColumnNameFromId([8,event.index]);
         this.spreadsheet.setValue(columnCityCode, event.data.cityCode);
       }
 
       if(event.columName === 'districtCode') {
-        const columnDistrictCode = jexcel.getColumnNameFromId([7,event.index]);
+        const columnDistrictCode = jexcel.getColumnNameFromId([9,event.index]);
         this.spreadsheet.setValue(columnDistrictCode, event.data.districtCode);
       }
 
       if(event.columName === 'wardsCode') {
-        const columnWardsCode = jexcel.getColumnNameFromId([8,event.index]);
+        const columnWardsCode = jexcel.getColumnNameFromId([10,event.index]);
         this.spreadsheet.setValue(columnWardsCode, event.data.wardsCode);
       }
 
@@ -159,6 +168,15 @@ export class EmployeeFamilyTableComponent implements OnInit, OnDestroy, OnChange
       if(event.columName === 'typeBirthday') {
         const columntypeBirthday = jexcel.getColumnNameFromId([3,event.index]);
         this.spreadsheet.setValue(columntypeBirthday, event.data.typeBirthday);
+      }
+      if(event.columName === 'peopleCode') {
+        const columnFullName = jexcel.getColumnNameFromId([7,event.index]);
+        this.spreadsheet.setValue(columnFullName, event.data.peopleCode);
+      }
+
+      if(event.columName === 'nationalityCode') {
+        const columnCityCode = jexcel.getColumnNameFromId([6,event.index]);
+        this.spreadsheet.setValue(columnCityCode, event.data.nationalityCode);
       }
     }
   }

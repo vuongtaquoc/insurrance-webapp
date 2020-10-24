@@ -154,7 +154,6 @@ export const CONSTPARENTDELETEAUTOROW =
       tableName: 'Giảm lao động'
     }
   ]
-
 export const DOCUMENTBYPLANCODE =
   [
     {

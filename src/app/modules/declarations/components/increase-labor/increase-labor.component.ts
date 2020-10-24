@@ -23,6 +23,8 @@ import {
   CategoryService,
   RelationshipService,
   VillageService,
+  PeopleService,
+  NationalityService
 } from '@app/core/services';
 import { DATE_FORMAT, DECLARATIONS, DOCUMENTBYPLANCODE, ACTION } from '@app/shared/constant';
 import { eventEmitter } from '@app/shared/utils/event-emitter';
@@ -105,7 +107,9 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     private relationshipService: RelationshipService,
     private districtService:  DistrictService,
     private wardService: WardsService,
-    private villageService: VillageService
+    private villageService: VillageService,
+    private peopleService: PeopleService,
+    private nationalityService: NationalityService
   ) {
 
     this.getRelationshipDistrictsByCityCode = this.getRelationshipDistrictsByCityCode.bind(this);
@@ -129,12 +133,16 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     forkJoin([
       this.cityService.getCities(),
       this.categoryService.getCategories('relationshipDocumentType'),
-      this.relationshipService.getRelationships()
-    ]).subscribe(([cities, relationshipDocumentTypies, relationShips ]) => {
+      this.relationshipService.getRelationships(),
+      this.peopleService.getPeoples(),
+      this.nationalityService.getNationalities()
+    ]).subscribe(([cities, relationshipDocumentTypies, relationShips, peoples,nationalities ]) => {
       this.updateSourceToColumn(this.tableHeaderColumnsFamilies, 'relationshipCityCode', cities);
       this.updateSourceToColumn(this.tableHeaderColumnsFamilies, 'cityCode', cities);
       this.updateSourceToColumn(this.tableHeaderColumnsFamilies, 'relationshipDocumentType', relationshipDocumentTypies);
       this.updateSourceToColumn(this.tableHeaderColumnsFamilies, 'relationshipCode', relationShips);
+      this.updateSourceToColumn(this.tableHeaderColumnsFamilies, 'peopleCode', peoples);
+      this.updateSourceToColumn(this.tableHeaderColumnsFamilies, 'nationalityCode', nationalities);
 
       //families filter columns
 

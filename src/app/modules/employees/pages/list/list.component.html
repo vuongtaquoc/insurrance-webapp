@@ -26,36 +26,39 @@
         [nzShowPagination]="false"
         [nzTotal]="total"
         class="table-editor">
-        <thead>
+        <thead (nzSortChange)="sort($event)">
           <tr class="ui-table-custom-header">
-            <th class="text-center cell-custom">Họ và tên</th>
-            <th class="text-center cell-custom width-9p">Mã nhân viên</th>
-            <th class="cell-custom width-9p">Mã số BHXH</th>
-            <th class="text-center cell-custom width-9p">Số sổ BHXH</th>
-            <th class="text-center cell-custom width-9p">CMND/HC/TCC</th>
-            <th class="text-center cell-custom width-9p">Năm sinh</th>
-            <th class="cell-custom width-1p">GT</th>
-            <th class="text-center cell-custom">Đơn vị KCB ban đầu</th>
+            <th nzShowSort nzColumnKey="fullName" class="text-center cell-custom">Họ và tên</th>
+            <th nzShowSort nzColumnKey="code" class="text-center cell-custom width-9p">Mã nhân viên</th>
+            <th nzShowSort nzColumnKey="isurranceCode" class="cell-custom width-9p">Mã số BHXH</th>
+            <th nzShowSort nzColumnKey="isurranceNo" class="text-center cell-custom width-9p">Số sổ BHXH</th>
+            <th nzShowSort nzColumnKey="identityCar" class="text-center cell-custom width-9p">CMND/HC/TCC</th>
+            <th nzShowSort nzColumnKey="birthday" class="text-center cell-custom width-9p">Năm sinh</th>
+            <th class="cell-custom width-3p">GT</th>
+            <th nzShowSort nzColumnKey="hospitalFirstRegistName" class="text-center cell-custom">Đơn vị KCB ban đầu</th>
             <th class="text-center cell-custom width-9p">Thao tác</th>
           </tr>
 
           <tr class="ui-table-custom-filter">
             <td class="cell-custom"><input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small"
-                [(ngModel)]="filter.fullName" (ngModelChange)="handleFilter('fullName')" /></td>
+                [(ngModel)]="param.fullName" (ngModelChange)="handleFilter('fullName')" /></td>
             <td class="cell-custom"><input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small"
-                [(ngModel)]="filter.code" (ngModelChange)="handleFilter('code')" /></td>
+                [(ngModel)]="param.code" (ngModelChange)="handleFilter('code')" /></td>
             <td class="cell-custom"><input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small"
-                [(ngModel)]="filter.isurranceCode" (ngModelChange)="handleFilter('isurranceCode')" /></td>
+                [(ngModel)]="param.isurranceCode" (ngModelChange)="handleFilter('isurranceCode')" /></td>
             <td class="cell-custom"><input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small"
-                [(ngModel)]="filter.isurranceNo" (ngModelChange)="handleFilter('isurranceNo')" /></td>
+                [(ngModel)]="param.isurranceNo" (ngModelChange)="handleFilter('isurranceNo')" /></td>
             <td class="cell-custom"><input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small"
-                [(ngModel)]="filter.identityCar" (ngModelChange)="handleFilter('identityCar')" /></td>
+                [(ngModel)]="param.identityCar" (ngModelChange)="handleFilter('identityCar')" /></td>
             <td class="cell-custom"><input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small"
-                [(ngModel)]="filter.birthday" (ngModelChange)="handleFilter('birthday')" /></td>
+                [(ngModel)]="param.birthday" (ngModelChange)="handleFilter('birthday')" /></td>
+            <td class="cell-custom">
+                <nz-select nzSize="small" nzAllowClear class="input-filter" [(ngModel)]="param.gender" (ngModelChange)="handleFilter('gender')">
+                    <nz-option nzValue="0" [nzLabel]="gender[0] | translate"> </nz-option>
+                    <nz-option nzValue="1" [nzLabel]="gender[1] | translate"></nz-option>
+                </nz-select>
             <td class="cell-custom"><input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small"
-                [(ngModel)]="filter.gender" (ngModelChange)="handleFilter('gender')" /></td>
-            <td class="cell-custom"><input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small"
-                [(ngModel)]="filter.hospitalFirstRegistName" (ngModelChange)="handleFilter('hospitalFirstRegistName')" />
+                [(ngModel)]="param.hospitalFirstRegistName" (ngModelChange)="handleFilter('hospitalFirstRegistName')" />
             </td>
             <td class="cell-custom"></td>
           </tr>
