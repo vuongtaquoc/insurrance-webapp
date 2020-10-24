@@ -1,30 +1,33 @@
 <form nz-form [formGroup]="form" [nzNoColon]="true" class="regime-approval-form">
   <div nz-row [nzGutter]="10">
-    <div nz-col [nzSpan]="18">
-      <div nz-row [nzGutter]="5">
-        <div nz-col [nzSpan]="3">
-          <nz-form-item>
-            <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10" [nzXXl]="8">Đợt</nz-form-label>
-            <nz-form-control [nzSpan]="14" [nzXXl]="16" [nzErrorTip]="batchTpl">
-              <input nz-input nzSize="small" formControlName="batch" (blur)="handleTrimValue('batch')">
-              <ng-template #batchTpl let-control>
-                <ng-container *ngIf="control.hasError('required')">
-                  <p class="regime-approval-form__error">Đợt kê khai không được để trống</p>
-                </ng-container>
-                <ng-container *ngIf="control.hasError('pattern')">
-                  <p class="regime-approval-form__error">Đợt kê khai phải số</p>
-                </ng-container>
-              </ng-template>
-            </nz-form-control>
-          </nz-form-item>
-        </div>
+    <div nz-row [nzGutter]="5" style="width: 100%;">
 
-        <div nz-col [nzSpan]="3">
-          <nz-form-item>
-            <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="13" [nzXXl]="11">Tháng</nz-form-label>
-            <nz-form-control [nzSpan]="11" [nzXXl]="13" [nzErrorTip]="monthTpl">
-              <input nz-input nzSize="small" formControlName="month" (blur)="handleTrimValue('month')">
-              <ng-template #monthTpl let-control>
+      <div nz-col [nzSpan]="15">
+
+        <div nz-row>
+          <div nz-col [nzSpan]="4">
+            <nz-form-item>
+              <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10" [nzXXl]="8">Đợt</nz-form-label>
+              <nz-form-control [nzSpan]="14" [nzXXl]="16" [nzErrorTip]="batchTpl">
+                <input nz-input nzSize="small" formControlName="batch" (blur)="handleTrimValue('batch')">
+                <ng-template #batchTpl let-control>
+                  <ng-container *ngIf="control.hasError('required')">
+                    <p class="regime-approval-form__error">Đợt kê khai không được để trống</p>
+                  </ng-container>
+                  <ng-container *ngIf="control.hasError('pattern')">
+                    <p class="regime-approval-form__error">Đợt kê khai phải số</p>
+                  </ng-container>
+                </ng-template>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+
+          <div nz-col [nzSpan]="4">
+            <nz-form-item>
+              <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="13" [nzXXl]="11">Tháng</nz-form-label>
+              <nz-form-control [nzSpan]="11" [nzXXl]="13" [nzErrorTip]="monthTpl">
+                <input nz-input nzSize="small" formControlName="month" (blur)="handleTrimValue('month')">
+                <ng-template #monthTpl let-control>
                   <ng-container *ngIf="control.hasError('required')">
                     <p class="regime-approval-form__error">Tháng kê khai không được để trống</p>
                   </ng-container>
@@ -37,93 +40,104 @@
                   <ng-container class="regime-approval-form__error" *ngIf="control.hasError('max')">
                     Tháng phải nhỏ hơn 12
                   </ng-container>
-              </ng-template>
-            </nz-form-control>
-          </nz-form-item>
-        </div>
+                </ng-template>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
 
-        <div nz-col [nzSpan]="3">
-          <nz-form-item>
-            <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="12" [nzXXl]="10">Năm</nz-form-label>
-            <nz-form-control [nzSpan]="12" [nzXXl]="14" [nzErrorTip]="yearTpl">
-              <input nz-input nzSize="small" formControlName="year" (blur)="handleTrimValue('year')">
-              <ng-template #yearTpl let-control>
-                <ng-container *ngIf="control.hasError('required')">
-                  <p class="regime-approval-form__error">Năm kê khai không được để trống</p>
-                </ng-container>
-                <ng-container *ngIf="control.hasError('pattern')">
-                  <p class="regime-approval-form__error">Năm kê khai phải số</p>
-                </ng-container>
-                <ng-container *ngIf="control.hasError('maxlength')">
+          <div nz-col [nzSpan]="4">
+            <nz-form-item>
+              <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="12" [nzXXl]="10">Năm</nz-form-label>
+              <nz-form-control [nzSpan]="12" [nzXXl]="14" [nzErrorTip]="yearTpl">
+                <input nz-input nzSize="small" formControlName="year" (blur)="handleTrimValue('year')">
+                <ng-template #yearTpl let-control>
+                  <ng-container *ngIf="control.hasError('required')">
+                    <p class="regime-approval-form__error">Năm kê khai không được để trống</p>
+                  </ng-container>
+                  <ng-container *ngIf="control.hasError('pattern')">
+                    <p class="regime-approval-form__error">Năm kê khai phải số</p>
+                  </ng-container>
+                  <ng-container *ngIf="control.hasError('maxlength')">
                     <p class="regime-approval-form__error">Năm kê khai tối đa 4 ký tự</p>
-                </ng-container>
-                <ng-container class="regime-approval-form__error" *ngIf="control.hasError('min')">
+                  </ng-container>
+                  <ng-container class="regime-approval-form__error" *ngIf="control.hasError('min')">
                     <p class="regime-approval-form__error">Năm kê khai tối thiểu 4 ký tự </p>
-                </ng-container>
-              </ng-template>
-            </nz-form-control>
-          </nz-form-item>
-        </div>
+                  </ng-container>
+                </ng-template>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
 
-        <div nz-col [nzSpan]="8">
-          <nz-form-item>
-            <nz-form-label class="text-left" [nzSpan]="15" [nzXXl]="12">Số hiệu TK của đơn vị</nz-form-label>
-            <nz-form-control [nzSpan]="9" [nzXXl]="12">
-              <input nz-input nzSize="small" formControlName="bankAccount" (blur)="handleTrimValue('bankAccount')">
-            </nz-form-control>
-          </nz-form-item>
-        </div>
+          <div nz-col [nzSpan]="9">
 
-        <div nz-col [nzSpan]="7">
-          <nz-form-item>
-            <nz-form-label [nzSpan]="13">Mở tại</nz-form-label>
-            <nz-form-control [nzSpan]="11">
-              <input nz-input nzSize="small" formControlName="openAddress" (blur)="handleTrimValue('openAddress')">
-            </nz-form-control>
-          </nz-form-item>
-        </div>
-      </div>
-
-      <div nz-row [nzGutter]="5">
-        <div nz-col [nzSpan]="17">
-          <nz-form-item>
-            <nz-form-label class="text-left" [nzSpan]="3" [nzXXl]="2">Chi nhánh</nz-form-label>
-            <nz-form-control [nzSpan]="21" [nzXXl]="22">
-              <input nz-input nzSize="small" formControlName="branch" (blur)="handleTrimValue('branch')">
-            </nz-form-control>
-          </nz-form-item>
-        </div>
-
-        <div nz-col [nzSpan]="7">
-          <nz-form-item>
-            <nz-form-label [nzRequired]="true" [nzSpan]="13">Gửi kèm hồ sơ giấy</nz-form-label>
-            <nz-form-control [nzSpan]="11" [nzErrorTip]="typeDocumentActtachTpl">
+            <nz-form-item>
+              <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="13">Gửi kèm hồ sơ giấy</nz-form-label>
+              <nz-form-control [nzSpan]="11" [nzErrorTip]="typeDocumentActtachTpl">
                 <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="typeDocumentActtach">
-                    <nz-option *ngFor="let typeDocumentActtach of typeDocumentActtachs" [nzLabel]="typeDocumentActtach.name" [nzValue]="typeDocumentActtach.id"></nz-option>
+                  <nz-option *ngFor="let typeDocumentActtach of typeDocumentActtachs"
+                    [nzLabel]="typeDocumentActtach.name" [nzValue]="typeDocumentActtach.id"></nz-option>
                 </nz-select>
                 <ng-template #typeDocumentActtachTpl let-control>
                   <ng-container *ngIf="control.hasError('required')">
                     <p class="regime-approval-form__error">Gửi kèm hồ sơ giấy không được để trống</p>
                   </ng-container>
                 </ng-template>
-            </nz-form-control>
-          </nz-form-item>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
         </div>
       </div>
+
+      <div nz-col [nzSpan]="9">
+        <div nz-row>
+          <div nz-col [nzSpan]="14">
+            <nz-form-item>
+              <nz-form-label class="text-left" [nzSpan]="14" [nzXXl]="12">Số hiệu TK của đơn vị</nz-form-label>
+              <nz-form-control [nzSpan]="12" [nzXXl]="12">
+                <input nz-input nzSize="small" formControlName="bankAccount" (blur)="handleTrimValue('bankAccount')">
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+
+          <div nz-col [nzSpan]="10">
+            <nz-form-item>
+              <nz-form-label [nzSpan]="10">Mở tại</nz-form-label>
+              <nz-form-control [nzSpan]="14">
+                <input nz-input nzSize="small" formControlName="openAddress" (blur)="handleTrimValue('openAddress')">
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+        </div>
+      </div>
+
     </div>
 
-    <div nz-col [nzSpan]="6">
-      <nz-form-item class="reason">
-        <nz-form-label class="text-left" [nzRequired]="true">Lý do giải trình (Đối với hồ sơ chậm muộn)</nz-form-label>
-        <nz-form-control class="reason-control" [nzErrorTip]="reasonTpl">
-          <textarea rows="1" nz-input formControlName="reason"  (blur)="handleTrimValue('reason')"></textarea>
-          <ng-template #reasonTpl let-control>
-            <ng-container *ngIf="control.hasError('required')">
-              <p class="regime-approval-form__error">Lý do giải trình không được để trống</p>
-            </ng-container>
-          </ng-template>
-        </nz-form-control>
-      </nz-form-item>
+    <div [nzGutter]="5" style="width: 100%;" nz-row>
+
+
+      <div nz-col [nzSpan]="15">
+        <nz-form-item class="reason">
+          <nz-form-label [nzSpan]="9" class="text-left" [nzRequired]="true">Lý do giải trình (Đối với hồ sơ chậm muộn)
+          </nz-form-label>
+          <nz-form-control class="reason-control" [nzSpan]="12" [nzErrorTip]="reasonTpl">
+            <input nz-input nzSize="small" formControlName="reason" (blur)="handleTrimValue('reason')" />
+            <ng-template #reasonTpl let-control>
+              <ng-container *ngIf="control.hasError('required')">
+                <p class="regime-approval-form__error">Lý do giải trình không được để trống</p>
+              </ng-container>
+            </ng-template>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col [nzSpan]="9">
+        <nz-form-item>
+          <nz-form-label class="text-left" [nzSpan]="4">Chi nhánh</nz-form-label>
+          <nz-form-control [nzSpan]="20">
+            <input nz-input nzSize="small" formControlName="branch" (blur)="handleTrimValue('branch')">
+          </nz-form-control>
+        </nz-form-item>
+      </div>
     </div>
   </div>
 </form>
