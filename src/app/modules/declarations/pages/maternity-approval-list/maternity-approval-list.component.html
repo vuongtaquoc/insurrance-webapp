@@ -3,84 +3,86 @@
     <h1>{{declarationCode}} | {{declarationName}}</h1>
 
     <div class="page-increase-labor__menu-bar">
-      <div class="page-increase-labor__filter">
-        <nz-year-picker [(ngModel)]="year" (ngModelChange)="onChange($event)" nzPlaceHolder="Chọn năm"></nz-year-picker>
-      </div>
-
-      <div class="page-increase-labor__group-button">
-        <a [routerLink]="['/declarations/maternity-approval/add']" class="page-card__declaration-button" nz-button nzType="default">
-          Lập tờ khai<i nz-icon nzType="container"></i>
-        </a>
-        <!-- <a nz-button nzType="default"><i nz-icon nzType="edit"></i>Sửa</a>
-        <button nz-button nzType="default"><i nz-icon nzType="delete"></i>Xóa</button> -->
-      </div>
-    </div><!-- page-increase-labor__menu-bar -->
-
-    <nz-table
-      #rowSelectionTable
-      nzBordered
-      [nzData]="declarations"
-      [nzPageSize]="declarations.length"
-      [nzShowPagination]="false"
-      class="table ui-table-custom--center table-editor"
-      [nzScroll]="{ y: '400px' }"
-    >
-      <thead>
-        <tr class="ui-table-custom-header">
-            <th nzWidth="140px" class="cell-custom-reduction width-12p">Ngày lập</th>
-            <th nzWidth="140px" class="cell-custom-reduction width-7p">Số hồ sơ</th>
-            <th class="cell-custom-reduction">Giấy tờ, biểu mẫu</th>
-            <th nzWidth="140px" class="cell-custom-reduction width-7p">Ngày nộp</th>
-            <th nzWidth="180px" class="cell-custom-reduction  width-12p">Kết quả giải quyết</th>
+        <div class="page-increase-labor__filter">
+          <nz-year-picker [(ngModel)]="year" (ngModelChange)="onChangeYear($event)" nzPlaceHolder="Chọn năm"></nz-year-picker>
+        </div>
+  
+        <div class="page-increase-labor__group-button">
+          <a [routerLink]="['/declarations/maternity-approval/add']" class="page-card__declaration-button" nz-button nzType="default">
+            Lập tờ khai<i nz-icon nzType="container"></i>
+          </a>
+          <!-- <a nz-button nzType="default"><i nz-icon nzType="edit"></i>Sửa</a>
+          <button nz-button nzType="default"><i nz-icon nzType="delete"></i>Xóa</button> -->
+        </div>
+      </div><!-- page-increase-labor__menu-bar -->
+  
+      <nz-table
+        #rowSelectionTable
+        nzBordered
+        [nzData]="declarations"
+        [nzPageSize]="declarations.length"
+        [nzShowPagination]="false"
+        class="table ui-table-custom--center table-editor"
+        [nzScroll]="{ y: '400px' }"
+      >
+      <thead (nzSortChange)="sort($event)">
+          <tr class="ui-table-custom-header">
+            <th nzShowSort nzColumnKey="createDate" nzWidth="140px" class="cell-custom-reduction width-12p">Ngày lập</th>
+            <th nzShowSort nzColumnKey="documentNo" nzWidth="140px" class="cell-custom-reduction width-7p">Số hồ sơ</th>
+            <th nzShowSort nzColumnKey="declarationName" class="cell-custom-reduction">Giấy tờ, biểu mẫu</th>
+            <th nzShowSort nzColumnKey="sendDate" nzWidth="140px" class="cell-custom-reduction width-7p">Ngày nộp</th>
+            <th nzShowSort nzColumnKey="status" nzWidth="180px" class="cell-custom-reduction  width-12p">Kết quả giải quyết</th>
             <th nzWidth="80px" class="cell-custom-reduction  width-7p">Tờ khai</th>
             <th nzWidth="100px" class="cell-custom-reduction width-7p">Thao tác</th>
-        </tr>
-
-        <tr class="ui-table-custom-filter">
-          <th class="cell-custom-reduction">
-            <input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small"
-            [(ngModel)]="filter.createDate" (ngModelChange)="handleFilter('createDate')" />
-          </th>
-          <th class="cell-custom-reduction">
-            <input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small"
-              [(ngModel)]="filter.documentNo" (ngModelChange)="handleFilter('documentNo')" />
-          </th>
-          <th class="cell-custom-reduction">
-            <input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small"
-              [(ngModel)]="filter.declarationName" (ngModelChange)="handleFilter('declarationName')" />
-          </th>
-          <th class="cell-custom-reduction">
-            <input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small"
-              [(ngModel)]="filter.sendDate" (ngModelChange)="handleFilter('sendDate')" />
-          </th>
-          <th class="cell-custom-reduction">
-            <input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small"
-            [(ngModel)]="filter.documentStatusName" (ngModelChange)="handleFilter('documentStatusName')" />
-          </th>
-          <th class="cell-custom-reduction"></th>
-          <th class="cell-custom-reduction"></th>
-        </tr>
-
-      </thead>
-      <tbody>
-        <tr *ngFor="let data of rowSelectionTable.data" class="status_{{data.status}}">
-          <td class="text-center">{{ data.createDate }}</td>
-          <td class="text-center">{{ data.documentNo }}</td>
-          <td class="text-wrap">{{ data.declarationName }}</td>
-          <td class="text-center">{{ data.sendDate }}</td>
-          <td class="text-center"> {{ status[data.status] | translate }}</td>
-          <td class="text-center">
-              <button nz-button nzType="link" nzBlock (click)="viewDocument(data)" >Xem</button>
+          </tr>
+  
+          <tr class="ui-table-custom-filter">
+            <th class="cell-custom-reduction">
+                <nz-date-picker class="input-filter" [(ngModel)]="param.createDate" nzPlaceHolder="Tìm kiếm..." nzSize="small" nzFormat="dd/MM/yyyy" (ngModelChange)="handleFilter('createDate')"></nz-date-picker>
+            </th>
+            <th class="cell-custom-reduction">
+              <input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small"
+                [(ngModel)]="param.documentNo" (ngModelChange)="handleFilter('documentNo')" />
+            </th>
+            <th class="cell-custom-reduction">
+              <input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small"
+                [(ngModel)]="param.declarationName" (ngModelChange)="handleFilter('declarationName')" />
+            </th>
+            <th class="cell-custom-reduction">
+                <nz-date-picker class="input-filter" [(ngModel)]="param.sendDate" nzPlaceHolder="Tìm kiếm..." nzSize="small" nzFormat="dd/MM/yyyy" (ngModelChange)="handleFilter('sendDate')"></nz-date-picker>
+            </th>
+            <th class="cell-custom-reduction">
+              <nz-select style="width: 170px;" nzSize="small" nzAllowClear class="input-filter" [(ngModel)]="param.status" (ngModelChange)="handleFilter('status')">
+                  <nz-option nzValue="0" [nzLabel]="status[0] | translate"> </nz-option>
+                  <nz-option nzValue="1" [nzLabel]="status[1] | translate"></nz-option>
+                  <nz-option nzValue="2" [nzLabel]="status[2] | translate"> </nz-option>
+                  <nz-option nzValue="3" [nzLabel]="status[3] | translate"></nz-option>
+              </nz-select>
+            </th>
+            <th class="cell-custom-reduction"></th>
+            <th class="cell-custom-reduction"></th>
+          </tr>
+  
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of rowSelectionTable.data" class="status_{{data.status}}">
+            <td class="text-center">{{ data.createDate }}</td>
+            <td class="text-center">{{ data.documentNo }}</td>
+            <td class="text-wrap">{{ data.declarationName }}</td>
+            <td class="text-center">{{ data.sendDate }}</td>
+            <td class="text-center"> {{ status[data.status] | translate }}</td>
+            <td class="text-center">
+                <button nz-button nzType="link" nzBlock (click)="viewDocument(data)" >Xem</button>
+              </td>
+            <td class="text-center">
+              <a [routerLink]="['/declarations/maternity-approval/' + data.id + '/edit']" nz-button nzType="link">
+                <i nz-icon nzType="edit" nzTheme="outline"></i>
+              </a>
+              <app-button-delete [id]="data.id" (delete)="delete($event)"></app-button-delete>
             </td>
-          <td class="text-center">
-            <a [routerLink]="['/declarations/maternity-approval/' + data.id + '/edit']" nz-button nzType="link">
-              <i nz-icon nzType="edit" nzTheme="outline"></i>
-            </a>
-            <app-button-delete [id]="data.id" (delete)="delete($event)"></app-button-delete>
-          </td>
-        </tr>
-      </tbody>
-    </nz-table>
-    <app-pagination [total]="total" [selected]="selectedPage" (onPageChange)="pageChange($event)"></app-pagination>
+          </tr>
+        </tbody>
+      </nz-table>
+      <app-pagination [total]="total" [selected]="selectedPage" (onPageChange)="pageChange($event)"></app-pagination>
+    </div>
   </div>
-</div>

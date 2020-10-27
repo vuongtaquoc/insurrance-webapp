@@ -6,6 +6,7 @@ import { Declaration } from '@app/core/interfaces';
 import { PAGE_SIZE, DECLARATIONS, RESULTSUBMIT } from '@app/shared/constant';
 import { DocumentFormComponent } from '@app/shared/components';
 import { NzModalService } from 'ng-zorro-antd/modal';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-increase-labor-list',
@@ -20,6 +21,8 @@ export class IncreaseLaborListComponent implements OnInit {
   year: any = null;
   declarations: Declaration[] = [];
   total: number;
+  orderby: string = '';
+  orderType: string = '';
   skip: number;
   selectedPage: number = 1;
   declarationCode: string = '600';
@@ -27,12 +30,13 @@ export class IncreaseLaborListComponent implements OnInit {
 
   keyword: string = '';
   status: any = RESULTSUBMIT;
-  filter: any = {
+  filter: any = {};
+  param: any = {
     createDate: '',
     documentNo: '',
     declarationName: '',
     sendDate: '',
-    documentStatusName: ''
+    status: ''
   };
 
   constructor(
@@ -41,16 +45,23 @@ export class IncreaseLaborListComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.year = new Date();
     this.declarationName = this.getDeclaration(this.declarationCode).value;
     this.getDeclarations();
   }
 
   getDeclarations(skip = 0, take = PAGE_SIZE) {
-    this.declarationService.getDeclarations({
-      documentType: this.declarationCode,
-      skip,
-      take
-    }).subscribe(res => {
+    
+    this.declarationService.getDeclarations(
+      {
+        ...this.filter,
+        orderby: this.orderby,
+        orderType: this.orderType,
+        documentType: this.declarationCode,
+        year: this.getYear(),
+        skip,       
+        take
+      }).subscribe(res => {
       this.declarations = res.data;
       this.total = res.total;
       this.skip = skip;
@@ -64,12 +75,39 @@ export class IncreaseLaborListComponent implements OnInit {
     });
   }
 
+  getYear() {
+
+    if(moment(this.year,"YYYY").isValid()) {
+      return  moment(this.year).format("YYYY");
+    }
+
+    return null;
+  }
+
   handleFilter(key) {
-    this.keyword = this.filter[key];
+
+    if (key === 'createDate' || key === 'sendDate') {
+      if(moment(this.param[key],"DD/MM/YYYY").isValid()) {
+        this.filter[key] = moment(this.param[key]).format("DD/MM/YYYY");
+      } else {
+        this.filter[key] = '';
+      }
+    } else {
+      this.filter[key] = this.param[key];
+    }
+    
+    this.selectedPage = 1;
+    this.getDeclarations();
+  }
+
+  sort(event) {
+    this.orderby = event.key;
+    this.orderType = event.value;
     this.getDeclarations();
   }
 
   pageChange({ skip, page }) {
+    this.skip = skip;
     this.selectedPage = page;
 
     this.getDeclarations(skip);
@@ -118,7 +156,7 @@ export class IncreaseLaborListComponent implements OnInit {
     return declarations;
   }
 
-  onChange () {
+  onChangeYear () {
     this.getDeclarations();
   }
 

@@ -6,6 +6,7 @@ import { Declaration } from '@app/core/interfaces';
 import { PAGE_SIZE, DECLARATIONS, RESULTSUBMIT } from '@app/shared/constant';
 import { DocumentFormComponent } from '@app/shared/components';
 import { NzModalService } from 'ng-zorro-antd/modal';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-adjust-list',
@@ -20,19 +21,20 @@ export class AdjustListComponent implements OnInit {
   year: any = null;
   declarations: Declaration[] = [];
   total: number;
+  orderby: string = '';
+  orderType: string = '';
   skip: number;
   selectedPage: number = 1;
   declarationCode: string = '600b';
   declarationName: string;
   status: any = RESULTSUBMIT;
-  keyword: string = '';
-
-  filter: any = {
+  filter: any = {};
+  param: any = {
     createDate: '',
     documentNo: '',
     declarationName: '',
     sendDate: '',
-    documentStatusName: ''
+    status: ''
   };
 
   constructor(
@@ -47,8 +49,12 @@ export class AdjustListComponent implements OnInit {
 
   getDeclarations(skip = 0, take = PAGE_SIZE) {
     this.declarationService.getDeclarations({
+      ...this.filter,
+      orderby: this.orderby,
+      orderType: this.orderType,
       documentType: this.declarationCode,
-      skip,
+      year: this.getYear(),
+      skip,       
       take
     }).subscribe(res => {
       this.declarations = res.data;
@@ -64,12 +70,39 @@ export class AdjustListComponent implements OnInit {
     });
   }
 
+  getYear() {
+
+    if(moment(this.year,"YYYY").isValid()) {
+      return  moment(this.year).format("YYYY");
+    }
+
+    return null;
+  }
+
   handleFilter(key) {
-    this.keyword = this.filter[key];
+
+    if (key === 'createDate' || key === 'sendDate') {
+      if(moment(this.param[key],"DD/MM/YYYY").isValid()) {
+        this.filter[key] = moment(this.param[key]).format("DD/MM/YYYY");
+      } else {
+        this.filter[key] = '';
+      }
+    } else {
+      this.filter[key] = this.param[key];
+    }
+    
+    this.selectedPage = 1;
+    this.getDeclarations();
+  }
+
+  sort(event) {
+    this.orderby = event.key;
+    this.orderType = event.value;
     this.getDeclarations();
   }
 
   pageChange({ skip, page }) {
+    this.skip = skip;
     this.selectedPage = page;
 
     this.getDeclarations(skip);
@@ -116,6 +149,10 @@ export class AdjustListComponent implements OnInit {
   getDeclaration(declarationCode: string) {
     const declarations = DECLARATIONS.find(d => d.key === declarationCode);
     return declarations;
+  }
+
+  onChangeYear () {
+    this.getDeclarations();
   }
 
 }

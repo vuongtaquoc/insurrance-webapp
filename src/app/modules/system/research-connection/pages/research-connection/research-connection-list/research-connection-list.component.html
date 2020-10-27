@@ -1,0 +1,92 @@
+<div class="page-card-custom">
+  
+  <form nz-form [formGroup]="formSearch" (ngSubmit)="handleSearchBox()">
+    <div class="page-title ">
+      <h1>{{'system.researchconnection.info.title' | translate}}</h1>
+      <div class="page-declarations__footer">
+      </div>
+    </div>
+    <div class="page-search">
+      <div nz-row nzGutter="30">
+        <div nz-col nzMd="4">
+          <nz-form-item>
+            <nz-form-label>{{ 'system.researchconnection.info.dateFrom' | translate }}</nz-form-label>
+            <nz-form-control>
+              <input nz-input placeholder="Từ ngày" formControlName="dateFrom" mask="00/00/0000" [showMaskTyped]="true"
+                [validation]="true" [clearIfNotMatch]="true" (ngModelChange)="onChangeDateTime($event)" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzMd="4">
+          <nz-form-item>
+            <nz-form-label>{{ 'system.researchconnection.info.dateTo' | translate }}</nz-form-label>
+            <nz-form-control>
+              <input nz-input placeholder="Đến ngày" formControlName="dateTo" mask="00/00/0000" [showMaskTyped]="true"
+                [validation]="true" [clearIfNotMatch]="true" (ngModelChange)="onChangeDateTime($event)" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+      </div>
+    </div>
+  </form>
+  <nz-spin [nzSpinning]="isSpinning" class="dashboard-page-container__spinning">
+  <nz-table nzBordered #ajaxTable nzShowSizeChanger [nzFrontPagination]="false" 
+    [nzData]="submitDeclaration" 
+    [nzLoading]="loading"
+    [nzPageSize]="submitDeclaration.length" 
+    [nzShowPagination]="false"
+    [nzLoading]="loading" 
+    [nzTotal]="total"
+    class="table-editor">
+    <thead (nzSortChange)="sort($event)" nzSortFn>
+      <tr class="ui-table-custom-header">
+        <th class="cell-custom" style="width: 50px;">{{'system.researchconnection.table.stt' | translate}}</th>
+        <th class="cell-custom" style="width: 130px;" nzShowSort nzColumnKey="companyCode">{{'system.researchconnection.table.companyCode' | translate}}</th>
+        <th class="cell-custom" nzShowSort nzColumnKey="companyName">{{'system.researchconnection.table.companyName' | translate}}</th>
+        <th class="cell-custom"  style="width: 130px;" nzShowSort nzColumnKey="documentNo">{{'system.researchconnection.table.documentNo' | translate}}</th>
+        <th class="cell-custom" style="width: 100px;" nzShowSort nzColumnKey="sendTimes"><span>{{'system.researchconnection.table.batch' | translate}}</span></th>
+        <th class="cell-custom" nzShowSort nzColumnKey="description"><span>{{'system.researchconnection.table.result' | translate}}</span></th>
+        <th class="cell-custom" style="width: 120px;"><span>{{'system.researchconnection.table.action' | translate}}</span></th>
+      </tr>
+
+      <tr class="ui-table-custom-filter">
+        <td class="cell-custom"></td>
+        <td class="cell-custom"><input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small"
+            [(ngModel)]="param.taxCode" (ngModelChange)="handleFilter('taxCode')" /></td>
+        <td class="cell-custom"><input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small"
+            [(ngModel)]="param.companyName" (ngModelChange)="handleFilter('companyName')" /></td>
+        <td class="cell-custom"><input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small"
+            [(ngModel)]="param.documentNo" (ngModelChange)="handleFilter('documentNo')" /></td>
+        <td class="cell-custom"></td>
+        <td class="cell-custom"><input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small"
+          [(ngModel)]="param.sendTimes" (ngModelChange)="handleFilter('sendTimes')" /></td>
+        <td class="cell-custom"></td>
+      </tr>
+
+    </thead>
+    <tbody>
+
+
+      <tr *ngFor="let data of ajaxTable.data;index as i">
+        <td class="text-center">{{i + 1}}</td>
+        <td>{{ data.taxCode }}</td>
+        <td>{{ data.companyName }}</td>
+        <td class="text-right">{{ data.documentNo }}</td>
+        <td class="text-center">{{ data.sendTimes }}</td>
+        <td>{{ data.description}}</td>
+        <td>
+          <ng-container>
+            <a (click)="viewResult(data)" class="action-padding">
+              <i nz-icon nzType="diff" nzTheme="outline"></i>
+            </a>
+          </ng-container>
+          <app-button-delete [id]="data.id" (delete)="delete($event)"></app-button-delete>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</nz-spin>
+  <app-pagination [total]="total" [selected]="selectedPage" (onPageChange)="pageChange($event)"></app-pagination>
+
+</div>

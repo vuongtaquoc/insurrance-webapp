@@ -17,3 +17,4 @@ export * from './email-form/email-form.component';
 export * from './contract/contract.component';
 export * from './file-attachment/file-attachment.component';
 export * from './declaration-result/declaration-result.component';
+export * from './declaration-result-company/declaration-result-company.component';

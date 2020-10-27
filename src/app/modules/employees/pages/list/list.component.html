@@ -25,14 +25,15 @@
         [nzPageSize]="employees.length"
         [nzShowPagination]="false"
         [nzTotal]="total"
+        [nzScroll]="{ y: '400px' }"
         class="table-editor">
         <thead (nzSortChange)="sort($event)">
           <tr class="ui-table-custom-header">
             <th nzShowSort nzColumnKey="fullName" class="text-center cell-custom">Họ và tên</th>
-            <th nzShowSort nzColumnKey="code" class="text-center cell-custom width-9p">Mã nhân viên</th>
-            <th nzShowSort nzColumnKey="isurranceCode" class="cell-custom width-9p">Mã số BHXH</th>
-            <th nzShowSort nzColumnKey="isurranceNo" class="text-center cell-custom width-9p">Số sổ BHXH</th>
-            <th nzShowSort nzColumnKey="identityCar" class="text-center cell-custom width-9p">CMND/HC/TCC</th>
+            <th nzWidth="180px" nzShowSort nzColumnKey="code" class="text-center cell-custom">Mã nhân viên</th>
+            <th nzShowSort nzColumnKey="isurranceCode" class="cell-custom">Mã số BHXH</th>
+            <th nzShowSort nzColumnKey="isurranceNo" class="text-center cell-custom">Số sổ BHXH</th>
+            <th nzShowSort nzColumnKey="identityCar" class="text-center cell-custom">CMND/HC/TCC</th>
             <th nzShowSort nzColumnKey="birthday" class="text-center cell-custom width-9p">Năm sinh</th>
             <th class="cell-custom width-3p">GT</th>
             <th nzShowSort nzColumnKey="hospitalFirstRegistName" class="text-center cell-custom">Đơn vị KCB ban đầu</th>

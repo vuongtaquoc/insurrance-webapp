@@ -23,6 +23,8 @@ import {
   CategoryService,
   RelationshipService,
   VillageService,
+  PeopleService,
+  NationalityService
 } from '@app/core/services';
 import { DATE_FORMAT, DECLARATIONS, DOCUMENTBYPLANCODE, ACTION } from '@app/shared/constant';
 import { eventEmitter } from '@app/shared/utils/event-emitter';
@@ -104,7 +106,9 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
     private relationshipService: RelationshipService,
     private districtService:  DistrictService,
     private wardService: WardsService,
-    private villageService: VillageService
+    private villageService: VillageService,
+    private peopleService: PeopleService,
+    private nationalityService: NationalityService
   ) {
 
     this.getRelationshipDistrictsByCityCode = this.getRelationshipDistrictsByCityCode.bind(this);
@@ -128,12 +132,16 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
     forkJoin([
       this.cityService.getCities(),
       this.categoryService.getCategories('relationshipDocumentType'),
-      this.relationshipService.getRelationships()
-    ]).subscribe(([cities, relationshipDocumentTypies, relationShips ]) => {
+      this.relationshipService.getRelationships(),
+      this.peopleService.getPeoples(),
+      this.nationalityService.getNationalities()
+    ]).subscribe(([cities, relationshipDocumentTypies, relationShips, peoples, nationalities ]) => {
       this.updateSourceToColumn(this.tableHeaderColumnsFamilies, 'relationshipCityCode', cities);
       this.updateSourceToColumn(this.tableHeaderColumnsFamilies, 'cityCode', cities);
       this.updateSourceToColumn(this.tableHeaderColumnsFamilies, 'relationshipDocumentType', relationshipDocumentTypies);
       this.updateSourceToColumn(this.tableHeaderColumnsFamilies, 'relationshipCode', relationShips);
+      this.updateSourceToColumn(this.tableHeaderColumnsFamilies, 'peopleCode', peoples);
+      this.updateSourceToColumn(this.tableHeaderColumnsFamilies, 'nationalityCode', nationalities);
 
       //families filter columns
 
@@ -604,29 +612,32 @@ handleChangeDataFamilies({ instance, cell, c, r, records, columns }) {
       if(employeeIsMaster === true) {
 
         this.employeeService.getEmployeeById(records[r].origin.employeeId).subscribe(emp => {
-          this.updateNextColumns(instance, r, emp.fullName, [ c + 1]);
-          this.updateNextColumns(instance, r, emp.relationshipMobile, [ c + 2]);
-          this.updateNextColumns(instance, r, emp.relationshipDocumentType, [ c + 3]);
-          this.updateNextColumns(instance, r, emp.relationshipBookNo, [ c + 4]);
-          this.updateNextColumns(instance, r, emp.recipientsCityCode, [ c + 5]);
-          this.updateNextColumns(instance, r, emp.recipientsDistrictCode, [ c + 6]);
-          this.updateNextColumns(instance, r, emp.recipientsWardsCode, [ c + 7]);
-          this.updateNextColumns(instance, r, emp.fullName, [ c + 10]);
-          this.updateNextColumns(instance, r, emp.isurranceCode, [ c + 11]);
-          this.updateNextColumns(instance, r, emp.typeBirthday, [ c + 12]);
-          this.updateNextColumns(instance, r, emp.birthday, [ c + 13]);
-          this.updateNextColumns(instance, r, emp.gender, [ c + 14]);
-          this.updateNextColumns(instance, r, emp.relationshipCityCode, [ c + 16]);
-          this.updateNextColumns(instance, r, emp.relationshipDistrictCode, [ c + 17]);
-          this.updateNextColumns(instance, r, emp.relationshipWardsCode, [ c + 18]);
-          this.updateNextColumns(instance, r, '00', [21]);
-          this.updateNextColumns(instance, r, emp.identityCar, [c + 20]);
-          this.updateSelectedValueDropDown(columns, instance, r);
+            this.updateNextColumns(instance, r, emp.fullName, [ c + 1]);
+            this.updateNextColumns(instance, r, emp.relationshipMobile, [ c + 2]);
+            this.updateNextColumns(instance, r, emp.relationshipDocumentType, [ c + 3]);
+            this.updateNextColumns(instance, r, emp.relationshipBookNo, [ c + 4]);
+            this.updateNextColumns(instance, r, emp.relationshipCityCode , [ c + 5]);
+            this.updateNextColumns(instance, r, emp.relationshipDistrictCode, [ c + 6]);
+            this.updateNextColumns(instance, r, emp.relationshipWardsCode, [ c + 7]);
+            this.updateNextColumns(instance, r, emp.relationshipVillageCode, [ c + 8]);
+            this.updateNextColumns(instance, r, emp.fullName, [ c + 10]);
+            this.updateNextColumns(instance, r, emp.isurranceCode, [ c + 11]);
+            this.updateNextColumns(instance, r, emp.typeBirthday, [ c + 12]);
+            this.updateNextColumns(instance, r, emp.birthday, [ c + 13]);
+            this.updateNextColumns(instance, r, emp.gender, [ c + 14]);
+            this.updateNextColumns(instance, r, emp.nationalityCode, [ c + 15]);
+            this.updateNextColumns(instance, r, emp.peopleCode, [ c + 16]);
+            this.updateNextColumns(instance, r, emp.registerCityCode, [ c + 18]);
+            this.updateNextColumns(instance, r, emp.registerDistrictCode, [ c + 19]);
+            this.updateNextColumns(instance, r, emp.registerWardsCode, [ c + 20]);
+            this.updateNextColumns(instance, r, '00', [23]);
+            this.updateNextColumns(instance, r, emp.identityCar, [c + 22]);
+            this.updateSelectedValueDropDown(columns, instance, r);
         });
 
       }else {
         this.updateNextColumns(instance, r, '', [ c + 1 , c + 2, c + 3, c + 4, c + 5, c + 6, c + 7, c + 8,
-        c + 10, c + 11, c + 11,c + 12,c + 13,c + 14,c + 15,c + 16,c + 17]);
+          c + 10, c + 11, c + 11,c + 12,c + 13,c + 14,c + 15,c + 16,c + 17,c + 18,c + 19,c + 20, c + 21, c + 22]);
 
         const value = instance.jexcel.getValueFromCoords(1, r);
         const numberColumn = this.tableHeaderColumnsFamilies.length;
@@ -803,6 +814,8 @@ private setDataToFamilyEditor(records: any)
         master.relationshipWardsCode = ep.relationshipWardsCode;
         master.relationshipVillageCode = ep.relationshipVillageCode;
         master.relationshipCode = '00';
+        master.peopleCode = ep.peopleCode,
+        master.nationalityCode = ep.nationalityCode,
         master.conditionValid = ep.relationshipFullName ? ep.relationshipFullName : ep.fullName;
         master.origin = {
           employeeId: ep.employeeId,

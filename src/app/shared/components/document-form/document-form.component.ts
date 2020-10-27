@@ -10,7 +10,7 @@ import { DropdownItem } from '@app/core/interfaces';
 import { City, District, Wards } from '@app/core/models';
 
 import { download } from '@app/shared/utils/download-file';
-import { DATE_FORMAT, MIME_TYPE, schemaSign } from '@app/shared/constant';
+import { DATE_FORMAT, MIME_TYPE, schemaSign, PREFIXBYFILEXML } from '@app/shared/constant';
 
 @Component({
   selector: 'app-document-form',
@@ -71,8 +71,8 @@ export class DocumentFormComponent implements OnInit {
     declarationFileInfo.isDownloading = true;
 
     this.declarationFileService.downloadDeclarationFile(declarationFileInfo.id).then(response => {
-      const fileName = this.getItemInArray(declarationFileInfo.fullPathFile.split("."), 0);
-      const subfixFile = this.getItemInArray(declarationFileInfo.fullPathFile.split("."), 1);
+      const subfixFile = this.getSufixFile(declarationFileInfo.xmlFile)
+      const fileName =  declarationFileInfo.fullPathFile + subfixFile;
       const mimeType = this.getMimeType(subfixFile);
       download(fileName, response, mimeType);
 
@@ -80,12 +80,12 @@ export class DocumentFormComponent implements OnInit {
     });
   }
 
-  getItemInArray(stringArray: any, index: number) {
-    const numberItem = stringArray.length;
-    if(numberItem > index) {
-      return stringArray[index];
+  getSufixFile(xmlFile: any) {
+    const subfix = PREFIXBYFILEXML.find(d =>  d.key === xmlFile);
+    if (subfix) {
+      return subfix.value;
     }
-    return "";
+    return PREFIXBYFILEXML[0].value
   }
 
   getMimeType(subfixFile: string) {

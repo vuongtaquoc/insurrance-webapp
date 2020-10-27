@@ -6,6 +6,7 @@ import { Declaration } from '@app/core/interfaces';
 import { PAGE_SIZE,DECLARATIONS, RESULTSUBMIT } from '@app/shared/constant';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { DocumentFormComponent } from '@app/shared/components';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-sicknesses-approval-list',
@@ -21,18 +22,19 @@ export class SicknessesApprovalListComponent implements OnInit {
   declarations: Declaration[] = [];
   total: number;
   skip: number;
+  orderby: string = '';
+  orderType: string = '';
   selectedPage: number = 1;
   declarationCode: string = '630a';
   declarationName: string;
   status: any = RESULTSUBMIT;
-  keyword: string = '';
-
-  filter: any = {
+  filter: any = {};
+  param: any = {
     createDate: '',
     documentNo: '',
     declarationName: '',
     sendDate: '',
-    documentStatusName: ''
+    status: ''
   };
 
   constructor(
@@ -47,8 +49,12 @@ export class SicknessesApprovalListComponent implements OnInit {
 
   getDeclarations(skip = 0, take = PAGE_SIZE) {
     this.declarationService.getDeclarations({
+      ...this.filter,
+      orderby: this.orderby,
+      orderType: this.orderType,
       documentType: this.declarationCode,
-      skip,
+      year: this.getYear(),
+      skip,       
       take
     }).subscribe(res => {
       this.declarations = res.data;
@@ -64,14 +70,40 @@ export class SicknessesApprovalListComponent implements OnInit {
     });
   }
 
+  getYear() {
+
+    if(moment(this.year,"YYYY").isValid()) {
+      return  moment(this.year).format("YYYY");
+    }
+
+    return null;
+  }
+
   handleFilter(key) {
-    this.keyword = this.filter[key];
+
+    if (key === 'createDate' || key === 'sendDate') {
+      if(moment(this.param[key],"DD/MM/YYYY").isValid()) {
+        this.filter[key] = moment(this.param[key]).format("DD/MM/YYYY");
+      } else {
+        this.filter[key] = '';
+      }
+    } else {
+      this.filter[key] = this.param[key];
+    }
+    
+    this.selectedPage = 1;
+    this.getDeclarations();
+  }
+
+  sort(event) {
+    this.orderby = event.key;
+    this.orderType = event.value;
     this.getDeclarations();
   }
 
   pageChange({ skip, page }) {
     this.selectedPage = page;
-
+    this.skip = skip;
     this.getDeclarations(skip);
   }
 
@@ -117,4 +149,9 @@ export class SicknessesApprovalListComponent implements OnInit {
     const declarations = DECLARATIONS.find(d => d.key === declarationCode);
     return declarations;
   }
+
+  onChangeYear () {
+    this.getDeclarations();
+  }
+
 }

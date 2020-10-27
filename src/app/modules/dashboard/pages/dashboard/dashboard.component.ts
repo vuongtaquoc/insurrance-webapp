@@ -4,7 +4,7 @@ import { SelectItem } from '@app/core/interfaces';
 import { SubmitDeclarationService, ExternalService } from '@app/core/services';
 import { PAGE_SIZE, DECLARATIONRESULT} from '@app/shared/constant';
 import { NzModalService } from 'ng-zorro-antd/modal';
-import { DeclarationResultComponent } from '@app/shared/components';
+import { DeclarationResultComponent, DeclarationResultOfCompanyComponent } from '@app/shared/components';
 
 @Component({
   selector: 'app-dashboard',
@@ -77,8 +77,17 @@ export class DashboardComponent implements OnInit {
   }
 
   private loadDeclarationFiles(declaration) {
-    this.isSpinning = true;
 
+      if (declaration.declarationCode === '04_ĐK-IVAN' || declaration.declarationCode === '05_SĐ-IVAN' || declaration.declarationCode === '06_NG-IVAN') {
+        this.loadResultOfDeclarationOfCompany(declaration);
+      } else {
+        this.loadResultOfDeclaration(declaration);
+      }
+      
+  }
+
+  private loadResultOfDeclaration(declaration) {
+    this.isSpinning = true;
     this.externalService.getProcessDeclaration(declaration.id).subscribe(data => {
       const modal = this.modalService.create({
         nzWidth: 980,
@@ -98,4 +107,27 @@ export class DashboardComponent implements OnInit {
 
     });
   }
+
+  private loadResultOfDeclarationOfCompany(declaration) {
+    this.isSpinning = true;
+
+    this.externalService.getProcessDeclarationOfCompany(declaration.id).subscribe(data => {
+      const modal = this.modalService.create({
+        nzWidth: 980,
+        nzWrapClassName: 'document-modal',
+        nzTitle: 'Kết quả tiếp nhận hồ sơ số : ' + declaration.documentNo,
+        nzContent: DeclarationResultOfCompanyComponent,
+        nzOnOk: (data) => console.log('Click ok', data),
+        nzComponentParams: {
+          declarationFileInfo: data,
+        }
+      });
+  
+      modal.afterClose.subscribe(result => {
+      });
+
+      this.isSpinning = false;
+
+    });
+}
 }

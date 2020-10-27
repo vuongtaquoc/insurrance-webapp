@@ -4,7 +4,7 @@ export const TABLE_FAMILIES_NESTED_HEADERS = [
     { title: 'Người tham gia', subtitle: 'Nhập chữ thường', rowspan: '3' },
     { title: 'Người tham gia là chủ hộ', rowspan: '3' },
     { title: 'THÔNG TIN HỘ GIA ĐÌNH CỦA NGƯỜI THAM GIA', colspan: '8' },
-    { title: 'THÔNG TIN THÀNH VIÊN HỘ GIA ĐÌNH', colspan: '13' },
+    { title: 'THÔNG TIN THÀNH VIÊN HỘ GIA ĐÌNH', colspan: '15' },
   ],
   [
     { title: 'Chủ hộ', rowspan: '2' },
@@ -120,10 +120,10 @@ export const TABLE_FAMILIES_HEADER_COLUMNS = [{
   }
 }, {
   type: 'dropdown',
-  autocomplete: true,
-  defaultLoad: true,
+  autocomplete: true,  
   width: 100,
   title: '(8.4)',
+  defaultLoad: true,
   source: [],
   key: 'relationshipVillageCode',
   fieldName: 'Tỉnh thành phố',
@@ -190,7 +190,7 @@ export const TABLE_FAMILIES_HEADER_COLUMNS = [{
   type: 'dropdown',
   autocomplete: true,
   width: 100,
-  title: '(7)',
+  title: '(15)',
   fieldName: 'Quốc tịch',
   key: 'nationalityCode',
   source: [],
@@ -201,7 +201,7 @@ export const TABLE_FAMILIES_HEADER_COLUMNS = [{
   type: 'dropdown',
   autocomplete: true,
   width: 100,
-  title: '(8)',
+  title: '(16)',
   fieldName: 'Dân tộc',
   key: 'peopleCode',
   source: [],
@@ -211,14 +211,14 @@ export const TABLE_FAMILIES_HEADER_COLUMNS = [{
 },{
   type: 'checkbox',
   width: 100,
-  title: '(15)',
+  title: '(17)',
   key: 'sameAddress',
   align: 'center',
 }, {
   type: 'dropdown',
   autocomplete: true,
   width: 100,
-  title: '(16)',
+  title: '(18)',
   key: 'cityCode',
   source: [],
   fieldName: 'Tình thành phố',
@@ -230,7 +230,7 @@ export const TABLE_FAMILIES_HEADER_COLUMNS = [{
   type: 'dropdown',
   autocomplete: true,
   width: 100,
-  title: '(17)',
+  title: '(19)',
   key: 'districtCode',
   defaultLoad: true,
   source: [ ],
@@ -242,7 +242,7 @@ export const TABLE_FAMILIES_HEADER_COLUMNS = [{
   type: 'dropdown',
   autocomplete: true,
   width: 100,
-  title: '(18)',
+  title: '(20)',
   defaultLoad: true,
   source: [],
   key: 'wardsCode',
@@ -256,18 +256,18 @@ export const TABLE_FAMILIES_HEADER_COLUMNS = [{
   autocomplete: true,
   defaultLoad: true,
   width: 100,
-  title: '(19)',
+  title: '(21)',
   key: 'relationshipCode',
   source: []
 },{
   type: 'text',
   width: 120,
-  title: '(20)',
+  title: '(22)',
   key: 'identityCar'
 },  {
   type: 'text',
   width: 150,
-  title: '(21)',
+  title: '(23)',
   key: 'note'
 },{
   type: 'hidden',

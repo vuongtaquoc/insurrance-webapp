@@ -60,6 +60,7 @@ import {
   ContractComponent,
   FileAttachmentComponent,
   DeclarationResultComponent,
+  DeclarationResultOfCompanyComponent,
 } from './components';
 
 import {
@@ -119,6 +120,7 @@ import {
     ContractComponent,
     FileAttachmentComponent,
     DeclarationResultComponent,
+    DeclarationResultOfCompanyComponent,
   ],
   exports: [
     FormsModule,
@@ -141,7 +143,8 @@ import {
     DepartmentComponent,
     ContractComponent,
     FileAttachmentComponent,
-    DeclarationResultComponent
+    DeclarationResultComponent,
+    DeclarationResultOfCompanyComponent,
   ],
   providers: [
     AuthenticationService,
@@ -166,6 +169,7 @@ import {
     ContractComponent,
     FileAttachmentComponent,
     DeclarationResultComponent,
+    DeclarationResultOfCompanyComponent,
   ]
 })
 export class SharedModule { }

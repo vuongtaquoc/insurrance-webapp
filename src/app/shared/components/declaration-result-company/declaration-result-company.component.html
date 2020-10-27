@@ -1,0 +1,41 @@
+<div class="declaration-result">
+  <div class="declaration-result__content">
+  <h2><span>Hồ sơ</span> : {{declarationFileInfo.declarationCode}} | {{declarationFileInfo.declarationName}}</h2>
+  <h1>KẾT QUẢ CÁ BƯỚC XỬ LÝ HỒ SƠ</h1>
+  <nz-table
+      nzBordered
+      #ajaxTable
+      nzShowSizeChanger
+      [nzFrontPagination]="false"
+      [nzData]="resultsProcess"
+      [nzLoading]="loading"
+      [nzTotal]="total"
+      [(nzPageIndex)]="pageIndex"
+      [(nzPageSize)]="pageSize"
+      class="table-editor "
+    >
+      <thead>
+        <tr>
+          <th style="width: 50px;">Bước</th>
+          <th>Kết quả</th>
+          <th style="width: 150px;">Mã kết quả</th>
+          <th style="width: 200px;">Thời gian tiếp nhận</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of ajaxTable.data;">
+          <td>{{ data.step }}</td>
+          <td>{{ data.result }}</td>
+          <td>{{ data.resultCode }}</td>
+          <td>{{ data.dateReceived }}</td>
+        </tr>
+      </tbody>
+    </nz-table>
+        <!-- ROW START -->
+  </div>
+  <div class="declaration-result__footer" *nzModalFooter>
+    <button nz-button nzType="default" (click)="dismiss()">
+      <i nz-icon nzType="rollback"></i>Đóng
+    </button>
+  </div>
+</div>

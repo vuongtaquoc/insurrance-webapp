@@ -30,7 +30,7 @@
 			"hasRessult": "Đã có kết quả"
 		},
 		"resultSubmit": {
-			"draft": "Chưa nộp",
+			"draft": "Nháp",
 			"notSend": "Chưa nộp",
 			"sendError": "Gửi lỗi",
 			"sendSuceesfull": "Gửi thành công"
@@ -319,6 +319,25 @@
 				"status": "Trạng thái",
 				"createDate": "Ngày tạo",
 				"sendDate": "Ngày gửi"
+			}
+		},"researchconnection": {
+			"info": {
+				"title": "Danh sách kết quả nộp tờ khai đơn vị",
+				"dateFrom": "Từ ngày",
+				"dateTo": "Đến ngày",
+				"keyWords": "Từ khóa"
+			},
+			"table": {
+				"stt": "STT",
+				"companyCode": "Mã số thuế",
+				"companyName": "Tên công ty",
+				"documentNo": "Số hồ sơ",
+				"declarationCode": "Mã tờ khai",
+				"batch": "Lần gửi",
+				"result": "Kết quả",
+				"content": "Nội dung",				 
+				"sendDate": "Ngày gửi",
+				"action": "Thao tác"
 			}
 		},
 		"products": {

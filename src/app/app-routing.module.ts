@@ -76,6 +76,11 @@ const routes: Routes = [
     loadChildren: './modules/register-ivan/register-ivan.module#RegisterIvanModule',
     canActivate: [AuthGuard],
   },
+  {
+    path: 'research-connection',
+    loadChildren: './modules/system/research-connection/research-connection.module#ResearchConnectionModule',
+    canActivate: [AuthGuard],
+  },
    
 ];
 

@@ -67,19 +67,19 @@ export const ACTION = {
 export const MIME_TYPE =
   [
     {
-      key: 'xlsx',
+      key: '.xlsx',
       value: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
     },
     {
-      key: 'docx',
+      key: '.docx',
       value: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
     },
     {
-      key: 'zip',
+      key: '.zip',
       value: 'application/zip'
     },
     {
-      key: 'xml',
+      key: '.xml',
       value: 'application/xml'
     }
   ];
@@ -147,6 +147,30 @@ export const DECLARATIONS =
     },
   ];
 
+  export const PREFIXBYFILEXML =
+  [
+    {
+      key: 'D02-TS',
+      value: '.xlxs'
+    },
+    {
+      key: 'TK1-TS',
+      value: '.docx'
+    },
+    {
+      key: 'D01-TS',
+      value: '.docx'
+    },
+    {
+      key: 'M01B-HSB',
+      value: '.xlxs'
+    },
+    {
+      key: 'TK3-TS',
+      value: '.docx'
+    }     
+  ];
+
 export const CONSTPARENTDELETEAUTOROW =
   [
     {
@@ -154,6 +178,7 @@ export const CONSTPARENTDELETEAUTOROW =
       tableName: 'Giảm lao động'
     }
   ]
+  
 export const DOCUMENTBYPLANCODE =
   [
     {

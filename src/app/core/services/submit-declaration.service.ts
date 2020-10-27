@@ -19,6 +19,15 @@ export class SubmitDeclarationService {
         });
     }
 
+    public filterResult(filters = {}) {
+        return this.http.getList('/submit-declaration/research-connection', {
+            params: {
+                ...filters
+            }
+        });
+    }
+
+
     public getDetailById(id: string) {
         return this.http.get(`/submit-declaration/${id}`, {
         });

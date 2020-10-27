@@ -111,7 +111,7 @@ export class ReissueHealthCardComponent implements OnInit, OnDestroy {
     private modalService: NzModalService,
     private relationshipService: RelationshipService,
     private villageService: VillageService,
-    private fileUploadEmitter: FileUploadEmitter
+    private fileUploadEmitter: FileUploadEmitter,
   ) {
     this.getRecipientsDistrictsByCityCode = this.getRecipientsDistrictsByCityCode.bind(this);
     this.getRecipientsWardsByDistrictCode = this.getRecipientsWardsByDistrictCode.bind(this);
@@ -158,7 +158,7 @@ export class ReissueHealthCardComponent implements OnInit, OnDestroy {
       this.planService.getPlanShowCode(this.declarationCode),
       this.departmentService.getDepartments(),
       this.categoryService.getCategories('relationshipDocumentType'),
-      this.relationshipService.getRelationships()
+      this.relationshipService.getRelationships(),
     ]).subscribe(([ cities, nationalities, peoples, salaryAreas, plans, departments,relationshipDocumentTypies, relationShips ]) => {
       this.updateSourceToColumn(this.tableHeaderColumns, 'peopleCode', peoples);
       this.updateSourceToColumn(this.tableHeaderColumns, 'nationalityCode', nationalities);
@@ -167,6 +167,8 @@ export class ReissueHealthCardComponent implements OnInit, OnDestroy {
       this.updateSourceToColumn(this.tableHeaderColumns, 'salaryAreaCode', salaryAreas);
       this.updateSourceToColumn(this.tableHeaderColumns, 'planCode', plans);
       this.updateSourceToColumn(this.tableHeaderColumns, 'departmentCode', departments);
+      this.updateSourceToColumn(this.tableHeaderColumnsFamilies, 'peopleCode', peoples);
+      this.updateSourceToColumn(this.tableHeaderColumnsFamilies, 'nationalityCode', nationalities);
 
       this.updateSourceToColumn(this.tableHeaderColumnsFamilies, 'relationshipCityCode', cities);
       this.updateSourceToColumn(this.tableHeaderColumnsFamilies, 'cityCode', cities);
@@ -1232,11 +1234,13 @@ export class ReissueHealthCardComponent implements OnInit, OnDestroy {
             this.updateNextColumns(instance, r, emp.typeBirthday, [ c + 12]);
             this.updateNextColumns(instance, r, emp.birthday, [ c + 13]);
             this.updateNextColumns(instance, r, emp.gender, [ c + 14]);
-            this.updateNextColumns(instance, r, emp.relationshipCityCode, [ c + 16]);
-            this.updateNextColumns(instance, r, emp.relationshipDistrictCode, [ c + 17]);
-            this.updateNextColumns(instance, r, emp.relationshipWardsCode, [ c + 18]);
-            this.updateNextColumns(instance, r, '00', [21]);
-            this.updateNextColumns(instance, r, emp.identityCar, [c + 20]);
+            this.updateNextColumns(instance, r, emp.nationalityCode, [ c + 15]);
+            this.updateNextColumns(instance, r, emp.peopleCode, [ c + 16]);
+            this.updateNextColumns(instance, r, emp.registerCityCode, [ c + 18]);
+            this.updateNextColumns(instance, r, emp.registerDistrictCode, [ c + 19]);
+            this.updateNextColumns(instance, r, emp.registerWardsCode, [ c + 20]);
+            this.updateNextColumns(instance, r, '00', [23]);
+            this.updateNextColumns(instance, r, emp.identityCar, [c + 22]);
             this.updateSelectedValueDropDown(columns, instance, r);
             });
 
@@ -1253,7 +1257,9 @@ export class ReissueHealthCardComponent implements OnInit, OnDestroy {
             this.updateNextColumns(instance, r, firstEmployee.typeBirthday, [ c + 12]);
             this.updateNextColumns(instance, r, firstEmployee.birthday, [ c + 13]);
             this.updateNextColumns(instance, r, firstEmployee.gender, [ c + 14]);
-            this.updateNextColumns(instance, r, firstEmployee.identityCar, [c + 20]);
+            this.updateNextColumns(instance, r, firstEmployee.nationalityCode, [ c + 15]);
+            this.updateNextColumns(instance, r, firstEmployee.peopleCode, [ c + 16]);
+            this.updateNextColumns(instance, r, firstEmployee.identityCar, [c + 22]);
             this.updateSelectedValueDropDown(columns, instance, r);
             const nextRow = Number(r) + 1;
             const fullNameNextRow = records[nextRow][c + 10];
@@ -1265,7 +1271,7 @@ export class ReissueHealthCardComponent implements OnInit, OnDestroy {
         }else if(employeeIsMaster === false && records[r].origin.employeeId > 0) {
           
           this.updateNextColumns(instance, r, '', [ c + 1 , c + 2, c + 3, c + 4, c + 5, c + 6, c + 7, c + 8,
-          c + 10, c + 11, c + 11,c + 12,c + 13,c + 14,c + 15,c + 16,c + 17]);
+          c + 10, c + 11, c + 11,c + 12,c + 13,c + 14,c + 15,c + 16,c + 17,c + 18,c + 19,c + 20, c + 21, c + 22]);
   
           const value = instance.jexcel.getValueFromCoords(1, r);
           const numberColumn = this.tableHeaderColumnsFamilies.length;
@@ -1275,7 +1281,7 @@ export class ReissueHealthCardComponent implements OnInit, OnDestroy {
           const employeesInDeclaration = this.getEmployeeInDeclarations(this.declarations);
           const firstEmployee = employeesInDeclaration.find(f => f.employeeId === records[r].origin.employeeId);
           this.updateNextColumns(instance, r, '', [ c + 1 , c + 2, c + 3, c + 4, c + 5, c + 6, c + 7, c + 8,
-            c + 10, c + 11, c + 11,c + 12,c + 13,c + 14,c + 15,c + 16,c + 17]);
+            c + 10, c + 11, c + 11,c + 12,c + 13,c + 14,c + 15,c + 16,c + 17,c + 18,c + 19,c + 20, c + 21, c + 22]);
 
           const value = instance.jexcel.getValueFromCoords(1, r);
           const numberColumn = this.tableHeaderColumnsFamilies.length;

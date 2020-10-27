@@ -55,6 +55,8 @@
                 Danh sách tài khoản</a></li>
               <li nz-menu-item [hidden]="!permissions[pmsConf.emailActive.R]"><a [routerLink]="['/emails-notification/list']"><i nz-icon nzType="notification"
                 nzTheme="outline"></i> Thông báo gửi Email</a></li>
+            <li nz-menu-item [hidden]="!permissions[pmsConf.emailActive.R]"><a [routerLink]="['/research-connection/list']"><i nz-icon nzType="notification"
+                nzTheme="outline"></i> Tra cứu kết quả nộp tờ khai đơn vị</a></li>
             </ul>
           </nz-dropdown-menu>
         </li>

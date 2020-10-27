@@ -79,6 +79,7 @@ export class CompanyChangeComponent implements OnInit, OnDestroy {
       taxCode: ['', Validators.required],
       address: ['', Validators.required],
       addressRegister: ['', Validators.required],
+      companyType: ['', Validators.required],
       careers: ['', Validators.required],
       mobile: ['', [Validators.required, Validators.pattern(REGEX.PHONE_NUMBER)]],
       email: ['', [Validators.required, Validators.pattern(REGEX.EMAIL)]],
@@ -108,6 +109,7 @@ export class CompanyChangeComponent implements OnInit, OnDestroy {
         mobile: data.mobile,
         email: data.emailOfContract,
         paymentMethodCode: data.paymentMethodCode,
+        companyType: data.companyType,
       });
     })
   }
@@ -128,6 +130,7 @@ export class CompanyChangeComponent implements OnInit, OnDestroy {
         taxCode: data.changeCompanyInfo.taxCode,
         address: data.changeCompanyInfo.address,
         addressRegister: data.changeCompanyInfo.addressRegister,
+        companyType: data.changeCompanyInfo.companyType,
         careers: data.changeCompanyInfo.careers,
         license: data.changeCompanyInfo.license,
         issued: data.changeCompanyInfo.issued,

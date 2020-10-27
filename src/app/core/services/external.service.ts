@@ -29,4 +29,8 @@ export class ExternalService {
     return this.http.get(`/external-sevice/process-document/${declarationFileId}`);
   }
 
+  public getProcessDeclarationOfCompany(declarationFileId: string): Observable<any> {
+    return this.http.get(`/external-sevice/result-declaration-of-company/${declarationFileId}`);
+  }
+
 }
