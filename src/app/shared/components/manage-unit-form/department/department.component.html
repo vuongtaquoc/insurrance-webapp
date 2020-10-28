@@ -12,7 +12,7 @@
       <td class="text-center">{{ i +1}}</td>
       <td>
         <input (change)="codeChange($event, i)" [ngClass]="{ 'error_border': (isError && editIndex == i) }" nz-input
-          nzSize="small" placeholder="Nhập mã phòng ban" [(ngModel)]="row.code" />
+          nzSize="small" placeholder="Nhập mã phòng ban" [(ngModel)]="row.id" />
 
         <p class="error-text" *ngIf="(isError && editIndex == i)">
           {{ errorTitleCode }}

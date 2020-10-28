@@ -49,7 +49,7 @@ export class DeclarationResultOfCompanyComponent implements OnInit {
       ...this.declarationFileInfo.resultDetail.stepTwo
     });
     this.resultsProcess.push({
-      step: 2,
+      step: 3,
       ...this.declarationFileInfo.resultDetail.stepThree
     });
     

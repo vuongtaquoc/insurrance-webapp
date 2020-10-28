@@ -4,7 +4,6 @@ import { map } from 'rxjs/operators';
 
 import { ApplicationHttpClient } from '@app/core/http';
 
-// import { City } from '@app/core/models';
 
 @Injectable({ providedIn: 'root' })
 export class DepartmentService {
@@ -17,7 +16,7 @@ export class DepartmentService {
       map(departments => {
         return departments.map(department => ({
           ...department,
-          name: `${ department.code } - ${ department.name }`,
+          name: `${ department.id } - ${ department.name }`,
           shortName: department.name
         }));
       })

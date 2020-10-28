@@ -29,7 +29,7 @@ export class DepartmentComponent implements OnInit, OnChanges {
   private loadDefaultData() {
     for (let i = 1; i <= 4; i++) {
       this.departments.push({
-        code: '',
+        id: '',
         name: ''
       });
     }
@@ -38,7 +38,7 @@ export class DepartmentComponent implements OnInit, OnChanges {
   addRow() {
 
     this.departments.push({
-      code: '',
+      id: '',
       name: ''
     });
   }
@@ -48,13 +48,13 @@ export class DepartmentComponent implements OnInit, OnChanges {
   }
 
   codeChange(event, index) {
-    let code = event.target.value;
-    if (code) {
+    let id = event.target.value;
+    if (id) {
       this.editIndex = index;
-      let codes = this.departments.filter(x => x.code == code);
+      let codes = this.departments.filter(x => x.id == id);
       if (codes.length > 1) {
         this.isError = true;
-        this.errorTitleCode = `Mã ${code} đã tồn tại`;
+        this.errorTitleCode = `Mã ${id} đã tồn tại`;
       }
       else {
         this.errorTitleCode = '';

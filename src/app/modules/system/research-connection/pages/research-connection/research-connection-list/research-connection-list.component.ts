@@ -144,5 +144,5 @@ export class ResearchConnectionListComponent implements OnInit, OnDestroy {
           this.isSpinning = false;
     
         });
-      }
+    }
 }

@@ -1,5 +1,6 @@
-<div class="employee-form">
-  <div class="employee-form__content">
+<div class="employee-form"> 
+  <nz-spin [nzSpinning]="isSpinning" class="page-container__spinning">
+  <div class="employee-form__content">    
     <form nz-form [formGroup]="employeeForm">
       <nz-tabset (nzSelectChange)="changeTab($event)">
         <nz-tab nzTitle="Thông tin NLĐ">
@@ -934,16 +935,17 @@
       </nz-tabset>
     </form>
   </div>
-
-  <div class="employee-form__footer" *nzModalFooter>
-    <button class="employee-form__button-export" *ngIf="employee.id" nz-button nzType="primary" (click)="download()">
-       Xuất KT1-TS
-    </button>
-    <button class="employee-form__button-save" nz-button nzType="primary" (click)="save()">
-      <i nz-icon nzType="save"></i>Lưu
-    </button>
-    <button class="employee-form__button-back" nz-button nzType="default" (click)="dismiss()">
-      <i nz-icon nzType="stop"></i>Quay lại
-    </button>
-  </div>
+  
+    <div class="employee-form__footer" *nzModalFooter>
+      <button class="employee-form__button-export" *ngIf="(employee.id) && !isSpinning" nz-button nzType="primary" (click)="download()">
+        Xuất KT1-TS
+      </button>
+      <button class="employee-form__button-save" nz-button nzType="primary" (click)="save()">
+        <i nz-icon nzType="save"></i>Lưu
+      </button>
+      <button class="employee-form__button-back" nz-button nzType="default" (click)="dismiss()">
+        <i nz-icon nzType="stop"></i>Quay lại
+      </button>
+    </div>
+  </nz-spin>
 </div>

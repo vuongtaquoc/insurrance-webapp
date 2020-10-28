@@ -74,6 +74,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
   familySubject: Subject<any> = new Subject<any>();
   flagChangeMaster: boolean = false;
   isAccountHolderChange: boolean = false;
+  isSpinning: boolean = false;
   formatterCurrency = (value: number) => typeof value === 'number' ? `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',') : '';
   private timer;
   private saveTimer;
@@ -885,9 +886,11 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
   }
 
   download() {
+    this.isSpinning = true;
     this.employeeService.download(this.employee.id).then(response => {
-      const mimeType = this.getMimeType('docx');
+      const mimeType = this.getMimeType('.docx');
       download(`TK1-TS-${ this.employee.fullName }`, response, mimeType);
+      this.isSpinning = false;
     });
   }
 
