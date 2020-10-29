@@ -362,7 +362,7 @@
                   Email liên hệ
                 </nz-form-label>
                 <nz-form-control [nzSpan]="14" [nzErrorTip]="toError">
-                  <input nz-input placeholder="Email liên hệ" formControlName="email" />
+                  <input nz-input placeholder="Email liên hệ" formControlName="emailOfContract" />
                   <ng-template #toError let-control>
                     <ng-container *ngIf="control.hasError('required')">
                       Email không được để trống

@@ -97,7 +97,7 @@ export class RegisterIvanRegisterComponent implements OnInit {
       tel: ['', [Validators.required, Validators.pattern(REGEX.PHONE_NUMBER)]],
       personContact: ['', [Validators.required]],
       mobile: ['', [Validators.required, Validators.pattern(REGEX.PHONE_NUMBER)]],
-      email: ['', [Validators.required, Validators.pattern(REGEX.EMAIL)]],
+      emailOfContract: ['', [Validators.required, Validators.pattern(REGEX.EMAIL)]],
       emailConfirm: ['', [Validators.required, Validators.pattern(REGEX.EMAIL)]],
       paymentMethodCode: ['', [Validators.required]],
       responseResults: ['', [Validators.required]],
@@ -116,7 +116,7 @@ export class RegisterIvanRegisterComponent implements OnInit {
       isFirst: ['0']
     },
       {
-        validator: MustMatch('email', 'emailConfirm')
+        validator: MustMatch('emailOfContract', 'emailConfirm')
       });
     
     this.getFullHeight();
@@ -303,8 +303,8 @@ export class RegisterIvanRegisterComponent implements OnInit {
       tel: data.tel,
       personContact: data.personContact,
       mobile: data.mobile,
-      email: data.email,
-      emailConfirm: data.email,
+      emailOfContract: (data.emailOfContract ? data.emailOfContract : data.email),
+      emailConfirm: (data.emailOfContract ? data.emailOfContract : data.email),
       paymentMethodCode: data.paymentMethodCode,
       responseResults: (data.responseResults || '0').toString(),
       privateKey: data.privateKey,

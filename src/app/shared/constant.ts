@@ -151,7 +151,7 @@ export const DECLARATIONS =
   [
     {
       key: 'D02-TS',
-      value: '.xlxs'
+      value: '.xlsx'
     },
     {
       key: 'TK1-TS',
@@ -163,7 +163,7 @@ export const DECLARATIONS =
     },
     {
       key: 'M01B-HSB',
-      value: '.xlxs'
+      value: '.xlsx'
     },
     {
       key: 'TK3-TS',
