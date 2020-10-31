@@ -94,6 +94,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
   handlers: any = [];
   isSpinning = false;
   timer: any;
+  isCheckIsuranceCode: boolean = false;
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
@@ -294,6 +295,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     this.declarations.tables[tableName] = this.declarations[tableName] || {};
     this.declarations.tables[data.tableName]= data.data;
     if(tableName === 'increaselabor') {
+      this.isCheckIsuranceCode = false;
       this.sumCreateBHXH(data.data);
     }
     
@@ -353,7 +355,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
         nzTitle: 'Bạn chưa kê khai'
       });
       return;
-    }
+    }   
 
     eventEmitter.emit('tableEditor:validFrom', {
       tableName: 'documentList'
@@ -398,6 +400,13 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
           errors: this.getColumnErrror()
         }
       });
+    }
+
+    if (!this.isCheckIsuranceCode) {
+      this.modalService.warning({
+        nzTitle: 'Đơn vị chưa kiểm tra Mã số BHXH và trạng thái của người tham gia'
+      });
+      return;
     }
 
     if (this.declarationId) {
@@ -454,6 +463,10 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     this.declarationGeneral = declarationGeneralTemp;
   }
 
+  handleCheckIsuranceNo(event) {
+    this.isCheckIsuranceCode = true;
+  }
+
   save() {
 
     if(!this.isTableValid) {
@@ -461,7 +474,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
         nzTitle: 'Bạn chưa kê khai'
       });
       return;
-    }
+    }    
 
     if (this.declarationId) {
       this.update('save');

@@ -107,7 +107,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
     this.employeeForm = this.formBuilder.group({
       fullName: [employee.fullName, Validators.required],
       birthday: [employee.birthday ? employee.birthday.split('/').join('') : '', [Validators.required, validateLessThanEqualNowBirthday]],
-      typeBirthday: [employee.typeBirthday || '3'],
+      typeBirthday: [employee.typeBirthday || '0'],
       gender: [employee.gender, Validators.required],
       nationalityCode: [employee.nationalityCode, Validators.required],
       peopleCode: [employee.peopleCode, Validators.required],
@@ -136,7 +136,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
       rate: [employee.rate, [Validators.required, Validators.min(0), Validators.max(100), Validators.pattern(REGEX.ONLY_NUMBER_INCLUDE_DECIMAL)]],
       cityFirstRegistCode: [employee.cityFirstRegistCode, Validators.required],
       hospitalFirstRegistCode: [employee.hospitalFirstRegistCode, Validators.required],
-      allowanceLevel: [employee.allowanceLevel,[Validators.pattern(REGEX.ONLY_NUMBER)]],
+      allowanceLevel: [employee.allowanceLevel,[Validators.min(0), Validators.max(99),Validators.pattern(REGEX.ONLY_NUMBER)]],
       allowanceSeniority: [employee.allowanceSeniority, [Validators.min(0), Validators.max(100), Validators.pattern(REGEX.ONLY_NUMBER_INCLUDE_DECIMAL)]],
       allowanceSeniorityJob: [employee.allowanceSeniorityJob, [Validators.min(0), Validators.max(100), Validators.pattern(REGEX.ONLY_NUMBER_INCLUDE_DECIMAL)]],
       allowanceSalary: [employee.allowanceSalary, [Validators.pattern(REGEX.ONLY_NUMBER)]],
@@ -353,7 +353,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
       )
     };
 
-    formData.typeBirthday = '3';
+    formData.typeBirthday = '0';
     if (this.employeeForm.get('birthTypeOnlyYearMonth').value) {
       formData.typeBirthday = '1';
     }
@@ -765,7 +765,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
     } else if (this.birthTypeOnlyYear) {
       return '2';
     }else {
-      return '3';
+      return '0';
     }
   }
 

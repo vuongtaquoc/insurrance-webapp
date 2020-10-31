@@ -252,7 +252,12 @@ export const TABLE_ARREARS_HEADER_COLUMNS = [{
   mask: '#,##0',
   // decimal: ',',
   sum: true,
-  key: 'allowanceLevel'
+  key: 'allowanceLevel',
+  validations: {
+    min: 0,
+    max: 99
+  },
+
 }, {
   type: 'numeric',
   width: 70,
@@ -321,7 +326,11 @@ export const TABLE_ARREARS_HEADER_COLUMNS = [{
   mask: '#,##0',
   // decimal: ',',
   sum: true,
-  key: 'allowanceLevelNew'
+  key: 'allowanceLevelNew',
+  validations: {
+    min: 0,
+    max: 99
+  },
 }, {
   type: 'numeric',
   width: 70,

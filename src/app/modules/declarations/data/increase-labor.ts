@@ -116,14 +116,13 @@ export const TABLE_HEADER_COLUMNS = [{
   type: 'text',
   key: 'isurranceCodeStatus',
   width: 123,
-  readOnly: true,
   title: '(5.2)',
   wordWrap: true,
 }, {
   type: 'dropdown',
   width: 70,
   title: '(6)',
-  source: [ { id: '3', name: 'Ngày tháng năm' },{ id: '1', name: 'tháng/năm' }, { id: '2', name: 'năm' } ],
+  source: [ { id: '0', name: 'Ngày tháng năm' },{ id: '1', name: 'tháng/năm' }, { id: '2', name: 'năm' } ],
   key: 'typeBirthday',
   warnings: {
     duplicateUserFields: {
@@ -430,7 +429,8 @@ export const TABLE_HEADER_COLUMNS = [{
   fieldName: 'Chức vụ',
   validations: {
     required: true,
-    number: true
+    min: 0,
+    max: 99
   },
   format: (value) => {
     return format.currency(value);

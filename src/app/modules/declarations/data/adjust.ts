@@ -109,7 +109,7 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   type: 'dropdown',
   width: 70,
   title: '(6)',
-  source: [{ id: '3', name: 'Ngày tháng năm' },{ id: '1', name: 'tháng/năm' }, { id: '2', name: 'năm' } ],
+  source: [{ id: '0', name: 'Ngày tháng năm' },{ id: '1', name: 'tháng/năm' }, { id: '2', name: 'năm' } ],
   key: 'typeBirthday'
 }, {
   type: 'text',
@@ -298,7 +298,9 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   sum: true,
   key: 'allowanceLevel',
   validations: {
-    number: true
+    number: true,
+    min: 0,
+    max: 99
   },
   format: (value) => {
     return format.currency(value);
@@ -412,7 +414,9 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   key: 'allowanceLevelNew',
   fieldName: 'Chức vụ lương mới',
   validations: {
-    number: true
+    number: true,
+    min: 0,
+    max: 99
   },
   format: (value) => {
     return format.currency(value);

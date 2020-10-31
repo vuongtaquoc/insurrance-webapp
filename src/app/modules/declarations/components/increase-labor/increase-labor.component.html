@@ -71,6 +71,7 @@
             (onChange)="handleChangeTable($event, 'increaselabor')"
             (onFormChange)="handleFormChange($event)"
             (onHiddenSidebar)="handleHiddenSidebar($event)"
+            (onCheckIsuranceNo)="handleCheckIsuranceNo($event)"
           ></app-increase>
         </nz-tab>
         <nz-tab [nzTitle]="tabFamily" [nzDisabled]="!families || !families.length">

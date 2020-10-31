@@ -28,6 +28,7 @@ export class GeneralBaseComponent {
   @Output() onHiddenSidebar: EventEmitter<any> = new EventEmitter();
   @Output() onFormChange: EventEmitter<any> = new EventEmitter();
   @Output() onChangedFile: EventEmitter<any> = new EventEmitter();
+  @Output() onCheckIsuranceNo: EventEmitter<any> = new EventEmitter();
   headers: any = {
     increaselabor: {
       nested: [],
@@ -402,7 +403,9 @@ handleUserUpdated(user, tableName) {
     if (c !== null && c !== undefined) {
       c = Number(c);
       const column = this.headers[tableName].columns[c];
-
+      if (column.key === 'fullName') {
+        this.updateNextColumns(instance, r, '', [c + 4]);
+      }
       if (column.key === 'registerCityCode') {
         this.updateNextColumns(instance, r, '', [ c + 1, c + 2 ]);
       } else if (column.key === 'recipientsCityCode') {

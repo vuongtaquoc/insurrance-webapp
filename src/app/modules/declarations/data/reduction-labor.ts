@@ -105,7 +105,7 @@ export const TABLE_REDUCTION_HEADER_COLUMNS = [{
   autocomplete: true,
   width: 70,
   title: '(6)',
-  source: [ { id: '3', name: 'Ngày tháng năm' },{ id: '1', name: 'tháng/năm' }, { id: '2', name: 'năm' } ],
+  source: [ { id: '0', name: 'Ngày tháng năm' },{ id: '1', name: 'tháng/năm' }, { id: '2', name: 'năm' } ],
   key: 'typeBirthday'
 }, {
   type: 'text',
@@ -298,7 +298,8 @@ export const TABLE_REDUCTION_HEADER_COLUMNS = [{
   sum: true,
   key: 'allowanceLevel',
   validations: {
-    number: true
+    min: 0,
+    max: 99
   },
   format: (value) => {
     return format.currency(value);

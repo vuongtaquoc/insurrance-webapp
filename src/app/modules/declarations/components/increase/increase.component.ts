@@ -112,15 +112,23 @@ export class IncreaseComponent extends GeneralBaseComponent implements OnInit, O
   }
 
   checkInsurranceCode() {
-    eventEmitter.emit('action:loadding', {
-      isShow: true,
-    });
+   
     const declarations = [...this.declarations.increaselabor.table];
+    const INSURRANCE_FULLNAME_INDEX = 1;
     const INSURRANCE_CODE_INDEX = 4;
     const INSURRANCE_STATUS_INDEX = 5;
     const errors = {};
     const leafs = declarations.filter(d => d.isLeaf && d.data[INSURRANCE_CODE_INDEX]);
-     
+
+    //Kiểm tra nếu có dữ liệu cần check thì show loadding
+    if(leafs.length > 0) {
+      eventEmitter.emit('action:loadding', {
+        isShow: true,       
+      });
+
+      this.onCheckIsuranceNo.emit('1');
+    }
+    
     forkJoin(
       leafs.map(item => {        
         const code = item.data[INSURRANCE_CODE_INDEX];
@@ -130,6 +138,7 @@ export class IncreaseComponent extends GeneralBaseComponent implements OnInit, O
       
       declarations.forEach((declaration, rowIndex) => {
         const code = declaration.data[INSURRANCE_CODE_INDEX];
+        const fullName = declaration.data[INSURRANCE_FULLNAME_INDEX];
         if (code && declaration.isLeaf) {
 
             const item = results.find(r => r.isurranceCodeCheck === code);
@@ -140,6 +149,18 @@ export class IncreaseComponent extends GeneralBaseComponent implements OnInit, O
                   value: code,
                   valid: false
                 };
+            } else if (item.fullName !==  fullName)
+            {
+              declaration.data[INSURRANCE_STATUS_INDEX] = `Sai họ tên. Mã số ${ declaration.data[INSURRANCE_CODE_INDEX] } của ${ item.fullName }`;
+              errors[rowIndex] = {
+                col: INSURRANCE_CODE_INDEX,
+                value: code,
+                valid: false
+              };
+
+            } else 
+            {
+              declaration.data[INSURRANCE_STATUS_INDEX] = '';
             }
         }
         

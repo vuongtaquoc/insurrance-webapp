@@ -119,7 +119,7 @@ export function validateLessThanEqualNowBirthdayGrid(currentDate, type) {
   if (!currentDate || !type) return null;
   const now = getDateNow();
   // full date
-  if (type === '3') {
+  if (type === '0') {
     if (currentDate.length < 8) {
       return {
         lessThanEqualNow: {

@@ -83,7 +83,7 @@ export const TABLE_HEADER_COLUMNS = [{
   width: 70,
   title: '(4)',
   fieldName: 'Loại ngày tháng nắm sinh',
-  source: [ { id: '3', name: 'Ngày tháng năm' },{ id: '1', name: 'tháng/năm' }, { id: '2', name: 'năm' } ],
+  source: [ { id: '0', name: 'Ngày tháng năm' },{ id: '1', name: 'tháng/năm' }, { id: '2', name: 'năm' } ],
   key: 'typeBirthday',
   // warnings: {
   //   duplicateUserFields: {

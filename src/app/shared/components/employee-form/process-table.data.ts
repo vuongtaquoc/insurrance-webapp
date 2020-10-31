@@ -96,7 +96,8 @@ export const TABLE_PROCESS_HEADER_COLUMNS = [{
   mask: '#,##0',
   fieldName: 'Phụ cấp chức vụ',
   validations: {
-    number: true
+    min: 0,
+    max: 99
   },
   format: (value) => {
     return format.currency(value);

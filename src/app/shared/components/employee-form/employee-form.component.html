@@ -549,9 +549,16 @@
                     formControlName="allowanceLevel"
                     [nzFormatter]="formatterCurrency"
                   ></nz-input-number>
+                  
                   <ng-template #allowanceLevelTpl let-control>
                     <ng-container *ngIf="control.hasError('pattern')">
                       Chức vụ phải là số
+                    </ng-container>
+                    <ng-container *ngIf="control.hasError('min')">
+                      Chức vụ  phải lớn hơn 0
+                    </ng-container>
+                    <ng-container *ngIf="control.hasError('max')">
+                      Chức vụ phải nhỏ hơn 100
                     </ng-container>
                   </ng-template>
                 </nz-form-control>
