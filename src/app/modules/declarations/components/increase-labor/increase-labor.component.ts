@@ -627,31 +627,32 @@ handleChangeDataFamilies({ instance, cell, c, r, records, columns }) {
         
         this.employeeService.getEmployeeById(records[r].origin.employeeId).subscribe(emp => {
             this.updateNextColumns(instance, r, emp.fullName, [ c + 1]);
-            this.updateNextColumns(instance, r, emp.relationshipMobile, [ c + 2]);
-            this.updateNextColumns(instance, r, emp.relationshipDocumentType, [ c + 3]);
-            this.updateNextColumns(instance, r, emp.relationshipBookNo, [ c + 4]);
-            this.updateNextColumns(instance, r, emp.relationshipCityCode , [ c + 5]);
-            this.updateNextColumns(instance, r, emp.relationshipDistrictCode, [ c + 6]);
-            this.updateNextColumns(instance, r, emp.relationshipWardsCode, [ c + 7]);
-            this.updateNextColumns(instance, r, emp.relationshipVillageCode, [ c + 8]);
-            this.updateNextColumns(instance, r, emp.fullName, [ c + 10]);
-            this.updateNextColumns(instance, r, emp.isurranceCode, [ c + 11]);
-            this.updateNextColumns(instance, r, emp.typeBirthday, [ c + 12]);
-            this.updateNextColumns(instance, r, emp.birthday, [ c + 13]);
-            this.updateNextColumns(instance, r, emp.gender, [ c + 14]);
-            this.updateNextColumns(instance, r, emp.nationalityCode, [ c + 15]);
-            this.updateNextColumns(instance, r, emp.peopleCode, [ c + 16]);
-            this.updateNextColumns(instance, r, emp.registerCityCode, [ c + 18]);
-            this.updateNextColumns(instance, r, emp.registerDistrictCode, [ c + 19]);
-            this.updateNextColumns(instance, r, emp.registerWardsCode, [ c + 20]);
-            this.updateNextColumns(instance, r, '00', [23]);
-            this.updateNextColumns(instance, r, emp.identityCar, [c + 22]);
+            this.updateNextColumns(instance, r, emp.relationFamilyNo, [ c + 2]);
+            this.updateNextColumns(instance, r, emp.relationshipMobile, [ c + 3]);
+            this.updateNextColumns(instance, r, emp.relationshipDocumentType, [ c + 4]);
+            this.updateNextColumns(instance, r, emp.relationshipBookNo, [ c + 5]);
+            this.updateNextColumns(instance, r, emp.relationshipCityCode , [ c + 6]);
+            this.updateNextColumns(instance, r, emp.relationshipDistrictCode, [ c + 7]);
+            this.updateNextColumns(instance, r, emp.relationshipWardsCode, [ c + 8]);
+            this.updateNextColumns(instance, r, emp.relationAddress, [ c + 9]);
+            this.updateNextColumns(instance, r, emp.fullName, [ c + 11]);
+            this.updateNextColumns(instance, r, emp.isurranceCode, [ c + 12]);
+            this.updateNextColumns(instance, r, emp.typeBirthday, [ c + 13]);
+            this.updateNextColumns(instance, r, emp.birthday, [ c + 14]);
+            this.updateNextColumns(instance, r, emp.gender, [ c + 15]);
+            this.updateNextColumns(instance, r, emp.nationalityCode, [ c + 16]);
+            this.updateNextColumns(instance, r, emp.peopleCode, [ c + 17]);
+            this.updateNextColumns(instance, r, emp.registerCityCode, [ c + 19]);
+            this.updateNextColumns(instance, r, emp.registerDistrictCode, [ c + 20]);
+            this.updateNextColumns(instance, r, emp.registerWardsCode, [ c + 21]);
+            this.updateNextColumns(instance, r, '00', [24]);
+            this.updateNextColumns(instance, r, emp.identityCar, [c + 23]);
             this.updateSelectedValueDropDown(columns, instance, r);
         });
 
       }else {
         this.updateNextColumns(instance, r, '', [ c + 1 , c + 2, c + 3, c + 4, c + 5, c + 6, c + 7, c + 8,
-        c + 10, c + 11, c + 11,c + 12,c + 13,c + 14,c + 15,c + 16,c + 17,c + 18,c + 19,c + 20, c + 21, c + 22]);
+         c + 11, c + 11,c + 12,c + 13,c + 14,c + 15,c + 16,c + 17,c + 18,c + 19,c + 20, c + 21, c + 22, c + 23]);
 
         const value = instance.jexcel.getValueFromCoords(1, r);
         const numberColumn = this.tableHeaderColumnsFamilies.length;
@@ -665,9 +666,9 @@ handleChangeDataFamilies({ instance, cell, c, r, records, columns }) {
 
       if(isSameAddress === true)
       {
-        this.updateNextColumns(instance, r, instance.jexcel.getValueFromCoords(7, r), [ c + 1]);
-        this.updateNextColumns(instance, r, instance.jexcel.getValueFromCoords(8, r), [ c + 2]);
-        this.updateNextColumns(instance, r, instance.jexcel.getValueFromCoords(9, r), [ c + 3]);
+        this.updateNextColumns(instance, r, instance.jexcel.getValueFromCoords(8, r), [ c + 1]);
+        this.updateNextColumns(instance, r, instance.jexcel.getValueFromCoords(9, r), [ c + 2]);
+        this.updateNextColumns(instance, r, instance.jexcel.getValueFromCoords(10, r), [ c + 3]);
         this.updateSelectedValueDropDown(columns, instance, r);
 
       } else {
@@ -819,6 +820,7 @@ private setDataToFamilyEditor(records: any)
         master.isMaster = ep.isMaster;
         master.employeeName = ep.fullName;
         master.employeeId = ep.employeeId;
+        master.relationFamilyNo = ep.relationFamilyNo;
         master.relationshipMobile = ep.relationshipMobile;
         master.relationshipFullName = ep.relationshipFullName;
         master.relationshipBookNo = ep.relationshipBookNo;
@@ -826,7 +828,7 @@ private setDataToFamilyEditor(records: any)
         master.relationshipCityCode = ep.relationshipCityCode;
         master.relationshipDistrictCode = ep.relationshipDistrictCode;
         master.relationshipWardsCode = ep.relationshipWardsCode;
-        master.relationshipVillageCode = ep.relationshipVillageCode;
+        master.relationAddress = ep.relationAddress;
         master.peopleCode = ep.peopleCode,
         master.nationalityCode = ep.nationalityCode,
         master.relationshipCode = '00';
