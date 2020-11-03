@@ -183,7 +183,6 @@ export class IncreaseComponent extends GeneralBaseComponent implements OnInit, O
       });
 
     });
-
     
   }
 

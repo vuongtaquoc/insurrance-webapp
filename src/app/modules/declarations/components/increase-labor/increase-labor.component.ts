@@ -626,7 +626,6 @@ handleChangeDataFamilies({ instance, cell, c, r, records, columns }) {
       if(employeeIsMaster === true) {
         
         this.employeeService.getEmployeeById(records[r].origin.employeeId).subscribe(emp => {
-            console.log(emp, 'OOO');
             this.updateNextColumns(instance, r, emp.fullName, [ c + 1]);
             this.updateNextColumns(instance, r, emp.relationshipMobile, [ c + 2]);
             this.updateNextColumns(instance, r, emp.relationshipDocumentType, [ c + 3]);

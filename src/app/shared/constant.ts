@@ -540,7 +540,7 @@ export const DOCUMENTBYPLANCODE =
             column: [],
           },
           documentAppraisal: {
-            mesage: 'Truy tăng {0} từ {1}',
+            mesage: 'Truy giảm {0} từ {1}',
             column: ['fullName', 'fromDate'],
           },
           documentCode: 'GH1_2',
@@ -565,7 +565,7 @@ export const DOCUMENTBYPLANCODE =
             column: [],
           },
           documentAppraisal: {
-            mesage: 'Truy tăng {0} từ {1}',
+            mesage: 'Truy Giảm {0} từ {1}',
             column: ['fullName', 'fromDate'],
           },
           documentCode: 'GH2_1',
@@ -586,7 +586,7 @@ export const DOCUMENTBYPLANCODE =
             column: [],
           },
           documentAppraisal: {
-            mesage: 'Truy tăng {0} từ {1}',
+            mesage: 'Truy giảm {0} từ {1}',
             column: ['fullName', 'fromDate'],
           },
           documentCode: 'GH2_2',
