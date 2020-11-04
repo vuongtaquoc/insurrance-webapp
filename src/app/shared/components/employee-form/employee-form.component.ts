@@ -99,7 +99,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
     private villageService: VillageService,
     private categoryService: CategoryService,
     private externalService: ExternalService,
-  ) {}
+  ) { }
 
   ngOnInit() {
     const employee = this.employee;
@@ -111,7 +111,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
       gender: [employee.gender, Validators.required],
       nationalityCode: [employee.nationalityCode, Validators.required],
       peopleCode: [employee.peopleCode, Validators.required],
-      code: [employee.code, [ Validators.required, Validators.maxLength(50), Validators.pattern(REGEX.ONLY_CHARACTER_NUMBER) ]],
+      code: [employee.code, [Validators.required, Validators.maxLength(50), Validators.pattern(REGEX.ONLY_CHARACTER_NUMBER)]],
       departmentCode: employee.departmentCode,
       email: [employee.email, [Validators.pattern(REGEX.EMAIL)]],
       company: [employee.company],
@@ -123,11 +123,11 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
       recipientsWardsCode: [employee.recipientsWardsCode, Validators.required],
       recipientsAddress: [employee.recipientsAddress, Validators.required],
       isurranceCode: [employee.isurranceCode, [Validators.minLength(10), Validators.maxLength(10), Validators.pattern(REGEX.ONLY_NUMBER)]],
-      mobile: [employee.mobile, [ Validators.maxLength(15), Validators.pattern(REGEX.PHONE_NUMBER) ]],
+      mobile: [employee.mobile, [Validators.maxLength(15), Validators.pattern(REGEX.PHONE_NUMBER)]],
       identityCar: [employee.identityCar, [Validators.required, Validators.maxLength(15), validateIdentifyCard]],
       familyNo: [employee.familyNo],
-      isurranceNo: [employee.isurranceNo, [ Validators.maxLength(15), Validators.pattern(REGEX.ONLY_CHARACTER_NUMBER) ]],
-      healthNo: [employee.healthNo, [ Validators.maxLength(15), Validators.pattern(REGEX.ONLY_CHARACTER_NUMBER) ]],
+      isurranceNo: [employee.isurranceNo, [Validators.maxLength(15), Validators.pattern(REGEX.ONLY_CHARACTER_NUMBER)]],
+      healthNo: [employee.healthNo, [Validators.maxLength(15), Validators.pattern(REGEX.ONLY_CHARACTER_NUMBER)]],
       contractNo: [employee.contractNo, [Validators.required, Validators.maxLength(100)]],
       dateSign: [employee.dateSign ? employee.dateSign.split('/').join('') : '', [Validators.required, validateDateSign]],
       levelWork: [employee.levelWork, Validators.required],
@@ -139,8 +139,10 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
       positionType: [],
       positionDateFrom: [],
       positionDateTo: [],
-      dateForm:[],
-      dateTo:[],
+      dateForm: [],
+      dateTo: [],
+      hourseCode: [],
+      hourseAddress: [],
       // End add new
       salary: [employee.salary, [Validators.required, Validators.pattern(REGEX.ONLY_NUMBER)]],
       ratio: [employee.ratio, [Validators.required, Validators.pattern(REGEX.ONLY_NUMBER)]],
@@ -149,7 +151,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
       rate: [employee.rate, [Validators.required, Validators.min(0), Validators.max(100), Validators.pattern(REGEX.ONLY_NUMBER_INCLUDE_DECIMAL)]],
       cityFirstRegistCode: [employee.cityFirstRegistCode, Validators.required],
       hospitalFirstRegistCode: [employee.hospitalFirstRegistCode, Validators.required],
-      allowanceLevel: [employee.allowanceLevel,[Validators.min(0), Validators.max(99),Validators.pattern(REGEX.ONLY_NUMBER)]],
+      allowanceLevel: [employee.allowanceLevel, [Validators.min(0), Validators.max(99), Validators.pattern(REGEX.ONLY_NUMBER)]],
       allowanceSeniority: [employee.allowanceSeniority, [Validators.min(0), Validators.max(100), Validators.pattern(REGEX.ONLY_NUMBER_INCLUDE_DECIMAL)]],
       allowanceSeniorityJob: [employee.allowanceSeniorityJob, [Validators.min(0), Validators.max(100), Validators.pattern(REGEX.ONLY_NUMBER_INCLUDE_DECIMAL)]],
       allowanceSalary: [employee.allowanceSalary, [Validators.pattern(REGEX.ONLY_NUMBER)]],
@@ -162,13 +164,13 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
       status: [employee.status],
       orders: [employee.orders, [Validators.pattern(REGEX.ONLY_NUMBER)]],
       relationshipFullName: [employee.relationshipFullName, Validators.required],
-      relationshipDocumentType:[employee.relationshipDocumentType],
+      relationshipDocumentType: [employee.relationshipDocumentType],
       relationshipBookNo: [employee.relationshipBookNo, [Validators.maxLength(50), Validators.pattern(REGEX.ONLY_CHARACTER_NUMBER)]],
       relationshipCityCode: [employee.relationshipCityCode, Validators.required],
       relationshipDistrictCode: [employee.relationshipDistrictCode, Validators.required],
       relationshipWardsCode: [employee.relationshipWardsCode, Validators.required],
       relationshipVillageCode: [employee.relationshipVillageCode],
-      relationshipMobile: [employee.relationshipMobile, [ Validators.maxLength(15), Validators.pattern(REGEX.PHONE_NUMBER) ]],
+      relationshipMobile: [employee.relationshipMobile, [Validators.maxLength(15), Validators.pattern(REGEX.PHONE_NUMBER)]],
       isMaster: [employee.isMaster],
       isDuplicateAddress: [false],
       birthTypeOnlyYearMonth: [employee.typeBirthday === '1'],
@@ -191,10 +193,10 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
       this.wardService.getWards(employee.registerDistrictCode),
       this.districtService.getDistrict(employee.recipientsCityCode),
       this.wardService.getWards(employee.recipientsDistrictCode),
-      this.hospitalService.searchHospital(employee.cityFirstRegistCode,''),
+      this.hospitalService.searchHospital(employee.cityFirstRegistCode, ''),
       this.districtService.getDistrict(employee.relationshipCityCode),
       this.wardService.getWards(employee.relationshipDistrictCode),
-      this.villageService.getVillage(employee.relationshipWardsCode)      
+      this.villageService.getVillage(employee.relationshipWardsCode)
     ];
 
     // if (employee.registerCityCode) jobs.push(this.districtService.getDistrict(employee.registerCityCode));
@@ -206,9 +208,9 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
     // if (employee.relationshipDistrictCode) jobs.push(this.wardService.getWards(employee.relationshipDistrictCode));
     // if (employee.relationshipWardsCode) jobs.push(this.villageService.getVillage(employee.relationshipWardsCode));
 
-    forkJoin(jobs).subscribe(([ cities, nationalities, peoples, salaryAreas, paymentStatus,
-       paymentMethods, relationships, banks, departments,relationshipDocumentTypies, typeBirthdays,
-       registerDistricts, registerWards, recipientsDistricts, recipientsWards, hospitals, relationshipDistricts, relationshipWards, relationshipVillages ]) => {
+    forkJoin(jobs).subscribe(([cities, nationalities, peoples, salaryAreas, paymentStatus,
+      paymentMethods, relationships, banks, departments, relationshipDocumentTypies, typeBirthdays,
+      registerDistricts, registerWards, recipientsDistricts, recipientsWards, hospitals, relationshipDistricts, relationshipWards, relationshipVillages]) => {
 
       this.nationalities = nationalities;
       this.peoples = peoples;
@@ -247,11 +249,11 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
   }
 
   formatFamilies(families) {
-    if(!families) {
+    if (!families) {
       families = this.createObjectsBlank([], this.tableHeaderColumnsFamilies, 15);
     }
 
-    let familiescopy = [ ...families ];
+    let familiescopy = [...families];
     familiescopy = this.createObjectsBlank(familiescopy, this.tableHeaderColumnsFamilies, 15);
     // fomat dữ liệu cho jexcel;
     familiescopy.forEach(p => {
@@ -273,9 +275,9 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
       for (let i = 1; i <= length; i++) {
         const item = {};
         tableHeaderColumns.map(column => {
-          if(length === numberItem && column.key === 'relationshipCode' && i === 1) {
-            item[column.key] =  '00';
-          }else {
+          if (length === numberItem && column.key === 'relationshipCode' && i === 1) {
+            item[column.key] = '00';
+          } else {
             item[column.key] = column.defaultValue ? column.defaultValue : null;
           }
         });
@@ -287,11 +289,11 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
   }
 
   formatEvolutionIsurrances(evolutionIsurrances) {
-    if(!evolutionIsurrances) {
+    if (!evolutionIsurrances) {
       evolutionIsurrances = this.createObjectsBlank([], this.tableHeaderColumnsProcess, 15);
     }
 
-    let evolutionIsurrancesCopy = [ ...evolutionIsurrances ];
+    let evolutionIsurrancesCopy = [...evolutionIsurrances];
     //Tạo dữ liệu trống
     evolutionIsurrancesCopy = this.createObjectsBlank(evolutionIsurrancesCopy, this.tableHeaderColumnsProcess, 15);
     evolutionIsurrancesCopy.forEach(p => {
@@ -313,7 +315,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
     }
 
     if (this.employeeForm.invalid) {
-       this.modalService.error({
+      this.modalService.error({
         nzTitle: 'Lỗi dữ liệu',
         nzContent: 'Vui lòng kiểm tra trường dữ liệu được cảnh báo lỗi hoặc yêu cầu nhập'
       });
@@ -341,26 +343,26 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
       ...this.employeeForm.value,
       birthday: getBirthDay(this.employeeForm.value.birthday, this.birthTypeOnlyYear, this.birthTypeOnlyYearMonth).format,
       dateSign: this.dateSign,
-      nationalityName: this.getNameOfDropdown(this.nationalities , this.employeeForm.value.nationalityCode),
-      hospitalFirstRegistName: this.getNameOfDropdown(this.hospitals , this.employeeForm.value.hospitalFirstRegistCode),
+      nationalityName: this.getNameOfDropdown(this.nationalities, this.employeeForm.value.nationalityCode),
+      hospitalFirstRegistName: this.getNameOfDropdown(this.hospitals, this.employeeForm.value.hospitalFirstRegistCode),
       families: this.families.reduce(
         (combine, current) => {
           if (current.fullName) {
             current.gender = current.gender ? 1 : 0;
-            return [ ...combine, current ];
+            return [...combine, current];
           }
 
-          return [ ...combine ];
+          return [...combine];
         },
         []
       ),
       evolutionIsurrances: this.evolutionIsurrances.reduce(
         (combine, current) => {
           if (current.fromDate) {
-            return [ ...combine, current ];
+            return [...combine, current];
           }
 
-          return [ ...combine ];
+          return [...combine];
         },
         []
       )
@@ -412,7 +414,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
     this.modal.destroy();
   }
 
-  handleChangeFamilyTable({ instance, cell, c, r, records, columns  }) {
+  handleChangeFamilyTable({ instance, cell, c, r, records, columns }) {
     if (c !== null && c !== undefined) {
       this.updateSelectedValueDropDown(columns, instance, r);
     }
@@ -425,7 +427,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
       });
       //update data object source
       columns.map((column, index) => {
-          family[column.key] = record[index];
+        family[column.key] = record[index];
       });
 
     });
@@ -438,7 +440,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
         instance.jexcel.updateDropdownValue(colIndex, r);
       }
     });
-}
+  }
 
   handleSpaceFullName(event) {
     const fullNames = this.employeeForm.value.fullName.split(' ').map(fullName => {
@@ -479,7 +481,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
   }
 
   handleDeleteFamilyData({ rowNumber, numOfRows }) {
-    const families = [ ...this.families ];
+    const families = [...this.families];
 
     families.splice(rowNumber, numOfRows);
 
@@ -488,7 +490,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
     this.families = families;
   }
 
-  handleChangeProcessTable({ instance, cell, c, r, records, columns  }) {
+  handleChangeProcessTable({ instance, cell, c, r, records, columns }) {
     //update evolutionIsurrances
     this.evolutionIsurrances.forEach((evolutionIsurrance: any, index) => {
       const record = records[index];
@@ -505,7 +507,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
   }
 
   handleDeleteProcessData({ rowNumber, numOfRows }) {
-    const evolutionIsurrances = [ ...this.evolutionIsurrances ];
+    const evolutionIsurrances = [...this.evolutionIsurrances];
 
     evolutionIsurrances.splice(rowNumber, numOfRows);
 
@@ -525,12 +527,12 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
   }
 
   changeRegisterCity(value) {
-    if(!value) {
+    if (!value) {
       return;
     }
     this.districtService.getDistrict(value).subscribe(data => this.registerDistricts = data);
 
-    if(this.isDuplicateAddress) {
+    if (this.isDuplicateAddress) {
       this.employeeForm.patchValue({
         recipientsCityCode: value
       });
@@ -539,11 +541,11 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
   }
 
   changeRegisterDistrict(value) {
-    if(!value) {
+    if (!value) {
       return;
     }
     this.wardService.getWards(value).subscribe(data => this.registerWards = data);
-    if(this.isDuplicateAddress) {
+    if (this.isDuplicateAddress) {
       this.employeeForm.patchValue({
         recipientsDistrictCode: value
       });
@@ -552,7 +554,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
 
   changeRegisterWardsCode(value) {
 
-    if(this.isDuplicateAddress) {
+    if (this.isDuplicateAddress) {
       this.employeeForm.patchValue({
         recipientsWardsCode: value
       });
@@ -561,13 +563,13 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
   }
 
   isSameAddress(value) {
-    if(!value) {
+    if (!value) {
       this.employeeForm.patchValue({
         recipientsCityCode: null,
         recipientsDistrictCode: null,
         recipientsWardsCode: null
       });
-    }else {
+    } else {
       this.employeeForm.patchValue({
         recipientsCityCode: this.registerCityCode,
         recipientsDistrictCode: this.registerDistrictCode,
@@ -589,14 +591,14 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
       recipientsWardsCode: null
     });
 
-    if(!value) {
+    if (!value) {
       return;
     }
     this.wardService.getWards(value).subscribe(data => this.recipientsWards = data);
   }
 
   changeRelationshipCities(value) {
-    if(!value) {
+    if (!value) {
       return '';
     }
     this.districtService.getDistrict(value).subscribe(data => this.relationshipDistricts = data);
@@ -604,7 +606,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
   }
 
   changeRelationshipDistrict(value) {
-    if(!value) {
+    if (!value) {
       return '';
     }
     this.wardService.getWards(value).subscribe(data => this.relationshipWards = data);
@@ -612,7 +614,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
   }
 
   changeRelationshipWards(value) {
-    if(!value) {
+    if (!value) {
       return '';
     }
     this.villageService.getVillage(value).subscribe(data => this.relationshipVillages = data);
@@ -624,14 +626,13 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
   }
 
   bindingDataToGirdFamilies(columnName) {
-    if(!this.isMaster) {
+    if (!this.isMaster) {
       return '';
     }
 
     const familiescopy = [... this.families];
     let master = familiescopy.find(f => f.relationshipCode === '00');
-    if (!master)
-    {
+    if (!master) {
       const index = familiescopy.findIndex(f => f.relationshipCode === '00');
       const indexOf = index > -1 ? index : 0;
       master = familiescopy[indexOf];
@@ -649,19 +650,19 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
     master.identityCar = this.identityCar;
     master.peopleCode = this.peopleCode;
     master.nationalityCode = this.nationalityCode,
-    master.data = this.tableHeaderColumnsFamilies.map(column => {
+      master.data = this.tableHeaderColumnsFamilies.map(column => {
         if (!column.key || !master[column.key]) return '';
         return master[column.key];
-    });
+      });
     this.families = familiescopy;
 
-  //  const index = familiescopy.findIndex(f => f.relationshipCode === '00');
-  //  this.familySubject.next({
-  //     type:"familyMaster",
-  //     data: master,
-  //     columName: columnName,
-  //     index: index,
-  //   });
+    //  const index = familiescopy.findIndex(f => f.relationshipCode === '00');
+    //  this.familySubject.next({
+    //     type:"familyMaster",
+    //     data: master,
+    //     columName: columnName,
+    //     index: index,
+    //   });
 
   }
 
@@ -674,7 +675,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
       nzWrapClassName: 'add-hospital-modal',
       nzTitle: 'Thông tin đơn vị KCB',
       nzContent: EmployeeHospitalRegisterFormComponent,
-	  nzComponentParams: {
+      nzComponentParams: {
         data
       }
     });
@@ -692,7 +693,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
   }
 
   changeMaster(value) {
-    if(value) {
+    if (value) {
       this.employeeForm.patchValue({
         relationshipFullName: this.fullName,
         relationshipCityCode: this.registerCityCode,
@@ -721,10 +722,10 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
         }
 
         if (column.type === 'numberic') {
-          return { ...combine, [ column.key ]: array[current].toString().split(' ').join('') };
+          return { ...combine, [column.key]: array[current].toString().split(' ').join('') };
         }
 
-        return { ...combine, [ column.key ]: column.key === 'gender' ? +array[current] : array[current] };
+        return { ...combine, [column.key]: column.key === 'gender' ? +array[current] : array[current] };
       },
       {}
     );
@@ -777,7 +778,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
       return '1';
     } else if (this.birthTypeOnlyYear) {
       return '2';
-    }else {
+    } else {
       return '0';
     }
   }
@@ -902,14 +903,14 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
     this.isSpinning = true;
     this.employeeService.download(this.employee.id).then(response => {
       const mimeType = this.getMimeType('.docx');
-      download(`TK1-TS-${ this.employee.fullName }`, response, mimeType);
+      download(`TK1-TS-${this.employee.fullName}`, response, mimeType);
       this.isSpinning = false;
     });
   }
 
   getMimeType(subfixFile: string) {
     const mimeType = _.find(MIME_TYPE, {
-        key: subfixFile,
+      key: subfixFile,
     });
     if (mimeType) {
       return mimeType.value;
@@ -925,11 +926,11 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
 
     this.getHospital(value);
   }
-  
+
   getHospital(cityCode) {
-    this.hospitalService.searchHospital(cityCode,'').subscribe(data => {
+    this.hospitalService.searchHospital(cityCode, '').subscribe(data => {
       this.hospitals = data;
     });
   }
-  
+
 }
