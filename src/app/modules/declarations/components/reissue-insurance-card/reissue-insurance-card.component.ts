@@ -28,7 +28,8 @@ import {
   CategoryService,
   RelationshipService,
   VillageService,
-  FileUploadEmitter
+  FileUploadEmitter,
+  ExternalService
 } from '@app/core/services';
 import { DATE_FORMAT, DECLARATIONS, DOCUMENTBYPLANCODE } from '@app/shared/constant';
 import { eventEmitter } from '@app/shared/utils/event-emitter';
@@ -87,6 +88,7 @@ export class ReissueInsuranceCardComponent implements OnInit, OnDestroy {
   tableSubmitErrorCount = 0;
   status = 0;
   dataIsValid = true;
+  isCheckIsuranceCode: boolean = false;
   constructor(
     private formBuilder: FormBuilder,
     private cityService: CityService,
@@ -106,7 +108,8 @@ export class ReissueInsuranceCardComponent implements OnInit, OnDestroy {
     private modalService: NzModalService,
     private relationshipService: RelationshipService,
     private villageService: VillageService,
-    private fileUploadEmitter: FileUploadEmitter
+    private fileUploadEmitter: FileUploadEmitter,
+    private externalService: ExternalService,
   ) {
     this.getRecipientsDistrictsByCityCode = this.getRecipientsDistrictsByCityCode.bind(this);
     this.getRecipientsWardsByDistrictCode = this.getRecipientsWardsByDistrictCode.bind(this);
@@ -588,6 +591,7 @@ export class ReissueInsuranceCardComponent implements OnInit, OnDestroy {
   handleChangeTable({ instance, cell, c, r, records }) {
     eventEmitter.emit('unsaved-changed');
     if (c !== null && c !== undefined) {
+      this.this.isCheckIsuranceCode = false;
       c = Number(c);
       const column = this.tableHeaderColumns[c];
 
@@ -720,32 +724,62 @@ export class ReissueInsuranceCardComponent implements OnInit, OnDestroy {
 
   checkInsurranceCode() {
     const declarations = [...this.declarations];
-    const INSURRANCE_CODE_INDEX = 2;
-    const INSURRANCE_STATUS_INDEX = 3;
+    const INSURRANCE_FULLNAME_INDEX = 1;
+    const INSURRANCE_CODE_INDEX = 3;
+    const INSURRANCE_STATUS_INDEX = 4;
     const errors = {};
+    this.isCheckIsuranceCode = true;
+    const leafs = declarations.filter(d => d.isLeaf && d.data[INSURRANCE_CODE_INDEX]);
+    if(leafs.length > 0) {
+      this.isSpinning = true;
+    }
+   
+    forkJoin(
+      leafs.map(item => {        
+        const code = item.data[INSURRANCE_CODE_INDEX];
+        return this.externalService.getEmployeeByIsurranceCode(code);
+      })
+    ).subscribe(results => {
+      
+      declarations.forEach((declaration, rowIndex) => {
+        const code = declaration.data[INSURRANCE_CODE_INDEX];
+        const fullName = declaration.data[INSURRANCE_FULLNAME_INDEX];
+        if (code && declaration.isLeaf) {
 
-    declarations.forEach((declaration, rowIndex) => {
-      const code = declaration.data[INSURRANCE_CODE_INDEX];
+            const item = results.find(r => r.isurranceCodeCheck === code);
+            if (item.fullName === "" || item.fullName === undefined){
+                declaration.data[INSURRANCE_STATUS_INDEX] = `Không tìm thấy Mã số ${ declaration.data[INSURRANCE_CODE_INDEX] }`;
+                errors[rowIndex] = {
+                  col: INSURRANCE_CODE_INDEX,
+                  value: code,
+                  valid: false
+                };
+            } else if (item.fullName !==  fullName)
+            {
+              declaration.data[INSURRANCE_STATUS_INDEX] = `Sai họ tên. Mã số ${ declaration.data[INSURRANCE_CODE_INDEX] } của ${ item.fullName }`;
+              errors[rowIndex] = {
+                col: INSURRANCE_CODE_INDEX,
+                value: code,
+                valid: false
+              };
 
-      if (code && declaration.isLeaf) {
-        declaration.data[INSURRANCE_STATUS_INDEX] = `Không tìm thấy Mã số ${ declaration.data[INSURRANCE_CODE_INDEX] }`;
-
-        errors[rowIndex] = {
-          col: INSURRANCE_CODE_INDEX,
-          value: code,
-          valid: false
-        };
-      }
-    });
-
-    this.declarations = declarations;
-
-    setTimeout(() => {
-      this.validateSubject.next({
-        field: 'isurranceCode',
-        errors
+            } else 
+            {
+              declaration.data[INSURRANCE_STATUS_INDEX] = '';
+            }
+        }
+        
       });
-    }, 20);
+
+      this.declarations = declarations;
+      this.isSpinning = false;
+      setTimeout(() => {
+        this.validateSubject.next({
+          field: 'isurranceCode',
+          errors
+        });
+      }, 20);       
+    });
   }
 
   private updateOrders(declarations) {
