@@ -86,61 +86,61 @@ export class GeneralBaseComponent {
   }
 
 
-handleUserDeleted(user, tableName) {
-  this.tableSubject.next({
-    type: 'deleteUser',
-    user,
-    tableName,
-    deletedIndexes: []
-  });
-}
-
-handleUserUpdateTables(user, tableName) {
-  this.handleUserUpdated(user, tableName);
-}
-
-handleUserUpdated(user, tableName) {
-  const declarations = [ ...this.declarations[tableName].table ];
-  const declarationUsers = declarations.filter(d => {
-    return d.isLeaf && d.origin && (d.origin.employeeId || d.origin.id) === user.id;
-  });
-
-  declarationUsers.forEach(declaration => {
-    declaration.origin = {
-      ...declaration.origin,
-      ...user
-    };
-
-    this.headers[tableName].columns.forEach((column, index) => {
-      if (user[column.key] !== null && typeof user[column.key] !== 'undefined') {
-        declaration.data[index] = user[column.key];
-      }
+  handleUserDeleted(user, tableName) {
+    this.tableSubject.next({
+      type: 'deleteUser',
+      user,
+      tableName,
+      deletedIndexes: []
     });
-  });
+  }
+
+  handleUserUpdateTables(user, tableName) {
+    this.handleUserUpdated(user, tableName);
+  }
+
+  handleUserUpdated(user, tableName) {
+    const declarations = [ ...this.declarations[tableName].table ];
+    const declarationUsers = declarations.filter(d => {
+      return d.isLeaf && d.origin && (d.origin.employeeId || d.origin.id) === user.id;
+    });
+
+    declarationUsers.forEach(declaration => {
+      declaration.origin = {
+        ...declaration.origin,
+        ...user
+      };
+
+      this.headers[tableName].columns.forEach((column, index) => {
+        if (user[column.key] !== null && typeof user[column.key] !== 'undefined') {
+          declaration.data[index] = user[column.key];
+        }
+      });
+    });
 
   // update orders
-  this.updateOrders(declarations);
+    this.updateOrders(declarations);
 
-  this.declarations[tableName].table = this.declarationService.updateFormula(declarations, this.headers[tableName].columns);
+    this.declarations[tableName].table = this.declarationService.updateFormula(declarations, this.headers[tableName].columns);
 
- // clean employee
-  this.employeeSubject.next({
-    tableName,
-    type: 'clean'
-  });
+  // clean employee
+    this.employeeSubject.next({
+      tableName,
+      type: 'clean'
+    });
 
-  this.employeeSelected.length = 0;
-  this.tableSubject.next({
-    tableName,
-    type: 'validate'
-  });
+    this.employeeSelected.length = 0;
+    this.tableSubject.next({
+      tableName,
+      type: 'validate'
+    });
 
-  this.tableSubject.next({
-    tableName,
-    type: 'readonly',
-    data: this.declarations.table
-  });
-}
+    this.tableSubject.next({
+      tableName,
+      type: 'readonly',
+      data: this.declarations.table
+    });
+  }
 
   cloneEmployeeByPlanCode(groupInfo, tableName, employee, fromDate) {
     const declarations = [ ...this.declarations[tableName].table];
@@ -404,7 +404,10 @@ handleUserUpdated(user, tableName) {
       c = Number(c);
       const column = this.headers[tableName].columns[c];
       if (column.key === 'fullName') {
-        this.updateNextColumns(instance, r, '', [c + 4]);
+        clearTimeout(this.timer);
+        this.timer = setTimeout(() => {
+          this.updateNextColumns(instance, r, '', [c + 4]);
+        }, 10);
       }
       if (column.key === 'registerCityCode') {
         this.updateNextColumns(instance, r, '', [ c + 1, c + 2 ]);
@@ -452,7 +455,7 @@ handleUserUpdated(user, tableName) {
         declaration.data[index] = record[index];
       });
     });
-
+     
     const rowChange: any = this.declarations[tableName].table[r];
     rowChange.data.options.isInitialize = false;
     rowChange.isInitialize = false;
@@ -878,6 +881,5 @@ handleUserUpdated(user, tableName) {
   handleFileSelected(files) {
     this.onChangedFile.emit(files);
   }
-
    
 }

@@ -3,11 +3,12 @@ export const TABLE_FAMILIES_NESTED_HEADERS = [
     { title: 'STT', rowspan: '3' },
     { title: 'Người tham gia', subtitle: 'Nhập chữ thường', rowspan: '3' },
     { title: 'Người tham gia là chủ hộ', rowspan: '3' },
-    { title: 'THÔNG TIN HỘ GIA ĐÌNH CỦA NGƯỜI THAM GIA', colspan: '8' },
+    { title: 'THÔNG TIN HỘ GIA ĐÌNH CỦA NGƯỜI THAM GIA', colspan: '9' },
     { title: 'THÔNG TIN THÀNH VIÊN HỘ GIA ĐÌNH', colspan: '15' },
   ],
   [
     { title: 'Chủ hộ', rowspan: '2' },
+    { title: 'Mã số hộ gia đình', rowspan: '2' },
     { title: 'Số điện thoại (nếu có)', rowspan: '2' },
     { title: 'Loại giấy tờ', rowspan: '2' },
     { title: 'Số sổ hộ khẩu (hoặc số tạm trú)', rowspan: '2' },
@@ -29,7 +30,7 @@ export const TABLE_FAMILIES_NESTED_HEADERS = [
     { title: 'Tỉnh/TP' },
     { title: 'Quận/huyện' },
     { title: 'Xã/phường' },
-    { title: 'Thôn/bản/ tổ dân phố' },
+    { title: 'Địa chỉ hộ khẩu' },
     { title: 'Trùng địa chỉ Hộ khẩu' },
     { title: 'Tỉnh/TP' },
     { title: 'Quận/huyện' },
@@ -69,26 +70,31 @@ export const TABLE_FAMILIES_HEADER_COLUMNS = [{
   validations: {
     required: true
   }
-}, {
+},{
   type: 'text',
   width: 80,
   title: '(5)',
+  key: 'relationFamilyNo'
+}, {
+  type: 'text',
+  width: 80,
+  title: '(6)',
   key: 'relationshipMobile'
 }, {
   type: 'dropdown',
   width: 80,
-  title: '(6)',
+  title: '(7)',
   key: 'relationshipDocumentType',
   source: []
 }, {
   type: 'text',
   width: 80,
-  title: '(7)',
+  title: '(8)',
   key: 'relationshipBookNo'
 }, {
   type: 'dropdown',
   width: 100,
-  title: '(8.1)',
+  title: '(9.1)',
   key: 'relationshipCityCode',
   source: [],
   fieldName: 'Tỉnh thành phố',
@@ -98,7 +104,7 @@ export const TABLE_FAMILIES_HEADER_COLUMNS = [{
 }, {
   type: 'dropdown',
   width: 100,
-  title: '(8.2)',
+  title: '(9.2)',
   defaultLoad: true,
   key: 'relationshipDistrictCode',
   source: [],
@@ -110,7 +116,7 @@ export const TABLE_FAMILIES_HEADER_COLUMNS = [{
   type: 'dropdown',
   autocomplete: true,
   width: 100,
-  title: '(8.3)',
+  title: '(9.3)',
   defaultLoad: true,
   source: [],
   key: 'relationshipWardsCode',
@@ -119,27 +125,21 @@ export const TABLE_FAMILIES_HEADER_COLUMNS = [{
     required: true
   }
 }, {
-  type: 'dropdown',
-  autocomplete: true,  
+  type: 'text',
   width: 100,
-  title: '(8.4)',
+  title: '(9.4)',
   defaultLoad: true,
-  source: [],
-  key: 'relationshipVillageCode',
-  fieldName: 'Tỉnh thành phố',
-  validations: {
-    required: true
-  }
+  key: 'relationAddress'  
 }, {
   type: 'text',
   width: 35,
-  title: '(9)',
+  title: '(10)',
   key: 'orderEmpl',
   align: 'left'
 }, {
   type: 'text',
   width: 135,
-  title: '(10)',
+  title: '(11)',
   willBeValid: true,
   align: 'left',
   key: 'fullName',
@@ -150,7 +150,7 @@ export const TABLE_FAMILIES_HEADER_COLUMNS = [{
 }, {
   type: 'text',
   width: 100,
-  title: '(11)',
+  title: '(12)',
   key: 'isurranceCode',
   fieldName: 'Mã số BHXH',
   validations: {
@@ -161,7 +161,7 @@ export const TABLE_FAMILIES_HEADER_COLUMNS = [{
   type: 'dropdown',
   autocomplete: true,
   width: 75,
-  title: '(12)',
+  title: '(13)',
   source: [{ id: '0', name: 'Ngày tháng năm' },{ id: '1', name: 'tháng/năm' }, { id: '2', name: 'năm' } ],
   key: 'typeBirthday',
   fieldName: 'Loại ngày tháng năm sinh',
@@ -172,7 +172,7 @@ export const TABLE_FAMILIES_HEADER_COLUMNS = [{
 },  {
   type: 'text',
   width: 80,
-  title: '(13)',
+  title: '(14)',
   key: 'birthday',
   fieldName: 'Năm sinh',
   validations: {
@@ -182,7 +182,7 @@ export const TABLE_FAMILIES_HEADER_COLUMNS = [{
 }, {
   type: 'checkbox',
   width: 30,
-  title: '(14)',
+  title: '(15)',
   key: 'gender',
   align: 'center',
 },
@@ -190,7 +190,7 @@ export const TABLE_FAMILIES_HEADER_COLUMNS = [{
   type: 'dropdown',
   autocomplete: true,
   width: 100,
-  title: '(15)',
+  title: '(16)',
   fieldName: 'Quốc tịch',
   key: 'nationalityCode',
   source: [],
@@ -201,7 +201,7 @@ export const TABLE_FAMILIES_HEADER_COLUMNS = [{
   type: 'dropdown',
   autocomplete: true,
   width: 100,
-  title: '(16)',
+  title: '(17)',
   fieldName: 'Dân tộc',
   key: 'peopleCode',
   source: [],
@@ -211,14 +211,14 @@ export const TABLE_FAMILIES_HEADER_COLUMNS = [{
 },{
   type: 'checkbox',
   width: 100,
-  title: '(17)',
+  title: '(18)',
   key: 'sameAddress',
   align: 'center',
 }, {
   type: 'dropdown',
   autocomplete: true,
   width: 100,
-  title: '(18)',
+  title: '(19)',
   key: 'cityCode',
   source: [],
   fieldName: 'Tình thành phố',
@@ -230,7 +230,7 @@ export const TABLE_FAMILIES_HEADER_COLUMNS = [{
   type: 'dropdown',
   autocomplete: true,
   width: 100,
-  title: '(19)',
+  title: '(20)',
   key: 'districtCode',
   defaultLoad: true,
   source: [ ],
@@ -242,7 +242,7 @@ export const TABLE_FAMILIES_HEADER_COLUMNS = [{
   type: 'dropdown',
   autocomplete: true,
   width: 100,
-  title: '(20)',
+  title: '(21)',
   defaultLoad: true,
   source: [],
   key: 'wardsCode',
@@ -256,18 +256,18 @@ export const TABLE_FAMILIES_HEADER_COLUMNS = [{
   autocomplete: true,
   defaultLoad: true,
   width: 100,
-  title: '(21)',
+  title: '(22)',
   key: 'relationshipCode',
   source: []
 },{
   type: 'text',
   width: 120,
-  title: '(22)',
+  title: '(23)',
   key: 'identityCar'
 },  {
   type: 'text',
   width: 150,
-  title: '(23)',
+  title: '(24)',
   key: 'note'
 },{
   type: 'hidden',

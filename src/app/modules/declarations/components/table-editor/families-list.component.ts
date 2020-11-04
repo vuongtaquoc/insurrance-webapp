@@ -166,10 +166,10 @@ export class FamiliesListTableComponent implements OnInit, OnDestroy, OnChanges,
         d[0] = i;
         i++;
         numberOfMember = 1;
-        d[11] = numberOfMember;
+        d[12] = numberOfMember;
         numberOfMember++;
       }else {
-        d[11] = numberOfMember;
+        d[12] = numberOfMember;
         numberOfMember++;
       }
     });
@@ -181,14 +181,14 @@ export class FamiliesListTableComponent implements OnInit, OnDestroy, OnChanges,
     this.data.forEach((d, index) => {
 
       this.columns.forEach((column, colIndex) => {
-        if (!(d.origin && d.origin.isMaster) && colIndex < 11) {
+        if (!(d.origin && d.origin.isMaster) && colIndex < 12) {
           this.spreadsheet.setReadonlyCellAndClear(index, colIndex);
         }
 
-        if(d[23] === '00') {
-          this.spreadsheet.setReadonly(index, 23);
+        if(d[24] === '00') {
+          this.spreadsheet.setReadonly(index, 24);
         }else {
-          this.spreadsheet.setReadonlyCellAndClear(index, 19);
+          this.spreadsheet.setReadonlyCellAndClear(index, 20);
         }
 
         if (d.origin && d.origin.isMaster) {

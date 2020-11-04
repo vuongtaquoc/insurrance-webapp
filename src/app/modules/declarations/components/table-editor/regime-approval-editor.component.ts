@@ -479,6 +479,7 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
 
   private updateCellReadonly() {
     const readonlyColumnIndex = this.columns.findIndex(c => !!c.checkReadonly);
+	  console.log(readonlyColumnIndex,'xxx');
 
     this.data.forEach((d, rowIndex) => {
       if (this.tableName === 'maternityPart1' && readonlyColumnIndex > -1) {

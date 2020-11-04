@@ -92,7 +92,7 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
   tableSubject: Subject<any> = new Subject<any>();
   tabSubject: Subject<any> = new Subject<any>();
   handlers: any = [];
-
+  isCheckIsuranceCode: boolean = true;
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
@@ -214,7 +214,6 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
         this.allInitialize[name] = leaf.length === initialize.length;
         this.isTableValid = Object.values(this.allInitialize).indexOf(false) === -1 ? false : true;
         this.tableErrors[name + this.declarationCode] = errors;
-        // console.log(name + this.declarationCode, errors)
       });
 
       this.tabSubject.next({
@@ -289,6 +288,7 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
     this.declarations.tables[data.tableName]= data.data;
 
     if(tableName === 'increaselabor') {
+      this.isCheckIsuranceCode = false;
       this.sumCreateBHXH(data.data);
     }
 
@@ -394,7 +394,15 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
         },
       });
     }
-
+    //Kiêm tra nếu tồn tại nhân viên bên tab báo tăng thì yêu cầu kiêm tra mã số BHXH
+    const hastEmployeeInTabIncreaselabor = this.isHasLeaf('increaselabor');
+    if (!this.isCheckIsuranceCode && hastEmployeeInTabIncreaselabor) {
+      this.modalService.warning({
+        nzTitle: 'Đơn vị chưa kiểm tra Mã số BHXH và trạng thái của người tham gia'
+      });
+      return;
+    }
+    
     if (this.declarationId) {
       this.update('saveAndView');
     } else {
@@ -1294,6 +1302,26 @@ private setDateToInformationList(records: any)
 
   private getFileByDeclarationCode(code) {
      console.log(this.files);
+  }
+
+  handleCheckIsuranceNo(event) {
+    this.isCheckIsuranceCode = true;
+  }
+
+  protected isHasLeaf(tableName) {    
+    const declarations = [ ...this.declarations.tables[tableName] ];
+    const declarationHasUser = [];
+    declarations.forEach(d => {
+        d.declarations.forEach(i => {
+          declarationHasUser.push(i);
+        });
+    });
+
+    const declarationUsers = declarationHasUser.filter(d => {
+      return d.origin && (d.origin.employeeId || d.employeeId) > 0;
+    });
+
+    return declarationUsers.length > 0;
   }
 
 }

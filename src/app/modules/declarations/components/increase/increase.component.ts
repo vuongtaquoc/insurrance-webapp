@@ -70,7 +70,9 @@ export class IncreaseComponent extends GeneralBaseComponent implements OnInit, O
       this.departmentService.getDepartments(),
       this.planService.getPlanShowCode('600'),
       this.categoryService.getCategories('livesAreaCode'),
-    ]).subscribe(([ peoples,nationalities, cities, salaryAreas,departments, plans,livesAreas ]) => {
+      this.categoryService.getCategories('WorkType'),
+      this.categoryService.getCategories('ContractType'),
+    ]).subscribe(([ peoples,nationalities, cities, salaryAreas,departments, plans,livesAreas, workTypes, contractType  ]) => {
       this.updateSourceToColumn(TABLE_HEADER_COLUMNS, 'peopleCode', peoples);
       this.updateSourceToColumn(TABLE_HEADER_COLUMNS, 'nationalityCode', nationalities);
       this.updateSourceToColumn(TABLE_HEADER_COLUMNS, 'registerCityCode', cities);
@@ -79,6 +81,9 @@ export class IncreaseComponent extends GeneralBaseComponent implements OnInit, O
       this.updateSourceToColumn(TABLE_HEADER_COLUMNS, 'planCode', plans);
       this.updateSourceToColumn(TABLE_HEADER_COLUMNS, 'departmentCode', departments);
       this.updateSourceToColumn(TABLE_HEADER_COLUMNS, 'livesAreaCode', livesAreas);
+
+      this.updateSourceToColumn(TABLE_HEADER_COLUMNS, 'workTypeCode', workTypes);
+      this.updateSourceToColumn(TABLE_HEADER_COLUMNS, 'contractTypeCode', contractType);
 
       // // get filter columns
       this.updateFilterToColumn(TABLE_HEADER_COLUMNS, 'registerDistrictCode', this.getRegisterDistrictsByCityCode);
@@ -183,7 +188,6 @@ export class IncreaseComponent extends GeneralBaseComponent implements OnInit, O
       });
 
     });
-
     
   }
 

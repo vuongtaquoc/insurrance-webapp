@@ -216,6 +216,12 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
     this.updateEditorToColumn('motherDayDead',true, 'date');
     this.updateAutoCompleteToColumn('hospitalFirstRegistCode');
     this.updateEditorToColumn('dateCancelSign');
+    this.updateEditorToColumn('careTypeToDate',false);
+    this.updateEditorToColumn('careFromDate',false);
+    this.updateEditorToColumn('workTypeToDate',false);
+    this.updateEditorToColumn('workTypeFromDate',false);
+    this.updateEditorToColumn('contractTypeFromDate',false);
+    this.updateEditorToColumn('contractTypeToDate',false);
 
     this.spreadsheet.hideIndex();
 
@@ -274,7 +280,7 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
     this.spreadsheet.setReadonlyRowsTitle(readonlyIndexes, [0, 1]);
     this.spreadsheet.setReadonlyRowsFormula(formulaIndexes, formulaIgnoreIndexes);
     this.spreadsheet.setReadonlyBlankRows(readonlyBlankRows);
-    this.updateCellReadonly();
+    // this.updateCellReadonly();
     // update dropdown data
     data.forEach((row, rowIndex) => {
       this.columns.forEach((column, colIndex) => {
@@ -390,9 +396,12 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
     }
   }
 
-  private updateCellReadonly() {
-    const readonlyColumnIndex = this.columns.findIndex(c => !!c.checkReadonly);
-  }
+  // private updateCellReadonly() {
+  //   const readonlyColumnIndex = this.columns.findIndex(c => !!c.checkReadonly);
+  //   this.data.forEach((d, rowIndex) => {
+  //     console.log(d);
+  //   });
+  // }
 
   private updateSourceToColumn(key, sources) {
     const column = this.columns.find(c => c.key === key);
@@ -594,6 +603,222 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
         // instance.jexcel.clearValidation(y, Number(cell) - 1);
         instance.jexcel.validationCell(y, Number(cell) - 1, validationColumn.fieldName, validationColumn.validations);
       }
+    }else if (column.key === 'contractTypeFromDate') {
+      const toDateValue = this.spreadsheet.getValueFromCoords(Number(cell) + 1, y);
+      const validationColumn = this.columns[cell];
+
+      if (toDateValue && cellValue) {
+        const cellValueMoment = moment(cellValue, DATE_FORMAT.ONLY_MONTH_YEAR);
+        const toDateValueMoment = moment(toDateValue, DATE_FORMAT.ONLY_MONTH_YEAR);
+        const isAfter = cellValueMoment.isAfter(toDateValueMoment);
+
+        if (isAfter) {
+          validationColumn.validations = {
+            required: true,
+            lessThan: true
+          };
+          validationColumn.fieldName = {
+            name: 'Từ ngày',
+            message: '<Từ ngày> phải nhỏ hơn hoặc bằng <Đến ngày làm việc>',
+          };
+
+          instance.jexcel.validationCell(y, cell, validationColumn.fieldName, validationColumn.validations);
+        } else {
+          validationColumn.validations = {
+            required: true
+          };
+          validationColumn.fieldName = 'Từ ngày';
+          // instance.jexcel.clearValidation(y, cell);
+          instance.jexcel.validationCell(y, cell, validationColumn.fieldName, validationColumn.validations);
+        }
+      } else {
+        validationColumn.validations = {
+          required: true
+        };
+        validationColumn.fieldName = 'Từ ngày';
+        // instance.jexcel.clearValidation(y, cell);
+        instance.jexcel.validationCell(y, cell, validationColumn.fieldName, validationColumn.validations);
+      }
+    } else if (column.key === 'contractTypeToDate') {
+      const fromDateValue = this.spreadsheet.getValueFromCoords(Number(cell) - 1, y);
+      const validationColumn = this.columns[Number(cell) - 1];
+
+      if (cellValue && fromDateValue) {
+        const cellValueMoment = moment(cellValue, DATE_FORMAT.ONLY_MONTH_YEAR);
+        const fromDateValueMoment = moment(fromDateValue, DATE_FORMAT.ONLY_MONTH_YEAR);
+        const isAfter = fromDateValueMoment.isAfter(cellValueMoment);
+
+        if (isAfter) {
+          validationColumn.validations = {
+            required: true,
+            lessThan: true
+          };
+          validationColumn.fieldName = {
+            name: 'Từ ngày',
+            message: '<Từ ngày> phải nhỏ hơn hoặc bằng <Đến ngày làm việc>',
+          };
+
+          instance.jexcel.validationCell(y, Number(cell) - 1, validationColumn.fieldName, validationColumn.validations);
+        } else {
+          validationColumn.validations = {
+            required: true
+          };
+          validationColumn.fieldName = 'Từ ngày';
+          // instance.jexcel.clearValidation(y, Number(cell) - 1);
+          instance.jexcel.validationCell(y, Number(cell) - 1, validationColumn.fieldName, validationColumn.validations);
+        }
+      } else {
+        validationColumn.validations = {
+          required: true
+        };
+        validationColumn.fieldName = 'Từ ngày';
+        // instance.jexcel.clearValidation(y, Number(cell) - 1);
+        instance.jexcel.validationCell(y, Number(cell) - 1, validationColumn.fieldName, validationColumn.validations);
+      }
+    } else if (column.key === 'workTypeFromDate') {
+      const toDateValue = this.spreadsheet.getValueFromCoords(Number(cell) + 1, y);
+      const validationColumn = this.columns[cell];
+
+      if (toDateValue && cellValue) {
+        const cellValueMoment = moment(cellValue, DATE_FORMAT.ONLY_MONTH_YEAR);
+        const toDateValueMoment = moment(toDateValue, DATE_FORMAT.ONLY_MONTH_YEAR);
+        const isAfter = cellValueMoment.isAfter(toDateValueMoment);
+
+        if (isAfter) {
+          validationColumn.validations = {
+            required: true,
+            lessThan: true
+          };
+          validationColumn.fieldName = {
+            name: 'Từ ngày',
+            message: '<Từ ngày> phải nhỏ hơn hoặc bằng <Đến ngày làm việc>',
+          };
+
+          instance.jexcel.validationCell(y, cell, validationColumn.fieldName, validationColumn.validations);
+        } else {
+          validationColumn.validations = {
+            required: true
+          };
+          validationColumn.fieldName = 'Từ ngày';
+          // instance.jexcel.clearValidation(y, cell);
+          instance.jexcel.validationCell(y, cell, validationColumn.fieldName, validationColumn.validations);
+        }
+      } else {
+        validationColumn.validations = {
+          required: true
+        };
+        validationColumn.fieldName = 'Từ ngày';
+        // instance.jexcel.clearValidation(y, cell);
+        instance.jexcel.validationCell(y, cell, validationColumn.fieldName, validationColumn.validations);
+      }
+    } else if (column.key === 'workTypeToDate') {
+      const fromDateValue = this.spreadsheet.getValueFromCoords(Number(cell) - 1, y);
+      const validationColumn = this.columns[Number(cell) - 1];
+
+      if (cellValue && fromDateValue) {
+        const cellValueMoment = moment(cellValue, DATE_FORMAT.ONLY_MONTH_YEAR);
+        const fromDateValueMoment = moment(fromDateValue, DATE_FORMAT.ONLY_MONTH_YEAR);
+        const isAfter = fromDateValueMoment.isAfter(cellValueMoment);
+
+        if (isAfter) {
+          validationColumn.validations = {
+            required: true,
+            lessThan: true
+          };
+          validationColumn.fieldName = {
+            name: 'Từ ngày',
+            message: '<Từ ngày> phải nhỏ hơn hoặc bằng <Đến ngày làm việc>',
+          };
+
+          instance.jexcel.validationCell(y, Number(cell) - 1, validationColumn.fieldName, validationColumn.validations);
+        } else {
+          validationColumn.validations = {
+            required: true
+          };
+          validationColumn.fieldName = 'Từ ngày';
+          // instance.jexcel.clearValidation(y, Number(cell) - 1);
+          instance.jexcel.validationCell(y, Number(cell) - 1, validationColumn.fieldName, validationColumn.validations);
+        }
+      } else {
+        validationColumn.validations = {
+          required: true
+        };
+        validationColumn.fieldName = 'Từ ngày';
+        // instance.jexcel.clearValidation(y, Number(cell) - 1);
+        instance.jexcel.validationCell(y, Number(cell) - 1, validationColumn.fieldName, validationColumn.validations);
+      }
+    } else if (column.key === 'careFromDate') {
+      const toDateValue = this.spreadsheet.getValueFromCoords(Number(cell) + 1, y);
+      const validationColumn = this.columns[cell];
+
+      if (toDateValue && cellValue) {
+        const cellValueMoment = moment(cellValue, DATE_FORMAT.ONLY_MONTH_YEAR);
+        const toDateValueMoment = moment(toDateValue, DATE_FORMAT.ONLY_MONTH_YEAR);
+        const isAfter = cellValueMoment.isAfter(toDateValueMoment);
+
+        if (isAfter) {
+          validationColumn.validations = {
+            required: true,
+            lessThan: true
+          };
+          validationColumn.fieldName = {
+            name: 'Từ ngày',
+            message: '<Từ ngày> phải nhỏ hơn hoặc bằng <Đến ngày làm việc>',
+          };
+
+          instance.jexcel.validationCell(y, cell, validationColumn.fieldName, validationColumn.validations);
+        } else {
+          validationColumn.validations = {
+            required: true
+          };
+          validationColumn.fieldName = 'Từ ngày';
+          // instance.jexcel.clearValidation(y, cell);
+          instance.jexcel.validationCell(y, cell, validationColumn.fieldName, validationColumn.validations);
+        }
+      } else {
+        validationColumn.validations = {
+          required: true
+        };
+        validationColumn.fieldName = 'Từ ngày';
+        // instance.jexcel.clearValidation(y, cell);
+        instance.jexcel.validationCell(y, cell, validationColumn.fieldName, validationColumn.validations);
+      }
+    } else if (column.key === 'careTypeToDate') {
+      const fromDateValue = this.spreadsheet.getValueFromCoords(Number(cell) - 1, y);
+      const validationColumn = this.columns[Number(cell) - 1];
+
+      if (cellValue && fromDateValue) {
+        const cellValueMoment = moment(cellValue, DATE_FORMAT.ONLY_MONTH_YEAR);
+        const fromDateValueMoment = moment(fromDateValue, DATE_FORMAT.ONLY_MONTH_YEAR);
+        const isAfter = fromDateValueMoment.isAfter(cellValueMoment);
+
+        if (isAfter) {
+          validationColumn.validations = {
+            required: true,
+            lessThan: true
+          };
+          validationColumn.fieldName = {
+            name: 'Từ ngày',
+            message: '<Từ ngày> phải nhỏ hơn hoặc bằng <Đến ngày làm việc>',
+          };
+
+          instance.jexcel.validationCell(y, Number(cell) - 1, validationColumn.fieldName, validationColumn.validations);
+        } else {
+          validationColumn.validations = {
+            required: true
+          };
+          validationColumn.fieldName = 'Từ ngày';
+          // instance.jexcel.clearValidation(y, Number(cell) - 1);
+          instance.jexcel.validationCell(y, Number(cell) - 1, validationColumn.fieldName, validationColumn.validations);
+        }
+      } else {
+        validationColumn.validations = {
+          required: true
+        };
+        validationColumn.fieldName = 'Từ ngày';
+        // instance.jexcel.clearValidation(y, Number(cell) - 1);
+        instance.jexcel.validationCell(y, Number(cell) - 1, validationColumn.fieldName, validationColumn.validations);
+      }
     } else if (column.key === 'birthday') {
       const typeBirthday = this.spreadsheet.getValueFromCoords(Number(cell) - 1, y);
       const validationColumn = this.columns[cell];
@@ -618,6 +843,7 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
         instance.jexcel.validationCell(y, cell, validationColumn.fieldName, validationColumn.validations);
       }
     }
+    
     this.handleEvent({
       type: 'validate',
       part: '',

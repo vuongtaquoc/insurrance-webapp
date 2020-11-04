@@ -21,8 +21,8 @@ export const validationColumnsPlanCode: any = {
       lessThanNow: true
     },
     note: {
-      message: 'Chấm dứt HĐLĐ/Chuyển công tác',
-      argsColumn: []
+      message: 'Chấm dứt HĐLĐ/Chuyển công tác {0} {1}',
+      argsColumn: ['contractCancelNo$ ,số VB ','dateCancelSign$ ,ngày '],  
     },
     copy: {
       type: 'I_1',      
@@ -108,16 +108,16 @@ export const validationColumnsPlanCode: any = {
       required: true,
       lessThanNow: true
     },note: {
-      message: 'Nghỉ thai sản/ốm/không lương chuyển sang Giảm', 
-      argsColumn: []    
+      message: 'Nghỉ thai sản/ốm/không lương chuyển sang Giảm {0} {1}', 
+      argsColumn: ['contractCancelNo$ ,số VB ','dateCancelSign$ ,ngày '],   
     }
   },
   'GH4': {
     motherDayDead: {
       required: true
     },note: {
-      message: 'Giảm hẳn do chết, người lao động chết, ngày chết ', 
-      argsColumn: []    
+      message: 'Giảm hẳn do chết, người lao động chết {0}  ', 
+      argsColumn: ['motherDayDead$ ,ngày chết'],   
     }
   },
   'GC': {
@@ -128,8 +128,8 @@ export const validationColumnsPlanCode: any = {
       required: true,
       lessThanNow: true
     },note: {
-      message: 'Giảm do chuyển tỉnh', 
-      argsColumn: []    
+      message: 'Giảm do chuyển tỉnh {0} {1}', 
+      argsColumn: ['contractCancelNo$ ,số VB ','dateCancelSign$ ,ngày '],  
     },
     copy: {
       type: 'I_1',      
@@ -146,15 +146,9 @@ export const validationColumnsPlanCode: any = {
       required: true,
       lessThanNow: true
     },note: {
-      message: 'Giảm do chuyển đơn vị', 
-      argsColumn: []    
-    },
-    copy: {
-      type: 'I_1',      
-      tableName : 'reductionlabor',
-      note: 'Truy thu BHYT',
-      planCode : 'TT'
-    }
+      message: 'Giảm do chuyển đơn vị {0} {1}', 
+      argsColumn: ['contractCancelNo$ ,số VB ','dateCancelSign$ ,ngày '],      
+    } 
   },
   'SB': {
     toDate: {

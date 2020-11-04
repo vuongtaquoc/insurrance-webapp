@@ -11,17 +11,20 @@ export const TABLE_ADJUST_NESTED_HEADERS = [
     { title: 'Nữ', rowspan: '3' },
     { title: 'Dân tộc', rowspan: '3' },
     { title: 'Quốc tịch', rowspan: '3' },
+    { title: 'Số CMTNN/Hộ chiếu/Thẻ căn cước', rowspan: '3' }, 
     { title: 'Địa chỉ đăng ký giấy khai sinh', subtitle: 'hoặc nguyên quán hoặc HKTT hoặc tạm trú', colspan: '3', rowspan: '2' },
     { title: 'Địa chỉ nhận hồ sơ', subtitle: 'nơi sinh sống', colspan: '4', rowspan: '2' },
     { title: 'Vùng sinh sống', rowspan: '3' },
     { title: 'Vùng lương tối thiểu', rowspan: '3' },
     { title: 'Cấp bập, chức vụ, chức danh nghề', rowspan: '3' },
+    { title: 'Vị trí làm việc', colspan: '3' },
+    { title: 'Ngành/nghề nặng nhọc độc hại', colspan: '2' },
     { title: 'Nơi làm việc', rowspan: '3' },
     { title: 'Phòng ban', rowspan: '3' },
+    { title: 'Quyết định/Hợp đồng lao động', colspan: '5', rowspan: '2' },
     { title: 'Tiền lương mức đóng cũ', colspan: '8' },
     { title: 'Tiền lương mức đóng mới', colspan: '8' },
-    { title: 'Từ tháng, năm', rowspan: '3' },
-    { title: 'Đến tháng, năm', rowspan: '3' },
+    { title: 'Thời điểm đóng', colspan: '2' },
     { title: 'Phương án', rowspan: '3' },
     { title: 'Tỷ lệ đóng', rowspan: '3' },
     { title: 'Quyết định điều chỉnh chức danh mức đóng', colspan: '2', rowspan: '2' },
@@ -30,12 +33,19 @@ export const TABLE_ADJUST_NESTED_HEADERS = [
   [
     { title: 'Mã số BHXH', rowspan: '2' },
     { title: 'Trạng thái', rowspan: '2' },
+    { title: 'Loại', rowspan: '2' },
+    { title: 'Từ ngày', rowspan: '2' },
+    { title: 'Đến ngày', rowspan: '2' },
+    { title: 'Từ ngày', rowspan: '2' },
+    { title: 'Đến ngày', rowspan: '2' },
     { title: 'Mức lương', rowspan: '2' },
     { title: 'Hệ số', rowspan: '2' },
     { title: 'Phụ cấp', colspan: '6' },
     { title: 'Mức lương', rowspan: '2' },
     { title: 'Hệ số', rowspan: '2' },
-    { title: 'Phụ cấp', colspan: '6' }
+    { title: 'Phụ cấp', colspan: '6' },
+    { title: 'Tháng. năm bắt đầu', rowspan: '2' },
+    { title: 'Tháng. năm kết thúc', rowspan: '2' },
   ],
   [
     { title: 'Tỉnh/TP' },
@@ -45,6 +55,11 @@ export const TABLE_ADJUST_NESTED_HEADERS = [
     { title: 'Quận/huyện' },
     { title: 'Xã/phường' },
     { title: 'Số nhà, đường phố, thôn, xóm' },
+    { title: 'Số' },
+    { title: 'Ngày ký' },
+    { title: 'Loại hợp đồng' },
+    { title: 'Ngày bắt đầu' },
+    { title: 'Ngày kết thúc' },
     { title: 'Phụ cấp lương' },
     { title: 'Các khoản bổ sung' },
     { title: 'Chức vụ' },
@@ -138,9 +153,20 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   align: 'left',
   key: 'nationalityCode'
 }, {
+  type: 'numeric',
+  align: 'right',
+  width: 100,
+  title: '(11)',
+  key: 'identityCar',
+  fieldName: 'Số CMND/Hộ chiếu/Thẻ căn cước',
+  validations: {
+    cardId: true,
+    duplicate: true
+  }
+}, {
   type: 'dropdown',
   width: 145,
-  title: '(11.1)',
+  title: '(12.1)',
   source: [ 'Chọn' ],
   align: 'left',
   key: 'registerCityCode'
@@ -149,7 +175,7 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   autocomplete: true,
   width: 145,
   source: [ ],
-  title: '(11.2)',
+  title: '(12.2)',
   align: 'left',
   key: 'registerDistrictCode',
   defaultLoad: true
@@ -157,7 +183,7 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   type: 'dropdown',
   autocomplete: true,
   width: 145,
-  title: '(11.3)',
+  title: '(12.3)',
   source: [],
   align: 'left',
   key: 'registerWardsCode',
@@ -166,7 +192,7 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   type: 'dropdown',
   autocomplete: true,
   width: 145,
-  title: '(12.1)',
+  title: '(13.1)',
   align: 'left',
   source: [],
   key: 'recipientsCityCode'
@@ -174,7 +200,7 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   type: 'dropdown',
   autocomplete: true,
   width: 145,
-  title: '(12.2)',
+  title: '(13.2)',
   align: 'left',
   source: [],
   key: 'recipientsDistrictCode',
@@ -183,7 +209,7 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   type: 'dropdown',
   autocomplete: true,
   width: 145,
-  title: '(12.3)',
+  title: '(13.3)',
   align: 'left',
   source: [ ],
   key: 'recipientsWardsCode',
@@ -191,7 +217,7 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
 }, {
   type: 'text',
   width: 145,
-  title: '(12.4)',
+  title: '(13.4)',
   align: 'left',
   wordWrap: true,
   key: 'recipientsAddress'
@@ -216,6 +242,39 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   title: '(15)',
   fieldName: 'Cấp bậc, chức vụ, chức danh nghề',
   key: 'levelWork'
+},
+{
+  type: 'dropdown',
+  autocomplete: true,
+  width: 100,
+  title: '(17.1)',
+  source: [],
+  key: 'workTypeCode'
+}, {
+  type: 'text',
+  width: 80,
+  title: '(17.2)',
+  key: 'workTypeFromDate',
+  fieldName: 'Từ ngày',
+}, {
+  type: 'text',
+  width: 80,
+  title: '(17.3)',
+  key: 'workTypeToDate',
+  fieldName: 'Đến ngày',
+},
+{
+  type: 'text',
+  width: 100,
+  title: '(18.1)',
+  key: 'careFromDate',
+  fieldName: 'Từ ngày',
+}, {
+  type: 'text',
+  width: 100,
+  title: '(18.2)',
+  key: 'careTypeToDate',
+  fieldName: 'Đến ngày',
 },{
   type: 'text',
   width: 135,
@@ -229,6 +288,42 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   width: 135,
   title: '(17)',
   key: 'departmentCode'
+},{
+  type: 'numeric',
+  align: 'right',
+  width: 100,
+  title: '(22.1)',
+  key: 'contractNo'
+}, {
+  type: 'text',
+  width: 100,
+  title: '(22.2)',
+  key: 'dateSign',
+  fieldName: 'Ngày ký',
+  validations: {
+    lessThanNow: true
+  }
+},{
+  type: 'dropdown',
+  autocomplete: true,
+  source: [ ],
+  width: 100,
+  title: '(22.3)',
+  key: 'contractTypeCode',
+  fieldName: 'Loại hợp đồng'  
+},{
+  type: 'text',
+  width: 100,
+  title: '(22.4)',
+  key: 'contractTypeFromDate',
+  fieldName: 'Ngày băt đầu',   
+},{
+  type: 'text',
+  width: 100,
+  title: '(22.5)',
+  key: 'contractTypeToDate',
+  fieldName: 'Ngày kết thúc',
+  checkReadonly: true,
 }, {
   type: 'numeric',
   width: 80,
