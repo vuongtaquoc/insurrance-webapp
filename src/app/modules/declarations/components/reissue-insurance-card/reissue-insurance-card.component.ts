@@ -143,14 +143,12 @@ export class ReissueInsuranceCardComponent implements OnInit, OnDestroy {
       this.salaryAreaService.getSalaryAreas(),
       this.planService.getPlanShowCode(this.declarationCode),
       this.departmentService.getDepartments(),
-    ]).subscribe(([ cities, nationalities, peoples, salaryAreas, plans, departments ]) => {
+    ]).subscribe(([ cities, nationalities, peoples, salaryAreas]) => {
       this.updateSourceToColumn(this.tableHeaderColumns, 'peopleCode', peoples);
       this.updateSourceToColumn(this.tableHeaderColumns, 'nationalityCode', nationalities);
       this.updateSourceToColumn(this.tableHeaderColumns, 'registerCityCode', cities);
       this.updateSourceToColumn(this.tableHeaderColumns, 'recipientsCityCode', cities);
       this.updateSourceToColumn(this.tableHeaderColumns, 'salaryAreaCode', salaryAreas);
-      this.updateSourceToColumn(this.tableHeaderColumns, 'planCode', plans);
-      this.updateSourceToColumn(this.tableHeaderColumns, 'departmentCode', departments);
 
       // get filter columns
       this.updateFilterToColumn(this.tableHeaderColumns, 'registerDistrictCode', this.getRegisterDistrictsByCityCode);
