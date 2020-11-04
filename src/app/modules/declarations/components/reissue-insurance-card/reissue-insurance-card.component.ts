@@ -451,6 +451,13 @@ export class ReissueInsuranceCardComponent implements OnInit, OnDestroy {
       });
     }
 
+    if (!this.isCheckIsuranceCode) {
+      this.modalService.warning({
+        nzTitle: 'Đơn vị chưa kiểm tra Mã số BHXH và trạng thái của người tham gia'
+      });
+      return;
+    }
+
     this.tableSubject.next({type});
   }
 
@@ -591,7 +598,7 @@ export class ReissueInsuranceCardComponent implements OnInit, OnDestroy {
   handleChangeTable({ instance, cell, c, r, records }) {
     eventEmitter.emit('unsaved-changed');
     if (c !== null && c !== undefined) {
-      this.this.isCheckIsuranceCode = false;
+      this.isCheckIsuranceCode = false;
       c = Number(c);
       const column = this.tableHeaderColumns[c];
 
