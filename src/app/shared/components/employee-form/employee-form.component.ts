@@ -113,6 +113,8 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
       peopleCode: [employee.peopleCode, Validators.required],
       code: [employee.code, [ Validators.required, Validators.maxLength(50), Validators.pattern(REGEX.ONLY_CHARACTER_NUMBER) ]],
       departmentCode: employee.departmentCode,
+      email: [employee.email, [Validators.pattern(REGEX.EMAIL)]],
+      company: [employee.company],
       registerCityCode: [employee.registerCityCode, Validators.required],
       registerDistrictCode: [employee.registerDistrictCode, Validators.required],
       registerWardsCode: [employee.registerWardsCode, Validators.required],
@@ -129,6 +131,17 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
       contractNo: [employee.contractNo, [Validators.required, Validators.maxLength(100)]],
       dateSign: [employee.dateSign ? employee.dateSign.split('/').join('') : '', [Validators.required, validateDateSign]],
       levelWork: [employee.levelWork, Validators.required],
+
+      // Add new
+      companyType: [],
+      dateStart: [],
+      dateEnd: [],
+      positionType: [],
+      positionDateFrom: [],
+      positionDateTo: [],
+      dateForm:[],
+      dateTo:[],
+      // End add new
       salary: [employee.salary, [Validators.required, Validators.pattern(REGEX.ONLY_NUMBER)]],
       ratio: [employee.ratio, [Validators.required, Validators.pattern(REGEX.ONLY_NUMBER)]],
       salaryAreaCode: [employee.salaryAreaCode, Validators.required],

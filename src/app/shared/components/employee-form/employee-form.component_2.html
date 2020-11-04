@@ -1,0 +1,958 @@
+<div class="employee-form"> 
+  <nz-spin [nzSpinning]="isSpinning" class="page-container__spinning">
+  <div class="employee-form__content">    
+    <form nz-form [formGroup]="employeeForm">
+      <nz-tabset (nzSelectChange)="changeTab($event)">
+        <nz-tab nzTitle="Thông tin NLĐ">
+          <h3 class="employee-form__group-title">Thông tin NLĐ</h3>
+          <!-- ROW START -->
+          <div nz-row [nzGutter]="10"> 
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Họ và tên</nz-form-label>
+                <nz-form-control [nzSpan]="14" nzErrorTip="Họ và tên không để trống">
+                  <input nz-input
+                    placeholder="Họ và tên"
+                    formControlName="fullName"
+                    (keyup)="handleSpaceFullName($event)"
+                  />
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Ngày sinh</nz-form-label>
+                <nz-form-control [nzSpan]="14" nzErrorTip="Ngày sinh không để trống" [nzErrorTip]="birthdayTpl">
+                  <input nz-input
+                    placeholder="Ngày sinh"
+                    formControlName="birthday"
+                    [mask]="birthdayFormat"
+                    [showMaskTyped]="true"
+                    [validation]="true"
+                    [clearIfNotMatch]="true"
+                  />
+                  <!-- <nz-date-picker [nzAllowClear]="false" formControlName="birthday" nzFormat="d/M/yyyy" nzPlaceHolder="Ngày sinh" *ngIf="!birthTypeOnlyYearMonth && !birthTypeOnlyYear"></nz-date-picker>
+                  <nz-month-picker
+                    formControlName="birthday"
+                    nzPlaceHolder="Ngày sinh"
+                    nzFormat="MM/yyyy"
+                    [nzAutoFocus]="true"
+                    *ngIf="birthTypeOnlyYearMonth && !birthTypeOnlyYear"
+                  ></nz-month-picker>
+                  <nz-year-picker nzFormat="yyyy" formControlName="birthday" nzPlaceHolder="Ngày sinh" *ngIf="!birthTypeOnlyYearMonth && birthTypeOnlyYear"></nz-year-picker> -->
+                  <ng-template #birthdayTpl let-control>
+                    <ng-container *ngIf="control.hasError('required')">
+                      Ngày sinh không để trống
+                    </ng-container>
+                    <ng-container *ngIf="control.hasError('lessThanEqualNow')">
+                      Ngày sinh phải nhỏ hơn hoặc bằng ngày hiện tại
+                    </ng-container>
+                  </ng-template>
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+            <div nz-col [nzSpan]="8">
+              <nz-checkbox-wrapper>
+                <label nz-checkbox (ngModelChange)="changeBirthType($event, 'birthTypeOnlyYearMonth')" formControlName="birthTypeOnlyYearMonth">Chỉ có tháng/năm sinh</label>
+                <label nz-checkbox (ngModelChange)="changeBirthType($event, 'birthTypeOnlyYear')" formControlName="birthTypeOnlyYear">Chỉ có năm sinh</label>
+              </nz-checkbox-wrapper>
+            </div><!-- col -->
+          </div><!-- END ROW -->
+
+          <!-- ROW START -->
+          <div nz-row [nzGutter]="10">
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Giới tính</nz-form-label>
+                <nz-form-control [nzSpan]="14" nzErrorTip="Giới tính không để trống">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="gender">
+                    <nz-option nzLabel="Nam" nzValue="0"></nz-option>
+                    <nz-option nzLabel="Nữ" nzValue="1"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Quốc tịch</nz-form-label>
+                <nz-form-control [nzSpan]="14" nzErrorTip="Quốc tịch không để trống">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="nationalityCode">
+                    <nz-option *ngFor="let national of nationalities" [nzLabel]="national.name" [nzValue]="national.id"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Dân tộc</nz-form-label>
+                <nz-form-control [nzSpan]="14" nzErrorTip="Dân tộc không để trống">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="peopleCode">
+                    <nz-option *ngFor="let people of peoples" [nzLabel]="people.name" [nzValue]="people.id"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+          </div><!-- END ROW -->
+
+          <!-- ROW START -->
+          <div nz-row [nzGutter]="10">
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Mã nhân viên</nz-form-label>
+                <nz-form-control [nzSpan]="14" [nzErrorTip]="errorTplCode" >
+                  <input nz-input
+                    placeholder="Mã nhân viên"
+                    formControlName="code"
+                    (keyup)="handleUpperCase('code')"
+                  />
+                  <ng-template #errorTplCode let-control>
+                    <ng-container *ngIf="control.hasError('required')">
+                      Mã nhân viên không để trống
+                    </ng-container>
+                    <ng-container *ngIf="control.hasError('maxlength')">
+                      Mã nhân viên chỉ được tối đa 50 ký tự
+                    </ng-container>
+                    <ng-container *ngIf="control.hasError('pattern')">
+                      Mã nhân viên chỉ được chữ hoặc số
+                    </ng-container>
+                  </ng-template>
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzSpan]="10">Phòng ban</nz-form-label>
+                <nz-form-control [nzSpan]="14">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn phòng ban" formControlName="departmentCode">
+                      <nz-option *ngFor="let department of departments" [nzLabel]="department.name" [nzValue]="department.id"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+          </div><!-- END ROW -->
+
+          <h3 class="employee-form__group-title employee-form__group-title--disabled">Nơi đăng ký giấy khai sinh hoặc nguyên quán hoặc HKTT hoặc tạm trú</h3>
+          <!-- ROW START -->
+          <div nz-row [nzGutter]="10">
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Tỉnh/TP</nz-form-label>
+                <nz-form-control [nzSpan]="14" nzErrorTip="Tỉnh/TP không để trống">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="registerCityCode" (ngModelChange)="changeRegisterCity($event)">
+                    <nz-option *ngFor="let city of cities" [nzLabel]="city.name" [nzValue]="city.id"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Quận/huyện</nz-form-label>
+                <nz-form-control [nzSpan]="14" nzErrorTip="Quận/huyện không để trống">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="registerDistrictCode" (ngModelChange)="changeRegisterDistrict($event)">
+                    <nz-option *ngFor="let district of registerDistricts" [nzLabel]="district.name" [nzValue]="district.id"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Phường/xã</nz-form-label>
+                <nz-form-control [nzSpan]="14" nzErrorTip="Phường/xã không để trống">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="registerWardsCode" (ngModelChange)="changeRegisterWardsCode($event)">
+                    <nz-option *ngFor="let ward of registerWards" [nzLabel]="ward.name" [nzValue]="ward.id"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+          </div><!-- END ROW -->
+
+          <h3 class="employee-form__group-title employee-form__group-title--disabled">
+            Địa chỉ nhận hồ sơ (nơi sinh sống)
+            <label style="margin-left: 20px;" nz-checkbox (ngModelChange)= "isSameAddress($event)" formControlName="isDuplicateAddress">Trùng với địa chỉ trên</label>
+          </h3>
+          <!-- ROW START -->
+          <div nz-row [nzGutter]="10">
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Tỉnh/TP</nz-form-label>
+                <nz-form-control [nzSpan]="14" nzErrorTip="Tỉnh/TP không để trống">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="recipientsCityCode" (ngModelChange)="changeRecipientsCity($event)">
+                    <nz-option *ngFor="let city of cities" [nzLabel]="city.name" [nzValue]="city.id"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Quận/huyện</nz-form-label>
+                <nz-form-control [nzSpan]="14" nzErrorTip="Quận/huyện không để trống">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn"
+                    formControlName="recipientsDistrictCode"
+                    (ngModelChange)="changeRecipientsDistrict($event)"
+                  >
+                    <nz-option *ngFor="let district of recipientsDistricts" [nzLabel]="district.name" [nzValue]="district.id"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Phường/xã</nz-form-label>
+                <nz-form-control [nzSpan]="14" nzErrorTip="Phường/xã không để trống">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn"
+                    formControlName="recipientsWardsCode"
+                  >
+                    <nz-option *ngFor="let ward of recipientsWards" [nzLabel]="ward.name" [nzValue]="ward.id"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+          </div><!-- END ROW -->
+           <!-- ROW START -->
+           <div nz-row [nzGutter]="10">
+            <div nz-col [nzSpan]="24">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="5">Số nhà, đường phố, thôn xóm</nz-form-label>
+                <nz-form-control [nzSpan]="19" nzErrorTip="Số nhà, đường phố, thôn xóm không để trống">
+                  <input nz-input
+                    placeholder="Số nhà, đường phố, thôn xóm"
+                    formControlName="recipientsAddress"
+                  />
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+           </div><!-- END ROW -->
+
+          <h3 class="employee-form__group-title">Thông tin tham gia BHXH, BHYT</h3>
+          <!-- ROW START -->
+          <div nz-row [nzGutter]="10">
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzSpan]="10">Mã số BHXH</nz-form-label>
+                <nz-form-control [nzSpan]="14" [nzErrorTip]="errorTplInsurranceCode">
+                  <input nz-input
+                    placeholder="Mã số BHXH"
+                    formControlName="isurranceCode"
+                  />
+                  <ng-template #errorTplInsurranceCode let-control>
+                    <ng-container *ngIf="control.hasError('minlength')">
+                      Mã số BHXH phải chứa 10 ký tự số
+                    </ng-container>
+                    <ng-container *ngIf="control.hasError('maxlength')">
+                      Mã số BHXH phải chứa 10 ký tự số
+                    </ng-container>
+                    <ng-container *ngIf="control.hasError('pattern')">
+                      Mã số BHXH chỉ được ký tự số
+                    </ng-container>
+                  </ng-template>
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzSpan]="10">Điện thoại liên hệ</nz-form-label>
+                <nz-form-control [nzSpan]="14" [nzErrorTip]="errorTplMobile13">
+                  <input nz-input
+                    placeholder="Điện thoại liên hệ"
+                    formControlName="mobile"
+                  />
+                  <ng-template #errorTplMobile13 let-control>
+                    <ng-container *ngIf="control.hasError('maxlength')">
+                      Điện thoại chỉ được tối đa 15 ký tự
+                    </ng-container>
+                    <ng-container *ngIf="control.hasError('pattern')">
+                      Điện thoại liên hệ phải là số
+                    </ng-container>
+                  </ng-template>
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="15">Số CMT/HC/Thẻ căn cước</nz-form-label>
+                <nz-form-control [nzSpan]="9" [nzErrorTip]="identityCarTpl">
+                  <input nz-input
+                    placeholder="Số CMT/HC/Thẻ căn cước"
+                    formControlName="identityCar"
+                    (keyup)="handleUpperCase('identityCar')"
+                  />
+                  <ng-template #identityCarTpl let-control>
+                    <ng-container *ngIf="control.hasError('required')">
+                      Số CMT/HC/Thẻ căn cước không để trống
+                    </ng-container>
+                    <ng-container *ngIf="control.hasError('maxlength')">
+                      Số CMT/HC/Thẻ căn cước chỉ được tối đa 15 ký tự
+                    </ng-container>
+                    <ng-container *ngIf="control.hasError('cardId')">
+                      Số CMT/HC/Thẻ căn cước không đúng định dạng
+                    </ng-container>
+                  </ng-template>
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+          </div><!-- END ROW -->
+
+          <!-- ROW START -->
+          <div nz-row [nzGutter]="10">
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzSpan]="10">Mã số hộ gia đình</nz-form-label>
+                <nz-form-control [nzSpan]="14">
+                  <input nz-input
+                    placeholder="Mã số hộ gia đình"
+                    formControlName="familyNo"
+                  />
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzSpan]="10">Số sổ BHXH</nz-form-label>
+                <nz-form-control [nzSpan]="14" [nzErrorTip]="isurranceNoTpl">
+                  <input nz-input
+                    placeholder="Số sổ BHXH"
+                    formControlName="isurranceNo"
+                  />
+                  <ng-template #isurranceNoTpl let-control>
+                    <ng-container *ngIf="control.hasError('maxlength')">
+                      Số sổ BHXH chỉ được tối đa 15 ký tự
+                    </ng-container>
+                    <ng-container *ngIf="control.hasError('pattern')">
+                      Số sổ BHXH liên hệ phải là ký tự hoặc số
+                    </ng-container>
+                  </ng-template>
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzSpan]="10">Số thẻ BHYT</nz-form-label>
+                <nz-form-control [nzSpan]="14" [nzErrorTip]="healthNoTpl">
+                  <input nz-input
+                    placeholder="Số thẻ BHYT"
+                    formControlName="healthNo"
+                  />
+                  <ng-template #healthNoTpl let-control>
+                    <ng-container *ngIf="control.hasError('maxlength')">
+                      Số thẻ BHYT chỉ được tối đa 15 ký tự
+                    </ng-container>
+                    <ng-container *ngIf="control.hasError('pattern')">
+                      Số thẻ BHYT liên hệ phải là ký tự hoặc số
+                    </ng-container>
+                  </ng-template>
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+          </div><!-- END ROW -->
+
+          <!-- ROW START -->
+          <div nz-row [nzGutter]="10">
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Số HĐLĐ/QĐ</nz-form-label>
+                <nz-form-control [nzSpan]="14"  [nzErrorTip]="contractNoTpl">
+                  <input nz-input
+                    placeholder="Số HĐLĐ/QĐ"
+                    formControlName="contractNo"
+                    (keyup)="handleUpperCase('contractNo')"
+                  />
+                  <ng-template #contractNoTpl let-control>
+                    <ng-container *ngIf="control.hasError('required')">
+                      Số HĐLĐ/QĐ không để trống
+                    </ng-container>
+
+                  </ng-template>
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Ngày ký</nz-form-label>
+                <nz-form-control [nzSpan]="14" [nzErrorTip]="dateSignTpl">
+                  <!-- <nz-date-picker nzPlaceHolder ="Ngày ký" formControlName="dateSign"></nz-date-picker> -->
+                  <input nz-input
+                    placeholder="Ngày ký" 
+                    formControlName="dateSign"
+                    mask="00/00/0000"
+                    [showMaskTyped]="true"
+                    [validation]="true"
+                    [clearIfNotMatch]="true"
+                  />
+                  <ng-template #dateSignTpl let-control>
+                    <ng-container *ngIf="control.hasError('required')">
+                      Ngày ký không để trống
+                    </ng-container>
+                    <ng-container *ngIf="control.hasError('lessThanEqualNow')">
+                      Ngày ký phải nhỏ hơn hoặc bằng ngày hiện tại
+                    </ng-container>
+                    <ng-container *ngIf="control.hasError('greaterThanBirthday')">
+                      Ngày ký phải lớn hơn ngày sinh
+                    </ng-container>
+                  </ng-template>
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Cấp bậc, chức vụ</nz-form-label>
+                <nz-form-control [nzSpan]="14" nzErrorTip="Cấp bậc, chức vụ không để trống">
+                  <input nz-input
+                    placeholder="Cấp bậc, chức vụ"
+                    formControlName="levelWork"
+                  />
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+          </div><!-- END ROW -->
+
+          <!-- ROW START -->
+          <div nz-row [nzGutter]="10">
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Tiền lương</nz-form-label>
+                <nz-form-control [nzSpan]="14" [nzErrorTip]="salaryTpl">
+                  <nz-input-number
+                    placeholder="Tiền lương"
+                    formControlName="salary"
+                    [nzFormatter]="formatterCurrency"
+                  ></nz-input-number>
+                  <ng-template #salaryTpl let-control>
+                    <ng-container *ngIf="control.hasError('required')">
+                      Tiền lương không để trống
+                    </ng-container>
+                    <ng-container *ngIf="control.hasError('pattern')">
+                      Tiền lương phải số
+                    </ng-container>
+                  </ng-template>
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Hệ số</nz-form-label>
+                <nz-form-control [nzSpan]="14" [nzErrorTip]="ratioTpl">
+                  <input nz-input
+                    placeholder="Hệ số"
+                    formControlName="ratio"
+                  />
+                  <ng-template #ratioTpl let-control>
+                    <ng-container *ngIf="control.hasError('required')">
+                      Hệ số không để trống
+                    </ng-container>
+                    <ng-container *ngIf="control.hasError('pattern')">
+                      Hệ số phải số
+                    </ng-container>
+                  </ng-template>
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+          </div><!-- END ROW -->
+
+          <!-- ROW START -->
+          <div nz-row [nzGutter]="10">
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Vùng lương</nz-form-label>
+                <nz-form-control [nzSpan]="14" nzErrorTip="Vùng lương không để trống">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="salaryAreaCode">
+                    <nz-option *ngFor="let salaryArea of salaryAreas" [nzLabel]="salaryArea.name" [nzValue]="salaryArea.id"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Tỷ lệ đóng (%)</nz-form-label>
+                <nz-form-control [nzSpan]="14" [nzErrorTip]="errorTplRate">
+                  <nz-input-group nzSuffix="%">
+                    <input nz-input
+                      placeholder="Tỷ lệ"
+                      formControlName="rate"
+                    />
+                    <ng-template #errorTplRate let-control>
+                      <ng-container *ngIf="control.hasError('required')">
+                        Tỷ lệ đóng (%) không để trống
+                      </ng-container>
+                      <ng-container *ngIf="control.hasError('min')">
+                        Tỷ lệ đóng (%) phải lớn hơn 0
+                      </ng-container>
+                      <ng-container *ngIf="control.hasError('max')">
+                        Tỷ lệ đóng (%) phải nhỏ hơn 100
+                      </ng-container>
+                      <ng-container *ngIf="control.hasError('pattern')">
+                        Tỷ lệ đóng (%) phải là số
+                      </ng-container>
+                    </ng-template>
+                  </nz-input-group>
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzSpan]="10">Phương thức đóng</nz-form-label>
+                <nz-form-control [nzSpan]="14">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="paymentMethodCode">
+                    <nz-option *ngFor="let paymentMethod of paymentMethods" [nzLabel]="paymentMethod.name" [nzValue]="paymentMethod.id"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+          </div><!-- END ROW -->
+
+          <h3 class="employee-form__group-title employee-form__group-title--disabled">Đăng ký nơi khám chữa bệnh ban đầu</h3>
+          <!-- ROW START -->
+          <div nz-row [nzGutter]="10">
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="12">Tỉnh/TP nơi KCBBĐ</nz-form-label>
+                <nz-form-control [nzSpan]="12" nzErrorTip="Tỉnh/TP nơi KCBBĐ không để trống">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" (ngModelChange)="changeCityFirstRegistCode($event)" formControlName="cityFirstRegistCode">
+                    <nz-option *ngFor="let city of cities" [nzLabel]="city.name" [nzValue]="city.id"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+            <div nz-col [nzSpan]="14">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="6">Nơi KCBBĐ</nz-form-label>
+                <nz-form-control [nzSpan]="18" nzErrorTip="Nơi KCBBĐ không để trống">
+                  <nz-select
+                    nzShowSearch
+                    nzServerSearch
+                    nzAllowClear
+                    nzPlaceHolder="Chọn"
+                    formControlName="hospitalFirstRegistCode"
+                    (nzOnSearch)="searchHospitalFirstRegistCode($event)"
+                  >
+                    <nz-option *ngFor="let hospital of hospitals" [nzLabel]="hospital.name" [nzValue]="hospital.id"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+
+            <div nz-col [nzSpan]="2" class="employee-form__add-btn">
+              <button nz-button type="button" nzType="default" (click)="addHospitalFirstRegistCode($event)">
+                <i nz-icon nzType="plus" nzTheme="outline"></i>
+              </button>
+            </div>
+          </div><!-- END ROW -->
+
+          <h3 class="employee-form__group-title employee-form__group-title--disabled">Các phụ cấp hiện tại</h3>
+          <!-- ROW START -->
+          <div nz-row [nzGutter]="10">
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzSpan]="10">Chức vụ</nz-form-label>
+                <nz-form-control [nzSpan]="14" [nzErrorTip]="allowanceLevelTpl">
+                  <nz-input-number
+                    placeholder="Chức vụ"
+                    formControlName="allowanceLevel"
+                    [nzFormatter]="formatterCurrency"
+                  ></nz-input-number>
+                  
+                  <ng-template #allowanceLevelTpl let-control>
+                    <ng-container *ngIf="control.hasError('pattern')">
+                      Chức vụ phải là số
+                    </ng-container>
+                    <ng-container *ngIf="control.hasError('min')">
+                      Chức vụ  phải lớn hơn 0
+                    </ng-container>
+                    <ng-container *ngIf="control.hasError('max')">
+                      Chức vụ phải nhỏ hơn 100
+                    </ng-container>
+                  </ng-template>
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzSpan]="10">TN VK (%)</nz-form-label>
+                <nz-form-control [nzSpan]="14" [nzErrorTip]="errorTplAllowanceSeniority">
+                  <nz-input-group nzSuffix="%">
+                    <input nz-input
+                      type="text"
+                      placeholder="TN VK (%)"
+                      formControlName="allowanceSeniority"
+                    />
+                    <ng-template #errorTplAllowanceSeniority let-control>
+                      <ng-container *ngIf="control.hasError('required')">
+                        TN VK (%) không để trống
+                      </ng-container>
+                      <ng-container *ngIf="control.hasError('min')">
+                        TN VK (%) phải lớn hơn 0
+                      </ng-container>
+                      <ng-container *ngIf="control.hasError('max')">
+                        TN VK (%) phải nhỏ hơn 100
+                      </ng-container>
+                      <ng-container *ngIf="control.hasError('pattern')">
+                        TN VK (%) phải là số
+                      </ng-container>
+                    </ng-template>
+                  </nz-input-group>
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzSpan]="10">TN nghề (%)</nz-form-label>
+                <nz-form-control [nzSpan]="14" [nzErrorTip]="errorTplAllowanceSeniorityJob">
+                  <nz-input-group nzSuffix="%">
+                    <input nz-input
+                      placeholder="TN nghề (%)"
+                      formControlName="allowanceSeniorityJob"
+                    />
+                    <ng-template #errorTplAllowanceSeniorityJob let-control>
+                      <ng-container *ngIf="control.hasError('required')">
+                        TN nghề (%) không để trống
+                      </ng-container>
+                      <ng-container *ngIf="control.hasError('min')">
+                        TN nghề (%) phải lớn hơn 0
+                      </ng-container>
+                      <ng-container *ngIf="control.hasError('max')">
+                        TN nghề (%) phải nhỏ hơn 100
+                      </ng-container>
+                      <ng-container *ngIf="control.hasError('pattern')">
+                        TN nghề (%) phải là số
+                      </ng-container>
+                    </ng-template>
+                  </nz-input-group>
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+          </div><!-- END ROW -->
+
+          <!-- ROW START -->
+          <div nz-row [nzGutter]="10">
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzSpan]="10">PC lương</nz-form-label>
+                <nz-form-control [nzSpan]="14" [nzErrorTip]="allowanceSalaryTpl">
+                  <nz-input-number
+                    placeholder="PC lương"
+                    formControlName="allowanceSalary"
+                    [nzFormatter]="formatterCurrency"
+                  ></nz-input-number>
+                  <ng-template #allowanceSalaryTpl let-control>
+                    <ng-container *ngIf="control.hasError('pattern')">
+                      PC lương phải là số
+                    </ng-container>
+                  </ng-template>
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzSpan]="10">Các khoản bổ sung</nz-form-label>
+                <nz-form-control [nzSpan]="14" [nzErrorTip]="allowanceAdditional">
+                  <nz-input-number
+                    placeholder="Các khoản bổ sung"
+                    formControlName="allowanceAdditional"
+                    [nzFormatter]="formatterCurrency"
+                  ></nz-input-number>
+                  <ng-template #allowanceAdditionalTpl let-control>
+                    <ng-container *ngIf="control.hasError('pattern')">
+                      PC lương phải là số
+                    </ng-container>
+                  </ng-template>
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzSpan]="10">PC CLBL</nz-form-label>
+                <nz-form-control [nzSpan]="14" [nzErrorTip]="allowanceOther">
+                  <nz-input-number
+                    placeholder="PC CLBL"
+                    formControlName="allowanceOther"
+                    [nzFormatter]="formatterCurrency"
+                  ></nz-input-number>
+                  <ng-template #allowanceOtherTpl let-control>
+                    <ng-container *ngIf="control.hasError('pattern')">
+                      PC CLBL phải là số
+                    </ng-container>
+                  </ng-template>
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+          </div><!-- END ROW -->
+
+          <h3 class="employee-form__group-title">Thông tin khác</h3>
+          <!-- ROW START -->
+          <div nz-row [nzGutter]="10">
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzSpan]="10">Mã số thuế TNCN</nz-form-label>
+                <nz-form-control [nzSpan]="14" [nzErrorTip]="mstncn">
+                  <input nz-input
+                    placeholder="Mã số thuế TNCN"
+                    formControlName="mstncn"
+                  />
+                  <ng-template #mstncnTpl let-control>
+                    <ng-container *ngIf="control.hasError('pattern')">
+                      Mã số thuế TNCN phải là số
+                    </ng-container>
+                  </ng-template>
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzSpan]="10">Số tài khoản</nz-form-label>
+                <nz-form-control [nzSpan]="14" [nzErrorTip]="bankAccount">
+                  <input nz-input
+                    placeholder="Số tài khoản"
+                    formControlName="bankAccount"
+                  />
+                  <ng-template #bankAccountTpl let-control>
+                    <ng-container *ngIf="control.hasError('pattern')">
+                      Số tài khoản phải là số
+                    </ng-container>
+                  </ng-template>
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzSpan]="10">Ngân hàng</nz-form-label>
+                <nz-form-control [nzSpan]="14">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="bankCode">
+                    <nz-option *ngFor="let bank of banks" [nzLabel]="bank.name" [nzValue]="bank.id"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+          </div><!-- END ROW -->
+
+          <!-- ROW START -->
+          <div nz-row [nzGutter]="10">
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzSpan]="10">Chủ tài khoản</nz-form-label>
+                <nz-form-control [nzSpan]="14">
+                  <input nz-input
+                    placeholder="Chủ tài khoản"
+                    formControlName="accountHolder"
+                    (keyup)="handleChangeAccountHolder()"
+                  />
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzSpan]="10">Tình trạng</nz-form-label>
+                <nz-form-control [nzSpan]="14">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="status">
+                    <nz-option *ngFor="let payment of paymentStatus" [nzLabel]="payment.name" [nzValue]="payment.id"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzSpan]="10">Thứ tự</nz-form-label>
+                <nz-form-control [nzSpan]="14" [nzErrorTip]="orders">
+                  <input nz-input
+                    placeholder="Thứ tự"
+                    formControlName="orders"
+                  />
+                  <ng-template #ordersTpl let-control>
+                    <ng-container *ngIf="control.hasError('pattern')">
+                      Số tài khoản phải là số
+                    </ng-container>
+                  </ng-template>
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+          </div><!-- END ROW -->
+        </nz-tab><!-- Tab 1 -->
+
+        <nz-tab nzTitle="Quá trình tham gia BHXH">
+          <h3 class="employee-form__group-title">Thông tin NLĐ</h3>
+          <!-- ROW START -->
+          <div class="employee-form__info">
+            <div class="employee-form__info-col">
+              Họ và tên: {{ fullName }}
+              <span class="employee-form__info-col-icon">
+                <i nz-icon nzType="user" nzTheme="outline"></i>
+              </span>
+            </div>
+            <div class="employee-form__info-col">
+              Ngày sinh: {{ birthday }}
+              <span class="employee-form__info-col-icon">
+                <i nz-icon nzType="calendar" nzTheme="outline"></i>
+              </span>
+            </div>
+            <div class="employee-form__info-col">
+              Mã số BHXH: {{ insurranceCode }}
+              <span class="employee-form__info-col-icon">
+                <i nz-icon nzType="file-text" nzTheme="outline"></i>
+              </span>
+            </div>
+          </div><!-- END ROW -->
+
+          <h3 class="employee-form__group-title">Thông tin quá trình tham gia BHXH</h3>
+          <div class="employee-form__process-table">
+            <app-employee-process-table
+              [data]="evolutionIsurrances"
+              [nestedHeaders]="tableNestedHeadersProcess"
+              [columns]="tableHeaderColumnsProcess"
+              [events]="processSubject.asObservable()"
+              (onChange)="handleChangeProcessTable($event)"
+              (onDelete)="handleDeleteProcessData($event)"
+            ></app-employee-process-table>
+          </div>
+        </nz-tab><!-- Tab 2 -->
+
+        <nz-tab nzTitle="Thành viên hộ gia đình">
+          <h3 class="employee-form__group-title">
+            Phụ lục: Thành viên hộ gia đình của NLĐ
+            <label class="employee-form__group-title--right" nz-checkbox (ngModelChange)="changeMaster($event)" formControlName="isMaster">NLĐ là chủ hộ</label>
+          </h3>
+          <!-- ROW START -->
+          <div nz-row [nzGutter]="10">
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Họ và tên chủ hộ</nz-form-label>
+                <nz-form-control [nzSpan]="14" nzErrorTip="Họ và tên chủ hộ không để trống">
+                  <input nz-input
+                    placeholder="Họ và tên chủ hộ"
+                    formControlName="relationshipFullName"
+                    (ngModelChange)="changeRelationshipFullName($event)"
+                  />
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzSpan]="10">Loại giấy tờ</nz-form-label>
+                <nz-form-control [nzSpan]="14">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="relationshipDocumentType">
+                    <nz-option *ngFor="let relationshipDocumentType of relationshipDocumentTypies" [nzLabel]="relationshipDocumentType.name" [nzValue]="relationshipDocumentType.id"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzSpan]="10">Số sổ hộ khẩu</nz-form-label>
+                <nz-form-control [nzSpan]="14" [nzErrorTip]="relationshipBookNoTpl">
+                  <input nz-input
+                    placeholder="Số sổ hộ khẩu"
+                    formControlName="relationshipBookNo"
+                  />
+                  <ng-template #relationshipBookNoTpl let-control>
+                    <ng-container *ngIf="control.hasError('maxlength')">
+                      Số sổ hộ khẩu chỉ được tối đa 50 ký tự
+                    </ng-container>
+                    <ng-container *ngIf="control.hasError('pattern')">
+                      Số sổ hộ khẩu liên hệ phải là ký tự hoặc số
+                    </ng-container>
+                  </ng-template>
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+          </div><!-- END ROW -->
+
+          <!-- ROW START -->
+          <div nz-row [nzGutter]="10">
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Tỉnh/TP</nz-form-label>
+                <nz-form-control [nzSpan]="14" nzErrorTip="Tỉnh/TP không để trống">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="relationshipCityCode"
+                  (ngModelChange)="changeRelationshipCities($event)">
+                    <nz-option *ngFor="let city of cities" [nzLabel]="city.name" [nzValue]="city.id"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Quận/huyện</nz-form-label>
+                <nz-form-control [nzSpan]="14" nzErrorTip="Quận/huyện không để trống">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn"
+                   formControlName="relationshipDistrictCode"
+                   (ngModelChange)="changeRelationshipDistrict($event)"
+                   >
+                    <nz-option *ngFor="let district of relationshipDistricts" [nzLabel]="district.name" [nzValue]="district.id"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Phường/xã</nz-form-label>
+                <nz-form-control [nzSpan]="14" nzErrorTip="Phường/xã không để trống">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn"
+                  formControlName="relationshipWardsCode"
+                  (ngModelChange)="changeRelationshipWards($event)"
+                  >
+                    <nz-option *ngFor="let ward of relationshipWards" [nzLabel]="ward.name" [nzValue]="ward.id"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+          </div><!-- END ROW -->
+
+          <!-- ROW START -->
+          <div nz-row [nzGutter]="10">
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzSpan]="10">Thôn (bản/tổ dân phố)</nz-form-label>
+                <nz-form-control [nzSpan]="14">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="relationshipVillageCode">
+                    <nz-option *ngFor="let village of relationshipVillages" [nzLabel]="village.name" [nzValue]="village.id"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzSpan]="10">Số điện thoại</nz-form-label>
+                <nz-form-control [nzSpan]="14" [nzErrorTip]="relationshipMobileTpl">
+                  <input nz-input
+                    placeholder="Số điện thoại"
+                    formControlName="relationshipMobile"
+                  />
+                  <ng-template #relationshipMobileTpl let-control>
+                    <ng-container *ngIf="control.hasError('maxlength')">
+                      Số điện thoại chỉ được tối đa 15 ký tự
+                    </ng-container>
+                    <ng-container *ngIf="control.hasError('pattern')">
+                      Số điện thoại phải là số
+                    </ng-container>
+                  </ng-template>
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+          </div><!-- END ROW -->
+
+          <h3 class="employee-form__group-title">Kê khai đầy đủ thành viên hộ gia đình trong sổ hộ khẩu hoặc sổ tạm trú</h3>
+          <div class="employee-form__family-table">
+            <app-employee-family-table
+              [data]="families"
+              [nestedHeaders]="tableNestedHeadersFamilies"
+              [columns]="tableHeaderColumnsFamilies"
+              [events]="familySubject.asObservable()"
+              (onChange)="handleChangeFamilyTable($event)"
+              (onDelete)="handleDeleteFamilyData($event)"
+            ></app-employee-family-table>
+          </div>
+        </nz-tab><!-- Tab 3 -->
+      </nz-tabset>
+    </form>
+  </div>
+  
+    <div class="employee-form__footer" *nzModalFooter>
+      <button class="employee-form__button-export" *ngIf="(employee.id) && !isSpinning" nz-button nzType="primary" (click)="download()">
+        Xuất KT1-TS
+      </button>
+      <button class="employee-form__button-save" nz-button nzType="primary" (click)="save()">
+        <i nz-icon nzType="save"></i>Lưu
+      </button>
+      <button class="employee-form__button-back" nz-button nzType="default" (click)="dismiss()">
+        <i nz-icon nzType="stop"></i>Quay lại
+      </button>
+    </div>
+  </nz-spin>
+</div>
