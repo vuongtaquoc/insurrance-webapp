@@ -844,12 +844,9 @@
             <div nz-row [nzGutter]="10">
               <div nz-col [nzSpan]="8">
                 <nz-form-item>
-                  <nz-form-label class="text-left" [nzSpan]="10">Thôn (bản/tổ dân phố)</nz-form-label>
+                  <nz-form-label class="text-left" [nzSpan]="10">Địa chỉ hộ khẩu</nz-form-label>
                   <nz-form-control [nzSpan]="14">
-                    <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="relationshipVillageCode">
-                      <nz-option *ngFor="let village of relationshipVillages" [nzLabel]="village.name"
-                        [nzValue]="village.id"></nz-option>
-                    </nz-select>
+                    <input nz-input placeholder="Địa chỉ hộ khẩu" formControlName="hourseAddress" />              
                   </nz-form-control>
                 </nz-form-item>
               </div><!-- col -->
@@ -866,6 +863,14 @@
                         Số điện thoại phải là số
                       </ng-container>
                     </ng-template>
+                  </nz-form-control>
+                </nz-form-item>
+              </div><!-- col -->
+              <div nz-col [nzSpan]="8">
+                <nz-form-item>
+                  <nz-form-label class="text-left" [nzSpan]="10">Mã số hộ gia đình</nz-form-label>
+                  <nz-form-control [nzSpan]="14">
+                    <input nz-input placeholder="Mã số hộ gia đình" formControlName="hourseCode" />              
                   </nz-form-control>
                 </nz-form-item>
               </div><!-- col -->
