@@ -501,11 +501,6 @@ export class TableEditorNormalComponent implements AfterViewInit, OnInit, OnDest
   }
 
   private async getHospitalsByCityCode(table, keyword, c, r) {
-    // const indexOfCloumnRecipientsCityCode= this.columns.findIndex(c => c.key === 'recipientsCityCode');
-    // const cityCode = table.getValueFromCoords(indexOfCloumnRecipientsCityCode, r);
-    // if (!cityCode) {
-    //   return [];
-    // }
     const cityCode = '';
     return await this.hospitalService.searchHospital(cityCode, keyword).toPromise();
   }

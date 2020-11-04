@@ -146,7 +146,11 @@ export const TABLE_HEADER_COLUMNS = [{
   type: 'text',
   width: 80,
   title: '(7)',
-  key: 'birthday'
+  fieldName: 'Ngày tháng năm sinh',
+  key: 'birthday',
+  validations: {
+    lessThanNow: true
+  }
 }, {
   type: 'checkbox',
   width: 35,

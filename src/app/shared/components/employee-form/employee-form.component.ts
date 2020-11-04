@@ -25,7 +25,6 @@ import {
   BankService,
   EmployeeService,
   DepartmentService,
-  VillageService,
   CategoryService,
   ExternalService,
 } from '@app/core/services';
@@ -58,6 +57,8 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
   paymentStatus: DropdownItem[] = [];
   paymentMethods: DropdownItem[] = [];
   relationships: DropdownItem[] = [];
+  contractTypes: DropdownItem[] = [];
+  workTypes: DropdownItem[] = [];
   banks: DropdownItem[] = [];
   hospitals: DropdownItem[] = [];
   relationshipDocumentTypies: DropdownItem[] = [];
@@ -96,7 +97,6 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
     private bankService: BankService,
     private employeeService: EmployeeService,
     private departmentService: DepartmentService,
-    private villageService: VillageService,
     private categoryService: CategoryService,
     private externalService: ExternalService,
   ) { }
@@ -106,7 +106,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
 
     this.employeeForm = this.formBuilder.group({
       fullName: [employee.fullName, Validators.required],
-      birthday: [employee.birthday ? employee.birthday.split('/').join('') : '', [Validators.required, validateLessThanEqualNowBirthday]],
+      birthday: [employee.birthday ? employee.birthday.split('/').join('') : '', [Validators.required,validateLessThanEqualNowBirthday]],
       typeBirthday: [employee.typeBirthday || '0'],
       gender: [employee.gender, Validators.required],
       nationalityCode: [employee.nationalityCode, Validators.required],
@@ -114,7 +114,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
       code: [employee.code, [Validators.required, Validators.maxLength(50), Validators.pattern(REGEX.ONLY_CHARACTER_NUMBER)]],
       departmentCode: employee.departmentCode,
       email: [employee.email, [Validators.pattern(REGEX.EMAIL)]],
-      company: [employee.company],
+      addressWorking: [employee.addressWorking],
       registerCityCode: [employee.registerCityCode, Validators.required],
       registerDistrictCode: [employee.registerDistrictCode, Validators.required],
       registerWardsCode: [employee.registerWardsCode, Validators.required],
@@ -131,19 +131,16 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
       contractNo: [employee.contractNo, [Validators.required, Validators.maxLength(100)]],
       dateSign: [employee.dateSign ? employee.dateSign.split('/').join('') : '', [Validators.required, validateDateSign]],
       levelWork: [employee.levelWork, Validators.required],
-
-      // Add new
-      companyType: [],
-      dateStart: [],
-      dateEnd: [],
-      positionType: [],
-      positionDateFrom: [],
-      positionDateTo: [],
-      dateForm: [],
-      dateTo: [],
-      hourseCode: [],
-      hourseAddress: [],
-      // End add new
+	    contractTypeCode: [employee.contractTypeCode],       
+      contractTypeFromDate: [employee.contractTypeFromDate ? employee.contractTypeFromDate.split('/').join('') : ''],
+      contractTypeToDate: [employee.contractTypeToDate ? employee.contractTypeToDate.split('/').join('') : ''],
+      workTypeCode: [employee.workTypeCode],
+      workTypeFromDate: [employee.workTypeFromDate ? employee.workTypeFromDate.split('/').join('') : ''],
+      workTypeToDate: [employee.workTypeToDate ? employee.workTypeToDate.split('/').join('') : ''],
+      careFromDate: [employee.careFromDate ? employee.careFromDate.split('/').join('') : ''],
+      careTypeToDate: [employee.careTypeToDate ? employee.careTypeToDate.split('/').join('') : ''],
+      relationFamilyNo: [employee.relationFamilyNo],
+      relationAddress: [employee.relationAddress],
       salary: [employee.salary, [Validators.required, Validators.pattern(REGEX.ONLY_NUMBER)]],
       ratio: [employee.ratio, [Validators.required, Validators.pattern(REGEX.ONLY_NUMBER)]],
       salaryAreaCode: [employee.salaryAreaCode, Validators.required],
@@ -196,21 +193,13 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
       this.hospitalService.searchHospital(employee.cityFirstRegistCode, ''),
       this.districtService.getDistrict(employee.relationshipCityCode),
       this.wardService.getWards(employee.relationshipDistrictCode),
-      this.villageService.getVillage(employee.relationshipWardsCode)
+      this.categoryService.getCategories('ContractType'),
+      this.categoryService.getCategories('WorkType')
     ];
-
-    // if (employee.registerCityCode) jobs.push(this.districtService.getDistrict(employee.registerCityCode));
-    // if (employee.registerDistrictCode) jobs.push(this.wardService.getWards(employee.registerDistrictCode));
-    // if (employee.recipientsCityCode) jobs.push(this.districtService.getDistrict(employee.recipientsCityCode));
-    // if (employee.recipientsDistrictCode) jobs.push(this.wardService.getWards(employee.recipientsDistrictCode));
-    // if (employee.cityFirstRegistCode) jobs.push(this.hospitalService.searchHospital(employee.cityFirstRegistCode,''));
-    // if (employee.relationshipCityCode) jobs.push(this.districtService.getDistrict(employee.relationshipCityCode));
-    // if (employee.relationshipDistrictCode) jobs.push(this.wardService.getWards(employee.relationshipDistrictCode));
-    // if (employee.relationshipWardsCode) jobs.push(this.villageService.getVillage(employee.relationshipWardsCode));
 
     forkJoin(jobs).subscribe(([cities, nationalities, peoples, salaryAreas, paymentStatus,
       paymentMethods, relationships, banks, departments, relationshipDocumentTypies, typeBirthdays,
-      registerDistricts, registerWards, recipientsDistricts, recipientsWards, hospitals, relationshipDistricts, relationshipWards, relationshipVillages]) => {
+      registerDistricts, registerWards, recipientsDistricts, recipientsWards, hospitals, relationshipDistricts, relationshipWards, contractTypes, workTypes]) => {
 
       this.nationalities = nationalities;
       this.peoples = peoples;
@@ -223,7 +212,8 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
       this.departments = departments;
       this.relationshipDocumentTypies = relationshipDocumentTypies;
       this.typeBirthdays = typeBirthdays;
-
+      this.contractTypes = contractTypes;
+      this.workTypes = workTypes;
       if (registerDistricts) this.registerDistricts = registerDistricts;
       if (registerWards) this.registerWards = registerWards;
       if (recipientsDistricts) this.recipientsDistricts = recipientsDistricts;
@@ -231,7 +221,6 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
       if (hospitals) this.hospitals = hospitals;
       if (relationshipDistricts) this.relationshipDistricts = relationshipDistricts;
       if (relationshipWards) this.relationshipWards = relationshipWards;
-      if (relationshipVillages) this.relationshipVillages = relationshipVillages;
       this.employeeForm.patchValue({
         peopleCode: peoples[0].id,
         nationalityCode: nationalities[0].id,
@@ -317,7 +306,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
     if (this.employeeForm.invalid) {
       this.modalService.error({
         nzTitle: 'Lỗi dữ liệu',
-        nzContent: 'Vui lòng kiểm tra trường dữ liệu được cảnh báo lỗi hoặc yêu cầu nhập'
+        nzContent: 'Vui lòng kiểm tra trường dữ liệu được cảnh báo lỗi hoặc yêu cầu nhập, trên tab thông tin [Thông tin NLD],[Quá trình tham gia BHXH],[Thành viên hộ gia đình]'
       });
 
       return;
@@ -343,6 +332,12 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
       ...this.employeeForm.value,
       birthday: getBirthDay(this.employeeForm.value.birthday, this.birthTypeOnlyYear, this.birthTypeOnlyYearMonth).format,
       dateSign: this.dateSign,
+      contractTypeFromDate: this.contractTypeFromDate,
+      contractTypeToDate:  this.contractTypeToDate,
+      workTypeFromDate: this.workTypeFromDate,
+      workTypeToDate: this.workTypeToDate,
+      careFromDate: this.careFromDate,
+      careTypeToDate: this.careTypeToDate,
       nationalityName: this.getNameOfDropdown(this.nationalities, this.employeeForm.value.nationalityCode),
       hospitalFirstRegistName: this.getNameOfDropdown(this.hospitals, this.employeeForm.value.hospitalFirstRegistCode),
       families: this.families.reduce(
@@ -617,7 +612,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
     if (!value) {
       return '';
     }
-    this.villageService.getVillage(value).subscribe(data => this.relationshipVillages = data);
+    
     this.bindingDataToGirdFamilies('wardsCode');
   }
 
@@ -795,6 +790,66 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
     const birth = getBirthDay(dateSign, false, false);
 
     return birth.format;
+  }
+
+  get contractTypeFromDate() {
+    const contractTypeFromDate = this.employeeForm.get('contractTypeFromDate').value;
+
+    if (!contractTypeFromDate) return '';
+
+    const dateconvert = getBirthDay(contractTypeFromDate, false, false);
+
+    return dateconvert.format;
+  }
+
+  get workTypeFromDate() {
+    const workTypeFromDate = this.employeeForm.get('workTypeFromDate').value;
+
+    if (!workTypeFromDate) return '';
+
+    const dateconvert = getBirthDay(workTypeFromDate, false, false);
+
+    return dateconvert.format;
+  }
+
+  get workTypeToDate() {
+    const workTypeToDate = this.employeeForm.get('workTypeToDate').value;
+
+    if (!workTypeToDate) return '';
+
+    const dateconvert = getBirthDay(workTypeToDate, false, false);
+
+    return dateconvert.format;
+  }
+
+  get contractTypeToDate() {
+    const contractTypeToDate = this.employeeForm.get('contractTypeToDate').value;
+
+    if (!contractTypeToDate) return '';
+
+    const dateconvert = getBirthDay(contractTypeToDate, false, false);
+
+    return dateconvert.format;
+  }
+
+  get careFromDate() {
+    const careFromDate = this.employeeForm.get('careFromDate').value;
+
+    if (!careFromDate) return '';
+
+    const dateconvert = getBirthDay(careFromDate, false, false);
+
+    return dateconvert.format;
+  }
+
+  get careTypeToDate() {
+    const careTypeToDate = this.employeeForm.get('careTypeToDate').value;
+
+    if (!careTypeToDate) return '';
+
+    const dateconvert = getBirthDay(careTypeToDate, false, false);
+
+    return dateconvert.format;
   }
 
 

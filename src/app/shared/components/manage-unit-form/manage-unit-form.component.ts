@@ -126,7 +126,7 @@ export class ManageUnitFormComponent implements OnInit, OnDestroy {
         if (this.checkDuplicateDepartment()) {
             return;
         }
-
+        
         if (this.form.invalid) {
             return;
         }
@@ -292,16 +292,15 @@ export class ManageUnitFormComponent implements OnInit, OnDestroy {
     checkDuplicateDepartment() {
         let isDup = false;
         let code_values = [];
-
         //iterate the source data
         for (let x of this.departments) {
 
-            if (x.code != "") {
-                if (code_values.indexOf(x.code) != -1) {
+            if (x.id != "") {
+                if (code_values.indexOf(x.id) != -1) {
                     isDup = true;
                     break;
                 } else {
-                    code_values.push(x.code)
+                    code_values.push(x.id)
                 }
             }
 

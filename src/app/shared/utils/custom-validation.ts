@@ -1,4 +1,4 @@
-import { FormControl } from '@angular/forms';
+import { FormControl, Form } from '@angular/forms';
 import * as moment from 'moment';
 
 import { REGEX } from '@app/shared/constant';
@@ -267,6 +267,8 @@ export function validateLessThanEqualNowBirthday(c: FormControl) {
   };
 }
 
+
+
 export function validateLessThanEqualNow(c: FormControl) {
   if (!c.value || !c.parent) return null;
 
@@ -297,6 +299,11 @@ export function validateLessThanEqualNow(c: FormControl) {
   };
 }
 
+export function validDate(c : FormControl) {
+  if (!c.value || !c.parent) return null;
+  const birthDay = getBirthDay(c.value, false, false);
+}
+
 export function validateDateSign(c: FormControl) {
   if (!c.value || !c.parent) return null;
 
@@ -305,6 +312,9 @@ export function validateDateSign(c: FormControl) {
   if (!birthDay) return null;
 
   const dateSign = getBirthDay(c.value, false, false);
+  if (!moment(dateSign.format, 'DD/MM/YYYY').isValid()) { 
+    return { datetimeInvalid: { valid: false } };
+  }
   const birthTypeOnlyYearMonth = c.parent.value.birthTypeOnlyYearMonth;
   const birthTypeOnlyYear = c.parent.value.birthTypeOnlyYear;
 

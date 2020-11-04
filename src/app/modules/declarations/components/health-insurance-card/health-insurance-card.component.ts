@@ -28,7 +28,8 @@ import {
   CategoryService,
   RelationshipService,
   VillageService,
-  FileUploadEmitter
+  FileUploadEmitter,
+  ExternalService
 } from '@app/core/services';
 import { DATE_FORMAT, DECLARATIONS, DOCUMENTBYPLANCODE } from '@app/shared/constant';
 import { eventEmitter } from '@app/shared/utils/event-emitter';
@@ -91,7 +92,7 @@ export class ReissueHealthCardComponent implements OnInit, OnDestroy {
   files: any[] = [];
   timer: any;
   status = 0;
-
+  isCheckIsuranceCode: boolean = false;
   constructor(
     private formBuilder: FormBuilder,
     private cityService: CityService,
@@ -112,6 +113,7 @@ export class ReissueHealthCardComponent implements OnInit, OnDestroy {
     private relationshipService: RelationshipService,
     private villageService: VillageService,
     private fileUploadEmitter: FileUploadEmitter,
+    private externalService: ExternalService,
   ) {
     this.getRecipientsDistrictsByCityCode = this.getRecipientsDistrictsByCityCode.bind(this);
     this.getRecipientsWardsByDistrictCode = this.getRecipientsWardsByDistrictCode.bind(this);
@@ -134,9 +136,9 @@ export class ReissueHealthCardComponent implements OnInit, OnDestroy {
     const date = new Date();
     this.currentCredentials = this.authenticationService.currentCredentials;
     this.form = this.formBuilder.group({
-      batch: [ '1',[Validators.required, Validators.pattern(REGEX.ONLY_NUMBER)] ],
-      month: [ date.getMonth() + 1 , [Validators.required, Validators.pattern(REGEX.ONLY_NUMBER)]],
-      year: [ date.getFullYear(), [Validators.required, Validators.pattern(REGEX.ONLY_NUMBER)] ]
+      batch: [ {value:'1', disabled: true },[Validators.required, Validators.pattern(REGEX.ONLY_NUMBER)] ],
+      month: [ date.getMonth() + 1 , [Validators.required,Validators.min(1), Validators.max(12), Validators.pattern(REGEX.ONLY_NUMBER)]],
+      year: [ date.getFullYear(), [Validators.required,Validators.min(1990), Validators.maxLength(4), Validators.pattern(REGEX.ONLY_NUMBER)]]
     });
     
     this.documentForm = this.formBuilder.group({
@@ -482,6 +484,13 @@ export class ReissueHealthCardComponent implements OnInit, OnDestroy {
       });
     }
 
+    if (!this.isCheckIsuranceCode) {
+      this.modalService.warning({
+        nzTitle: 'Đơn vị chưa kiểm tra Mã số BHXH và trạng thái của người tham gia'
+      });
+      return;
+    }
+
     this.tableSubject.next({type});
   }
 
@@ -577,10 +586,12 @@ export class ReissueHealthCardComponent implements OnInit, OnDestroy {
       declarationName: this.getDeclaration(this.declarationCode).value,
       documentStatus: 0,
       status: this.getStatus(event.type),
-      documentNo: number,
+      batch: number,
+      month,
+      year,
       submitter: this.submitter,
       mobile: this.mobile,
-      createDate: `01/0${ month }/${ year }`,
+      createDate: this.getDateOfDeclaration(month, year),
       totalNumberInsurance: this.totalNumberInsurance,
       totalCardInsurance: this.totalCardInsurance,
       documentDetail: event.data,
@@ -588,6 +599,16 @@ export class ReissueHealthCardComponent implements OnInit, OnDestroy {
       families: this.reformatFamilies(),
       files: this.files
     });
+  }
+
+  getDateOfDeclaration(month, year) {
+  
+    let monthOfDate = month;
+    if(month.length < 2) {
+      monthOfDate =  `0${ month }`;
+    }
+
+    return `01/${ monthOfDate }/${ year }`
   }
 
   private getStatus(type) {
@@ -622,6 +643,7 @@ export class ReissueHealthCardComponent implements OnInit, OnDestroy {
   handleChangeTable({ instance, cell, c, r, records }) {
     eventEmitter.emit('unsaved-changed');
     if (c !== null && c !== undefined) {
+      this.isCheckIsuranceCode = false;
       c = Number(c);
       const column = this.tableHeaderColumns[c];
 
@@ -755,32 +777,62 @@ export class ReissueHealthCardComponent implements OnInit, OnDestroy {
 
   checkInsurranceCode() {
     const declarations = [...this.declarations];
+    const INSURRANCE_FULLNAME_INDEX = 1;
     const INSURRANCE_CODE_INDEX = 3;
     const INSURRANCE_STATUS_INDEX = 4;
     const errors = {};
+    this.isCheckIsuranceCode = true;
+    const leafs = declarations.filter(d => d.isLeaf && d.data[INSURRANCE_CODE_INDEX]);
+    if(leafs.length > 0) {
+      this.isSpinning = true;
+    }
+   
+    forkJoin(
+      leafs.map(item => {        
+        const code = item.data[INSURRANCE_CODE_INDEX];
+        return this.externalService.getEmployeeByIsurranceCode(code);
+      })
+    ).subscribe(results => {
+      
+      declarations.forEach((declaration, rowIndex) => {
+        const code = declaration.data[INSURRANCE_CODE_INDEX];
+        const fullName = declaration.data[INSURRANCE_FULLNAME_INDEX];
+        if (code && declaration.isLeaf) {
 
-    declarations.forEach((declaration, rowIndex) => {
-      const code = declaration.data[INSURRANCE_CODE_INDEX];
+            const item = results.find(r => r.isurranceCodeCheck === code);
+            if (item.fullName === "" || item.fullName === undefined){
+                declaration.data[INSURRANCE_STATUS_INDEX] = `Không tìm thấy Mã số ${ declaration.data[INSURRANCE_CODE_INDEX] }`;
+                errors[rowIndex] = {
+                  col: INSURRANCE_CODE_INDEX,
+                  value: code,
+                  valid: false
+                };
+            } else if (item.fullName !==  fullName)
+            {
+              declaration.data[INSURRANCE_STATUS_INDEX] = `Sai họ tên. Mã số ${ declaration.data[INSURRANCE_CODE_INDEX] } của ${ item.fullName }`;
+              errors[rowIndex] = {
+                col: INSURRANCE_CODE_INDEX,
+                value: code,
+                valid: false
+              };
 
-      if (code && declaration.isLeaf) {
-        declaration.data[INSURRANCE_STATUS_INDEX] = `Không tìm thấy Mã số ${ declaration.data[INSURRANCE_CODE_INDEX] }`;
-
-        errors[rowIndex] = {
-          col: INSURRANCE_CODE_INDEX,
-          value: code,
-          valid: false
-        };
-      }
-    });
-
-    this.declarations = declarations;
-
-    setTimeout(() => {
-      this.validateSubject.next({
-        field: 'isurranceCode',
-        errors
+            } else 
+            {
+              declaration.data[INSURRANCE_STATUS_INDEX] = '';
+            }
+        }
+        
       });
-    }, 20);
+
+      this.declarations = declarations;
+      this.isSpinning = false;
+      setTimeout(() => {
+        this.validateSubject.next({
+          field: 'isurranceCode',
+          errors
+        });
+      }, 20);       
+    });
   }
 
   private updateOrders(declarations) {
@@ -1223,24 +1275,26 @@ export class ReissueHealthCardComponent implements OnInit, OnDestroy {
           
           this.employeeService.getEmployeeById(records[r].origin.employeeId).subscribe(emp => {
             this.updateNextColumns(instance, r, emp.fullName, [ c + 1]);
-            this.updateNextColumns(instance, r, emp.relationshipMobile, [ c + 2]);
-            this.updateNextColumns(instance, r, emp.relationshipDocumentType, [ c + 3]);
-            this.updateNextColumns(instance, r, emp.relationshipBookNo, [ c + 4]);
-            this.updateNextColumns(instance, r, emp.recipientsCityCode, [ c + 5]);
-            this.updateNextColumns(instance, r, emp.recipientsDistrictCode, [ c + 6]);
-            this.updateNextColumns(instance, r, emp.recipientsWardsCode, [ c + 7]);
-            this.updateNextColumns(instance, r, emp.fullName, [ c + 10]);
-            this.updateNextColumns(instance, r, emp.isurranceCode, [ c + 11]);
-            this.updateNextColumns(instance, r, emp.typeBirthday, [ c + 12]);
-            this.updateNextColumns(instance, r, emp.birthday, [ c + 13]);
-            this.updateNextColumns(instance, r, emp.gender, [ c + 14]);
-            this.updateNextColumns(instance, r, emp.nationalityCode, [ c + 15]);
-            this.updateNextColumns(instance, r, emp.peopleCode, [ c + 16]);
-            this.updateNextColumns(instance, r, emp.registerCityCode, [ c + 18]);
-            this.updateNextColumns(instance, r, emp.registerDistrictCode, [ c + 19]);
-            this.updateNextColumns(instance, r, emp.registerWardsCode, [ c + 20]);
-            this.updateNextColumns(instance, r, '00', [23]);
-            this.updateNextColumns(instance, r, emp.identityCar, [c + 22]);
+            this.updateNextColumns(instance, r, emp.familyNo, [ c + 2]);
+            this.updateNextColumns(instance, r, emp.mobile, [ c + 3]);
+            this.updateNextColumns(instance, r, emp.relationshipDocumentType, [ c + 4]);
+            this.updateNextColumns(instance, r, emp.relationshipBookNo, [ c + 5]);
+            this.updateNextColumns(instance, r, emp.relationshipCityCode , [ c + 6]);
+            this.updateNextColumns(instance, r, emp.relationshipDistrictCode, [ c + 7]);
+            this.updateNextColumns(instance, r, emp.relationshipWardsCode, [ c + 8]);
+            this.updateNextColumns(instance, r, emp.relationAddress, [ c + 9]);
+            this.updateNextColumns(instance, r, emp.fullName, [ c + 11]);
+            this.updateNextColumns(instance, r, emp.isurranceCode, [ c + 12]);
+            this.updateNextColumns(instance, r, emp.typeBirthday, [ c + 13]);
+            this.updateNextColumns(instance, r, emp.birthday, [ c + 14]);
+            this.updateNextColumns(instance, r, emp.gender, [ c + 15]);
+            this.updateNextColumns(instance, r, emp.nationalityCode, [ c + 16]);
+            this.updateNextColumns(instance, r, emp.peopleCode, [ c + 17]);
+            this.updateNextColumns(instance, r, emp.registerCityCode, [ c + 19]);
+            this.updateNextColumns(instance, r, emp.registerDistrictCode, [ c + 20]);
+            this.updateNextColumns(instance, r, emp.registerWardsCode, [ c + 21]);
+            this.updateNextColumns(instance, r, '00', [24]);
+            this.updateNextColumns(instance, r, emp.identityCar, [c + 23]);
             this.updateSelectedValueDropDown(columns, instance, r);
             });
 
@@ -1249,29 +1303,31 @@ export class ReissueHealthCardComponent implements OnInit, OnDestroy {
             const employeesInDeclaration = this.getEmployeeInDeclarations(this.declarations);
             const firstEmployee = employeesInDeclaration.find(f => f.employeeId === records[r].origin.employeeId);
             this.updateNextColumns(instance, r, firstEmployee.fullName, [ c + 1]);
-            this.updateNextColumns(instance, r, firstEmployee.recipientsCityCode, [ c + 5]);
-            this.updateNextColumns(instance, r, firstEmployee.recipientsDistrictCode, [ c + 6]);
-            this.updateNextColumns(instance, r, firstEmployee.recipientsWardsCode, [ c + 7]);
-            this.updateNextColumns(instance, r, firstEmployee.fullName, [ c + 10]);
-            this.updateNextColumns(instance, r, firstEmployee.isurranceCode, [ c + 11]);
-            this.updateNextColumns(instance, r, firstEmployee.typeBirthday, [ c + 12]);
-            this.updateNextColumns(instance, r, firstEmployee.birthday, [ c + 13]);
-            this.updateNextColumns(instance, r, firstEmployee.gender, [ c + 14]);
-            this.updateNextColumns(instance, r, firstEmployee.nationalityCode, [ c + 15]);
-            this.updateNextColumns(instance, r, firstEmployee.peopleCode, [ c + 16]);
-            this.updateNextColumns(instance, r, firstEmployee.identityCar, [c + 22]);
+            this.updateNextColumns(instance, r, firstEmployee.familyNo, [ c + 2]);
+            this.updateNextColumns(instance, r, firstEmployee.mobile, [ c + 3]);
+            this.updateNextColumns(instance, r, firstEmployee.recipientsCityCode, [ c + 6]);
+            this.updateNextColumns(instance, r, firstEmployee.recipientsDistrictCode, [ c + 7]);
+            this.updateNextColumns(instance, r, firstEmployee.recipientsWardsCode, [ c + 8]);
+            this.updateNextColumns(instance, r, firstEmployee.fullName, [ c + 11]);
+            this.updateNextColumns(instance, r, firstEmployee.isurranceCode, [ c + 12]);
+            this.updateNextColumns(instance, r, firstEmployee.typeBirthday, [ c + 13]);
+            this.updateNextColumns(instance, r, firstEmployee.birthday, [ c + 14]);
+            this.updateNextColumns(instance, r, firstEmployee.gender, [ c + 15]);
+            this.updateNextColumns(instance, r, firstEmployee.nationalityCode, [ c + 16]);
+            this.updateNextColumns(instance, r, firstEmployee.peopleCode, [ c + 17]);
+            this.updateNextColumns(instance, r, firstEmployee.identityCar, [c + 23]);
             this.updateSelectedValueDropDown(columns, instance, r);
             const nextRow = Number(r) + 1;
-            const fullNameNextRow = records[nextRow][c + 10];
+            const fullNameNextRow = records[nextRow][c + 11];
             if(fullNameNextRow === firstEmployee.fullName) {
-              this.updateNextColumns(instance, (Number(r) + 1), '', [ c + 10]);
+              this.updateNextColumns(instance, (Number(r) + 1), '', [ c + 11]);
             }
             
          
         }else if(employeeIsMaster === false && records[r].origin.employeeId > 0) {
           
           this.updateNextColumns(instance, r, '', [ c + 1 , c + 2, c + 3, c + 4, c + 5, c + 6, c + 7, c + 8,
-          c + 10, c + 11, c + 11,c + 12,c + 13,c + 14,c + 15,c + 16,c + 17,c + 18,c + 19,c + 20, c + 21, c + 22]);
+            c + 11, c + 11,c + 12,c + 13,c + 14,c + 15,c + 16,c + 17,c + 18,c + 19,c + 20, c + 21, c + 22, c + 23]);
   
           const value = instance.jexcel.getValueFromCoords(1, r);
           const numberColumn = this.tableHeaderColumnsFamilies.length;
@@ -1281,20 +1337,22 @@ export class ReissueHealthCardComponent implements OnInit, OnDestroy {
           const employeesInDeclaration = this.getEmployeeInDeclarations(this.declarations);
           const firstEmployee = employeesInDeclaration.find(f => f.employeeId === records[r].origin.employeeId);
           this.updateNextColumns(instance, r, '', [ c + 1 , c + 2, c + 3, c + 4, c + 5, c + 6, c + 7, c + 8,
-            c + 10, c + 11, c + 11,c + 12,c + 13,c + 14,c + 15,c + 16,c + 17,c + 18,c + 19,c + 20, c + 21, c + 22]);
+            c + 11, c + 11,c + 12,c + 13,c + 14,c + 15,c + 16,c + 17,c + 18,c + 19,c + 20, c + 21, c + 22, c + 23]);
 
           const value = instance.jexcel.getValueFromCoords(1, r);
           const numberColumn = this.tableHeaderColumnsFamilies.length;
           this.updateNextColumns(instance, r,value, [(numberColumn -1)]);
 
           const nextRow = Number(r) + 1;
-          const fullNameNextRow = records[nextRow][c + 10];
+          const fullNameNextRow = records[nextRow][c + 11];
           if(fullNameNextRow === '' || fullNameNextRow === undefined) {
-            this.updateNextColumns(instance, nextRow, firstEmployee.isurranceCode, [ c + 11]);
-            this.updateNextColumns(instance, nextRow, firstEmployee.typeBirthday, [ c + 12]);
-            this.updateNextColumns(instance, nextRow, firstEmployee.birthday, [ c + 13]);
-            this.updateNextColumns(instance, nextRow, firstEmployee.gender, [ c + 14]);
-            this.updateNextColumns(instance, nextRow, firstEmployee.fullName, [ c + 10]);
+            this.updateNextColumns(instance, nextRow, firstEmployee.fullName, [ c + 11]);
+            this.updateNextColumns(instance, nextRow, firstEmployee.isurranceCode, [ c + 12]);
+            this.updateNextColumns(instance, nextRow, firstEmployee.typeBirthday, [ c + 13]);
+            this.updateNextColumns(instance, nextRow, firstEmployee.birthday, [ c + 14]);
+            this.updateNextColumns(instance, nextRow, firstEmployee.gender, [ c + 15]);
+            this.updateNextColumns(instance, nextRow, firstEmployee.nationalityCode, [ c + 16]);
+            this.updateNextColumns(instance, nextRow, firstEmployee.peopleCode, [ c + 17]);
           }
         }
   
@@ -1305,9 +1363,9 @@ export class ReissueHealthCardComponent implements OnInit, OnDestroy {
   
         if(isSameAddress === true)
         {
-          this.updateNextColumns(instance, r, instance.jexcel.getValueFromCoords(7, r), [ c + 1]);
-          this.updateNextColumns(instance, r, instance.jexcel.getValueFromCoords(8, r), [ c + 2]);
-          this.updateNextColumns(instance, r, instance.jexcel.getValueFromCoords(9, r), [ c + 3]);
+          this.updateNextColumns(instance, r, instance.jexcel.getValueFromCoords(8, r), [ c + 1]);
+          this.updateNextColumns(instance, r, instance.jexcel.getValueFromCoords(9, r), [ c + 2]);
+          this.updateNextColumns(instance, r, instance.jexcel.getValueFromCoords(10, r), [ c + 3]);
           this.updateSelectedValueDropDown(columns, instance, r);
   
         } else {
@@ -1426,6 +1484,10 @@ export class ReissueHealthCardComponent implements OnInit, OnDestroy {
         master.isMaster = ep.isMaster;
         master.employeeName = ep.fullName;
         master.employeeId = ep.employeeId;
+        master.nationalityCode = ep.nationalityCode;
+        master.peopleCode = ep.peopleCode,
+        master.relationFamilyNo = ep.familyNo,
+        master.relationAddress = ep.relationAddress,
         master.relationshipMobile = ep.relationshipMobile;
         master.relationshipFullName = ep.relationshipFullName;
         master.relationshipBookNo = ep.relationshipBookNo;

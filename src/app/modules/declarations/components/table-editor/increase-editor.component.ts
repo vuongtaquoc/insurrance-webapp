@@ -820,28 +820,28 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
         instance.jexcel.validationCell(y, Number(cell) - 1, validationColumn.fieldName, validationColumn.validations);
       }
     } else if (column.key === 'birthday') {
-      const typeBirthday = this.spreadsheet.getValueFromCoords(Number(cell) - 1, y);
-      const validationColumn = this.columns[cell];
-      const result = validateLessThanEqualNowBirthdayGrid(cellValue, typeBirthday);
-      if(result) {
-        validationColumn.validations = {
-          required: true,
-          lessThan: true
-        };
-        validationColumn.fieldName = {
-          name: 'Ngày, tháng, năm sinh',
-          message: 'Ngày sinh phải nhỏ hơn hoặc bằng ngày hiện tại',
-        };
+      // const typeBirthday = this.spreadsheet.getValueFromCoords(Number(cell) - 1, y);
+      // const validationColumn = this.columns[cell];
+      //  const result = validateLessThanEqualNowBirthdayGrid(cellValue, typeBirthday);
+      // if(result) {
+      //   validationColumn.validations = {
+      //     required: true,
+      //     lessThan: true
+      //   };
+      //   validationColumn.fieldName = {
+      //     name: 'Ngày, tháng, năm sinh',
+      //     message: 'Ngày sinh phải nhỏ hơn hoặc bằng ngày hiện tại',
+      //   };
 
-        instance.jexcel.validationCell(y, cell, validationColumn.fieldName, validationColumn.validations);
-      }else {
-        validationColumn.validations = {
-          required: true
-        };
-        validationColumn.fieldName = 'Ngày, tháng, năm sinh';
-        // instance.jexcel.clearValidation(y, cell);
-        instance.jexcel.validationCell(y, cell, validationColumn.fieldName, validationColumn.validations);
-      }
+      //   instance.jexcel.validationCell(y, cell, validationColumn.fieldName, validationColumn.validations);
+      // }else {
+      //   validationColumn.validations = {
+      //     required: true
+      //   };
+      //   validationColumn.fieldName = 'Ngày, tháng, năm sinh';
+      //   // instance.jexcel.clearValidation(y, cell);
+      //   instance.jexcel.validationCell(y, cell, validationColumn.fieldName, validationColumn.validations);
+      // }
     }
     
     this.handleEvent({

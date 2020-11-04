@@ -8,7 +8,7 @@
       <nz-table class="table" #basicTable [nzData]="declarations" [nzShowPagination]="false"  [nzScroll]="{ y: '250px' }">
         <thead>
           <tr class="table__header">
-            <th nzWidth="50px" style="width: 50px" class="table__middle cell__header" nzShowCheckbox> </th>
+            <th nzWidth="50px" style="width: 50px" class="table__middle cell__header text-center">STT</th>
             <th nzWidth="150px" class="table__middle cell__header">Ngày gửi</th>
             <th class="table__middle cell__header">Giấy tờ đi kèm</th>
             <th nzWidth="80px" class="table__middle cell__header">Lần gửi</th>
@@ -17,8 +17,8 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let document of basicTable.data">
-            <td nzShowCheckbox></td>
+          <tr *ngFor="let document of basicTable.data;index as i">
+            <td class="text-center">{{i + 1}}</td>
             <td class="text-center table__middle">
               <span class="table__date">{{document.sendDate}}</span>
             </td>

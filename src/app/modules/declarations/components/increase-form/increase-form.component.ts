@@ -35,10 +35,10 @@ export class IncreaseFormComponent implements OnInit, OnChanges {
     ];
     
     this.form = this.formBuilder.group({
-      batch: [ '1',[Validators.required, Validators.pattern(REGEX.ONLY_NUMBER)] ],
-      quarter: [ '1',[Validators.required, Validators.pattern(REGEX.ONLY_NUMBER)] ],
-      month: [ date.getMonth() + 1 , [Validators.required, Validators.pattern(REGEX.ONLY_NUMBER)]],
-      year: [ date.getFullYear(), [Validators.required, Validators.pattern(REGEX.ONLY_NUMBER)] ]
+      batch: [ {value:'1', disabled: true },[Validators.required, Validators.pattern(REGEX.ONLY_NUMBER)] ],
+      quarter: [ '1',[Validators.required,Validators.required,Validators.min(1), Validators.max(4), Validators.pattern(REGEX.ONLY_NUMBER)] ],
+      month: [ date.getMonth() + 1 , [Validators.required,Validators.min(1), Validators.max(12), Validators.pattern(REGEX.ONLY_NUMBER)]],
+      year: [ date.getFullYear(), [Validators.required,Validators.min(1990), Validators.maxLength(4), Validators.pattern(REGEX.ONLY_NUMBER)]]
     });
 
     this.formChanges();

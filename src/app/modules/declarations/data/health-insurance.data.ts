@@ -66,6 +66,7 @@ export const TABLE_HEADER_COLUMNS = [{
   title: '(3)',
   key: 'isurranceNo',
   fieldName: 'Số số BHXH',
+  
   // warnings: {
   //   duplicateUserFields: {
   //     primary: 'isurranceNo',
@@ -74,7 +75,8 @@ export const TABLE_HEADER_COLUMNS = [{
   // },
   validations: {
     required: true,
-    duplicate: true
+    duplicate: true,
+    numberLength: 10
   }
 }, {
   type: 'numeric',

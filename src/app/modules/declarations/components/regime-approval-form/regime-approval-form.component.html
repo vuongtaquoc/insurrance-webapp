@@ -34,11 +34,11 @@
                   <ng-container *ngIf="control.hasError('pattern')">
                     <p class="regime-approval-form__error">Tháng kê khai phải số</p>
                   </ng-container>
-                  <ng-container class="regime-approval-form__error" *ngIf="control.hasError('min')">
-                    Tháng phải lớn hơn 0
+                  <ng-container class="regime-approval-form__error" *ngIf="control.hasError('min')">                  
+                    <p class="regime-approval-form__error">  Tháng phải lớn hơn 0</p>
                   </ng-container>
                   <ng-container class="regime-approval-form__error" *ngIf="control.hasError('max')">
-                    Tháng phải nhỏ hơn 12
+                      <p class="regime-approval-form__error"> Tháng phải nhỏ hơn 12</p>
                   </ng-container>
                 </ng-template>
               </nz-form-control>
@@ -61,7 +61,7 @@
                     <p class="regime-approval-form__error">Năm kê khai tối đa 4 ký tự</p>
                   </ng-container>
                   <ng-container class="regime-approval-form__error" *ngIf="control.hasError('min')">
-                    <p class="regime-approval-form__error">Năm kê khai tối thiểu 4 ký tự </p>
+                    <p class="regime-approval-form__error">Năm kê khai phải lớn hơn 1990</p>
                   </ng-container>
                 </ng-template>
               </nz-form-control>

@@ -135,10 +135,9 @@
               <div nz-row [nzGutter]="10">
                 <div nz-col [nzSpan]="24">
                   <nz-form-item>
-                    <nz-form-label class="text-left mg-r-10" [nzSpan]="3">Nơi làm việc:</nz-form-label>
+                    <nz-form-label class="text-left mg-r-10" [nzSpan]="3">Nơi làm việc</nz-form-label>
                     <nz-form-control [nzSpan]="21">
-                      <input nz-input placeholder="Nơi làm việc" formControlName="company"
-                        (keyup)="handleUpperCase('code')" />
+                      <input nz-input placeholder="Nơi làm việc" formControlName="addressWorking" />
                     </nz-form-control>
                   </nz-form-item>
                 </div><!-- col -->
@@ -383,6 +382,9 @@
                         <ng-container *ngIf="control.hasError('greaterThanBirthday')">
                           Ngày ký phải lớn hơn ngày sinh
                         </ng-container>
+                        <ng-container *ngIf="control.hasError('datetimeInvalid')">
+                          Ngày ký không hợp lệ
+                        </ng-container>
                       </ng-template>
                     </nz-form-control>
                   </nz-form-item>
@@ -403,9 +405,9 @@
                   <nz-form-item>
                     <nz-form-label class="text-left" [nzSpan]="10">Loại hợp đồng</nz-form-label>
                     <nz-form-control [nzSpan]="14">
-                      <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="companyType">
-                        <nz-option *ngFor="let companyType of companyTypes" [nzLabel]="companyType.name"
-                          [nzValue]="companyType.id"></nz-option>
+                      <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="contractTypeCode">
+                        <nz-option *ngFor="let contractType of contractTypes" [nzLabel]="contractType.name"
+                          [nzValue]="contractType.id"></nz-option>
                       </nz-select>
                     </nz-form-control>
                   </nz-form-item>
@@ -414,7 +416,7 @@
                   <nz-form-item>
                     <nz-form-label class="text-left" [nzSpan]="10">Ngày bắt đầu</nz-form-label>
                     <nz-form-control [nzSpan]="14">
-                      <input nz-input placeholder="Ngày bắt đầu" formControlName="dateStart" mask="00/00/0000"
+                      <input nz-input placeholder="Ngày bắt đầu" formControlName="contractTypeFromDate" mask="00/00/0000"
                         [showMaskTyped]="true" [validation]="true" [clearIfNotMatch]="true" />
                     </nz-form-control>
                   </nz-form-item>
@@ -423,7 +425,7 @@
                   <nz-form-item>
                     <nz-form-label class="text-left" [nzSpan]="10">Ngày kết thúc</nz-form-label>
                     <nz-form-control [nzSpan]="14">
-                      <input nz-input placeholder="Ngày kết thúc" formControlName="dateEnd" mask="00/00/0000"
+                      <input nz-input placeholder="Ngày kết thúc" formControlName="contractTypeToDate" mask="00/00/0000"
                         [showMaskTyped]="true" [validation]="true" [clearIfNotMatch]="true" />
                     </nz-form-control>
                   </nz-form-item>
@@ -436,29 +438,29 @@
               <div nz-row [nzGutter]="10">
                 <div nz-col [nzSpan]="8">
                   <nz-form-item>
-                    <nz-form-label class="text-left" [nzSpan]="10">Loại: </nz-form-label>
+                    <nz-form-label class="text-left" [nzSpan]="10">Loại</nz-form-label>
                     <nz-form-control [nzSpan]="14">
-                      <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="positionType">
-                        <nz-option *ngFor="let positionType of positionTypes" [nzLabel]="positionType.name"
-                          [nzValue]="positionType.id"></nz-option>
+                      <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="workTypeCode">
+                        <nz-option *ngFor="let workType of workTypes" [nzLabel]="workType.name"
+                          [nzValue]="workType.id"></nz-option>
                       </nz-select>
                     </nz-form-control>
                   </nz-form-item>
                 </div><!-- col -->
                 <div nz-col [nzSpan]="8">
                   <nz-form-item>
-                    <nz-form-label class="text-left" [nzSpan]="10">Từ ngày: </nz-form-label>
+                    <nz-form-label class="text-left" [nzSpan]="10">Từ ngày </nz-form-label>
                     <nz-form-control [nzSpan]="14">
-                      <input nz-input placeholder="Từ ngày" formControlName="positionDateFrom" mask="00/00/0000"
+                      <input nz-input placeholder="Từ ngày" formControlName="workTypeFromDate" mask="00/00/0000"
                         [showMaskTyped]="true" [validation]="true" [clearIfNotMatch]="true" />
                     </nz-form-control>
                   </nz-form-item>
                 </div><!-- col -->
                 <div nz-col [nzSpan]="8">
                   <nz-form-item>
-                    <nz-form-label class="text-left" [nzSpan]="10">Đến ngày: </nz-form-label>
+                    <nz-form-label class="text-left" [nzSpan]="10">Đến ngày </nz-form-label>
                     <nz-form-control [nzSpan]="14">
-                      <input nz-input placeholder="Đến ngày" formControlName="positionDateTo" mask="00/00/0000"
+                      <input nz-input placeholder="Đến ngày" formControlName="workTypeToDate" mask="00/00/0000"
                         [showMaskTyped]="true" [validation]="true" [clearIfNotMatch]="true" />
                     </nz-form-control>
                   </nz-form-item>
@@ -471,18 +473,18 @@
               <div nz-row [nzGutter]="10">
                 <div nz-col [nzSpan]="8">
                   <nz-form-item>
-                    <nz-form-label class="text-left" [nzSpan]="10">Từ ngày: </nz-form-label>
+                    <nz-form-label class="text-left" [nzSpan]="10">Từ ngày </nz-form-label>
                     <nz-form-control [nzSpan]="14">
-                      <input nz-input placeholder="Từ ngày" formControlName="dateFrom" mask="00/00/0000"
+                      <input nz-input placeholder="Từ ngày" formControlName="careFromDate" mask="00/00/0000"
                         [showMaskTyped]="true" [validation]="true" [clearIfNotMatch]="true" />
                     </nz-form-control>
                   </nz-form-item>
                 </div><!-- col -->
                 <div nz-col [nzSpan]="8">
                   <nz-form-item>
-                    <nz-form-label class="text-left" [nzSpan]="10">Đến ngày: </nz-form-label>
+                    <nz-form-label class="text-left" [nzSpan]="10">Đến ngày </nz-form-label>
                     <nz-form-control [nzSpan]="14">
-                      <input nz-input placeholder="Đến ngày" formControlName="dateTo" mask="00/00/0000"
+                      <input nz-input placeholder="Đến ngày" formControlName="careTypeToDate" mask="00/00/0000"
                         [showMaskTyped]="true" [validation]="true" [clearIfNotMatch]="true" />
                     </nz-form-control>
                   </nz-form-item>
@@ -846,7 +848,7 @@
                 <nz-form-item>
                   <nz-form-label class="text-left" [nzSpan]="10">Địa chỉ hộ khẩu</nz-form-label>
                   <nz-form-control [nzSpan]="14">
-                    <input nz-input placeholder="Địa chỉ hộ khẩu" formControlName="hourseAddress" />              
+                    <input nz-input placeholder="Địa chỉ hộ khẩu" formControlName="relationAddress" />              
                   </nz-form-control>
                 </nz-form-item>
               </div><!-- col -->
@@ -870,7 +872,7 @@
                 <nz-form-item>
                   <nz-form-label class="text-left" [nzSpan]="10">Mã số hộ gia đình</nz-form-label>
                   <nz-form-control [nzSpan]="14">
-                    <input nz-input placeholder="Mã số hộ gia đình" formControlName="hourseCode" />              
+                    <input nz-input placeholder="Mã số hộ gia đình" formControlName="relationFamilyNo" />              
                   </nz-form-control>
                 </nz-form-item>
               </div><!-- col -->

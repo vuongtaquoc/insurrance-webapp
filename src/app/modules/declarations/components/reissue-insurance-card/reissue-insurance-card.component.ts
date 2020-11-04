@@ -123,9 +123,9 @@ export class ReissueInsuranceCardComponent implements OnInit, OnDestroy {
     const date = new Date();
     this.currentCredentials = this.authenticationService.currentCredentials;
     this.form = this.formBuilder.group({
-      batch: [ '1',[Validators.required, Validators.pattern(REGEX.ONLY_NUMBER)] ],
-      month: [ date.getMonth() + 1 , [Validators.required, Validators.pattern(REGEX.ONLY_NUMBER)]],
-      year: [ date.getFullYear(), [Validators.required, Validators.pattern(REGEX.ONLY_NUMBER)] ]
+      batch: [{value:'1', disabled: true },[Validators.required, Validators.pattern(REGEX.ONLY_NUMBER)] ],
+      month: [ date.getMonth() + 1 , [Validators.required,Validators.min(1), Validators.max(12), Validators.pattern(REGEX.ONLY_NUMBER)]],
+      year: [ date.getFullYear(), [Validators.required,Validators.min(1990), Validators.maxLength(4), Validators.pattern(REGEX.ONLY_NUMBER)] ]
     });
     
     this.documentForm = this.formBuilder.group({
@@ -553,10 +553,12 @@ export class ReissueInsuranceCardComponent implements OnInit, OnDestroy {
       declarationName: this.getDeclaration(this.declarationCode).value,
       documentStatus: 0,
       status: this.getStatus(event.type),
-      documentNo: number,
+      batch: number,
+      month,
+      year,
       submitter: this.submitter,
       mobile: this.mobile,
-      createDate: `01/0${ month }/${ year }`,
+      createDate: this.getDateOfDeclaration(month, year),
       totalNumberInsurance: this.totalNumberInsurance,
       totalCardInsurance: this.totalCardInsurance,
       documentDetail: event.data,
@@ -564,6 +566,16 @@ export class ReissueInsuranceCardComponent implements OnInit, OnDestroy {
       files: this.files
     });
     this.isSpinning = false;
+  }
+
+  getDateOfDeclaration(month, year) {
+  
+    let monthOfDate = month;
+    if(month.length < 2) {
+      monthOfDate =  `0${ month }`;
+    }
+
+    return `01/${ monthOfDate }/${ year }`
   }
 
   private getStatus(type) {

@@ -29,9 +29,9 @@ export class RegimeApprovalFormComponent implements OnInit, OnChanges {
     const date = new Date();
     this.loadTypeDocumentAttach();
     this.form = this.formBuilder.group({
-      batch: ['1', Validators.required],
-      month: [ date.getMonth() + 1, [Validators.required,Validators.min(0), Validators.max(12), Validators.pattern(REGEX.ONLY_NUMBER_INCLUDE_DECIMAL)] ],
-      year: [ date.getFullYear(), [Validators.required,Validators.min(1000), Validators.maxLength(4),Validators.pattern(REGEX.ONLY_NUMBER_INCLUDE_DECIMAL)] ],
+      batch: [{value:'1', disabled: true }, Validators.required],
+      month: [ date.getMonth() + 1, [Validators.required,Validators.min(1), Validators.max(12), Validators.pattern(REGEX.ONLY_NUMBER_INCLUDE_DECIMAL)] ],
+      year: [ date.getFullYear(), [Validators.required,Validators.min(1990), Validators.maxLength(4),Validators.pattern(REGEX.ONLY_NUMBER_INCLUDE_DECIMAL)] ],
       bankAccount: [''],
       openAddress: [''],
       branch: [''],

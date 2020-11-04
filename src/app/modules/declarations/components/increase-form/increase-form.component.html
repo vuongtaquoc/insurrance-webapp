@@ -23,12 +23,18 @@
       <!-- <input nz-input formControlName="month"> -->
       <input nz-input formControlName="month">
       <ng-template #monthTpl let-control>
-        <ng-container *ngIf="control.hasError('required')">
-          <p class="regime-approval-form__error">Tháng tờ khai không để trống</p>
-        </ng-container>
-        <ng-container *ngIf="control.hasError('pattern')">
-          <p class="regime-approval-form__error">Tháng tờ khai phải số</p>
-        </ng-container>
+          <ng-container *ngIf="control.hasError('required')">
+              <p class="regime-approval-form__error">Tháng tờ khai không để trống</p>
+            </ng-container>
+            <ng-container *ngIf="control.hasError('min')">
+              <p class="regime-approval-form__error"> Tháng phải lơn hơn 0</p>
+            </ng-container>
+            <ng-container *ngIf="control.hasError('max')">
+                <p class="regime-approval-form__error">Tháng phải nhỏ hơn hoặc bằng 12</p>
+            </ng-container>
+            <ng-container *ngIf="control.hasError('pattern')">
+              <p class="regime-approval-form__error">Tháng tờ khai phải số</p>
+            </ng-container>
       </ng-template>
     </nz-form-control>
   </nz-form-item>
@@ -41,6 +47,12 @@
         <ng-container *ngIf="control.hasError('required')">
           <p class="regime-approval-form__error">Quý khai không để trống</p>
         </ng-container>
+        <ng-container *ngIf="control.hasError('min')">
+            <p class="regime-approval-form__error"> Quý phải lơn hơn 0</p>
+          </ng-container>
+          <ng-container *ngIf="control.hasError('max')">
+              <p class="regime-approval-form__error">Quý phải nhỏ hơn hoặc bằng 4</p>
+          </ng-container>
         <ng-container *ngIf="control.hasError('pattern')">
           <p class="regime-approval-form__error">Quý tờ khai phải số</p>
         </ng-container>
@@ -53,12 +65,18 @@
       <!-- <input nz-input formControlName="year"> -->
       <input nz-input formControlName="year">
       <ng-template #yearTpl let-control>
-        <ng-container *ngIf="control.hasError('required')">
-          <p class="regime-approval-form__error">Năm tờ khai không để trống</p>
-        </ng-container>
-        <ng-container *ngIf="control.hasError('pattern')">
-          <p class="regime-approval-form__error">Năm tờ khai phải số</p>
-        </ng-container>
+          <ng-container *ngIf="control.hasError('required')">
+              <p class="regime-approval-form__error">Năm tờ khai không để trống</p>
+            </ng-container>
+            <ng-container *ngIf="control.hasError('pattern')">
+              <p class="regime-approval-form__error">Năm tờ khai phải số</p>
+            </ng-container>
+            <ng-container *ngIf="control.hasError('min')">
+                <p class="regime-approval-form__error"> Năm phải lơn hơn năm 1990</p>
+            </ng-container>
+            <ng-container *ngIf="control.hasError('maxlength')">
+                <p class="regime-approval-form__error"> Năm chỉ được tối đa 4 ký tự</p>
+            </ng-container>
       </ng-template>
     </nz-form-control>
   </nz-form-item>

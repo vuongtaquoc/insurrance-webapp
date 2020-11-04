@@ -14,7 +14,7 @@ export const TABLE_REDUCTION_NESTED_HEADERS = [
     { title: 'Số CMTNN/Hộ chiếu/Thẻ căn cước', rowspan: '3' }, 
     { title: 'Địa chỉ đăng ký giấy khai sinh', subtitle: 'hoặc nguyên quán hoặc HKTT hoặc tạm trú', colspan: '3', rowspan: '2' },
     { title: 'Địa chỉ nhận hồ sơ', subtitle: 'nơi sinh sống', colspan: '4', rowspan: '2' },
-	  { title: 'Vùng sinh sống', rowspan: '3' },
+	{ title: 'Vùng sinh sống', rowspan: '3' },
     { title: 'Vùng lương tối thiểu', rowspan: '3' },
     { title: 'Cấp bập, chức vụ, chức danh nghề', rowspan: '3' },
     { title: 'Vị trí làm việc', colspan: '3' },
@@ -126,7 +126,11 @@ export const TABLE_REDUCTION_HEADER_COLUMNS = [{
   type: 'text',
   width: 80,
   title: '(7)',
-  key: 'birthday'
+  fieldName: 'Ngày tháng năm sinh',
+  key: 'birthday',
+  validations: {
+    lessThanNow: true
+  }
 }, {
   type: 'checkbox',
   width: 35,
