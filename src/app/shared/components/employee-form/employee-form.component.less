@@ -3,6 +3,11 @@
 
   &__content {
     height: 100%;
+    .employee-form-info_content{
+      padding: 0 10px 0 0;
+      overflow-y: scroll;
+      height: 100%;
+    }
   }
 
   &__group-title {
@@ -50,7 +55,7 @@
   }
 
   &__family-table {
-    height: calc(100% - 192px);
+    height: calc(100% - 165px);
   }
 
   &__button-export {
@@ -90,7 +95,7 @@
   form,
   .ant-tabs {
     height: 100%;
-    overflow: visible;
+    //overflow: visible;
   }
 
   .ant-form-item {
@@ -102,7 +107,8 @@
   }
 
   .ant-tabs .ant-tabs-top-content {
-    height: calc(100% - 60px);
+    //height: calc(100% - 60px);
+    height: 480px;
   }
 
   .ant-radio-group,
@@ -128,6 +134,7 @@
 }
 
 .employee-modal {
+  overflow: hidden;
   .ant-modal {
     top: 20px;
     height: calc(100% - 40px);
@@ -159,9 +166,14 @@
   }
 
   .ant-modal-body {
-    height: calc(100% - 108px);
+    //height: calc(100% - 108px);
     overflow-y: auto;
     overflow-x: hidden;
     padding: 10px 20px;
   }
+}
+
+
+.mg-r-10{
+  margin-right: 10px;
 }

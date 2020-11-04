@@ -24,7 +24,7 @@
 
           <div nz-col [nzSpan]="4">
             <nz-form-item>
-              <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="13" [nzXXl]="11">Tháng</nz-form-label>
+              <nz-form-label class="text-right" [nzRequired]="true" [nzSpan]="13" [nzXXl]="11">Tháng</nz-form-label>
               <nz-form-control [nzSpan]="11" [nzXXl]="13" [nzErrorTip]="monthTpl">
                 <input nz-input nzSize="small" formControlName="month" (blur)="handleTrimValue('month')">
                 <ng-template #monthTpl let-control>
@@ -47,7 +47,7 @@
 
           <div nz-col [nzSpan]="4">
             <nz-form-item>
-              <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="12" [nzXXl]="10">Năm</nz-form-label>
+              <nz-form-label class="text-right" [nzRequired]="true" [nzSpan]="12" [nzXXl]="10">Năm</nz-form-label>
               <nz-form-control [nzSpan]="12" [nzXXl]="14" [nzErrorTip]="yearTpl">
                 <input nz-input nzSize="small" formControlName="year" (blur)="handleTrimValue('year')">
                 <ng-template #yearTpl let-control>
@@ -71,7 +71,7 @@
           <div nz-col [nzSpan]="9">
 
             <nz-form-item>
-              <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="13">Gửi kèm hồ sơ giấy</nz-form-label>
+              <nz-form-label class="text-right" [nzRequired]="true" [nzSpan]="13">Gửi kèm hồ sơ giấy</nz-form-label>
               <nz-form-control [nzSpan]="11" [nzErrorTip]="typeDocumentActtachTpl">
                 <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="typeDocumentActtach">
                   <nz-option *ngFor="let typeDocumentActtach of typeDocumentActtachs"
