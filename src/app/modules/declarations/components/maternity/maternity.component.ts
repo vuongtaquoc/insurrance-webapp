@@ -1,7 +1,7 @@
 import { Component, OnInit, OnChanges, OnDestroy } from '@angular/core';
 import { NzModalService } from 'ng-zorro-antd/modal';
 
-import { DeclarationService, CategoryService, BankService, PlanService } from '@app/core/services';
+import { DeclarationService, CategoryService, BankService, PlanService, EmployeeService } from '@app/core/services';
 
 import { RegimeApprovalBaseComponent } from '@app/modules/declarations/components/regime-approval/base.component';
 
@@ -24,9 +24,10 @@ export class MaternityComponent extends RegimeApprovalBaseComponent implements O
     protected categoryService: CategoryService,
     private bankService: BankService,
     private planService: PlanService,
-    protected modalService: NzModalService
+    protected modalService: NzModalService,
+    protected employeeService: EmployeeService,
   ) {
-    super(declarationService, modalService, categoryService);
+    super(declarationService, modalService, categoryService, employeeService);
   }
 
   ngOnInit() {

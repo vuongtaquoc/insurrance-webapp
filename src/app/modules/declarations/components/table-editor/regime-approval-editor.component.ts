@@ -239,7 +239,8 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
         isParent: d.isParent,
         formula: !!d.formula,
         planType: d.planType,
-        isInitialize: d.isInitialize
+        isInitialize: d.isInitialize,
+        groupObject: d.groupObject
       };
 
       data.push(d.data);
@@ -479,7 +480,6 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
 
   private updateCellReadonly() {
     const readonlyColumnIndex = this.columns.findIndex(c => !!c.checkReadonly);
-	  console.log(readonlyColumnIndex,'xxx');
 
     this.data.forEach((d, rowIndex) => {
       if (this.tableName === 'maternityPart1' && readonlyColumnIndex > -1) {
@@ -745,6 +745,14 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
         instance.jexcel.validationCell(y, Number(cell) + 1, bankAccountColumn.fieldName, bankAccountColumn.validations);
         instance.jexcel.validationCell(y, Number(cell) + 2, accountHolderColumn.fieldName, accountHolderColumn.validations);
         instance.jexcel.validationCell(y, Number(cell) + 3, bankCodeColumn.fieldName, bankCodeColumn.validations);
+
+        this.handleEvent({
+          type: 'validate',
+          part: '',
+          parentKey: '',
+          user: {}
+        });
+        
       }
     }, 50);
   }

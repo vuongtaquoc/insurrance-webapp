@@ -1,7 +1,7 @@
 import { Component, OnInit, OnChanges, OnDestroy } from '@angular/core';
 import { NzModalService } from 'ng-zorro-antd/modal';
 
-import { DeclarationService, BankService, CategoryService } from '@app/core/services';
+import { DeclarationService, BankService, CategoryService, EmployeeService } from '@app/core/services';
 
 import { RegimeApprovalBaseComponent } from '@app/modules/declarations/components/regime-approval/base.component';
 
@@ -20,9 +20,10 @@ export class HealthRecoveryComponent extends RegimeApprovalBaseComponent impleme
     protected declarationService: DeclarationService,
     private bankService: BankService,
     protected categoryService: CategoryService,
-    protected modalService: NzModalService
+    protected modalService: NzModalService,
+    protected employeeService: EmployeeService,
   ) {
-    super(declarationService, modalService, categoryService);
+    super(declarationService, modalService, categoryService, employeeService);
   }
 
   ngOnInit() {

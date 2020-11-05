@@ -407,6 +407,7 @@ export class GeneralBaseComponent {
         clearTimeout(this.timer);
         this.timer = setTimeout(() => {
           this.updateNextColumns(instance, r, '', [c + 4]);
+          instance.jexcel.setReadonly(2, 38);
         }, 10);
       }
       if (column.key === 'registerCityCode') {
@@ -578,14 +579,17 @@ export class GeneralBaseComponent {
       row.parent = beforeRow.parent;
       row.parentKey = beforeRow.parentKey;
       row.planType = beforeRow.planType;
+      row.groupObject = beforeRow.groupObject;
     } else if (!beforeRow.isLeaf && afterRow.isLeaf) {
       row.parent = afterRow.parent;
       row.parentKey = afterRow.parentKey;
       row.planType = afterRow.planType;
+      row.groupObject = afterRow.groupObject;
     } else if (beforeRow.isLeaf && afterRow.isLeaf) {
       row.parent = beforeRow.parent;
       row.parentKey = beforeRow.parentKey;
       row.planType = beforeRow.planType;
+      row.groupObject = beforeRow.groupObject;
     }
 
     declarations.splice(insertBefore ? rowNumber : rowNumber + 1, 0, row);
@@ -823,6 +827,7 @@ export class GeneralBaseComponent {
           parentKey: declaration.parentKey,
           key: declaration.key,
           planType: declaration.planType,
+          groupObject: declaration.groupObject,
         }
       };
 

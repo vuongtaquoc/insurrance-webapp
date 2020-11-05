@@ -124,12 +124,13 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   }
 }, {
   type: 'numeric',
+  align: 'right',
   width: 60,
   title: '(7.3)',
   key: 'regimeSum',
   sum: true,
   fieldName: 'Tổng số',
-  readOnly: true,
+  readOnly: false,//Không sét được gia trị khi trường bị readonly
   validations: {
     required: true,
     min: 1
@@ -153,7 +154,7 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   isCalendar: true,
   fieldName: 'Ngày sinh con',
   validations: {
-    greaterThanNow: true
+    lessThanNow: true
   }
 }, {
   type: 'numeric',
@@ -168,6 +169,7 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   width: 80,
   title: '(8.3)',
   key: 'childrenNumberSick',
+  align: 'right',
   sum: true,
 }, {
   type: 'dropdown',
@@ -321,11 +323,12 @@ export const TABLE_HEADER_COLUMNS_PART_2 = [{
   isCalendar: true
 }, {
   type: 'text',
+  align: 'right',
   width: 60,
   title: '(4.3)',
   key: 'regimeSum',
   sum: true,
-  readOnly: true,
+  readOnly: false,
   validations: {
     required: true,
     min: 1

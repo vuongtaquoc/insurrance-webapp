@@ -114,18 +114,12 @@
 
     <div [nzGutter]="5" style="width: 100%;" nz-row>
 
-
       <div nz-col [nzSpan]="15">
         <nz-form-item class="reason">
-          <nz-form-label [nzSpan]="9" class="text-left" [nzRequired]="true">Lý do giải trình (Đối với hồ sơ chậm muộn)
+          <nz-form-label [nzSpan]="9" class="text-left">Lý do giải trình (Đối với hồ sơ chậm muộn)
           </nz-form-label>
-          <nz-form-control class="reason-control" [nzSpan]="12" [nzErrorTip]="reasonTpl">
+          <nz-form-control class="reason-control" [nzSpan]="12">
             <input nz-input nzSize="small" formControlName="reason" (blur)="handleTrimValue('reason')" />
-            <ng-template #reasonTpl let-control>
-              <ng-container *ngIf="control.hasError('required')">
-                <p class="regime-approval-form__error">Lý do giải trình không được để trống</p>
-              </ng-container>
-            </ng-template>
           </nz-form-control>
         </nz-form-item>
       </div>

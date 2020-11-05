@@ -270,7 +270,8 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
         formula: !!d.formula,
         planType: d.planType,
         planDefault: d.planDefault,
-        isInitialize: d.isInitialize
+        isInitialize: d.isInitialize,
+        groupObject: d.groupObject
       };
 
       data.push(d.data);
@@ -279,8 +280,7 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
     this.spreadsheet.setData(data);
     this.spreadsheet.setReadonlyRowsTitle(readonlyIndexes, [0, 1]);
     this.spreadsheet.setReadonlyRowsFormula(formulaIndexes, formulaIgnoreIndexes);
-    this.spreadsheet.setReadonlyBlankRows(readonlyBlankRows);
-    // this.updateCellReadonly();
+    this.spreadsheet.setReadonlyBlankRows(readonlyBlankRows);     
     // update dropdown data
     data.forEach((row, rowIndex) => {
       this.columns.forEach((column, colIndex) => {
@@ -395,14 +395,7 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
       }
     }
   }
-
-  // private updateCellReadonly() {
-  //   const readonlyColumnIndex = this.columns.findIndex(c => !!c.checkReadonly);
-  //   this.data.forEach((d, rowIndex) => {
-  //     console.log(d);
-  //   });
-  // }
-
+  
   private updateSourceToColumn(key, sources) {
     const column = this.columns.find(c => c.key === key);
 

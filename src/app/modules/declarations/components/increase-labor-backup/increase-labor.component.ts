@@ -659,14 +659,17 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
       row.parent = beforeRow.parent;
       row.parentKey = beforeRow.parentKey;
       row.planType = beforeRow.planType;
+      row.groupObject = beforeRow.groupObject;
     } else if (!beforeRow.isLeaf && afterRow.isLeaf) {
       row.parent = afterRow.parent;
       row.parentKey = afterRow.parentKey;
       row.planType = afterRow.planType;
+      row.groupObject = afterRow.groupObject;
     } else if (beforeRow.isLeaf && afterRow.isLeaf) {
       row.parent = beforeRow.parent;
       row.parentKey = beforeRow.parentKey;
       row.planType = beforeRow.planType;
+      row.groupObject = beforeRow.groupObject;
     }
 
     // if (beforeRow.isInitialize) {

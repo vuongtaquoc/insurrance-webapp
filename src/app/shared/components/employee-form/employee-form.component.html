@@ -720,6 +720,93 @@
                   </button>
                 </div>
               </div><!-- END ROW -->
+              <h3 class="employee-form__group-title">Thông tin khác</h3>
+              <!-- ROW START -->
+              <div nz-row [nzGutter]="10">
+                <div nz-col [nzSpan]="8">
+                  <nz-form-item>
+                    <nz-form-label class="text-left" [nzSpan]="10">Mã số thuế TNCN</nz-form-label>
+                    <nz-form-control [nzSpan]="14" [nzErrorTip]="mstncn">
+                      <input nz-input
+                        placeholder="Mã số thuế TNCN"
+                        formControlName="mstncn"
+                      />
+                      <ng-template #mstncnTpl let-control>
+                        <ng-container *ngIf="control.hasError('pattern')">
+                          Mã số thuế TNCN phải là số
+                        </ng-container>
+                      </ng-template>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div><!-- col -->
+                <div nz-col [nzSpan]="8">
+                  <nz-form-item>
+                    <nz-form-label class="text-left" [nzSpan]="10">Số tài khoản</nz-form-label>
+                    <nz-form-control [nzSpan]="14" [nzErrorTip]="bankAccount">
+                      <input nz-input
+                        placeholder="Số tài khoản"
+                        formControlName="bankAccount"
+                      />
+                      <ng-template #bankAccountTpl let-control>
+                        <ng-container *ngIf="control.hasError('pattern')">
+                          Số tài khoản phải là số
+                        </ng-container>
+                      </ng-template>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div><!-- col -->
+                <div nz-col [nzSpan]="8">
+                  <nz-form-item>
+                    <nz-form-label class="text-left" [nzSpan]="10">Ngân hàng</nz-form-label>
+                    <nz-form-control [nzSpan]="14">
+                      <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="bankCode">
+                        <nz-option *ngFor="let bank of banks" [nzLabel]="bank.name" [nzValue]="bank.id"></nz-option>
+                      </nz-select>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div><!-- col -->
+              </div><!-- END ROW -->
+              <!-- ROW START -->
+              <div nz-row [nzGutter]="10">
+                <div nz-col [nzSpan]="8">
+                  <nz-form-item>
+                    <nz-form-label class="text-left" [nzSpan]="10">Chủ tài khoản</nz-form-label>
+                    <nz-form-control [nzSpan]="14">
+                      <input nz-input
+                        placeholder="Chủ tài khoản"
+                        formControlName="accountHolder"
+                        (keyup)="handleChangeAccountHolder()"
+                      />
+                    </nz-form-control>
+                  </nz-form-item>
+                </div><!-- col -->
+                <div nz-col [nzSpan]="8">
+                  <nz-form-item>
+                    <nz-form-label class="text-left" [nzSpan]="10">Tình trạng</nz-form-label>
+                    <nz-form-control [nzSpan]="14">
+                      <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="status">
+                        <nz-option *ngFor="let payment of paymentStatus" [nzLabel]="payment.name" [nzValue]="payment.id"></nz-option>
+                      </nz-select>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div><!-- col -->
+                <div nz-col [nzSpan]="8">
+                  <nz-form-item>
+                    <nz-form-label class="text-left" [nzSpan]="10">Thứ tự</nz-form-label>
+                    <nz-form-control [nzSpan]="14" [nzErrorTip]="orders">
+                      <input nz-input
+                        placeholder="Thứ tự"
+                        formControlName="orders"
+                      />
+                      <ng-template #ordersTpl let-control>
+                        <ng-container *ngIf="control.hasError('pattern')">
+                          Số tài khoản phải là số
+                        </ng-container>
+                      </ng-template>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div><!-- col -->
+              </div><!-- END ROW -->
             </div>
           </nz-tab><!-- Tab 1 -->
 

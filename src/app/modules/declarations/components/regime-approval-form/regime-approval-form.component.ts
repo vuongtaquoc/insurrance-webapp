@@ -36,7 +36,7 @@ export class RegimeApprovalFormComponent implements OnInit, OnChanges {
       openAddress: [''],
       branch: [''],
       typeDocumentActtach: ['', Validators.required],
-      reason: ['', Validators.required]
+      reason: ['']
     });
 
     this.handlers = [

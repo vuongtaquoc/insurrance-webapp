@@ -107,10 +107,11 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   }
 }, {
   type: 'numeric',
+  align: 'right',
   width: 60,
   title: '(6.3)',
   key: 'regimeSum',
-  readOnly: true,
+  readOnly: false,
   sum: true,
   fieldName: 'Tổng số ngày thực tế người lao động nghỉ việc trong kỳ đề nghị giải quyết',
   validations: {

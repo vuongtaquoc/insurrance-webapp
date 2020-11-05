@@ -130,6 +130,7 @@ export class DeclarationService {
         data: [ d.codeView, d.name ],
         hasLeaf: d.hasChildren,
         isOther: d.isOther,
+        groupObject: d.groupObject,
         isParent: true
       });
 
@@ -183,7 +184,8 @@ export class DeclarationService {
         data: [ d.codeView, d.name ],
         hasLeaf: d.hasChildren,
         isParent: true,
-        isOther: d.isOther
+        isOther: d.isOther,
+        groupObject: d.groupObject        
       };
 
       parts.part1.push({ ...data });
@@ -254,6 +256,7 @@ export class DeclarationService {
       isInitialize,
       planType: parent.planType,
       planDefault: parent.planDefault,
+      groupObject: parent.groupObject,
       data: tableHeaderColumns.map(column => {
         if (!column.key) return '';
 

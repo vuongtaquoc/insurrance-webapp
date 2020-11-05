@@ -1306,5 +1306,4 @@ private setDateToInformationList(records: any)
   private getFileByDeclarationCode(code) {
      console.log(this.files);
   }
-  
 }

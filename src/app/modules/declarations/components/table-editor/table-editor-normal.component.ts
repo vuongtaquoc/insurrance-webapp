@@ -253,7 +253,8 @@ export class TableEditorNormalComponent implements AfterViewInit, OnInit, OnDest
         isParent: d.isParent,
         planType: d.planType,
         formula: !!d.formula,
-        isInitialize: d.isInitialize
+        isInitialize: d.isInitialize,
+        groupObject: d.groupObject
       };
 
       data.push(d.data);

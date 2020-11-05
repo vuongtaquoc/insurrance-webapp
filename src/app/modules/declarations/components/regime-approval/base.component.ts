@@ -6,7 +6,7 @@ import findIndex from 'lodash/findIndex';
 import * as jexcel from 'jstable-editor/dist/jexcel.js';
 import * as moment from 'moment';
 
-import { CategoryService } from '@app/core/services';
+import { CategoryService, EmployeeService } from '@app/core/services';
 import { DATE_FORMAT } from '@app/shared/constant';
 
 import { eventEmitter } from '@app/shared/utils/event-emitter';
@@ -60,7 +60,8 @@ export class RegimeApprovalBaseComponent {
   constructor(
     protected declarationService: DeclarationService,
     protected modalService: NzModalService,
-    protected categoryService: CategoryService
+    protected categoryService: CategoryService,
+    protected employeeService: EmployeeService,
   ) {}
 
   initializeTableColumns(part, nested, columns) {
@@ -87,6 +88,9 @@ export class RegimeApprovalBaseComponent {
 
         // replace
         employee.gender = !employee.gender;
+        employee.bankCode = '';
+        employee.accountHolder = '';
+        employee.bankAccount = '';
 
         if (accepted) {
           if (declarations[childLastIndex].isInitialize) {
@@ -304,15 +308,27 @@ export class RegimeApprovalBaseComponent {
             regimeToDateValue = instance.jexcel.getValueFromCoords(c, r);
             totalColumn = c + 1;
           }
-
           if (regimeFromDateValue && regimeToDateValue) {
             const regimeFromDateMoment = moment(regimeFromDateValue, DATE_FORMAT.FULL);
             const regimeToDateMoment = moment(regimeToDateValue, DATE_FORMAT.FULL);
             const totalValue = regimeToDateMoment.diff(regimeFromDateMoment, 'days');
-
             instance.jexcel.setValueFromCoords(totalColumn, r, totalValue >= 0 ? totalValue + 1 : 0);
           }
         }, 100);
+      }else if(column.key ==='subsidizeReceipt') {
+       
+        const subsidizeReceipt = records[r][c];
+        if(subsidizeReceipt === 'ATM') {
+          this.updateBankAccountOfEmployee(instance, records, r, c);
+        }else {
+          clearTimeout(this.timer);
+          this.timer = setTimeout(() => {
+              this.updateNextColumns(instance, r, '', [ c + 1 ]);
+              this.updateNextColumns(instance, r, '', [ c + 2 ]);
+              this.updateNextColumns(instance, r, '', [ c + 3 ]);
+          }, 10);
+        }
+        
       }
     }
 
@@ -372,23 +388,18 @@ export class RegimeApprovalBaseComponent {
       row.parent = beforeRow.parent;
       row.parentKey = beforeRow.parentKey;
       row.planType = beforeRow.planType;
+      row.groupObject = beforeRow.groupObject;
     } else if (!beforeRow.isLeaf && afterRow.isLeaf) {
       row.parent = afterRow.parent;
       row.parentKey = afterRow.parentKey;
       row.planType = afterRow.planType;
+      row.groupObject = afterRow.groupObject;
     } else if (beforeRow.isLeaf && afterRow.isLeaf) {
       row.parent = beforeRow.parent;
       row.parentKey = beforeRow.parentKey;
       row.planType = beforeRow.planType;
+      row.groupObject = beforeRow.groupObject;
     }
-
-    // if (beforeRow.isInitialize) {
-    //   beforeRow.isInitialize = false;
-    // }
-
-    // if (afterRow.isInitialize) {
-    //   afterRow.isInitialize = false;
-    // }
 
     declarations.splice(insertBefore ? rowNumber : rowNumber + 1, 0, row);
 
@@ -577,6 +588,7 @@ export class RegimeApprovalBaseComponent {
           parentKey: declaration.parentKey,
           key: declaration.key,
           planType: declaration.planType,
+          groupObject: declaration.groupObject
         }
       };
 
@@ -600,5 +612,23 @@ export class RegimeApprovalBaseComponent {
     this.tableSubject.next({
       type: 'validate'
     });
+  }
+
+  protected updateBankAccountOfEmployee(instance: any,records: any, r: any, c: any) {
+   
+    const record = records[r];
+    if(!record.origin || !record.origin.employeeId) {
+      return;
+    }
+    
+    clearTimeout(this.timer);
+    this.timer = setTimeout(() => {
+      this.employeeService.getEmployeeById(record.origin.employeeId).subscribe(data => {
+        this.updateNextColumns(instance, r, data.bankAccount, [ c + 1 ]);
+        this.updateNextColumns(instance, r, data.accountHolder, [ c + 2 ]);
+        this.updateNextColumns(instance, r, data.bankCode, [ c + 3 ]);
+      })
+    }, 10);
+
   }
 }
