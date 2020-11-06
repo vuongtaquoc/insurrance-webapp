@@ -10,7 +10,7 @@ import { City, District, Wards } from '@app/core/models';
 import { EmployeeHospitalRegisterFormComponent } from './hospital-register-form.component';
 import { TABLE_FAMILIES_NESTED_HEADERS, TABLE_FAMILIES_HEADER_COLUMNS } from './family-table.data';
 import { TABLE_PROCESS_NESTED_HEADERS, TABLE_PROCESS_HEADER_COLUMNS } from './process-table.data';
-import { MIME_TYPE } from '@app/shared/constant';
+import { MIME_TYPE, ContactType } from '@app/shared/constant';
 import {
   CityService,
   DistrictService,
@@ -193,8 +193,8 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
       this.hospitalService.searchHospital(employee.cityFirstRegistCode, ''),
       this.districtService.getDistrict(employee.relationshipCityCode),
       this.wardService.getWards(employee.relationshipDistrictCode),
-      this.categoryService.getCategories('ContractType'),
-      this.categoryService.getCategories('WorkType')
+      this.categoryService.getCategories('contractType'),
+      this.categoryService.getCategories('workType')
     ];
 
     forkJoin(jobs).subscribe(([cities, nationalities, peoples, salaryAreas, paymentStatus,
@@ -986,6 +986,67 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
     this.hospitalService.searchHospital(cityCode, '').subscribe(data => {
       this.hospitals = data;
     });
+  }
+
+  changeContractType(event) {
+    if (event === ContactType.CT_HDKXDTH) {
+      this.employeeForm.patchValue({
+        contractTypeToDate: null,
+      });
+      this.employeeForm.controls['contractTypeToDate'].disable();
+    } else {
+      this.employeeForm.controls['contractTypeToDate'].enable();
+    }
+  }
+
+  handleSearchIsurranceCode(){
+    this.isSpinning = true;
+    const code = this.employeeForm.get('isurranceCode').value;
+    this.externalService.getEmployeeByIsurranceCode(code).subscribe(data => {
+      console.log(data);
+      this.setResultToFrom(data);
+      this.isSpinning = false;
+    });
+  }
+
+  setResultToFrom(result: any) {
+
+    if (result.fullName === '' || result.status !== '1') {
+       this.showDialogNotFound();
+    }
+
+    this.employeeForm.patchValue({
+      fullName: result.fullName,
+      identityCar: result.identityCar,
+      gender: result.gender,
+      birthday: this.buildBirthday(result.typeBirthday, result.birthday),
+      recipientsAddress: result.address,
+      typeBirthday: result.typeBirthday,
+      registerCityCode: result.recipientsCityCode,
+      registerDistrictCode: result.recipientsDistrictCode,
+      registerWardsCode: result.recipientsWardsCode,
+    });
+
+  }
+
+  private showDialogNotFound() {
+    this.modalService.warning({
+      nzTitle: 'Không tìm thấy mã số bảo hiểm cần tìm'
+    });
+  }
+
+  private buildBirthday(typeBirthday, birthday) {
+    let result = '';
+    if (typeBirthday === '0')
+    {
+      result = birthday.substr(6, 2) + birthday.substr(4, 2) + birthday.substr(0, 4);
+    } else if (typeBirthday === '1') {
+      result = birthday.substr(4, 2) + birthday.substr(0, 4);
+    } else {
+      result = birthday.substr(0, 4);
+    }
+
+    return result;
   }
 
 }

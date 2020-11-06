@@ -268,8 +268,13 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
     if (['maternityPart1', 'maternityPart2'].indexOf(this.tableName) > -1) {
       const parentKeys = ['II', 'III_1', 'III_2', 'III_3', 'IV', 'V_1', 'V_2', 'VI_1', 'VI_2', 'VII', 'VIII', 'IX'];
 
-      const childrenWeekOld = {
+      const childrenWeekOldValid = {
         required: true,
+        number: true,
+        min: 0,
+      };
+
+      const childrenWeekOld = {         
         number: true,
         min: 0,
       };
@@ -278,11 +283,11 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
       };
       const validationColumns: any = {
         'II': {
-          childrenWeekOld,
+          childrenWeekOldValid,
           planCode
         },
         'III_1': {
-          childrenWeekOld,
+          childrenWeekOldValid,
           planCode,
           childrenBirthday: {
             required: true,
@@ -290,25 +295,25 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
           }
         },
         'III_2': {
-          childrenWeekOld,
+          childrenWeekOldValid,
           planCode,
           childrenDayDead: {
             required: true
           }
         },
         'III_3': {
-          childrenWeekOld,
+          childrenWeekOldValid,
           planCode,
           motherDayDead: {
             required: true
           }
         },
         'IV': {
-          childrenWeekOld,
+          childrenWeekOldValid,
           planCode,
         },
         'V_1': {
-          childrenWeekOld,
+          childrenWeekOldValid,
           planCode,
           childrenBirthday: {
             required: true,
@@ -316,14 +321,14 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
           }
         },
         'V_2': {
-          childrenWeekOld,
+          childrenWeekOldValid,
           planCode,
           childrenDayDead: {
             required: true
           }
         },
         'VI_1': {
-          childrenWeekOld,
+          childrenWeekOldValid,
           planCode,
           childrenBirthday: {
             required: true,
@@ -331,19 +336,18 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
           }
         },
         'VI_2': {
-          childrenWeekOld,
+          childrenWeekOldValid,
           planCode,
           childrenDayDead: {
             required: true
           }
         },
         'VII': {
-          childrenWeekOld,
+          childrenWeekOldValid,
           planCode,
         },
         'VIII': {
           childrenWeekOld,
-          planCode
         },
         'IX': {
           childrenWeekOld,

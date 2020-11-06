@@ -137,6 +137,7 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   ignoreRequiredRow: ['VIII']
 }, {
   type: 'numeric',
+  lign: 'right',
   width: 60,
   title: '(6.4)',
   key: 'regimeSum',
@@ -145,7 +146,7 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
     required: true,
     min: 1
   },
-  readOnly: true,
+  readOnly: false,
   ignoreRequiredRow: ['VIII']
 }, {
   type: 'text',

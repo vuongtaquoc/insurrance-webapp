@@ -136,7 +136,6 @@ export class ReducingLaborComponent implements OnInit, OnDestroy {
               quarter: declarations.quarter,
               year: declarations.year,
           };
-
           this.declarationGeneral = {
             totalNumberInsurance: declarations.totalNumberInsurance,
             totalCardInsurance: declarations.totalCardInsurance

@@ -70,8 +70,8 @@ export class IncreaseComponent extends GeneralBaseComponent implements OnInit, O
       this.departmentService.getDepartments(),
       this.planService.getPlanShowCode('600'),
       this.categoryService.getCategories('livesAreaCode'),
-      this.categoryService.getCategories('WorkType'),
-      this.categoryService.getCategories('ContractType'),
+      this.categoryService.getCategories('workType'),
+      this.categoryService.getCategories('contractType'),
     ]).subscribe(([ peoples,nationalities, cities, salaryAreas,departments, plans,livesAreas, workTypes, contractType  ]) => {
       this.updateSourceToColumn(TABLE_HEADER_COLUMNS, 'peopleCode', peoples);
       this.updateSourceToColumn(TABLE_HEADER_COLUMNS, 'nationalityCode', nationalities);

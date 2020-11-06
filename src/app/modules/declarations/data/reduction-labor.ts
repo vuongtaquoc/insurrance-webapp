@@ -326,14 +326,15 @@ export const TABLE_REDUCTION_HEADER_COLUMNS = [{
   width: 100,
   title: '(22.4)',
   key: 'contractTypeFromDate',
-  fieldName: 'Ngày băt đầu',   
+  fieldName: 'Ngày băt đầu',
+  isCalendar: true
 },{
   type: 'text',
   width: 100,
   title: '(22.5)',
   key: 'contractTypeToDate',
   fieldName: 'Ngày kết thúc',
-  checkReadonly: true,
+  isCalendar: true
 }, {
   type: 'numeric',
   width: 80,

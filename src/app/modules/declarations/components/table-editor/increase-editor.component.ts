@@ -276,7 +276,6 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
 
       data.push(d.data);
     });
-
     this.spreadsheet.setData(data);
     this.spreadsheet.setReadonlyRowsTitle(readonlyIndexes, [0, 1]);
     this.spreadsheet.setReadonlyRowsFormula(formulaIndexes, formulaIgnoreIndexes);
@@ -601,13 +600,12 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
       const validationColumn = this.columns[cell];
 
       if (toDateValue && cellValue) {
-        const cellValueMoment = moment(cellValue, DATE_FORMAT.ONLY_MONTH_YEAR);
-        const toDateValueMoment = moment(toDateValue, DATE_FORMAT.ONLY_MONTH_YEAR);
+        const cellValueMoment = moment(cellValue, DATE_FORMAT.FULL);
+        const toDateValueMoment = moment(toDateValue, DATE_FORMAT.FULL);
         const isAfter = cellValueMoment.isAfter(toDateValueMoment);
 
         if (isAfter) {
           validationColumn.validations = {
-            required: true,
             lessThan: true
           };
           validationColumn.fieldName = {
@@ -618,7 +616,7 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
           instance.jexcel.validationCell(y, cell, validationColumn.fieldName, validationColumn.validations);
         } else {
           validationColumn.validations = {
-            required: true
+            required: false
           };
           validationColumn.fieldName = 'Từ ngày';
           // instance.jexcel.clearValidation(y, cell);
@@ -626,7 +624,7 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
         }
       } else {
         validationColumn.validations = {
-          required: true
+          required: false
         };
         validationColumn.fieldName = 'Từ ngày';
         // instance.jexcel.clearValidation(y, cell);
@@ -637,13 +635,12 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
       const validationColumn = this.columns[Number(cell) - 1];
 
       if (cellValue && fromDateValue) {
-        const cellValueMoment = moment(cellValue, DATE_FORMAT.ONLY_MONTH_YEAR);
-        const fromDateValueMoment = moment(fromDateValue, DATE_FORMAT.ONLY_MONTH_YEAR);
+        const cellValueMoment = moment(cellValue, DATE_FORMAT.FULL);        
+        const fromDateValueMoment = moment(fromDateValue, DATE_FORMAT.FULL);
         const isAfter = fromDateValueMoment.isAfter(cellValueMoment);
 
         if (isAfter) {
           validationColumn.validations = {
-            required: true,
             lessThan: true
           };
           validationColumn.fieldName = {
@@ -654,18 +651,18 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
           instance.jexcel.validationCell(y, Number(cell) - 1, validationColumn.fieldName, validationColumn.validations);
         } else {
           validationColumn.validations = {
-            required: true
+            required: false
           };
           validationColumn.fieldName = 'Từ ngày';
           // instance.jexcel.clearValidation(y, Number(cell) - 1);
           instance.jexcel.validationCell(y, Number(cell) - 1, validationColumn.fieldName, validationColumn.validations);
         }
       } else {
+
         validationColumn.validations = {
-          required: true
+          required: false
         };
         validationColumn.fieldName = 'Từ ngày';
-        // instance.jexcel.clearValidation(y, Number(cell) - 1);
         instance.jexcel.validationCell(y, Number(cell) - 1, validationColumn.fieldName, validationColumn.validations);
       }
     } else if (column.key === 'workTypeFromDate') {
@@ -673,13 +670,12 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
       const validationColumn = this.columns[cell];
 
       if (toDateValue && cellValue) {
-        const cellValueMoment = moment(cellValue, DATE_FORMAT.ONLY_MONTH_YEAR);
-        const toDateValueMoment = moment(toDateValue, DATE_FORMAT.ONLY_MONTH_YEAR);
+        const cellValueMoment = moment(cellValue, DATE_FORMAT.FULL);
+        const toDateValueMoment = moment(toDateValue, DATE_FORMAT.FULL);
         const isAfter = cellValueMoment.isAfter(toDateValueMoment);
 
         if (isAfter) {
           validationColumn.validations = {
-            required: true,
             lessThan: true
           };
           validationColumn.fieldName = {
@@ -690,7 +686,7 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
           instance.jexcel.validationCell(y, cell, validationColumn.fieldName, validationColumn.validations);
         } else {
           validationColumn.validations = {
-            required: true
+            required: false
           };
           validationColumn.fieldName = 'Từ ngày';
           // instance.jexcel.clearValidation(y, cell);
@@ -698,7 +694,7 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
         }
       } else {
         validationColumn.validations = {
-          required: true
+          required: false
         };
         validationColumn.fieldName = 'Từ ngày';
         // instance.jexcel.clearValidation(y, cell);
@@ -709,13 +705,12 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
       const validationColumn = this.columns[Number(cell) - 1];
 
       if (cellValue && fromDateValue) {
-        const cellValueMoment = moment(cellValue, DATE_FORMAT.ONLY_MONTH_YEAR);
-        const fromDateValueMoment = moment(fromDateValue, DATE_FORMAT.ONLY_MONTH_YEAR);
+        const cellValueMoment = moment(cellValue, DATE_FORMAT.FULL);
+        const fromDateValueMoment = moment(fromDateValue, DATE_FORMAT.FULL);
         const isAfter = fromDateValueMoment.isAfter(cellValueMoment);
 
         if (isAfter) {
           validationColumn.validations = {
-            required: true,
             lessThan: true
           };
           validationColumn.fieldName = {
@@ -726,7 +721,7 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
           instance.jexcel.validationCell(y, Number(cell) - 1, validationColumn.fieldName, validationColumn.validations);
         } else {
           validationColumn.validations = {
-            required: true
+            required: false
           };
           validationColumn.fieldName = 'Từ ngày';
           // instance.jexcel.clearValidation(y, Number(cell) - 1);
@@ -734,7 +729,7 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
         }
       } else {
         validationColumn.validations = {
-          required: true
+          required: false
         };
         validationColumn.fieldName = 'Từ ngày';
         // instance.jexcel.clearValidation(y, Number(cell) - 1);
@@ -745,14 +740,13 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
       const validationColumn = this.columns[cell];
 
       if (toDateValue && cellValue) {
-        const cellValueMoment = moment(cellValue, DATE_FORMAT.ONLY_MONTH_YEAR);
-        const toDateValueMoment = moment(toDateValue, DATE_FORMAT.ONLY_MONTH_YEAR);
+        const cellValueMoment = moment(cellValue, DATE_FORMAT.FULL);
+        const toDateValueMoment = moment(toDateValue, DATE_FORMAT.FULL);
         const isAfter = cellValueMoment.isAfter(toDateValueMoment);
 
         if (isAfter) {
           validationColumn.validations = {
-            required: true,
-            lessThan: true
+           lessThan: true
           };
           validationColumn.fieldName = {
             name: 'Từ ngày',
@@ -762,7 +756,7 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
           instance.jexcel.validationCell(y, cell, validationColumn.fieldName, validationColumn.validations);
         } else {
           validationColumn.validations = {
-            required: true
+            required: false
           };
           validationColumn.fieldName = 'Từ ngày';
           // instance.jexcel.clearValidation(y, cell);
@@ -770,7 +764,7 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
         }
       } else {
         validationColumn.validations = {
-          required: true
+          required: false
         };
         validationColumn.fieldName = 'Từ ngày';
         // instance.jexcel.clearValidation(y, cell);
@@ -781,13 +775,12 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
       const validationColumn = this.columns[Number(cell) - 1];
 
       if (cellValue && fromDateValue) {
-        const cellValueMoment = moment(cellValue, DATE_FORMAT.ONLY_MONTH_YEAR);
-        const fromDateValueMoment = moment(fromDateValue, DATE_FORMAT.ONLY_MONTH_YEAR);
+        const cellValueMoment = moment(cellValue, DATE_FORMAT.FULL);
+        const fromDateValueMoment = moment(fromDateValue, DATE_FORMAT.FULL);
         const isAfter = fromDateValueMoment.isAfter(cellValueMoment);
 
         if (isAfter) {
           validationColumn.validations = {
-            required: true,
             lessThan: true
           };
           validationColumn.fieldName = {
@@ -798,7 +791,7 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
           instance.jexcel.validationCell(y, Number(cell) - 1, validationColumn.fieldName, validationColumn.validations);
         } else {
           validationColumn.validations = {
-            required: true
+            required: false
           };
           validationColumn.fieldName = 'Từ ngày';
           // instance.jexcel.clearValidation(y, Number(cell) - 1);
@@ -806,7 +799,7 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
         }
       } else {
         validationColumn.validations = {
-          required: true
+          required: false
         };
         validationColumn.fieldName = 'Từ ngày';
         // instance.jexcel.clearValidation(y, Number(cell) - 1);

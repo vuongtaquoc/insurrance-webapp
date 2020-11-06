@@ -26,7 +26,7 @@ export class DeclarationSidebarComponent implements OnInit, OnDestroy {
   @Output() onUserDeleted: EventEmitter<any> = new EventEmitter();
   @Output() onUserAdded: EventEmitter<any> = new EventEmitter();
 
-  isSpinning: boolean;
+  isLoading: boolean;
   employeeSelected: any[] = [];
   employeeSubject: Subject<any> = new Subject<any>();
   private eventsSubscription: Subscription;
@@ -225,8 +225,7 @@ export class DeclarationSidebarComponent implements OnInit, OnDestroy {
   }
 
   private edit(selected) {
-    this.isSpinning = true;
-    eventEmitter.emit('loading:open', true);
+    this.isLoading = true;
 
     this.employeeService.getEmployeeById(selected.id).subscribe(employee => {
 
@@ -240,8 +239,8 @@ export class DeclarationSidebarComponent implements OnInit, OnDestroy {
           employee
         }
       });
-      this.isSpinning = false;
-      eventEmitter.emit('loading:open', false);
+
+      this.isLoading = false;
       modal.afterClose.subscribe(result => {
         if (!result) return;
 

@@ -248,7 +248,14 @@
                   <nz-form-item>
                     <nz-form-label class="text-left" [nzSpan]="10">Mã số BHXH</nz-form-label>
                     <nz-form-control [nzSpan]="14" [nzErrorTip]="errorTplInsurranceCode">
-                      <input nz-input placeholder="Mã số BHXH" formControlName="isurranceCode" />
+                        <nz-input-group nzSearch [nzAddOnAfter]="suffixButton">
+                            <input nz-input placeholder="Mã số BHXH" formControlName="isurranceCode"  placeholder="Tìm kiếm theo số sổ BHXH" /> 
+                        </nz-input-group>
+                        <ng-template #suffixButton>
+                            <button nz-button class="employee-form__button-search" (click)="handleSearchIsurranceCode()" nzSearch>Tra cứu
+                            </button>
+                        </ng-template>
+                     
                       <ng-template #errorTplInsurranceCode let-control>
                         <ng-container *ngIf="control.hasError('minlength')">
                           Mã số BHXH phải chứa 10 ký tự số
@@ -315,7 +322,7 @@
                 <div nz-col [nzSpan]="8">
                   <nz-form-item>
                     <nz-form-label class="text-left" [nzSpan]="10">Số sổ BHXH</nz-form-label>
-                    <nz-form-control [nzSpan]="14" [nzErrorTip]="isurranceNoTpl">
+                    <nz-form-control [nzSpan]="14" [nzErrorTip]="isurranceNoTpl">                      
                       <input nz-input placeholder="Số sổ BHXH" formControlName="isurranceNo" />
                       <ng-template #isurranceNoTpl let-control>
                         <ng-container *ngIf="control.hasError('maxlength')">
@@ -405,7 +412,7 @@
                   <nz-form-item>
                     <nz-form-label class="text-left" [nzSpan]="10">Loại hợp đồng</nz-form-label>
                     <nz-form-control [nzSpan]="14">
-                      <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="contractTypeCode">
+                      <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" (ngModelChange)="changeContractType($event)" formControlName="contractTypeCode">
                         <nz-option *ngFor="let contractType of contractTypes" [nzLabel]="contractType.name"
                           [nzValue]="contractType.id"></nz-option>
                       </nz-select>
@@ -441,8 +448,7 @@
                     <nz-form-label class="text-left" [nzSpan]="10">Loại</nz-form-label>
                     <nz-form-control [nzSpan]="14">
                       <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="workTypeCode">
-                        <nz-option *ngFor="let workType of workTypes" [nzLabel]="workType.name"
-                          [nzValue]="workType.id"></nz-option>
+                        <nz-option *ngFor="let workType of workTypes" [nzLabel]="workType.name" [nzValue]="workType.id"></nz-option>
                       </nz-select>
                     </nz-form-control>
                   </nz-form-item>

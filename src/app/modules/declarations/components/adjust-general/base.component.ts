@@ -12,7 +12,7 @@ import {
 } from '@app/core/services';
 import { ACTION } from '@app/shared/constant';
 import { validationColumnsPlanCode, PLANCODECOUNTBHXH } from '@app/shared/constant-valid';
-import { CONSTPARENTDELETEAUTOROW } from '@app/shared/constant';
+import { CONSTPARENTDELETEAUTOROW, ContactType } from '@app/shared/constant';
 export class GeneralBaseComponent {
   @Input() data: any;
   @Input() NzPageHeaderContentDirective: string;
@@ -143,21 +143,20 @@ export class GeneralBaseComponent {
   }
 
   cloneEmployeeByPlanCode(groupInfo, tableName, employee, fromDate) {
+    
     const declarations = [ ...this.declarations[tableName].table];
 
     const parentIndex = findIndex(declarations, d => d.key === groupInfo.type);
     const childLastIndex = findLastIndex(declarations, d => d.isLeaf && d.parentKey === groupInfo.type);
-
     if (childLastIndex > -1) {
       const employeeExists = declarations.filter(d => d.parentKey === groupInfo.type);
-      const accepted = employeeExists.findIndex(e => (e.origin && (e.origin.employeeId || e.origin.id)) === employee.id) === -1;
+      const accepted = employeeExists.findIndex(e => (e.origin && (e.origin.employeeId || e.origin.id)) === employee.employeeId) === -1;
       // replace
       employee.gender = employee.gender === '1';
       employee.employeeIdClone = employee.id;
       employee.workAddress = this.currentCredentials.companyInfo.address;
       employee.planCode = groupInfo.planCode;
       employee.note = groupInfo.note;
-
       if (accepted) {
         if (declarations[childLastIndex].isInitialize) {
           // remove initialize data
@@ -407,10 +406,9 @@ export class GeneralBaseComponent {
         clearTimeout(this.timer);
         this.timer = setTimeout(() => {
           this.updateNextColumns(instance, r, '', [c + 4]);
-          instance.jexcel.setReadonly(2, 38);
+          instance.jexcel.setReadonly(Number(r), c + 4);
         }, 10);
-      }
-      if (column.key === 'registerCityCode') {
+      }else if (column.key === 'registerCityCode') {
         this.updateNextColumns(instance, r, '', [ c + 1, c + 2 ]);
       } else if (column.key === 'recipientsCityCode') {
         this.updateNextColumns(instance, r, '', [ c + 1, c + 2, c + 5, c + 6 ]);
@@ -446,6 +444,20 @@ export class GeneralBaseComponent {
           this.hospitalService.getById(hospitalFirstCode).subscribe(data => {
             this.updateNextColumns(instance, r,  data.name, [ c + 1 ]);
           });
+        }
+      } else if(column.key === 'contractTypeCode') {
+        const contractTypeCode = records[r][c];
+        if(ContactType.CT_HDKXDTH === contractTypeCode) {
+          clearTimeout(this.timer);
+          this.timer = setTimeout(() => {
+            this.updateNextColumns(instance, r, '', [c + 2]);
+            instance.jexcel.setReadonly(Number(r), c + 2);
+          }, 10);
+        } else {
+          clearTimeout(this.timer);
+          this.timer = setTimeout(() => {
+            instance.jexcel.setReadonly(Number(r), c + 2, true);
+          }, 10);
         }
       }
     }
@@ -522,6 +534,7 @@ export class GeneralBaseComponent {
   private deleteEmployeeLink(tableName, data, employeeId, parentKey) {
     const key = (tableName + '_' + parentKey);
     const willBeDeleted =  CONSTPARENTDELETEAUTOROW.findIndex(p => p.parent === (tableName + '_' + parentKey)) > -1;
+    
     if(!willBeDeleted) {
       return '';
     }
@@ -670,7 +683,15 @@ export class GeneralBaseComponent {
     });
 
     declarationsDeleted.forEach(d => {
-      this.deleteEmployeeLink(tableName, records, d.origin.employeeId, d.parentKey);
+    
+      let parentKey = '';//(d.options.parentKey || d.parentKey);
+      if (!d.options || !d.options.parentKey) {
+        parentKey = d.parentKey;
+      } else {
+        parentKey = d.options.parentKey;
+      }
+
+      this.deleteEmployeeLink(tableName, records, d.origin.employeeId, parentKey);
       const indexEmployeeIdClone = this.headers[tableName].columns.findIndex(c => c.key === 'employeeIdClone');
       records = records.filter(p => p[indexEmployeeIdClone] !== d.origin.employeeId);
     });

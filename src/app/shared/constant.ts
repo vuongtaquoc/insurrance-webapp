@@ -1062,6 +1062,20 @@ export const DOCUMENTBYPLANCODE =
       ]
     }
   ];
+
+export const WorkPotision = {
+  WP_NNQL: 'WP_NNQL',
+  WP_CMKTC: 'WP_CMKTC',
+  WP_CMKTBT: 'WP_CMKTBT',
+  WP_CMKTK: 'WP_CMKTK'
+}
+
+export const ContactType = {
+  CT_HDXDTH: 'CT_HDXDTH',
+  CT_HDKXDTH: 'CT_HDKXDTH',
+  CT_HDK: 'CT_HDK',
+}
+
 export const PERMISSIONS = {
   regime_approval: {
     C: 'regimeApproval_C',
