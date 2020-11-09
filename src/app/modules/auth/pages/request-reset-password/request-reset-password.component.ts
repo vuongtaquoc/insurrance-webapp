@@ -1,11 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { INTERNAL_SERVER_ERROR } from 'http-status-codes';
-
+import { REGEX } from "@app/shared/constant";
 import { AuthenticationService } from '@app/core/services';
 
 @Component({
@@ -26,7 +26,7 @@ export class RequestResetPasswordComponent implements OnInit, OnDestroy {
     private authService: AuthenticationService,
     private titleService: Title,
     private translateService: TranslateService
-  ) {}
+  ) { }
 
   ngOnInit() {
     // set page title
@@ -35,9 +35,14 @@ export class RequestResetPasswordComponent implements OnInit, OnDestroy {
     });
 
     this.resetForm = this.formBuilder.group({
-      email: []
+      email: ['', [Validators.required, Validators.pattern(REGEX.EMAIL)]]
     });
   }
+
+  get form() {
+    return this.resetForm.controls;
+  }
+
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
