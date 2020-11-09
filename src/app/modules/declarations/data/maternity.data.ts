@@ -112,7 +112,7 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   type: 'text',
   width: 120,
   title: '(6.1)',
-  key: 'SeriNo'
+  key: 'seriNo'
 }, {
   type: 'text',
   width: 80,
@@ -272,7 +272,7 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   type: 'text',
   width: 90,
   title: '(11.8)',
-  key: 'cotherConclusionDate',
+  key: 'motherConclusionDate',
   isCalendar: true
 }, {
   type: 'numeric',

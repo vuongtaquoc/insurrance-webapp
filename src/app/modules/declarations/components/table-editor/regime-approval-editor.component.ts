@@ -479,6 +479,47 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
           });
         });
       }, 50);
+    } else if(['sicknessesPart1'].indexOf(this.tableName) > -1) {
+      const parentKeys = ['I', 'II', 'III'];
+      const validationColumns: any = {
+        'II': {
+          diagnosticCode: {
+            required: true,
+          },
+          diagnosticName: {
+            required: true,
+          }
+        },
+      };
+      setTimeout(() => {
+        parentKeys.forEach(parentKey => {
+          const columnIndexes = [];
+
+          Object.keys(validationColumns[parentKey] || {}).forEach(column => {
+
+            const x = this.columns.findIndex(c => c.key === column);
+
+            if (x > -1) {
+              columnIndexes.push(x);
+            }
+          });
+
+          this.data.forEach((d, y) => {
+            if (d.parentKey === parentKey) {
+              columnIndexes.forEach(x => {
+                const column = this.columns[x];
+                this.spreadsheet.validationCell(y, x, column.fieldName, validationColumns[parentKey][column.key]);
+              });
+            }
+          });
+          this.handleEvent({
+            type: 'validate',
+            parentKey: '',
+            part: '',
+            user: {}
+          });
+        });
+    }, 50);
     }
   }
 
