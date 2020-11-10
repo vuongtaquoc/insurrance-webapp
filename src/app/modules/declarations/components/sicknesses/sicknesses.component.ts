@@ -1,7 +1,7 @@
 import { Component, OnInit, OnChanges, ViewEncapsulation, OnDestroy } from '@angular/core';
 import { NzModalService } from 'ng-zorro-antd/modal';
 
-import { DeclarationService, CategoryService, BankService, EmployeeService } from '@app/core/services';
+import { DeclarationService, CategoryService, BankService, EmployeeService, } from '@app/core/services';
 
 import { RegimeApprovalBaseComponent } from '@app/modules/declarations/components/regime-approval/base.component';
 
@@ -20,11 +20,12 @@ export class SicknessesComponent extends RegimeApprovalBaseComponent implements 
   constructor(
     protected declarationService: DeclarationService,
     protected categoryService: CategoryService,
-    private bankService: BankService,
+    protected bankService: BankService,
     protected modalService: NzModalService,
     protected employeeService: EmployeeService,
+
   ) {
-    super(declarationService, modalService, categoryService, employeeService);
+    super(declarationService, modalService, categoryService, employeeService, bankService);
   }
 
   ngOnInit() {
@@ -42,9 +43,9 @@ export class SicknessesComponent extends RegimeApprovalBaseComponent implements 
       this.getSourceDropDownByKey('certificationHospital'),
       this.getSourceDropDownByKey('recruitmentNumber'),
       this.getSourceDropDownByKey('subsidizeReceipt'),
-      this.getSourceDropDownByKey('diagnosticCode'),
-      this.bankService.getBanks(),
-    ]).subscribe(([conditionWorks, holidayWeeklies, certificationHospitals, recruitmentNumbers,subsidizeReceipts,diagnosticCodes, banks]) => {
+      // this.getSourceDropDownByKey('diagnosticCode'),
+      // this.bankService.getBanks(),
+    ]).subscribe(([conditionWorks, holidayWeeklies, certificationHospitals, recruitmentNumbers,subsidizeReceipts]) => { //,diagnosticCodes, banks]) => {
       this.updateSourceToColumn(TABLE_HEADER_COLUMNS_PART_1, 'conditionWork', conditionWorks);
       this.updateSourceToColumn(TABLE_HEADER_COLUMNS_PART_1, 'holidayWeekly', holidayWeeklies);
       this.updateSourceToColumn(TABLE_HEADER_COLUMNS_PART_1, 'certificationHospital', certificationHospitals);
@@ -52,9 +53,9 @@ export class SicknessesComponent extends RegimeApprovalBaseComponent implements 
       this.updateSourceToColumn(TABLE_HEADER_COLUMNS_PART_2, 'recordSolvedNumber', recruitmentNumbers);
       this.updateSourceToColumn(TABLE_HEADER_COLUMNS_PART_1, 'subsidizeReceipt', subsidizeReceipts);
       this.updateSourceToColumn(TABLE_HEADER_COLUMNS_PART_2, 'subsidizeReceipt', subsidizeReceipts);
-      this.updateSourceToColumn(TABLE_HEADER_COLUMNS_PART_1, 'diagnosticCode', diagnosticCodes);
-      this.updateSourceToColumn(TABLE_HEADER_COLUMNS_PART_1, 'bankCode', banks);
-      this.updateSourceToColumn(TABLE_HEADER_COLUMNS_PART_2, 'bankCode', banks);
+      // this.updateSourceToColumn(TABLE_HEADER_COLUMNS_PART_1, 'diagnosticCode', diagnosticCodes);
+      // this.updateSourceToColumn(TABLE_HEADER_COLUMNS_PART_1, 'bankCode', banks);
+      // this.updateSourceToColumn(TABLE_HEADER_COLUMNS_PART_2, 'bankCode', banks);
     });
 
     this.handlers.push(eventEmitter.on('tree-declaration:deleteUser', (data) => {

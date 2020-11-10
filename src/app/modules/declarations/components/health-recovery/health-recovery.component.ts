@@ -18,12 +18,13 @@ import { eventEmitter } from '@app/shared/utils/event-emitter';
 export class HealthRecoveryComponent extends RegimeApprovalBaseComponent implements OnInit, OnChanges, OnDestroy {
   constructor(
     protected declarationService: DeclarationService,
-    private bankService: BankService,
+    protected bankService: BankService,
     protected categoryService: CategoryService,
     protected modalService: NzModalService,
     protected employeeService: EmployeeService,
+    
   ) {
-    super(declarationService, modalService, categoryService, employeeService);
+    super(declarationService, modalService, categoryService, employeeService, bankService);
   }
 
   ngOnInit() {

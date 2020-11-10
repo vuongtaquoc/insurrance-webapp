@@ -182,7 +182,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
       this.paymentStatusServiced.getPaymentStatus(),
       this.paymentMethodServiced.getPaymentMethods(),
       this.relationshipService.getRelationships(),
-      this.bankService.getBanks(),
+      this.bankService.filterBankNotDisplayCode({keyword: employee.bankCode}),
       this.departmentService.getDepartments(),
       this.categoryService.getCategories('relationshipDocumentType'),
       this.categoryService.getCategories('typeBirthday'),
@@ -340,6 +340,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
       careTypeToDate: this.careTypeToDate,
       nationalityName: this.getNameOfDropdown(this.nationalities, this.employeeForm.value.nationalityCode),
       hospitalFirstRegistName: this.getNameOfDropdown(this.hospitals, this.employeeForm.value.hospitalFirstRegistCode),
+      bankName: this.getNameOfDropdown(this.banks, this.employeeForm.value.bankCode),
       families: this.families.reduce(
         (combine, current) => {
           if (current.fullName) {
@@ -953,6 +954,22 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
       });
     }, 200);
   }
+
+
+  searchBankCode(value: string): void {
+    clearTimeout(this.timer);
+
+    if (!this.cityFirstRegistCode || !value) {
+      return;
+    }
+
+    this.timer = setTimeout(() => {
+      this.bankService.filterBankNotDisplayCode( {keyword:value }).subscribe(data => {
+        this.banks = data;
+      });
+    }, 200);
+  }
+
 
   download() {
     this.isSpinning = true;

@@ -44,6 +44,7 @@ export class ReissueHealthCardListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.year = new Date();
     this.declarationName = this.getDeclaration(this.declarationCode).value;
     this.getDeclarations();
   }

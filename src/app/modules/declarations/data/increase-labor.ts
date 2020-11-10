@@ -129,6 +129,7 @@ export const TABLE_HEADER_COLUMNS = [{
   width: 123,
   title: '(5.2)',
   wordWrap: true,
+  readOnly:true,
 }, {
   type: 'dropdown',
   width: 70,

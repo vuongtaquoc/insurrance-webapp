@@ -160,6 +160,7 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   type: 'numeric',
   width: 130,
   title: '(8.2)',
+  fieldName: 'Số thẻ bảo hiểm của con',
   key: 'childrenHealthNo',
   validations: {
     number: true
@@ -169,10 +170,11 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   width: 80,
   title: '(8.3)',
   key: 'childrenNumberSick',
+  fieldName: 'Số con bị ốm',
   align: 'right',
   sum: true,
 }, {
-  type: 'dropdown',
+  type: 'text',
   autocomplete: true,
   width: 120,
   title: '(9.1)',
@@ -183,6 +185,7 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   type: 'text',
   width: 330,
   title: '(9.2)',
+  wordWrap: true,
   key: 'diagnosticName'
 }, {
   type: 'checkbox',
@@ -221,11 +224,12 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   title: '(C.3)',
   key: 'accountHolder'
 }, {
-  type: 'dropdown',
+  type: 'text',
   autocomplete: true,
   width: 280,
+  wordWrap: true,
   title: '(C.4)',
-  key: 'bankCode',
+  key: 'bankName',
   source: [ ],
 }, {
   type: 'text',
@@ -233,6 +237,11 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   title: '(D)',
   key: 'note',
   wordWrap: true
+},{
+  type: 'hidden',
+  width: 140,
+  title: 'key',
+  key: 'bankCode',
 },{
   type: 'hidden',
   width: 140,
@@ -330,7 +339,6 @@ export const TABLE_HEADER_COLUMNS_PART_2 = [{
   sum: true,
   readOnly: false,
   validations: {
-    required: true,
     min: 1
   },
   fieldName: 'Tổng số'
@@ -394,11 +402,12 @@ export const TABLE_HEADER_COLUMNS_PART_2 = [{
   title: '(C.3)',
   key: 'accountHolder'
 }, {
-  type: 'dropdown',
+  type: 'text',
   autocomplete: true,
   width: 280,
   title: '(C.4)',
-  key: 'bankCode',
+  wordWrap: true,
+  key: 'bankName',
   source: [ ],
 }, {
   type: 'text',
@@ -406,6 +415,12 @@ export const TABLE_HEADER_COLUMNS_PART_2 = [{
   title: '(D)',
   key: 'note',
   wordWrap: true
+},
+{
+  type: 'hidden',
+  width: 140,
+  title: 'bankCode',
+  key: 'bankCode'
 },
 {
   type: 'hidden',

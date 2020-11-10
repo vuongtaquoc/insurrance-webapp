@@ -29,6 +29,21 @@ export class CategoryService {
     });
   }
 
+  public filterCategories(filters = {}) {
+    return this.http.getList('/categories/search-code', {
+      params: {
+        ...filters
+      }
+    }).pipe(
+      map(categories => {
+        return categories.data.map(category => ({
+          ...category,
+          shortName: category.name.split(' - ')[0]
+        }));
+      })
+    );
+  }
+
   public getCategoryByTypeAndCode(type, code) {
     return this.http.get(`/categories/type/${ type }/code/${code}`, {
     });
