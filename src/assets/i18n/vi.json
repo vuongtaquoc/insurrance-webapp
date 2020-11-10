@@ -47,9 +47,9 @@
 			"employeeIsExistDeclatation": "NLĐ đã có hồ sơ, bạn không thể xóa",
 			"loginFailed": "Sai Tên đăng nhập hoặc Mật khẩu. Vui lòng thử lại!"
 		},
-		"emailType" : {
-			"customerAccount" : "Tài khoản khách hàng",
-			"sellerAccount" : "Tài khoản đại lý"
+		"emailType": {
+			"customerAccount": "Tài khoản khách hàng",
+			"sellerAccount": "Tài khoản đại lý"
 		}
 	},
 	"auth": {
@@ -66,7 +66,17 @@
 				"register": "Đăng ký"
 			}
 		},
-		"resetPassword": {}
+		"resetPassword": {},
+		"requestReset": {
+			"pageTitle": "Quên mật khẩu",
+			"title": "Quên mật khẩu",
+			"description": "Vui lòng nhập email để lấy lại mật khẩu",
+			"loginLink": "Quay lại trang đăng nhập",
+			"form": {
+				"email": "Email liên hệ",
+				"send": "Gửi"
+			}
+		}
 	},
 	"dashboard": {
 		"title": "Trang chủ"
@@ -79,7 +89,7 @@
 	"company": {
 		"company-list": {
 			"title": "Danh sách công ty"
-		}, 
+		},
 		"from": {
 			"subject": "Kính gửi",
 			"city": "Tỉnh thành phố",
@@ -115,7 +125,7 @@
 			"object": "Đôi tượng cấp thẻ",
 			"studentLevelOne": "Học sinh(Lớp 1->12)",
 			"studentLevelTwo": "Sinh viên(Đại học, Cao đẳng, Trung học chuyên nghiệp, Nghề...)",
-			"career":"Ngành nghề sản xuất kinh doanh chính"
+			"career": "Ngành nghề sản xuất kinh doanh chính"
 		}
 	},
 	"contract": {
@@ -137,7 +147,6 @@
 			"createDate": "Ngay tạo",
 			"contractStatus": "Trạng thái",
 			"action": "Thao tác"
-			
 		},
 		"from": {
 			"subject": "Kính gửi",
@@ -174,15 +183,15 @@
 			"object": "Đôi tượng cấp thẻ",
 			"studentLevelOne": "Học sinh(Lớp 1->12)",
 			"studentLevelTwo": "Sinh viên(Đại học, Cao đẳng, Trung học chuyên nghiệp, Nghề...)",
-			"expiryDate" : "Hạn sử dụng",
-			"block" : "Gói dịch vụ",
-			"totalVAN" : "Thành tiền I-VAN",
-			"totalToken" : "Thành tiền CKS",
-			"useDate" : "Tổng thời gian sử dụng",
-			"dataStandard" : "Số tháng niêm yết",
-			"dataBonus" : "Số tháng khuyến mại",
-			"paymentMethod" : "Hình thức thanh toán",
-			"totalAmount" : "Tổng tiền thanh toán"
+			"expiryDate": "Hạn sử dụng",
+			"block": "Gói dịch vụ",
+			"totalVAN": "Thành tiền I-VAN",
+			"totalToken": "Thành tiền CKS",
+			"useDate": "Tổng thời gian sử dụng",
+			"dataStandard": "Số tháng niêm yết",
+			"dataBonus": "Số tháng khuyến mại",
+			"paymentMethod": "Hình thức thanh toán",
+			"totalAmount": "Tổng tiền thanh toán"
 		}
 	},
 	"agencies": {
@@ -236,8 +245,8 @@
 			"companyName": "Tên đơn vị",
 			"address": "Địa chỉ ĐKKD",
 			"addressOther": "Địa chỉ giao dịch(Nếu có)",
-			"tax": "Mã số thuế/ mã ngân sách",			
-			"tel": "Điện thoại cố định",			
+			"tax": "Mã số thuế/ mã ngân sách",
+			"tel": "Điện thoại cố định",
 			"delegate": "Người đại diện",
 			"level": "Chức danh",
 			"personContact": "Người giao dịch BHXH",
@@ -247,7 +256,7 @@
 			"registerReception": "Đăng ký nhận kết quả",
 			"receptionInsurranceDepartment": "Nhận tại CQBH",
 			"receptionPostOffice": "Nhận qua bưu điện"
-		}		 
+		}
 	},
 	"documentTable": {
 		"list": {
@@ -320,7 +329,8 @@
 				"createDate": "Ngày tạo",
 				"sendDate": "Ngày gửi"
 			}
-		},"researchconnection": {
+		},
+		"researchconnection": {
 			"info": {
 				"title": "Danh sách kết quả nộp tờ khai đơn vị",
 				"dateFrom": "Từ ngày",
@@ -335,7 +345,7 @@
 				"declarationCode": "Mã tờ khai",
 				"batch": "Lần gửi",
 				"result": "Kết quả",
-				"content": "Nội dung",				 
+				"content": "Nội dung",
 				"sendDate": "Ngày gửi",
 				"action": "Thao tác"
 			}

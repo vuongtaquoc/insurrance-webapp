@@ -9,7 +9,7 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import { eventEmitter } from '@app/shared/utils/event-emitter';
 import { AuthenticationService } from '@app/core/services';
 import { NzModalService } from 'ng-zorro-antd/modal';
-import { ROLE } from '@app/shared/constant';
+import { ROLE, REGEX } from '@app/shared/constant';
 
 @Component({
   selector: 'app-auth-login',
@@ -34,15 +34,15 @@ export class AuthLoginComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
- 
+
     // set page title
     this.subscription = this.translateService.get('auth.login.pageTitle').subscribe(text => {
       this.titleService.setTitle(text);
     });
 
     this.loginForm = this.formBuilder.group({
-      username: ['', Validators.required],
-      password: ['', Validators.required],
+      username: ['', [Validators.required, Validators.pattern(REGEX.ONLY_CHARACTER_NUMBER)]],
+      password: ['', [Validators.required, Validators.pattern(REGEX.ONLY_CHARACTER_NUMBER)]],
       remember: [false],
       // companyName: ['', Validators.required]
     });
@@ -83,14 +83,14 @@ export class AuthLoginComponent implements OnInit, OnDestroy {
 
     if (this.authService.currentCredentials) {
       let defaultUrl = '/';
-      if (ROLE.CUSTOMER  === this.authService.currentCredentials.role.level 
+      if (ROLE.CUSTOMER === this.authService.currentCredentials.role.level
         && !this.authService.currentCredentials.companyInfo.hasContract) {
-          defaultUrl = '/register-ivan';
-      }else if (ROLE.SALE  === this.authService.currentCredentials.role.level) {
+        defaultUrl = '/register-ivan';
+      } else if (ROLE.SALE === this.authService.currentCredentials.role.level) {
         defaultUrl = this.authService.currentCredentials.role.defaultUrl;
       }
       this.router.navigate([defaultUrl]);
     }
-    
+
   }
 }

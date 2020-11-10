@@ -15,15 +15,31 @@
 
   <nz-form-item>
     <nz-form-label>{{ 'auth.login.form.username' | translate }} <span class="required">*</span></nz-form-label>
-    <nz-form-control>
-      <input nz-input formControlName="username">
+    <nz-form-control [nzErrorTip]="userNameTpl">
+      <input nz-input formControlName="username" > 
+      <ng-template #userNameTpl let-control>
+        <ng-container *ngIf="control.hasError('required')">
+          Tài khoản không được trống
+        </ng-container>
+        <ng-container *ngIf="control.hasError('pattern')">
+          Tài khoản không hợp lệ
+        </ng-container>
+      </ng-template>
     </nz-form-control>
   </nz-form-item>
 
   <nz-form-item>
     <nz-form-label>{{ 'auth.login.form.password' | translate }} <span class="required">*</span></nz-form-label>
-    <nz-form-control>
+    <nz-form-control [nzErrorTip]="passWordTpl">  
       <input type="password" nz-input formControlName="password">
+      <ng-template #passWordTpl let-control>
+        <ng-container *ngIf="control.hasError('required')">
+          Tài khoản không được trống
+        </ng-container>
+        <ng-container *ngIf="control.hasError('pattern')">
+          Mật khẩu không hợp lệ
+        </ng-container>
+      </ng-template>
     </nz-form-control>
   </nz-form-item>
 
