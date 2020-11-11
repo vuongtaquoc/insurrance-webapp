@@ -150,6 +150,10 @@ export class RegimeApprovalListComponent implements OnInit {
   }
 
   onChangeYear () {
+    if(!moment(this.year,"YYYY").isValid()) {
+      this.year = '';
+      return;
+    }
     this.getDeclarations();
   }
 

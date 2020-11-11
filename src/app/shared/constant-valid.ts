@@ -62,8 +62,8 @@ export const validationColumnsPlanCode: any = {
   },
   'TV' : {
     note: {
-      message: 'Tăng quỹ HTTT', 
-      argsColumn: []      
+      message: 'Tăng quỹ HTTT{0} {1}', 
+      argsColumn: ['contractCancelNo$ .số VB','dateCancelSign$,ngày '],      
     }
   },
    'AT' : {
@@ -74,8 +74,8 @@ export const validationColumnsPlanCode: any = {
   },
   'GV' : {
     note: {
-      message: 'Tăng quỹ HTTT', 
-      argsColumn: []      
+      message: 'Giảm quỹ HTTT{0} {1}', 
+      argsColumn: ['contractCancelNo$ .số VB','dateCancelSign$,ngày '],   
     }
   },'DL' : {
     note: {

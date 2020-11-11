@@ -41,6 +41,10 @@ import {
   SicknessesApprovalListComponent,
   SicknessesApprovalAddComponent,
   SicknessesApprovalEditComponent,
+  PendingRetirementListComponent,
+  PendingRetirementAddComponent,
+  PendingRetirementEditComponent,
+   
 } from './pages';
 
 const routes: Routes = [
@@ -122,33 +126,39 @@ const routes: Routes = [
       },
       {
         path: 'arrears/add',
-        component: ArrearsAddComponent
+        component: ArrearsAddComponent,
+        canDeactivate: [ UnsavedChangesGuard, NavigationGuard ]
       },
       {
         path: 'arrears/:id/edit',
-        component: ArrearsEditComponent
+        component: ArrearsEditComponent,
+        canDeactivate: [ UnsavedChangesGuard, NavigationGuard ]
       },{
         path: 'adjust',
-        component: AdjustListComponent
+        component: AdjustListComponent,
       },
       {
         path: 'adjust/add',
-        component: AdjustAddComponent
+        component: AdjustAddComponent,
+        canDeactivate: [ UnsavedChangesGuard, NavigationGuard ]
       },
       {
         path: 'adjust/:id/edit',
-        component: AdjustEditComponent
+        component: AdjustEditComponent,
+        canDeactivate: [ UnsavedChangesGuard, NavigationGuard ]
       },{
         path: 'adjust-general',
         component: AdjustGeneralListComponent
       },
       {
         path: 'adjust-general/add',
-        component: AdjustGeneralAddComponent
+        component: AdjustGeneralAddComponent,
+        canDeactivate: [ UnsavedChangesGuard, NavigationGuard ]
       },
       {
         path: 'adjust-general/:id/edit',
-        component: AdjustGeneralEditComponent
+        component: AdjustGeneralEditComponent,
+        canDeactivate: [ UnsavedChangesGuard, NavigationGuard ]
       },
       {
         path: 'company-change',
@@ -164,15 +174,17 @@ const routes: Routes = [
       },
       {
         path: 'health-insurance-card',
-        component: ReissueHealthCardListComponent
+        component: ReissueHealthCardListComponent         
       },
       {
         path: 'health-insurance-card/add',
-        component: ReissueHealthCardAddComponent
+        component: ReissueHealthCardAddComponent,
+        canDeactivate: [ UnsavedChangesGuard, NavigationGuard ]
       },
       {
         path: 'health-insurance-card/:id/edit',
-        component: ReissueHealthCardEditComponent
+        component: ReissueHealthCardEditComponent,
+        canDeactivate: [ UnsavedChangesGuard, NavigationGuard ]
       },
       {
         path: 'reissue-insurance-card',
@@ -180,11 +192,13 @@ const routes: Routes = [
       },
       {
         path: 'reissue-insurance-card/add',
-        component: ReissueInsuranceCardAddComponent
+        component: ReissueInsuranceCardAddComponent,
+        canDeactivate: [ UnsavedChangesGuard, NavigationGuard ]
       },
       {
         path: 'reissue-insurance-card/:id/edit',
-        component: ReissueInsuranceCardEditComponent
+        component: ReissueInsuranceCardEditComponent,
+        canDeactivate: [ UnsavedChangesGuard, NavigationGuard ]
       },
       {
         path: 'sicknesses-approval',
@@ -192,11 +206,13 @@ const routes: Routes = [
       },
       {
         path: 'sicknesses-approval/add',
-        component: SicknessesApprovalAddComponent
+        component: SicknessesApprovalAddComponent,
+        canDeactivate: [ UnsavedChangesGuard, NavigationGuard ]
       },
       {
         path: 'sicknesses-approval/:id/edit',
-        component: SicknessesApprovalEditComponent
+        component: SicknessesApprovalEditComponent,
+        canDeactivate: [ UnsavedChangesGuard, NavigationGuard ]
       },
       {
         path: 'health-recovery-approval',
@@ -204,11 +220,13 @@ const routes: Routes = [
       },
       {
         path: 'health-recovery-approval/add',
-        component: HealthRecoveryApprovalAddComponent
+        component: HealthRecoveryApprovalAddComponent,
+        canDeactivate: [ UnsavedChangesGuard, NavigationGuard ]
       },
       {
         path: 'health-recovery-approval/:id/edit',
-        component: HealthRecoveryApprovalEditComponent
+        component: HealthRecoveryApprovalEditComponent,
+        canDeactivate: [ UnsavedChangesGuard, NavigationGuard ]
       },
       {
         path: 'maternity-approval',
@@ -216,11 +234,27 @@ const routes: Routes = [
       },
       {
         path: 'maternity-approval/add',
-        component: MaternityApprovalAddComponent
+        component: MaternityApprovalAddComponent,
+        canDeactivate: [ UnsavedChangesGuard, NavigationGuard ]
       },
       {
         path: 'maternity-approval/:id/edit',
-        component: MaternityApprovalEditComponent
+        component: MaternityApprovalEditComponent,
+        canDeactivate: [ UnsavedChangesGuard, NavigationGuard ]
+      },
+      {
+        path: 'pending-retirement',
+        component:PendingRetirementListComponent
+      },
+      {
+        path: 'pending-retirement/add',
+        component: PendingRetirementAddComponent,
+        canDeactivate: [ UnsavedChangesGuard, NavigationGuard ]
+      },
+      {
+        path: 'pending-retirement/:id/edit',
+        component: PendingRetirementEditComponent,
+        canDeactivate: [ UnsavedChangesGuard, NavigationGuard ]
       }
     ]
   }

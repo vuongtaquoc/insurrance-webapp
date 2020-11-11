@@ -1,3 +1,4 @@
+import format from '@app/shared/utils/format';
 export const TABLE_NESTED_HEADERS_PART_1 = [
   [
     { title: 'STT', rowspan: 2 },
@@ -140,6 +141,9 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
     // number: true,
     min: 0,
     max: 100
+  },
+  format: (value) => {
+    return format.currency(value, '0,0');
   }
 }, {
   type: 'text',

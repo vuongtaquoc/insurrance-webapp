@@ -121,30 +121,7 @@ export class HealthRecoveryApprovalComponent implements OnInit, OnDestroy {
   }
 
   rollback() {
-    if(!this.isTableValid) {
-      this.router.navigate(['/declarations/health-recovery-approval']);
-      return;
-    }
-
-    eventEmitter.emit('unsaved-changed', true);
-    this.modalService.confirm({
-      nzTitle: 'Bạn có muốn lưu lại thông tin thay đổi',
-      nzOkText: 'Có',
-      nzCancelText: 'Không',
-      nzClosable: true,
-      nzOnOk: () => {
-        if (this.declarationId) {
-          this.update('save');
-        } else {
-          this.create('save');
-        }
-      },
-      nzOnCancel: () => {
-        this.router.navigate(['/declarations/health-recovery-approval']);
-      }
-
-    });
-
+    this.router.navigate(['/declarations/health-recovery-approval']);
   }
 
   saveAndView() {

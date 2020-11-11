@@ -276,6 +276,7 @@ export class ReissueInsuranceCardComponent implements OnInit, OnDestroy {
 
     this.employeeSelected.length = 0;
     this.notificeEventValidData('healthInsuranceCard');     
+    eventEmitter.emit('unsaved-changed');
   }
 
   private setDataToEmployee(employee) {
@@ -304,6 +305,7 @@ export class ReissueInsuranceCardComponent implements OnInit, OnDestroy {
     });
     this.notificeEventValidData('healthInsuranceCard');
     eventEmitter.emit('unsaved-changed');
+    
   }
 
   handleUserUpdated(user) {

@@ -120,30 +120,7 @@ export class MaternityApprovalComponent implements OnInit, OnDestroy {
   }
 
   rollback() {
-    if(!this.isTableValid) {
-      this.router.navigate(['/declarations/maternity-approval']);
-      return;
-    }
-
-    eventEmitter.emit('unsaved-changed', true);
-    this.modalService.confirm({
-      nzTitle: 'Bạn có muốn lưu lại thông tin thay đổi',
-      nzOkText: 'Có',
-      nzCancelText: 'Không',
-      nzClosable: true,
-      nzOnOk: () => {
-        if (this.declarationId) {
-          this.update('save');
-        } else {
-          this.create('save');
-        }
-      },
-      nzOnCancel: () => {
-        this.router.navigate(['/declarations/maternity-approval']);
-      }
-
-    });
-
+    this.router.navigate(['/declarations/maternity-approval']);
   }
 
   saveAndView() {

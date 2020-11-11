@@ -96,6 +96,10 @@
                     nzTheme="outline"></i>Báo giảm lao động</a></li>
               <li nz-menu-item [hidden]="!permissions[pmsConf.adjust.R]"><a [routerLink]="['/declarations/adjust']"><i
                     nz-icon nzType="form" nzTheme="outline"></i>Điều chỉnh chức danh, mức đóng</a></li>
+              <li nz-menu-item [hidden]="!permissions[pmsConf.adjust.R]"><a [routerLink]="['/declarations/pending-retirement']"><i
+                      nz-icon nzType="form" nzTheme="outline"></i>Tạm dừng đóng vào quỹ hưu trí và tử tuất</a></li>
+              <li nz-menu-item [hidden]="!permissions[pmsConf.adjust.R]"><a [routerLink]="['/declarations/pending-retirement-covid']"><i
+                        nz-icon nzType="form" nzTheme="outline"></i>Tạm dừng đóng vào quỹ hưu trí và tử tuất do ảnh hưởng của dịch Covid 19</a></li>
               <li nz-menu-item [hidden]="!permissions[pmsConf.arrears.R]"><a [routerLink]="['/declarations/arrears']"><i
                     nz-icon nzType="carry-out" nzTheme="outline"></i>Truy thu điều chỉnh điều chỉnh chức danh, mức
                   đóng(trường hợp báo muộn)</a></li>

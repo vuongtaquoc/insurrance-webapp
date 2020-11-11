@@ -132,6 +132,13 @@ export const DECLARATIONS =
     {
       key: '600b',
       value: 'Điều chỉnh chức danh mức đóng'
+    },{
+      key: '600c',
+      value: 'Tạm dừng đóng vào quỹ hưu trí và tử tuất'
+    },
+    {
+      key: '600d',
+      value: 'Tạm dừng đóng vào quỹ hưu trí và tử tuất do ảnh hưởng của dịch Covid 19'
     },
     {
       key: '607',

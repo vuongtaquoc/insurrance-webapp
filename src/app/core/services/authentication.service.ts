@@ -42,11 +42,11 @@ export class AuthenticationService {
   }
 
   public requestResetPassword(email: string) {
-    return this.http.post('/password-reset/email', { email });
+    return this.http.post('/session/reset-password', { email });
   }
 
   public getUserByToken(token: string) {
-    return this.http.get('/token/user', {
+    return this.http.get('/session/account-info', {
       params: { token }
     });
   }

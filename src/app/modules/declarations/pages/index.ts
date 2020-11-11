@@ -34,3 +34,6 @@ export * from './maternity-approval-edit/maternity-approval-edit.component';
 export * from './sicknesses-approval-list/sicknesses-approval-list.component';
 export * from './sicknesses-approval-add/sicknesses-approval-add.component';
 export * from './sicknesses-approval-edit/sicknesses-approval-edit.component';
+export * from './pending-retirement-list/pending-retirement-list.component';
+export * from './pending-retirement-add/pending-retirement-add.component';
+export * from './pending-retirement-edit/pending-retirement-edit.component';

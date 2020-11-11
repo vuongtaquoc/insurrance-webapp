@@ -70,6 +70,9 @@ import {
   SicknessesApprovalListComponent,
   SicknessesApprovalAddComponent,
   SicknessesApprovalEditComponent,
+  PendingRetirementListComponent,
+  PendingRetirementAddComponent,
+  PendingRetirementEditComponent,
   
 } from './pages';
 
@@ -103,7 +106,10 @@ import {
   ReissueInsuranceCardComponent,
   SicknessesApprovalComponent,
   MaternityApprovalComponent,
+  PendingFormComponent,
   HealthRecoveryApprovalComponent,
+  PendingRetirementComponent,
+  PendingComponent,
   
 } from './components';
 
@@ -200,6 +206,12 @@ import { RegimeAutoSizeDirective } from './directives';
     SicknessesApprovalListComponent,
     SicknessesApprovalAddComponent,
     SicknessesApprovalEditComponent,
+    PendingRetirementComponent,
+    PendingFormComponent,
+    PendingComponent,
+    PendingRetirementListComponent,
+    PendingRetirementAddComponent,
+    PendingRetirementEditComponent,
   ],
   providers: [
     AuthenticationService,

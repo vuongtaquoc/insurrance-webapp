@@ -303,7 +303,7 @@ export class ReducingLaborComponent implements OnInit, OnDestroy {
         }
       });
     }
-
+    eventEmitter.emit('unsaved-changed', true);
     if (this.declarationId) {
       this.update('saveAndView');
     } else {
@@ -311,27 +311,8 @@ export class ReducingLaborComponent implements OnInit, OnDestroy {
     }
   }
 
-  rollback() {
-    if(!this.isTableValid) { 
-      this.router.navigate(['/declarations/reduction-labor']);
-      return;
-    }
-    
-    this.modalService.confirm({
-      nzTitle: 'Bạn có muốn lưu lại thông tin thay đổi',
-      nzOkText: 'Có',
-      nzCancelText: 'Không',
-      nzOnOk: () => {
-        if (this.declarationId) {
-          this.update('save');
-        } else {
-          this.create('save');
-        }
-      },
-      nzOnCancel: () => {
-        this.router.navigate(['/declarations/reduction-labor']);
-      }
-    });      
+  rollback() {    
+    this.router.navigate(['/declarations/reduction-labor']);       
   }
    
   save() {
@@ -342,7 +323,7 @@ export class ReducingLaborComponent implements OnInit, OnDestroy {
       });
       return;
     }
-
+    eventEmitter.emit('unsaved-changed', true);
     if (this.declarationId) {
       this.update('save');
     } else {

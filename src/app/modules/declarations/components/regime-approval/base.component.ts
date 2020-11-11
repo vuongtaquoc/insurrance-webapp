@@ -149,7 +149,7 @@ export class RegimeApprovalBaseComponent {
       type: 'readonly',
       part,
       data: this.declarations[part].table
-    });
+    });    
     eventEmitter.emit('unsaved-changed');
   }
 
@@ -368,6 +368,7 @@ export class RegimeApprovalBaseComponent {
     this.tableSubject.next({
       type: 'validate'
     });
+    console.log('XXXXXXXXXXX');
     eventEmitter.emit('unsaved-changed');
   }
 

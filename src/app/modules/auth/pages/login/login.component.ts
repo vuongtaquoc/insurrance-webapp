@@ -53,6 +53,10 @@ export class AuthLoginComponent implements OnInit, OnDestroy {
   }
 
   handleSubmit() {
+
+    if(this.loginForm.invalid) {
+      return;
+    }
     this.loading = true;
 
     this.authService

@@ -49,6 +49,9 @@ export class RequestResetPasswordComponent implements OnInit, OnDestroy {
   }
 
   handleSubmit() {
+    if(this.resetForm.invalid) {
+      return;
+    }
     this.authService.requestResetPassword(this.resetForm.value.email)
       .subscribe(
         () => {

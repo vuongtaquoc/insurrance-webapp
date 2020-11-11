@@ -27,5 +27,8 @@ export * from './table-editor/table-editor-normal.component';
 export * from './reissue-insurance-card/reissue-insurance-card.component';
 export * from './health-recovery-approval/health-recovery-approval.component';
 export * from './maternity-approval/maternity-approval.component';
+export * from './pending-form/pending-form.component';
+export * from './pending/pending.component';
 export * from './reissue-insurance-card/reissue-insurance-card.component';
 export * from './sicknesses-approval/sicknesses-approval.component';
+export * from './pending-retirement/pending-retirement.component';

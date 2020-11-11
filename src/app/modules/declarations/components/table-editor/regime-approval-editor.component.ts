@@ -374,10 +374,16 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
           planCode,
           childrenDayDead: {
             required: true
+          },
+          childrenWeekOld:{
+            number: true,
           }
         },
         'VI_1': {
           planCode,
+          childrenWeekOld:{
+            number: true,
+          },
           childrenBirthday: {
             required: true,
             lessThanNow: true
@@ -387,14 +393,22 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
           planCode,
           childrenDayDead: {
             required: true
+          },
+          childrenWeekOld:{
+            number: true,
           }
         },
         'VII': {
           planCode,
+          childrenWeekOld:{
+            number: true,
+          }
         },
         'IX': {
-          childrenWeekOld,
           planCode,
+          childrenWeekOld:{
+            number: true,
+          }
         }
       };
       const readonlyColumns = {

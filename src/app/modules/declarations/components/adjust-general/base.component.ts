@@ -5,6 +5,7 @@ import findLastIndex from 'lodash/findLastIndex';
 import findIndex from 'lodash/findIndex';
 import * as jexcel from 'jstable-editor/dist/jexcel.js';
 import * as moment from 'moment';
+import { eventEmitter } from '@app/shared/utils/event-emitter';
 
 import {
   DeclarationService,
@@ -41,6 +42,10 @@ export class GeneralBaseComponent {
     adjustment: {
       nested: [],
       columns: []
+    },
+    pending: {
+      nested: [],
+      columns: []
     }
   };
   declarations: any = {
@@ -53,6 +58,10 @@ export class GeneralBaseComponent {
       table: []
     },
     adjustment: {
+      origin: [],
+      table: []
+    },
+    pending: {
       origin: [],
       table: []
     }
@@ -83,6 +92,7 @@ export class GeneralBaseComponent {
 
   handleUserDeleteTables(user, tableName) {
     this.handleUserDeleted(user, tableName);
+    eventEmitter.emit('unsaved-changed');
   }
 
 
@@ -97,6 +107,7 @@ export class GeneralBaseComponent {
 
   handleUserUpdateTables(user, tableName) {
     this.handleUserUpdated(user, tableName);
+    eventEmitter.emit('unsaved-changed');
   }
 
   handleUserUpdated(user, tableName) {
@@ -212,7 +223,6 @@ export class GeneralBaseComponent {
       });
     }
     const declarations = [ ...this.declarations[tableName].table];
-
     const parentIndex = findIndex(declarations, d => d.key === type);
     const childLastIndex = findLastIndex(declarations, d => d.isLeaf && d.parentKey === type);
 
@@ -245,7 +255,7 @@ export class GeneralBaseComponent {
         }
 
         //copy salary
-        if(tableName === 'adjustment') {
+        if(tableName === 'adjustment' || tableName === 'pending') {
           employee.allowanceAdditionalNew = employee.allowanceAdditional;
           employee.allowanceLevelNew = employee.allowanceLevel;
           employee.allowanceOtherNew = employee.allowanceOther;
@@ -310,6 +320,7 @@ export class GeneralBaseComponent {
       data: this.declarations.table
     });
 
+    eventEmitter.emit('unsaved-changed');
   }
 
   handleUserAdded({ tableName, y, employee }) {
@@ -344,6 +355,8 @@ export class GeneralBaseComponent {
       type: 'readonly',
       data: this.declarations.table
     });
+
+    eventEmitter.emit('unsaved-changed');
   }
 
 
@@ -373,6 +386,7 @@ export class GeneralBaseComponent {
       tableName,
       data: this.declarations[tableName].table
     });
+    eventEmitter.emit('unsaved-changed');
   }
 
   handleTabChanged({ selected }) {
@@ -487,6 +501,8 @@ export class GeneralBaseComponent {
     this.tableSubject.next({
       type: 'validate'
     });
+
+    eventEmitter.emit('unsaved-changed');
   }
 
   private setDataByPlanCode(instance, records, r, planCode,tableName, fromDate) {

@@ -78,7 +78,7 @@
               <a [routerLink]="['/declarations/adjust/' + data.id + '/edit']" nz-button nzType="link">
                 <i nz-icon nzType="edit" nzTheme="outline"></i>
               </a>
-              <app-button-delete [id]="data.id" (delete)="delete($event)"></app-button-delete>
+              <app-button-delete [id]="data.id" *ngIf="(data.status !== 3)"  (delete)="delete($event)"></app-button-delete>
             </td>
           </tr>
         </tbody>
