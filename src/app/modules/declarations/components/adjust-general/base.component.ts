@@ -154,7 +154,7 @@ export class GeneralBaseComponent {
   }
 
   cloneEmployeeByPlanCode(groupInfo, tableName, employee, fromDate) {
-    
+
     const declarations = [ ...this.declarations[tableName].table];
 
     const parentIndex = findIndex(declarations, d => d.key === groupInfo.type);
@@ -419,7 +419,7 @@ export class GeneralBaseComponent {
       if (column.key === 'fullName') {
         clearTimeout(this.timer);
         this.timer = setTimeout(() => {
-          this.updateNextColumns(instance, r, '', [c + 4]);
+          this.updateNextColumns(instance, r, '', [c + 4], true);
           instance.jexcel.setReadonly(Number(r), c + 4);
         }, 10);
       }else if (column.key === 'registerCityCode') {
@@ -482,7 +482,7 @@ export class GeneralBaseComponent {
         declaration.data[index] = record[index];
       });
     });
-     
+
     const rowChange: any = this.declarations[tableName].table[r];
     rowChange.data.options.isInitialize = false;
     rowChange.isInitialize = false;
@@ -550,7 +550,7 @@ export class GeneralBaseComponent {
   private deleteEmployeeLink(tableName, data, employeeId, parentKey) {
     const key = (tableName + '_' + parentKey);
     const willBeDeleted =  CONSTPARENTDELETEAUTOROW.findIndex(p => p.parent === (tableName + '_' + parentKey)) > -1;
-    
+
     if(!willBeDeleted) {
       return '';
     }
@@ -573,10 +573,10 @@ export class GeneralBaseComponent {
       }
   }
 
-  private updateNextColumns(instance, r, value, nextColumns = []) {
+  private updateNextColumns(instance, r, value, nextColumns = [], force = false) {
     nextColumns.forEach(columnIndex => {
       const columnName = jexcel.getColumnNameFromId([columnIndex, r]);
-      instance.jexcel.setValue(columnName, value);
+      instance.jexcel.setValue(columnName, value, force);
     });
   }
 
@@ -699,7 +699,7 @@ export class GeneralBaseComponent {
     });
 
     declarationsDeleted.forEach(d => {
-    
+
       let parentKey = '';//(d.options.parentKey || d.parentKey);
       if (!d.options || !d.options.parentKey) {
         parentKey = d.parentKey;
@@ -923,5 +923,5 @@ export class GeneralBaseComponent {
   handleFileSelected(files) {
     this.onChangedFile.emit(files);
   }
-   
+
 }
