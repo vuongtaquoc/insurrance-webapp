@@ -31,7 +31,7 @@
     "jquery": "3.4.1",
     "jstable-editor": "3.15.45",
     "jsuites": "2.7.1",
-    "lodash": "4.17.15",
+    "lodash": "4.17.19",
     "moment": "2.24.0",
     "ng-zorro-antd": "9.1.2",
     "ngx-mask": "9.1.2",
