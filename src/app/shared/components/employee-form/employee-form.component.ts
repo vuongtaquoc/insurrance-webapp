@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, ViewEncapsulation, Input, AfterViewInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { forkJoin, Subject } from 'rxjs';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import * as moment from 'moment';
@@ -80,6 +80,8 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
   private timer;
   private saveTimer;
 
+  tableSubmitErrors: boolean = false;
+
   constructor(
     private formBuilder: FormBuilder,
     private modal: NzModalRef,
@@ -105,9 +107,12 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
     const employee = this.employee;
 
     this.employeeForm = this.formBuilder.group({
+
+      // tabEmployee
       fullName: [employee.fullName, Validators.required],
-      birthday: [employee.birthday ? employee.birthday.split('/').join('') : '', [Validators.required,validateLessThanEqualNowBirthday]],
-      typeBirthday: [employee.typeBirthday || '0'],
+      birthday: [employee.birthday ? employee.birthday.split('/').join('') : '', [Validators.required, validateLessThanEqualNowBirthday]],
+      birthTypeOnlyYearMonth: [employee.typeBirthday === '1'],
+      birthTypeOnlyYear: [employee.typeBirthday === '2'],
       gender: [employee.gender, Validators.required],
       nationalityCode: [employee.nationalityCode, Validators.required],
       peopleCode: [employee.peopleCode, Validators.required],
@@ -118,6 +123,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
       registerCityCode: [employee.registerCityCode, Validators.required],
       registerDistrictCode: [employee.registerDistrictCode, Validators.required],
       registerWardsCode: [employee.registerWardsCode, Validators.required],
+      isDuplicateAddress: [false],
       recipientsCityCode: [employee.recipientsCityCode, Validators.required],
       recipientsDistrictCode: [employee.recipientsDistrictCode, Validators.required],
       recipientsWardsCode: [employee.recipientsWardsCode, Validators.required],
@@ -131,7 +137,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
       contractNo: [employee.contractNo, [Validators.required, Validators.maxLength(100)]],
       dateSign: [employee.dateSign ? employee.dateSign.split('/').join('') : '', [Validators.required, validateDateSign]],
       levelWork: [employee.levelWork, Validators.required],
-	    contractTypeCode: [employee.contractTypeCode],       
+      contractTypeCode: [employee.contractTypeCode],
       contractTypeFromDate: [employee.contractTypeFromDate ? employee.contractTypeFromDate.split('/').join('') : ''],
       contractTypeToDate: [employee.contractTypeToDate ? employee.contractTypeToDate.split('/').join('') : ''],
       workTypeCode: [employee.workTypeCode],
@@ -139,39 +145,41 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
       workTypeToDate: [employee.workTypeToDate ? employee.workTypeToDate.split('/').join('') : ''],
       careFromDate: [employee.careFromDate ? employee.careFromDate.split('/').join('') : ''],
       careTypeToDate: [employee.careTypeToDate ? employee.careTypeToDate.split('/').join('') : ''],
-      relationFamilyNo: [employee.relationFamilyNo],
-      relationAddress: [employee.relationAddress],
       salary: [employee.salary, [Validators.required, Validators.pattern(REGEX.ONLY_NUMBER)]],
       ratio: [employee.ratio, [Validators.required, Validators.pattern(REGEX.ONLY_NUMBER)]],
       salaryAreaCode: [employee.salaryAreaCode, Validators.required],
-      paymentMethodCode: [employee.paymentMethodCode],
       rate: [employee.rate, [Validators.required, Validators.min(0), Validators.max(100), Validators.pattern(REGEX.ONLY_NUMBER_INCLUDE_DECIMAL)]],
-      cityFirstRegistCode: [employee.cityFirstRegistCode, Validators.required],
-      hospitalFirstRegistCode: [employee.hospitalFirstRegistCode, Validators.required],
       allowanceLevel: [employee.allowanceLevel, [Validators.min(0), Validators.max(99), Validators.pattern(REGEX.ONLY_NUMBER)]],
       allowanceSeniority: [employee.allowanceSeniority, [Validators.min(0), Validators.max(100), Validators.pattern(REGEX.ONLY_NUMBER_INCLUDE_DECIMAL)]],
       allowanceSeniorityJob: [employee.allowanceSeniorityJob, [Validators.min(0), Validators.max(100), Validators.pattern(REGEX.ONLY_NUMBER_INCLUDE_DECIMAL)]],
       allowanceSalary: [employee.allowanceSalary, [Validators.pattern(REGEX.ONLY_NUMBER)]],
       allowanceAdditional: [employee.allowanceAdditional],
       allowanceOther: [employee.allowanceOther, [Validators.pattern(REGEX.ONLY_NUMBER)]],
+      cityFirstRegistCode: [employee.cityFirstRegistCode, Validators.required],
+      hospitalFirstRegistCode: [employee.hospitalFirstRegistCode, Validators.required],
       mstncn: [employee.mstncn, [Validators.pattern(REGEX.ONLY_NUMBER)]],
       bankAccount: [employee.bankAccount, [Validators.pattern(REGEX.ONLY_NUMBER)]],
       bankCode: [employee.bankCode ? employee.bankCode.toString() : ''],
       accountHolder: [employee.accountHolder],
       status: [employee.status],
       orders: [employee.orders, [Validators.pattern(REGEX.ONLY_NUMBER)]],
+
+      //tabFamily
+      isMaster: [employee.isMaster],
       relationshipFullName: [employee.relationshipFullName, Validators.required],
       relationshipDocumentType: [employee.relationshipDocumentType],
       relationshipBookNo: [employee.relationshipBookNo, [Validators.maxLength(50), Validators.pattern(REGEX.ONLY_CHARACTER_NUMBER)]],
       relationshipCityCode: [employee.relationshipCityCode, Validators.required],
       relationshipDistrictCode: [employee.relationshipDistrictCode, Validators.required],
       relationshipWardsCode: [employee.relationshipWardsCode, Validators.required],
-      relationshipVillageCode: [employee.relationshipVillageCode],
+      relationAddress: [employee.relationAddress],
       relationshipMobile: [employee.relationshipMobile, [Validators.maxLength(15), Validators.pattern(REGEX.PHONE_NUMBER)]],
-      isMaster: [employee.isMaster],
-      isDuplicateAddress: [false],
-      birthTypeOnlyYearMonth: [employee.typeBirthday === '1'],
-      birthTypeOnlyYear: [employee.typeBirthday === '2']
+      relationFamilyNo: [employee.relationFamilyNo],
+
+      // other
+      typeBirthday: [employee.typeBirthday || '0'],
+      paymentMethodCode: [employee.paymentMethodCode],
+      relationshipVillageCode: [employee.relationshipVillageCode],
     });
 
     const jobs = [
@@ -303,7 +311,10 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
       this.employeeForm.controls[i].updateValueAndValidity();
     }
 
+
     if (this.employeeForm.invalid) {
+
+      this.tableSubmitErrors = true;
       this.modalService.error({
         nzTitle: 'Lỗi dữ liệu',
         nzContent: 'Vui lòng kiểm tra trường dữ liệu được cảnh báo lỗi hoặc yêu cầu nhập, trên tab thông tin [Thông tin NLD],[Quá trình tham gia BHXH],[Thành viên hộ gia đình]'
@@ -311,6 +322,8 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
 
       return;
     }
+
+    this.tableSubmitErrors = false;
 
     const formData = this.getData();
 
@@ -333,7 +346,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
       birthday: getBirthDay(this.employeeForm.value.birthday, this.birthTypeOnlyYear, this.birthTypeOnlyYearMonth).format,
       dateSign: this.dateSign,
       contractTypeFromDate: this.contractTypeFromDate,
-      contractTypeToDate:  this.contractTypeToDate,
+      contractTypeToDate: this.contractTypeToDate,
       workTypeFromDate: this.workTypeFromDate,
       workTypeToDate: this.workTypeToDate,
       careFromDate: this.careFromDate,
@@ -612,7 +625,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
     if (!value) {
       return '';
     }
-    
+
     this.bindingDataToGirdFamilies('wardsCode');
   }
 
@@ -999,7 +1012,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  handleSearchIsurranceCode(){
+  handleSearchIsurranceCode() {
     this.isSpinning = true;
     const code = this.employeeForm.get('isurranceCode').value;
     this.externalService.getEmployeeByIsurranceCode(code).subscribe(data => {
@@ -1012,7 +1025,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
   setResultToFrom(result: any) {
 
     if (result.fullName === '' || result.status !== '1') {
-       this.showDialogNotFound();
+      this.showDialogNotFound();
     }
 
     this.employeeForm.patchValue({
@@ -1037,8 +1050,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
 
   private buildBirthday(typeBirthday, birthday) {
     let result = '';
-    if (typeBirthday === '0')
-    {
+    if (typeBirthday === '0') {
       result = birthday.substr(6, 2) + birthday.substr(4, 2) + birthday.substr(0, 4);
     } else if (typeBirthday === '1') {
       result = birthday.substr(4, 2) + birthday.substr(0, 4);

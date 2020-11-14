@@ -3,7 +3,13 @@
     <div class="employee-form__content">
       <form nz-form [formGroup]="employeeForm">
         <nz-tabset (nzSelectChange)="changeTab($event)">
-          <nz-tab nzTitle="Thông tin NLĐ">
+          <nz-tab [nzTitle]="tabEmployee">
+            <ng-template #tabEmployee>
+              <div class="page-adjust-general__tab-title" [ngClass]="{'tab-title--error': tableSubmitErrors}">
+                Thông tin NLĐ
+              </div>
+            </ng-template>
+
             <div class="employee-form-info_content">
               <h3 class="employee-form__group-title">Thông tin NLĐ</h3>
               <!-- ROW START -->
@@ -248,14 +254,16 @@
                   <nz-form-item>
                     <nz-form-label class="text-left" [nzSpan]="10">Mã số BHXH</nz-form-label>
                     <nz-form-control [nzSpan]="14" [nzErrorTip]="errorTplInsurranceCode">
-                        <nz-input-group nzSearch [nzAddOnAfter]="suffixButton">
-                            <input nz-input placeholder="Mã số BHXH" formControlName="isurranceCode"  placeholder="Tìm kiếm theo số sổ BHXH" /> 
-                        </nz-input-group>
-                        <ng-template #suffixButton>
-                            <button nz-button class="employee-form__button-search" (click)="handleSearchIsurranceCode()" nzSearch>Tra cứu
-                            </button>
-                        </ng-template>
-                     
+                      <nz-input-group nzSearch [nzAddOnAfter]="suffixButton">
+                        <input nz-input placeholder="Mã số BHXH" formControlName="isurranceCode"
+                          placeholder="Tìm kiếm theo số sổ BHXH" />
+                      </nz-input-group>
+                      <ng-template #suffixButton>
+                        <button nz-button class="employee-form__button-search" (click)="handleSearchIsurranceCode()"
+                          nzSearch>Tra cứu
+                        </button>
+                      </ng-template>
+
                       <ng-template #errorTplInsurranceCode let-control>
                         <ng-container *ngIf="control.hasError('minlength')">
                           Mã số BHXH phải chứa 10 ký tự số
@@ -322,7 +330,7 @@
                 <div nz-col [nzSpan]="8">
                   <nz-form-item>
                     <nz-form-label class="text-left" [nzSpan]="10">Số sổ BHXH</nz-form-label>
-                    <nz-form-control [nzSpan]="14" [nzErrorTip]="isurranceNoTpl">                      
+                    <nz-form-control [nzSpan]="14" [nzErrorTip]="isurranceNoTpl">
                       <input nz-input placeholder="Số sổ BHXH" formControlName="isurranceNo" />
                       <ng-template #isurranceNoTpl let-control>
                         <ng-container *ngIf="control.hasError('maxlength')">
@@ -412,7 +420,8 @@
                   <nz-form-item>
                     <nz-form-label class="text-left" [nzSpan]="10">Loại hợp đồng</nz-form-label>
                     <nz-form-control [nzSpan]="14">
-                      <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" (ngModelChange)="changeContractType($event)" formControlName="contractTypeCode">
+                      <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn"
+                        (ngModelChange)="changeContractType($event)" formControlName="contractTypeCode">
                         <nz-option *ngFor="let contractType of contractTypes" [nzLabel]="contractType.name"
                           [nzValue]="contractType.id"></nz-option>
                       </nz-select>
@@ -423,8 +432,8 @@
                   <nz-form-item>
                     <nz-form-label class="text-left" [nzSpan]="10">Ngày bắt đầu</nz-form-label>
                     <nz-form-control [nzSpan]="14">
-                      <input nz-input placeholder="Ngày bắt đầu" formControlName="contractTypeFromDate" mask="00/00/0000"
-                        [showMaskTyped]="true" [validation]="true" [clearIfNotMatch]="true" />
+                      <input nz-input placeholder="Ngày bắt đầu" formControlName="contractTypeFromDate"
+                        mask="00/00/0000" [showMaskTyped]="true" [validation]="true" [clearIfNotMatch]="true" />
                     </nz-form-control>
                   </nz-form-item>
                 </div><!-- col -->
@@ -448,7 +457,8 @@
                     <nz-form-label class="text-left" [nzSpan]="10">Loại</nz-form-label>
                     <nz-form-control [nzSpan]="14">
                       <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="workTypeCode">
-                        <nz-option *ngFor="let workType of workTypes" [nzLabel]="workType.name" [nzValue]="workType.id"></nz-option>
+                        <nz-option *ngFor="let workType of workTypes" [nzLabel]="workType.name" [nzValue]="workType.id">
+                        </nz-option>
                       </nz-select>
                     </nz-form-control>
                   </nz-form-item>
@@ -733,10 +743,7 @@
                   <nz-form-item>
                     <nz-form-label class="text-left" [nzSpan]="10">Mã số thuế TNCN</nz-form-label>
                     <nz-form-control [nzSpan]="14" [nzErrorTip]="mstncn">
-                      <input nz-input
-                        placeholder="Mã số thuế TNCN"
-                        formControlName="mstncn"
-                      />
+                      <input nz-input placeholder="Mã số thuế TNCN" formControlName="mstncn" />
                       <ng-template #mstncnTpl let-control>
                         <ng-container *ngIf="control.hasError('pattern')">
                           Mã số thuế TNCN phải là số
@@ -749,10 +756,7 @@
                   <nz-form-item>
                     <nz-form-label class="text-left" [nzSpan]="10">Số tài khoản</nz-form-label>
                     <nz-form-control [nzSpan]="14" [nzErrorTip]="bankAccount">
-                      <input nz-input
-                        placeholder="Số tài khoản"
-                        formControlName="bankAccount"
-                      />
+                      <input nz-input placeholder="Số tài khoản" formControlName="bankAccount" />
                       <ng-template #bankAccountTpl let-control>
                         <ng-container *ngIf="control.hasError('pattern')">
                           Số tài khoản phải là số
@@ -778,11 +782,8 @@
                   <nz-form-item>
                     <nz-form-label class="text-left" [nzSpan]="10">Chủ tài khoản</nz-form-label>
                     <nz-form-control [nzSpan]="14">
-                      <input nz-input
-                        placeholder="Chủ tài khoản"
-                        formControlName="accountHolder"
-                        (keyup)="handleChangeAccountHolder()"
-                      />
+                      <input nz-input placeholder="Chủ tài khoản" formControlName="accountHolder"
+                        (keyup)="handleChangeAccountHolder()" />
                     </nz-form-control>
                   </nz-form-item>
                 </div><!-- col -->
@@ -791,7 +792,8 @@
                     <nz-form-label class="text-left" [nzSpan]="10">Tình trạng</nz-form-label>
                     <nz-form-control [nzSpan]="14">
                       <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="status">
-                        <nz-option *ngFor="let payment of paymentStatus" [nzLabel]="payment.name" [nzValue]="payment.id"></nz-option>
+                        <nz-option *ngFor="let payment of paymentStatus" [nzLabel]="payment.name"
+                          [nzValue]="payment.id"></nz-option>
                       </nz-select>
                     </nz-form-control>
                   </nz-form-item>
@@ -800,10 +802,7 @@
                   <nz-form-item>
                     <nz-form-label class="text-left" [nzSpan]="10">Thứ tự</nz-form-label>
                     <nz-form-control [nzSpan]="14" [nzErrorTip]="orders">
-                      <input nz-input
-                        placeholder="Thứ tự"
-                        formControlName="orders"
-                      />
+                      <input nz-input placeholder="Thứ tự" formControlName="orders" />
                       <ng-template #ordersTpl let-control>
                         <ng-container *ngIf="control.hasError('pattern')">
                           Số tài khoản phải là số
@@ -816,7 +815,13 @@
             </div>
           </nz-tab><!-- Tab 1 -->
 
-          <nz-tab nzTitle="Quá trình tham gia BHXH">
+          <nz-tab [nzTitle]="tabIncrease">
+            <ng-template #tabIncrease>
+              <div class="page-adjust-general__tab-title" [ngClass]="{'tab-title--error': tableSubmitErrors}">
+                Quá trình tham gia BHXH
+              </div>
+            </ng-template>
+
             <h3 class="employee-form__group-title">Thông tin NLĐ</h3>
             <!-- ROW START -->
             <div class="employee-form__info">
@@ -849,8 +854,13 @@
             </div>
           </nz-tab><!-- Tab 2 -->
 
-          <nz-tab nzTitle="Thành viên hộ gia đình">
-            <h3 class="employee-form__group-title">
+          <nz-tab [nzTitle]="tabFamily">
+            <ng-template #tabFamily>
+              <div class="page-adjust-general__tab-title" [ngClass]="{'tab-title--error': tableSubmitErrors}">
+                Thành viên hộ gia đình
+              </div>
+            </ng-template>
+            <h3 class="employee-form__group-title" [formGroupName]="tabFamily">
               Phụ lục: Thành viên hộ gia đình của NLĐ
               <label class="employee-form__group-title--right" nz-checkbox (ngModelChange)="changeMaster($event)"
                 formControlName="isMaster">NLĐ là chủ hộ</label>
@@ -941,7 +951,7 @@
                 <nz-form-item>
                   <nz-form-label class="text-left" [nzSpan]="10">Địa chỉ hộ khẩu</nz-form-label>
                   <nz-form-control [nzSpan]="14">
-                    <input nz-input placeholder="Địa chỉ hộ khẩu" formControlName="relationAddress" />              
+                    <input nz-input placeholder="Địa chỉ hộ khẩu" formControlName="relationAddress" />
                   </nz-form-control>
                 </nz-form-item>
               </div><!-- col -->
@@ -965,7 +975,7 @@
                 <nz-form-item>
                   <nz-form-label class="text-left" [nzSpan]="10">Mã số hộ gia đình</nz-form-label>
                   <nz-form-control [nzSpan]="14">
-                    <input nz-input placeholder="Mã số hộ gia đình" formControlName="relationFamilyNo" />              
+                    <input nz-input placeholder="Mã số hộ gia đình" formControlName="relationFamilyNo" />
                   </nz-form-control>
                 </nz-form-item>
               </div><!-- col -->
