@@ -41,9 +41,9 @@ import {
   SicknessesApprovalListComponent,
   SicknessesApprovalAddComponent,
   SicknessesApprovalEditComponent,
-  PendingRetirementListComponent,
-  PendingRetirementAddComponent,
-  PendingRetirementEditComponent,
+  // PendingRetirementListComponent,
+  // PendingRetirementAddComponent,
+  // PendingRetirementEditComponent,
    
 } from './pages';
 
@@ -242,20 +242,20 @@ const routes: Routes = [
         component: MaternityApprovalEditComponent,
         canDeactivate: [ UnsavedChangesGuard, NavigationGuard ]
       },
-      {
-        path: 'pending-retirement',
-        component:PendingRetirementListComponent
-      },
-      {
-        path: 'pending-retirement/add',
-        component: PendingRetirementAddComponent,
-        canDeactivate: [ UnsavedChangesGuard, NavigationGuard ]
-      },
-      {
-        path: 'pending-retirement/:id/edit',
-        component: PendingRetirementEditComponent,
-        canDeactivate: [ UnsavedChangesGuard, NavigationGuard ]
-      }
+      // {
+      //   path: 'pending-retirement',
+      //   component:PendingRetirementListComponent
+      // },
+      // {
+      //   path: 'pending-retirement/add',
+      //   component: PendingRetirementAddComponent,
+      //   canDeactivate: [ UnsavedChangesGuard, NavigationGuard ]
+      // },
+      // {
+      //   path: 'pending-retirement/:id/edit',
+      //   component: PendingRetirementEditComponent,
+      //   canDeactivate: [ UnsavedChangesGuard, NavigationGuard ]
+      // }
     ]
   }
 ];

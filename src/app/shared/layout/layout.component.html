@@ -140,7 +140,7 @@
           </a>
         </li>
         <li class="layout-menu__item" [hidden]="!permissions[pmsConf.increase_labor.R] && !permissions[pmsConf.reduction_labor.R] && !permissions[pmsConf.adjust.R] && !permissions[pmsConf.arrears.R] && !permissions[pmsConf.adjust_general.R] && !permissions[pmsConf.regime_approval.R]">
-          <a href="" class="layout-menu__link">
+          <a [routerLink]="['/search']"  class="layout-menu__link">
             <span class="layout-menu__icon">
               <i nz-icon nzType="search" nzTheme="outline"></i>
             </span>
