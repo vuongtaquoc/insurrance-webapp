@@ -4,8 +4,10 @@ import { NzModalService } from 'ng-zorro-antd/modal';
 import * as jexcel from 'jstable-editor/dist/jexcel.js';
 import 'jsuites/dist/jsuites.js';
 import * as moment from 'moment';
+import { CategoryService, BankService } from '@app/core/services';
 
-import { customPicker } from '@app/shared/utils/custom-editor';
+
+import { customPicker, customAutocomplete, customAutocompleteDisplayName } from '@app/shared/utils/custom-editor';
 import { eventEmitter } from '@app/shared/utils/event-emitter';
 import { DATE_FORMAT } from '@app/shared/constant';
 
@@ -37,11 +39,17 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
   private handlers = [];
   private timer;
   private deleteTimer;
-
+  sicknessesPart1: string = 'sicknessesPart1';
+  sicknessesPart2: string = 'sicknessesPart2';
+  maternityPart1: string = 'maternityPart1';
+  maternityPart2: string = 'maternityPart2';
+  healthRecoveryPart1: string = 'healthRecoveryPart1';
+  healthRecoveryPart2: string = 'healthRecoveryPart2';
   constructor(
-    private modalService: NzModalService
+    private modalService: NzModalService,
+    private categoryService: CategoryService,
+    private bankService: BankService,
   ) {
-
   }
 
   ngOnInit() {
@@ -192,7 +200,8 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
     this.updateEditorToColumn('recordSolvedFromDate');
     this.updateEditorToColumn('dateStartWork');
     this.updateEditorToColumn('expertiseDate');
-
+    this.updateAutoCompleteToColumn('diagnosticCode');
+    this.updateAutoCompleteToColumn('bankName');
     this.spreadsheet.hideIndex();
 
     this.updateTable();
@@ -255,9 +264,24 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
     // update dropdown data
     data.forEach((row, rowIndex) => {
       this.columns.forEach((column, colIndex) => {
-        if (column.defaultLoad) {
-          this.spreadsheet.updateDropdownValue(colIndex, rowIndex);
+        if (column.key === 'diagnosticCode') {
+          if (row[colIndex]) {
+            this.getDiagnosticCode(this.spreadsheet, row[colIndex], colIndex, rowIndex).then(data => {
+              this.spreadsheet.updateAutoComplete(colIndex, rowIndex, data);
+            });
+          }
+        } else if (column.key === 'bankName') {
+          if (row[colIndex]) {
+            this.getBankCode(this.spreadsheet, row[colIndex], colIndex, rowIndex).then(data => {
+              this.spreadsheet.updateAutoComplete(colIndex, rowIndex, data);
+            });
+          }
+        } else {
+          if (column.defaultLoad) {
+            this.spreadsheet.updateDropdownValue(colIndex, rowIndex);
+          }
         }
+        
       });
     });
 
@@ -265,55 +289,81 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
   }
 
   private updateCellValidation() {
-    if (['maternityPart1', 'maternityPart2'].indexOf(this.tableName) > -1) {
-      const parentKeys = ['II', 'III_1', 'III_2', 'III_3', 'IV', 'V_1', 'V_2', 'VI_1', 'VI_2', 'VII', 'VIII', 'IX'];
+    if ([this.maternityPart1, this.maternityPart2].indexOf(this.tableName) > -1) {
+      this.validMaternity();
+    } else if ([this.healthRecoveryPart1].indexOf(this.tableName) > -1) {
+      this.validHealthRecoveryPart1();
+    } else if([this.sicknessesPart1].indexOf(this.tableName) > -1) {
+      this.validSicknessesPart1();
+    }
+  }
 
-      const childrenWeekOldValid = {
+  private updateAutoCompleteToColumn(key) {
+    const column = this.columns.find(c => c.key === key);
+
+    if (!column) return;
+    if(key === 'bankName') {
+      column.editor = customAutocompleteDisplayName(this.spreadsheet, this.getBankCode.bind(this));
+    } else if(key === 'diagnosticCode') {
+      column.editor = customAutocomplete(this.spreadsheet, this.getDiagnosticCode.bind(this));
+    }
+    
+  }
+
+  private async getDiagnosticCode(table, keyword, c, r) {
+     const filter = {
+      type: 'diagnosticCode',
+      keyword
+     };
+    return await this.categoryService.filterCategories(filter).toPromise();
+  }
+
+  private async getBankCode(table, keyword, c, r) {
+    const filter = {
+     keyword
+    };
+
+   return await this.bankService.filterBank(filter).toPromise();
+ }
+
+
+  private validMaternity() {
+    const parentKeys = ['II', 'III_1', 'III_2', 'III_3', 'IV', 'V_1', 'V_2', 'VI_1', 'VI_2', 'VII', 'VIII', 'IX'];
+
+      const childrenWeekOld = {
         required: true,
         number: true,
-        min: 0,
+        min: 1,
       };
-
-      const childrenWeekOld = {         
-        number: true,
-        min: 0,
-      };
+       
       const planCode = {
         required: true
       };
       const validationColumns: any = {
         'II': {
-          childrenWeekOldValid,
+          childrenWeekOld,
           planCode
         },
         'III_1': {
-          childrenWeekOldValid,
           planCode,
           childrenBirthday: {
             required: true,
-            lessThanNow: true
           }
         },
         'III_2': {
-          childrenWeekOldValid,
           planCode,
-          childrenDayDead: {
-            required: true
-          }
         },
         'III_3': {
-          childrenWeekOldValid,
+          childrenWeekOld,
           planCode,
           motherDayDead: {
             required: true
           }
         },
         'IV': {
-          childrenWeekOldValid,
           planCode,
         },
         'V_1': {
-          childrenWeekOldValid,
           planCode,
           childrenBirthday: {
             required: true,
@@ -321,37 +371,44 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
           }
         },
         'V_2': {
-          childrenWeekOldValid,
           planCode,
           childrenDayDead: {
             required: true
+          },
+          childrenWeekOld:{
+            number: true,
           }
         },
         'VI_1': {
-          childrenWeekOldValid,
           planCode,
+          childrenWeekOld:{
+            number: true,
+          },
           childrenBirthday: {
             required: true,
             lessThanNow: true
           }
         },
         'VI_2': {
-          childrenWeekOldValid,
           planCode,
           childrenDayDead: {
             required: true
+          },
+          childrenWeekOld:{
+            number: true,
           }
         },
         'VII': {
-          childrenWeekOldValid,
           planCode,
-        },
-        'VIII': {
-          childrenWeekOld,
+          childrenWeekOld:{
+            number: true,
+          }
         },
         'IX': {
-          childrenWeekOld,
           planCode,
+          childrenWeekOld:{
+            number: true,
+          }
         }
       };
       const readonlyColumns = {
@@ -405,8 +462,10 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
           });
         });
       }, 50);
-    } else if (['healthRecoveryPart1'].indexOf(this.tableName) > -1) {
-      const parentKeys = ['I_1', 'I_2', 'I_3', 'II_1', 'II_2', 'II_3', 'II_4', 'III_1', 'III_2', 'III_3'];
+  }
+
+  private validHealthRecoveryPart1() {
+    const parentKeys = ['I_1', 'I_2', 'I_3', 'II_1', 'II_2', 'II_3', 'II_4', 'III_1', 'III_2', 'III_3'];
       const ratioReduction = { min: 0, max: 100 };
       const validationColumns: any = {
         'I_1': {
@@ -479,14 +538,25 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
           });
         });
       }, 50);
-    } else if(['sicknessesPart1'].indexOf(this.tableName) > -1) {
-      const parentKeys = ['I', 'II', 'III'];
+  }
+
+  private validSicknessesPart1() {
+    const parentKeys = ['I', 'II', 'III'];
       const validationColumns: any = {
         'II': {
           diagnosticCode: {
             required: true,
           },
           diagnosticName: {
+            required: true,
+          }
+        },
+        'III': {
+          childrenBirthday: {
+            required: true,
+            lessThanNow: true
+          },
+          childrenHealthNo: {
             required: true,
           }
         },
@@ -520,14 +590,12 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
           });
         });
     }, 50);
-    }
   }
-
   private updateCellReadonly() {
     const readonlyColumnIndex = this.columns.findIndex(c => !!c.checkReadonly);
 
     this.data.forEach((d, rowIndex) => {
-      if (this.tableName === 'maternityPart1' && readonlyColumnIndex > -1) {
+      if (this.tableName === this.maternityPart1 && readonlyColumnIndex > -1) {
         if (d.parentKey === 'III_1') {
           this.spreadsheet.setReadonly(rowIndex, readonlyColumnIndex);
         }
@@ -658,7 +726,6 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
 
         validationColumn.validations = rules;
         validationColumn.fieldName = fieldName;
-
         instance.jexcel.validationCell(y, x, fieldName, rules);
 
         this.handleEvent({
@@ -681,7 +748,7 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
               required: true,
               lessThan: true
             };
-            if (['sicknessesPart1', 'sicknessesPart2'].indexOf(this.tableName) === -1) {
+            if ([this.sicknessesPart1, this.sicknessesPart2].indexOf(this.tableName) === -1) {
               validationColumn.validations.lessThanNow = true;
             }
             validationColumn.fieldName = {
@@ -694,7 +761,7 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
             validationColumn.validations = {
               required: true,
             };
-            if (['sicknessesPart1', 'sicknessesPart2'].indexOf(this.tableName) === -1) {
+            if ([this.sicknessesPart1, this.sicknessesPart2].indexOf(this.tableName) === -1) {
               validationColumn.validations.lessThanNow = true;
             }
             validationColumn.fieldName = 'Từ ngày';
@@ -704,7 +771,7 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
           validationColumn.validations = {
             required: true,
           };
-          if (['sicknessesPart1', 'sicknessesPart2'].indexOf(this.tableName) === -1) {
+          if ([this.sicknessesPart1, this.sicknessesPart2].indexOf(this.tableName) === -1) {
             validationColumn.validations.lessThanNow = true;
           }
           validationColumn.fieldName = 'Từ ngày';
@@ -732,7 +799,7 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
               required: true,
               lessThan: true,
             };
-            if (['sicknessesPart1', 'sicknessesPart2'].indexOf(this.tableName) === -1) {
+            if ([this.sicknessesPart1, this.sicknessesPart2].indexOf(this.tableName) === -1) {
               validationColumn.validations.lessThanNow = true;
             }
             validationColumn.fieldName = {
@@ -745,7 +812,7 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
             validationColumn.validations = {
               required: true,
             };
-            if (['sicknessesPart1', 'sicknessesPart2'].indexOf(this.tableName) === -1) {
+            if ([this.sicknessesPart1, this.sicknessesPart2].indexOf(this.tableName) === -1) {
               validationColumn.validations.lessThanNow = true;
             }
             validationColumn.fieldName = 'Từ ngày';
@@ -755,7 +822,7 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
           validationColumn.validations = {
             required: true,
           };
-          if (['sicknessesPart1', 'sicknessesPart2'].indexOf(this.tableName) === -1) {
+          if ([this.sicknessesPart1, this.sicknessesPart2].indexOf(this.tableName) === -1) {
             validationColumn.validations.lessThanNow = true;
           }
           validationColumn.fieldName = 'Từ ngày';

@@ -6,7 +6,7 @@ import findIndex from 'lodash/findIndex';
 import * as jexcel from 'jstable-editor/dist/jexcel.js';
 import * as moment from 'moment';
 
-import { CategoryService, EmployeeService } from '@app/core/services';
+import { CategoryService, EmployeeService, BankService } from '@app/core/services';
 import { DATE_FORMAT } from '@app/shared/constant';
 
 import { eventEmitter } from '@app/shared/utils/event-emitter';
@@ -62,6 +62,7 @@ export class RegimeApprovalBaseComponent {
     protected modalService: NzModalService,
     protected categoryService: CategoryService,
     protected employeeService: EmployeeService,
+    protected bankService: BankService,
   ) {}
 
   initializeTableColumns(part, nested, columns) {
@@ -89,6 +90,7 @@ export class RegimeApprovalBaseComponent {
         // replace
         employee.gender = !employee.gender;
         employee.bankCode = '';
+        employee.bankName = '';
         employee.accountHolder = '';
         employee.bankAccount = '';
 
@@ -147,7 +149,7 @@ export class RegimeApprovalBaseComponent {
       type: 'readonly',
       part,
       data: this.declarations[part].table
-    });
+    });    
     eventEmitter.emit('unsaved-changed');
   }
 
@@ -288,10 +290,17 @@ export class RegimeApprovalBaseComponent {
       const column =  this.headers[part].columns[c];
       if (column.key === 'diagnosticCode') {
         // const diagnosticName = cell.innerText.split(' - ').pop();
-        // this.updateNextColumns(instance, r, diagnosticName, [ c + 1 ]);
+        // this.updateNextColumns(instance, r, diagnosticName, [ c + 1 ]);        
         this.categoryService.getCategoryByTypeAndCode('diagnosticCode', cell.innerText).subscribe(data => {
-          this.updateNextColumns(instance, r, data.name, [ c + 1 ]);
+           this.updateNextColumns(instance, r, data.name, [ c + 1 ]);
         });
+      } else if (column.key === 'bankName') {
+        if (cell.innerText !== '') {
+          const indexColunmBakCode = this.headers[part].columns.findIndex(d => d.key === 'bankCode');
+          this.bankService.getDetailByName(cell.innerText).subscribe(data => {
+            this.updateNextColumns(instance, r, data.id, [ indexColunmBakCode]);
+          });  
+        }
       } else if (column.key === 'regimeFromDate' || column.key === 'regimeToDate') {
         clearTimeout(this.timer);
         this.timer = setTimeout(() => {
@@ -319,7 +328,7 @@ export class RegimeApprovalBaseComponent {
        
         const subsidizeReceipt = records[r][c];
         if(subsidizeReceipt === 'ATM') {
-          this.updateBankAccountOfEmployee(instance, records, r, c);
+          this.updateBankAccountOfEmployee(instance, records, r, c, part);
         }else {
           clearTimeout(this.timer);
           this.timer = setTimeout(() => {
@@ -359,6 +368,7 @@ export class RegimeApprovalBaseComponent {
     this.tableSubject.next({
       type: 'validate'
     });
+    console.log('XXXXXXXXXXX');
     eventEmitter.emit('unsaved-changed');
   }
 
@@ -614,7 +624,7 @@ export class RegimeApprovalBaseComponent {
     });
   }
 
-  protected updateBankAccountOfEmployee(instance: any,records: any, r: any, c: any) {
+  protected updateBankAccountOfEmployee(instance: any,records: any, r: any, c: any, part: any) {
    
     const record = records[r];
     if(!record.origin || !record.origin.employeeId) {
@@ -624,9 +634,11 @@ export class RegimeApprovalBaseComponent {
     clearTimeout(this.timer);
     this.timer = setTimeout(() => {
       this.employeeService.getEmployeeById(record.origin.employeeId).subscribe(data => {
+        const indexColunmBakCode = this.headers[part].columns.findIndex(d => d.key === 'bankCode');
         this.updateNextColumns(instance, r, data.bankAccount, [ c + 1 ]);
         this.updateNextColumns(instance, r, data.accountHolder, [ c + 2 ]);
-        this.updateNextColumns(instance, r, data.bankCode, [ c + 3 ]);
+        this.updateNextColumns(instance, r, data.bankName, [ c + 3 ]);
+        this.updateNextColumns(instance, r, data.bankCode, [ indexColunmBakCode ]);
       })
     }, 10);
 

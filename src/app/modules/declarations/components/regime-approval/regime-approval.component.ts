@@ -42,8 +42,7 @@ export class RegimeApprovalComponent implements OnInit, OnDestroy {
   allInitialize: any = {};
   dataIsValid = true;
   status = 0;
-  isSpinning = false;
-
+  isSpinning = false;  
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
@@ -123,30 +122,7 @@ export class RegimeApprovalComponent implements OnInit, OnDestroy {
   }
 
   rollback() {
-    if(!this.isTableValid) {
-      this.router.navigate(['/declarations/regime-approval']);
-      return;
-    }
-
-    eventEmitter.emit('unsaved-changed', true);
-    this.modalService.confirm({
-      nzTitle: 'Bạn có muốn lưu lại thông tin thay đổi',
-      nzOkText: 'Có',
-      nzCancelText: 'Không',
-      nzClosable: true,
-      nzOnOk: () => {
-        if (this.declarationId) {
-          this.update('save');
-        } else {
-          this.create('save');
-        }
-      },
-      nzOnCancel: () => {
-        this.router.navigate(['/declarations/regime-approval']);
-      }
-
-    });
-
+    this.router.navigate(['/declarations/regime-approval']);
   }
 
   saveAndView() {
@@ -194,7 +170,7 @@ export class RegimeApprovalComponent implements OnInit, OnDestroy {
         }
       });
     }
-
+    
     eventEmitter.emit('unsaved-changed', true);
     if (this.declarationId) {
       this.update('saveAndView');
@@ -239,7 +215,7 @@ export class RegimeApprovalComponent implements OnInit, OnDestroy {
       return;
     }
 
-    eventEmitter.emit('unsaved-changed', true);
+    eventEmitter.emit('unsaved-changed', true);     
     this.dataIsValid = this.invalidData();
     if (this.declarationId) {
       this.update('save');

@@ -43,6 +43,7 @@ export class ArrearsListComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.year = new Date();
     this.declarationName = this.getDeclaration(this.declarationCode).value;
     this.getDeclarations();
   }
@@ -151,6 +152,10 @@ export class ArrearsListComponent implements OnInit {
   }
 
   onChangeYear () {
+    if(!moment(this.year,"YYYY").isValid()) {
+      this.year = '';
+      return;
+    }
     this.getDeclarations();
   }
 

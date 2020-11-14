@@ -1,20 +1,33 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Injector } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+
+import { PageCoreComponent } from '@app/shared/components';
+
+import { eventEmitter } from '@app/shared/utils/event-emitter';
 
 @Component({
   selector: 'app-declaration-adjust-general-edit',
   templateUrl: './adjust-general-edit.component.html',
   styleUrls: ['./adjust-general-edit.component.less']
 })
-export class AdjustGeneralEditComponent implements OnInit {
+export class AdjustGeneralEditComponent extends PageCoreComponent implements OnInit {
   declarationId: string;
+  handlers: any[] = [];
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router
-  ) {}
+    private router: Router,
+    public injector: Injector
+  ) {
+    super(injector);
+  }
 
   ngOnInit() {
     this.declarationId = this.route.snapshot.params.id;
+    this.handlers.push(eventEmitter.on('unsaved-changed', (isSubmit) => this.setIsUnsavedChanges(!isSubmit)));
+  }
+
+  ngOnDestroy() {
+    eventEmitter.destroy(this.handlers);
   }
 }

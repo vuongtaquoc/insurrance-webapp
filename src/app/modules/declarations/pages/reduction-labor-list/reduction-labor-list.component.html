@@ -78,7 +78,7 @@
             <a [routerLink]="['/declarations/reduction-labor/' + data.id + '/edit']" nz-button nzType="link">
               <i nz-icon nzType="edit" nzTheme="outline"></i>
             </a>
-            <app-button-delete [id]="data.id" (delete)="delete($event)"></app-button-delete>
+            <app-button-delete *ngIf="(data.status !== 3)" [id]="data.id" (delete)="delete($event)"></app-button-delete>
           </td>
         </tr>
       </tbody>

@@ -186,9 +186,11 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   key: 'childrenHealthNo'
 }, {
   type: 'numeric',
+  align: 'right',
   width: 50,
   title: '(10.3)',
   key: 'childrenWeekOld',
+  fieldName: 'Số tuần tuổi thai',
   validations: {
     numeric: true,
   }
@@ -200,6 +202,7 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   isCalendar: true
 }, {
   type: 'numeric',
+  align: 'right',
   width: 50,
   title: '(10.5)',
   key: 'childrenNumber',
@@ -321,11 +324,12 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   title: '(C.3)',
   key: 'accountHolder'
 }, {
-  type: 'dropdown',
+  type: 'text',
   autocomplete: true,
   width: 280,
   title: '(C.4)',
-  key: 'bankCode',
+  key: 'bankName',
+  wordWrap: true,
   source: [ ],
 }, {
   type: 'dropdown',
@@ -334,6 +338,7 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   width: 180,
   title: '(D)',
   key: 'planCode',
+  wordWrap: true,
   fieldName: 'Phương án',
   // validations: {
   //   required: true
@@ -344,6 +349,12 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   title: '(E)',
   key: 'note'
 },{
+  type: 'hidden',
+  width: 140,
+  title: 'key',
+  key: 'bankCode',
+},
+{
   type: 'hidden',
   width: 140,
   title: 'key',
@@ -506,18 +517,25 @@ export const TABLE_HEADER_COLUMNS_PART_2 = [{
   title: '(C.3)',
   key: 'accountHolder'
 }, {
-  type: 'dropdown',
+  type: 'text',
   autocomplete: true,
   source: [],
   width: 240,
   title: '(C.4)',
-  key: 'bankCode'
+  fieldName: 'Ngân hàng',
+  key: 'bankName'
 }, {
   type: 'text',
   width: 150,
   title: '(D)',
   key: 'note',
   wordWrap: true
+},
+{
+  type: 'hidden',
+  width: 140,
+  title: 'key',
+  key: 'bankCode', 
 },
 {
   type: 'hidden',
@@ -536,5 +554,11 @@ export const VALIDATION_RULES = {
   },
   SC3: {
     minNumberLengthByOtherField: 3
+  },
+  CC3: {
+    minNumberLengthByOtherField: 1
+  },
+  NCN2: {
+    minNumberLengthByOtherField: 2
   }
 };

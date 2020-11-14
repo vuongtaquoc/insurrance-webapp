@@ -29,7 +29,10 @@ const TABLES = {
   documentList600b: 'Bảng kê hồ sơ',
   documentList601a: 'Bảng kê hồ sơ',
   generalFomError: 'Thông tin tờ khai',
-  documentFomError: 'Danh mục tài liệu'
+  documentFomError: 'Danh mục tài liệu',
+  pending600c: 'D02-TL',
+  documentList600c: 'Bảng kê hồ sơ'
+
 };
 
 @Component({

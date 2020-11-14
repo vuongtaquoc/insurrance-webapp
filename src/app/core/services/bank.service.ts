@@ -15,4 +15,41 @@ export class BankService {
   public getBanks(): Observable<any> {
     return this.http.get('/bank');
   }
+
+  public getDetailByName(name: string) {
+    return this.http.get(`/bank/detail/${name}`);
+  }
+
+
+  public filterBank(filters = {}) {
+    return this.http.getList('/bank', {
+      params: {
+        ...filters
+      }
+    }).pipe(
+      map(categories => {
+        return categories.data.map(category => ({
+          ...category,
+          name: category.id + ' - ' + category.name,
+          shortName: category.name
+        }));
+      })
+    );
+  }
+
+  public filterBankNotDisplayCode(filters = {}) {
+    return this.http.getList('/bank', {
+      params: {
+        ...filters
+      }
+    }).pipe(
+      map(categories => {
+        return categories.data.map(category => ({
+          ...category,
+          shortName: category.name
+        }));
+      })
+    );
+  }
+  
 }

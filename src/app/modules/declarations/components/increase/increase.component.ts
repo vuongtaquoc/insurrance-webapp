@@ -52,7 +52,6 @@ export class IncreaseComponent extends GeneralBaseComponent implements OnInit, O
     this.getRecipientsWardsByDistrictCode = this.getRecipientsWardsByDistrictCode.bind(this);
     this.getRegisterDistrictsByCityCode = this.getRegisterDistrictsByCityCode.bind(this);
     this.getRegisterWardsByDistrictCode = this.getRegisterWardsByDistrictCode.bind(this);
-    this.getHospitalsByCityCode = this.getHospitalsByCityCode.bind(this);
     this.getPlanByParent = this.getPlanByParent.bind(this);
     this.getRegisterDistrictsByCityCode = this.getRegisterDistrictsByCityCode.bind(this);
   }
@@ -117,7 +116,7 @@ export class IncreaseComponent extends GeneralBaseComponent implements OnInit, O
   }
 
   checkInsurranceCode() {
-   
+
     const declarations = [...this.declarations.increaselabor.table];
     const INSURRANCE_FULLNAME_INDEX = 1;
     const INSURRANCE_CODE_INDEX = 4;
@@ -128,19 +127,19 @@ export class IncreaseComponent extends GeneralBaseComponent implements OnInit, O
     //Kiểm tra nếu có dữ liệu cần check thì show loadding
     if(leafs.length > 0) {
       eventEmitter.emit('action:loadding', {
-        isShow: true,       
+        isShow: true,
       });
 
       this.onCheckIsuranceNo.emit('1');
     }
-    
+
     forkJoin(
-      leafs.map(item => {        
+      leafs.map(item => {
         const code = item.data[INSURRANCE_CODE_INDEX];
         return this.externalService.getEmployeeByIsurranceCode(code);
       })
     ).subscribe(results => {
-      
+
       declarations.forEach((declaration, rowIndex) => {
         const code = declaration.data[INSURRANCE_CODE_INDEX];
         const fullName = declaration.data[INSURRANCE_FULLNAME_INDEX];
@@ -163,12 +162,12 @@ export class IncreaseComponent extends GeneralBaseComponent implements OnInit, O
                 valid: false
               };
 
-            } else 
+            } else
             {
               declaration.data[INSURRANCE_STATUS_INDEX] = '';
             }
         }
-        
+
       });
 
       this.declarations.increaselabor.table = declarations;
@@ -187,8 +186,12 @@ export class IncreaseComponent extends GeneralBaseComponent implements OnInit, O
         type: 'validate'
       });
 
+    }, () => {
+      eventEmitter.emit('action:loadding', {
+        isShow: false,
+      });
     });
-    
+
   }
 
   private getRegisterDistrictsByCityCode(instance, cell, c, r, source) {
@@ -244,16 +247,6 @@ export class IncreaseComponent extends GeneralBaseComponent implements OnInit, O
 
       return districts;
     });
-  }
-
-  private getHospitalsByCityCode(instance, cell, c, r, source) {
-    const value = instance.jexcel.getValueFromCoords(c - 5, r);
-
-    if (!value) {
-      return [];
-    }
-
-    return this.hospitalService.getHospitals(value).toPromise();
   }
 
   private getPlanByParent(instance, cell, c, r, source) {

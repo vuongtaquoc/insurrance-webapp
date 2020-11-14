@@ -197,3 +197,70 @@ export const customAutocomplete = (table, callback) => {
     }
   };
 }
+
+export const customAutocompleteDisplayName = (table, callback) => {
+  return {
+    // Methods
+    closeEditor : function(cell, save) {
+      const selected = !!cell.classList.contains('selected');
+      const value = cell.children[0].value || table.getValue(cell);
+      cell.innerHTML = selected ? value : table.getValue(cell);
+      cell.classList.remove('selected');
+
+      const selectedValue = selected ? value : table.getValue(cell);
+
+      // cell.setAttribute('data-name', selectedValue);
+
+      return selectedValue.indexOf(' - ') > 0 ? selectedValue.split(' - ')[1] : selectedValue;
+      // return selectedValue;
+    },
+    openEditor : function(cell) {
+      const dataset = cell.dataset;
+      const x = Number(dataset.x);
+      const y = Number(dataset.y);
+
+      // Create input
+      const element = document.createElement('input');
+
+      // Update cell
+      // cell.classList.add('editor');
+      // cell.innerHTML = table.getValue(cell);
+      cell.innerHTML = '';
+      cell.appendChild(element);
+
+      $(element).autocomplete({
+        lookup: function(query, done) {
+          callback(table, query, x, y).then(data => {
+            const result = {
+              suggestions: data.map(d => ({
+                ...d,
+                value: d.name,
+                data: d.id
+              }))
+            };
+
+            done(result);
+          });
+        },
+        onSelect: function (suggestion) {
+          setTimeout(function() {
+            if (cell.children[0]) {
+              cell.classList.add('selected');
+              table.closeEditor(cell, true);
+              $(element).autocomplete().dispose();
+            }
+          });
+        }
+      });
+
+      // Focus on the element
+      element.focus();
+    },
+    getValue : function(cell) {
+      return cell.innerHTML;
+    },
+    setValue : function(cell, value) {
+      cell.innerHTML = value;
+    }
+  };
+}

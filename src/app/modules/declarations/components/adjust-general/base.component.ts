@@ -5,6 +5,7 @@ import findLastIndex from 'lodash/findLastIndex';
 import findIndex from 'lodash/findIndex';
 import * as jexcel from 'jstable-editor/dist/jexcel.js';
 import * as moment from 'moment';
+import { eventEmitter } from '@app/shared/utils/event-emitter';
 
 import {
   DeclarationService,
@@ -41,6 +42,10 @@ export class GeneralBaseComponent {
     adjustment: {
       nested: [],
       columns: []
+    },
+    pending: {
+      nested: [],
+      columns: []
     }
   };
   declarations: any = {
@@ -53,6 +58,10 @@ export class GeneralBaseComponent {
       table: []
     },
     adjustment: {
+      origin: [],
+      table: []
+    },
+    pending: {
       origin: [],
       table: []
     }
@@ -83,6 +92,7 @@ export class GeneralBaseComponent {
 
   handleUserDeleteTables(user, tableName) {
     this.handleUserDeleted(user, tableName);
+    eventEmitter.emit('unsaved-changed');
   }
 
 
@@ -97,6 +107,7 @@ export class GeneralBaseComponent {
 
   handleUserUpdateTables(user, tableName) {
     this.handleUserUpdated(user, tableName);
+    eventEmitter.emit('unsaved-changed');
   }
 
   handleUserUpdated(user, tableName) {
@@ -143,7 +154,7 @@ export class GeneralBaseComponent {
   }
 
   cloneEmployeeByPlanCode(groupInfo, tableName, employee, fromDate) {
-    
+
     const declarations = [ ...this.declarations[tableName].table];
 
     const parentIndex = findIndex(declarations, d => d.key === groupInfo.type);
@@ -212,7 +223,6 @@ export class GeneralBaseComponent {
       });
     }
     const declarations = [ ...this.declarations[tableName].table];
-
     const parentIndex = findIndex(declarations, d => d.key === type);
     const childLastIndex = findLastIndex(declarations, d => d.isLeaf && d.parentKey === type);
 
@@ -245,7 +255,7 @@ export class GeneralBaseComponent {
         }
 
         //copy salary
-        if(tableName === 'adjustment') {
+        if(tableName === 'adjustment' || tableName === 'pending') {
           employee.allowanceAdditionalNew = employee.allowanceAdditional;
           employee.allowanceLevelNew = employee.allowanceLevel;
           employee.allowanceOtherNew = employee.allowanceOther;
@@ -310,6 +320,7 @@ export class GeneralBaseComponent {
       data: this.declarations.table
     });
 
+    eventEmitter.emit('unsaved-changed');
   }
 
   handleUserAdded({ tableName, y, employee }) {
@@ -344,6 +355,8 @@ export class GeneralBaseComponent {
       type: 'readonly',
       data: this.declarations.table
     });
+
+    eventEmitter.emit('unsaved-changed');
   }
 
 
@@ -373,6 +386,7 @@ export class GeneralBaseComponent {
       tableName,
       data: this.declarations[tableName].table
     });
+    eventEmitter.emit('unsaved-changed');
   }
 
   handleTabChanged({ selected }) {
@@ -405,7 +419,7 @@ export class GeneralBaseComponent {
       if (column.key === 'fullName') {
         clearTimeout(this.timer);
         this.timer = setTimeout(() => {
-          this.updateNextColumns(instance, r, '', [c + 4]);
+          this.updateNextColumns(instance, r, '', [c + 4], true);
           instance.jexcel.setReadonly(Number(r), c + 4);
         }, 10);
       }else if (column.key === 'registerCityCode') {
@@ -468,7 +482,7 @@ export class GeneralBaseComponent {
         declaration.data[index] = record[index];
       });
     });
-     
+
     const rowChange: any = this.declarations[tableName].table[r];
     rowChange.data.options.isInitialize = false;
     rowChange.isInitialize = false;
@@ -487,6 +501,8 @@ export class GeneralBaseComponent {
     this.tableSubject.next({
       type: 'validate'
     });
+
+    eventEmitter.emit('unsaved-changed');
   }
 
   private setDataByPlanCode(instance, records, r, planCode,tableName, fromDate) {
@@ -534,7 +550,7 @@ export class GeneralBaseComponent {
   private deleteEmployeeLink(tableName, data, employeeId, parentKey) {
     const key = (tableName + '_' + parentKey);
     const willBeDeleted =  CONSTPARENTDELETEAUTOROW.findIndex(p => p.parent === (tableName + '_' + parentKey)) > -1;
-    
+
     if(!willBeDeleted) {
       return '';
     }
@@ -557,10 +573,10 @@ export class GeneralBaseComponent {
       }
   }
 
-  private updateNextColumns(instance, r, value, nextColumns = []) {
+  private updateNextColumns(instance, r, value, nextColumns = [], force = false) {
     nextColumns.forEach(columnIndex => {
       const columnName = jexcel.getColumnNameFromId([columnIndex, r]);
-      instance.jexcel.setValue(columnName, value);
+      instance.jexcel.setValue(columnName, value, force);
     });
   }
 
@@ -683,7 +699,7 @@ export class GeneralBaseComponent {
     });
 
     declarationsDeleted.forEach(d => {
-    
+
       let parentKey = '';//(d.options.parentKey || d.parentKey);
       if (!d.options || !d.options.parentKey) {
         parentKey = d.parentKey;
@@ -907,5 +923,5 @@ export class GeneralBaseComponent {
   handleFileSelected(files) {
     this.onChangedFile.emit(files);
   }
-   
+
 }

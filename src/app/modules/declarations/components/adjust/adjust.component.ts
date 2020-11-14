@@ -305,7 +305,7 @@ export class AdjustComponent implements OnInit, OnDestroy {
         }
       });
     }
-    
+    eventEmitter.emit('unsaved-changed', true);
     if (this.declarationId) {
       this.update('saveAndView');
     } else {
@@ -314,26 +314,7 @@ export class AdjustComponent implements OnInit, OnDestroy {
   }
 
   rollback() {
-    if(!this.isTableValid) {
-      this.router.navigate(['/declarations/adjust']);
-      return;
-    }
-
-    this.modalService.confirm({
-      nzTitle: 'Bạn có muốn lưu lại thông tin thay đổi',
-      nzOkText: 'Có',
-      nzCancelText: 'Không',
-      nzOnOk: () => {
-        if (this.declarationId) {
-          this.update('save');
-        } else {
-          this.create('save');
-        }
-      },
-      nzOnCancel: () => {
-        this.router.navigate(['/declarations/adjust']);
-      }
-    });
+    this.router.navigate(['/declarations/adjust']);
   }
 
   save() {
@@ -344,7 +325,7 @@ export class AdjustComponent implements OnInit, OnDestroy {
       });
       return;
     }
-     
+    eventEmitter.emit('unsaved-changed', true);
     if (this.declarationId) {
       this.update('save');
     } else {

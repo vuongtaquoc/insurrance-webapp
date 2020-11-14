@@ -31,3 +31,4 @@ export class SicknessesApprovalEditComponent extends PageCoreComponent implement
     eventEmitter.destroy(this.handlers);
   }
 }
+

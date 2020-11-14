@@ -1,3 +1,4 @@
+import format from '@app/shared/utils/format';
 export const TABLE_NESTED_HEADERS_PART_1 = [
   [
     { title: 'STT', rowspan: 2 },
@@ -140,6 +141,9 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
     // number: true,
     min: 0,
     max: 100
+  },
+  format: (value) => {
+    return format.currency(value, '0,0');
   }
 }, {
   type: 'text',
@@ -176,11 +180,12 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   title: '(C.3)',
   key: 'accountHolder'
 }, {
-  type: 'dropdown',
+  type: 'text',
   autocomplete: true,
   width: 280,
   title: '(C.4)',
-  key: 'bankCode',
+  wordWrap: true,
+  key: 'bankName',
   source: [ ],
 }, {
   type: 'text',
@@ -189,6 +194,12 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   key: 'note',
   wordWrap: true
 },{
+  type: 'hidden',
+  width: 140,
+  title: 'key',
+  key: 'bankCode',
+},
+{
   type: 'hidden',
   width: 140,
   title: 'key',
@@ -349,11 +360,12 @@ export const TABLE_HEADER_COLUMNS_PART_2 = [{
   title: '(C.3)',
   key: 'accountHolder'
 }, {
-  type: 'dropdown',
+  type: 'text',
   autocomplete: true,
   width: 280,
   title: '(C.4)',
-  key: 'bankCode',
+  wordWrap: true,
+  key: 'bankName',
   source: [ ],
 }, {
   type: 'text',
@@ -361,6 +373,12 @@ export const TABLE_HEADER_COLUMNS_PART_2 = [{
   title: '(D)',
   key: 'note',
   wordWrap: true
+},
+{
+  type: 'hidden',
+  width: 140,
+  title: 'key',
+  key: 'bankCode',
 },
 {
   type: 'hidden',
