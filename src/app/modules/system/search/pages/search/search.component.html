@@ -1,0 +1,53 @@
+<div class="page-container">
+  <nz-spin [nzSpinning]="isSpinning" class="page-container__spinning">
+    <div class="page-card page-search">
+
+      <div class="page-title">
+        <h1 class="text-center color-red">TRA CỨU KẾT QUẢ ĐÓNG BHXH, BHYT, BHTN (C12)</h1>
+      </div>
+      <div class="page-body">
+        <div class="page-search_list-year">
+          <ul class="list-inline">
+            <li><a href="#" class="color-black">{{ previous }}</a></li>
+            <li *ngFor="let year of years; let first=first; let last = last">
+              <a href="#" class="color-black">
+                {{ year }} <span *ngIf="!last">|</span>
+              </a>
+            </li>
+
+          </ul>
+        </div><!-- search-page_list -->
+
+        <div class="search-page_list-month">
+          <nz-list nzGrid>
+            <div nz-row [nzGutter]="16">
+              <div nz-col [nzMd]="2" class="text-center" *ngFor="let month of months">
+                <nz-list-item>
+                  <a href="#" class="color-black"> Tháng {{ month }}
+                    <div class="search-page_list-month-icon color-blue"> <i nz-icon nzType="download"
+                        nzTheme="outline"></i></div>
+                  </a>
+                </nz-list-item>
+              </div>
+            </div>
+          </nz-list>
+        </div>
+      </div>
+
+      <div class="page-footer text-center">
+        <div class="page-footer_content">
+          <h2>Dữ liệu do cơ quan BHXH cung cấp đến khách hàng và không bị chỉnh sửa!</h2>
+          <h2>
+            Vui lòng ấn vào
+            <span class="color-blue">
+              <a href="#">
+                <i style="font-size: 20px; margin: 0 2px;" nz-icon nzType="download" nzTheme="outline"></i>
+              </a>
+            </span>
+            để tải về thông báo kết quả đóng BHXH, BHYT, BHTN của tháng đó
+          </h2>
+        </div>
+      </div>
+    </div>
+  </nz-spin>
+</div>
