@@ -420,7 +420,6 @@ export class GeneralBaseComponent {
         clearTimeout(this.timer);
         this.timer = setTimeout(() => {
           this.updateNextColumns(instance, r, '', [c + 4], true);
-          instance.jexcel.setReadonly(Number(r), c + 4);
         }, 10);
       }else if (column.key === 'registerCityCode') {
         this.updateNextColumns(instance, r, '', [ c + 1, c + 2 ]);

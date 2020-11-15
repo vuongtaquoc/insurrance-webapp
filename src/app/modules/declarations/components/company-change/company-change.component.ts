@@ -213,7 +213,7 @@ export class CompanyChangeComponent implements OnInit, OnDestroy {
       submitter: this.submitter,
       mobile: this.mobile,
       changeCompanyInfo: this.companyForm.value,
-      flies: this.files,
+      files: this.files,
     }).subscribe(data => {
       if (type === 'saveAndView') {
         this.viewDocument(data);
@@ -233,7 +233,7 @@ export class CompanyChangeComponent implements OnInit, OnDestroy {
       submitter: this.submitter,
       mobile: this.mobile,
       changeCompanyInfo: this.companyForm.value,
-      flies: this.files,
+      files: this.files,
     }).subscribe(data => {
       if (type === 'saveAndView') {
         this.viewDocument(data);

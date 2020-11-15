@@ -1,0 +1,122 @@
+<div class="page-container">
+  <nz-spin [nzSpinning]="isSpinning">
+    <div class="page-adjust-general" [ngClass]="{'page-adjust-general-hide-last-tab': !usedocumentDT01}" cardFullHeight>
+      <nz-tabset nzSize="small" [ngClass]="{'page-adjust-general__tabs-error': tableSubmitErrorCount > 0}" nzTabPosition="bottom" nzSelectedIndex="1" [nzTabBarExtraContent]="extraTemplate" (nzSelectChange)="handleSelectTab($event)">
+          <nz-tab [nzTitle]="tabDocument">
+          <ng-template #tabDocument>
+            <div class="page-adjust-general__tab-title" [ngClass]="{'page-adjust-general__tab-title--error': tableSubmitErrors.documentFomError > 0}">
+              Danh mục tài liệu
+            </div>
+          </ng-template>
+          <div class="page-document-list__container">
+            <form nz-form [formGroup]="documentForm">
+              <h1><strong>{{declarationCode}}</strong> | {{declarationName}}</h1>
+              <div nz-row [nzGutter]="10">
+                <div nz-col [nzSpan]="12">
+                  <nz-form-item>
+                    <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Người nộp</nz-form-label>
+                    <nz-form-control [nzSpan]="14" [nzErrorTip]="submitterTpl">
+                      <input nz-input placeholder="Người nộp" formControlName="submitter"/>
+                      <ng-template #submitterTpl let-control>
+                        <ng-container *ngIf="control.hasError('required')">
+                          <p class="regime-approval-form__error">Người nộp không được để trống</p>
+                        </ng-container>
+                      </ng-template>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                      <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Số điện thoại</nz-form-label>
+                      <nz-form-control [nzSpan]="14" [nzErrorTip]="mobileTpl">
+                        <!-- <input nz-input formControlName="month"> -->
+                        <input nz-input formControlName="mobile" placeholder="Số điện thoại">
+                        <ng-template #mobileTpl let-control>
+                          <ng-container *ngIf="control.hasError('required')">
+                            <p class="regime-approval-form__error">Số điện thoại không được để trống</p>
+                          </ng-container>
+                          <ng-container *ngIf="control.hasError('pattern')">
+                            <p class="regime-approval-form__error">Số điện thoại phải là số</p>
+                          </ng-container>
+                        </ng-template>
+                      </nz-form-control>
+                    </nz-form-item>
+                  </div>
+                </div>
+                <h1>THÀNH PHẦN HỒ SƠ</h1>
+                <div class="document-form__process-table">
+                  <div class="document-form__process-table">
+                    <app-document-table
+                      [data]="documentList"
+                    ></app-document-table>
+                  </div>
+                </div>
+            </form>
+          </div><!-- page-declarations__container -->
+        </nz-tab><!-- tab 1-->
+        <nz-tab [nzTitle]="tabAdjustment">
+          <ng-template #tabAdjustment>
+            <div class="page-adjust-general__tab-title" [ngClass]="{'page-adjust-general__tab-title--error': tableSubmitErrors.pending600c > 0}">
+              D02-LT
+            </div>
+          </ng-template>
+          <app-pending
+            [declarationId]="declarationId"
+            [pageName]="declarationName"
+            [pageCode]="declarationCode"
+            [data]="declarations.origin['600c']"
+            [files] = 'declarations.files'
+            [tabEvents]="tabSubject.asObservable()"
+            (onChange)="handleChangeTable($event, 'pending')"
+            (onHiddenSidebar)="handleHiddenSidebar($event)"
+            (onChangedFile)="handleChangedFiles($event)"
+          ></app-pending>
+        </nz-tab>
+        <nz-tab [nzTitle]="tabDocumentList">
+          <ng-template #tabDocumentList>
+            <div class="page-adjust-general__tab-title" [ngClass]="{'page-adjust-general__tab-title--error': tableSubmitErrors.documentList600c > 0}">
+              Bảng kê hồ sơ
+            </div>
+          </ng-template>
+          <div class="page-document-list__container">
+            <form nz-form [formGroup]="documentForm">
+              <h1>{{declarationCode}} | {{declarationName}}</h1>
+              <h2>Bảng kê thông tin</h2>
+              <div class="document-form__process-table">
+                <app-document-list-table
+                  tableName="documentList"
+                  [data]="informations"
+                  [events]="tableSubject.asObservable()"
+                  [nestedHeaders]="tableNestedHeadersDocuments"
+                  [columns]="tableHeaderColumnsDocuments"
+                  (onChange)="handleChangeInfomation($event)"
+                  (onDelete)="handleDeleteInfomation($event)"
+                ></app-document-list-table>
+              </div>
+            </form>
+          </div>
+        </nz-tab><!-- tab 5-->
+      </nz-tabset>
+      <ng-template #extraTemplate>
+        <div class="page-declarations__footer">
+          <button nz-button class="page-declarations__footer-export"   nzType="default" nzSize="small" (click)="saveAndView()">
+            <i nz-icon nzType="upload"></i>Xuất tờ khai
+          </button>
+          <button nz-button nzType="default" nzSize="small" (click)="save()">
+            <i nz-icon nzType="save"></i>Ghi lại
+          </button>
+          <button nz-button nzType="default" nzSize="small" (click)="rollback()">
+            <i nz-icon nzType="folder-open"  nzTheme="outline"></i>Lấy mẫu file
+          </button>
+          <button nz-button nzType="default" nzSize="small" (click)="rollback()">
+            <i nz-icon nzType="database" nzTheme="outline"></i>Nạp dữ liệu
+          </button>
+          <button nz-button class="page-declarations__navigater-button" nzType="default" nzSize="small" (click)="rollback()">
+            <i nz-icon nzType="rollback"></i>Quay lại
+          </button>
+        </div>
+      </ng-template>
+      <app-pending-form [data]="declarations.formOrigin" (onFormValid) = "handleValidForm($event)" class="page-regime-approval__form" [ngClass]="{'page-regime-approval__form--hidden': (selectedTabIndex == 0 || selectedTabIndex == 2)}" (onFormValuesChanged)="handleFormValuesChanged($event)"></app-pending-form>
+    </div>
+  </nz-spin>
+</div>

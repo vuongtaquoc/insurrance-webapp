@@ -314,6 +314,7 @@ export class ReissueHealthCardComponent implements OnInit, OnDestroy {
     this.notificeEventValidData('healthInsuranceCard');
     this.notificeEventValidData('families');
     this.setDataToFamilyEditor(declarations);
+    eventEmitter.emit('unsaved-changed');
   }
 
   private setDataToEmployee(employee) {
@@ -698,6 +699,7 @@ export class ReissueHealthCardComponent implements OnInit, OnDestroy {
     rowChange.isInitialize = false;
     this.changeDataFamiliesByDeclaration(rowChange);
     this.notificeEventValidData('healthInsuranceCard');   
+    eventEmitter.emit('unsaved-changed');
   }
 
   private updateFakeEmployeeId(instance, cell, c, r, records ) {

@@ -1,0 +1,59 @@
+<div class="page-declarations__container" [ngClass]="{ 'page-declarations__container--hidden': isHiddenSidebar }">
+  <app-declaration-sidebar
+    tableName="pending"
+    [isHiddenSidebar]="isHiddenSidebar"
+    [events]="employeeSubject.asObservable()"
+    (onSelectEmployees)="handleSelectEmployees($event)"
+    (onToggleSidebar)="handleToggleSidebar()"
+    (onUserUpdated)="handleUserUpdateTables($event, 'pending')"
+    (onUserDeleted)="handleUserDeleteTables($event, 'pending')"
+    (onUserAdded)="handleUserAdded($event)"
+  ></app-declaration-sidebar>
+
+  <div class="page-declarations__content">
+    <div class="page-declarations__group-button">
+      <div class="page-declarations__buttons">
+        <button class="page-declarations__button" [ngClass]="{'flash-button': isBlinking}" nz-button nzType="default" (click)="handleAddEmployee('I_1','pending')">
+         <i nz-icon nzType="dollar-circle" nzTheme="outline"></i> Tăng quỹ HTTT 
+        </button>
+        <button class="page-declarations__button" [ngClass]="{'flash-button': isBlinking}" nz-button nzType="default" (click)="handleAddEmployee('II_1','pending')">
+          <i nz-icon nzType="dollar-circle" nzTheme="outline"></i> Giảm quỹ HTTT
+        </button>
+      </div>
+      <h1><strong>{{pageCode}} |</strong>| {{pageName}}</h1>
+    </div><!-- page-declarations__group-button -->
+
+    <div class="page-declarations__title">
+      <ng-container *ngIf="hasForm">
+        <app-increase-form (onFormValuesChanged)="handleFormValuesChanged($event)"></app-increase-form>
+      </ng-container>
+      <div *ngIf="!hasForm"></div>
+    </div><!-- page-declarations__title -->
+
+    <div class="page-declarations__editor">
+      <app-increase-editor
+      tableName="pending"
+      [data]="declarations.pending.table"
+      [nestedHeaders]="headers.pending.nested"
+      [columns]="headers.pending.columns"
+      [events]="tableSubject.asObservable()"
+      [validate]="validateSubject.asObservable()"
+      (onChange)="handleChangeTable($event,'pending')"
+      (onDelete)="handleDeleteTableData($event,'pending')"
+      (onAddRow)="handleAddRow($event,'pending')"
+      (onFocus)="handleFocus($event)"
+      (onSort)="handleSort($event, 'pending')"
+    ></app-increase-editor>
+    </div><!-- page-declarations__editor -->
+
+    <nz-collapse [nzBordered]="false">
+      <nz-collapse-panel class="collapse-attachment" [nzHeader]="attachmentHeader" [nzActive]="panel.attachment.active" (nzActiveChange)="collapseChange($event, 'attachment')">
+          <app-labor-attachment  [files]="files" [declarationCode] = "'600c'" (onSelectedFileChanged)="handleFileSelected($event)"></app-labor-attachment>
+      </nz-collapse-panel>
+    </nz-collapse>
+    <ng-template #attachmentHeader>
+      Tài liệu kèm theo <span class="collapse-attachment-note">(tổng dung lượng &lt; 20MB)</span>
+    </ng-template>
+
+  </div><!-- page-declarations__content -->
+</div><!-- page-declarations__container -->

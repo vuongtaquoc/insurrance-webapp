@@ -7,12 +7,13 @@ import { PAGE_SIZE, DECLARATIONS, RESULTSUBMIT } from '@app/shared/constant';
 import { DocumentFormComponent } from '@app/shared/components';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import * as moment from 'moment';
+
 @Component({
-  selector: 'app-adjust-general-list',
-  templateUrl: './adjust-general-list.component.html',
-  styleUrls: ['./adjust-general-list.component.less','../reduction-labor-list/reduction-labor-list.component.less']
+  selector: 'app-pending-retirement-list',
+  templateUrl: './pending-retirement-list.component.html',
+  styleUrls: ['./pending-retirement-list.component.less', '../reduction-labor-list/reduction-labor-list.component.less']
 })
-export class AdjustGeneralListComponent implements OnInit {
+export class PendingRetirementListComponent implements OnInit {
   isAllDisplayDataChecked = false;
   isIndeterminate = false;
   listOfDisplayData: Declaration[] = [];
@@ -20,15 +21,15 @@ export class AdjustGeneralListComponent implements OnInit {
   year: any = null;
   declarations: Declaration[] = [];
   total: number;
-  skip: number;
   orderby: string = '';
   orderType: string = '';
+  skip: number;
   selectedPage: number = 1;
-  declarationCode: string = '601';
+  declarationCode: string = '600c';
   declarationName: string;
-  status: any = RESULTSUBMIT;
-  keyword: string = '';
 
+  keyword: string = '';
+  status: any = RESULTSUBMIT;
   filter: any = {};
   param: any = {
     createDate: '',
@@ -50,15 +51,17 @@ export class AdjustGeneralListComponent implements OnInit {
   }
 
   getDeclarations(skip = 0, take = PAGE_SIZE) {
-    this.declarationService.getDeclarations({
-      ...this.filter,
-      orderby: this.orderby,
-      orderType: this.orderType,
-      documentType: this.declarationCode,
-      year: this.getYear(),
-      skip,       
-      take
-    }).subscribe(res => {
+    
+    this.declarationService.getDeclarations(
+      {
+        ...this.filter,
+        orderby: this.orderby,
+        orderType: this.orderType,
+        documentType: this.declarationCode,
+        year: this.getYear(),
+        skip,       
+        take
+      }).subscribe(res => {
       this.declarations = res.data;
       this.total = res.total;
       this.skip = skip;
@@ -104,8 +107,9 @@ export class AdjustGeneralListComponent implements OnInit {
   }
 
   pageChange({ skip, page }) {
-    this.selectedPage = page;
     this.skip = skip;
+    this.selectedPage = page;
+
     this.getDeclarations(skip);
   }
 

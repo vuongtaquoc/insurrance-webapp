@@ -494,7 +494,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
       documentDetail: this.tablesToApi(this.declarations.tables),
       informations: this.reformatInformations(),
       families: this.reformatFamilies(),
-      flies: this.declarations.files,
+      files: this.declarations.files,
     }).subscribe(data => {
        this.isSpinning = false;
       if (type === 'saveAndView') {
@@ -520,7 +520,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
       documentDetail: this.tablesToApi(this.declarations.tables),
       informations: this.reformatInformations(),
       families: this.reformatFamilies(),
-      flies: this.declarations.files,
+      files    : this.declarations.files,
     }).subscribe(data => {
       this.isSpinning = false;
       if (type === 'saveAndView') {

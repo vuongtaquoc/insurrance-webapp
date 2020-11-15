@@ -34,6 +34,7 @@ import {
   PriceService,
   SwitchVendorService,
   SubmitDeclarationService,
+  DeclarationFileUploadService,
 } from './services';
 
 @NgModule({
@@ -73,6 +74,7 @@ import {
     PriceService,
     SwitchVendorService,
     SubmitDeclarationService,
+    DeclarationFileUploadService,
   ],
   declarations: []
 })

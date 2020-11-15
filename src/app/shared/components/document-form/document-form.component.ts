@@ -4,7 +4,7 @@ import { forkJoin, Subject } from 'rxjs';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 import * as moment from 'moment';
 import * as _ from 'lodash';
-import { DeclarationFileService,AuthenticationService } from '@app/core/services';
+import { DeclarationFileService,AuthenticationService, DeclarationFileUploadService } from '@app/core/services';
 
 import { DropdownItem } from '@app/core/interfaces';
 import { City, District, Wards } from '@app/core/models';
@@ -31,6 +31,7 @@ export class DocumentFormComponent implements OnInit {
     private formBuilder: FormBuilder,
     private modal: NzModalRef,
     private declarationFileService: DeclarationFileService,
+    private declarationFileUploadService: DeclarationFileUploadService,
     private authenticationService: AuthenticationService,
   ) {}
 
@@ -68,16 +69,38 @@ export class DocumentFormComponent implements OnInit {
   }
 
   downloadFile(declarationFileInfo: any) {
-    declarationFileInfo.isDownloading = true;
+    
+    if (declarationFileInfo.isFileUpload) {
+      this.downloadFileUpload(declarationFileInfo);      
+    } else {
+      this.downloadDeclartion(declarationFileInfo);
+    }
+  }
 
+  private downloadDeclartion(declarationFileInfo: any) {
+
+    declarationFileInfo.isDownloading = true;
     this.declarationFileService.downloadDeclarationFile(declarationFileInfo.id).then(response => {
       const subfixFile = this.getSufixFile(declarationFileInfo.xmlFile)
       const fileName =  declarationFileInfo.fullPathFile + subfixFile;
       const mimeType = this.getMimeType(subfixFile);
       download(fileName, response, mimeType);
-
       declarationFileInfo.isDownloading = false;
     });
+
+  }
+
+  private  downloadFileUpload(declarationFileInfo: any) {
+
+    declarationFileInfo.isDownloading = true;
+    this.declarationFileUploadService.downloadDeclarationFile(declarationFileInfo.id).then(response => {
+      const fileName =  declarationFileInfo.declaretionName;
+      const mimeType = this.getMimeType(declarationFileInfo.xmlFile);
+      download(fileName, response, mimeType);
+      declarationFileInfo.isDownloading = false;
+    });
+
+
   }
 
   getSufixFile(xmlFile: any) {

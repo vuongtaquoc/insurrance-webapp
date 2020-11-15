@@ -33,17 +33,15 @@ import { TABLE_DOCUMENT_NESTED_HEADERS, TABLE_DOCUMENT_HEADER_COLUMNS } from '@a
 import { Router } from '@angular/router';
 
 const TAB_NAMES = {
-  1: 'adjustment',
-  2: 'reduction',
-  3: 'increase'
+  1: 'pending',
 };
 
 @Component({
-  selector: 'app-declaration-arrears',
-  templateUrl: './arrears.component.html',
-  styleUrls: [ './arrears.component.less' ]
+  selector: 'app-pending-retirement',
+  templateUrl: './pending-retirement.component.html',
+  styleUrls: [ './pending-retirement.component.less' ]
 })
-export class ArrearsComponent implements OnInit, OnDestroy {
+export class PendingRetirementComponent implements OnInit, OnDestroy {
   @Input() declarationId: string;
   @Output() onSubmit: EventEmitter<any> = new EventEmitter();
   @Output() onAddEmployee: EventEmitter<any> = new EventEmitter();
@@ -54,7 +52,7 @@ export class ArrearsComponent implements OnInit, OnDestroy {
   documentForm: FormGroup;
   documentList: DocumentList[] = [];
   isHiddenSidebar = false;
-  declarationCode: string = '601a';
+  declarationCode: string = '600c';
   declarationName: string;
   selectedTabIndex: number = 1;
   eventValidData = 'adjust-general:validate';
@@ -179,7 +177,7 @@ export class ArrearsComponent implements OnInit, OnDestroy {
 
       this.tabSubject.next({
         type: 'change',
-        selected: TAB_NAMES[1]
+        selected: TAB_NAMES[0]
       });
 
 
@@ -296,9 +294,8 @@ export class ArrearsComponent implements OnInit, OnDestroy {
         },
         {}
       );
-
       this.tableSubmitErrorCount = count;
-      eventEmitter.emit('unsaved-changed', true);
+      
       return this.modalService.error({
         nzTitle: 'Lỗi dữ liệu. Vui lòng sửa!',
         nzContent: TableEditorErrorsComponent,
@@ -307,7 +304,15 @@ export class ArrearsComponent implements OnInit, OnDestroy {
         }
       });
     }
-    
+
+    if (this.declarations.files.length === 0) {
+      this.modalService.warning({
+        nzTitle: 'Chưa đính kèm file tài liệu'
+      });
+      return;
+    }
+
+    eventEmitter.emit('unsaved-changed', true);
     if (this.declarationId) {
       this.update('saveAndView');
     } else {
@@ -316,7 +321,7 @@ export class ArrearsComponent implements OnInit, OnDestroy {
   }
 
   rollback() {
-    this.router.navigate(['/declarations/arrears']);
+    this.router.navigate(['/declarations/pending-retirement']);
   }
 
   save() {
@@ -327,7 +332,8 @@ export class ArrearsComponent implements OnInit, OnDestroy {
       });
       return;
     }
-    eventEmitter.emit('unsaved-changed', true);  
+
+    eventEmitter.emit('unsaved-changed', true);
     if (this.declarationId) {
       this.update('save');
     } else {
@@ -370,7 +376,7 @@ export class ArrearsComponent implements OnInit, OnDestroy {
       if (type === 'saveAndView') {
         this.viewDocument(data);
       } else{
-        this.router.navigate(['/declarations/arrears']);
+        this.router.navigate(['/declarations/pending-retirement']);
       }
     });
   }
@@ -395,7 +401,7 @@ export class ArrearsComponent implements OnInit, OnDestroy {
       if (type === 'saveAndView') {
         this.viewDocument(data);
       } else {
-        this.router.navigate(['/declarations/arrears']);
+        this.router.navigate(['/declarations/pending-retirement']);
       }
     });
   }
@@ -677,7 +683,7 @@ private setDateToInformationList(records: any)
   }
 
   handleChangedFiles(files) {
-    this.declarations.files = files;
+     this.declarations.files = files;
   }
 
 

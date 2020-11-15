@@ -843,9 +843,11 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
         if (cellValue === 'ATM') {
           bankAccountColumn.validations = { required: true };
           accountHolderColumn.validations = { required: true };
+          bankAccountColumn.readonly = false;
           bankCodeColumn.validations = { required: true };
         } else {
           bankAccountColumn.validations = { };
+          bankAccountColumn.readonly = true;
           accountHolderColumn.validations = { };
           bankCodeColumn.validations = { };
         }

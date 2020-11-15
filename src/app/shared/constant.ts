@@ -81,6 +81,10 @@ export const MIME_TYPE =
     {
       key: '.xml',
       value: 'application/xml'
+    },
+    {
+      key: '.pdf',
+      value: 'application/pdf'
     }
   ];
 export const CRON_TIMES = 0.15 * 60 * 1000; // ~ 1.5 minutes
