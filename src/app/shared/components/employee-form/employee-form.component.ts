@@ -105,7 +105,6 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     const employee = this.employee;
-
     this.employeeForm = this.formBuilder.group({
 
       // tabEmployee
@@ -499,6 +498,22 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
     this.families = families;
   }
 
+  handleAddFamilyRow({ rowNumber, numOfRows, beforeRowIndex, afterRowIndex, options, origin, insertBefore }) {
+    const families = [...this.families];
+    let row: any = {};
+    const data: any = [];
+    row.data = data;
+    row.isMaster = false;
+
+    row.origin = {
+      isLeaf: true,
+    };
+
+    families.splice(insertBefore ? rowNumber : rowNumber + 1, 0, row);
+    this.updateOrders(families);
+    this.families  = families;
+  }
+
   handleChangeProcessTable({ instance, cell, c, r, records, columns }) {
     //update evolutionIsurrances
     this.evolutionIsurrances.forEach((evolutionIsurrance: any, index) => {
@@ -521,8 +536,22 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
     evolutionIsurrances.splice(rowNumber, numOfRows);
 
     this.updateOrders(evolutionIsurrances);
-
     this.evolutionIsurrances = evolutionIsurrances;
+  }
+
+  handleAddProcessRow({ rowNumber, numOfRows, beforeRowIndex, afterRowIndex, options, origin, insertBefore }) {
+    const evolutionIsurrances = [...this.evolutionIsurrances];
+    let row: any = {};
+    const data: any = [];
+    row.data = data;
+    row.isMaster = false;
+
+    row.origin = {
+      isLeaf: true,
+    };
+
+    evolutionIsurrances.splice(insertBefore ? rowNumber : rowNumber + 1, 0, row);
+    this.evolutionIsurrances  = evolutionIsurrances;
   }
 
   changeTab({ index }) {
@@ -1033,7 +1062,6 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
     this.isSpinning = true;
     const code = this.employeeForm.get('isurranceCode').value;
     this.externalService.getEmployeeByIsurranceCode(code).subscribe(data => {
-      console.log(data);
       this.setResultToFrom(data);
       this.isSpinning = false;
     });

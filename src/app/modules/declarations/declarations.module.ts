@@ -70,9 +70,12 @@ import {
   SicknessesApprovalListComponent,
   SicknessesApprovalAddComponent,
   SicknessesApprovalEditComponent,
-  // PendingRetirementListComponent,
-  // PendingRetirementAddComponent,
-  // PendingRetirementEditComponent,
+  PendingRetirementListComponent,
+  PendingRetirementAddComponent,
+  PendingRetirementEditComponent,
+  PendingRetirementCovidListComponent,
+  PendingRetirementCovidAddComponent,
+  PendingRetirementCovidEditComponent,
   
 } from './pages';
 
@@ -106,11 +109,12 @@ import {
   ReissueInsuranceCardComponent,
   SicknessesApprovalComponent,
   MaternityApprovalComponent,
-  //PendingFormComponent,
   HealthRecoveryApprovalComponent,
-  //PendingRetirementComponent,
-  //PendingComponent,
-  
+  PendingFormComponent,
+  PendingRetirementComponent,
+  PendingComponent,
+  PendingRetirementCovidComponent,
+  PendingCovidComponent,
 } from './components';
 
 import { RegimeAutoSizeDirective } from './directives';
@@ -206,12 +210,18 @@ import { RegimeAutoSizeDirective } from './directives';
     SicknessesApprovalListComponent,
     SicknessesApprovalAddComponent,
     SicknessesApprovalEditComponent,
-    // PendingRetirementComponent,
-    // PendingFormComponent,
-    // PendingComponent,
-    // PendingRetirementListComponent,
-    // PendingRetirementAddComponent,
-    // PendingRetirementEditComponent,
+    PendingRetirementComponent,
+    PendingFormComponent,
+    PendingComponent,
+    PendingRetirementListComponent,
+    PendingRetirementAddComponent,
+    PendingRetirementEditComponent,
+    PendingCovidComponent,
+    PendingRetirementCovidComponent,
+    PendingRetirementCovidListComponent,
+    PendingRetirementCovidAddComponent,
+    PendingRetirementCovidEditComponent,
+    
   ],
   providers: [
     AuthenticationService,

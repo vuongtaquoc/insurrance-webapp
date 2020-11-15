@@ -929,6 +929,23 @@ export class ReissueInsuranceCardComponent implements OnInit, OnDestroy {
     eventEmitter.emit('unsaved-changed');
   }
 
+  private handleAddDocumentRow({ rowNumber, numOfRows, beforeRowIndex, afterRowIndex, insertBefore }) { 
+    const informations = [ ...this.informations ];
+    let row: any = {};
+    const data: any = [];
+    row.data = data;
+    row.isMaster = false;
+
+    row.origin = {
+      isLeaf: true,
+    };
+
+    informations.splice(insertBefore ? rowNumber : rowNumber + 1, 0, row);
+    this.informations  = informations;
+    this.notificeEventValidData('documentList');
+    eventEmitter.emit('unsaved-changed');
+  }
+
   private arrayToProps(array, columns) {
     const object: any = Object.keys(array).reduce(
       (combine, current) => {

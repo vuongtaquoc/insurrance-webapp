@@ -1284,7 +1284,29 @@ private setDateToInformationList(records: any)
     return str;
   }
 
-  private getFileByDeclarationCode(code) {
-     console.log(this.files);
+  private handleAddDocumentRow({ rowNumber, numOfRows, beforeRowIndex, afterRowIndex, insertBefore }) { 
+    const informations = [ ...this.informations ];
+    let row: any = {};
+    const data: any = [];
+    row.data = data;
+    row.isMaster = false;
+
+    row.origin = {
+      isLeaf: true,
+    };
+
+    informations.splice(insertBefore ? rowNumber : rowNumber + 1, 0, row);
+    this.informations  = informations;
+    this.notificeEventValidData('documentList');
+    eventEmitter.emit('unsaved-changed');
+  }
+
+  handleDeleteInfomation({ rowNumber, numOfRows }) {
+    const infomations = [ ...this.informations ];
+
+    const infomaionDeleted = infomations.splice(rowNumber, numOfRows);
+    this.informations = infomations;
+    this.notificeEventValidData('documentList');
+    eventEmitter.emit('unsaved-changed');
   }
 }

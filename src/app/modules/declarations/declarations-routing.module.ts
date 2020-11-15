@@ -41,9 +41,12 @@ import {
   SicknessesApprovalListComponent,
   SicknessesApprovalAddComponent,
   SicknessesApprovalEditComponent,
-  // PendingRetirementListComponent,
-  // PendingRetirementAddComponent,
-  // PendingRetirementEditComponent,
+  PendingRetirementListComponent,
+  PendingRetirementAddComponent,
+  PendingRetirementEditComponent,
+  PendingRetirementCovidListComponent,
+  PendingRetirementCovidAddComponent,
+  PendingRetirementCovidEditComponent,
    
 } from './pages';
 
@@ -242,20 +245,34 @@ const routes: Routes = [
         component: MaternityApprovalEditComponent,
         canDeactivate: [ UnsavedChangesGuard, NavigationGuard ]
       },
-      // {
-      //   path: 'pending-retirement',
-      //   component:PendingRetirementListComponent
-      // },
-      // {
-      //   path: 'pending-retirement/add',
-      //   component: PendingRetirementAddComponent,
-      //   canDeactivate: [ UnsavedChangesGuard, NavigationGuard ]
-      // },
-      // {
-      //   path: 'pending-retirement/:id/edit',
-      //   component: PendingRetirementEditComponent,
-      //   canDeactivate: [ UnsavedChangesGuard, NavigationGuard ]
-      // }
+      {
+        path: 'pending-retirement',
+        component:PendingRetirementListComponent
+      },
+      {
+        path: 'pending-retirement/add',
+        component: PendingRetirementAddComponent,
+        canDeactivate: [ UnsavedChangesGuard, NavigationGuard ]
+      },
+      {
+        path: 'pending-retirement/:id/edit',
+        component: PendingRetirementEditComponent,
+        canDeactivate: [ UnsavedChangesGuard, NavigationGuard ]
+      },
+      {
+        path: 'pending-retirement-covid',
+        component:PendingRetirementCovidListComponent
+      },
+      {
+        path: 'pending-retirement-covid/add',
+        component: PendingRetirementCovidAddComponent,
+        canDeactivate: [ UnsavedChangesGuard, NavigationGuard ]
+      },
+      {
+        path: 'pending-retirement-covid/:id/edit',
+        component: PendingRetirementCovidEditComponent,
+        canDeactivate: [ UnsavedChangesGuard, NavigationGuard ]
+      }
     ]
   }
 ];

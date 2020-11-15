@@ -23,7 +23,7 @@ export class EmployeeProcessTableComponent implements OnInit, OnDestroy, OnChang
   @Output() onChange: EventEmitter<any> = new EventEmitter();
   @Output() onSubmit: EventEmitter<any> = new EventEmitter();
   @Output() onDelete: EventEmitter<any> = new EventEmitter();
-
+  @Output() onAddRow: EventEmitter<any> = new EventEmitter();
   spreadsheet: any;
   isInitialized = false;
   private eventsSubscription: Subscription;
@@ -36,7 +36,7 @@ export class EmployeeProcessTableComponent implements OnInit, OnDestroy, OnChang
   ngOnInit() {
     this.eventsSubscription = this.events.subscribe((type) => this.handleEvent(type));
 
-    this.planService.getPlans('all').subscribe(plans => {
+    this.planService.getPlanShowCode('all').subscribe(plans => {
       this.updateSourceToColumn('planCode', plans);
     });
   }
@@ -84,7 +84,20 @@ export class EmployeeProcessTableComponent implements OnInit, OnDestroy, OnChang
             records: this.spreadsheet.getJson(),
             columns: this.columns
           });
-        }
+        },
+        oninsertrow: (instance, rowNumber, numOfRows, rowRecords, insertBefore,c, r) => {
+          this.spreadsheet.updateFreezeColumn();
+          const records = this.spreadsheet.getJson();
+  
+          this.onAddRow.emit({
+            rowNumber,
+            numOfRows,
+            afterRowIndex: rowNumber,
+            beforeRowIndex: rowNumber,
+            insertBefore,
+            records: this.spreadsheet.getJson()
+          });
+        }   
       });
 
       // update editor

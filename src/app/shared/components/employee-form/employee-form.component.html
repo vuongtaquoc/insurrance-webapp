@@ -850,8 +850,11 @@
             <h3 class="employee-form__group-title">Thông tin quá trình tham gia BHXH</h3>
             <div class="employee-form__process-table">
               <app-employee-process-table [data]="evolutionIsurrances" [nestedHeaders]="tableNestedHeadersProcess"
-                [columns]="tableHeaderColumnsProcess" [events]="processSubject.asObservable()"
-                (onChange)="handleChangeProcessTable($event)" (onDelete)="handleDeleteProcessData($event)">
+                [columns]="tableHeaderColumnsProcess"
+                [events]="processSubject.asObservable()"
+                (onChange)="handleChangeProcessTable($event)" 
+                (onAddRow)="handleAddProcessRow($event)"
+                (onDelete)="handleDeleteProcessData($event)">
               </app-employee-process-table>
             </div>
           </nz-tab><!-- Tab 2 -->
@@ -986,9 +989,13 @@
             <h3 class="employee-form__group-title">Kê khai đầy đủ thành viên hộ gia đình trong sổ hộ khẩu hoặc sổ tạm
               trú</h3>
             <div class="employee-form__family-table">
-              <app-employee-family-table [data]="families" [nestedHeaders]="tableNestedHeadersFamilies"
-                [columns]="tableHeaderColumnsFamilies" [events]="familySubject.asObservable()"
-                (onChange)="handleChangeFamilyTable($event)" (onDelete)="handleDeleteFamilyData($event)">
+              <app-employee-family-table [data]="families" 
+                [nestedHeaders]="tableNestedHeadersFamilies"
+                [columns]="tableHeaderColumnsFamilies" 
+                [events]="familySubject.asObservable()"
+                (onChange)="handleChangeFamilyTable($event)"
+                (onAddRow)="handleAddFamilyRow($event)"
+                (onDelete)="handleDeleteFamilyData($event)">
               </app-employee-family-table>
             </div>
           </nz-tab><!-- Tab 3 -->

@@ -33,17 +33,15 @@ import { TABLE_DOCUMENT_NESTED_HEADERS, TABLE_DOCUMENT_HEADER_COLUMNS } from '@a
 import { Router } from '@angular/router';
 
 const TAB_NAMES = {
-  1: 'adjustment',
-  2: 'reduction',
-  3: 'increase'
+  1: 'pending',
 };
 
 @Component({
-  selector: 'app-declaration-adjust',
-  templateUrl: './adjust.component.html',
-  styleUrls: [ './adjust.component.less' ]
+  selector: 'app-pending-retirement-covid',
+  templateUrl: './pending-retirement-covid.component.html',
+  styleUrls: [ './pending-retirement-covid.component.less' ]
 })
-export class AdjustComponent implements OnInit, OnDestroy {
+export class PendingRetirementCovidComponent implements OnInit, OnDestroy {
   @Input() declarationId: string;
   @Output() onSubmit: EventEmitter<any> = new EventEmitter();
   @Output() onAddEmployee: EventEmitter<any> = new EventEmitter();
@@ -54,7 +52,7 @@ export class AdjustComponent implements OnInit, OnDestroy {
   documentForm: FormGroup;
   documentList: DocumentList[] = [];
   isHiddenSidebar = false;
-  declarationCode: string = '600b';
+  declarationCode: string = '600d';
   declarationName: string;
   selectedTabIndex: number = 1;
   eventValidData = 'adjust-general:validate';
@@ -86,7 +84,6 @@ export class AdjustComponent implements OnInit, OnDestroy {
   tabSubject: Subject<any> = new Subject<any>();
   handlers: any = [];
   isSpinning = false;
-
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
@@ -180,7 +177,7 @@ export class AdjustComponent implements OnInit, OnDestroy {
 
       this.tabSubject.next({
         type: 'change',
-        selected: TAB_NAMES[1]
+        selected: TAB_NAMES[0]
       });
 
 
@@ -251,6 +248,7 @@ export class AdjustComponent implements OnInit, OnDestroy {
   }
 
   saveAndView() {
+
     this.tableSubmitErrors = {};
     this.tableSubmitErrorCount = 0;
 
@@ -297,6 +295,7 @@ export class AdjustComponent implements OnInit, OnDestroy {
         {}
       );
       this.tableSubmitErrorCount = count;
+      
       return this.modalService.error({
         nzTitle: 'Lỗi dữ liệu. Vui lòng sửa!',
         nzContent: TableEditorErrorsComponent,
@@ -305,6 +304,14 @@ export class AdjustComponent implements OnInit, OnDestroy {
         }
       });
     }
+
+    if (this.declarations.files.length === 0) {
+      this.modalService.warning({
+        nzTitle: 'Chưa đính kèm file tài liệu'
+      });
+      return;
+    }
+
     eventEmitter.emit('unsaved-changed', true);
     if (this.declarationId) {
       this.update('saveAndView');
@@ -314,7 +321,7 @@ export class AdjustComponent implements OnInit, OnDestroy {
   }
 
   rollback() {
-    this.router.navigate(['/declarations/adjust']);
+    this.router.navigate(['/declarations/pending-retirement-covid']);
   }
 
   save() {
@@ -325,6 +332,7 @@ export class AdjustComponent implements OnInit, OnDestroy {
       });
       return;
     }
+
     eventEmitter.emit('unsaved-changed', true);
     if (this.declarationId) {
       this.update('save');
@@ -368,7 +376,7 @@ export class AdjustComponent implements OnInit, OnDestroy {
       if (type === 'saveAndView') {
         this.viewDocument(data);
       } else{
-        this.router.navigate(['/declarations/adjust']);
+        this.router.navigate(['/declarations/pending-retirement-covid']);
       }
     });
   }
@@ -393,7 +401,7 @@ export class AdjustComponent implements OnInit, OnDestroy {
       if (type === 'saveAndView') {
         this.viewDocument(data);
       } else {
-        this.router.navigate(['/declarations/adjust']);
+        this.router.navigate(['/declarations/pending-retirement-covid']);
       }
     });
   }
@@ -673,35 +681,9 @@ private setDateToInformationList(records: any)
 
     this.notificeEventValidData('documentList');
   }
-  
-  private handleAddDocumentRow({ rowNumber, numOfRows, beforeRowIndex, afterRowIndex, insertBefore }) { 
-    const informations = [ ...this.informations ];
-    let row: any = {};
-    const data: any = [];
-    row.data = data;
-    row.isMaster = false;
-
-    row.origin = {
-      isLeaf: true,
-    };
-
-    informations.splice(insertBefore ? rowNumber : rowNumber + 1, 0, row);
-    this.informations  = informations;
-    this.notificeEventValidData('documentList');
-    eventEmitter.emit('unsaved-changed');
-  }
-
-  handleDeleteInfomation({ rowNumber, numOfRows }) {
-    const infomations = [ ...this.informations ];
-
-    const infomaionDeleted = infomations.splice(rowNumber, numOfRows);
-    this.informations = infomations;
-    this.notificeEventValidData('documentList');
-    eventEmitter.emit('unsaved-changed');
-  }
 
   handleChangedFiles(files) {
-    this.declarations.files = files;
+     this.declarations.files = files;
   }
 
 
@@ -753,9 +735,31 @@ private setDateToInformationList(records: any)
        str = str.replace("{" + i + "}", args[i]);
     return str;
   }
+  
+  private handleAddDocumentRow({ rowNumber, numOfRows, beforeRowIndex, afterRowIndex, insertBefore }) { 
+    const informations = [ ...this.informations ];
+    let row: any = {};
+    const data: any = [];
+    row.data = data;
+    row.isMaster = false;
 
-  private getFileByDeclarationCode(code) {
-     console.log(this.files);
+    row.origin = {
+      isLeaf: true,
+    };
+
+    informations.splice(insertBefore ? rowNumber : rowNumber + 1, 0, row);
+    this.informations  = informations;
+    this.notificeEventValidData('documentList');
+    eventEmitter.emit('unsaved-changed');
+  }
+
+  handleDeleteInfomation({ rowNumber, numOfRows }) {
+    const infomations = [ ...this.informations ];
+
+    const infomaionDeleted = infomations.splice(rowNumber, numOfRows);
+    this.informations = infomations;
+    this.notificeEventValidData('documentList');
+    eventEmitter.emit('unsaved-changed');
   }
 
 }

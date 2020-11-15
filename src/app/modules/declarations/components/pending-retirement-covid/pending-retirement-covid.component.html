@@ -2,7 +2,7 @@
   <nz-spin [nzSpinning]="isSpinning">
     <div class="page-adjust-general" [ngClass]="{'page-adjust-general-hide-last-tab': !usedocumentDT01}" cardFullHeight>
       <nz-tabset nzSize="small" [ngClass]="{'page-adjust-general__tabs-error': tableSubmitErrorCount > 0}" nzTabPosition="bottom" nzSelectedIndex="1" [nzTabBarExtraContent]="extraTemplate" (nzSelectChange)="handleSelectTab($event)">
-        <nz-tab [nzTitle]="tabDocument">
+          <nz-tab [nzTitle]="tabDocument">
           <ng-template #tabDocument>
             <div class="page-adjust-general__tab-title" [ngClass]="{'page-adjust-general__tab-title--error': tableSubmitErrors.documentFomError > 0}">
               Danh mục tài liệu
@@ -29,6 +29,7 @@
                     <nz-form-item>
                       <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Số điện thoại</nz-form-label>
                       <nz-form-control [nzSpan]="14" [nzErrorTip]="mobileTpl">
+                        <!-- <input nz-input formControlName="month"> -->
                         <input nz-input formControlName="mobile" placeholder="Số điện thoại">
                         <ng-template #mobileTpl let-control>
                           <ng-container *ngIf="control.hasError('required')">
@@ -53,90 +54,27 @@
             </form>
           </div><!-- page-declarations__container -->
         </nz-tab><!-- tab 1-->
-        <nz-tab [nzTitle]="tabIncrease">
-          <ng-template #tabIncrease>
-            <div class="page-adjust-general__tab-title" [ngClass]="{'page-adjust-general__tab-title--error': tableSubmitErrors.increaselabor601 > 0}">
-              D02-TS Tăng
-            </div>
-          </ng-template>
-          <app-increase
-            [declarationId]="declarationId"
-            [pageName]="declarationName"
-            [pageCode]="declarationCode"
-            [declarationGeneral] = "declarationGeneral"
-            [files] = 'declarations.files'
-            [data]="declarations.origin['600']"
-            [tabEvents]="tabSubject.asObservable()"
-            (onChange)="handleChangeTable($event, 'increaselabor')"
-            (onFormChange)="handleFormChange($event)"
-            (onHiddenSidebar)="handleHiddenSidebar($event)"
-            (onChangedFile)="handleChangedFiles($event)"
-            (onCheckIsuranceNo)="handleCheckIsuranceNo($event)"
-          ></app-increase>
-        </nz-tab>
-        <nz-tab [nzTitle]="tabReduction">
-          <ng-template #tabReduction>
-            <div class="page-adjust-general__tab-title" [ngClass]="{'page-adjust-general__tab-title--error': tableSubmitErrors.reductionlabor601 > 0}">
-              D02-TS Giảm
-            </div>
-          </ng-template>
-          <app-reduction
-            [declarationId]="declarationId"
-            [pageName]="declarationName"
-            [pageCode]="declarationCode"
-            [data]="declarations.origin['600a']"
-            [files] = 'declarations.files'
-            [tabEvents]="tabSubject.asObservable()"
-            (onChange)="handleChangeTable($event, 'reductionlabor')"
-            (onHiddenSidebar)="handleHiddenSidebar($event)"
-            (onChangedFile)="handleChangedFiles($event)"
-          ></app-reduction>
-        </nz-tab>
         <nz-tab [nzTitle]="tabAdjustment">
           <ng-template #tabAdjustment>
-            <div class="page-adjust-general__tab-title" [ngClass]="{'page-adjust-general__tab-title--error': tableSubmitErrors.adjustment601 > 0}">
-              D02-TS Điều chỉnh
+            <div class="page-adjust-general__tab-title" [ngClass]="{'page-adjust-general__tab-title--error': tableSubmitErrors.pendingCovid600d > 0}">
+              D02-LT
             </div>
           </ng-template>
-          <app-adjustment
+          <app-pending-covid
             [declarationId]="declarationId"
             [pageName]="declarationName"
             [pageCode]="declarationCode"
-            [data]="declarations.origin['600b']"
+            [data]="declarations.origin['600d']"
             [files] = 'declarations.files'
             [tabEvents]="tabSubject.asObservable()"
-            (onChange)="handleChangeTable($event, 'adjustment')"
+            (onChange)="handleChangeTable($event, 'pendingCovid')"
             (onHiddenSidebar)="handleHiddenSidebar($event)"
             (onChangedFile)="handleChangedFiles($event)"
-          ></app-adjustment>
+          ></app-pending-covid>
         </nz-tab>
-        <nz-tab [nzTitle]="tabFamily" [nzDisabled]="!families || !families.length">
-          <ng-template #tabFamily>
-            <div class="page-adjust-general__tab-title" [ngClass]="{'page-adjust-general__tab-title--error': tableSubmitErrors.family601 > 0}">
-              PL TVHD-NLD
-            </div>
-          </ng-template>
-          <div class="page-document-list__container page-document-list__container--note">
-            <h1>{{declarationCode}} | {{declarationName}}</h1>
-            <h2>PHỤ LỤC THÀNH VIÊN GIA ĐÌNH</h2>
-            <div class="document-form__process-table">
-              <app-families-list-table
-                tableName="family"
-                [tableEvent]="eventValidData"
-                [data]="families"
-                [nestedHeaders]="tableNestedHeadersFamilies"
-                [columns]="tableHeaderColumnsFamilies"
-                [events]="tableSubject.asObservable()"
-                (onChange)="handleChangeDataFamilies($event)"
-                (onDelete)="handleDeleteMember($event)"
-                (onAddRow)="handleAddMember($event)"
-              ></app-families-list-table>
-            </div>
-          </div>
-        </nz-tab><!-- tab 4-->
-        <nz-tab [nzTitle]="tabDocumentList" [nzDisabled]="!informations || !informations.length">
+        <nz-tab [nzTitle]="tabDocumentList">
           <ng-template #tabDocumentList>
-            <div class="page-adjust-general__tab-title" [ngClass]="{'page-adjust-general__tab-title--error': tableSubmitErrors.documentList601 > 0}">
+            <div class="page-adjust-general__tab-title" [ngClass]="{'page-adjust-general__tab-title--error': tableSubmitErrors.documentList600d > 0}">
               Bảng kê hồ sơ
             </div>
           </ng-template>
@@ -179,7 +117,7 @@
           </button>
         </div>
       </ng-template>
-      <app-increase-form [data]="declarations.formOrigin" (onFormValid) = "handleValidForm($event)" class="page-regime-approval__form" [ngClass]="{'page-regime-approval__form--hidden': (selectedTabIndex == 0 || selectedTabIndex == 4 || selectedTabIndex == 5)}" (onFormValuesChanged)="handleFormValuesChanged($event)"></app-increase-form>
+      <app-pending-form [data]="declarations.formOrigin" (onFormValid) = "handleValidForm($event)" class="page-regime-approval__form" [ngClass]="{'page-regime-approval__form--hidden': (selectedTabIndex == 0 || selectedTabIndex == 2)}" (onFormValuesChanged)="handleFormValuesChanged($event)"></app-pending-form>
     </div>
   </nz-spin>
 </div>

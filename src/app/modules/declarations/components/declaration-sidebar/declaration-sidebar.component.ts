@@ -50,6 +50,7 @@ export class DeclarationSidebarComponent implements OnInit, OnDestroy {
     });
     this.handlers = [
       eventEmitter.on('tableEditor:addEmployee', ({ tableName, y, x }) => {
+        console.log(tableName, x, y);
         if (tableName.indexOf(this.tableName) > -1) {
           this.add(tableName, y);
         }
@@ -79,7 +80,8 @@ export class DeclarationSidebarComponent implements OnInit, OnDestroy {
         ratio: data.ratioInsurrance.ratio,
         rate: data.ratioInsurrance.bhxh,
         paymentMethodCode: data.ratioInsurrance.month,
-        orders: data.order
+        orders: data.order,
+        isMaster: false
       }
       const modal = this.modalService.create({
         nzWidth: 980,

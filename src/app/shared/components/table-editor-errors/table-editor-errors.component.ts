@@ -31,7 +31,9 @@ const TABLES = {
   generalFomError: 'Thông tin tờ khai',
   documentFomError: 'Danh mục tài liệu',
   pending600c: 'D02-TL',
-  documentList600c: 'Bảng kê hồ sơ'
+  documentList600c: 'Bảng kê hồ sơ',
+  pendingCovid600d: 'D02-TL',
+  documentList600d: 'Bảng kê hồ sơ',
 
 };
 

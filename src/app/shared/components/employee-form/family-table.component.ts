@@ -31,7 +31,7 @@ export class EmployeeFamilyTableComponent implements OnInit, OnDestroy, OnChange
   @Output() onChange: EventEmitter<any> = new EventEmitter();
   @Output() onSubmit: EventEmitter<any> = new EventEmitter();
   @Output() onDelete: EventEmitter<any> = new EventEmitter();
-
+  @Output() onAddRow: EventEmitter<any> = new EventEmitter();
   spreadsheet: any;
   isInitialized = false;
   private eventsSubscription: Subscription;
@@ -123,7 +123,20 @@ export class EmployeeFamilyTableComponent implements OnInit, OnDestroy, OnChange
             records: this.spreadsheet.getJson(),
             columns: this.columns
           });
-        }
+        },
+        oninsertrow: (instance, rowNumber, numOfRows, rowRecords, insertBefore,c, r) => {
+          this.spreadsheet.updateFreezeColumn();
+          const records = this.spreadsheet.getJson();
+  
+          this.onAddRow.emit({
+            rowNumber,
+            numOfRows,
+            afterRowIndex: rowNumber,
+            beforeRowIndex: rowNumber,
+            insertBefore,
+            records: this.spreadsheet.getJson()
+          });
+        }      
       });
 
       this.spreadsheet.hideIndex();

@@ -46,7 +46,11 @@ export class GeneralBaseComponent {
     pending: {
       nested: [],
       columns: []
-    }
+    },
+    pendingCovid: {
+      nested: [],
+      columns: []
+    },
   };
   declarations: any = {
     increaselabor: {
@@ -62,6 +66,10 @@ export class GeneralBaseComponent {
       table: []
     },
     pending: {
+      origin: [],
+      table: []
+    },
+    pendingCovid: {
       origin: [],
       table: []
     }
@@ -255,7 +263,7 @@ export class GeneralBaseComponent {
         }
 
         //copy salary
-        if(tableName === 'adjustment' || tableName === 'pending') {
+        if(tableName === 'adjustment' || tableName === 'pending' || tableName === 'pendingCovid') {
           employee.allowanceAdditionalNew = employee.allowanceAdditional;
           employee.allowanceLevelNew = employee.allowanceLevel;
           employee.allowanceOtherNew = employee.allowanceOther;

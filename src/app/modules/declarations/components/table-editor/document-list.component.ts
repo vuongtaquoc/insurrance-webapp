@@ -22,6 +22,7 @@ export class DocumentListTableComponent implements OnInit, OnDestroy, OnChanges,
   @Output() onChange: EventEmitter<any> = new EventEmitter();
   @Output() onSubmit: EventEmitter<any> = new EventEmitter();
   @Output() onDelete: EventEmitter<any> = new EventEmitter();
+  @Output() onAddRow: EventEmitter<any> = new EventEmitter();
 
   spreadsheet: any;
   private eventsSubscription: Subscription;
@@ -52,7 +53,7 @@ export class DocumentListTableComponent implements OnInit, OnDestroy, OnChanges,
       nestedHeaders: this.nestedHeaders,
       columns: this.columns,
       allowInsertColumn: false,
-      allowInsertRow: false,
+      allowInsertRow: true,
       tableOverflow: true,
       tableWidth: '100%',
       tableHeight: '100%',
@@ -72,7 +73,20 @@ export class DocumentListTableComponent implements OnInit, OnDestroy, OnChanges,
           records: this.spreadsheet.getJson(),
           columns: this.columns
         });
-      }
+      },
+      oninsertrow: (instance, rowNumber, numOfRows, rowRecords, insertBefore,c, r) => {
+        this.spreadsheet.updateFreezeColumn();
+        const records = this.spreadsheet.getJson();
+
+        this.onAddRow.emit({
+          rowNumber,
+          numOfRows,
+          afterRowIndex: rowNumber,
+          beforeRowIndex: rowNumber,
+          insertBefore,
+          records: this.spreadsheet.getJson()
+        });
+      }      
     });
     this.updateEditorToColumn('dateRelease', 'date');
     this.updateEditorToColumn('dateEffective', 'date');
