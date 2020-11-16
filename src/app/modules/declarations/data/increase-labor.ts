@@ -164,6 +164,9 @@ export const TABLE_HEADER_COLUMNS = [{
   title: '(9)',
   source: [ 'Chọn' ],
   key: 'peopleCode',
+  validations: {
+    required: true,
+  },
   warnings: {
     duplicateUserFields: {
       primary: 'peopleCode',
@@ -178,6 +181,9 @@ export const TABLE_HEADER_COLUMNS = [{
   source: [ 'Chọn' ],
   align: 'left',
   key: 'nationalityCode',
+    validations: {
+    required: true,
+  },
   warnings: {
     duplicateUserFields: {
       primary: 'nationalityCode',
@@ -192,6 +198,7 @@ export const TABLE_HEADER_COLUMNS = [{
   key: 'identityCar',
   fieldName: 'Số CMND/Hộ chiếu/Thẻ căn cước',
   validations: {
+    required: true,
     cardId: true,
     duplicate: true
   }

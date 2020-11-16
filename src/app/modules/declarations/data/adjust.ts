@@ -147,7 +147,10 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   width: 75,
   title: '(9)',
   source: [ 'Chọn' ],
-  key: 'peopleCode'
+  key: 'peopleCode',
+  validations: {
+    required:true,
+  }
 }, {
   type: 'dropdown',
   autocomplete: true,
@@ -155,7 +158,10 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   title: '(10)',
   source: [ 'Chọn' ],
   align: 'left',
-  key: 'nationalityCode'
+  key: 'nationalityCode',
+  validations: {
+    required:true,
+  }
 }, {
   type: 'numeric',
   align: 'right',
@@ -164,6 +170,7 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   key: 'identityCar',
   fieldName: 'Số CMND/Hộ chiếu/Thẻ căn cước',
   validations: {
+    required:true,
     cardId: true,
     duplicate: true
   }
@@ -173,7 +180,10 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   title: '(12.1)',
   source: [ 'Chọn' ],
   align: 'left',
-  key: 'registerCityCode'
+  key: 'registerCityCode',
+  validations: {
+    required:true,
+  }
 }, {
   type: 'dropdown',
   autocomplete: true,
@@ -182,6 +192,9 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   title: '(12.2)',
   align: 'left',
   key: 'registerDistrictCode',
+  validations: {
+    required:true,
+  },
   defaultLoad: true
 }, {
   type: 'dropdown',
@@ -191,7 +204,10 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   source: [],
   align: 'left',
   key: 'registerWardsCode',
-  defaultLoad: true
+  defaultLoad: true,
+  validations: {
+    required:true,
+  }
 }, {
   type: 'dropdown',
   autocomplete: true,
@@ -199,7 +215,10 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   title: '(13.1)',
   align: 'left',
   source: [],
-  key: 'recipientsCityCode'
+  key: 'recipientsCityCode',
+  validations: {
+    required:true,
+  }
 }, {
   type: 'dropdown',
   autocomplete: true,
@@ -208,7 +227,10 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   align: 'left',
   source: [],
   key: 'recipientsDistrictCode',
-  defaultLoad: true
+  defaultLoad: true,
+  validations: {
+    required:true,
+  }
 }, {
   type: 'dropdown',
   autocomplete: true,
@@ -217,7 +239,10 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   align: 'left',
   source: [ ],
   key: 'recipientsWardsCode',
-  defaultLoad: true
+  defaultLoad: true,
+  validations: {
+    required:true,
+  }
 }, {
   type: 'text',
   width: 145,

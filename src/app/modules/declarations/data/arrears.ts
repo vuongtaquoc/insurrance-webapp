@@ -102,7 +102,7 @@ export const TABLE_ARREARS_HEADER_COLUMNS = [{
   type: 'dropdown',
   width: 70,
   title: '(6)',
-  source: [ { id: '1', name: 'tháng/năm' }, { id: '2', name: 'năm' } ],
+  source: [ { id: '0', name: 'Ngày tháng năm' },{ id: '1', name: 'tháng/năm' }, { id: '2', name: 'năm' } ],
   key: 'typeBirthday'
 }, {
   type: 'text',
@@ -124,7 +124,10 @@ export const TABLE_ARREARS_HEADER_COLUMNS = [{
   width: 75,
   title: '(9)',
   source: [ 'Chọn' ],
-  key: 'peopleCode'
+  key: 'peopleCode',
+  validations: {
+    lessThanNow: true
+  }
 }, {
   type: 'dropdown',
   autocomplete: true,
@@ -132,14 +135,20 @@ export const TABLE_ARREARS_HEADER_COLUMNS = [{
   title: '(10)',
   source: [ 'Chọn' ],
   align: 'left',
-  key: 'nationalityCode'
+  key: 'nationalityCode',
+  validations: {
+    lessThanNow: true
+  }
 }, {
   type: 'dropdown',
   width: 145,
   title: '(11.1)',
   source: [ 'Chọn' ],
   align: 'left',
-  key: 'registerCityCode'
+  key: 'registerCityCode',
+  validations: {
+    lessThanNow: true
+  }
 }, {
   type: 'dropdown',
   autocomplete: true,
@@ -148,7 +157,10 @@ export const TABLE_ARREARS_HEADER_COLUMNS = [{
   title: '(11.2)',
   align: 'left',
   key: 'registerDistrictCode',
-  defaultLoad: true
+  defaultLoad: true,
+  validations: {
+    lessThanNow: true
+  }
 }, {
   type: 'dropdown',
   autocomplete: true,
@@ -157,7 +169,10 @@ export const TABLE_ARREARS_HEADER_COLUMNS = [{
   source: [],
   align: 'left',
   key: 'registerWardsCode',
-  defaultLoad: true
+  defaultLoad: true,
+  validations: {
+    lessThanNow: true
+  }
 }, {
   type: 'dropdown',
   autocomplete: true,
@@ -165,7 +180,10 @@ export const TABLE_ARREARS_HEADER_COLUMNS = [{
   title: '(12.1)',
   align: 'left',
   source: [],
-  key: 'recipientsCityCode'
+  key: 'recipientsCityCode',
+  validations: {
+    lessThanNow: true
+  }
 }, {
   type: 'dropdown',
   autocomplete: true,
@@ -174,7 +192,10 @@ export const TABLE_ARREARS_HEADER_COLUMNS = [{
   align: 'left',
   source: [],
   key: 'recipientsDistrictCode',
-  defaultLoad: true
+  defaultLoad: true,
+  validations: {
+    lessThanNow: true
+  }
 }, {
   type: 'dropdown',
   autocomplete: true,
@@ -183,14 +204,20 @@ export const TABLE_ARREARS_HEADER_COLUMNS = [{
   align: 'left',
   source: [ ],
   key: 'recipientsWardsCode',
-  defaultLoad: true
+  defaultLoad: true,
+  validations: {
+    lessThanNow: true
+  }
 }, {
   type: 'text',
   width: 145,
   title: '(12.4)',
   align: 'left',
   wordWrap: true,
-  key: 'recipientsAddress'
+  key: 'recipientsAddress',
+  validations: {
+    lessThanNow: true
+  }
 }, {
   type: 'dropdown',
   autocomplete: true,
