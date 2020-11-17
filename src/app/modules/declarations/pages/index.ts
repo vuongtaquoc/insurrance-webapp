@@ -40,3 +40,6 @@ export * from './pending-retirement-edit/pending-retirement-edit.component';
 export * from './pending-retirement-covid-list/pending-retirement-covid-list.component';
 export * from './pending-retirement-covid-add/pending-retirement-covid-add.component';
 export * from './pending-retirement-covid-edit/pending-retirement-covid-edit.component';
+export * from './allocation-card-list/allocation-card-list.component';
+export * from './allocation-card-add/allocation-card-add.component';
+export * from './allocation-card-edit/allocation-card-edit.component';

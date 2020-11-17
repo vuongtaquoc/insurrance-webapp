@@ -5,7 +5,7 @@
         <nz-tab nzTitle="Danh mục tài liệu">
           <div class="page-document-list__container">
             <form nz-form [formGroup]="documentForm">
-              <h1><strong>600</strong> | Báo tăng lao động</h1>
+              <h1><strong>{{declarationCode}}</strong> | {{declarationName}}</h1>
               <div nz-row [nzGutter]="10">
                 <div nz-col [nzSpan]="12">
                   <nz-form-item>
@@ -53,7 +53,7 @@
           </div><!-- page-declarations__container -->
         </nz-tab><!-- tab 1-->
 
-        <nz-tab nzTitle="D02-TS">
+        <nz-tab nzTitle="D05-TS">
           <div class="page-declarations__container" [ngClass]="{ 'page-declarations__container--hidden': isHiddenSidebar }">
             <app-declaration-sidebar
               tableName="increaseLabor"
@@ -73,40 +73,59 @@
                     <i nz-icon nzType="arrow-up"></i>Tăng lao động
                   </button>
                   <button class="page-declarations__button" [ngClass]="{'flash-button': isBlinking}" nz-button nzType="default" (click)="handleAddEmployee('I_2')">
-                    <i nz-icon nzType="arrow-up"></i>Tăng BHYT
-                  </button>
-                  <button class="page-declarations__button" [ngClass]="{'flash-button': isBlinking}" nz-button nzType="default" (click)="handleAddEmployee('I_3')">
-                    <i nz-icon nzType="arrow-up"></i>Tăng BHTN
-                  </button>
-                  <button class="page-declarations__button" [ngClass]="{'flash-button': isBlinking}" nz-button nzType="default" (click)="handleAddEmployee('II_2')">
-                    <i nz-icon nzType="arrow-up"></i>Tăng BHTNLĐ, BNN
+                    <i nz-icon nzType="arrow-up"></i>Tăng tiền lương
                   </button>
                   <button class="page-declarations__button" [ngClass]="{'flash-button': isBlinking}" nz-button nzType="default" (click)="handleAddEmployee('II_1')">
-                    <i nz-icon nzType="arrow-down"></i>Giảm BHYT
+                    <i nz-icon nzType="arrow-down"></i>Giảm lao động
+                  </button>
+                  <button class="page-declarations__button" [ngClass]="{'flash-button': isBlinking}" nz-button nzType="default" (click)="handleAddEmployee('II_2')">
+                    <i nz-icon nzType="arrow-down"></i>Giảm tiền lương
                   </button>
                 </div>
-                <h1><strong>600</strong> | Báo tăng lao động</h1>
+                <h1><strong>{{declarationCode}}</strong> | {{declarationName}}</h1>
               </div><!-- page-declarations__group-button -->
 
               <div class="page-declarations__title">
-                <h2>Danh sách lao động tham gia BHXH, BHYT, BHTN</h2>
-                <form nz-form [formGroup]="form" class="page-declarations__search">
+                <h2>Danh sách người tham gia bảo hiểm xã hội Tự nguyện</h2>
+                <form nz-form [formGroup]="form" class="page-declarations__search_normal">
                   <nz-form-item>
-                    <nz-form-label [nzNoColon]="true" [nzSpan]="10">Số</nz-form-label>
-                    <nz-form-control [nzSpan]="14">
-                      <input nz-input formControlName="number" (onChange)="handleChangeForm()">
+                    <nz-form-label [nzNoColon]="true" [nzSpan]="18">Tỷ lệ đóng (%)</nz-form-label>
+                    <nz-form-control [nzSpan]="6" [nzErrorTip]="monthTpl">
+                      <input nz-input formControlName="ratioPayment" (onChange)="handleChangeForm()">
+                      <ng-template #monthTpl let-control>
+                        <ng-container *ngIf="control.hasError('required')">
+                          <p class="regime-approval-form__error">Tháng tờ khai không để trống</p>
+                        </ng-container>
+                        <ng-container *ngIf="control.hasError('min')">
+                            <p class="regime-approval-form__error"> Tháng phải lơn hơn 0</p>
+                          </ng-container>
+                          <ng-container *ngIf="control.hasError('max')">
+                              <p class="regime-approval-form__error">Tháng phải nhỏ hơn hoặc bằng 12</p>
+                          </ng-container>
+                        <ng-container *ngIf="control.hasError('pattern')">
+                          <p class="regime-approval-form__error">Tháng tờ khai phải số</p>
+                        </ng-container>
+                      </ng-template>
                     </nz-form-control>
                   </nz-form-item>
                   <nz-form-item>
-                    <nz-form-label [nzNoColon]="true" [nzSpan]="10">Tháng</nz-form-label>
-                    <nz-form-control [nzSpan]="14">
-                      <input nz-input formControlName="month" (onChange)="handleChangeForm()">
-                    </nz-form-control>
-                  </nz-form-item>
-                  <nz-form-item>
-                    <nz-form-label [nzNoColon]="true" [nzSpan]="10">Năm</nz-form-label>
-                    <nz-form-control [nzSpan]="14">
+                    <nz-form-label [nzNoColon]="true" [nzSpan]="12">Chuẩn nghèo(CN)</nz-form-label>
+                    <nz-form-control [nzSpan]="12" [nzErrorTip]="yearTpl">
                       <input nz-input formControlName="year" (onChange)="handleChangeForm()">
+                      <ng-template #yearTpl let-control>
+                        <ng-container *ngIf="control.hasError('required')">
+                          <p class="regime-approval-form__error">Năm tờ khai không để trống</p>
+                        </ng-container>
+                        <ng-container *ngIf="control.hasError('pattern')">
+                          <p class="regime-approval-form__error">Năm tờ khai phải số</p>
+                        </ng-container>
+                        <ng-container *ngIf="control.hasError('min')">
+                            <p class="regime-approval-form__error"> Năm phải lơn hơn năm 1990</p>
+                        </ng-container>
+                        <ng-container *ngIf="control.hasError('maxlength')">
+                            <p class="regime-approval-form__error"> Năm chỉ được tối đa 4 ký tự</p>
+                        </ng-container>
+                      </ng-template>
                     </nz-form-control>
                   </nz-form-item>
                 </form>

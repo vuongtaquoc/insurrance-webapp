@@ -174,6 +174,9 @@ export class IncreaseComponent extends GeneralBaseComponent implements OnInit, O
       eventEmitter.emit('action:loadding', {
         isShow: false,
       });
+      this.modalService.success({
+        nzTitle: 'Quá trình thực hiện thành công'
+      });
       setTimeout(() => {
         this.validateSubject.next({
           field: 'isurranceCode',
@@ -189,9 +192,9 @@ export class IncreaseComponent extends GeneralBaseComponent implements OnInit, O
     }, () => {
       eventEmitter.emit('action:loadding', {
         isShow: false,
-      });
+      });     
+     
     });
-
   }
 
   private getRegisterDistrictsByCityCode(instance, cell, c, r, source) {

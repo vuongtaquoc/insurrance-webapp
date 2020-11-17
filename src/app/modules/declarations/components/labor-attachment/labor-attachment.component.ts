@@ -11,6 +11,7 @@ import cloneDeep from 'lodash/cloneDeep';
 export class LaborAttachmentComponent implements OnInit, OnChanges {
   @Input() files: any = [];
   @Input() declarationCode: any;
+  @Input() notAllowAttach: any;
   @Output() onChangeName = new EventEmitter<any>();
   @Output() onSelectedFileChanged = new EventEmitter<any>();
 
@@ -26,7 +27,10 @@ export class LaborAttachmentComponent implements OnInit, OnChanges {
     if (!this.rows.length) {
       this.loadDefaultData();
     }
-
+     
+    if (this.notAllowAttach) {
+      return;
+    }
     if (changes.files && changes.files.currentValue && changes.files.currentValue.length) {
       changes.files.currentValue
         .filter(f => f.declarationCode === this.declarationCode)

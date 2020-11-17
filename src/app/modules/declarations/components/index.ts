@@ -34,4 +34,5 @@ export * from './pending/pending.component';
 export * from './pending-retirement/pending-retirement.component';
 export * from './pending-covid/pending-covid.component';
 export * from './pending-retirement-covid/pending-retirement-covid.component';
+export * from './allocation-card/allocation-card.component';
 

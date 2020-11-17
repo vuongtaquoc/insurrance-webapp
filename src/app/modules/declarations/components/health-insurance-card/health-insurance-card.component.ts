@@ -828,6 +828,9 @@ export class ReissueHealthCardComponent implements OnInit, OnDestroy {
 
       this.declarations = declarations;
       this.isSpinning = false;
+      this.modalService.success({
+        nzTitle: 'Quá trình thực hiện thành công'
+      });
       setTimeout(() => {
         this.validateSubject.next({
           field: 'isurranceCode',

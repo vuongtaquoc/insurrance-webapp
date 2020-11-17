@@ -76,6 +76,10 @@ import {
   PendingRetirementCovidListComponent,
   PendingRetirementCovidAddComponent,
   PendingRetirementCovidEditComponent,
+  AllocationCardListComponent,
+  AllocationCardAddComponent,
+  AllocationCardEditComponent,
+  
   
 } from './pages';
 
@@ -115,6 +119,7 @@ import {
   PendingComponent,
   PendingRetirementCovidComponent,
   PendingCovidComponent,
+  AllocationCardComponent,
 } from './components';
 
 import { RegimeAutoSizeDirective } from './directives';
@@ -221,7 +226,10 @@ import { RegimeAutoSizeDirective } from './directives';
     PendingRetirementCovidListComponent,
     PendingRetirementCovidAddComponent,
     PendingRetirementCovidEditComponent,
-    
+    AllocationCardComponent,
+    AllocationCardListComponent,
+    AllocationCardAddComponent,
+    AllocationCardEditComponent,
   ],
   providers: [
     AuthenticationService,

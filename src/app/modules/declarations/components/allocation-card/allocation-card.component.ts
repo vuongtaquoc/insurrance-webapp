@@ -32,7 +32,7 @@ import {
 import { DATE_FORMAT, DECLARATIONS, DOCUMENTBYPLANCODE } from '@app/shared/constant';
 import { eventEmitter } from '@app/shared/utils/event-emitter';
 
-import { TABLE_NESTED_HEADERS, TABLE_HEADER_COLUMNS } from '@app/modules/declarations/data/increase-labor';
+import { TABLE_NESTED_HEADERS, TABLE_HEADER_COLUMNS } from '@app/modules/declarations/data/allocation-card.data';
 import { TABLE_FAMILIES_NESTED_HEADERS, TABLE_FAMILIES_HEADER_COLUMNS } from '@app/modules/declarations/data/families-editor.data';
 import { TABLE_DOCUMENT_NESTED_HEADERS, TABLE_DOCUMENT_HEADER_COLUMNS } from '@app/modules/declarations/data/document-list-editor.data';
 import { TableEditorErrorsComponent } from '@app/shared/components';
@@ -47,11 +47,11 @@ const TYPES = {
 const MAX_UPLOAD_SIZE = 20 * 1024 * 1024; // ~ 20MB
 
 @Component({
-  selector: 'app-declaration-increase-labor',
-  templateUrl: './increase-labor.component.html',
-  styleUrls: [ './increase-labor.component.less' ]
+  selector: 'app-declaration-allocation-card-card',
+  templateUrl: './allocation-card.component.html',
+  styleUrls: [ './allocation-card.component.less' ]
 })
-export class IncreaseLaborComponent implements OnInit, OnDestroy {
+export class AllocationCardComponent implements OnInit, OnDestroy {
   @Input() declarationId: string;
   @Output() onSubmit: EventEmitter<any> = new EventEmitter();
 
@@ -76,7 +76,8 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
   declaration: any;
   declarationGeneral: any;
   isHiddenSidebar = false;
-  declarationCode: string = '600';
+  declarationCode: string = '602';
+  declarationName: string = '';
   employeeSubject: Subject<any> = new Subject<any>();
   handlers: any[] = [];
   handler;
@@ -91,6 +92,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
   isBlinking = false;
   submitType: string;
   files: any[] = [];
+  isSpinning: boolean= false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -132,11 +134,11 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     const date = new Date();
     this.currentCredentials = this.authenticationService.currentCredentials;
     this.form = this.formBuilder.group({
-      number: [ '1' ],
+      ratioPayment: [ '1' ],
       month: [ date.getMonth() + 1 ],
       year: [ date.getFullYear() ]
     });
-
+    this.declarationName = this.getDeclaration(this.declarationCode).value;
     this.documentForm = this.formBuilder.group({
       userAction: [this.currentCredentials.companyInfo.delegate],
       mobile:[this.currentCredentials.companyInfo.mobile],
@@ -204,7 +206,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
 
         this.isTableValid = true;
       } else {
-        this.declarationService.getDeclarationInitials('600', this.tableHeaderColumns).subscribe(declarations => {
+        this.declarationService.getDeclarationInitials('602', this.tableHeaderColumns).subscribe(declarations => {
           this.declarations = declarations;
         });
 
@@ -1364,7 +1366,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     const declarations = _.find(DECLARATIONS, {
         key: declarationCode,
     });
-
+    console.log(declarations);
     return declarations;
   }
 

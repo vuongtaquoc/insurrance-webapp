@@ -149,6 +149,14 @@ export const DECLARATIONS =
       value: 'Cấp lại thẻ BHXH do hỏng, do mất'
     },
     {
+      key: '602',
+      value: 'Đăng ký, đăng ký lại, điều chỉnh đóng BHXH tự nguyện, cấp sổ BHXH'
+    },
+    {
+      key: '603',
+      value: 'Đăng ký đóng, cấp thẻ BHYT đối với người chỉ tham gia BHYT'
+    },
+    {
       key: '612',
       value: 'Cấp lại thẻ BHYT do hỏng, do mất'
     },

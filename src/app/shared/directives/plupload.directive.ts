@@ -20,7 +20,8 @@ export class PluploadDirective {
     filters: {
       mime_types: [{
         title: 'Attachment files',
-        extensions: 'xlsx,docx,pdf,pptx,xls,doc,ppt',
+        extensions: 'pdf'
+        // extensions: 'xlsx,docx,pdf,pptx,xls,doc,ppt',
       }],
       max_file_size: '5mb',
     },

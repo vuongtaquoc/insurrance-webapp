@@ -96,6 +96,8 @@
                     nzTheme="outline"></i>Báo giảm lao động</a></li>
               <li nz-menu-item [hidden]="!permissions[pmsConf.adjust.R]"><a [routerLink]="['/declarations/adjust']"><i
                     nz-icon nzType="form" nzTheme="outline"></i>Điều chỉnh chức danh, mức đóng</a></li>
+              <li nz-menu-item [hidden]="!permissions[pmsConf.adjust.R]"><a [routerLink]="['/declarations/allocation-card']"><i
+                      nz-icon nzType="form" nzTheme="outline"></i>Đăng ký, đăng ký lại, điều chỉnh đóng BHXH tự nguyện, cấp sổ BHXH</a></li>
               <li nz-menu-item [hidden]="!permissions[pmsConf.adjust.R]"><a [routerLink]="['/declarations/pending-retirement']"><i
                       nz-icon nzType="form" nzTheme="outline"></i>Tạm dừng đóng vào quỹ hưu trí và tử tuất</a></li>
               <li nz-menu-item [hidden]="!permissions[pmsConf.adjust.R]"><a [routerLink]="['/declarations/pending-retirement-covid']"><i

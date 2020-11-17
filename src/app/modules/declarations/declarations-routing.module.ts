@@ -47,6 +47,9 @@ import {
   PendingRetirementCovidListComponent,
   PendingRetirementCovidAddComponent,
   PendingRetirementCovidEditComponent,
+  AllocationCardListComponent,
+  AllocationCardAddComponent,
+  AllocationCardEditComponent,
    
 } from './pages';
 
@@ -271,6 +274,20 @@ const routes: Routes = [
       {
         path: 'pending-retirement-covid/:id/edit',
         component: PendingRetirementCovidEditComponent,
+        canDeactivate: [ UnsavedChangesGuard, NavigationGuard ]
+      },
+      {
+        path: 'allocation-card',
+        component:AllocationCardListComponent
+      },
+      {
+        path: 'allocation-card/add',
+        component: AllocationCardAddComponent,
+        canDeactivate: [ UnsavedChangesGuard, NavigationGuard ]
+      },
+      {
+        path: 'allocation-card/:id/edit',
+        component: AllocationCardEditComponent,
         canDeactivate: [ UnsavedChangesGuard, NavigationGuard ]
       }
     ]
