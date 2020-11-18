@@ -27,7 +27,8 @@ import {
   CategoryService,
   RelationshipService,
   VillageService,
-  FileUploadEmitter
+  FileUploadEmitter,
+  PaymentMethodServiced,
 } from '@app/core/services';
 import { DATE_FORMAT, DECLARATIONS, DOCUMENTBYPLANCODE } from '@app/shared/constant';
 import { eventEmitter } from '@app/shared/utils/event-emitter';
@@ -113,6 +114,7 @@ export class AllocationCardComponent implements OnInit, OnDestroy {
     private modalService: NzModalService,
     private relationshipService: RelationshipService,
     private villageService: VillageService,
+    private paymentMethodServiced: PaymentMethodServiced,
     private fileUploadEmitter: FileUploadEmitter
   ) {
     this.getRecipientsDistrictsByCityCode = this.getRecipientsDistrictsByCityCode.bind(this);
@@ -157,8 +159,9 @@ export class AllocationCardComponent implements OnInit, OnDestroy {
       this.planService.getPlanShowCode(this.declarationCode),
       this.departmentService.getDepartments(),
       this.categoryService.getCategories('relationshipDocumentType'),
-      this.relationshipService.getRelationships()
-    ]).subscribe(([ cities, nationalities, peoples, salaryAreas, plans, departments, relationshipDocumentTypies, relationShips ]) => {
+      this.relationshipService.getRelationships(),
+      this.paymentMethodServiced.getPaymentMethods(),
+    ]).subscribe(([ cities, nationalities, peoples, salaryAreas, plans, departments, relationshipDocumentTypies, relationShips, paymentMethods ]) => {
       this.updateSourceToColumn(this.tableHeaderColumns, 'peopleCode', peoples);
       this.updateSourceToColumn(this.tableHeaderColumns, 'nationalityCode', nationalities);
       this.updateSourceToColumn(this.tableHeaderColumns, 'registerCityCode', cities);
@@ -166,6 +169,7 @@ export class AllocationCardComponent implements OnInit, OnDestroy {
       this.updateSourceToColumn(this.tableHeaderColumns, 'salaryAreaCode', salaryAreas);
       this.updateSourceToColumn(this.tableHeaderColumns, 'planCode', plans);
       this.updateSourceToColumn(this.tableHeaderColumns, 'departmentCode', departments);
+      this.updateSourceToColumn(this.tableHeaderColumns, 'paymentMethodCode', paymentMethods);
 
       //families table
       this.updateSourceToColumn(this.tableHeaderColumnsFamilies, 'relationshipCityCode', cities);
@@ -206,7 +210,7 @@ export class AllocationCardComponent implements OnInit, OnDestroy {
 
         this.isTableValid = true;
       } else {
-        this.declarationService.getDeclarationInitials('602', this.tableHeaderColumns).subscribe(declarations => {
+        this.declarationService.getDeclarationInitials(this.declarationCode, this.tableHeaderColumns).subscribe(declarations => {
           this.declarations = declarations;
         });
 
