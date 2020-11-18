@@ -50,6 +50,9 @@ import {
   AllocationCardListComponent,
   AllocationCardAddComponent,
   AllocationCardEditComponent,
+  RegisterAllocationCardListComponent,
+  RegisterAllocationCardAddComponent,
+  RegisterAllocationCardEditComponent,
    
 } from './pages';
 
@@ -288,6 +291,20 @@ const routes: Routes = [
       {
         path: 'allocation-card/:id/edit',
         component: AllocationCardEditComponent,
+        canDeactivate: [ UnsavedChangesGuard, NavigationGuard ]
+      },
+      {
+        path: 'register-allocation-card',
+        component:RegisterAllocationCardListComponent
+      },
+      {
+        path: 'register-allocation-card/add',
+        component: RegisterAllocationCardAddComponent,
+        canDeactivate: [ UnsavedChangesGuard, NavigationGuard ]
+      },
+      {
+        path: 'register-allocation-card/:id/edit',
+        component: RegisterAllocationCardEditComponent,
         canDeactivate: [ UnsavedChangesGuard, NavigationGuard ]
       }
     ]

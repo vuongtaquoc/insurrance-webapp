@@ -3,17 +3,16 @@ import { Component, OnInit } from '@angular/core';
 import { DeclarationService } from '@app/core/services';
 import { Declaration } from '@app/core/interfaces';
 
-import { PAGE_SIZE, DECLARATIONS,  RESULTSUBMIT } from '@app/shared/constant';
-import { NzModalService } from 'ng-zorro-antd/modal';
+import { PAGE_SIZE, DECLARATIONS, RESULTSUBMIT } from '@app/shared/constant';
 import { DocumentFormComponent } from '@app/shared/components';
+import { NzModalService } from 'ng-zorro-antd/modal';
 import * as moment from 'moment';
-
 @Component({
-  selector: 'app-regime-approval-list',
-  templateUrl: './regime-approval-list.component.html',
-  styleUrls: ['./regime-approval-list.component.less', '../reduction-labor-list/reduction-labor-list.component.less']
+  selector: 'app-register-allocation-card-list',
+  templateUrl: './register-allocation-card-list.component.html',
+  styleUrls: ['./register-allocation-card-list.component.less','../reduction-labor-list/reduction-labor-list.component.less']
 })
-export class RegimeApprovalListComponent implements OnInit {
+export class RegisterAllocationCardListComponent implements OnInit {
   isAllDisplayDataChecked = false;
   isIndeterminate = false;
   listOfDisplayData: Declaration[] = [];
@@ -25,9 +24,11 @@ export class RegimeApprovalListComponent implements OnInit {
   orderby: string = '';
   orderType: string = '';
   selectedPage: number = 1;
-  declarationCode: string = '630';
+  declarationCode: string = '603';
   declarationName: string;
   status: any = RESULTSUBMIT;
+  keyword: string = '';
+
   filter: any = {};
   param: any = {
     createDate: '',
@@ -36,6 +37,7 @@ export class RegimeApprovalListComponent implements OnInit {
     sendDate: '',
     status: ''
   };
+
   constructor(
     private declarationService: DeclarationService,
     private modalService: NzModalService,
@@ -69,7 +71,7 @@ export class RegimeApprovalListComponent implements OnInit {
       }
     });
   }
-  
+
   getYear() {
 
     if(moment(this.year,"YYYY").isValid()) {
@@ -114,6 +116,7 @@ export class RegimeApprovalListComponent implements OnInit {
   }
 
   viewDocument(declarationInfo: any) {
+
     if(declarationInfo.status === 0) {
       this.showMessageNotView();
     } else {

@@ -98,6 +98,9 @@
                     nz-icon nzType="form" nzTheme="outline"></i>Điều chỉnh chức danh, mức đóng</a></li>
               <li nz-menu-item [hidden]="!permissions[pmsConf.adjust.R]"><a [routerLink]="['/declarations/allocation-card']"><i
                       nz-icon nzType="form" nzTheme="outline"></i>Đăng ký, đăng ký lại, điều chỉnh đóng BHXH tự nguyện, cấp sổ BHXH</a></li>
+                      <li nz-menu-item [hidden]="!permissions[pmsConf.adjust.R]"><a [routerLink]="['/declarations/register-allocation-card']"><i
+                        nz-icon nzType="form" nzTheme="outline"></i>Đăng ký đóng, cấp thẻ BHYT đối với người chỉ tham gia BHYT</a></li>
+
               <li nz-menu-item [hidden]="!permissions[pmsConf.adjust.R]"><a [routerLink]="['/declarations/pending-retirement']"><i
                       nz-icon nzType="form" nzTheme="outline"></i>Tạm dừng đóng vào quỹ hưu trí và tử tuất</a></li>
               <li nz-menu-item [hidden]="!permissions[pmsConf.adjust.R]"><a [routerLink]="['/declarations/pending-retirement-covid']"><i
