@@ -615,7 +615,6 @@ export class ReissueInsuranceCardComponent implements OnInit, OnDestroy {
       this.isCheckIsuranceCode = false;
       c = Number(c);
       const column = this.tableHeaderColumns[c];
-
       if (column.key === 'hospitalFirstRegistCode') {
         const hospitalFirstCode = cell.innerText.split(' - ').shift();
         if(hospitalFirstCode !== '' && hospitalFirstCode !== undefined) {

@@ -185,6 +185,7 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
     this.updateEditorToColumn('toDate', 'month');
     this.updateAutoCompleteToColumn('hospitalFirstRegistCode');
     this.updateEditorToColumn('fromDateJoin', 'date');
+    this.updateEditorToColumn('motherDayDead', 'date');
 
     this.spreadsheet.hideIndex();
 
@@ -366,26 +367,34 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
   }
 
   validationCellByOtherCell(cellValue, column, y, instance, cell) {
-    if (column.key === 'fromDate') {
-      const toDateValue = this.spreadsheet.getValueFromCoords(Number(cell) + 1, y);
-      const validationColumn = this.columns[cell];
+    setTimeout(() => {
+      if (column.key === 'fromDate') {
+        const toDateValue = this.spreadsheet.getValueFromCoords(Number(cell) + 1, y);
+        const validationColumn = this.columns[cell];
 
-      if (toDateValue && cellValue) {
-        const cellValueMoment = moment(cellValue, DATE_FORMAT.ONLY_MONTH_YEAR);
-        const toDateValueMoment = moment(toDateValue, DATE_FORMAT.ONLY_MONTH_YEAR);
-        const isAfter = cellValueMoment.isAfter(toDateValueMoment);
+        if (toDateValue && cellValue) {
+          const cellValueMoment = moment(cellValue, DATE_FORMAT.ONLY_MONTH_YEAR);
+          const toDateValueMoment = moment(toDateValue, DATE_FORMAT.ONLY_MONTH_YEAR);
+          const isAfter = cellValueMoment.isAfter(toDateValueMoment);
 
-        if (isAfter) {
-          validationColumn.validations = {
-            required: true,
-            lessThan: true
-          };
-          validationColumn.fieldName = {
-            name: 'Từ tháng, năm',
-            message: '<Từ tháng, năm> phải nhỏ hơn hoặc bằng <Đến tháng, năm>',
-          };
+          if (isAfter) {
+            validationColumn.validations = {
+              required: true,
+              lessThan: true
+            };
+            validationColumn.fieldName = {
+              name: 'Từ tháng, năm',
+              message: '<Từ tháng, năm> phải nhỏ hơn hoặc bằng <Đến tháng, năm>',
+            };
 
-          instance.jexcel.validationCell(y, cell, validationColumn.fieldName, validationColumn.validations);
+            instance.jexcel.validationCell(y, cell, validationColumn.fieldName, validationColumn.validations);
+          } else {
+            validationColumn.validations = {
+              required: true
+            };
+            validationColumn.fieldName = 'Từ tháng, năm';
+            instance.jexcel.clearValidation(y, cell);
+          }
         } else {
           validationColumn.validations = {
             required: true
@@ -393,39 +402,39 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
           validationColumn.fieldName = 'Từ tháng, năm';
           instance.jexcel.clearValidation(y, cell);
         }
-      } else {
-        validationColumn.validations = {
-          required: true
-        };
-        validationColumn.fieldName = 'Từ tháng, năm';
-        instance.jexcel.clearValidation(y, cell);
-      }
 
-      this.handleEvent({
-        type: 'validate',
-        deletedIndexes: [],
-        user: {}
-      });
-    } else if (column.key === 'toDate') {
-      const fromDateValue = this.spreadsheet.getValueFromCoords(Number(cell) - 1, y);
-      const validationColumn = this.columns[Number(cell) - 1];
+        this.handleEvent({
+          type: 'validate',
+          deletedIndexes: [],
+          user: {}
+        });
+      } else if (column.key === 'toDate') {
+        const fromDateValue = this.spreadsheet.getValueFromCoords(Number(cell) - 1, y);
+        const validationColumn = this.columns[Number(cell) - 1];
 
-      if (cellValue && fromDateValue) {
-        const cellValueMoment = moment(cellValue, DATE_FORMAT.ONLY_MONTH_YEAR);
-        const fromDateValueMoment = moment(fromDateValue, DATE_FORMAT.ONLY_MONTH_YEAR);
-        const isAfter = fromDateValueMoment.isAfter(cellValueMoment);
+        if (cellValue && fromDateValue) {
+          const cellValueMoment = moment(cellValue, DATE_FORMAT.ONLY_MONTH_YEAR);
+          const fromDateValueMoment = moment(fromDateValue, DATE_FORMAT.ONLY_MONTH_YEAR);
+          const isAfter = fromDateValueMoment.isAfter(cellValueMoment);
 
-        if (isAfter) {
-          validationColumn.validations = {
-            required: true,
-            lessThan: true
-          };
-          validationColumn.fieldName = {
-            name: 'Từ tháng, năm',
-            message: '<Từ tháng, năm> phải nhỏ hơn hoặc bằng <Đến tháng, năm>',
-          };
+          if (isAfter) {
+            validationColumn.validations = {
+              required: true,
+              lessThan: true
+            };
+            validationColumn.fieldName = {
+              name: 'Từ tháng, năm',
+              message: '<Từ tháng, năm> phải nhỏ hơn hoặc bằng <Đến tháng, năm>',
+            };
 
-          instance.jexcel.validationCell(y, Number(cell) - 1, validationColumn.fieldName, validationColumn.validations);
+            instance.jexcel.validationCell(y, Number(cell) - 1, validationColumn.fieldName, validationColumn.validations);
+          } else {
+            validationColumn.validations = {
+              required: true
+            };
+            validationColumn.fieldName = 'Từ tháng, năm';
+            instance.jexcel.clearValidation(y, Number(cell) - 1);
+          }
         } else {
           validationColumn.validations = {
             required: true
@@ -433,20 +442,31 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
           validationColumn.fieldName = 'Từ tháng, năm';
           instance.jexcel.clearValidation(y, Number(cell) - 1);
         }
-      } else {
-        validationColumn.validations = {
-          required: true
-        };
-        validationColumn.fieldName = 'Từ tháng, năm';
-        instance.jexcel.clearValidation(y, Number(cell) - 1);
-      }
 
-      this.handleEvent({
-        type: 'validate',
-        deletedIndexes: [],
-        user: {}
-      });
-    }
+        this.handleEvent({
+          type: 'validate',
+          deletedIndexes: [],
+          user: {}
+        });
+      } else if (column.key === 'isReductionWhenDead') {
+          const columnIndex = Number(cell) + 1; 
+          const motherDayDead = this.columns[columnIndex];
+          if (cellValue) {
+            motherDayDead.validations = { required: true };
+            this.spreadsheet.setReadonly(Number(y), columnIndex, true);
+          }else  {
+            motherDayDead.validations = {};
+            this.spreadsheet.setReadonly(Number(y), columnIndex);
+          }
+          motherDayDead.fieldName = 'Ngày chết';
+          instance.jexcel.validationCell(y, columnIndex, motherDayDead.fieldName, motherDayDead.validations);
+          this.handleEvent({
+            type: 'validate',
+            deletedIndexes: [],
+            user: {}
+          });
+      }
+    }, 50);
   }
 
   private arrayToProps(array, columns) {

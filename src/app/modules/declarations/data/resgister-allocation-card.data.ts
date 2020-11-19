@@ -319,11 +319,11 @@ export const TABLE_HEADER_COLUMNS = [{
   key: 'isReductionWhenDead'
 },{
   type: 'text',
-  width: 70,
+  width: 80,
   title: '(19)',
   key: 'motherDayDead',
   fieldName: 'Ngày chết',
-  isCalendar: true
+  readOnly:true,
 },
  {
   type: 'numeric',
