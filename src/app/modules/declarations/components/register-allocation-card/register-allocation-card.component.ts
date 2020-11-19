@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subject, forkJoin } from 'rxjs';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import findLastIndex from 'lodash/findLastIndex';
@@ -29,7 +29,7 @@ import {
   VillageService,
   FileUploadEmitter
 } from '@app/core/services';
-import { DATE_FORMAT, DECLARATIONS, DOCUMENTBYPLANCODE } from '@app/shared/constant';
+import { DATE_FORMAT, DECLARATIONS, DOCUMENTBYPLANCODE, REGEX } from '@app/shared/constant';
 import { eventEmitter } from '@app/shared/utils/event-emitter';
 
 import { TABLE_NESTED_HEADERS, TABLE_HEADER_COLUMNS } from '@app/modules/declarations/data/resgister-allocation-card.data';
@@ -134,9 +134,16 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
     const date = new Date();
     this.currentCredentials = this.authenticationService.currentCredentials;
     this.form = this.formBuilder.group({
-      ratioPayment: [ '1' ],
-      month: [ date.getMonth() + 1 ],
-      year: [ date.getFullYear() ]
+      number:[1],
+      ratioPayment: [ '1' , [Validators.pattern(REGEX.ONLY_NUMBER)]],
+      month: [ date.getMonth() + 1],
+      year: [ date.getFullYear()],
+      supportRatio:['', [Validators.min(0), Validators.max(99), Validators.pattern(REGEX.ONLY_NUMBER)]],
+      proportionJoin:['', [Validators.min(0), Validators.max(99), Validators.pattern(REGEX.ONLY_NUMBER)]],
+      customerCode:['', [Validators.required]],
+      source:[''],
+      salary:['', [Validators.min(0), Validators.max(99), Validators.pattern(REGEX.ONLY_NUMBER)]],
+      sumCar:['', [Validators.pattern(REGEX.ONLY_NUMBER)]]
     });
     this.declarationName = this.getDeclaration(this.declarationCode).value;
     this.documentForm = this.formBuilder.group({
