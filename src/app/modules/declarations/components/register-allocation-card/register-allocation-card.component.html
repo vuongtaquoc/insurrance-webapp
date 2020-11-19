@@ -93,7 +93,7 @@
                     <div nz-col nzSpan="2">
                       <nz-form-item>
                         <nz-form-label [nzNoColon]="true" [nzSpan]="14">Tháng</nz-form-label>
-                        <nz-form-control  [nzSpan]="10">
+                        <nz-form-control [nzSpan]="10">
                           <input nz-input formControlName="month">
                         </nz-form-control>
                       </nz-form-item>
@@ -101,7 +101,7 @@
                     <div nz-col nzSpan="3">
                       <nz-form-item>
                         <nz-form-label class="text-right" [nzNoColon]="true" [nzSpan]="7">Năm</nz-form-label>
-                        <nz-form-control  [nzSpan]="10">
+                        <nz-form-control [nzSpan]="10">
                           <input nz-input formControlName="year">
                         </nz-form-control>
                       </nz-form-item>
@@ -109,7 +109,31 @@
                   </div>
 
                   <div nz-row>
+
                     <div nz-col [nzSpan]="5">
+                      <nz-form-item>
+                        <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Mã đối tượng</nz-form-label>
+                        <nz-form-control [nzSpan]="14" nzErrorTip="Vui lòng chọn đối tượng">
+                          <nz-select [nzSize]="'small'" class="custom-select" nzShowSearch nzAllowClear
+                            formControlName="customerCode">
+                            <nz-option *ngFor="let customer of customers" [nzLabel]="customer.name"
+                              [nzValue]="customer.id">
+                            </nz-option>
+                          </nz-select>
+                        </nz-form-control>
+                      </nz-form-item>
+                    </div><!-- col -->
+
+                    <div nz-col [nzSpan]="10">
+                      <nz-form-item>
+                        <nz-form-label class="text-center" [nzSpan]="6">Tên đối tượng</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                          <input nz-input placeholder="Tên đối tượng" formControlName="customerName" />
+                        </nz-form-control>
+                      </nz-form-item>
+                    </div>
+
+                    <div nz-col [nzSpan]="4">
                       <nz-form-item>
                         <nz-form-label class="text-left" [nzNoColon]="true" [nzSpan]="16">Tỷ lệ NSNN hỗ trợ (%)
                         </nz-form-label>
@@ -149,55 +173,32 @@
                         </nz-form-control>
                       </nz-form-item>
                     </div>
-                  </div>
 
-                  <div nz-row>
-                    <div nz-col [nzSpan]="5">
-                      <nz-form-item>
-                        <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="8">Mã đối tượng</nz-form-label>
-                        <nz-form-control [nzSpan]="16" nzErrorTip="Vui lòng chọn đối tượng">
-                          <nz-select [nzSize]="'small'" class="custom-select" nzShowSearch nzAllowClear
-                            formControlName="customerCode">
-                            <nz-option *ngFor="let customer of customers" [nzLabel]="customer.name"
-                              [nzValue]="customer.id">
-                            </nz-option>
-                          </nz-select>
-                        </nz-form-control>
-                      </nz-form-item>
-                    </div><!-- col -->
-
-                    <div nz-col [nzSpan]="12">
-                      <nz-form-item>
-                        <nz-form-label class="text-center" [nzSpan]="6">Tên đối tượng</nz-form-label>
-                        <nz-form-control [nzSpan]="18">
-                          <input nz-input placeholder="Tên đối tượng" formControlName="customerName" />
-                        </nz-form-control>
-                      </nz-form-item>
-                    </div>
-
-                    <div nz-col [nzSpan]="7">
-                      <nz-form-item>
-                        <nz-form-label class="text-right" [nzSpan]="10">Nguồn đóng</nz-form-label>
-                        <nz-form-control [nzSpan]="14">
-                          <input nz-input placeholder="Nguồn đóng" formControlName="source" />
-                        </nz-form-control>
-                      </nz-form-item>
-                    </div><!-- col -->
 
                   </div>
 
+
                   <div nz-row>
-                    <div nz-col [nzSpan]="18">
+                    <div nz-col [nzSpan]="4">
                       <div class="page-declarations__check-code">
                         <button nz-button nzType="default" (click)="checkInsurranceCode($event)">Kiểm tra mã số
                           BHXH</button>
                       </div><!-- page-declarations__check-code -->
                     </div>
-                    <div nz-col [nzSpan]="6">
+                    <div nz-col [nzSpan]="5">
                       <nz-form-item>
-                        <nz-form-label class="text-left" style="padding-left: 10px;" [nzSpan]="10">Lương cơ sở</nz-form-label>
+                        <nz-form-label class="text-left" [nzSpan]="8">Nguồn đóng</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                          <input nz-input placeholder="Nguồn đóng" formControlName="source" />
+                        </nz-form-control>
+                      </nz-form-item>
+                    </div><!-- col -->
+                    <div nz-col [nzSpan]="5" style="margin-left: 9px;">
+                      <nz-form-item>
+                        <nz-form-label class="text-left" style="padding-left: 10px;" [nzSpan]="10">Lương cơ sở
+                        </nz-form-label>
                         <nz-form-control [nzSpan]="14" [nzErrorTip]="salaryTpl">
-                          <nz-input-number placeholder="Lương cơ sở" formControlName="salary"
+                          <nz-input-number [nzSize]="'small'" placeholder="Lương cơ sở" formControlName="salary"
                             [nzFormatter]="formatterCurrency"></nz-input-number>
                           <ng-template #salaryTpl let-control>
                             <ng-container *ngIf="control.hasError('pattern')">
