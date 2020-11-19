@@ -285,18 +285,26 @@ export const TABLE_HEADER_COLUMNS = [{
   key: 'recipientsAddress'
 },
 {
-  type: 'dropdown',
-  autocomplete: true,
-  width: 75,
+  type: 'numeric',
+  width: 120,
   title: '(16)',
-  source: [],
-  key: 'livesAreaCode'
+  align: 'right',
+  mask: '#,##0',
+  // decimal: ',',
+  sum: true,
+  key: 'salary',
+  validations: {
+    number: true
+  },
+  format: (value) => {
+    return format.currency(value);
+  }
 },
 {
   type: 'dropdown',
   autocomplete: true,
   width: 50,
-  title: '(28)',
+  title: '(17)',
   source: [ ],
   key: 'planCode',
   fieldName: 'Phương án',
@@ -304,77 +312,151 @@ export const TABLE_HEADER_COLUMNS = [{
     required: true
   }
 }, {
-  type: 'text',
+  type: 'dropdown',
+  autocomplete: true,
   width: 150,
   title: '(18.1)',
   align: 'left',
   wordWrap: true,
-  key: 'hospitalFirstRegistName'
+  source: [ ],
+  key: 'paymentMethodCode'
 }, {
-  type: 'text',
-  width: 135,
+  type: 'numeric',
+  align: 'right',
+  width: 80,
   title: '(18.2)',
-  key: 'levelWork'
+  key: 'numberMonthJoin',
+  fieldName: 'Số tháng đóng',
+  validations: {
+    required: true,
+    number: true
+  },
 },
 {
-  type: 'dropdown',
-  autocomplete: true,
-  width: 100,
-  title: '(18.3)',
-  source: [],
-  key: 'workTypeCode'
-}, {
   type: 'text',
+  width: 60,
+  title: '(18.3)',
+  key: 'fromDate',
+  fieldName: 'Từ tháng, năm',
+  validations: {
+    required: true
+  },
+},{
+  type: 'numeric',
+  align: 'right',
   width: 80,
   title: '(19.1)',
-  key: 'workTypeFromDate',
-  fieldName: 'Từ ngày',
-}, {
-  type: 'text',
-  width: 80,
+  mask: '#,##0',
+  sum: true,
+  key: 'moneyPayment',
+  fieldName: 'Tổng số tiền phải đóng',
+  validations: {
+    number: true
+  },
+  format: (value) => {
+    return format.currency(value);
+  }
+},{
+  type: 'numeric',
+  align: 'right',
+  width: 70,
   title: '(19.2)',
-  key: 'workTypeToDate',
-  fieldName: 'Từ ngày',
+  fieldName: 'Tỷ lệ NSNN hỗ trợ (%)',
+  key: 'tyleNSNN',
+  suffix: '%',
+  validations: {
+    // number: true,
+    min: 0,
+    max: 100
+  }
 },
 {
-  type: 'text',
-  width: 100,
+  type: 'numeric',
+  align: 'right',
+  width: 80,
   title: '(19.3)',
-  key: 'careFromDate',
-  fieldName: 'Từ ngày',
+  mask: '#,##0',
+  fieldName: 'Số tiền NS nhà nước hỗ trợ',
+  sum: true,
+  key: 'soTienNSNN',
+  validations: {
+    number: true
+  },
+  format: (value) => {
+    return format.currency(value, '0,0.000');
+  }
 }, {
-  type: 'text',
-  width: 80,
+  type: 'numeric',
+  align: 'right',
+  width: 70,
   title: '(19.4)',
-  key: 'careTypeToDate',
-  fieldName: 'Từ ngày',
-}, {
-  type: 'text',
-  width: 100,
-  wordWrap: true,
-  title: '(19.5)',
-  key: 'workAddress'
-}, {
-  type: 'dropdown',
-  autocomplete: true,
-  source: [ ],
+  fieldName: 'Tỷ lệ NSĐP hỗ trợ (%)',
+  key: 'tyleNSDP',
+  suffix: '%',
+  validations: {
+    // number: true,
+    min: 0,
+    max: 100
+  }
+},
+{
+  type: 'numeric',
+  align: 'right',
   width: 80,
+  title: '(19.5)',
+  mask: '#,##0',
+  fieldName: 'Số tiền NS địa phương hỗ trợ',
+  sum: true,
+  key: 'soTienNSDP',
+  validations: {
+    number: true
+  },
+  format: (value) => {
+    return format.currency(value, '0,0.000');
+  }
+}, {
+  type: 'numeric',
+  align: 'right',
+  width: 70,
   title: '(19.6)',
-  key: 'departmentCode'
+  fieldName: 'Tỷ lệ tổ chức, cá nhân khác hỗ trợ (%)',
+  key: 'tyleTCCNHTK',
+  suffix: '%',
+  validations: {
+    // number: true,
+    min: 0,
+    max: 100
+  }
+},
+{
+  type: 'numeric',
+  align: 'right',
+  width: 80,
+  title: '(19.7)',
+  mask: '#,##0',
+  // decimal: ',',
+  sum: true,
+  key: 'toChuCaNhanHTKhac',
+  validations: {
+    number: true
+  },
+  format: (value) => {
+    return format.currency(value, '0,0.000');
+  }
 }, {
   type: 'numeric',
   align: 'right',
   width: 100,
-  title: '(19.7)',
-  key: 'contractNo'
-}, {
-  type: 'text',
-  width: 100,
   title: '(19.8)',
-  key: 'dateSign',
-  fieldName: 'Ngày ký',
+  mask: '#,##0',
+  fieldName: 'Người tham gia đóng',
+  sum: true,
+  key: 'playerClose',
   validations: {
-    lessThanNow: true
+    number: true
+  },
+  format: (value) => {
+    return format.currency(value);
   }
 }, {
   type: 'text',
