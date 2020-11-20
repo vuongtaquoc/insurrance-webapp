@@ -3,30 +3,47 @@
     <div class="page-declarations" [ngClass]="{'page-declarations-hide-last-tab': !usedocumentDT01}" cardFullHeight>
       <nz-tabset nzSize="small" nzTabPosition="bottom" nzSelectedIndex="1" [nzTabBarExtraContent]="extraTemplate"
         (nzSelectChange)="handleSelectTab($event)">
-        <nz-tab nzTitle="Danh mục tài liệu">
+        <nz-tab  [nzTitle]="tabDocument">
+          <ng-template #tabDocument>
+            <div class="page-adjust-general__tab-title" [ngClass]="{'page-adjust-general__tab-title--error': tableSubmitErrors.documentFomError > 0}">
+              Danh mục tài liệu
+            </div>
+          </ng-template>
           <div class="page-document-list__container">
             <form nz-form [formGroup]="documentForm">
               <h1><strong>{{declarationCode}}</strong> | {{declarationName}}</h1>
-              <div nz-row [nzGutter]="10">
+               <div nz-row [nzGutter]="10">
                 <div nz-col [nzSpan]="12">
                   <nz-form-item>
                     <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Người nộp</nz-form-label>
-                    <nz-form-control [nzSpan]="14">
-                      <input nz-input placeholder="Người nộp" formControlName="userAction"
-                        (onChange)="handleChangeForm()" />
+                    <nz-form-control [nzSpan]="14" [nzErrorTip]="submitterTpl">
+                      <input nz-input placeholder="Người nộp" formControlName="submitter"/>
+                      <ng-template #submitterTpl let-control>
+                        <ng-container *ngIf="control.hasError('required')">
+                          <p class="regime-approval-form__error">Người nộp không được để trống</p>
+                        </ng-container>
+                      </ng-template>
                     </nz-form-control>
                   </nz-form-item>
                 </div>
                 <div nz-col [nzSpan]="12">
-                  <nz-form-item>
-                    <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Số điện thoại</nz-form-label>
-                    <nz-form-control [nzSpan]="14">
-                      <input nz-input placeholder="Số điện thoại" formControlName="mobile"
-                        (onChange)="handleChangeForm()" />
-                    </nz-form-control>
-                  </nz-form-item>
+                    <nz-form-item>
+                      <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Số điện thoại</nz-form-label>
+                      <nz-form-control [nzSpan]="14" [nzErrorTip]="mobileTpl">
+                        <!-- <input nz-input formControlName="month"> -->
+                        <input nz-input formControlName="mobile" placeholder="Số điện thoại">
+                        <ng-template #mobileTpl let-control>
+                          <ng-container *ngIf="control.hasError('required')">
+                            <p class="regime-approval-form__error">Số điện thoại không được để trống</p>
+                          </ng-container>
+                          <ng-container *ngIf="control.hasError('pattern')">
+                            <p class="regime-approval-form__error">Số điện thoại phải là số</p>
+                          </ng-container>
+                        </ng-template>
+                      </nz-form-control>
+                    </nz-form-item>
+                  </div>
                 </div>
-              </div>
               <h1>Thành phần hồ sơ</h1>
               <div class="document-form__process-table">
                 <div class="document-form__process-table">
@@ -46,13 +63,22 @@
           </div><!-- page-declarations__container -->
         </nz-tab><!-- tab 1-->
 
-        <nz-tab nzTitle="D03-TS">
+        <nz-tab [nzTitle]="tabIncrease">
+          <ng-template #tabIncrease>
+            <div class="page-adjust-general__tab-title" [ngClass]="{'page-adjust-general__tab-title--error': (tableSubmitErrors.increaselabor600 > 0 || tableSubmitErrors.generalFomError > 0)}">
+              D03-TS
+            </div>
+          </ng-template>
           <div class="page-declarations__container"
             [ngClass]="{ 'page-declarations__container--hidden': isHiddenSidebar }">
-            <app-declaration-sidebar tableName="increaseLabor" [isHiddenSidebar]="isHiddenSidebar"
-              [events]="employeeSubject.asObservable()" (onSelectEmployees)="handleSelectEmployees($event)"
-              (onToggleSidebar)="handleToggleSidebar()" (onUserUpdated)="handleUserUpdated($event)"
-              (onUserDeleted)="handleUserDeleted($event)" (onUserAdded)="handleUserAdded($event)">
+            <app-declaration-sidebar tableName="increaseLabor"
+               [isHiddenSidebar]="isHiddenSidebar"
+              [events]="employeeSubject.asObservable()"
+              (onSelectEmployees)="handleSelectEmployees($event)"
+              (onToggleSidebar)="handleToggleSidebar()"
+              (onUserUpdated)="handleUserUpdated($event)"
+              (onUserDeleted)="handleUserDeleted($event)" 
+              (onUserAdded)="handleUserAdded($event)">
             </app-declaration-sidebar>
 
             <div class="page-declarations__content">
@@ -86,7 +112,7 @@
                       <nz-form-item>
                         <nz-form-label [nzNoColon]="true" [nzSpan]="14">Số</nz-form-label>
                         <nz-form-control [nzSpan]="10">
-                          <input nz-input formControlName="number">
+                          <input nz-input formControlName="batch">
                         </nz-form-control>
                       </nz-form-item>
                     </div>
@@ -115,9 +141,9 @@
                         <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Mã đối tượng</nz-form-label>
                         <nz-form-control [nzSpan]="14" nzErrorTip="Vui lòng chọn đối tượng">
                           <nz-select [nzSize]="'small'" class="custom-select" nzShowSearch nzAllowClear
-                            formControlName="customerCode">
-                            <nz-option *ngFor="let customer of customers" [nzLabel]="customer.name"
-                              [nzValue]="customer.id">
+                            formControlName="benefitLevelCode">
+                            <nz-option *ngFor="let benefitLevel of benefitLevels" [nzLabel]="benefitLevel.name"
+                              [nzValue]="benefitLevel.id">
                             </nz-option>
                           </nz-select>
                         </nz-form-control>
@@ -128,7 +154,7 @@
                       <nz-form-item>
                         <nz-form-label class="text-center" [nzSpan]="6">Tên đối tượng</nz-form-label>
                         <nz-form-control [nzSpan]="16">
-                          <input nz-input placeholder="Tên đối tượng" formControlName="customerName" />
+                          <input nz-input placeholder="Tên đối tượng" formControlName="benefitLevelName" />
                         </nz-form-control>
                       </nz-form-item>
                     </div>
@@ -137,9 +163,9 @@
                       <nz-form-item>
                         <nz-form-label class="text-left" [nzNoColon]="true" [nzSpan]="16">Tỷ lệ NSNN hỗ trợ (%)
                         </nz-form-label>
-                        <nz-form-control [nzSpan]="8" [nzErrorTip]="supportRatioTpl">
-                          <input nz-input formControlName="supportRatio" (onChange)="handleChangeForm()">
-                          <ng-template #supportRatioTpl let-control>
+                        <nz-form-control [nzSpan]="8" [nzErrorTip]="tyleNSNNTpl">
+                          <input nz-input formControlName="tyleNSNN" (onChange)="handleChangeForm()">
+                          <ng-template #tyleNSNNTpl let-control>
                             <ng-container *ngIf="control.hasError('pattern')">
                               <p class="regime-approval-form__error">Tỷ lệ phải là số</p>
                             </ng-container>
@@ -157,9 +183,9 @@
                     <div nz-col [nzSpan]="5">
                       <nz-form-item>
                         <nz-form-label [nzNoColon]="true" [nzSpan]="16">Tỷ lệ tham gia BHYT (%)</nz-form-label>
-                        <nz-form-control style="margin-left: 13px" [nzSpan]="8" [nzErrorTip]="proportionJoinTpl">
-                          <input nz-input formControlName="proportionJoin" (onChange)="handleChangeForm()">
-                          <ng-template #proportionJoinTpl let-control>
+                        <nz-form-control style="margin-left: 13px" [nzSpan]="8" [nzErrorTip]="tyleTGBHYTTpl">
+                          <input nz-input formControlName="tyleTGBHYT" (onChange)="handleChangeForm()">
+                          <ng-template #tyleTGBHYTTpl let-control>
                             <ng-container *ngIf="control.hasError('pattern')">
                               <p class="regime-approval-form__error">Tỷ lệ phải là số</p>
                             </ng-container>
@@ -173,11 +199,7 @@
                         </nz-form-control>
                       </nz-form-item>
                     </div>
-
-
                   </div>
-
-
                   <div nz-row>
                     <div nz-col [nzSpan]="4">
                       <div class="page-declarations__check-code">
@@ -189,7 +211,7 @@
                       <nz-form-item>
                         <nz-form-label class="text-left" [nzSpan]="8">Nguồn đóng</nz-form-label>
                         <nz-form-control [nzSpan]="16">
-                          <input nz-input placeholder="Nguồn đóng" formControlName="source" />
+                          <input nz-input placeholder="Nguồn đóng" formControlName="resource" />
                         </nz-form-control>
                       </nz-form-item>
                     </div><!-- col -->
@@ -197,12 +219,12 @@
                       <nz-form-item>
                         <nz-form-label class="text-left" style="padding-left: 10px;" [nzSpan]="10">Lương cơ sở
                         </nz-form-label>
-                        <nz-form-control [nzSpan]="14" [nzErrorTip]="salaryTpl">
-                          <nz-input-number [nzSize]="'small'" placeholder="Lương cơ sở" formControlName="salary"
+                        <nz-form-control [nzSpan]="14" [nzErrorTip]="salaryBaseTpl">
+                          <nz-input-number [nzSize]="'small'" placeholder="Lương cơ sở" formControlName="salaryBase"
                             [nzFormatter]="formatterCurrency"></nz-input-number>
-                          <ng-template #salaryTpl let-control>
+                          <ng-template #salaryBaseTpl let-control>
                             <ng-container *ngIf="control.hasError('pattern')">
-                              Tiền lương phải số
+                              <p class="regime-approval-form__error"> Tiền lương phải số</p>
                             </ng-container>
                           </ng-template>
                         </nz-form-control>
@@ -210,33 +232,39 @@
                     </div>
                   </div>
                 </form>
-
-
               </div><!-- page-declarations__title -->
-
               <div class="page-declarations__editor">
-                <app-table-editor tableName="increaseLabor" [nestedHeaders]="tableNestedHeaders"
-                  [columns]="tableHeaderColumns" [data]="declarations" [events]="eventsSubject.asObservable()"
-                  [validate]="validateSubject.asObservable()" (onSubmit)="handleSubmit($event)"
-                  (onChange)="handleChangeTable($event)" (onDelete)="handleDeleteData($event)"
-                  (onAddRow)="handleAddRow($event)" (onFocus)="handleFocus($event)" (onSort)="handleSort($event)">
+                <app-table-editor tableName="increaseLabor" 
+                  [nestedHeaders]="tableNestedHeaders"
+                  [columns]="tableHeaderColumns" 
+                  [data]="declarations" 
+                  [events]="eventsSubject.asObservable()"
+                  [validate]="validateSubject.asObservable()" 
+                  (onSubmit)="handleSubmit($event)"
+                  (onChange)="handleChangeTable($event)" 
+                  (onDelete)="handleDeleteData($event)"
+                  (onAddRow)="handleAddRow($event)" 
+                  (onFocus)="handleFocus($event)" 
+                  (onSort)="handleSort($event)">
                 </app-table-editor>
               </div><!-- page-declarations__editor -->
 
               <div class="sumCar">
-                <nz-form-item>
-                  <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="4">Tổng số thẻ BHYT đề nghị cấp
-                  </nz-form-label>
-                  <nz-form-control [nzSpan]="14" [nzErrorTip]="sumCarfTpl">
-                    <nz-input-number placeholder="Tổng số thẻ" formControlName="sumCar"
-                      [nzFormatter]="formatterCurrency"></nz-input-number>
-                    <ng-template #sumCarfTpl let-control>
-                      <ng-container *ngIf="control.hasError('pattern')">
-                        Tổng số thẻ phải số
-                      </ng-container>
-                    </ng-template>
-                  </nz-form-control>
-                </nz-form-item>
+                  <form nz-form [formGroup]="declarationGeneral">
+                    <nz-form-item>
+                      <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="4">Tổng số thẻ BHYT đề nghị cấp
+                      </nz-form-label>
+                      <nz-form-control [nzSpan]="14" [nzErrorTip]="sumCarfTpl">
+                        <nz-input-number placeholder="Tổng số thẻ" formControlName="totalNumberInsurance"  [nzSize]="'small'" 
+                          [nzFormatter]="formatterCurrency"></nz-input-number>
+                        <ng-template #sumCarfTpl let-control>
+                          <ng-container *ngIf="control.hasError('pattern')">
+                            Tổng số thẻ phải số
+                          </ng-container>
+                        </ng-template>
+                      </nz-form-control>
+                    </nz-form-item>
+                  </form>
               </div>
 
               <nz-collapse [nzBordered]="false" [ngClass]="{
@@ -244,11 +272,6 @@
                 'collapse-active-general': panel.general.active && !panel.attachment.active,
                 'collapse-active-attachment': !panel.general.active && panel.attachment.active
               }">
-                <!-- <nz-collapse-panel class="collapse-general" nzHeader="Phần tổng hợp" [nzActive]="panel.general.active"
-                  (nzActiveChange)="collapseChange($event, 'general')">
-                  <app-labor-general-form [data]="declarationGeneral"
-                    (onFormValuesChanged)="handleFormValuesChanged($event)"></app-labor-general-form>
-                </nz-collapse-panel> -->
                 <nz-collapse-panel class="collapse-attachment" [nzHeader]="attachmentHeader"
                   [nzActive]="panel.attachment.active" (nzActiveChange)="collapseChange($event, 'attachment')">
                   <app-labor-attachment [files]="files" (onSelectedFileChanged)="handleFileSelected($event)">
@@ -261,9 +284,14 @@
             </div><!-- page-declarations__content -->
           </div><!-- page-declarations__container -->
         </nz-tab><!-- tab 2 -->
-        <nz-tab nzTitle="PL TVHGD-NLD" [nzDisabled]="!families || !families.length">
+        <nz-tab [nzTitle]="tabFamily" [nzDisabled]="!families || !families.length">
+            <ng-template #tabFamily>
+                <div class="page-adjust-general__tab-title" [ngClass]="{'page-adjust-general__tab-title--error': tableSubmitErrors.family600 > 0}">
+                  PL TVHD-NLD
+                </div>
+              </ng-template>
           <div class="page-document-list__container page-document-list__container--note">
-            <h1>600 | Báo tăng lao động</h1>
+          <h1><strong>{{declarationCode}}</strong> | {{declarationName}}</h1>
             <h2>PHỤ LỤC THÀNH VIÊN GIA ĐÌNH</h2>
             <div class="document-form__process-table">
               <app-families-list-table tableName="family" [data]="families" [nestedHeaders]="tableNestedHeadersFamilies"
@@ -273,7 +301,12 @@
             </div>
           </div>
         </nz-tab>
-        <nz-tab nzTitle="Bảng kê hồ sơ" [nzDisabled]="!informations || !informations.length">
+        <nz-tab [nzTitle]="tabDocumentList" [nzDisabled]="!informations || !informations.length">
+            <ng-template #tabDocumentList>
+                <div class="page-adjust-general__tab-title" [ngClass]="{'page-adjust-general__tab-title--error': tableSubmitErrors.documentList600 > 0}">
+                  Bảng kê hồ sơ
+                </div>
+            </ng-template>
           <div class="page-document-list__container">
             <form nz-form [formGroup]="documentForm">
               <h1>600 | Báo tăng lao động</h1>
@@ -299,6 +332,12 @@
           <button nz-button nzType="default" nzSize="small" (click)="emitEventToChild('save')">
             <i nz-icon nzType="save"></i>Ghi lại
           </button>
+          <button nz-button nzType="default" nzSize="small" (click)="rollback()">
+              <i nz-icon nzType="folder-open"  nzTheme="outline"></i>Lấy mẫu file
+            </button>
+            <button nz-button nzType="default" nzSize="small" (click)="rollback()">
+              <i nz-icon nzType="database" nzTheme="outline"></i>Nạp dữ liệu
+            </button>
           <button nz-button class="page-declarations__footer-button" nzType="default" nzSize="small"
             (click)="emitEventToChild('back')">
             <i nz-icon nzType="reload"></i>Quay lại

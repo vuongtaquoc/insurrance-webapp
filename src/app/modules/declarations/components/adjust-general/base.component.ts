@@ -103,7 +103,6 @@ export class GeneralBaseComponent {
     eventEmitter.emit('unsaved-changed');
   }
 
-
   handleUserDeleted(user, tableName) {
     this.tableSubject.next({
       type: 'deleteUser',
@@ -465,6 +464,8 @@ export class GeneralBaseComponent {
           this.hospitalService.getById(hospitalFirstCode).subscribe(data => {
             this.updateNextColumns(instance, r,  data.name, [ c + 1 ]);
           });
+        } else {
+          this.updateNextColumns(instance, r, '', [ c + 1 ]);
         }
       } else if(column.key === 'contractTypeCode') {
         const contractTypeCode = records[r][c];

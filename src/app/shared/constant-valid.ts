@@ -7,7 +7,7 @@ export const PLANCODECOUNTBHXH: any = [
 ]
 
 export const PLANCODECOUNTBHYT: any = [
-  'KJY', //Todo add plancode will be sum 
+  'TM',  
 ]
 
 

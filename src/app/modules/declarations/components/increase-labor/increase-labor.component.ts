@@ -421,25 +421,24 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
   }
 
   private sumCreateBHXH(data) {
-    let totalCardInsurance = 0;
-    let totalNumberInsurance = 0;
+
+    const declarationGeneralTemp = {...this.declarationGeneral};
+    declarationGeneralTemp.totalCardInsurance =  0;
+    declarationGeneralTemp.totalNumberInsurance = 0;
     data.forEach(d => {
+      
         d.declarations.forEach(e => {
           const isSumCardInsurance = PLANCODECOUNTBHXH.findIndex(p => p === e.planCode) > -1;
           const isSumNumberInsurance = PLANCODECOUNTBHYT.findIndex(p => p === e.planCode) > -1;
           if(isSumCardInsurance) {
-            totalCardInsurance = totalCardInsurance + 1;
+            declarationGeneralTemp.totalCardInsurance += 1;
           }
-
           if(isSumNumberInsurance) {
-            totalNumberInsurance = totalNumberInsurance + 1;
+            declarationGeneralTemp.totalNumberInsurance += 1;
           }
 
         });
     });
-    const declarationGeneralTemp = {...this.declarationGeneral};
-    declarationGeneralTemp.totalCardInsurance = totalCardInsurance;
-    declarationGeneralTemp.totalNumberInsurance = totalNumberInsurance;
 
     this.declarationGeneral = declarationGeneralTemp;
   }

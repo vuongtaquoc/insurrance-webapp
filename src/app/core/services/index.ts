@@ -39,4 +39,6 @@ export * from './switch-vendor.service';
 export * from './external.service';
 export * from './submit-declaration.service';
 export * from './declaration-file-upload.service';
+export * from './coefficient.service';
+export * from './benefit-level.service';
 

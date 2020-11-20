@@ -28,12 +28,16 @@ export class LaborGeneralFormComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes) {
     if (changes.data && !isEmpty(changes.data.currentValue) && this.form) {
-      if (changes.data.currentValue.totalNumberInsurance || changes.data.currentValue.totalCardInsurance) {
-        this.form.patchValue({
-          totalNumberInsurance: changes.data.currentValue.totalNumberInsurance,
-          totalCardInsurance: changes.data.currentValue.totalCardInsurance,
-        });
-      }
+      this.form.patchValue({
+        totalNumberInsurance: changes.data.currentValue.totalNumberInsurance,
+        totalCardInsurance: changes.data.currentValue.totalCardInsurance,
+      });
+      // if (changes.data.currentValue.totalNumberInsurance || changes.data.currentValue.totalCardInsurance) {
+      //   this.form.patchValue({
+      //     totalNumberInsurance: changes.data.currentValue.totalNumberInsurance,
+      //     totalCardInsurance: changes.data.currentValue.totalCardInsurance,
+      //   });
+      // }
     }
   }
 

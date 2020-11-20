@@ -279,7 +279,10 @@ export const TABLE_HEADER_COLUMNS = [{
   align: 'left',
   fieldName: 'số nhà, đường phố, thôn, xóm',
   wordWrap: true,
-  key: 'recipientsAddress'
+  key: 'recipientsAddress',
+  validations: {
+    required:true,
+  }
 }, {
   type: 'text',
   autocomplete: true,
@@ -316,14 +319,14 @@ export const TABLE_HEADER_COLUMNS = [{
   title: '(18)',
   align: 'center',
   fieldName: 'Có giản chết',
-  key: 'isReductionWhenDead'
+  key: 'isReductionWhenDead',
 },{
   type: 'text',
   width: 80,
   title: '(19)',
   key: 'motherDayDead',
   fieldName: 'Ngày chết',
-  readOnly:true,
+  readOnly: true,
 },
  {
   type: 'numeric',
@@ -362,7 +365,6 @@ export const TABLE_HEADER_COLUMNS = [{
   title: '(22.2)',
   mask: '#,##0',
   // decimal: ',',
-  sum: true,
   key: 'toChuCaNhanHTKhac',
   validations: {
     number: true
@@ -389,7 +391,7 @@ export const TABLE_HEADER_COLUMNS = [{
   fieldName: 'Số tháng tham gia',
   validations: {
     required: true,
-    number: true
+    min: 1
   },
 },{
   type: 'numeric',
@@ -398,7 +400,6 @@ export const TABLE_HEADER_COLUMNS = [{
   align: 'right',
   mask: '#,##0',
   // decimal: ',',
-  sum: true,
   key: 'salary',
   validations: {
     number: true
@@ -412,13 +413,12 @@ export const TABLE_HEADER_COLUMNS = [{
   width: 100,
   title: '(24.2)',
   mask: '#,##0',
-  sum: true,
   key: 'sumRatio',
   validations: {
     number: true
   },
   format: (value) => {
-    return format.currency(value, '0,0.000');
+    return format.currency(value);
   }
 },{
   type: 'numeric',
