@@ -25,6 +25,7 @@ export class DocumentListTableComponent implements OnInit, OnDestroy, OnChanges,
   @Output() onAddRow: EventEmitter<any> = new EventEmitter();
 
   spreadsheet: any;
+  eventValid: string  = 'adjust-general:validate';
   private eventsSubscription: Subscription;
 
   constructor(private element: ElementRef) {}
@@ -115,10 +116,11 @@ export class DocumentListTableComponent implements OnInit, OnDestroy, OnChanges,
   private handleEvent(eventData) {
     if (eventData.type === 'validate') {
       setTimeout(() => {
+        console.log(this.tableName, 'documentList');
         const data = Object.values(this.spreadsheet.getJson());
         const leaf = true;
         const initialize = true;
-        eventEmitter.emit('adjust-general:validate', {
+        eventEmitter.emit(this.eventValid, {
           name: this.tableName,
           isValid: this.spreadsheet.isTableValid(),
           errors: this.getColumnNameValid(this.spreadsheet.getTableErrors()),

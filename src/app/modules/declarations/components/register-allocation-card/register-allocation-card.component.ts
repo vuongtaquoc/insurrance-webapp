@@ -68,9 +68,8 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
   tableNestedHeadersDocuments: any[] = TABLE_DOCUMENT_NESTED_HEADERS;
   tableHeaderColumnsDocuments: any[] = TABLE_DOCUMENT_HEADER_COLUMNS;
   employeeSelected: any[] = [];
+  tableSubject: Subject<any> = new Subject<any>();
   eventsSubject: Subject<any> = new Subject<any>();
-  familiesSubject: Subject<string> = new Subject<string>();
-  documentsSubject: Subject<string> = new Subject<string>();
   validateSubject: Subject<any> = new Subject<any>();
   documentList: DocumentList[] = [];
 
@@ -101,6 +100,7 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
   status: any;
   timer: any;
   formatterCurrency = (value: number) => typeof value === 'number' ? `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',') : '';
+  eventValidData = 'adjust-general:validate';
 
   constructor(
     private formBuilder: FormBuilder,
@@ -149,7 +149,7 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
       benefitLevelCode:[null, [Validators.required]],
       benefitLevelName: [''],
       tyleNSNN:['10', [Validators.min(0), Validators.max(99), Validators.pattern(REGEX.ONLY_NUMBER)]],
-      tyleTGBHYT:['4.50', [Validators.min(0), Validators.max(99), Validators.pattern(REGEX.ONLY_NUMBER)]],
+      tyleTGBHYT:['4.50', [Validators.min(0), Validators.max(99), Validators.pattern(REGEX.ONLY_NUMBER_INCLUDE_DECIMAL)]],
       resource:[''],
       salaryBase:[1490000, [Validators.min(0), Validators.pattern(REGEX.ONLY_NUMBER)]],
     });
@@ -193,6 +193,8 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
       this.updateSourceToColumn(this.tableHeaderColumnsFamilies, 'cityCode', cities);
       this.updateSourceToColumn(this.tableHeaderColumnsFamilies, 'relationshipDocumentType', relationshipDocumentTypies);
       this.updateSourceToColumn(this.tableHeaderColumnsFamilies, 'relationshipCode', relationShips);
+      this.updateSourceToColumn(this.tableHeaderColumnsFamilies, 'peopleCode', peoples);
+      this.updateSourceToColumn(this.tableHeaderColumnsFamilies, 'nationalityCode', nationalities);
 
       // get filter columns
       this.updateFilterToColumn(this.tableHeaderColumns, 'registerDistrictCode', this.getRegisterDistrictsByCityCode);
@@ -258,24 +260,18 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
         this.documentForm.patchValue({
           submitter: this.currentCredentials.companyInfo.delegate,
           mobile: this.currentCredentials.companyInfo.mobile
-        });  
+        });
+        this.informations = this.loadDefaultInformations();
       }
     });
-    this.handlers.push(eventEmitter.on('labor-table-editor:validate', ({ name, isValid, errors }) => {
-      console.log(name,'name');
-      if (name === 'increaseLabor' || name === 'families' || name === 'informations') {
-        this.tableErrors[name] = errors;
-      }
-    }));
 
-    this.handlers.push(eventEmitter.on('labor-family-editor:validate', ({ name, isValid }) => {
-      if (name === 'family') {
-        this.isTableValid = isValid;
-      }
-    }));
+    this.handler = eventEmitter.on(this.eventValidData, ({ name, isValid, errors }) => {
+        this.tableErrors[name] = errors;
+        this.isTableValid = true;
+    });
 
     this.handler = this.fileUploadEmitter.on('file:uploaded', (file) => {
-      this.eventsSubject.next({
+      this.tableSubject.next({
         type: this.submitType
       });
       eventEmitter.emit('saveData:loading', false);
@@ -367,9 +363,9 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
     });
     this.employeeSelected.length = 0;
     this.sumCreateBHXH();
-    this.eventsSubject.next({ type: 'validate' });
-    this.familiesSubject.next('validate');
-    this.documentsSubject.next('validate');
+    this.notificeEventValidData('allocationCard');
+    this.notificeEventValidData('families');
+    eventEmitter.emit('unsaved-changed');
   }
 
   handleSort({ direction, source, dist }) {
@@ -390,9 +386,8 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
     this.employeeSubject.next({
       type: 'clean'
     });
-    this.eventsSubject.next({ type: 'validate' });
-    this.familiesSubject.next('validate');
-    this.documentsSubject.next('validate');
+    this.notificeEventValidData('allocationCard');
+    this.notificeEventValidData('families');
     eventEmitter.emit('unsaved-changed');
   }
 
@@ -421,9 +416,10 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
     this.employeeSubject.next({
       type: 'clean'
     });
-    this.eventsSubject.next({ type: 'validate' });
-    this.familiesSubject.next('validate');
-    this.documentsSubject.next('validate');
+
+    this.notificeEventValidData('allocationCard');
+    this.notificeEventValidData('families');
+    this.notificeEventValidData('informations');
     eventEmitter.emit('unsaved-changed');
   }
 
@@ -453,13 +449,15 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
     this.employeeSubject.next({
       type: 'clean'
     });
-    this.eventsSubject.next({ type: 'validate' });
-    this.familiesSubject.next('validate');
-    this.documentsSubject.next('validate');
+
+    this.notificeEventValidData('allocationCard');
+    this.notificeEventValidData('families');
+    this.notificeEventValidData('informations');
     eventEmitter.emit('unsaved-changed');
   }
 
   handleUserDeleted(user) {
+
     this.eventsSubject.next({
       type: 'deleteUser',
       user,
@@ -529,7 +527,6 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
     let count = Object.keys(this.tableErrors).reduce(
       (total, key) => {
         const data = this.tableErrors[key];
-        console.log(data);
         return total + data.length;
       },
       0
@@ -592,64 +589,125 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
       const column = this.tableHeaderColumnsFamilies[c];
       if (column.key === 'isMaster') {
         const employeeIsMaster = instance.jexcel.getValueFromCoords(c, r);
-
-        if(employeeIsMaster === true) {
-
+  
+        if (employeeIsMaster === true && records[r].origin.employeeId > 0) {
+          
           this.employeeService.getEmployeeById(records[r].origin.employeeId).subscribe(emp => {
             this.updateNextColumns(instance, r, emp.fullName, [ c + 1]);
-            this.updateNextColumns(instance, r, emp.relationshipMobile, [ c + 2]);
-            this.updateNextColumns(instance, r, emp.relationshipDocumentType, [ c + 3]);
-            this.updateNextColumns(instance, r, emp.relationshipBookNo, [ c + 4]);
-            this.updateNextColumns(instance, r, emp.recipientsCityCode, [ c + 5]);
-            this.updateNextColumns(instance, r, emp.recipientsDistrictCode, [ c + 6]);
-            this.updateNextColumns(instance, r, emp.recipientsWardsCode, [ c + 7]);
-            this.updateNextColumns(instance, r, emp.fullName, [ c + 10]);
-            this.updateNextColumns(instance, r, emp.isurranceCode, [ c + 11]);
-            this.updateNextColumns(instance, r, emp.typeBirthday, [ c + 12]);
-            this.updateNextColumns(instance, r, emp.birthday, [ c + 13]);
-            this.updateNextColumns(instance, r, emp.gender, [ c + 14]);
-            this.updateNextColumns(instance, r, emp.relationshipCityCode, [ c + 16]);
-            this.updateNextColumns(instance, r, emp.relationshipDistrictCode, [ c + 17]);
-            this.updateNextColumns(instance, r, emp.relationshipWardsCode, [ c + 18]);
-            this.updateNextColumns(instance, r, '00', [21]);
-            this.updateNextColumns(instance, r, emp.identityCar, [c + 20]);
-            this.updateSelectedValueDropDow(columns, instance, r);
-          });
+            this.updateNextColumns(instance, r, emp.familyNo, [ c + 2]);
+            this.updateNextColumns(instance, r, emp.mobile, [ c + 3]);
+            this.updateNextColumns(instance, r, emp.relationshipDocumentType, [ c + 4]);
+            this.updateNextColumns(instance, r, emp.relationshipBookNo, [ c + 5]);
+            this.updateNextColumns(instance, r, emp.relationshipCityCode , [ c + 6]);
+            this.updateNextColumns(instance, r, emp.relationshipDistrictCode, [ c + 7]);
+            this.updateNextColumns(instance, r, emp.relationshipWardsCode, [ c + 8]);
+            this.updateNextColumns(instance, r, emp.relationAddress, [ c + 9]);
+            this.updateNextColumns(instance, r, emp.fullName, [ c + 11]);
+            let isurranceCode = emp.isurranceCode;
+            if (isurranceCode === null || isurranceCode === undefined) {
+              isurranceCode = '';
+            }
+            this.updateNextColumns(instance, r, isurranceCode, [ c + 12]);
+            this.updateNextColumns(instance, r, emp.typeBirthday, [ c + 13]);
+            this.updateNextColumns(instance, r, emp.birthday, [ c + 14]);
+            this.updateNextColumns(instance, r, emp.gender, [ c + 15]);
+            this.updateNextColumns(instance, r, emp.nationalityCode, [ c + 16]);
+            this.updateNextColumns(instance, r, emp.peopleCode, [ c + 17]);
+            this.updateNextColumns(instance, r, emp.registerCityCode, [ c + 19]);
+            this.updateNextColumns(instance, r, emp.registerDistrictCode, [ c + 20]);
+            this.updateNextColumns(instance, r, emp.registerWardsCode, [ c + 21]);
+            this.updateNextColumns(instance, r, '00', [24]);
+            this.updateNextColumns(instance, r, emp.identityCar, [c + 23]);
+            this.updateSelectedValueDropDown(columns, instance, r);
+            });
+
+        }else if(employeeIsMaster === true && records[r].origin.employeeId < 0) {
+          
+            const employeesInDeclaration = this.getEmployeeInDeclarations(this.declarations);
+            const firstEmployee = employeesInDeclaration.find(f => f.employeeId === records[r].origin.employeeId);
+            this.updateNextColumns(instance, r, firstEmployee.fullName, [ c + 1]);
+            this.updateNextColumns(instance, r, firstEmployee.familyNo, [ c + 2]);
+            this.updateNextColumns(instance, r, firstEmployee.mobile, [ c + 3]);
+            this.updateNextColumns(instance, r, firstEmployee.recipientsCityCode, [ c + 6]);
+            this.updateNextColumns(instance, r, firstEmployee.recipientsDistrictCode, [ c + 7]);
+            this.updateNextColumns(instance, r, firstEmployee.recipientsWardsCode, [ c + 8]);
+            this.updateNextColumns(instance, r, firstEmployee.fullName, [ c + 11]);
+            let isurranceCode = firstEmployee.isurranceCode;
+            if (isurranceCode === null || isurranceCode === undefined) {
+              isurranceCode = '';
+            }
+            this.updateNextColumns(instance, r, isurranceCode, [ c + 12]);
+            this.updateNextColumns(instance, r, firstEmployee.typeBirthday, [ c + 13]);
+            this.updateNextColumns(instance, r, firstEmployee.birthday, [ c + 14]);
+            this.updateNextColumns(instance, r, firstEmployee.gender, [ c + 15]);
+            this.updateNextColumns(instance, r, firstEmployee.nationalityCode, [ c + 16]);
+            this.updateNextColumns(instance, r, firstEmployee.peopleCode, [ c + 17]);
+            this.updateNextColumns(instance, r, firstEmployee.identityCar, [c + 23]);
+            this.updateSelectedValueDropDown(columns, instance, r);
+            const nextRow = Number(r) + 1;
+            const fullNameNextRow = records[nextRow][c + 11];
+            if(fullNameNextRow === firstEmployee.fullName) {
+              this.updateNextColumns(instance, (Number(r) + 1), '', [ c + 11]);
+            }
+            
+         
+        }else if(employeeIsMaster === false && records[r].origin.employeeId > 0) {
+          
+          this.updateNextColumns(instance, r, '', [ c + 1 , c + 2, c + 3, c + 4, c + 5, c + 6, c + 7, c + 8,c + 9,
+            c + 11, c + 11,c + 12,c + 13,c + 14,c + 15,c + 16,c + 17,c + 18,c + 19,c + 20, c + 21, c + 22, c + 23], true);
+  
+          const value = instance.jexcel.getValueFromCoords(1, r);
+          const numberColumn = this.tableHeaderColumnsFamilies.length;
+          this.updateNextColumns(instance, r,value, [(numberColumn -1)]);
 
         }else {
+          const employeesInDeclaration = this.getEmployeeInDeclarations(this.declarations);
+          const firstEmployee = employeesInDeclaration.find(f => f.employeeId === records[r].origin.employeeId);
           this.updateNextColumns(instance, r, '', [ c + 1 , c + 2, c + 3, c + 4, c + 5, c + 6, c + 7, c + 8,
-          c + 10, c + 11, c + 11,c + 12,c + 13,c + 14,c + 15,c + 16,c + 17]);
+            c + 11, c + 11,c + 12,c + 13,c + 14,c + 15,c + 16,c + 17,c + 18,c + 19,c + 20, c + 21, c + 22, c + 23]);
 
           const value = instance.jexcel.getValueFromCoords(1, r);
           const numberColumn = this.tableHeaderColumnsFamilies.length;
           this.updateNextColumns(instance, r,value, [(numberColumn -1)]);
+
+          const nextRow = Number(r) + 1;
+          const fullNameNextRow = records[nextRow][c + 11];
+          if(fullNameNextRow === '' || fullNameNextRow === undefined) {
+            this.updateNextColumns(instance, nextRow, firstEmployee.fullName, [ c + 11]);
+            this.updateNextColumns(instance, nextRow, firstEmployee.isurranceCode, [ c + 12]);
+            this.updateNextColumns(instance, nextRow, firstEmployee.typeBirthday, [ c + 13]);
+            this.updateNextColumns(instance, nextRow, firstEmployee.birthday, [ c + 14]);
+            this.updateNextColumns(instance, nextRow, firstEmployee.gender, [ c + 15]);
+            this.updateNextColumns(instance, nextRow, firstEmployee.nationalityCode, [ c + 16]);
+            this.updateNextColumns(instance, nextRow, firstEmployee.peopleCode, [ c + 17]);
+          }
         }
-
       }
-
+  
       if (column.key === 'sameAddress') {
         const isSameAddress = instance.jexcel.getValueFromCoords(c, r);
-
+  
         if(isSameAddress === true)
         {
-          this.updateNextColumns(instance, r, instance.jexcel.getValueFromCoords(7, r), [ c + 1]);
-          this.updateNextColumns(instance, r, instance.jexcel.getValueFromCoords(8, r), [ c + 2]);
-          this.updateNextColumns(instance, r, instance.jexcel.getValueFromCoords(9, r), [ c + 3]);
-          this.updateSelectedValueDropDow(columns, instance, r);
-
+          this.updateNextColumns(instance, r, instance.jexcel.getValueFromCoords(8, r), [ c + 1]);
+          this.updateNextColumns(instance, r, instance.jexcel.getValueFromCoords(9, r), [ c + 2]);
+          this.updateNextColumns(instance, r, instance.jexcel.getValueFromCoords(10, r), [ c + 3]);
+          this.updateSelectedValueDropDown(columns, instance, r);
+  
         } else {
           this.updateNextColumns(instance, r, '', [ c + 1]);
           this.updateNextColumns(instance, r, '', [ c + 2]);
           this.updateNextColumns(instance, r, '', [ c + 3]);
         }
       }
-
+  
       if (column.willBeValid) {
         const value = instance.jexcel.getValueFromCoords(c, r);
         const numberColumn = this.tableHeaderColumnsFamilies.length;
         this.updateNextColumns(instance, r,value, [(numberColumn -1)]);
       }
     }
+  
     //update families
     this.families.forEach((family: any, index) => {
       const record = records[index];
@@ -661,22 +719,20 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
       columns.map((column, index) => {
           family[column.key] = record[index];
       });
-
+  
     });
-
-    this.eventsSubject.next({ type: 'validate' });
-    this.familiesSubject.next('validate');
-    this.documentsSubject.next('validate');
-    eventEmitter.emit('unsaved-changed');
+  
+    this.notificeEventValidData('families');
   }
 
-  private updateSelectedValueDropDow(columns, instance, r) {
 
-      columns.forEach((column, colIndex) => {
-        if (column.defaultLoad) {
-          instance.jexcel.updateDropdownValue(colIndex, r);
-        }
-      });
+  private updateSelectedValueDropDown(columns, instance, r) {
+
+    columns.forEach((column, colIndex) => {
+      if (column.defaultLoad) {
+        instance.jexcel.updateDropdownValue(colIndex, r);
+      }
+    });
   }
 
   handleChangeTable({ instance, cell, c, r, records }) {
@@ -744,9 +800,9 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
     this.setDataToFamilies(employeesInDeclaration);
     this.setDateToInformationList(employeesInDeclaration);
     this.sumCreateBHXH();
-    this.eventsSubject.next({ type: 'validate' });
-    this.familiesSubject.next('validate');
-    this.documentsSubject.next('validate');
+    this.notificeEventValidData('allocationCard');
+    this.notificeEventValidData('families');
+    this.notificeEventValidData('informations');
   }
 
   handleAddRow({ rowNumber, options, origin, insertBefore }) {
@@ -785,16 +841,16 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
     this.updateOrders(declarations);
 
     this.declarations = this.declarationService.updateFormula(declarations, this.tableHeaderColumns);
-    this.eventsSubject.next({ type: 'validate' });
-    this.familiesSubject.next('validate');
-    this.documentsSubject.next('validate');
+    this.notificeEventValidData('allocationCard');
+    this.notificeEventValidData('families');
+    this.notificeEventValidData('informations');
     eventEmitter.emit('unsaved-changed');
   }
 
   handleDeleteData({ rowNumber, numOfRows, records }) {
     const declarations = [ ...this.declarations ];
     let declarationsDeleted = [];
-
+    let declarationsFirstDeleted;
     const beforeRow = records[rowNumber - 1];
     const afterRow = records[rowNumber];
 
@@ -804,6 +860,11 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
       const options = { ...row.data.options };
       origin.employeeId = 0;
       origin.id = 0;
+      declarationsFirstDeleted = {
+        data: [...row.data],
+        origin: { ...row.data.origin },
+        options: { ...row.data.options }
+    };
       row.data = [];
       row.origin = origin;
       row.options = options;
@@ -815,18 +876,19 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
         if (nextRow.isLeaf) {
           declarationsDeleted.push(declarations.splice(rowNumber + 1, numOfRows - 1));
         }
+        declarationsDeleted.push(declarationsFirstDeleted);
       }
     } else {
       declarationsDeleted = declarations.splice(rowNumber, numOfRows);
     }
-
     this.updateOrders(declarations);
 
     this.declarations = this.declarationService.updateFormula(declarations, this.tableHeaderColumns);
-    //this.deleteEmployeeInFamilies(declarationsDeleted);
-    this.eventsSubject.next({ type: 'validate' });
-    this.familiesSubject.next('validate');
-    this.documentsSubject.next('validate');
+    this.deleteEmployeeInFamilies(declarationsDeleted);
+    this.deleteEmployeeInInfomation(declarationsDeleted);
+    this.notificeEventValidData('allocationCard');
+    this.notificeEventValidData('families');
+    this.notificeEventValidData('informations');
     eventEmitter.emit('unsaved-changed');
   }
 
@@ -849,9 +911,9 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
     families.splice(insertBefore ? rowNumber : rowNumber + 1, 0, row);
 
     this.families = families;
-    this.eventsSubject.next({ type: 'validate' });
-    this.familiesSubject.next('validate');
-    this.documentsSubject.next('validate');
+    this.notificeEventValidData('allocationCard');
+    this.notificeEventValidData('families');
+    this.notificeEventValidData('informations');
     eventEmitter.emit('unsaved-changed');
   }
 
@@ -868,9 +930,9 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
 
     const familyDeleted = families.splice(rowNumber, numOfRows);
     this.families = families;
-    this.eventsSubject.next({type: 'validate'});
-    this.familiesSubject.next('validate');
-    this.documentsSubject.next('validate');
+    this.notificeEventValidData('allocationCard');
+    this.notificeEventValidData('families');
+    this.notificeEventValidData('informations');
     eventEmitter.emit('unsaved-changed');
   }
 
@@ -897,6 +959,37 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
     }
     this.families = families;
     eventEmitter.emit('unsaved-changed');
+  }
+
+  deleteEmployeeInInfomation(declarationsDeleted: any) {
+    let informations = [...this.informations];
+    
+    declarationsDeleted.forEach(d => {
+      const employeeInfo = this.getDeclarationInData(d.data, this.tableHeaderColumns);
+      informations = informations.filter(info => {
+          return info.employeeId + info.planCode !== employeeInfo.employeeId + employeeInfo.planCode;
+      });
+    });
+
+    if(informations.length === 0) {
+      informations.push({
+        data: {
+          origin: {
+            isLeaf: true,
+            employeeId: '',
+          },
+        }
+      });
+    }
+    this.informations = informations;
+  }
+
+  getDeclarationInData(record, columns) {
+    let declaration: any = {};
+    columns.map((column, index) => {
+      declaration[column.key] = record[index];
+    });
+    return declaration;
   }
 
   collapseChange(isActive, type) {
@@ -1136,8 +1229,6 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
   }
 
   private getPlanByParent(instance, cell, c, r, source) {
-    // const row = instance.jexcel.getRowFromCoords(r);
-    // return source.filter(s => s.type === row.options.planType);
     const row = instance.jexcel.getRowFromCoords(r);
     const planTypes = (row.options.planType || '').split(',');
     return source.filter(s => planTypes.indexOf(s.id) > -1);
@@ -1179,9 +1270,7 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
 
     });
 
-    this.eventsSubject.next({ type: 'validate' });
-    this.familiesSubject.next('validate');
-    this.documentsSubject.next('validate');
+    this.notificeEventValidData('documentList');
     eventEmitter.emit('unsaved-changed');
   }
 
@@ -1190,10 +1279,84 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
 
     const infomaionDeleted = infomations.splice(rowNumber, numOfRows);
     this.informations = infomations;
-    this.eventsSubject.next({ type: 'validate' });
-    this.familiesSubject.next('validate');
-    this.documentsSubject.next('validate');
+    this.notificeEventValidData('documentList');
     eventEmitter.emit('unsaved-changed');
+  }
+
+  private handleAddDocumentRow({ rowNumber, numOfRows, beforeRowIndex, afterRowIndex, insertBefore }) { 
+    const informations = [ ...this.informations ];
+    let row: any = {};
+    const data: any = [];
+    row.data = data;
+    row.isMaster = false;
+
+    row.origin = {
+      isLeaf: true,
+      employeeId: '',
+    };
+
+    informations.splice(insertBefore ? rowNumber : rowNumber + 1, 0, row);
+    this.informations  = informations;
+    this.notificeEventValidData('documentList');
+    eventEmitter.emit('unsaved-changed');
+  }
+
+  reformatInformations() {
+    const informations = [];
+    let informationcopy = [ ...this.informations];
+    informationcopy.forEach(information => {
+        if(information.fullName) {
+          informations.push(information);
+        }
+    });
+
+    return informations;
+  }
+
+  fomatInfomation(infomations) {
+    let infomationscopy = [ ...infomations ];
+    infomationscopy.forEach(p => {
+      p.data = this.tableHeaderColumnsDocuments.map(column => {
+        if (!column.key || !p[column.key]) return '';
+        return p[column.key];
+      });
+      p.data.origin = {
+        employeeId: p.employeeId,
+        isLeaf: true,
+      }
+    });
+
+    const itemPerPage = 10 - infomationscopy.length;
+    let numberItem = 5;
+    if(itemPerPage > 0) {
+      numberItem = itemPerPage;
+    }
+
+    for (let index = 0; index < numberItem; index++) {
+      infomationscopy.push({
+        data: [index + 1],
+        origin: {
+          employeeId: '',
+          isLeaf: true,
+        }
+      });
+    }
+
+    return infomationscopy;
+  }
+
+  private loadDefaultInformations() {
+    const dataFake = [];
+    for (let index = 0; index < 10; index++) {
+      dataFake.push({
+        data: [index + 1],
+        origin: {
+          employeeId: '',
+          isLeaf: true,
+        }
+      });
+    }
+    return dataFake;
   }
 
   private arrayToProps(array, columns) {
@@ -1248,36 +1411,6 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
     return object;
   }
 
-  reformatInformations() {
-    const informations = [];
-    let informationcopy = [ ...this.informations];
-    informationcopy.forEach(information => {
-        if(information.fullName) {
-          informations.push(information);
-        }
-    });
-
-    return informations;
-  }
-
-  fomatInfomation(infomations) {
-    if(!infomations) {
-      return [];
-    }
-    let infomationscopy = [ ...infomations ];
-    infomationscopy.forEach(p => {
-      p.data = this.tableHeaderColumnsDocuments.map(column => {
-        if (!column.key || !p[column.key]) return '';
-        return p[column.key];
-      });
-      p.data.origin = {
-        employeeId: p.employeeId,
-        isLeaf: true,
-      }
-    });
-    return infomationscopy;
-  }
-
   reformatFamilies() {
     const families = [];
     let familiescopy = [ ...this.families ];
@@ -1297,38 +1430,31 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
 
   private setDataToFamilies(employeesInDeclaration: any)
   {
+    const currentFamilis = [...this.families]
     const families = [];
     const employees = [];
     const employeesId = [];
     employeesInDeclaration.forEach(emp => {
 
-      const empId = employeesId.find(c => c === emp.employeeId);
-      if(empId) {
-        return;
+      const firstEmployee = currentFamilis.find(f => f.employeeId === emp.employeeId);
+      if(!firstEmployee) {
+        employees.push(emp);
+      } else {
+
+        const family = families.find(p => p.employeeId === emp.employeeId);
+        if(family) {
+          return;
+        }
+
+        const currentFamilies = currentFamilis.filter(fm => fm.employeeId === emp.employeeId);
+        if(currentFamilies){
+          currentFamilies.forEach(oldEmp => {
+            families.push(oldEmp);
+          });
+        }
+
       }
 
-      employeesId.push(empId);
-
-      const family = this.families.find(p => p.employeeId === emp.employeeId);
-
-        if (!family) {
-
-          const isContainsEmployee = employees.find(p => p.employeeId === emp.employeeId);
-          if(!isContainsEmployee)
-          {
-            employees.push(emp);
-          }
-
-        }else {
-
-          const currentFamilies = this.families.filter(fm => fm.employeeId === emp.employeeId);
-          if(currentFamilies){
-            currentFamilies.forEach(oldEmp => {
-              families.push(oldEmp);
-            });
-          }
-
-        }
     });
 
     forkJoin(
@@ -1336,12 +1462,13 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
         return this.employeeService.getEmployeeById(emp.employeeId)
       })
     ).subscribe(emps => {
-
+      const familiesNotExists = [];
       emps.forEach(ep => {
         const master = this.getMaster(ep.families);
         master.isMaster = ep.isMaster;
         master.employeeName = ep.fullName;
         master.employeeId = ep.employeeId;
+        master.relationFamilyNo = ep.relationFamilyNo;
         master.relationshipMobile = ep.relationshipMobile;
         master.relationshipFullName = ep.relationshipFullName;
         master.relationshipBookNo = ep.relationshipBookNo;
@@ -1349,7 +1476,9 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
         master.relationshipCityCode = ep.relationshipCityCode;
         master.relationshipDistrictCode = ep.relationshipDistrictCode;
         master.relationshipWardsCode = ep.relationshipWardsCode;
-        master.relationshipVillageCode = ep.relationshipVillageCode;
+        master.relationAddress = ep.relationAddress;
+        master.peopleCode = ep.peopleCode,
+        master.nationalityCode = ep.nationalityCode,
         master.relationshipCode = '00';
         master.conditionValid = ep.relationshipFullName ? ep.relationshipFullName : ep.fullName;
         master.origin = {
@@ -1357,8 +1486,7 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
           isLeaf: true,
           isMaster: true,
         };
-        families.push(master);
-
+        familiesNotExists.push(master);
         if(ep.families.length > 1) {
           ep.families.forEach(fa => {
             if(fa.relationshipCode === '00') {
@@ -1373,14 +1501,18 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
               isLeaf: true,
               isMaster: false,
             }
-            families.push(fa);
+            familiesNotExists.push(fa);
           });
         }else {
           // nếu chưa có thông tin của gia đình thì add dòng trống
-          families.push(this.fakeEmployeeInFamilies(ep));
-          families.push(this.fakeEmployeeInFamilies(ep));
+          familiesNotExists.push(this.fakeEmployeeInFamilies(ep));
+          familiesNotExists.push(this.fakeEmployeeInFamilies(ep));
         }
 
+      });
+
+      familiesNotExists.forEach(d => {
+        families.push(d);
       });
 
       families.forEach(p => {
@@ -1390,6 +1522,7 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
         });
         p.data.origin = p.origin;
       });
+
       this.families = families;
     });
   }
@@ -1398,7 +1531,7 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
 
     return {
       isMaster:false,
-      conditionValid: null, //employee.relationshipFullName,
+      conditionValid: null,
       employeeId: employee.employeeId,
       origin: {
         employeeId: employee.employeeId,
@@ -1411,39 +1544,56 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
 
   private setDateToInformationList(employeesInDeclaration: any)
   {
-    const informations = [];
+    const informationsCopy = [...this.informations];
+    const informations = informationsCopy.filter(i => (i.fullName !== '' && i.origin.employeeId === ''));     
     employeesInDeclaration.forEach(emp => {
-      const documents = this.getDocumentByPlancode(emp.planCode);
-
-      if(!documents) {
+      emp.companyRelease = this.currentCredentials.companyInfo.name;
+      const fromDate = this.getFromDate(emp.fromDateJoin);
+      const curentDate = new Date();
+      const  numberFromDate = (fromDate.getMonth() + 1 + fromDate.getFullYear());
+      const  numberCurentDate = (curentDate.getMonth() + 1 + curentDate.getFullYear());
+  
+      if(numberFromDate >= numberCurentDate)
+      {
         return;
       }
-
+  
+      const documents = this.getDocumentByPlancode(emp.planCode);
+      if(!documents) {
+        return '';
+      }
+  
       documents.forEach(doc => {
-        let item = {
-          fullName: emp.fullName,
-          isurranceNo: emp.isurranceNo,
-          documentNo: '',
-          dateRelease: '',
-          isurranceCode: emp.isurranceCode,
-          documentType: doc.documentName,
-          companyRelease: this.currentCredentials.companyInfo.name,
-          documentNote: doc.documentNote,
-          documentAppraisal: ('Truy tăng ' + emp.fullName + ' từ ' + emp.fromDate),
-          origin: {
-            employeeId: emp.employeeId,
-            isLeaf: true,
-          }
-        };
-        if(doc.isContract) {
-          item.documentNo = emp.contractNo;
-          item.dateRelease =  emp.dateSign;
-        }else {
-          item.documentNo = emp.fromDate;
+        let item = this.informations.find(i => (i.planCode === emp.planCode && i.employeeId === emp.employeeId && i.documentCode === doc.documentCode));
+        if (!item) {
+          item = {
+              documentNote: doc.documentNote,
+              documentType: doc.documentType,  
+              isurranceNo: emp.isurranceNo,           
+              isurranceCode: emp.isurranceCode,    
+              fullName: emp.fullName,
+              documentCode: doc.documentCode,
+              planCode: emp.planCode,
+              employeeId: emp.employeeId,
+              origin: {
+                employeeId: emp.employeeId,
+                isLeaf: true,
+                planCode: emp.planCode,
+                documentCode: doc.documentCode,
+              }
+          }; 
         }
+  
+        item.companyRelease = item.companyRelease ? item.companyRelease : this.buildMessgaeByConfig(doc.companyRelease,emp);
+        item.dateRelease = item.dateRelease ? item.dateRelease : this.buildMessgaeByConfig(doc.dateRelease,emp);
+        item.documentNo = this.buildMessgaeByConfig(doc.documentNo,emp);
+        item.documentAppraisal = this.buildMessgaeByConfig(doc.documentAppraisal,emp);
+        item.isurranceNo = emp.isurranceNo;
+        item.isurranceCode = emp.isurranceCode;
+        item.fullName = emp.fullName;
         informations.push(item);
       });
-
+  
       informations.forEach(p => {
         p.data = this.tableHeaderColumnsDocuments.map(column => {
           if (!column.key || !p[column.key]) return '';
@@ -1451,10 +1601,19 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
         });
         p.data.origin = p.origin;
       });
-
+  
     });
-
+  
+  
     this.informations = informations;
+  }
+
+  private getFromDate(dateMonthYear) {
+    const fullDate = '01/' + dateMonthYear;
+    if(!moment(fullDate,"DD/MM/YYYY")) {
+      return new Date();
+    }
+    return moment(fullDate,"DD/MM/YYYY").toDate();
   }
 
   private getEmployeeInDeclaration(records: any) {
@@ -1476,6 +1635,7 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
     });
     return employeesInDeclaration;
   }
+
   handleToggleSidebar() {
     this.isHiddenSidebar = !this.isHiddenSidebar;
   }
@@ -1514,7 +1674,7 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
   }
 
   handleSelectTab(index) {
-    eventEmitter.emit('increase-labor:tab:change', index);
+    eventEmitter.emit('adjust-general:tab:change', index);
   }
 
   protected formatNote(str, args) {
@@ -1603,6 +1763,10 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
       });
     }
 
+    for (const i in this.documentForm.controls) {
+      this.documentForm.controls[i].markAsDirty();
+      this.documentForm.controls[i].updateValueAndValidity();
+    }
     return formError;
   }
 
@@ -1644,6 +1808,11 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
         subfix: 'Lỗi'
       });
     }
+
+    for (const i in this.form.controls) {
+      this.form.controls[i].markAsDirty();
+      this.form.controls[i].updateValueAndValidity();
+    }
     return formError;
   }
 
@@ -1661,5 +1830,45 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
     return tableErrorMessage;
   }
 
+  private notificeEventValidData(tableName) {
+
+    this.tableSubject.next({
+      tableName: tableName,
+      type: 'validate',
+      tableEvent: this.eventValidData
+    });
+
+  }
+
+  private getEmployeeInDeclarations(records: any) {
+    const employeesInDeclaration = [];
+    records.forEach(r => {
+        let declaration: any = {};
+        this.tableHeaderColumns.map((column, index) => {
+          declaration[column.key] = r.data[index];
+        });
+
+        if(declaration.employeeId !== '' && declaration.employeeId !== undefined) {
+          employeesInDeclaration.push(declaration);
+        }
+    });
+    return employeesInDeclaration;
+  }
+
+  private buildMessgaeByConfig(objConfig, employeeInfo) {
+    const argsColumn = objConfig.column || [] ;
+    const mesage = objConfig.mesage || '' ;
+    const argsMessgae = [];
+    argsColumn.forEach(column => { 
+      let valueOfColumn =  employeeInfo[column];
+      if (employeeInfo[column] === undefined) {
+        valueOfColumn = '';
+      }
+      argsMessgae.push(valueOfColumn);
+     
+    });
+
+    return this.formatNote(mesage, argsMessgae);;
+  }
 
 }

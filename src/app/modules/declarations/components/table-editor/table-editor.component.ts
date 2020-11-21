@@ -38,6 +38,7 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
   private validateSubscription: Subscription;
   private deleteTimer;
   private differents: any = {};
+  eventValid: string  = 'adjust-general:validate';
 
   constructor(
     private element: ElementRef,
@@ -290,7 +291,7 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
   private handleEvent({ type, user, deletedIndexes }) {
     if (type === 'validate') {
       setTimeout(() => {
-        eventEmitter.emit('labor-table-editor:validate', {
+        eventEmitter.emit(this.eventValid, {
           name: this.tableName,
           isValid: this.spreadsheet.isTableValid(),
           errors: this.getColumnNameValid(this.spreadsheet.getTableErrors())

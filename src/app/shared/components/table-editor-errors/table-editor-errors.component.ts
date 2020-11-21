@@ -34,7 +34,7 @@ const TABLES = {
   documentList600c: 'Bảng kê hồ sơ',
   pendingCovid600d: 'D02-TL',
   documentList600d: 'Bảng kê hồ sơ',
-
+  allocationCard: 'Bảng kê D03-TS',
 };
 
 @Component({

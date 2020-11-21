@@ -63,9 +63,9 @@
           </div><!-- page-declarations__container -->
         </nz-tab><!-- tab 1-->
 
-        <nz-tab [nzTitle]="tabIncrease">
-          <ng-template #tabIncrease>
-            <div class="page-adjust-general__tab-title" [ngClass]="{'page-adjust-general__tab-title--error': (tableSubmitErrors.increaselabor600 > 0 || tableSubmitErrors.generalFomError > 0)}">
+        <nz-tab [nzTitle]="allocationCard">
+          <ng-template #allocationCard>
+            <div class="page-adjust-general__tab-title" [ngClass]="{'page-adjust-general__tab-title--error': (tableSubmitErrors.allocationCard > 0 || tableSubmitErrors.generalFomError > 0)}">
               D03-TS
             </div>
           </ng-template>
@@ -139,9 +139,8 @@
                     <div nz-col [nzSpan]="5">
                       <nz-form-item>
                         <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Mã đối tượng</nz-form-label>
-                        <nz-form-control [nzSpan]="14" nzErrorTip="Vui lòng chọn đối tượng">
-                          <nz-select [nzSize]="'small'" class="custom-select" nzShowSearch nzAllowClear
-                            formControlName="benefitLevelCode">
+                        <nz-form-control [nzSpan]="14">
+                          <nz-select [nzSize]="'small'" class="custom-select" nzShowSearch nzAllowClear formControlName="benefitLevelCode">
                             <nz-option *ngFor="let benefitLevel of benefitLevels" [nzLabel]="benefitLevel.name"
                               [nzValue]="benefitLevel.id">
                             </nz-option>
@@ -234,11 +233,12 @@
                 </form>
               </div><!-- page-declarations__title -->
               <div class="page-declarations__editor">
-                <app-table-editor tableName="increaseLabor" 
+                <app-table-editor 
+                  tableName="allocationCard" 
                   [nestedHeaders]="tableNestedHeaders"
                   [columns]="tableHeaderColumns" 
                   [data]="declarations" 
-                  [events]="eventsSubject.asObservable()"
+                  [events]="tableSubject.asObservable()"
                   [validate]="validateSubject.asObservable()" 
                   (onSubmit)="handleSubmit($event)"
                   (onChange)="handleChangeTable($event)" 
@@ -248,7 +248,6 @@
                   (onSort)="handleSort($event)">
                 </app-table-editor>
               </div><!-- page-declarations__editor -->
-
               <div class="sumCar">
                   <form nz-form [formGroup]="declarationGeneral">
                     <nz-form-item>
@@ -266,7 +265,6 @@
                     </nz-form-item>
                   </form>
               </div>
-
               <nz-collapse [nzBordered]="false" [ngClass]="{
                 'collapse-active-all': panel.general.active && panel.attachment.active,
                 'collapse-active-general': panel.general.active && !panel.attachment.active,
@@ -284,9 +282,9 @@
             </div><!-- page-declarations__content -->
           </div><!-- page-declarations__container -->
         </nz-tab><!-- tab 2 -->
-        <nz-tab [nzTitle]="tabFamily" [nzDisabled]="!families || !families.length">
+        <nz-tab [nzTitle]="tabFamily">
             <ng-template #tabFamily>
-                <div class="page-adjust-general__tab-title" [ngClass]="{'page-adjust-general__tab-title--error': tableSubmitErrors.family600 > 0}">
+                <div class="page-adjust-general__tab-title" [ngClass]="{'page-adjust-general__tab-title--error': tableSubmitErrors.family > 0}">
                   PL TVHD-NLD
                 </div>
               </ng-template>
@@ -294,28 +292,40 @@
           <h1><strong>{{declarationCode}}</strong> | {{declarationName}}</h1>
             <h2>PHỤ LỤC THÀNH VIÊN GIA ĐÌNH</h2>
             <div class="document-form__process-table">
-              <app-families-list-table tableName="family" [data]="families" [nestedHeaders]="tableNestedHeadersFamilies"
-                [columns]="tableHeaderColumnsFamilies" [events]="familiesSubject.asObservable()"
-                (onChange)="handleChangeDataFamilies($event)" (onDelete)="handleDeleteMember($event)"
-                (onAddRow)="handleAddMember($event)"></app-families-list-table>
+              <app-families-list-table 
+                tableName="family" 
+                [data]="families" 
+                [nestedHeaders]="tableNestedHeadersFamilies"
+                [columns]="tableHeaderColumnsFamilies"
+                [events]="tableSubject.asObservable()"
+                (onChange)="handleChangeDataFamilies($event)" 
+                (onDelete)="handleDeleteMember($event)"
+                (onAddRow)="handleAddMember($event)">
+              </app-families-list-table>
             </div>
           </div>
         </nz-tab>
-        <nz-tab [nzTitle]="tabDocumentList" [nzDisabled]="!informations || !informations.length">
+        <nz-tab [nzTitle]="tabDocumentList">
             <ng-template #tabDocumentList>
-                <div class="page-adjust-general__tab-title" [ngClass]="{'page-adjust-general__tab-title--error': tableSubmitErrors.documentList600 > 0}">
+                <div class="page-adjust-general__tab-title" [ngClass]="{'page-adjust-general__tab-title--error': tableSubmitErrors.documentList > 0}">
                   Bảng kê hồ sơ
                 </div>
             </ng-template>
           <div class="page-document-list__container">
             <form nz-form [formGroup]="documentForm">
-              <h1>600 | Báo tăng lao động</h1>
+              <h1><strong>{{declarationCode}}</strong> | {{declarationName}}</h1>
               <h2>Bảng kê thông tin</h2>
 
               <div class="document-form__process-table">
-                <app-document-list-table [data]="informations" [nestedHeaders]="tableNestedHeadersDocuments"
-                  [columns]="tableHeaderColumnsDocuments" [events]="documentsSubject.asObservable()"
-                  (onChange)="handleChangeInfomation($event)" (onDelete)="handleDeleteInfomation($event)">
+                <app-document-list-table 
+                  tableName="documentList"
+                  [data]="informations" 
+                  [nestedHeaders]="tableNestedHeadersDocuments"
+                  [columns]="tableHeaderColumnsDocuments" 
+                  [events]="tableSubject.asObservable()"
+                  (onChange)="handleChangeInfomation($event)" 
+                  (onAddRow)="handleAddDocumentRow($event)"
+                  (onDelete)="handleDeleteInfomation($event)">
                 </app-document-list-table>
               </div>
             </form>
