@@ -22,9 +22,10 @@ import {
   EmployeeService,
   CategoryService,
   RelationshipService,
+  DeclarationConfigService,
   VillageService,
 } from '@app/core/services';
-import { DATE_FORMAT, DECLARATIONS, DOCUMENTBYPLANCODE, ACTION } from '@app/shared/constant';
+import { DATE_FORMAT, DOCUMENTBYPLANCODE, ACTION } from '@app/shared/constant';
 import { eventEmitter } from '@app/shared/utils/event-emitter';
 
 import { TableEditorErrorsComponent } from '@app/shared/components';
@@ -55,7 +56,9 @@ export class ArrearsComponent implements OnInit, OnDestroy {
   documentList: DocumentList[] = [];
   isHiddenSidebar = false;
   declarationCode: string = '601a';
-  declarationName: string;
+  declarationName: string = '';
+  autoCreateDocumentList: boolean;
+  autoCreateFamilies: boolean;
   selectedTabIndex: number = 1;
   eventValidData = 'adjust-general:validate';
   handler: any;
@@ -99,6 +102,7 @@ export class ArrearsComponent implements OnInit, OnDestroy {
     private relationshipService: RelationshipService,
     private districtService:  DistrictService,
     private wardService: WardsService,
+    private declarationConfigService: DeclarationConfigService,
     private villageService: VillageService
   ) {
   }
@@ -109,7 +113,7 @@ export class ArrearsComponent implements OnInit, OnDestroy {
       mobile: ['',  [Validators.required, Validators.pattern(REGEX.ONLY_NUMBER)]],
     });
 
-    this.declarationName = this.getDeclaration(this.declarationCode).value;
+    this.loadDeclarationConfig();
     //Init data families table editor
     forkJoin([
       this.cityService.getCities(),
@@ -192,6 +196,14 @@ export class ArrearsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.handler();
+  }
+
+  private loadDeclarationConfig() {
+    this.declarationConfigService.getDetailByCode(this.declarationCode).subscribe(data => {
+       this.declarationName = data.declarationName;
+       this.autoCreateDocumentList = data.autoCreateDocumentList;
+       this.autoCreateFamilies = data.autoCreateFamilies;
+    });
   }
 
   private updateEmployeeInInfomation(user) {
@@ -355,7 +367,7 @@ export class ArrearsComponent implements OnInit, OnDestroy {
     this.declarationService.create({
       type: type,
       declarationCode: this.declarationCode,
-      declarationName: this.getDeclaration(this.declarationCode).value,
+      declarationName: this.declarationName,
       documentStatus: 0,
       status: type === 'saveAndView' ? 1: 0,
       submitter: this.submitter,
@@ -422,14 +434,6 @@ export class ArrearsComponent implements OnInit, OnDestroy {
 
     modal.afterClose.subscribe(result => {
     });
-  }
-
-  getDeclaration(declarationCode: string) {
-    const declarations = _.find(DECLARATIONS, {
-        key: declarationCode,
-    });
-
-    return declarations;
   }
 
   get submitter() {

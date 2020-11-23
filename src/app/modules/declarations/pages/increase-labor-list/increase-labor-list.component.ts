@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 
-import { DeclarationService } from '@app/core/services';
+import { DeclarationService, DeclarationConfigService } from '@app/core/services';
 import { Declaration } from '@app/core/interfaces';
 
-import { PAGE_SIZE, DECLARATIONS, RESULTSUBMIT } from '@app/shared/constant';
+import { PAGE_SIZE, RESULTSUBMIT } from '@app/shared/constant';
 import { DocumentFormComponent } from '@app/shared/components';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import * as moment from 'moment';
@@ -42,11 +42,12 @@ export class IncreaseLaborListComponent implements OnInit {
   constructor(
     private declarationService: DeclarationService,
     private modalService: NzModalService,
+    private declarationConfigService: DeclarationConfigService,
   ) {}
 
   ngOnInit() {
     this.year = new Date();
-    this.declarationName = this.getDeclaration(this.declarationCode).value;
+    this.loadDeclarationConfig();
     this.getDeclarations();
   }
 
@@ -151,9 +152,10 @@ export class IncreaseLaborListComponent implements OnInit {
     });
   }
 
-  getDeclaration(declarationCode: string) {
-    const declarations = DECLARATIONS.find(d => d.key === declarationCode);
-    return declarations;
+  private loadDeclarationConfig() {
+    this.declarationConfigService.getDetailByCode(this.declarationCode).subscribe(data => {
+       this.declarationName = data.declarationName;      
+    });
   }
 
   onChangeYear () {

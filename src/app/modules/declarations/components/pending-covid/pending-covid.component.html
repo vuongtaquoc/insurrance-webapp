@@ -48,7 +48,7 @@
 
     <nz-collapse [nzBordered]="false">
       <nz-collapse-panel class="collapse-attachment" [nzHeader]="attachmentHeader" [nzActive]="panel.attachment.active" (nzActiveChange)="collapseChange($event, 'attachment')">
-          <app-labor-attachment  [files]="files" [notAllowAttach] ="false" [declarationCode] = "'600d'" (onSelectedFileChanged)="handleFileSelected($event)"></app-labor-attachment>
+          <app-labor-attachment  [files]="files" [notAllowAttach] ="!allowAttach" [declarationCode] = "'600d'" (onSelectedFileChanged)="handleFileSelected($event)"></app-labor-attachment>
       </nz-collapse-panel>
     </nz-collapse>
     <ng-template #attachmentHeader>

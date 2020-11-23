@@ -83,7 +83,9 @@ export const TABLE_HEADER_COLUMNS = [{
   key: 'isurranceCode',
   fieldName: 'Mã số BHXH',
   validations: {
-    numberLength: 10
+    numberLength: 10,
+    required: true,
+    duplicate: true
   }
 }, {
   type: 'text',

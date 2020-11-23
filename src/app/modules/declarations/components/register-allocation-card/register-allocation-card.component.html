@@ -272,7 +272,7 @@
               }">
                 <nz-collapse-panel class="collapse-attachment" [nzHeader]="attachmentHeader"
                   [nzActive]="panel.attachment.active" (nzActiveChange)="collapseChange($event, 'attachment')">
-                  <app-labor-attachment [files]="files" (onSelectedFileChanged)="handleFileSelected($event)">
+                  <app-labor-attachment [files]="files" [notAllowAttach] ="!allowAttachFile" [declarationCode] = "declarationCode" (onSelectedFileChanged)="handleFileSelected($event)">
                   </app-labor-attachment>
                 </nz-collapse-panel>
               </nz-collapse>
@@ -282,7 +282,7 @@
             </div><!-- page-declarations__content -->
           </div><!-- page-declarations__container -->
         </nz-tab><!-- tab 2 -->
-        <nz-tab [nzTitle]="tabFamily">
+        <nz-tab [nzTitle]="tabFamily" [nzDisabled]="(!autoCreateFamilies || !families || !families.length)">
             <ng-template #tabFamily>
                 <div class="page-adjust-general__tab-title" [ngClass]="{'page-adjust-general__tab-title--error': tableSubmitErrors.family > 0}">
                   PL TVHD-NLD

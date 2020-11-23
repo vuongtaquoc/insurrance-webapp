@@ -41,4 +41,5 @@ export * from './submit-declaration.service';
 export * from './declaration-file-upload.service';
 export * from './coefficient.service';
 export * from './benefit-level.service';
+export * from './declaration-config.service';
 

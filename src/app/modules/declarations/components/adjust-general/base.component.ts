@@ -807,6 +807,9 @@ export class GeneralBaseComponent {
         if (column.type === 'calendar') {
           return { ...combine, [ column.key ]: array[current].toString().split(' ').join('') };
         }
+        if (column.key === 'isReductionWhenDead') {
+          return { ...combine, [ column.key ]: column.key === 'isReductionWhenDead' ? +array[current] : array[current]};
+        }
 
         return { ...combine, [ column.key ]: column.key === 'gender' ? +array[current] : array[current] };
       },

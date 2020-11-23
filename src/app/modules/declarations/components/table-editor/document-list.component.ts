@@ -116,7 +116,6 @@ export class DocumentListTableComponent implements OnInit, OnDestroy, OnChanges,
   private handleEvent(eventData) {
     if (eventData.type === 'validate') {
       setTimeout(() => {
-        console.log(this.tableName, 'documentList');
         const data = Object.values(this.spreadsheet.getJson());
         const leaf = true;
         const initialize = true;

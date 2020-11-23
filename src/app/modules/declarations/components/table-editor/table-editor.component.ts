@@ -262,6 +262,12 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
         }
       });
     });
+
+    this.handleEvent({
+      type: 'validate',
+      deletedIndexes: [],
+      user: {}
+    });
   }
 
   private handleDeleteUser(user) {
@@ -291,10 +297,15 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
   private handleEvent({ type, user, deletedIndexes }) {
     if (type === 'validate') {
       setTimeout(() => {
+        const data = Object.values(this.spreadsheet.getJson());
+        const leaf = data.filter((d: any) => d.options.isLeaf);
+        const initialize = leaf.filter((d: any) => d.options.isInitialize);
         eventEmitter.emit(this.eventValid, {
           name: this.tableName,
           isValid: this.spreadsheet.isTableValid(),
-          errors: this.getColumnNameValid(this.spreadsheet.getTableErrors())
+          errors: this.getColumnNameValid(this.spreadsheet.getTableErrors()),
+          leaf,
+          initialize
         });
       }, 10);
       return;
@@ -466,6 +477,78 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
             deletedIndexes: [],
             user: {}
           });
+      } else if(column.key === 'dateSign') {
+          const indexOfFromDateJoin =  this.columns.findIndex(c => c.key === 'fromDateJoin');
+          const fromDateJoinValue = this.spreadsheet.getValueFromCoords(indexOfFromDateJoin, y);
+          const validationColumn = this.columns[cell];
+
+          if (fromDateJoinValue && cellValue) {
+            const cellValueMoment = moment(cellValue, DATE_FORMAT.FULL);
+            const toDateValueMoment = moment(fromDateJoinValue, DATE_FORMAT.FULL);
+            const isAfter = cellValueMoment.isAfter(toDateValueMoment);
+
+            if (isAfter) {
+              validationColumn.validations = {
+                required: true,
+                lessThan: true
+              };
+              validationColumn.fieldName = {
+                name: 'Ngày biên lai',
+                message: '<Ngày biên lai> phải nhỏ hơn hoặc bằng <Từ ngày tham gia>',
+              };
+
+              instance.jexcel.validationCell(y, cell, validationColumn.fieldName, validationColumn.validations);
+            } else {
+              validationColumn.validations = {
+                required: true
+              };
+              validationColumn.fieldName = 'Ngày biên lai';
+              instance.jexcel.validationCell(y, cell, validationColumn.fieldName, validationColumn.validations);
+            }
+
+          } else {
+
+            validationColumn.validations = {
+              required: true
+            };
+            validationColumn.fieldName = 'Ngày biên lai';
+            instance.jexcel.validationCell(y, cell, validationColumn.fieldName, validationColumn.validations);
+
+          }
+      } else if(column.key === 'fromDateJoin') {
+        const indexOfDateSign =  this.columns.findIndex(c => c.key === 'dateSign');
+        const fromdateSignValue = this.spreadsheet.getValueFromCoords(indexOfDateSign, y);
+        const validationColumn = this.columns[indexOfDateSign];
+        if (cellValue && fromdateSignValue) {
+          const cellValueMoment = moment(cellValue, DATE_FORMAT.FULL);
+          const fromDateValueMoment = moment(fromdateSignValue, DATE_FORMAT.FULL);
+          const isAfter = fromDateValueMoment.isAfter(cellValueMoment);
+          if (isAfter) {
+            validationColumn.validations = {
+              required: true,
+              lessThan: true
+            };
+            validationColumn.fieldName = {
+              name: 'Ngày biên lai',
+              message: '<Ngày biên lai> phải nhỏ hơn hoặc bằng <Từ ngày tham gia>',
+            };
+  
+            instance.jexcel.validationCell(y, indexOfDateSign, validationColumn.fieldName, validationColumn.validations);
+          } else {
+            validationColumn.validations = {
+              required: true
+            };
+            validationColumn.fieldName = 'Ngày biên lai';
+            instance.jexcel.validationCell(y, indexOfDateSign, validationColumn.fieldName, validationColumn.validations);
+          }
+        } else {
+          validationColumn.validations = {
+            required: true
+          };
+          validationColumn.fieldName = 'Ngày biên lai';
+          instance.jexcel.validationCell(y, indexOfDateSign, validationColumn.fieldName, validationColumn.validations);
+        }
+
       }
     }, 50);
   }
@@ -487,7 +570,11 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
           return { ...combine, [ column.key ]: array[current].toString().split('-')[0].trim() };
         }
 
-        return { ...combine, [ column.key ]: column.key === 'gender' ? +array[current] : array[current] };
+        if (column.key === 'isReductionWhenDead') {
+          return { ...combine, [ column.key ]: column.key === 'isReductionWhenDead' ? +array[current] : array[current]};
+        }
+
+        return { ...combine, [ column.key ]: column.key === 'gender' ? +array[current] : array[current]};
       },
       {}
     );

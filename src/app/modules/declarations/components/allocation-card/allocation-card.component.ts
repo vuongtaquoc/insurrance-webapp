@@ -29,8 +29,9 @@ import {
   VillageService,
   FileUploadEmitter,
   PaymentMethodServiced,
+  DeclarationConfigService,
 } from '@app/core/services';
-import { DATE_FORMAT, DECLARATIONS, DOCUMENTBYPLANCODE } from '@app/shared/constant';
+import { DATE_FORMAT, DOCUMENTBYPLANCODE } from '@app/shared/constant';
 import { eventEmitter } from '@app/shared/utils/event-emitter';
 
 import { TABLE_NESTED_HEADERS, TABLE_HEADER_COLUMNS } from '@app/modules/declarations/data/allocation-card.data';
@@ -79,6 +80,8 @@ export class AllocationCardComponent implements OnInit, OnDestroy {
   isHiddenSidebar = false;
   declarationCode: string = '602';
   declarationName: string = '';
+  autoCreateDocumentList: boolean;
+  autoCreateFamilies: boolean;
   employeeSubject: Subject<any> = new Subject<any>();
   handlers: any[] = [];
   handler;
@@ -115,6 +118,7 @@ export class AllocationCardComponent implements OnInit, OnDestroy {
     private relationshipService: RelationshipService,
     private villageService: VillageService,
     private paymentMethodServiced: PaymentMethodServiced,
+    private declarationConfigService: DeclarationConfigService,
     private fileUploadEmitter: FileUploadEmitter
   ) {
     this.getRecipientsDistrictsByCityCode = this.getRecipientsDistrictsByCityCode.bind(this);
@@ -140,7 +144,8 @@ export class AllocationCardComponent implements OnInit, OnDestroy {
       month: [ date.getMonth() + 1 ],
       year: [ date.getFullYear() ]
     });
-    this.declarationName = this.getDeclaration(this.declarationCode).value;
+    
+    this.loadDeclarationConfig();
     this.documentForm = this.formBuilder.group({
       userAction: [this.currentCredentials.companyInfo.delegate],
       mobile:[this.currentCredentials.companyInfo.mobile],
@@ -243,6 +248,14 @@ export class AllocationCardComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     eventEmitter.destroy(this.handlers);
     this.handler();
+  }
+
+  private loadDeclarationConfig() {
+    this.declarationConfigService.getDetailByCode(this.declarationCode).subscribe(data => {
+       this.declarationName = data.declarationName;
+       this.autoCreateDocumentList = data.autoCreateDocumentList;
+       this.autoCreateFamilies = data.autoCreateFamilies;
+    });
   }
 
   handleAddEmployee(type) {
@@ -494,7 +507,7 @@ export class AllocationCardComponent implements OnInit, OnDestroy {
     this.onSubmit.emit({
       type: event.type,
       declarationCode: this.declarationCode,
-      declarationName: this.getDeclaration(this.declarationCode).value,
+      declarationName: this.declarationName,
       documentNo: number,
       createDate: `01/0${ month }/${ year }`,
       documentStatus: 0,
@@ -1364,15 +1377,7 @@ export class AllocationCardComponent implements OnInit, OnDestroy {
 
   handleToggleSidebar() {
     this.isHiddenSidebar = !this.isHiddenSidebar;
-  }
-
-  getDeclaration(declarationCode: string) {
-    const declarations = _.find(DECLARATIONS, {
-        key: declarationCode,
-    });
-    console.log(declarations);
-    return declarations;
-  }
+  }  
 
   getDocumentByPlancode(planCode: string) {
     if(!planCode) {

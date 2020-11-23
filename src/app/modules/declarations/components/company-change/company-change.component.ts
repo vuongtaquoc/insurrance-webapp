@@ -1,12 +1,12 @@
 import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
 import { NzModalService } from 'ng-zorro-antd/modal';
 
-import { DeclarationService, AuthenticationService, CompanyService, IsurranceDepartmentService, DocumentListService } from '@app/core/services';
+import { DeclarationService, AuthenticationService, CompanyService, IsurranceDepartmentService, DocumentListService, DeclarationConfigService } from '@app/core/services';
 import { Subject, forkJoin } from 'rxjs';
 import { eventEmitter } from '@app/shared/utils/event-emitter';
 import { log } from 'ng-zorro-antd';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { DATE_FORMAT, REGEX, DECLARATIONS } from '@app/shared/constant';
+import { DATE_FORMAT, REGEX } from '@app/shared/constant';
 import * as _ from 'lodash';
 import { Router } from '@angular/router';
 import { DocumentFormComponent } from '@app/shared/components';
@@ -23,7 +23,9 @@ export class CompanyChangeComponent implements OnInit, OnDestroy {
   documentForm: FormGroup;
   companyForm: FormGroup;
   declarationCode: string = '604'
-  declarationName: string = ''
+  declarationName: string = '';
+  autoCreateDocumentList: boolean;
+  autoCreateFamilies: boolean;
   currentCredentials: any;
   documentList: DocumentList[] = [];
   status = 0;
@@ -43,6 +45,7 @@ export class CompanyChangeComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private formCompanyBuilder: FormBuilder,
     private modalService: NzModalService,
+    private declarationConfigService: DeclarationConfigService,
     private documentListService: DocumentListService,
   ) {
   }
@@ -50,7 +53,7 @@ export class CompanyChangeComponent implements OnInit, OnDestroy {
   ngOnInit() {
 
     const date = new Date();
-    this.declarationName = this.getDeclaration(this.declarationCode).value;
+    this.loadDeclarationConfig();
     this.currentCredentials = this.authenticationService.currentCredentials;
     this.documentListService.getDocumentList(this.declarationCode).subscribe(documentList => {
       this.documentList = documentList;
@@ -160,21 +163,19 @@ export class CompanyChangeComponent implements OnInit, OnDestroy {
   handleSelectTab(index) {
     eventEmitter.emit('increase-labor:tab:change', index);
   }
-
-  getDeclaration(declarationCode: string) {
-    const declarations = _.find(DECLARATIONS, {
-        key: declarationCode,
-    });
-
-    return declarations;
-  }
-
    
-
   ngOnChanges(changes) {
   }
 
   ngOnDestroy() {
+  }
+
+  private loadDeclarationConfig() {
+    this.declarationConfigService.getDetailByCode(this.declarationCode).subscribe(data => {
+       this.declarationName = data.declarationName;
+       this.autoCreateDocumentList = data.autoCreateDocumentList;
+       this.autoCreateFamilies = data.autoCreateFamilies;
+    });
   }
 
   saveAndView() {
@@ -227,7 +228,7 @@ export class CompanyChangeComponent implements OnInit, OnDestroy {
     this.declarationService.createChangeCompany({
       type: type,
       declarationCode: this.declarationCode,
-      declarationName: this.getDeclaration(this.declarationCode).value,
+      declarationName: this.declarationName,
       documentStatus: 0,
       status: this.getStatus(type),
       submitter: this.submitter,

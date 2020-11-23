@@ -29,9 +29,10 @@ import {
   RelationshipService,
   VillageService,
   FileUploadEmitter,
+  DeclarationConfigService,
   ExternalService
 } from '@app/core/services';
-import { DATE_FORMAT, DECLARATIONS, DOCUMENTBYPLANCODE } from '@app/shared/constant';
+import { DATE_FORMAT, DOCUMENTBYPLANCODE } from '@app/shared/constant';
 import { eventEmitter } from '@app/shared/utils/event-emitter';
 
 import { TABLE_NESTED_HEADERS, TABLE_HEADER_COLUMNS } from '@app/modules/declarations/data/health-insurance.data';
@@ -71,7 +72,10 @@ export class ReissueHealthCardComponent implements OnInit, OnDestroy {
   declaration: any;
   isHiddenSidebar = false;
   declarationCode: string = '612';
-  declarationName: string;
+  declarationName: string = '';
+  allowAttachFile: boolean;
+  autoCreateDocumentList: boolean;
+  autoCreateFamilies: boolean;
   employeeSubject: Subject<any> = new Subject<any>();
   handlers: any[] = [];
   handler;
@@ -113,6 +117,7 @@ export class ReissueHealthCardComponent implements OnInit, OnDestroy {
     private relationshipService: RelationshipService,
     private villageService: VillageService,
     private fileUploadEmitter: FileUploadEmitter,
+    private declarationConfigService: DeclarationConfigService,
     private externalService: ExternalService,
   ) {
     this.getRecipientsDistrictsByCityCode = this.getRecipientsDistrictsByCityCode.bind(this);
@@ -147,7 +152,7 @@ export class ReissueHealthCardComponent implements OnInit, OnDestroy {
       usedocumentDT01: ['1']
     });
      
-    this.declarationName = this.getDeclaration(this.declarationCode).value;
+    this.loadDeclarationConfig();
     this.documentListService.getDocumentList(this.declarationCode).subscribe(documentList => {
       this.documentList = documentList;
     });
@@ -252,6 +257,15 @@ export class ReissueHealthCardComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     eventEmitter.destroy(this.handlers);
     this.handler();
+  }
+
+  private loadDeclarationConfig() {
+    this.declarationConfigService.getDetailByCode(this.declarationCode).subscribe(data => {
+       this.declarationName = data.declarationName;
+       this.autoCreateDocumentList = data.autoCreateDocumentList;
+       this.autoCreateFamilies = data.autoCreateFamilies;
+       this.allowAttachFile = data.allowAttachFile;
+    });
   }
 
   handleAddEmployee() {
@@ -584,7 +598,7 @@ export class ReissueHealthCardComponent implements OnInit, OnDestroy {
     this.onSubmit.emit({
       type: event.type,
       declarationCode: this.declarationCode,
-      declarationName: this.getDeclaration(this.declarationCode).value,
+      declarationName: this.declarationName,
       documentStatus: 0,
       status: this.getStatus(event.type),
       batch: number,
@@ -664,7 +678,7 @@ export class ReissueHealthCardComponent implements OnInit, OnDestroy {
         this.updateNextColumns(instance, r, '', [ c + 1, c + 2, c + 4, c + 5 ]);
       } else if (column.key === 'isurranceNo') {
         const isurranceNo = records[r][c];
-        const indexOfNote = this.tableHeaderColumns.findIndex(c => c.key === 'note')
+        const indexOfNote = this.tableHeaderColumns.findIndex(c => c.key === 'note');
         const noteMessage = this.formatNote(isurranceNo);
         this.updateNextColumns(instance, r, noteMessage , [ indexOfNote ]);
       } else if (column.key === 'fullName') {
@@ -1112,15 +1126,7 @@ export class ReissueHealthCardComponent implements OnInit, OnDestroy {
 
   handleToggleSidebar() {
     this.isHiddenSidebar = !this.isHiddenSidebar;
-  }
-
-  getDeclaration(declarationCode: string) {
-    const declarations = _.find(DECLARATIONS, {
-        key: declarationCode,
-    });
-
-    return declarations;
-  }
+  }  
 
   getDocumentByPlancode(planCode: string) {
     if(!planCode) {

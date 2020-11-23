@@ -422,7 +422,8 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
   private handleEvent({ type, parentKey, user, part }){
     if (type === 'validate') {
       setTimeout(() => {
-        const data = Object.values(this.spreadsheet.getJson());
+        
+        const data = Object.values(this.spreadsheet.getJson());        
         const leaf = data.filter((d: any) => d.options.isLeaf);
         const initialize = leaf.filter((d: any) => d.options.isInitialize);
         eventEmitter.emit('adjust-general:validate', {

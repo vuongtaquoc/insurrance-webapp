@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, OnChanges, ViewEncapsulation , Input} from '@angular/core';
 import { NzModalService } from 'ng-zorro-antd/modal';
 
 import { DeclarationService, CategoryService, BankService,
@@ -19,6 +19,7 @@ import { eventEmitter } from '@app/shared/utils/event-emitter';
   encapsulation: ViewEncapsulation.None
 })
 export class ReductionComponent extends GeneralBaseComponent implements OnInit, OnChanges {
+  @Input() allowAttach: any; 
   panel: any = {
     general: { active: false },
     attachment: { active: false }

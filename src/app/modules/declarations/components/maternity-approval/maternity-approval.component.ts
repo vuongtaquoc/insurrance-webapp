@@ -1,14 +1,14 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { DeclarationService, AuthenticationService, DocumentListService } from '@app/core/services';
+import { DeclarationService, AuthenticationService, DocumentListService, DeclarationConfigService } from '@app/core/services';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import * as _ from 'lodash';
 
 import { DocumentFormComponent } from '@app/shared/components';
 import { eventEmitter } from '@app/shared/utils/event-emitter';
 import { DocumentList } from '@app/core/models';
-import { DATE_FORMAT, DECLARATIONS } from '@app/shared/constant';
+import { DATE_FORMAT } from '@app/shared/constant';
 
 import { TableEditorErrorsComponent } from '@app/shared/components';
 import { REGEX } from '@app/shared/constant';
@@ -28,7 +28,9 @@ export class MaternityApprovalComponent implements OnInit, OnDestroy {
   };
 
   declarationCode: string = '630b';
-  declarationName: string = '630b';
+  declarationName: string = '';
+  autoCreateDocumentList: boolean;
+  autoCreateFamilies: boolean;
   isHiddenSidebar: boolean;
   selectedTabIndex: number = 1;
   documentList: DocumentList[] = [];
@@ -50,12 +52,13 @@ export class MaternityApprovalComponent implements OnInit, OnDestroy {
     private declarationService: DeclarationService,
     private authenticationService: AuthenticationService,
     private documentListService: DocumentListService,
+    private declarationConfigService: DeclarationConfigService,
     private modalService: NzModalService,
   ) {
   }
 
   ngOnInit() {
-    this.declarationName = this.getDeclaration(this.declarationCode).value;
+    this.loadDeclarationConfig();
     this.documentForm = this.formBuilder.group({
       submitter: ['', Validators.required],
       mobile: ['',  [Validators.required, Validators.pattern(REGEX.ONLY_NUMBER)]],
@@ -123,6 +126,14 @@ export class MaternityApprovalComponent implements OnInit, OnDestroy {
     this.router.navigate(['/declarations/maternity-approval']);
   }
 
+  private loadDeclarationConfig() {
+    this.declarationConfigService.getDetailByCode(this.declarationCode).subscribe(data => {
+       this.declarationName = data.declarationName;
+       this.autoCreateDocumentList = data.autoCreateDocumentList;
+       this.autoCreateFamilies = data.autoCreateFamilies;
+    });
+  }
+  
   saveAndView() {
 
     this.tableSubmitErrors = {};
@@ -225,7 +236,7 @@ export class MaternityApprovalComponent implements OnInit, OnDestroy {
     this.declarationService.update(this.declarationId, {
       type: type,
       declarationCode: this.declarationCode,
-      declarationName: this.getDeclaration(this.declarationCode).value,
+      declarationName: this.declarationName,
       documentStatus: 0,
       status: this.getStatus(type),
       submitter: this.submitter,
@@ -259,7 +270,7 @@ export class MaternityApprovalComponent implements OnInit, OnDestroy {
     this.declarationService.create({
       type: type,
       declarationCode: this.declarationCode,
-      declarationName: this.getDeclaration(this.declarationCode).value,
+      declarationName: this.declarationName,
       documentStatus: 0,
       status: this.getStatus(type),
       submitter: this.submitter,
@@ -279,14 +290,6 @@ export class MaternityApprovalComponent implements OnInit, OnDestroy {
   handleSelectTab({ index }) {
     this.selectedTabIndex = index;
     eventEmitter.emit('regime-approval:tab:change', index);
-  }
-
-  getDeclaration(declarationCode: string) {
-    const declarations = _.find(DECLARATIONS, {
-        key: declarationCode,
-    });
-
-    return declarations;
   }
 
   handleTableChange(data, type) {

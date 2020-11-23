@@ -22,9 +22,10 @@ import {
   EmployeeService,
   CategoryService,
   RelationshipService,
+  DeclarationConfigService,
   VillageService,
 } from '@app/core/services';
-import { DATE_FORMAT, DECLARATIONS, DOCUMENTBYPLANCODE, ACTION } from '@app/shared/constant';
+import { DATE_FORMAT, DOCUMENTBYPLANCODE, ACTION } from '@app/shared/constant';
 import { eventEmitter } from '@app/shared/utils/event-emitter';
 
 import { TableEditorErrorsComponent } from '@app/shared/components';
@@ -56,7 +57,10 @@ export class ReducingLaborComponent implements OnInit, OnDestroy {
   documentList: DocumentList[] = [];
   isHiddenSidebar = false;
   declarationCode: string = '600a';
-  declarationName: string;
+  declarationName: string = '';
+  allowAttachFile: boolean;
+  autoCreateDocumentList: boolean;
+  autoCreateFamilies: boolean;
   selectedTabIndex: number = 1;
   eventValidData = 'adjust-general:validate';
   handler: any;
@@ -101,6 +105,7 @@ export class ReducingLaborComponent implements OnInit, OnDestroy {
     private relationshipService: RelationshipService,
     private districtService:  DistrictService,
     private wardService: WardsService,
+    private declarationConfigService: DeclarationConfigService,
     private villageService: VillageService
   ) {
   }
@@ -110,8 +115,8 @@ export class ReducingLaborComponent implements OnInit, OnDestroy {
       submitter: ['', Validators.required],
       mobile: ['',  [Validators.required, Validators.pattern(REGEX.ONLY_NUMBER)]],
     });
-
-    this.declarationName = this.getDeclaration(this.declarationCode).value;
+    
+    this.loadDeclarationConfig();
     //Init data families table editor
     forkJoin([
       this.cityService.getCities(),
@@ -191,6 +196,15 @@ export class ReducingLaborComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.handler();
+  }
+
+  private loadDeclarationConfig() {
+    this.declarationConfigService.getDetailByCode(this.declarationCode).subscribe(data => {
+       this.declarationName = data.declarationName;
+       this.autoCreateDocumentList = data.autoCreateDocumentList;
+       this.autoCreateFamilies = data.autoCreateFamilies;
+       this.allowAttachFile = data.allowAttachFile;
+    });
   }
 
   private updateEmployeeInInfomation(user) {
@@ -351,7 +365,7 @@ export class ReducingLaborComponent implements OnInit, OnDestroy {
     this.declarationService.create({
       type: type,
       declarationCode: this.declarationCode,
-      declarationName: this.getDeclaration(this.declarationCode).value,
+      declarationName: this.declarationName,
       documentStatus: 0,
       status: type === 'saveAndView' ? 1: 0,
       submitter: this.submitter,
@@ -416,14 +430,6 @@ export class ReducingLaborComponent implements OnInit, OnDestroy {
 
     modal.afterClose.subscribe(result => {
     });
-  }
-
-  getDeclaration(declarationCode: string) {
-    const declarations = _.find(DECLARATIONS, {
-        key: declarationCode,
-    });
-
-    return declarations;
   }
 
   get submitter() {

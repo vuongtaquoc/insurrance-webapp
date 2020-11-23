@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, OnChanges, ViewEncapsulation, Input } from '@angular/core';
 import { NzModalService } from 'ng-zorro-antd/modal';
 
 import { DeclarationService, CategoryService, BankService,
@@ -20,7 +20,7 @@ import { log } from 'ng-zorro-antd';
   encapsulation: ViewEncapsulation.None
 })
 export class IncreaseComponent extends GeneralBaseComponent implements OnInit, OnChanges {
-
+  @Input() allowAttach: any; 
   panel: any = {
     general: { active: false },
     attachment: { active: false }
