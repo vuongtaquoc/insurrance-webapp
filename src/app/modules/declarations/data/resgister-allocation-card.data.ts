@@ -342,7 +342,7 @@ export const TABLE_HEADER_COLUMNS = [{
   width: 100,
   title: '(21)',
   key: 'dateSign',
-  fieldName: 'Ngày ký',
+  fieldName: 'Ngày lập biên lai/ Ngày văn bản phê duyệt',
   validations: {
     lessThanNow: true
   }

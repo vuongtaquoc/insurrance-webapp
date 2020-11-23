@@ -39,7 +39,8 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
   private deleteTimer;
   private differents: any = {};
   eventValid: string  = 'adjust-general:validate';
-
+  private handlers = [];
+  private timer;
   constructor(
     private element: ElementRef,
     private modalService: NzModalService,
@@ -50,14 +51,26 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
   ngOnInit() {
     this.eventsSubscription = this.events.subscribe((type) => this.handleEvent(type));
     this.validateSubscription = this.validate.subscribe((result) => this.handleValidate(result));
+    this.handlers.push(eventEmitter.on('adjust-general:tab:change', (index) => {
+      clearTimeout(this.timer);
+
+      this.isSpinning = true;
+
+      this.timer = setTimeout(() => {
+        this.spreadsheet.updateNestedHeaderPosition();
+        this.spreadsheet.updateFreezeColumn();
+        this.isSpinning = false;
+      }, 300);
+    }));
   }
 
   ngOnDestroy() {
+    this.eventsSubscription.unsubscribe();
+    this.validateSubscription.unsubscribe(); 
     if (this.spreadsheet) {
       this.spreadsheet.destroy(this.spreadsheetEl.nativeElement, true);
     }
-    this.eventsSubscription.unsubscribe();
-    this.validateSubscription.unsubscribe();
+    eventEmitter.destroy(this.handlers);
   }
 
   ngOnChanges(changes) {
@@ -307,36 +320,31 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
           leaf,
           initialize
         });
-      }, 10);
-      return;
-    }
-
-    if (type === 'deleteUser') {
+      }, 10);  
+    } else if (type === 'deleteUser') {
       this.handleDeleteUser(user);
+    } else {   
+      const data = this.spreadsheet.getJson();
+      const declarations = {};
 
-      return;
+      data.forEach(d => {
+        if (!d.options.hasLeaf && !d.options.isLeaf) {
+          declarations[d.options.key] = { ...d.origin };
+        } else if (d.options.hasLeaf) {
+          declarations[d.options.key] = {
+            ...d.origin,
+            declarations: []
+          };
+        } else if (d.options.isLeaf) {
+          declarations[d.options.parentKey].declarations.push(this.arrayToProps(d, this.columns));
+        }
+      });
+
+      this.onSubmit.emit({
+        type,
+        data: Object.values(declarations)
+      });
     }
-
-    const data = this.spreadsheet.getJson();
-    const declarations = {};
-
-    data.forEach(d => {
-      if (!d.options.hasLeaf && !d.options.isLeaf) {
-        declarations[d.options.key] = { ...d.origin };
-      } else if (d.options.hasLeaf) {
-        declarations[d.options.key] = {
-          ...d.origin,
-          declarations: []
-        };
-      } else if (d.options.isLeaf) {
-        declarations[d.options.parentKey].declarations.push(this.arrayToProps(d, this.columns));
-      }
-    });
-
-    this.onSubmit.emit({
-      type,
-      data: Object.values(declarations)
-    });
   }
 
   private getColumnNameValid(errors) {
@@ -567,7 +575,7 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
         }
 
         if (column.key === 'hospitalFirstRegistCode') {
-          return { ...combine, [ column.key ]: array[current].toString().split('-')[0].trim() };
+          return { ...combine, [ column.key ]: array[current].toString().trim() };
         }
 
         if (column.key === 'isReductionWhenDead') {

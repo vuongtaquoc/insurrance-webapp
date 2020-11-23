@@ -86,6 +86,7 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
   autoCreateDocumentList: boolean;
   autoCreateFamilies: boolean;
   allowAttachFile: boolean;
+  isCheckIsuranceCode: boolean;
   employeeSubject: Subject<any> = new Subject<any>();
   handlers: any[] = [];
   handler;
@@ -96,7 +97,7 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
     general: { active: false },
     attachment: { active: false }
   };
-  totalNumberInsurance: any;
+  
   totalCardInsurance: any;
   isBlinking = false;
   submitType: string;
@@ -168,7 +169,7 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
     });
 
     this.declarationGeneral = this.formBuilder.group({
-      totalNumberInsurance: [''],
+      totalCardInsurance: [''],
     });
 
     this.documentListService.getDocumentList(this.declarationCode).subscribe(documentList => {
@@ -237,7 +238,7 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
           });
 
           this.declarationGeneral.patchValue({
-            totalNumberInsurance: declarations.totalNumberInsurance,
+            totalCardInsurance: declarations.totalCardInsurance,
           });   
           
           this.documentForm.patchValue({
@@ -270,6 +271,10 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
     });
 
     this.handler = eventEmitter.on(this.eventValidData, ({ name, isValid, leaf, initialize, errors }) => {
+        if (leaf === undefined) {
+          return;
+        }
+
         this.tableErrors[name] = errors;
         this.allInitialize[name] = leaf.length === initialize.length;
         this.isTableValid = Object.values(this.allInitialize).indexOf(false) === -1 ? false : true;   
@@ -285,7 +290,11 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     eventEmitter.destroy(this.handlers);
-    this.handler();
+    eventEmitter.destroy(this.handler);
+    this.tableSubject.unsubscribe();
+    this.eventsSubject.unsubscribe();
+    this.validateSubject.unsubscribe();
+    if (this.timer) clearTimeout(this.timer);
   }
 
   private loadDeclarationConfig() {
@@ -472,7 +481,7 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
 
   handleUserDeleted(user) {
 
-    this.eventsSubject.next({
+    this.tableSubject.next({
       type: 'deleteUser',
       user,
       deletedIndexes: []
@@ -528,53 +537,75 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
         nzTitle: 'Bạn chưa kê khai'
       });
       return;
-    }  
+    }
 
-    // this.tableSubmitErrors = {};
-    // this.tableSubmitErrorCount = 0;
-    // const errorDocumentForm = this.validDocumentForm();
-    // if (errorDocumentForm.length > 0) {
-    //   this.tableErrors['documentFomError'] = errorDocumentForm;
-    // } else {
-    //   this.tableErrors['documentFomError'] = [];
-    // }
+    if (type === 'save') { 
+      this.save(type);
+    }else {
+      this.saveAndView(type);
+    }   
+    
+  }
 
-    // const generalFomError = this.validGeneralFomError()
-    // if(generalFomError.length > 0) {
-    //   this.tableErrors['generalFomError'] = generalFomError;
-    // } else {
-    //   this.tableErrors['generalFomError'] = [];
-    // }
+  private save(type) {    
 
-    // let count = Object.keys(this.tableErrors).reduce(
-    //   (total, key) => {
-    //     const data = this.tableErrors[key];
-    //     return total + data.length;
-    //   },
-    //   0
-    // );
+    this.tableSubject.next({type});
+  }
 
-    // if (count > 0) {
+  private saveAndView(type) {   
 
-    //   this.tableSubmitErrors = Object.keys(this.tableErrors).reduce(
-    //     (combine, key) => {
-    //       const data = this.tableErrors[key];
+    if (!this.isCheckIsuranceCode) {
+      this.modalService.warning({
+        nzTitle: 'Đơn vị chưa kiểm tra Mã số BHXH và trạng thái của người tham gia'
+      });
+      return;
+    }
 
-    //       return {...combine, [key]: data.length};
-    //     },
-    //     {}
-    //   );
+    this.tableSubmitErrors = {};
+    this.tableSubmitErrorCount = 0;
+    const errorDocumentForm = this.validDocumentForm();
+    if (errorDocumentForm.length > 0) {
+      this.tableErrors['documentFomError'] = errorDocumentForm;
+    } else {
+      this.tableErrors['documentFomError'] = [];
+    }
 
-    //   this.tableSubmitErrorCount = count;
-    //   return this.modalService.error({
-    //     nzTitle: 'Lỗi dữ liệu. Vui lòng sửa!',
-    //     nzContent: TableEditorErrorsComponent,
-    //     nzComponentParams: {         
-    //       errors: this.getColumnErrror()
-    //     }
-    //   });
-    // }
+    const generalFomError = this.validGeneralFomError()
+    if(generalFomError.length > 0) {
+      this.tableErrors['generalFomError'] = generalFomError;
+    } else {
+      this.tableErrors['generalFomError'] = [];
+    }
 
+    let count = Object.keys(this.tableErrors).reduce(
+      (total, key) => {
+        const data = this.tableErrors[key];
+        return total + data.length;
+      },
+      0
+    );
+
+    if (count > 0) {
+
+      this.tableSubmitErrors = Object.keys(this.tableErrors).reduce(
+        (combine, key) => {
+          const data = this.tableErrors[key];
+
+          return {...combine, [key]: data.length};
+        },
+        {}
+      );
+
+      this.tableSubmitErrorCount = count;
+      return this.modalService.error({
+        nzTitle: 'Lỗi dữ liệu. Vui lòng sửa!',
+        nzContent: TableEditorErrorsComponent,
+        nzComponentParams: {         
+          errors: this.getColumnErrror()
+        }
+      });
+    }
+    
     this.tableSubject.next({type});
   }
 
@@ -677,7 +708,7 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
         }else if(employeeIsMaster === false && records[r].origin.employeeId > 0) {
           
           this.updateNextColumns(instance, r, '', [ c + 1 , c + 2, c + 3, c + 4, c + 5, c + 6, c + 7, c + 8,c + 9,
-            c + 11, c + 11,c + 12,c + 13,c + 14,c + 15,c + 16,c + 17,c + 18,c + 19,c + 20, c + 21, c + 22, c + 23], true);
+            c + 11, c + 11,c + 12,c + 13,c + 14,c + 15,c + 16,c + 17,c + 18,c + 19,c + 20, c + 21, c + 23], true);
   
           const value = instance.jexcel.getValueFromCoords(1, r);
           const numberColumn = this.tableHeaderColumnsFamilies.length;
@@ -687,7 +718,7 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
           const employeesInDeclaration = this.getEmployeeInDeclarations(this.declarations);
           const firstEmployee = employeesInDeclaration.find(f => f.employeeId === records[r].origin.employeeId);
           this.updateNextColumns(instance, r, '', [ c + 1 , c + 2, c + 3, c + 4, c + 5, c + 6, c + 7, c + 8,
-            c + 11, c + 11,c + 12,c + 13,c + 14,c + 15,c + 16,c + 17,c + 18,c + 19,c + 20, c + 21, c + 22, c + 23]);
+            c + 11, c + 11,c + 12,c + 13,c + 14,c + 15,c + 16,c + 17,c + 18,c + 19,c + 20, c + 21, c + 23]);
 
           const value = instance.jexcel.getValueFromCoords(1, r);
           const numberColumn = this.tableHeaderColumnsFamilies.length;
@@ -913,6 +944,7 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
     this.declarations = this.declarationService.updateFormula(declarations, this.tableHeaderColumns);
     this.deleteEmployeeInFamilies(declarationsDeleted);
     this.deleteEmployeeInInfomation(declarationsDeleted);
+    this.sumCreateBHXH();
     this.notificeEventValidData('allocationCard');
     this.notificeEventValidData('families');
     this.notificeEventValidData('informations');
@@ -1006,14 +1038,19 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
       });
     });
 
-    if(informations.length === 0) {
+    const itemPerPage = 10 - informations.length;
+    let numberItem = 5;
+    if(itemPerPage > 0) {
+      numberItem = itemPerPage;
+    }
+
+    for (let index = 0; index < numberItem; index++) {
       informations.push({
-        data: {
-          origin: {
-            isLeaf: true,
-            employeeId: '',
-          },
-        }
+        data: [index + 1],
+        origin: {
+          employeeId: '',
+          isLeaf: true,
+        } 
       });
     }
     this.informations = informations;
@@ -1029,16 +1066,7 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
 
   collapseChange(isActive, type) {
     this.panel[type].active = isActive;
-  }
-
-  handleFormValuesChanged({ data, first }) {
-    this.totalNumberInsurance = data.totalNumberInsurance;
-    this.totalCardInsurance = data.totalNumberInsurance;
-
-    if (!first) {
-      eventEmitter.emit('unsaved-changed');
-    }
-  }
+  }   
 
   handleChangeForm() {
     eventEmitter.emit('unsaved-changed');
@@ -1051,6 +1079,7 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
     const INSURRANCE_CODE_INDEX = 2;
     const INSURRANCE_STATUS_INDEX = 3;
     const errors = {};
+    this.isCheckIsuranceCode = true;
     const leafs = declarations.filter(d => d.isLeaf && d.data[INSURRANCE_CODE_INDEX]);
 
     //Kiểm tra nếu có dữ liệu cần check thì show loadding
@@ -1818,7 +1847,7 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
     });
 
     this.declarationGeneral.patchValue({
-      totalNumberInsurance: totalCardInsurance,
+      totalCardInsurance: totalCardInsurance,
     });
   }
 

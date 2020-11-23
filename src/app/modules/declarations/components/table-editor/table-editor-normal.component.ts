@@ -486,7 +486,7 @@ export class TableEditorNormalComponent implements AfterViewInit, OnInit, OnDest
         }
 
         if (column.key === 'hospitalFirstRegistCode') {
-          return { ...combine, [ column.key ]: array[current].toString().split('-')[0].trim() };
+          return { ...combine, [ column.key ]: array[current].toString().trim() };
         }
 
         return { ...combine, [ column.key ]: column.key === 'gender' ? +array[current] : array[current] };

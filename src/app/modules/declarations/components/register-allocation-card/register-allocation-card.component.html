@@ -254,7 +254,7 @@
                       <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="4">Tổng số thẻ BHYT đề nghị cấp
                       </nz-form-label>
                       <nz-form-control [nzSpan]="14" [nzErrorTip]="sumCarfTpl">
-                        <nz-input-number placeholder="Tổng số thẻ" formControlName="totalNumberInsurance"  [nzSize]="'small'" 
+                        <nz-input-number placeholder="Tổng số thẻ" formControlName="totalCardInsurance"  [nzSize]="'small'" 
                           [nzFormatter]="formatterCurrency"></nz-input-number>
                         <ng-template #sumCarfTpl let-control>
                           <ng-container *ngIf="control.hasError('pattern')">
