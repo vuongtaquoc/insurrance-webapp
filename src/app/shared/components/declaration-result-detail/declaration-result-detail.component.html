@@ -1,13 +1,13 @@
 <div class="declaration-result">
   <div class="declaration-result__content">
-  <h2><span>Hồ sơ</span> : {{declarationFileInfo.declarationCode}} | {{declarationFileInfo.declarationName}}</h2>
+  <h2><span>Cán bộ xử lý</span> : {{declarationInfo.employeeHandler}} </h2>
   <h1>KẾT QUẢ CÁ BƯỚC XỬ LÝ HỒ SƠ</h1>
   <nz-table
       nzBordered
       #ajaxTable
       nzShowSizeChanger
       [nzFrontPagination]="false"
-      [nzData]="declarationFileInfo.resultResearch.detail"
+      [nzData]="declarationInfo.historyProcessDeclarations"
       [nzLoading]="loading"
       [nzTotal]="total"
       [(nzPageIndex)]="pageIndex"
@@ -16,24 +16,18 @@
     >
       <thead>
         <tr>
-          <th style="width: 40px;">Bước</th>
-          <th style="width: 200px;">Cơ quan bảo hiểm</th>
-          <th>Phòng ban</th>
-          <th>Nhân viên xử lý</th>
-          <th style="width: 100px;">Xem Kết quả</th>
+          <th style="width: 40px;">STT</th>
+          <th>Cán bộ xử lý</th>
+          <th style="width: 135px;">Thời gian</th>
+          <th>Hành động</th>          
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let data of ajaxTable.data;">
-          <td>{{ data.step }}</td>
-          <td>{{ data.isurranceDepartmentName }}</td>
-          <td>{{ data.department }}</td>
+        <tr *ngFor="let data of ajaxTable.data;index as i">
+          <td>{{i + 1}}</td>
           <td>{{ data.employeeHandler }}</td>
-          <td style="text-align: center;"> 
-            <a (click)="viewDetail(data)">
-              <i nz-icon nzType="eye" nzTheme="outline"></i>
-             </a>
-          </td>
+          <td>{{ data.timeProcess }}</td>
+          <td>{{ data.action }}</td>        
         </tr>
       </tbody>
     </nz-table>

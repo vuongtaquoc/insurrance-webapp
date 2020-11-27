@@ -70,6 +70,7 @@
             [tabEvents]="tabSubject.asObservable()"
             (onChange)="handleChangeTable($event, 'reductionlabor')"
             (onHiddenSidebar)="handleHiddenSidebar($event)"
+            (onChangedFile)="handleChangedFiles($event)"
           ></app-reduction>
         </nz-tab>         
         <nz-tab [nzTitle]="tabDocumentList" [nzDisabled]="!informations || !informations.length">

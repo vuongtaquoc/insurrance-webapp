@@ -59,6 +59,7 @@ export class ArrearsComponent implements OnInit, OnDestroy {
   declarationName: string = '';
   autoCreateDocumentList: boolean;
   autoCreateFamilies: boolean;
+  allowAttachFile: boolean;
   selectedTabIndex: number = 1;
   eventValidData = 'adjust-general:validate';
   handler: any;
@@ -203,6 +204,7 @@ export class ArrearsComponent implements OnInit, OnDestroy {
        this.declarationName = data.declarationName;
        this.autoCreateDocumentList = data.autoCreateDocumentList;
        this.autoCreateFamilies = data.autoCreateFamilies;
+       this.allowAttachFile = data.allowAttachFile;
     });
   }
 

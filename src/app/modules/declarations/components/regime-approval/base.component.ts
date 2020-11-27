@@ -368,7 +368,6 @@ export class RegimeApprovalBaseComponent {
     this.tableSubject.next({
       type: 'validate'
     });
-    console.log('XXXXXXXXXXX');
     eventEmitter.emit('unsaved-changed');
   }
 

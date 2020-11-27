@@ -61,6 +61,10 @@ export class DeclarationService {
     );
   }
 
+  public getDeclarationsYear() {
+    return this.http.get(`/declarations/declaration-year/`);
+  }
+
 
   public getDeclarationsNormalByDocumentId(id, tableHeaderColumns) {
     return this.http.get(`/declarations/normal/${ id }`).pipe(

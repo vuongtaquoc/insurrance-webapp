@@ -49,7 +49,7 @@ export class LaborAttachmentComponent implements OnInit, OnChanges {
         rowId: uuid.v4(),
         documentName: '',
         declarationCode: this.declarationCode,
-        data: {},
+        data: null,
         hasFile: false
       });
     }

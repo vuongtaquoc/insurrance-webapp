@@ -61,6 +61,7 @@ import {
   FileAttachmentComponent,
   DeclarationResultComponent,
   DeclarationResultOfCompanyComponent,
+  DeclarationResultDetailComponent,
 } from './components';
 
 import {
@@ -121,6 +122,7 @@ import {
     FileAttachmentComponent,
     DeclarationResultComponent,
     DeclarationResultOfCompanyComponent,
+    DeclarationResultDetailComponent,
   ],
   exports: [
     FormsModule,
@@ -145,6 +147,7 @@ import {
     FileAttachmentComponent,
     DeclarationResultComponent,
     DeclarationResultOfCompanyComponent,
+    DeclarationResultDetailComponent,
   ],
   providers: [
     AuthenticationService,
@@ -170,6 +173,7 @@ import {
     FileAttachmentComponent,
     DeclarationResultComponent,
     DeclarationResultOfCompanyComponent,
+    DeclarationResultDetailComponent,
   ]
 })
 export class SharedModule { }

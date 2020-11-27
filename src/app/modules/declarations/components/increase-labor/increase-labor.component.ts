@@ -346,6 +346,10 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     this.declarations.form = data;
   }
 
+  handleChangedFiles(files) {
+    this.declarations.files = files;
+  }
+
   handleSelectTab({ index }) {
     this.selectedTabIndex = index;
     eventEmitter.emit('adjust-general:tab:change', index);

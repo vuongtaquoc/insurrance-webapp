@@ -8,9 +8,9 @@
       <div class="page-body">
         <div class="page-search_list-year">
           <ul class="list-inline">
-            <li><a href="#" class="color-black">{{ previous }}</a></li>
+            <!-- <li><a href="#" class="color-black">{{ previous }}</a></li> -->
             <li *ngFor="let year of years; let first=first; let last = last">
-              <a href="#" class="color-black">
+              <a (click)="viewDeclaration(year)" class="color-black">
                 {{ year }} <span *ngIf="!last">|</span>
               </a>
             </li>
@@ -23,9 +23,11 @@
             <div nz-row [nzGutter]="16">
               <div nz-col [nzMd]="2" class="text-center" *ngFor="let month of months">
                 <nz-list-item>
-                  <a href="#" class="color-black"> Tháng {{ month }}
-                    <div class="search-page_list-month-icon color-blue"> <i nz-icon nzType="download"
-                        nzTheme="outline"></i></div>
+                  <a (click)="downloadC12(month)" class="color-black"> Tháng {{ month.month }}
+                      <div class="search-page_list-month-icon color-blue"  *ngIf="!month.isDownloading"> <i nz-icon nzType="download"
+                      nzTheme="outline" ></i></div>
+                      <ng-template #indicatorTemplate><i nz-icon nzType="loading"></i></ng-template>
+                      <nz-spin *ngIf="month.isDownloading" nzSimple [nzIndicator]="indicatorTemplate"> </nz-spin>
                   </a>
                 </nz-list-item>
               </div>

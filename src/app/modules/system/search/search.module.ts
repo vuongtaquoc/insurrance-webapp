@@ -14,7 +14,7 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
-
+import { NzListModule } from 'ng-zorro-antd/list';
 import { AuthenticationService } from '@app/core/services';
 import { SharedModule } from '@app/shared/shared.module';
 import { SearchRoutingModule } from './search-routing.module';
@@ -37,6 +37,7 @@ import { SearchComponent } from './pages';
         NzCheckboxModule,
         SharedModule,
         NzSpinModule,
+        NzListModule,
         NgxMaskModule.forRoot(),
         SearchRoutingModule
     ],
