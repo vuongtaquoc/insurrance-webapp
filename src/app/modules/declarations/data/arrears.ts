@@ -110,6 +110,7 @@ export const TABLE_ARREARS_HEADER_COLUMNS = [{
   fieldName: 'Ngày tháng năm sinh',
   key: 'birthday',
   validations: {
+    required: true,
     lessThanNow: true
   }   
 }, {
@@ -440,5 +441,5 @@ export const TABLE_ARREARS_HEADER_COLUMNS = [{
   type: 'text',
   width: 180,
   title: '(24)',
-  key: 'note'
+  key: 'reason'
 }];

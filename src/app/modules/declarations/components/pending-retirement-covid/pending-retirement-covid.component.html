@@ -118,7 +118,7 @@
           </button>
         </div>
       </ng-template>
-      <app-pending-form [data]="declarations.formOrigin" (onFormValid) = "handleValidForm($event)" class="page-regime-approval__form" [ngClass]="{'page-regime-approval__form--hidden': (selectedTabIndex == 0 || selectedTabIndex == 2)}" (onFormValuesChanged)="handleFormValuesChanged($event)"></app-pending-form>
+      <app-pending-form [data]="declarations.formOrigin" [headerName] = "'BÁO CÁO TÌNH HÌNH SỬ DỤNG LAO ĐỘNG VÀ DANH SÁCH THAM GIA BHXH,BHYT,BHTN'" (onFormValid) = "handleValidForm($event)" class="page-regime-approval__form" [ngClass]="{'page-regime-approval__form--hidden': (selectedTabIndex == 0 || selectedTabIndex == 2)}" (onFormValuesChanged)="handleFormValuesChanged($event)"></app-pending-form>
     </div>
   </nz-spin>
 </div>

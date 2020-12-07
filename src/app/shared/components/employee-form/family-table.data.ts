@@ -60,6 +60,7 @@ export const TABLE_FAMILIES_HEADER_COLUMNS = [{
   fieldName: 'Ngày tháng năm sinh',
   isCalendar: true,
   validations: {
+    required: true,
     lessThanNow: true
   }
 }, {

@@ -537,7 +537,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
       documentDetail: this.tablesToApi(this.declarations.tables),
       informations: this.reformatInformations(),
       families: this.reformatFamilies(),
-      files    : this.declarations.files,
+      files: this.declarations.files,
     }).subscribe(data => {
       this.isSpinning = false;
       if (type === 'saveAndView') {

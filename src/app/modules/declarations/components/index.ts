@@ -24,6 +24,7 @@ export * from './adjustment/adjustment.component';
 export * from './company-change/company-change.component';
 export * from './health-insurance-card/health-insurance-card.component';
 export * from './table-editor/table-editor-normal.component';
+export * from './table-editor/table-editor-header.component';
 export * from './reissue-insurance-card/reissue-insurance-card.component';
 export * from './health-recovery-approval/health-recovery-approval.component';
 export * from './maternity-approval/maternity-approval.component';
@@ -36,4 +37,6 @@ export * from './pending-covid/pending-covid.component';
 export * from './pending-retirement-covid/pending-retirement-covid.component';
 export * from './allocation-card/allocation-card.component';
 export * from './register-allocation-card/register-allocation-card.component';
-
+export * from './adjustment-insurance-card/adjustment-insurance-card.component';
+export * from './reissue-health-insurance-card/reissue-health-insurance-card.component';
+export * from './reissue-health-insurance/reissue-health-insurance.component';

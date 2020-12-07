@@ -53,6 +53,12 @@ import {
   RegisterAllocationCardListComponent,
   RegisterAllocationCardAddComponent,
   RegisterAllocationCardEditComponent,
+  AdjustmentInsuranceCardAddComponent,
+  AdjustmentInsuranceCardEditComponent,
+  AdjustmentInsuranceCardListComponent,
+  ReissueHealthInsuranceCardAddComponent,
+  ReissueHealthInsuranceCardEditComponent,
+  ReissueHealthInsuranceCardListComponent,
    
 } from './pages';
 
@@ -305,6 +311,34 @@ const routes: Routes = [
       {
         path: 'register-allocation-card/:id/edit',
         component: RegisterAllocationCardEditComponent,
+        canDeactivate: [ UnsavedChangesGuard, NavigationGuard ]
+      },
+      {
+        path: 'adjustment-insurance-card',
+        component: AdjustmentInsuranceCardListComponent
+      },
+      {
+        path: 'adjustment-insurance-card/add',
+        component: AdjustmentInsuranceCardAddComponent,
+        canDeactivate: [ UnsavedChangesGuard, NavigationGuard ]
+      },
+      {
+        path: 'adjustment-insurance-card/:id/edit',
+        component: AdjustmentInsuranceCardEditComponent,
+        canDeactivate: [ UnsavedChangesGuard, NavigationGuard ]
+      },
+      {
+        path: 'reissue-health-insurance-card',
+        component: ReissueHealthInsuranceCardListComponent
+      },
+      {
+        path: 'reissue-health-insurance-card/add',
+        component: ReissueHealthInsuranceCardAddComponent,
+        canDeactivate: [ UnsavedChangesGuard, NavigationGuard ]
+      },
+      {
+        path: 'reissue-health-insurance-card/:id/edit',
+        component: ReissueHealthInsuranceCardEditComponent,
         canDeactivate: [ UnsavedChangesGuard, NavigationGuard ]
       }
     ]

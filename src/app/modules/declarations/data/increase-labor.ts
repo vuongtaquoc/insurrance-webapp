@@ -98,7 +98,7 @@ export const TABLE_HEADER_COLUMNS = [{
   width: 45,
   title: '(3)',
   align: 'center',
-  key: 'hasBookIsurrance'
+  key: 'isExitsIsurranceNo'
 }, {
   type: 'text',
   width: 120,
@@ -149,6 +149,7 @@ export const TABLE_HEADER_COLUMNS = [{
   fieldName: 'Ngày tháng năm sinh',
   key: 'birthday',
   validations: {
+    required: true,
     lessThanNow: true
   }
 }, {
@@ -333,6 +334,9 @@ export const TABLE_HEADER_COLUMNS = [{
   source: [ ],
   wordWrap: true,
   key: 'hospitalFirstRegistCode',
+  validations: {
+    required:true,
+  },
   defaultLoad: true,
 }, {
   type: 'text',
@@ -340,7 +344,10 @@ export const TABLE_HEADER_COLUMNS = [{
   title: '(19.2)',
   align: 'left',
   wordWrap: true,
-  key: 'hospitalFirstRegistName'
+  key: 'hospitalFirstRegistName',
+  validations: {
+    required:true,
+  }
 }, {
   type: 'text',
   width: 135,
@@ -602,7 +609,7 @@ export const TABLE_HEADER_COLUMNS = [{
   width: 180,
   title: '(30)',
   wordWrap: true,
-  key: 'note'
+  key: 'reason'
 },{
   type: 'hidden',
   width: 140,

@@ -174,6 +174,8 @@ export class PendingRetirementCovidComponent implements OnInit, OnDestroy {
         this.documentList = documentList;
       });
 
+      this.informations = this.loadDefaultInformations();
+
       this.handler = eventEmitter.on(this.eventValidData, ({ name, isValid, leaf, initialize, errors }) => {
         this.allInitialize[name] = leaf.length === initialize.length;
         this.isTableValid = Object.values(this.allInitialize).indexOf(false) === -1 ? false : true;
@@ -652,9 +654,6 @@ private setDateToInformationList(records: any)
   }
 
   fomatInfomation(infomations) {
-    if(!infomations) {
-      return [];
-    }
     let infomationscopy = [ ...infomations ];
     infomationscopy.forEach(p => {
       p.data = this.tableHeaderColumnsDocuments.map(column => {
@@ -666,9 +665,39 @@ private setDateToInformationList(records: any)
         isLeaf: true,
       }
     });
+
+    const itemPerPage = 10 - infomationscopy.length;
+    let numberItem = 5;
+    if(itemPerPage > 0) {
+      numberItem = itemPerPage;
+    }
+
+    for (let index = 0; index < numberItem; index++) {
+      infomationscopy.push({
+        data: [index + 1],
+        origin: {
+          employeeId: '',
+          isLeaf: true,
+        }
+      });
+    }
+
     return infomationscopy;
   }
-
+  
+  private loadDefaultInformations() {
+    const dataFake = [];
+    for (let index = 0; index < 10; index++) {
+      dataFake.push({
+        data: [index + 1],
+        origin: {
+          employeeId: '',
+          isLeaf: true,
+        }
+      });
+    }
+    return dataFake;
+  }
   handleChangeInfomation({ records, columns }) {
 
     //update informations

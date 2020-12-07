@@ -16,6 +16,7 @@ import { eventEmitter } from '@app/shared/utils/event-emitter';
 export class PendingFormComponent implements OnInit, OnChanges {
   @Input() form: FormGroup;
   @Input() data: any = {};
+  @Input() headerName: string = 'Báo cáo tình hình sử dụng lao động và danh sách tham gia BHXH,BHYT,BHTN';
   @Output() onFormValuesChanged: EventEmitter<any> = new EventEmitter();
   @Output() onFormValid: EventEmitter<any> = new EventEmitter();
   typeDocumentActtachs: Category[] = [];

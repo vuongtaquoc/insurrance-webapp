@@ -10,6 +10,28 @@ export const PLANCODECOUNTBHYT: any = [
   'TM',  
 ]
 
+export const validationColumnsHeader: any = {
+  'reissuehealthinsurancecard_I' :  {
+    contractCancelNo: {
+      required: true,
+    },
+    dateCancelSign: {
+      required: true,
+      lessThanNow: true
+    },
+    note: {
+      message: 'Chấm dứt HĐLĐ/Chuyển công tác {0} {1}',
+      argsColumn: ['contractCancelNo$ ,số VB ','dateCancelSign$ ,ngày '],  
+    },
+    copy: {
+      type: 'I_1',      
+      tableName : 'reductionlabor',
+      note: 'Truy thu BHYT',
+      planCode : 'TT'
+    }
+  }
+}
+
 
 export const validationColumnsPlanCode: any = {
   'GH1': {

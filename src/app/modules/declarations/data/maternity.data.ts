@@ -347,7 +347,7 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   type: 'text',
   width: 180,
   title: '(E)',
-  key: 'note'
+  key: 'reason'
 },{
   type: 'hidden',
   width: 140,
@@ -528,7 +528,7 @@ export const TABLE_HEADER_COLUMNS_PART_2 = [{
   type: 'text',
   width: 150,
   title: '(D)',
-  key: 'note',
+  key: 'reason',
   wordWrap: true
 },
 {

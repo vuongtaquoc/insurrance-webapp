@@ -235,7 +235,7 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   type: 'text',
   width: 165,
   title: '(D)',
-  key: 'note',
+  key: 'reason',
   wordWrap: true
 },{
   type: 'hidden',
@@ -413,7 +413,7 @@ export const TABLE_HEADER_COLUMNS_PART_2 = [{
   type: 'text',
   width: 165,
   title: '(D)',
-  key: 'note',
+  key: 'reason',
   wordWrap: true
 },
 {

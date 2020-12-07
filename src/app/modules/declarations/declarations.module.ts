@@ -81,12 +81,19 @@ import {
   RegisterAllocationCardListComponent,
   RegisterAllocationCardAddComponent,
   RegisterAllocationCardEditComponent,
+  AdjustmentInsuranceCardListComponent,
+  AdjustmentInsuranceCardAddComponent,
+  AdjustmentInsuranceCardEditComponent,
+  ReissueHealthInsuranceCardListComponent,
+  ReissueHealthInsuranceCardAddComponent,
+  ReissueHealthInsuranceCardEditComponent,
   
 } from './pages';
 
 import {
   TableEditorComponent,
   TableEditorNormalComponent,
+  TableEditorHeaderComponent,
   DocumentListTableComponent,
   DeclarationSidebarComponent,
   IncreaseLaborComponent,
@@ -122,6 +129,10 @@ import {
   PendingCovidComponent,
   AllocationCardComponent,
   RegisterAllocationCardComponent,
+  AdjustmentInsuranceCardComponent,
+  ReissueHealthInsuranceCardComponent,
+  ReissueHealthInsuranceComponent,
+  
 } from './components';
 
 import { RegimeAutoSizeDirective } from './directives';
@@ -158,6 +169,7 @@ import { RegimeAutoSizeDirective } from './directives';
     ReductionLaborEditComponent,
     TableEditorComponent,
     TableEditorNormalComponent,
+    TableEditorHeaderComponent,
     DocumentListTableComponent,
     DeclarationSidebarComponent,
     IncreaseLaborComponent,
@@ -236,6 +248,15 @@ import { RegimeAutoSizeDirective } from './directives';
     RegisterAllocationCardListComponent,
     RegisterAllocationCardAddComponent,
     RegisterAllocationCardEditComponent,
+    AdjustmentInsuranceCardComponent,
+    AdjustmentInsuranceCardListComponent,
+    AdjustmentInsuranceCardAddComponent,
+    AdjustmentInsuranceCardEditComponent,
+    ReissueHealthInsuranceCardComponent,
+    ReissueHealthInsuranceCardListComponent,
+    ReissueHealthInsuranceCardAddComponent,
+    ReissueHealthInsuranceCardEditComponent,
+    ReissueHealthInsuranceComponent,
   ],
   providers: [
     AuthenticationService,

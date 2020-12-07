@@ -1,70 +1,85 @@
 <div class="page-container">
   <nz-spin [nzSpinning]="isSpinning">
     <div class="page-declarations" [ngClass]="{'page-declarations-hide-last-tab': !usedocumentDT01}" cardFullHeight>
-      <nz-tabset nzSize="small" nzTabPosition="bottom" nzSelectedIndex="1" [nzTabBarExtraContent]="extraTemplate" (nzSelectChange)="handleSelectTab($event)">
-        <nz-tab nzTitle="Danh mục tài liệu">
+      <nz-tabset nzSize="small" nzTabPosition="bottom" nzSelectedIndex="1" [nzTabBarExtraContent]="extraTemplate"
+        (nzSelectChange)="handleSelectTab($event)">
+        <nz-tab  [nzTitle]="tabDocument">
+          <ng-template #tabDocument>
+            <div class="page-adjust-general__tab-title" [ngClass]="{'page-adjust-general__tab-title--error': tableSubmitErrors.documentFomError > 0}">
+              Danh mục tài liệu
+            </div>
+          </ng-template>
           <div class="page-document-list__container">
             <form nz-form [formGroup]="documentForm">
               <h1><strong>{{declarationCode}}</strong> | {{declarationName}}</h1>
-              <div nz-row [nzGutter]="10">
+               <div nz-row [nzGutter]="10">
                 <div nz-col [nzSpan]="12">
                   <nz-form-item>
                     <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Người nộp</nz-form-label>
-                    <nz-form-control [nzSpan]="14">
-                      <input nz-input
-                        placeholder="Người nộp"
-                        formControlName="userAction"
-                        (onChange)="handleChangeForm()"
-                      />
+                    <nz-form-control [nzSpan]="14" [nzErrorTip]="submitterTpl">
+                      <input nz-input placeholder="Người nộp" formControlName="submitter"/>
+                      <ng-template #submitterTpl let-control>
+                        <ng-container *ngIf="control.hasError('required')">
+                          <p class="regime-approval-form__error">Người nộp không được để trống</p>
+                        </ng-container>
+                      </ng-template>
                     </nz-form-control>
                   </nz-form-item>
                 </div>
                 <div nz-col [nzSpan]="12">
                     <nz-form-item>
                       <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Số điện thoại</nz-form-label>
-                      <nz-form-control [nzSpan]="14">
-                        <input nz-input
-                          placeholder="Số điện thoại"
-                          formControlName="mobile"
-                          (onChange)="handleChangeForm()"
-                        />
+                      <nz-form-control [nzSpan]="14" [nzErrorTip]="mobileTpl">
+                        <!-- <input nz-input formControlName="month"> -->
+                        <input nz-input formControlName="mobile" placeholder="Số điện thoại">
+                        <ng-template #mobileTpl let-control>
+                          <ng-container *ngIf="control.hasError('required')">
+                            <p class="regime-approval-form__error">Số điện thoại không được để trống</p>
+                          </ng-container>
+                          <ng-container *ngIf="control.hasError('pattern')">
+                            <p class="regime-approval-form__error">Số điện thoại phải là số</p>
+                          </ng-container>
+                        </ng-template>
                       </nz-form-control>
                     </nz-form-item>
                   </div>
                 </div>
-                <h1>Thành phần hồ sơ</h1>
+              <h1>Thành phần hồ sơ</h1>
+              <div class="document-form__process-table">
                 <div class="document-form__process-table">
-                  <div class="document-form__process-table">
-                    <app-document-table
-                      [data]="documentList"
-                      (onChange)="handleChangeProcessTable($event)"
-                      (onDelete)="handleDeleteProcessData($event)"
-                    ></app-document-table>
-                  </div>
+                  <app-document-table [data]="documentList" (onChange)="handleChangeProcessTable($event)"
+                    (onDelete)="handleDeleteProcessData($event)"></app-document-table>
                 </div>
-                <div nz-row [nzGutter]="10">
-                  <div nz-col [nzSpan]="12">
-                    <nz-form-item>
-                      <label nz-checkbox  formControlName="usedocumentDT01">Phát sinh kê khai Mẫu D01T-TS Bảng kê thông tin</label>
-                    </nz-form-item>
-                  </div>
+              </div>
+              <div nz-row [nzGutter]="10">
+                <div nz-col [nzSpan]="12">
+                  <nz-form-item>
+                    <label nz-checkbox formControlName="usedocumentDT01">Phát sinh kê khai Mẫu D01T-TS Bảng kê thông
+                      tin</label>
+                  </nz-form-item>
                 </div>
+              </div>
             </form>
           </div><!-- page-declarations__container -->
         </nz-tab><!-- tab 1-->
 
-        <nz-tab nzTitle="D05-TS">
-          <div class="page-declarations__container" [ngClass]="{ 'page-declarations__container--hidden': isHiddenSidebar }">
-            <app-declaration-sidebar
-              tableName="increaseLabor"
-              [isHiddenSidebar]="isHiddenSidebar"
+        <nz-tab [nzTitle]="allocationCard">
+          <ng-template #allocationCard>
+            <div class="page-adjust-general__tab-title" [ngClass]="{'page-adjust-general__tab-title--error': (tableSubmitErrors.allocationCard > 0 || tableSubmitErrors.generalFomError > 0)}">
+              D05-TS
+            </div>
+          </ng-template>
+          <div class="page-declarations__container"
+            [ngClass]="{ 'page-declarations__container--hidden': isHiddenSidebar }">
+            <app-declaration-sidebar tableName="increaseLabor"
+               [isHiddenSidebar]="isHiddenSidebar"
               [events]="employeeSubject.asObservable()"
               (onSelectEmployees)="handleSelectEmployees($event)"
               (onToggleSidebar)="handleToggleSidebar()"
               (onUserUpdated)="handleUserUpdated($event)"
-              (onUserDeleted)="handleUserDeleted($event)"
-              (onUserAdded)="handleUserAdded($event)"
-            ></app-declaration-sidebar>
+              (onUserDeleted)="handleUserDeleted($event)" 
+              (onUserAdded)="handleUserAdded($event)">
+            </app-declaration-sidebar>
 
             <div class="page-declarations__content">
               <div class="page-declarations__group-button">
@@ -84,48 +99,37 @@
                 </div>
                 <h1><strong>{{declarationCode}}</strong> | {{declarationName}}</h1>
               </div><!-- page-declarations__group-button -->
-
               <div class="page-declarations__title">
                 <h2>Danh sách người tham gia bảo hiểm xã hội Tự nguyện</h2>
                 <form nz-form [formGroup]="form" class="page-declarations__search_normal">
                   <nz-form-item>
                     <nz-form-label [nzNoColon]="true" [nzSpan]="18">Tỷ lệ đóng (%)</nz-form-label>
-                    <nz-form-control [nzSpan]="6" [nzErrorTip]="monthTpl">
+                    <nz-form-control [nzSpan]="6" [nzErrorTip]="ratioPaymentTpl">
                       <input nz-input formControlName="ratioPayment" (onChange)="handleChangeForm()">
-                      <ng-template #monthTpl let-control>
+                      <ng-template #ratioPaymentTpl let-control>
                         <ng-container *ngIf="control.hasError('required')">
-                          <p class="regime-approval-form__error">Tháng tờ khai không để trống</p>
+                          <p class="regime-approval-form__error">Tỷ lệ đóng (%) không để trống</p>
                         </ng-container>
                         <ng-container *ngIf="control.hasError('min')">
-                            <p class="regime-approval-form__error"> Tháng phải lơn hơn 0</p>
+                            <p class="regime-approval-form__error"> Tỷ lệ đóng (%) phải lơn hơn 0</p>
                           </ng-container>
                           <ng-container *ngIf="control.hasError('max')">
-                              <p class="regime-approval-form__error">Tháng phải nhỏ hơn hoặc bằng 12</p>
+                              <p class="regime-approval-form__error">Tỷ lệ đóng (%) phải nhỏ hơn hoặc bằng 100</p>
                           </ng-container>
                         <ng-container *ngIf="control.hasError('pattern')">
-                          <p class="regime-approval-form__error">Tháng tờ khai phải số</p>
+                          <p class="regime-approval-form__error">Tỷ lệ đóng (%) tờ khai phải số</p>
                         </ng-container>
                       </ng-template>
                     </nz-form-control>
                   </nz-form-item>
                   <nz-form-item>
-                    <nz-form-label [nzNoColon]="true" [nzSpan]="12">Chuẩn nghèo(CN)</nz-form-label>
-                    <nz-form-control [nzSpan]="12" [nzErrorTip]="yearTpl">
-                      <input nz-input formControlName="year" (onChange)="handleChangeForm()">
-                      <ng-template #yearTpl let-control>
-                        <ng-container *ngIf="control.hasError('required')">
-                          <p class="regime-approval-form__error">Năm tờ khai không để trống</p>
-                        </ng-container>
-                        <ng-container *ngIf="control.hasError('pattern')">
-                          <p class="regime-approval-form__error">Năm tờ khai phải số</p>
-                        </ng-container>
-                        <ng-container *ngIf="control.hasError('min')">
-                            <p class="regime-approval-form__error"> Năm phải lơn hơn năm 1990</p>
-                        </ng-container>
-                        <ng-container *ngIf="control.hasError('maxlength')">
-                            <p class="regime-approval-form__error"> Năm chỉ được tối đa 4 ký tự</p>
-                        </ng-container>
-                      </ng-template>
+                    <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Chuẩn nghèo(CN)</nz-form-label>
+                    <nz-form-control [nzSpan]="14">
+                      <nz-select [nzSize]="'small'" class="custom-select" nzShowSearch nzAllowClear formControlName="coefficientCode">
+                        <nz-option *ngFor="let coefficient of coefficients" [nzLabel]="coefficient.name"
+                          [nzValue]="coefficient.id">
+                        </nz-option>
+                      </nz-select>
                     </nz-form-control>
                   </nz-form-item>
                 </form>
@@ -134,36 +138,32 @@
                   <button nz-button nzType="default" (click)="checkInsurranceCode($event)">Kiểm tra mã số BHXH</button>
                 </div><!-- page-declarations__check-code -->
               </div><!-- page-declarations__title -->
-
+               
               <div class="page-declarations__editor">
-                <app-table-editor
-                  tableName="increaseLabor"
+                <app-table-editor 
+                  tableName="allocationCard" 
                   [nestedHeaders]="tableNestedHeaders"
-                  [columns]="tableHeaderColumns"
-                  [data]="declarations"
-                  [events]="eventsSubject.asObservable()"
-                  [validate]="validateSubject.asObservable()"
+                  [columns]="tableHeaderColumns" 
+                  [data]="declarations" 
+                  [events]="tableSubject.asObservable()"
+                  [validate]="validateSubject.asObservable()" 
                   (onSubmit)="handleSubmit($event)"
-                  (onChange)="handleChangeTable($event)"
+                  (onChange)="handleChangeTable($event)" 
                   (onDelete)="handleDeleteData($event)"
-                  (onAddRow)="handleAddRow($event)"
-                  (onFocus)="handleFocus($event)"
-                  (onSort)="handleSort($event)"
-                ></app-table-editor>
-              </div><!-- page-declarations__editor -->
-
+                  (onAddRow)="handleAddRow($event)" 
+                  (onFocus)="handleFocus($event)" 
+                  (onSort)="handleSort($event)">
+                </app-table-editor>
+              </div><!-- page-declarations__editor -->               
               <nz-collapse [nzBordered]="false" [ngClass]="{
                 'collapse-active-all': panel.general.active && panel.attachment.active,
                 'collapse-active-general': panel.general.active && !panel.attachment.active,
                 'collapse-active-attachment': !panel.general.active && panel.attachment.active
               }">
-                <nz-collapse-panel class="collapse-general" nzHeader="Phần tổng hợp" [nzActive]="panel.general.active" (nzActiveChange)="collapseChange($event, 'general')">
-                  <app-labor-general-form
-                  [data]="declarationGeneral"
-                  (onFormValuesChanged)="handleFormValuesChanged($event)"></app-labor-general-form>
-                </nz-collapse-panel>
-                <nz-collapse-panel class="collapse-attachment" [nzHeader]="attachmentHeader" [nzActive]="panel.attachment.active" (nzActiveChange)="collapseChange($event, 'attachment')">
-                  <app-labor-attachment [files]="files" (onSelectedFileChanged)="handleFileSelected($event)"></app-labor-attachment>
+                <nz-collapse-panel class="collapse-attachment" [nzHeader]="attachmentHeader"
+                  [nzActive]="panel.attachment.active" (nzActiveChange)="collapseChange($event, 'attachment')">
+                  <app-labor-attachment [files]="files" [notAllowAttach] ="!allowAttachFile" [declarationCode] = "declarationCode" (onSelectedFileChanged)="handleFileSelected($event)">
+                  </app-labor-attachment>
                 </nz-collapse-panel>
               </nz-collapse>
               <ng-template #attachmentHeader>
@@ -172,39 +172,51 @@
             </div><!-- page-declarations__content -->
           </div><!-- page-declarations__container -->
         </nz-tab><!-- tab 2 -->
-        <nz-tab nzTitle="PL TVHGD-NLD" [nzDisabled]="!families || !families.length">
+        <nz-tab [nzTitle]="tabFamily" [nzDisabled]="(!autoCreateFamilies || !families || !families.length)">
+            <ng-template #tabFamily>
+                <div class="page-adjust-general__tab-title" [ngClass]="{'page-adjust-general__tab-title--error': tableSubmitErrors.family > 0}">
+                  PL TVHD-NLD
+                </div>
+              </ng-template>
           <div class="page-document-list__container page-document-list__container--note">
-            <h1>600 | Báo tăng lao động</h1>
+          <h1><strong>{{declarationCode}}</strong> | {{declarationName}}</h1>
             <h2>PHỤ LỤC THÀNH VIÊN GIA ĐÌNH</h2>
             <div class="document-form__process-table">
-              <app-families-list-table
-                tableName="family"
-                [data]="families"
+              <app-families-list-table 
+                tableName="family" 
+                [data]="families" 
                 [nestedHeaders]="tableNestedHeadersFamilies"
                 [columns]="tableHeaderColumnsFamilies"
-                [events]="familiesSubject.asObservable()"
-                (onChange)="handleChangeDataFamilies($event)"
+                [events]="tableSubject.asObservable()"
+                (onChange)="handleChangeDataFamilies($event)" 
                 (onDelete)="handleDeleteMember($event)"
-                (onAddRow)="handleAddMember($event)"
-              ></app-families-list-table>
+                (onAddRow)="handleAddMember($event)">
+              </app-families-list-table>
             </div>
           </div>
         </nz-tab>
-        <nz-tab nzTitle="Bảng kê hồ sơ" [nzDisabled]="!informations || !informations.length">
+        <nz-tab [nzTitle]="tabDocumentList">
+            <ng-template #tabDocumentList>
+                <div class="page-adjust-general__tab-title" [ngClass]="{'page-adjust-general__tab-title--error': tableSubmitErrors.documentList > 0}">
+                  Bảng kê hồ sơ
+                </div>
+            </ng-template>
           <div class="page-document-list__container">
             <form nz-form [formGroup]="documentForm">
-              <h1>600 | Báo tăng lao động</h1>
+              <h1><strong>{{declarationCode}}</strong> | {{declarationName}}</h1>
               <h2>Bảng kê thông tin</h2>
 
               <div class="document-form__process-table">
-                <app-document-list-table
-                  [data]="informations"
+                <app-document-list-table 
+                  tableName="documentList"
+                  [data]="informations" 
                   [nestedHeaders]="tableNestedHeadersDocuments"
-                  [columns]="tableHeaderColumnsDocuments"
-                  [events]="documentsSubject.asObservable()"
-                  (onChange)="handleChangeInfomation($event)"
-                  (onDelete)="handleDeleteInfomation($event)"
-                ></app-document-list-table>
+                  [columns]="tableHeaderColumnsDocuments" 
+                  [events]="tableSubject.asObservable()"
+                  (onChange)="handleChangeInfomation($event)" 
+                  (onAddRow)="handleAddDocumentRow($event)"
+                  (onDelete)="handleDeleteInfomation($event)">
+                </app-document-list-table>
               </div>
             </form>
           </div>
@@ -213,13 +225,21 @@
       </nz-tabset>
       <ng-template #extraTemplate>
         <div class="page-declarations__footer">
-          <button nz-button class="page-declarations__footer-export" nzType="default" nzSize="small" (click)="emitEventToChild('saveAndView')">
+          <button nz-button class="page-declarations__footer-export" nzType="default" nzSize="small"
+            (click)="emitEventToChild('saveAndView')">
             <i nz-icon nzType="upload"></i>Xuất tờ khai
           </button>
           <button nz-button nzType="default" nzSize="small" (click)="emitEventToChild('save')">
             <i nz-icon nzType="save"></i>Ghi lại
           </button>
-          <button nz-button class="page-declarations__footer-button" nzType="default" nzSize="small" (click)="emitEventToChild('back')">
+          <button nz-button nzType="default" nzSize="small" (click)="rollback()">
+              <i nz-icon nzType="folder-open"  nzTheme="outline"></i>Lấy mẫu file
+            </button>
+            <button nz-button nzType="default" nzSize="small" (click)="rollback()">
+              <i nz-icon nzType="database" nzTheme="outline"></i>Nạp dữ liệu
+            </button>
+          <button nz-button class="page-declarations__footer-button" nzType="default" nzSize="small"
+            (click)="emitEventToChild('back')">
             <i nz-icon nzType="reload"></i>Quay lại
           </button>
         </div>

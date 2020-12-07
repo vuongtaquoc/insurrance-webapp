@@ -24,8 +24,8 @@ export class CoefficientService {
     );;
   }
   
-  public getById(id): Observable<any> {
-    return this.http.get(`/coefficient/${id}`);
+  public getDetail(code): Observable<any> {
+    return this.http.get(`/coefficient/${code}`);
   }
    
 }

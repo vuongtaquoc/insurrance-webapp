@@ -97,7 +97,7 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   width: 45,
   title: '(3)',
   align: 'center',
-  key: 'hasBookIsurrance',
+  key: 'isExitsIsurranceNo',
   readOnly: true
 }, {
   type: 'text',
@@ -131,6 +131,7 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   fieldName: 'Ngày tháng năm sinh',
   key: 'birthday',
   validations: {
+    required: true,
     lessThanNow: true
   }
 }, {
@@ -632,7 +633,7 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   width: 180,
   title: '(28)',
   wordWrap: true,
-  key: 'note'
+  key: 'reason'
 },
 {
   type: 'hidden',

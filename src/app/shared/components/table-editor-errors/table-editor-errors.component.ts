@@ -35,6 +35,8 @@ const TABLES = {
   pendingCovid600d: 'D02-TL',
   documentList600d: 'Bảng kê hồ sơ',
   allocationCard: 'Bảng kê D03-TS',
+  reissuehealthinsurancecard610: 'D02-TL',
+  documentList610: 'Bảng kê hồ sơ',
 };
 
 @Component({

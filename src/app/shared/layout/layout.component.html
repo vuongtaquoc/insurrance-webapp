@@ -105,6 +105,8 @@
                       nz-icon nzType="form" nzTheme="outline"></i>Tạm dừng đóng vào quỹ hưu trí và tử tuất</a></li>
               <li nz-menu-item [hidden]="!permissions[pmsConf.adjust.R]"><a [routerLink]="['/declarations/pending-retirement-covid']"><i
                         nz-icon nzType="form" nzTheme="outline"></i>Tạm dừng đóng vào quỹ hưu trí và tử tuất do ảnh hưởng của dịch Covid 19</a></li>
+                <li nz-menu-item [hidden]="!permissions[pmsConf.adjust.R]"><a [routerLink]="['/declarations/reissue-health-insurance-card']"><i
+                          nz-icon nzType="form" nzTheme="outline"></i>Cấp lại thẻ BHYT do thay đổi mã quyền lợi, thay đổi thông tin in trên thẻ</a></li>
               <li nz-menu-item [hidden]="!permissions[pmsConf.arrears.R]"><a [routerLink]="['/declarations/arrears']"><i
                     nz-icon nzType="carry-out" nzTheme="outline"></i>Truy thu điều chỉnh điều chỉnh chức danh, mức
                   đóng(trường hợp báo muộn)</a></li>
@@ -118,6 +120,9 @@
               <li nz-menu-item [hidden]="!permissions[pmsConf.reissue_insurance_card.R]"><a
                 [routerLink]="['/declarations/reissue-insurance-card']"><i nz-icon nzType="account-book"
                   nzTheme="outline"></i>Cấp lại sổ BHXH do hỏng, do mất</a></li>
+                <li nz-menu-item [hidden]="!permissions[pmsConf.reissue_insurance_card.R]"><a
+                    [routerLink]="['/declarations/adjustment-insurance-card']"><i nz-icon nzType="account-book"
+                      nzTheme="outline"></i>Cấp lại sổ BHXH do điểu chỉnh nội dung đã ghi trên sổ BHXH</a></li>
               <li nz-menu-item [hidden]="!permissions[pmsConf.health_insurance_card.R]"><a
                 [routerLink]="['/declarations/health-insurance-card']"><i nz-icon nzType="idcard"
                   nzTheme="outline"></i>Cấp lại thẻ BHYT do hỏng, do mất</a></li>

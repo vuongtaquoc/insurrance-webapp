@@ -79,7 +79,7 @@ export const TABLE_HEADER_COLUMNS = [{
   width: 45,
   title: '(3)',
   align: 'center',
-  key: 'hasBookIsurrance'
+  key: 'isExitsIsurranceNo'
 }, {
   type: 'text',
   width: 120,
@@ -130,6 +130,7 @@ export const TABLE_HEADER_COLUMNS = [{
   fieldName: 'Ngày tháng năm sinh',
   key: 'birthday',
   validations: {
+    required: true,
     lessThanNow: true
   }
 }, {
@@ -290,11 +291,12 @@ export const TABLE_HEADER_COLUMNS = [{
   title: '(16)',
   align: 'right',
   mask: '#,##0',
-  // decimal: ',',
+  fieldName: 'Mức thu nhập tháng đóng BHXH',
   sum: true,
   key: 'salary',
   validations: {
-    number: true
+    number: true,
+    min: 1,
   },
   format: (value) => {
     return format.currency(value);
@@ -329,6 +331,7 @@ export const TABLE_HEADER_COLUMNS = [{
   fieldName: 'Số tháng đóng',
   validations: {
     required: true,
+    min: 1,
     number: true
   },
 },
@@ -341,17 +344,20 @@ export const TABLE_HEADER_COLUMNS = [{
   validations: {
     required: true
   },
-},{
+},
+{
   type: 'numeric',
-  align: 'right',
-  width: 80,
+  width: 120,
   title: '(19.1)',
+  align: 'right',
   mask: '#,##0',
-  sum: true,
-  key: 'moneyPayment',
   fieldName: 'Tổng số tiền phải đóng',
+  sum: true,
+  readOnly: true,
+  key: 'moneyPayment',
   validations: {
-    number: true
+    number: true,
+    min: 1,
   },
   format: (value) => {
     return format.currency(value);
@@ -378,12 +384,13 @@ export const TABLE_HEADER_COLUMNS = [{
   mask: '#,##0',
   fieldName: 'Số tiền NS nhà nước hỗ trợ',
   sum: true,
+  readOnly: true,
   key: 'soTienNSNN',
   validations: {
     number: true
   },
   format: (value) => {
-    return format.currency(value, '0,0.000');
+    return format.currency(value, '0,0');
   }
 }, {
   type: 'numeric',
@@ -408,11 +415,12 @@ export const TABLE_HEADER_COLUMNS = [{
   fieldName: 'Số tiền NS địa phương hỗ trợ',
   sum: true,
   key: 'soTienNSDP',
+  readOnly: true,
   validations: {
     number: true
   },
   format: (value) => {
-    return format.currency(value, '0,0.000');
+    return format.currency(value, '0,0');
   }
 }, {
   type: 'numeric',
@@ -436,12 +444,13 @@ export const TABLE_HEADER_COLUMNS = [{
   mask: '#,##0',
   // decimal: ',',
   sum: true,
+  readOnly: true,
   key: 'toChuCaNhanHTKhac',
   validations: {
     number: true
   },
   format: (value) => {
-    return format.currency(value, '0,0.000');
+    return format.currency(value, '0,0');
   }
 }, {
   type: 'numeric',
@@ -451,6 +460,7 @@ export const TABLE_HEADER_COLUMNS = [{
   mask: '#,##0',
   fieldName: 'Người tham gia đóng',
   sum: true,
+  readOnly: true,
   key: 'playerClose',
   validations: {
     number: true
@@ -463,7 +473,7 @@ export const TABLE_HEADER_COLUMNS = [{
   width: 220,
   title: '(20)',
   wordWrap: true,
-  key: 'note'
+  key: 'reason'
 },{
   type: 'hidden',
   width: 140,
