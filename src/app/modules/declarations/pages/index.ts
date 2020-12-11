@@ -52,3 +52,8 @@ export * from './adjustment-insurance-card-add/adjustment-insurance-card-add.com
 export * from './reissue-health-insurance-card-list/reissue-health-insurance-card-list.component';
 export * from './reissue-health-insurance-card-edit/reissue-health-insurance-card-edit.component';
 export * from './reissue-health-insurance-card-add/reissue-health-insurance-card-add.component';
+export * from './reissue-health-insurance-card-list/reissue-health-insurance-card-list.component';
+export * from './reissue-health-insurance-card-edit/reissue-health-insurance-card-edit.component';
+export * from './infomation-insurance-card-add/infomation-insurance-card-add.component';
+export * from './infomation-insurance-card-edit/infomation-insurance-card-edit.component';
+export * from './infomation-insurance-card-list/infomation-insurance-card-list.component';

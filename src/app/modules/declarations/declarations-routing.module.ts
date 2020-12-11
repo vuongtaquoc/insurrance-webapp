@@ -59,6 +59,9 @@ import {
   ReissueHealthInsuranceCardAddComponent,
   ReissueHealthInsuranceCardEditComponent,
   ReissueHealthInsuranceCardListComponent,
+  InfomationInsuranceCardAddComponent,
+  InfomationInsuranceCardEditComponent,
+  InfomationInsuranceCardListComponent,
    
 } from './pages';
 
@@ -339,6 +342,20 @@ const routes: Routes = [
       {
         path: 'reissue-health-insurance-card/:id/edit',
         component: ReissueHealthInsuranceCardEditComponent,
+        canDeactivate: [ UnsavedChangesGuard, NavigationGuard ]
+      },
+      {
+        path: 'infomation-insurance-card',
+        component: InfomationInsuranceCardListComponent
+      },
+      {
+        path: 'infomation-insurance-card/add',
+        component: InfomationInsuranceCardAddComponent,
+        canDeactivate: [ UnsavedChangesGuard, NavigationGuard ]
+      },
+      {
+        path: 'infomation-insurance-card/:id/edit',
+        component: InfomationInsuranceCardEditComponent,
         canDeactivate: [ UnsavedChangesGuard, NavigationGuard ]
       }
     ]

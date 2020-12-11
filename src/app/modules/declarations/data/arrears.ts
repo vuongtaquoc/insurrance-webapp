@@ -236,7 +236,11 @@ export const TABLE_ARREARS_HEADER_COLUMNS = [{
   width: 135,
   wordWrap: true,
   title: '(15)',
-  key: 'workAddress'
+  fieldName: 'Nới làm việc',
+  key: 'workAddress',
+  validations: {
+    required: true,
+  }
 }, {
   type: 'dropdown',
   autocomplete: true,

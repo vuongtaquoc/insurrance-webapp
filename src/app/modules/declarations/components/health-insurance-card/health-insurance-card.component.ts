@@ -678,7 +678,7 @@ export class ReissueHealthCardComponent implements OnInit, OnDestroy {
         this.updateNextColumns(instance, r, '', [ c + 1, c + 2, c + 4, c + 5 ]);
       } else if (column.key === 'isurranceNo') {
         const isurranceNo = records[r][c];
-        const indexOfNote = this.tableHeaderColumns.findIndex(c => c.key === 'note');
+        const indexOfNote = this.tableHeaderColumns.findIndex(c => c.key === 'reason');
         const noteMessage = this.formatNote(isurranceNo);
         this.updateNextColumns(instance, r, noteMessage , [ indexOfNote ]);
       } else if (column.key === 'fullName') {
@@ -686,7 +686,7 @@ export class ReissueHealthCardComponent implements OnInit, OnDestroy {
         this.timer = setTimeout(() => {
           const indexOfisurranceNo = this.tableHeaderColumns.findIndex(c => c.key === 'isurranceNo');
           const isurranceNo = records[r][indexOfisurranceNo];
-          const indexOfNote = this.tableHeaderColumns.findIndex(c => c.key === 'note');
+          const indexOfNote = this.tableHeaderColumns.findIndex(c => c.key === 'reason');
           const noteMessage = this.formatNote(isurranceNo);
           this.updateFakeEmployeeId(instance, cell, c, r, records);
           this.updateNextColumns(instance, r, noteMessage , [ indexOfNote ]);

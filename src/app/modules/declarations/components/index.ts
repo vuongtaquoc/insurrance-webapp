@@ -40,3 +40,4 @@ export * from './register-allocation-card/register-allocation-card.component';
 export * from './adjustment-insurance-card/adjustment-insurance-card.component';
 export * from './reissue-health-insurance-card/reissue-health-insurance-card.component';
 export * from './reissue-health-insurance/reissue-health-insurance.component';
+export * from './infomation-insurance-card/infomation-insurance-card.component';

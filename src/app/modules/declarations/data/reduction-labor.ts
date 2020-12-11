@@ -309,7 +309,11 @@ export const TABLE_REDUCTION_HEADER_COLUMNS = [{
   width: 135,
   wordWrap: true,
   title: '(19)',
-  key: 'workAddress'
+  fieldName: 'Nới làm việc',
+  key: 'workAddress',
+  validations: {
+    required: true,
+  }
 }, {
   type: 'dropdown',
   autocomplete: true,
@@ -501,7 +505,9 @@ export const TABLE_REDUCTION_HEADER_COLUMNS = [{
   width: 50,
   title: '(26)',
   key: 'ratio',
+  fieldName: 'Tỷ lệ đóng',
   validations: {
+    required: true,
     number: true
   },
   format: (value) => {

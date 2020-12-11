@@ -1395,6 +1395,7 @@ export class AllocationCardComponent implements OnInit, OnDestroy {
       });
       p.origin = {
         employeeId: p.employeeId,
+        isExitsIsurranceNo: p.isExitsIsurranceNo,
         isLeaf: true,
       };
     });
@@ -1410,6 +1411,7 @@ export class AllocationCardComponent implements OnInit, OnDestroy {
         data: [index + 1],
         origin: {
           employeeId: '',
+          isExitsIsurranceNo: false,
           isLeaf: true,
         } 
       });
@@ -1424,6 +1426,7 @@ export class AllocationCardComponent implements OnInit, OnDestroy {
         data: [index + 1],
         origin: {
           employeeId: '',
+          isExitsIsurranceNo: false,
           isLeaf: true,
         }        
       });
@@ -1698,15 +1701,18 @@ export class AllocationCardComponent implements OnInit, OnDestroy {
               documentCode: doc.documentCode,
               planCode: emp.planCode,
               employeeId: emp.employeeId,
+              isExitsIsurranceNo: emp.isExitsIsurranceNo,
               origin: {
                 employeeId: emp.employeeId,
                 isLeaf: true,
                 planCode: emp.planCode,
                 documentCode: doc.documentCode,
+                isExitsIsurranceNo: emp.isExitsIsurranceNo,
               }
           }; 
         }
-  
+        item.isurranceNo = emp.isurranceNo,           
+        item.isurranceCode = emp.isurranceCode,  
         item.companyRelease = item.companyRelease ? item.companyRelease : this.buildMessgaeByConfig(doc.companyRelease,emp);
         item.dateRelease = item.dateRelease ? item.dateRelease : this.buildMessgaeByConfig(doc.dateRelease,emp);
         item.documentNo = this.buildMessgaeByConfig(doc.documentNo,emp);
@@ -1714,6 +1720,8 @@ export class AllocationCardComponent implements OnInit, OnDestroy {
         item.isurranceNo = emp.isurranceNo;
         item.isurranceCode = emp.isurranceCode;
         item.fullName = emp.fullName;
+        item.isExitsIsurranceNo = emp.isExitsIsurranceNo;
+        item.origin.isExitsIsurranceNo = emp.isExitsIsurranceNo;
         informations.push(item);
       });
   

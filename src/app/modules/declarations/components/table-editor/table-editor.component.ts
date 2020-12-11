@@ -146,7 +146,7 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
 
           instance.jexcel.setValue(nextColumn, '');
         }
-
+        this.validIsurrance();
         this.validationCellByOtherCell(value, column, r, instance, c);
       },
       ondeleterow: (el, rowNumber, numOfRows) => {
@@ -275,7 +275,7 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
         }
       });
     });
-
+    this.validIsurrance();
     this.handleEvent({
       type: 'validate',
       deletedIndexes: [],
@@ -618,5 +618,34 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
     if (!column) return;
 
     column.editor = customAutocomplete(this.spreadsheet, this.getHospitalsByCityCode.bind(this));
+  }
+
+  private validIsurrance() {
+    setTimeout(() => {
+        const indexIsExitsIsurranceNo = this.columns.findIndex(c => c.key === 'isExitsIsurranceNo');
+        const indexisurranceNo = this.columns.findIndex(c => c.key === 'isurranceNo');
+        const indexIsurranceCode = this.columns.findIndex(c => c.key === 'isurranceCode');
+        this.data.forEach((d, y) => {
+          const isExitsIsurranceNo =  d.data[indexIsExitsIsurranceNo];
+            if(isExitsIsurranceNo) {
+              const column = this.columns[indexisurranceNo];
+              const validIsurranceNo = {
+                  required: true,
+              }
+              this.spreadsheet.validationCell(y, indexisurranceNo, column.fieldName ? column.fieldName : column.title, validIsurranceNo);
+              const columnIsurranceCode = this.columns[indexIsurranceCode];
+              const validIsurranceCode = {
+                  required: true,
+                  numberLength: 10
+              }
+              this.spreadsheet.validationCell(y, indexIsurranceCode, columnIsurranceCode.fieldName ? columnIsurranceCode.fieldName : columnIsurranceCode.title, validIsurranceCode);
+            }
+        });
+        this.handleEvent({
+          type: 'validate',
+          deletedIndexes: [],
+          user: {}
+        });
+    }, 10);
   }
 }

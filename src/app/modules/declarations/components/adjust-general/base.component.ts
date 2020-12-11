@@ -175,6 +175,7 @@ export class GeneralBaseComponent {
       employee.workAddress = this.currentCredentials.companyInfo.address;
       employee.planCode = groupInfo.planCode;
       employee.note = groupInfo.note;
+      
       if (accepted) {
         if (declarations[childLastIndex].isInitialize) {
           // remove initialize data
@@ -240,6 +241,7 @@ export class GeneralBaseComponent {
         const accepted = employeeExists.findIndex(e => (e.origin && (e.origin.employeeId || e.origin.id)) === employee.id) === -1;
 
         // replace
+        employee.isExitsIsurranceNo = (employee.isurranceNo !== '' && employee.isurranceNo !== null);
         employee.gender = employee.gender === '1';
         employee.workAddress = this.currentCredentials.companyInfo.address;
 
@@ -430,6 +432,20 @@ export class GeneralBaseComponent {
         }, 10);
       }else if (column.key === 'registerCityCode') {
         this.updateNextColumns(instance, r, '', [ c + 1, c + 2 ]);
+      } else if (column.key === 'isExitsIsurranceNo') {
+        const isExitsIsurranceNo = records[r][c];
+        const indexOfIsurranceNo = this.headers[tableName].columns.findIndex(c => c.key === 'isurranceNo')
+        const indexOfIsurranceCode = this.headers[tableName].columns.findIndex(c => c.key === 'isurranceCode')
+        clearTimeout(this.timer);
+        this.timer = setTimeout(() => {
+          if (!isExitsIsurranceNo) {
+            this.updateNextColumns(instance, r, '', [ indexOfIsurranceNo, indexOfIsurranceCode ]);
+          } else {
+            this.updateNextColumns(instance, r, records[r].origin.isurranceNo, [indexOfIsurranceNo]);
+            this.updateNextColumns(instance, r, records[r].origin.isurranceCode, [indexOfIsurranceCode]);
+          }
+        }, 10);
+
       } else if (column.key === 'recipientsCityCode') {
         this.updateNextColumns(instance, r, '', [ c + 1, c + 2, c + 5, c + 6 ]);
       } else if (column.key === 'planCode') {
@@ -535,7 +551,7 @@ export class GeneralBaseComponent {
               argsMessgae.push(messageBuilder);
             });
 
-            const indexColumnNote = this.headers[tableName].columns.findIndex(c => c.key === 'note');
+            const indexColumnNote = this.headers[tableName].columns.findIndex(c => c.key === 'reason');
             const notebuild = this.formatNote(planConfigInfo.note.message, argsMessgae);
             this.updateNextColumns(instance, r, notebuild, [indexColumnNote]);
             this.processEmployeeByPlanCode(cloneEmployee, tableName, records, r, fromDate);

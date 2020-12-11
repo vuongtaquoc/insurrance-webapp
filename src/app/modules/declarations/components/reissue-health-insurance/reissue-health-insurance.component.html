@@ -1,0 +1,68 @@
+<div class="page-declarations__container" [ngClass]="{ 'page-declarations__container--hidden': isHiddenSidebar }">
+  <app-declaration-sidebar
+    tableName="reissuehealthinsurancecard"
+    [isHiddenSidebar]="isHiddenSidebar"
+    [events]="employeeSubject.asObservable()"
+    (onSelectEmployees)="handleSelectEmployees($event)"
+    (onToggleSidebar)="handleToggleSidebar()"
+    (onUserUpdated)="handleUserUpdateTables($event, 'reissuehealthinsurancecard')"
+    (onUserDeleted)="handleUserDeleteTables($event, 'reissuehealthinsurancecard')"
+    (onUserAdded)="handleUserAdded($event)"
+  ></app-declaration-sidebar>
+
+  <div class="page-declarations__content">
+    <div class="page-declarations__group-button">
+      <div class="page-declarations__buttons">
+        <button class="page-declarations__button" [ngClass]="{'flash-button': isBlinking}" nz-button nzType="default" (click)="handleAddEmployee('I','reissuehealthinsurancecard')">
+         <i nz-icon nzType="dollar-circle" nzTheme="outline"></i> Cấp lại thẻ thay đổi thông tin
+        </button>
+        <button class="page-declarations__button" [ngClass]="{'flash-button': isBlinking}" nz-button nzType="default" (click)="handleAddEmployee('II','reissuehealthinsurancecard')">
+          <i nz-icon nzType="dollar-circle" nzTheme="outline"></i> Cấp lại thẻ thay đổi nơi KCB
+        </button>
+        <button class="page-declarations__button" [ngClass]="{'flash-button': isBlinking}" nz-button nzType="default" (click)="handleAddEmployee('III','reissuehealthinsurancecard')">
+          <i nz-icon nzType="dollar-circle" nzTheme="outline"></i> Ra soát Mã số BHXH
+        </button>
+        <button class="page-declarations__button" [ngClass]="{'flash-button': isBlinking}" nz-button nzType="default" (click)="handleAddEmployee('IV','reissuehealthinsurancecard')">
+          <i nz-icon nzType="dollar-circle" nzTheme="outline"></i> Thay đổi 5 năm liên tục
+        </button>
+      </div>
+      <h1><strong>{{pageCode}} |</strong>| {{pageName}}</h1>
+    </div><!-- page-declarations__group-button -->
+
+    <div class="page-declarations__title">
+      <ng-container *ngIf="hasForm">
+        <app-increase-form (onFormValuesChanged)="handleFormValuesChanged($event)"></app-increase-form>
+      </ng-container>
+      <div *ngIf="!hasForm"></div>
+      <div class="page-declarations__check-code">
+        <button nz-button nzType="default" (click)="checkInsurranceCode($event)">Kiểm tra mã số BHXH</button>
+      </div><!-- page-declarations__check-code -->
+    </div><!-- page-declarations__title -->
+
+    <div class="page-declarations__editor">
+      <app-table-editor-header
+      tableName="reissuehealthinsurancecard"
+      [data]="declarations.reissuehealthinsurancecard.table"
+      [nestedHeaders]="headers.reissuehealthinsurancecard.nested"
+      [columns]="headers.reissuehealthinsurancecard.columns"
+      [events]="tableSubject.asObservable()"
+      [validate]="validateSubject.asObservable()"
+      (onChange)="handleChangeTable($event,'reissuehealthinsurancecard')"
+      (onDelete)="handleDeleteTableData($event,'reissuehealthinsurancecard')"
+      (onAddRow)="handleAddRow($event,'reissuehealthinsurancecard')"
+      (onFocus)="handleFocus($event)"
+      (onSort)="handleSort($event, 'reissuehealthinsurancecard')"
+    ></app-table-editor-header>
+    </div><!-- page-declarations__editor -->
+
+    <nz-collapse [nzBordered]="false">
+      <nz-collapse-panel class="collapse-attachment" [nzHeader]="attachmentHeader" [nzActive]="panel.attachment.active" (nzActiveChange)="collapseChange($event, 'attachment')">
+          <app-labor-attachment  [files]="files" [notAllowAttach] ="!allowAttach" [declarationCode] = "'610'" (onSelectedFileChanged)="handleFileSelected($event)"></app-labor-attachment>
+      </nz-collapse-panel>
+    </nz-collapse>
+    <ng-template #attachmentHeader>
+      Tài liệu kèm theo <span class="collapse-attachment-note">(tổng dung lượng &lt; 20MB)</span>
+    </ng-template>
+
+  </div><!-- page-declarations__content -->
+</div><!-- page-declarations__container -->

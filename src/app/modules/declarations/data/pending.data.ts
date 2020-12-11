@@ -29,10 +29,10 @@ export const TABLE_ADJUST_NESTED_HEADERS = [
   [
     { title: 'Mã số BHXH', rowspan: '2' },
     { title: 'Trạng thái', rowspan: '2' },
-    { title: 'Mức lương', rowspan: '2' },
+    { title: 'Tiền lương', rowspan: '2' },
     { title: 'Hệ số', rowspan: '2' },
     { title: 'Phụ cấp', colspan: '6' },
-    { title: 'Mức lương', rowspan: '2' },
+    { title: 'Tiền lương', rowspan: '2' },
     { title: 'Hệ số', rowspan: '2' },
     { title: 'Phụ cấp', colspan: '6' },
     { title: 'Tháng. năm bắt đầu', rowspan: '2' },
@@ -228,7 +228,11 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   width: 135,
   wordWrap: true,
   title: '(16)',
-  key: 'workAddress'
+  fieldName: 'Nới làm việc',
+  key: 'workAddress',
+  validations: {
+    required: true,
+  }
 }, {
   type: 'dropdown',
   autocomplete: true,
@@ -244,7 +248,7 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   // decimal: ',',
   sum: true,
   key: 'salary',
-  fieldName: 'Mức lương',
+  fieldName: 'Tiền lương',
   validations: {
     number: true
   },

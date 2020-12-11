@@ -66,6 +66,7 @@ export class DocumentListTableComponent implements OnInit, OnDestroy, OnChanges,
           records: this.spreadsheet.getJson(),
           columns: this.columns
         });
+        this.validIsurrance();
       },
       ondeleterow: (el, rowNumber, numOfRows) => {
         this.onDelete.emit({
@@ -108,6 +109,7 @@ export class DocumentListTableComponent implements OnInit, OnDestroy, OnChanges,
 
     this.data = data;
     this.spreadsheet.setData(this.data);
+    this.validIsurrance();
     this.handleEvent({
       type: 'validate',      
     });
@@ -154,4 +156,33 @@ export class DocumentListTableComponent implements OnInit, OnDestroy, OnChanges,
 
     return errorcopy;
   }
+
+  private validIsurrance() {
+    setTimeout(() => {
+        const indexIsExitsIsurranceNo = this.columns.findIndex(c => c.key === 'isExitsIsurranceNo');
+        const indexisurranceNo = this.columns.findIndex(c => c.key === 'isurranceNo');
+        const indexIsurranceCode = this.columns.findIndex(c => c.key === 'isurranceCode');
+        this.data.forEach((d, y) => {
+          const isExitsIsurranceNo =  d.origin.isExitsIsurranceNo;
+            if(isExitsIsurranceNo) {
+              const column = this.columns[indexisurranceNo];
+              const validIsurranceNo = {
+                  required: true,
+              }
+              this.spreadsheet.validationCell(y, indexisurranceNo, column.fieldName ? column.fieldName : column.title, validIsurranceNo);
+              const columnIsurranceCode = this.columns[indexIsurranceCode];
+              const validIsurranceCode = {
+                  required: true,
+                  numberLength: 10
+              }
+              this.spreadsheet.validationCell(y, indexIsurranceCode, columnIsurranceCode.fieldName ? columnIsurranceCode.fieldName : columnIsurranceCode.title, validIsurranceCode);
+            }
+        });
+
+        this.handleEvent({
+          type: 'validate',      
+        });
+
+    }, 10);
+  } 
 }

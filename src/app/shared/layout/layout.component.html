@@ -121,8 +121,11 @@
                 [routerLink]="['/declarations/reissue-insurance-card']"><i nz-icon nzType="account-book"
                   nzTheme="outline"></i>Cấp lại sổ BHXH do hỏng, do mất</a></li>
                 <li nz-menu-item [hidden]="!permissions[pmsConf.reissue_insurance_card.R]"><a
-                    [routerLink]="['/declarations/adjustment-insurance-card']"><i nz-icon nzType="account-book"
-                      nzTheme="outline"></i>Cấp lại sổ BHXH do điểu chỉnh nội dung đã ghi trên sổ BHXH</a></li>
+                    [routerLink]="['/declarations/infomation-insurance-card']"><i nz-icon nzType="account-book"
+                      nzTheme="outline"></i>Cấp lại sổ BHXH do thay đổi họ, tên, chữ đệm; ngày, tháng, năm sinh; giới tính, dân tộc; quốc tịch</a></li>
+               <li nz-menu-item [hidden]="!permissions[pmsConf.reissue_insurance_card.R]"><a
+                        [routerLink]="['/declarations/adjustment-insurance-card']"><i nz-icon nzType="account-book"
+                          nzTheme="outline"></i>Cấp lại sổ BHXH do điểu chỉnh nội dung đã ghi trên sổ BHXH</a></li>
               <li nz-menu-item [hidden]="!permissions[pmsConf.health_insurance_card.R]"><a
                 [routerLink]="['/declarations/health-insurance-card']"><i nz-icon nzType="idcard"
                   nzTheme="outline"></i>Cấp lại thẻ BHYT do hỏng, do mất</a></li>

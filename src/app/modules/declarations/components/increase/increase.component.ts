@@ -123,14 +123,14 @@ export class IncreaseComponent extends GeneralBaseComponent implements OnInit, O
     const INSURRANCE_STATUS_INDEX = 5;
     const errors = {};
     const leafs = declarations.filter(d => d.isLeaf && d.data[INSURRANCE_CODE_INDEX]);
-
+    this.onCheckIsuranceNo.emit('1');
     //Kiểm tra nếu có dữ liệu cần check thì show loadding
     if(leafs.length > 0) {
       eventEmitter.emit('action:loadding', {
         isShow: true,
       });
 
-      this.onCheckIsuranceNo.emit('1');
+     
     }
 
     forkJoin(

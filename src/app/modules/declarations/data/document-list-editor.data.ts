@@ -32,22 +32,15 @@ export const TABLE_DOCUMENT_HEADER_COLUMNS = [{
   width: 100,
   title: '(3)',
   key: 'isurranceNo',
-  fieldName: 'Số sổ bảo hiểm',
-  validations: {
-    required: true
-  }
+  fieldName: 'Số sổ bảo hiểm'
+  
 }, {
   type: 'text',
   width: 100,
   title: '(4)',
   key: 'isurranceCode',
   fieldName: 'Mã số BHXH',
-  validations: {
-    numberLength: 10,
-    required: true
-  }
-
-}, {
+  }, {
   type: 'text',
   width: 150,
   title: '(5)',
@@ -120,6 +113,12 @@ export const TABLE_DOCUMENT_HEADER_COLUMNS = [{
   validations: {
     required: true
   }
+},
+{
+  type: 'hidden',
+  width: 240,
+  align: 'left',
+  key: 'isExitsIsurranceNo'
 },
 {
   type: 'hidden',

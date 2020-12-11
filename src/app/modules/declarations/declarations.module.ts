@@ -87,6 +87,9 @@ import {
   ReissueHealthInsuranceCardListComponent,
   ReissueHealthInsuranceCardAddComponent,
   ReissueHealthInsuranceCardEditComponent,
+  InfomationInsuranceCardListComponent,
+  InfomationInsuranceCardAddComponent,
+  InfomationInsuranceCardEditComponent,
   
 } from './pages';
 
@@ -132,6 +135,7 @@ import {
   AdjustmentInsuranceCardComponent,
   ReissueHealthInsuranceCardComponent,
   ReissueHealthInsuranceComponent,
+  InfomationInsuranceCardComponent,
   
 } from './components';
 
@@ -257,6 +261,10 @@ import { RegimeAutoSizeDirective } from './directives';
     ReissueHealthInsuranceCardAddComponent,
     ReissueHealthInsuranceCardEditComponent,
     ReissueHealthInsuranceComponent,
+    InfomationInsuranceCardComponent,
+    InfomationInsuranceCardListComponent,
+    InfomationInsuranceCardAddComponent,
+    InfomationInsuranceCardEditComponent,
   ],
   providers: [
     AuthenticationService,

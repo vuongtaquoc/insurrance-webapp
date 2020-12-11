@@ -43,7 +43,7 @@ export const TABLE_NESTED_HEADERS = [
     { title: 'Đến ngày', rowspan: '2' },
     { title: 'Từ ngày', rowspan: '2' },
     { title: 'Đến ngày', rowspan: '2' },
-    { title: 'Mức lương', rowspan: '2' },
+    { title: 'Tiền lương', rowspan: '2' },
     { title: 'Hệ số', rowspan: '2' },
     { title: 'Phụ cấp', colspan: '6' },
     { title: 'Tháng. năm bắt đầu', rowspan: '2' },
@@ -104,25 +104,20 @@ export const TABLE_HEADER_COLUMNS = [{
   width: 120,
   title: '(4)',
   key: 'isurranceNo',
+  fieldName: 'Số sổ BHXH',
   warnings: {
     duplicateUserFields: {
       primary: 'isurranceNo',
       check: ['employeeId']
     },
-  },
-  validations: {
-    required: true,
-  }
+  }  
 }, {
   type: 'numeric',
   align: 'right',
   width: 123,
   title: '(5.1)',
   key: 'isurranceCode',
-  fieldName: 'Mã số BHXH',
-  validations: {
-    numberLength: 10
-  }
+  fieldName: 'Mã số BHXH'
 }, {
   type: 'text',
   key: 'isurranceCodeStatus',
@@ -325,7 +320,11 @@ export const TABLE_HEADER_COLUMNS = [{
   width: 75,
   title: '(18)',
   source: [ ],
-  key: 'salaryAreaCode'
+  fieldName: 'Vùng lương tối thiểu',
+  key: 'salaryAreaCode',
+  validations: {
+    required: true,
+  }
 }, {
   type: 'text',
   autocomplete: true,
@@ -333,6 +332,7 @@ export const TABLE_HEADER_COLUMNS = [{
   title: '(19.1)',
   source: [ ],
   wordWrap: true,
+  fieldName: 'Mã đơn vị KCB',
   key: 'hospitalFirstRegistCode',
   validations: {
     required:true,
@@ -343,6 +343,7 @@ export const TABLE_HEADER_COLUMNS = [{
   width: 300,
   title: '(19.2)',
   align: 'left',
+  fieldName: 'Tên đơn vị KCB',
   wordWrap: true,
   key: 'hospitalFirstRegistName',
   validations: {
@@ -352,6 +353,10 @@ export const TABLE_HEADER_COLUMNS = [{
   type: 'text',
   width: 135,
   title: '(20)',
+  validations: {
+    required: true,
+  },
+  fieldName: 'Cấp bậc, chức vụ, chức danh nghề',
   key: 'levelWork'
 },
 {
@@ -391,7 +396,11 @@ export const TABLE_HEADER_COLUMNS = [{
   width: 135,
   wordWrap: true,
   title: '(23)',
-  key: 'workAddress'
+  fieldName: 'Nới làm việc',
+  key: 'workAddress',
+  validations: {
+    required: true,
+  }
 }, {
   type: 'dropdown',
   autocomplete: true,
@@ -441,7 +450,7 @@ export const TABLE_HEADER_COLUMNS = [{
   width: 80,
   title: '(26.1)',
   mask: '#,##0',
-  fieldName: 'Mức lương',
+  fieldName: 'Tiền lương',
   sum: true,
   key: 'salary',
   validations: {
@@ -598,7 +607,9 @@ export const TABLE_HEADER_COLUMNS = [{
   width: 50,
   title: '(29)',
   key: 'rate',
+  fieldName: 'Tỷ lệ đóng',
   validations: {
+    required: true,
     number: true
   },
   format: (value) => {

@@ -643,22 +643,12 @@ export class ReissueInsuranceCardComponent implements OnInit, OnDestroy {
         this.updateNextColumns(instance, r, '', [ c + 1, c + 2 ]);
       } else if (column.key === 'recipientsCityCode') {
         this.updateNextColumns(instance, r, '', [ c + 1, c + 2, c + 4, c + 5 ]);
-       }
-       // else if (column.key === 'isurranceNo') {
-      //   const isurranceNo = records[r][c];
-      //   const indexOfNote = this.tableHeaderColumns.findIndex(c => c.key === 'note')
-      //   const noteMessage = this.formatNote(isurranceNo);
-      //   this.updateNextColumns(instance, r, noteMessage , [ indexOfNote ]);
-      // }
-       else if (column.key === 'fullName') {
+      } else if (column.key === 'fullName') {
         clearTimeout(this.timer);
         this.timer = setTimeout(() => {
           const indexOfisurranceNo = this.tableHeaderColumns.findIndex(c => c.key === 'isurranceNo');
           const isurranceNo = records[r][indexOfisurranceNo];
-          const indexOfNote = this.tableHeaderColumns.findIndex(c => c.key === 'note');
-          // const noteMessage = this.formatNote(isurranceNo);
           this.updateFakeEmployeeId(instance, cell, c, r, records);
-          // this.updateNextColumns(instance, r, noteMessage , [ indexOfNote ]);
         }, 10);
       }
 

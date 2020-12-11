@@ -1,6 +1,6 @@
 <div class="page-container">
   <nz-spin [nzSpinning]="isSpinning">
-    <div class="page-adjust-general" [ngClass]="{'page-adjust-general-hide-last-tab': !usedocumentDT01}" cardFullHeight>
+    <div class="page-declarations" [ngClass]="{'page-declarations-hide-last-tab': !usedocumentDT01}" cardFullHeight>
       <nz-tabset nzSize="small" [ngClass]="{'page-adjust-general__tabs-error': tableSubmitErrorCount > 0}" nzTabPosition="bottom" nzSelectedIndex="1" [nzTabBarExtraContent]="extraTemplate" (nzSelectChange)="handleSelectTab($event)">
           <nz-tab [nzTitle]="tabDocument">
             <ng-template #tabDocument>
@@ -51,6 +51,14 @@
                     ></app-document-table>
                   </div>
                 </div>
+                <div nz-row [nzGutter]="10">
+                  <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                      <label nz-checkbox formControlName="usedocumentDT01">Phát sinh kê khai Mẫu D01T-TS Bảng kê thông
+                        tin</label>
+                    </nz-form-item>
+                  </div>
+                </div>
             </form>
           </div><!-- page-declarations__container -->
         </nz-tab><!-- tab 1-->
@@ -92,6 +100,7 @@
                   [columns]="tableHeaderColumnsDocuments"
                   (onChange)="handleChangeInfomation($event)"
                   (onDelete)="handleDeleteInfomation($event)"
+                  (onAddRow)="handleAddDocumentRow($event)"
                 ></app-document-list-table>
               </div>
             </form>
