@@ -64,7 +64,14 @@ export const TABLE_HEADER_COLUMNS = [{
   title: '(3.1)',
   key: 'isurranceCode',
   fieldName: 'Mã số BHXH',
+  warnings: {
+    duplicateUserFields: {
+      primary: 'isurranceCode',
+      check: ['employeeId']
+    },
+  },
   validations: {
+    required: true,
     numberLength: 10
   }
 }, {
@@ -92,6 +99,12 @@ export const TABLE_HEADER_COLUMNS = [{
   title: '(5)',
   fieldName: 'Ngày tháng năm sinh',
   key: 'birthday',
+  warnings: {
+    duplicateUserFields: {
+      primary: 'birthday',
+      check: ['employeeId']
+    },
+  },
   validations: {
     required: true,
     lessThanNow: true
@@ -125,6 +138,7 @@ export const TABLE_HEADER_COLUMNS = [{
   title: '(8)',
   source: [ 'Chọn' ],
   align: 'left',
+  fieldName: 'Quốc tịch',
   key: 'nationalityCode',
     validations: {
     required: true,

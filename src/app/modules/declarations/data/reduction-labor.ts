@@ -82,11 +82,13 @@ export const TABLE_REDUCTION_HEADER_COLUMNS = [{
   key: 'fullName',
   fieldName: 'Họ và tên',
   isMasterKey: true,
-  validations: {
+  warnings: {
     duplicateUserFields: {
-      primary: 'fullName',
+      primary: 'isurranceNo',
       check: ['employeeId']
     },
+  },
+  validations: {     
     required: true,
   }
 }, {
@@ -100,14 +102,33 @@ export const TABLE_REDUCTION_HEADER_COLUMNS = [{
   type: 'text',
   width: 120,
   title: '(4)',
-  key: 'isurranceNo'
+  key: 'isurranceNo',
+  fieldName: 'Số sổ BHXH',
+  warnings: {
+    duplicateUserFields: {
+      primary: 'isurranceNo',
+      check: ['employeeId']
+    },
+  },
+  validations: {
+    required: true,
+    duplicate: true   
+  }
 }, {
   type: 'numeric',
   width: 123,
   title: '(5.1)',
   key: 'isurranceCode',
   fieldName: 'Mã số BHXH',
+  warnings: {
+    duplicateUserFields: {
+      primary: 'isurranceCode',
+      check: ['employeeId']
+    },
+  },
   validations: {
+    required: true,
+    duplicate: true,
     numberLength: 10
   }
 }, {
@@ -115,6 +136,7 @@ export const TABLE_REDUCTION_HEADER_COLUMNS = [{
   width: 123,
   title: '(5.2)',
   fieldName: 'Trạng thái',
+  readOnly: true,
   wordWrap: true,
 }, {
   type: 'dropdown',
@@ -122,7 +144,13 @@ export const TABLE_REDUCTION_HEADER_COLUMNS = [{
   width: 70,
   title: '(6)',
   source: [ { id: '0', name: 'Ngày tháng năm' },{ id: '1', name: 'tháng/năm' }, { id: '2', name: 'năm' } ],
-  key: 'typeBirthday'
+  key: 'typeBirthday',
+  warnings: {
+    duplicateUserFields: {
+      primary: 'typeBirthday',
+      check: ['employeeId']
+    },
+  }
 }, {
   type: 'text',
   width: 80,
@@ -132,6 +160,12 @@ export const TABLE_REDUCTION_HEADER_COLUMNS = [{
   validations: {
     required: true,
     lessThanNow: true
+  },
+  warnings: {
+    duplicateUserFields: {
+      primary: 'birthday',
+      check: ['employeeId']
+    },
   }
 }, {
   type: 'checkbox',

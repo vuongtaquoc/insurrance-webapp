@@ -76,6 +76,12 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   title: '(2)',
   key: 'fullName',
   fieldName: 'Họ và tên',
+  warnings: {
+    duplicateUserFields: {
+      primary: 'fullName',
+      check: ['employeeId']
+    },
+  },
   validations: {
     required: true
   }
@@ -91,14 +97,32 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   type: 'text',
   width: 120,
   title: '(4)',
-  key: 'isurranceNo'
+  key: 'isurranceNo',
+  warnings: {
+    duplicateUserFields: {
+      primary: 'isurranceNo',
+      check: ['employeeId']
+    },
+  },
+  validations: {
+    required: true,
+    duplicate: true,
+  }
 }, {
   type: 'numeric',
   width: 123,
   title: '(5.1)',
   key: 'isurranceCode',
   fieldName: 'Mã số BHXH',
+  warnings: {
+    duplicateUserFields: {
+      primary: 'isurranceCode',
+      check: ['employeeId']
+    },
+  },
   validations: {
+    required: true,
+    duplicate: true,
     numberLength: 10
   }
 }, {
@@ -111,13 +135,25 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   width: 70,
   title: '(6)',
   source: [{ id: '0', name: 'Ngày tháng năm' },{ id: '1', name: 'tháng/năm' }, { id: '2', name: 'năm' } ],
-  key: 'typeBirthday'
+  key: 'typeBirthday',
+  warnings: {
+    duplicateUserFields: {
+      primary: 'typeBirthday',
+      check: ['employeeId']
+    },
+  },
 }, {
   type: 'text',
   width: 80,
   title: '(7)',
   fieldName: 'Ngày tháng năm sinh',
   key: 'birthday',
+  warnings: {
+    duplicateUserFields: {
+      primary: 'birthday',
+      check: ['employeeId']
+    },
+  },
   validations: {
     required: true,
     lessThanNow: true

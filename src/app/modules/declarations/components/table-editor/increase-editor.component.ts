@@ -272,7 +272,8 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
         planType: d.planType,
         planDefault: d.planDefault,
         isInitialize: d.isInitialize,
-        groupObject: d.groupObject
+        groupObject: d.groupObject,
+        isRequiredIsurranceNo: d.isRequiredIsurranceNo,
       };
 
       data.push(d.data);
@@ -808,30 +809,7 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
         // instance.jexcel.clearValidation(y, Number(cell) - 1);
         instance.jexcel.validationCell(y, Number(cell) - 1, validationColumn.fieldName, validationColumn.validations);
       }
-    } else if (column.key === 'birthday') {
-      // const typeBirthday = this.spreadsheet.getValueFromCoords(Number(cell) - 1, y);
-      // const validationColumn = this.columns[cell];
-      //  const result = validateLessThanEqualNowBirthdayGrid(cellValue, typeBirthday);
-      // if(result) {
-      //   validationColumn.validations = {
-      //     required: true,
-      //     lessThan: true
-      //   };
-      //   validationColumn.fieldName = {
-      //     name: 'Ngày, tháng, năm sinh',
-      //     message: 'Ngày sinh phải nhỏ hơn hoặc bằng ngày hiện tại',
-      //   };
-
-      //   instance.jexcel.validationCell(y, cell, validationColumn.fieldName, validationColumn.validations);
-      // }else {
-      //   validationColumn.validations = {
-      //     required: true
-      //   };
-      //   validationColumn.fieldName = 'Ngày, tháng, năm sinh';
-      //   // instance.jexcel.clearValidation(y, cell);
-      //   instance.jexcel.validationCell(y, cell, validationColumn.fieldName, validationColumn.validations);
-      // }
-    }
+    }  
     
     this.handleEvent({
       type: 'validate',
@@ -847,18 +825,20 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
         const indexisurranceNo = this.columns.findIndex(c => c.key === 'isurranceNo');
         const indexIsurranceCode = this.columns.findIndex(c => c.key === 'isurranceCode');
         this.data.forEach((d, y) => {
+          const isRequiredIsurranceNo = d.data.options.isRequiredIsurranceNo;
           const isExitsIsurranceNo =  d.data[indexIsExitsIsurranceNo];
-            if(isExitsIsurranceNo) {
+            if(!isExitsIsurranceNo && !isRequiredIsurranceNo) {
               const column = this.columns[indexisurranceNo];
               const validIsurranceNo = {
-                  required: true,
+                ...column.validations                
               }
+              validIsurranceNo.required = false;
               this.spreadsheet.validationCell(y, indexisurranceNo, column.fieldName ? column.fieldName : column.title, validIsurranceNo);
               const columnIsurranceCode = this.columns[indexIsurranceCode];
               const validIsurranceCode = {
-                  required: true,
-                  numberLength: 10
+                ...columnIsurranceCode.validations                
               }
+              validIsurranceCode.required = false;
               this.spreadsheet.validationCell(y, indexIsurranceCode, columnIsurranceCode.fieldName ? columnIsurranceCode.fieldName : columnIsurranceCode.title, validIsurranceCode);
             }
         });

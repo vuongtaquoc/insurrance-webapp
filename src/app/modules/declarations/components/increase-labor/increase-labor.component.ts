@@ -1337,9 +1337,10 @@ private setDateToInformationList(records: any)
     const data: any = [];
     row.data = data;
     row.isMaster = false;
-
+	row.isExitsIsurranceNo = false;
     row.origin = {
       isLeaf: true,
+	  isExitsIsurranceNo: false,
     };
 
     informations.splice(insertBefore ? rowNumber : rowNumber + 1, 0, row);

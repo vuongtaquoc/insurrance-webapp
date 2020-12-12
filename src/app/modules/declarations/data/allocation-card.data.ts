@@ -85,25 +85,14 @@ export const TABLE_HEADER_COLUMNS = [{
   width: 120,
   title: '(4)',
   key: 'isurranceNo',
-  warnings: {
-    duplicateUserFields: {
-      primary: 'isurranceNo',
-      check: ['employeeId']
-    },
-  },
-  validations: {
-    required: true,
-  }
+  fieldName: 'Số số BHXH'
 }, {
   type: 'numeric',
   align: 'right',
   width: 123,
   title: '(5.1)',
   key: 'isurranceCode',
-  fieldName: 'Mã số BHXH',
-  validations: {
-    numberLength: 10
-  }
+  fieldName: 'Mã số BHXH'  
 }, {
   type: 'text',
   key: 'isurranceCodeStatus',

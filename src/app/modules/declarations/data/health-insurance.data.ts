@@ -50,14 +50,15 @@ export const TABLE_HEADER_COLUMNS = [{
   title: '(2)',
   fieldName: 'Họ và tên',
   key: 'fullName',  
-  // warnings: {
-  //   duplicateUserFields: {
-  //     primary: 'fullName',
-  //     check: ['employeeId']
-  //   },
-  // },
+  warnings: {
+    duplicateUserFields: {
+      primary: 'fullName',
+      check: ['employeeId']
+    },
+  },
   validations: {
     required: true,
+    duplicate: true
   }
 }, 
 {
@@ -66,17 +67,15 @@ export const TABLE_HEADER_COLUMNS = [{
   title: '(3)',
   key: 'isurranceNo',
   fieldName: 'Số số BHXH',
-  
-  // warnings: {
-  //   duplicateUserFields: {
-  //     primary: 'isurranceNo',
-  //     check: ['employeeId']
-  //   },
-  // },
+  warnings: {
+    duplicateUserFields: {
+      primary: 'isurranceNo',
+      check: ['employeeId']
+    },
+  },
   validations: {
     required: true,
-    duplicate: true,
-    numberLength: 10
+    duplicate: true
   }
 }, {
   type: 'numeric',
@@ -85,12 +84,11 @@ export const TABLE_HEADER_COLUMNS = [{
   title: '(4.1)',
   key: 'isurranceCode',
   fieldName: 'Mã số BHXH',
-  // validations: {
-  //   required: true,
-  //   cardId: true,
-  //   duplicate: true,
-  //   numberLength: 10
-  // }
+  validations: {
+    required: true,
+    duplicate: true,
+    numberLength: 10
+  }
 }, {
   type: 'text',
   key: 'isurranceCodeStatus',
@@ -105,12 +103,12 @@ export const TABLE_HEADER_COLUMNS = [{
   fieldName: 'Loại ngày tháng nắm sinh',
   source: [ { id: '0', name: 'Ngày tháng năm' },{ id: '1', name: 'tháng/năm' }, { id: '2', name: 'năm' } ],
   key: 'typeBirthday',
-  // warnings: {
-  //   duplicateUserFields: {
-  //     primary: 'typeBirthday',
-  //     check: ['employeeId']
-  //   }
-  // }
+  warnings: {
+    duplicateUserFields: {
+      primary: 'typeBirthday',
+      check: ['employeeId']
+    }
+  }
 }, {
   type: 'text',
   width: 80,
@@ -134,12 +132,16 @@ export const TABLE_HEADER_COLUMNS = [{
   title: '(8)',
   source: [ 'Chọn' ],
   key: 'peopleCode',
-  // warnings: {
-  //   duplicateUserFields: {
-  //     primary: 'peopleCode',
-  //     check: ['employeeId']
-  //   }
-  // }
+  fieldName: 'Dân tộc',
+  validations: {
+    required: true,
+  },
+  warnings: {
+    duplicateUserFields: {
+      primary: 'peopleCode',
+      check: ['employeeId']
+    }
+  }
 }, {
   type: 'dropdown',
   autocomplete: true,
@@ -148,12 +150,13 @@ export const TABLE_HEADER_COLUMNS = [{
   source: [ 'Chọn' ],
   align: 'left',
   key: 'nationalityCode',
-  // warnings: {
-  //   duplicateUserFields: {
-  //     primary: 'nationalityCode',
-  //     check: ['employeeId']
-  //   }
-  // }
+  fieldName: 'Quốc tịch',
+  warnings: {
+    duplicateUserFields: {
+      primary: 'nationalityCode',
+      check: ['employeeId']
+    }
+  }
 }, {
   type: 'numeric',
   align: 'right',
@@ -275,13 +278,21 @@ export const TABLE_HEADER_COLUMNS = [{
   wordWrap: true,
   key: 'hospitalFirstRegistCode',
   defaultLoad: true,
+  fieldName: 'Mã đơn vị KCB',
+  validations: {
+    required: true,
+  }
 }, {
   type: 'text',
   width: 300,
   title: '(15.2)',
   align: 'left',
   wordWrap: true,
-  key: 'hospitalFirstRegistName'
+  key: 'hospitalFirstRegistName',
+  fieldName: 'Tên đơn vị KCB',
+  validations: {
+    required: true,
+  }
 }, {
   type: 'text',
   width: 180,

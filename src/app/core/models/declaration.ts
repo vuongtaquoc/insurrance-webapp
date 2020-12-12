@@ -9,4 +9,5 @@ export class Declaration {
   hasLeaf?: boolean;
   planDefault?: string;
   isLeaf?: boolean;
+  IsRequiredIsurranceNo? : boolean;
 }

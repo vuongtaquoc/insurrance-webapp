@@ -871,9 +871,10 @@ export class InfomationInsuranceCardComponent implements OnInit, OnDestroy {
     const data: any = [];
     row.data = data;
     row.isMaster = false;
-
+    row.isExitsIsurranceNo = true;
     row.origin = {
       isLeaf: true,
+      isExitsIsurranceNo: true,
     };
 
     informations.splice(insertBefore ? rowNumber : rowNumber + 1, 0, row);
@@ -955,6 +956,7 @@ export class InfomationInsuranceCardComponent implements OnInit, OnDestroy {
       });
       p.data.origin = {
         employeeId: p.employeeId,
+        isExitsIsurranceNo: p.isExitsIsurranceNo,
         isLeaf: true,
       }
     });
@@ -970,6 +972,7 @@ export class InfomationInsuranceCardComponent implements OnInit, OnDestroy {
         data: [index + 1],
         origin: {
           employeeId: '',
+          isExitsIsurranceNo: true,
           isLeaf: true,
         }
       });
@@ -987,6 +990,7 @@ export class InfomationInsuranceCardComponent implements OnInit, OnDestroy {
         employee.origin = {
           employeeId: employee.employeeId,
           isLeaf:true,
+          isExitsIsurranceNo: employee.isExitsIsurranceNo,
           isMaster: false,
         };
 
@@ -1045,6 +1049,7 @@ export class InfomationInsuranceCardComponent implements OnInit, OnDestroy {
         data: [index + 1],
         origin: {
           employeeId: '',
+          isExitsIsurranceNo: true,
           isLeaf: true,
         }
       });

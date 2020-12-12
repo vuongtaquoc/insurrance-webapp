@@ -135,6 +135,7 @@ export class DeclarationService {
         hasLeaf: d.hasChildren,
         isOther: d.isOther,
         groupObject: d.groupObject,
+        isRequiredIsurranceNo: d.isRequiredIsurranceNo,
         isParent: true
       });
 
@@ -189,6 +190,7 @@ export class DeclarationService {
         hasLeaf: d.hasChildren,
         isParent: true,
         isOther: d.isOther,
+        isRequiredIsurranceNo: d.isRequiredIsurranceNo,
         groupObject: d.groupObject        
       };
 
@@ -260,6 +262,7 @@ export class DeclarationService {
       isInitialize,
       planType: parent.planType,
       planDefault: parent.planDefault,
+      isRequiredIsurranceNo: parent.isRequiredIsurranceNo,
       groupObject: parent.groupObject,
       data: tableHeaderColumns.map(column => {
         if (!column.key) return '';

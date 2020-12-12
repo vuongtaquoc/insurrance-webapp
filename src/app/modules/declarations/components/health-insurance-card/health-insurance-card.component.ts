@@ -996,9 +996,10 @@ export class ReissueHealthCardComponent implements OnInit, OnDestroy {
     const data: any = [];
     row.data = data;
     row.isMaster = false;
-
+    row.isExitsIsurranceNo = true;
     row.origin = {
       isLeaf: true,
+      isExitsIsurranceNo: true,
     };
 
     informations.splice(insertBefore ? rowNumber : rowNumber + 1, 0, row);
@@ -1078,8 +1079,9 @@ export class ReissueHealthCardComponent implements OnInit, OnDestroy {
         if (!column.key || !p[column.key]) return '';
         return p[column.key];
       });
-      p.data.origin = {
+      p.origin = {
         employeeId: p.employeeId,
+        isExitsIsurranceNo: p.isExitsIsurranceNo,
         isLeaf: true,
       }
     });
@@ -1095,6 +1097,7 @@ export class ReissueHealthCardComponent implements OnInit, OnDestroy {
         data: [index + 1],
         origin: {
           employeeId: '',
+          isExitsIsurranceNo: true,
           isLeaf: true,
         }
       });
@@ -1181,6 +1184,7 @@ export class ReissueHealthCardComponent implements OnInit, OnDestroy {
         data: [index + 1],
         origin: {
           employeeId: '',
+          isExitsIsurranceNo: true,
           isLeaf: true,
         }
       });

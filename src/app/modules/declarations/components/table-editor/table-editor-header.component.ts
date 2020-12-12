@@ -270,6 +270,7 @@ export class TableEditorHeaderComponent implements AfterViewInit, OnInit, OnDest
         planType: d.planType,
         planDefault: d.planDefault,
         isInitialize: d.isInitialize,
+        isRequiredIsurranceNo: d.isRequiredIsurranceNo,
         groupObject: d.groupObject
       };
 

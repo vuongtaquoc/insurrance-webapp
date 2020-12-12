@@ -312,6 +312,7 @@ export class AllocationCardComponent implements OnInit, OnDestroy {
 
         // replace
         employee.gender = employee.gender === '1';
+        employee.isExitsIsurranceNo = (employee.isurranceNo !== '' && employee.isurranceNo !== null);
         employee.workAddress = this.currentCredentials.companyInfo.address;
         employee.planCode = declarations[parentIndex].planDefault;
         employee.tyleNSDP = 0;
@@ -808,6 +809,22 @@ export class AllocationCardComponent implements OnInit, OnDestroy {
           }, 10);
         }
         
+      } else if (column.key === 'isExitsIsurranceNo') {
+
+        const isExitsIsurranceNo = records[r][c];
+        const indexOfIsurranceNo = this.tableHeaderColumnsDocuments.findIndex(c => c.key === 'isurranceNo')
+        const indexOfIsurranceCode = this.tableHeaderColumnsDocuments.findIndex(c => c.key === 'isurranceCode')
+        clearTimeout(this.timer);
+        this.timer = setTimeout(() => {
+          if (!isExitsIsurranceNo) {
+            this.updateNextColumns(instance, r, '', [ indexOfIsurranceNo, indexOfIsurranceCode ]);
+            this.updateNextColumns(instance, r, '', [ indexOfIsurranceNo, indexOfIsurranceNo ]);
+          } else {
+            this.updateNextColumns(instance, r, records[r].origin.isurranceNo, [indexOfIsurranceNo]);
+            this.updateNextColumns(instance, r, records[r].origin.isurranceCode, [indexOfIsurranceCode]);
+          }
+        }, 10);
+
       } else if (column.key === 'hospitalFirstRegistCode') {
         const hospitalFirstCode = cell.innerText.split(' - ').shift();
         if(hospitalFirstCode !== '' && hospitalFirstCode !== undefined)
