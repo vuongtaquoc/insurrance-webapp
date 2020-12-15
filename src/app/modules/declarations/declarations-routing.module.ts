@@ -62,7 +62,18 @@ import {
   InfomationInsuranceCardAddComponent,
   InfomationInsuranceCardEditComponent,
   InfomationInsuranceCardListComponent,
-   
+  ReissueInsuranceExpireListComponent,
+  ReissueInsuranceExpireAddComponent,
+  ReissueInsuranceExpireEditComponent,
+  RegisterInsuranceRequiredListComponent,
+  RegisterInsuranceRequiredAddComponent,
+  RegisterInsuranceRequiredEditComponent,
+  ReturnPaymentOrganizationListComponent,
+  ReturnPaymentOrganizationAddComponent,
+  ReturnPaymentOrganizationEditComponent,
+  ReturnPaymentListComponent,
+  ReturnPaymentAddComponent,
+  ReturnPaymentEditComponent  
 } from './pages';
 
 const routes: Routes = [
@@ -356,6 +367,59 @@ const routes: Routes = [
       {
         path: 'infomation-insurance-card/:id/edit',
         component: InfomationInsuranceCardEditComponent,
+        canDeactivate: [ UnsavedChangesGuard, NavigationGuard ]
+      },
+      {
+        path: 'reissue-insurance-expire',
+        component: ReissueInsuranceExpireListComponent
+      },
+      {
+        path: 'reissue-insurance-expire/add',
+        component: ReissueInsuranceExpireAddComponent,
+        canDeactivate: [ UnsavedChangesGuard, NavigationGuard ]
+      },
+      {
+        path: 'reissue-insurance-expire/:id/edit',
+        component: ReissueInsuranceExpireEditComponent,
+        canDeactivate: [ UnsavedChangesGuard, NavigationGuard ]
+      },{
+        path: 'register-insurance-required',
+        component: RegisterInsuranceRequiredListComponent
+      },
+      {
+        path: 'register-insurance-required/add',
+        component: RegisterInsuranceRequiredAddComponent,
+        canDeactivate: [ UnsavedChangesGuard, NavigationGuard ]
+      },
+      {
+        path: 'register-insurance-required/:id/edit',
+        component: RegisterInsuranceRequiredEditComponent,
+        canDeactivate: [ UnsavedChangesGuard, NavigationGuard ]
+      },{
+        path: 'return-payment-organization',
+        component: ReturnPaymentOrganizationListComponent
+      },
+      {
+        path: 'return-payment-organization/add',
+        component: ReturnPaymentOrganizationAddComponent,
+        canDeactivate: [ UnsavedChangesGuard, NavigationGuard ]
+      },
+      {
+        path: 'return-payment-organization/:id/edit',
+        component: ReturnPaymentOrganizationEditComponent,
+        canDeactivate: [ UnsavedChangesGuard, NavigationGuard ]
+      },{
+        path: 'return-payment',
+        component: ReturnPaymentListComponent
+      },
+      {
+        path: 'return-payment/add',
+        component: ReturnPaymentAddComponent,
+        canDeactivate: [ UnsavedChangesGuard, NavigationGuard ]
+      },
+      {
+        path: 'return-payment/:id/edit',
+        component: ReturnPaymentEditComponent,
         canDeactivate: [ UnsavedChangesGuard, NavigationGuard ]
       }
     ]

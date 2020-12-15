@@ -90,6 +90,18 @@ import {
   InfomationInsuranceCardListComponent,
   InfomationInsuranceCardAddComponent,
   InfomationInsuranceCardEditComponent,
+  ReissueInsuranceExpireListComponent,
+  ReissueInsuranceExpireAddComponent,
+  ReissueInsuranceExpireEditComponent,
+  RegisterInsuranceRequiredListComponent,
+  RegisterInsuranceRequiredAddComponent,
+  RegisterInsuranceRequiredEditComponent,
+  ReturnPaymentOrganizationListComponent,
+  ReturnPaymentOrganizationAddComponent,
+  ReturnPaymentOrganizationEditComponent,
+  ReturnPaymentListComponent,
+  ReturnPaymentAddComponent,
+  ReturnPaymentEditComponent,
   
 } from './pages';
 
@@ -136,7 +148,10 @@ import {
   ReissueHealthInsuranceCardComponent,
   ReissueHealthInsuranceComponent,
   InfomationInsuranceCardComponent,
-  
+  ReissueInsuranceExpireComponent,
+  RegisterInsuranceRequiredComponent,
+  ReturnPaymentOrganizationComponent,   
+  ReturnPaymentComponent,     
 } from './components';
 
 import { RegimeAutoSizeDirective } from './directives';
@@ -265,6 +280,27 @@ import { RegimeAutoSizeDirective } from './directives';
     InfomationInsuranceCardListComponent,
     InfomationInsuranceCardAddComponent,
     InfomationInsuranceCardEditComponent,
+    ReissueInsuranceExpireComponent,
+    ReissueInsuranceExpireListComponent,
+    ReissueInsuranceExpireAddComponent,
+    ReissueInsuranceExpireEditComponent,
+    RegisterInsuranceRequiredComponent,
+    RegisterInsuranceRequiredListComponent,
+    RegisterInsuranceRequiredAddComponent,
+    RegisterInsuranceRequiredEditComponent,
+    ReturnPaymentOrganizationComponent,
+    ReturnPaymentOrganizationListComponent,
+    ReturnPaymentOrganizationAddComponent,
+    ReturnPaymentOrganizationEditComponent,
+    ReturnPaymentComponent,
+    ReturnPaymentListComponent,
+    ReturnPaymentAddComponent,
+    ReturnPaymentEditComponent,
+    ReturnPaymentComponent,
+    ReturnPaymentListComponent,
+    ReturnPaymentAddComponent,
+    ReturnPaymentEditComponent,
+    
   ],
   providers: [
     AuthenticationService,

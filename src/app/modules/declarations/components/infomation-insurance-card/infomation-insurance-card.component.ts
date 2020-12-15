@@ -954,7 +954,7 @@ export class InfomationInsuranceCardComponent implements OnInit, OnDestroy {
         if (!column.key || !p[column.key]) return '';
         return p[column.key];
       });
-      p.data.origin = {
+      p.origin = {
         employeeId: p.employeeId,
         isExitsIsurranceNo: p.isExitsIsurranceNo,
         isLeaf: true,

@@ -129,7 +129,6 @@ export class IncreaseComponent extends GeneralBaseComponent implements OnInit, O
       eventEmitter.emit('action:loadding', {
         isShow: true,
       });
-
      
     }
 

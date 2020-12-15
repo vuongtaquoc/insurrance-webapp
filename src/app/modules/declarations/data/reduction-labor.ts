@@ -89,7 +89,7 @@ export const TABLE_REDUCTION_HEADER_COLUMNS = [{
     },
   },
   validations: {     
-    required: true,
+    required: true,    
   }
 }, {
   type: 'checkbox',
@@ -303,6 +303,9 @@ export const TABLE_REDUCTION_HEADER_COLUMNS = [{
   type: 'text',
   width: 135,
   title: '(16)',
+  validations: {
+    required: true,
+  },
   key: 'levelWork'
 },
 {

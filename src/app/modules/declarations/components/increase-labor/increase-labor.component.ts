@@ -423,12 +423,15 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
       });
     }
 
-    if (!this.isCheckIsuranceCode) {
+    //Kiêm tra nếu tồn tại nhân viên bên tab báo tăng thì yêu cầu kiêm tra mã số BHXH
+    const hastEmployeeInTabIncreaselabor = this.isHasLeaf('increaselabor');
+    if (!this.isCheckIsuranceCode && hastEmployeeInTabIncreaselabor) {
       this.modalService.warning({
         nzTitle: 'Đơn vị chưa kiểm tra Mã số BHXH và trạng thái của người tham gia'
       });
       return;
     }
+    
     eventEmitter.emit('unsaved-changed', true);
     if (this.declarationId) {
       this.update('saveAndView');
@@ -1255,6 +1258,7 @@ private setDateToInformationList(records: any)
         data: [index + 1],
         origin: {
           employeeId: '',
+		  isExitsIsurranceNo: true,
           isLeaf: true,
         }
       });
@@ -1360,5 +1364,20 @@ private setDateToInformationList(records: any)
 
   get usedocumentDT01() {
     return this.documentForm.get('usedocumentDT01').value;
+  }
+
+  protected isHasLeaf(tableName) {    
+    const declarations = [ ...this.declarations.tables[tableName] ];
+    const declarationHasUser = [];
+    declarations.forEach(d => {
+        d.declarations.forEach(i => {
+          declarationHasUser.push(i);
+        });
+    });
+    const declarationUsers = declarationHasUser.filter(d => {
+      return d.origin && (d.origin.employeeId || d.employeeId) > 0 && d.isExitsIsurranceNo;
+    });
+
+    return declarationUsers.length > 0;
   }
 }

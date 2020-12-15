@@ -79,71 +79,97 @@
         </li>
         <li class="layout-menu__item"
           [hidden]="!permissions[pmsConf.increase_labor.R] && !permissions[pmsConf.reduction_labor.R] && !permissions[pmsConf.adjust.R] && !permissions[pmsConf.arrears.R] && !permissions[pmsConf.adjust_general.R] && !permissions[pmsConf.regime_approval.R]">
+          <a class="layout-menu__link" nz-dropdown nzTrigger="click" [nzDropdownMenu]="declarationOrganization"
+            [nzOverlayClassName]="'header-dropdown-menu'">
+            <span class="layout-menu__icon">
+              <i nz-icon nzType="delivered-procedure" nzTheme="outline"></i>
+            </span>
+            <span class="layout-menu__text">Kê khai Tổ chức</span>
+          </a>
+          <nz-dropdown-menu #declarationOrganization="nzDropdownMenu">
+            <ul nz-menu>
+              <li nz-menu-item [hidden]="!permissions[pmsConf.increase_labor.R]"><a
+                  [routerLink]="['/declarations/increase-labor']"><i nz-icon nzType="arrow-up" nzTheme="outline"></i>600 Báo
+                  tăng lao động</a></li>
+              <li nz-menu-item [hidden]="!permissions[pmsConf.reduction_labor.R]"><a
+                  [routerLink]="['/declarations/reduction-labor']"><i nz-icon nzType="arrow-down"
+                    nzTheme="outline"></i> 600a Báo giảm lao động</a></li>
+              <li nz-menu-item [hidden]="!permissions[pmsConf.adjust.R]"><a [routerLink]="['/declarations/adjust']"><i
+                    nz-icon nzType="form" nzTheme="outline"></i>600b Điều chỉnh chức danh, mức đóng</a></li>
+              <li nz-menu-item [hidden]="!permissions[pmsConf.adjust.R]"><a [routerLink]="['/declarations/pending-retirement']"><i
+                      nz-icon nzType="form" nzTheme="outline"></i>600c Tạm dừng đóng vào quỹ hưu trí và tử tuất</a></li>
+              <li nz-menu-item [hidden]="!permissions[pmsConf.adjust.R]"><a [routerLink]="['/declarations/pending-retirement-covid']"><i
+                        nz-icon nzType="form" nzTheme="outline"></i>600d Tạm dừng đóng vào quỹ hưu trí và tử tuất do ảnh hưởng của dịch Covid 19</a></li>
+              <li nz-menu-item [hidden]="!permissions[pmsConf.adjust_general.R]"><a
+                        [routerLink]="['/declarations/adjust-general']"><i nz-icon nzType="dribbble-square"
+                          nzTheme="outline"></i>601 Truy thu (Trường hợp vi phạp quy định của pháp luật về đóng BHXH.BHYT, BHTNLĐ,
+                        BNN)</a></li>
+              <li nz-menu-item [hidden]="!permissions[pmsConf.arrears.R]"><a [routerLink]="['/declarations/arrears']"><i
+                nz-icon nzType="carry-out" nzTheme="outline"></i>601a Truy thu điều chỉnh điều chỉnh chức danh, mức
+              đóng(trường hợp báo muộn)</a></li>
+              <li nz-menu-item [hidden]="!permissions[pmsConf.adjust.R]"><a [routerLink]="['/declarations/allocation-card']"><i
+                nz-icon nzType="form" nzTheme="outline"></i>602 Đăng ký, đăng ký lại, điều chỉnh đóng BHXH tự nguyện, cấp sổ BHXH</a></li>
+              <li nz-menu-item [hidden]="!permissions[pmsConf.adjust.R]"><a [routerLink]="['/declarations/register-allocation-card']"><i
+                nz-icon nzType="form" nzTheme="outline"></i>603 Đăng ký đóng, cấp thẻ BHYT đối với người chỉ tham gia BHYT</a></li>
+               <li nz-menu-item [hidden]="!permissions[pmsConf.company_change.R]"><a
+                  [routerLink]="['/declarations/company-change']"><i nz-icon nzType="edit" nzTheme="outline"></i>604  Đăng ký
+                  thay đổi thông tin đơn vị</a></li>
+                  <li nz-menu-item [hidden]="!permissions[pmsConf.adjust.R]"><a [routerLink]="['/declarations/return-payment-organization']"><i
+                    nz-icon nzType="form" nzTheme="outline"></i>606a Hoàn trả tiền đã đóng </a></li>    
+                    <li nz-menu-item [hidden]="!permissions[pmsConf.reissue_insurance_card.R]"><a
+                      [routerLink]="['/declarations/reissue-insurance-card']"><i nz-icon nzType="account-book"
+                        nzTheme="outline"></i>607 Cấp lại sổ BHXH do hỏng, do mất</a></li>
+                <li nz-menu-item [hidden]="!permissions[pmsConf.reissue_insurance_card.R]"><a
+                    [routerLink]="['/declarations/infomation-insurance-card']"><i nz-icon nzType="account-book"
+                      nzTheme="outline"></i>608 Cấp lại sổ BHXH do thay đổi họ, tên, chữ đệm; ngày, tháng, năm sinh; giới tính, dân tộc; quốc tịch</a></li>
+               <li nz-menu-item [hidden]="!permissions[pmsConf.reissue_insurance_card.R]"><a
+                        [routerLink]="['/declarations/adjustment-insurance-card']"><i nz-icon nzType="account-book"
+                          nzTheme="outline"></i>609 Cấp lại sổ BHXH do điểu chỉnh nội dung đã ghi trên sổ BHXH</a></li>
+                <li nz-menu-item [hidden]="!permissions[pmsConf.adjust.R]"><a [routerLink]="['/declarations/reissue-health-insurance-card']"><i
+                            nz-icon nzType="form" nzTheme="outline"></i>610  Cấp lại thẻ BHYT do thay đổi mã quyền lợi, thay đổi thông tin in trên thẻ</a></li>
+                <li nz-menu-item [hidden]="!permissions[pmsConf.reissue_insurance_card.R]"><a
+                      [routerLink]="['/declarations/reissue-insurance-expire']"><i nz-icon nzType="account-book"
+                        nzTheme="outline"></i>611 Cấp thẻ BHYT do hết hạn thẻ</a></li>
+              <li nz-menu-item [hidden]="!permissions[pmsConf.health_insurance_card.R]"><a
+                [routerLink]="['/declarations/health-insurance-card']"><i nz-icon nzType="idcard"
+                  nzTheme="outline"></i>612 Cấp lại thẻ BHYT do hỏng, do mất</a></li>
+              <li nz-menu-item [hidden]="!permissions[pmsConf.regime_approval.R]"><a
+                  [routerLink]="['/declarations/regime-approval']"><i nz-icon nzType="diff" nzTheme="outline"></i>630 Xét
+                  duyệt chế độ ôm đau, Thai sản và Dưỡng sức, phục hồi sức khỏe</a></li>
+              <li nz-menu-item [hidden]="!permissions[pmsConf.sicknesses_approval.R]"><a
+                    [routerLink]="['/declarations/sicknesses-approval']"><i nz-icon nzType="safety" nzTheme="outline"></i>630a Xét
+                    duyệt chế độ ôm đau</a></li>
+              <li nz-menu-item [hidden]="!permissions[pmsConf.maternity_approval.R]"><a
+                    [routerLink]="['/declarations/maternity-approval']"><i nz-icon nzType="heart" nzTheme="outline"></i>630b Xét
+                    duyệt chế độ thai sản</a></li>
+              <li nz-menu-item [hidden]="!permissions[pmsConf.healthRecovery_approval.R]"><a
+                [routerLink]="['/declarations/health-recovery-approval']"><i nz-icon nzType="user-add" nzTheme="outline"></i>630c Xét
+                duyệt chế độ dưỡng sức, phục hồi sức khỏe</a></li>
+            </ul>
+          </nz-dropdown-menu>
+        </li>
+
+        <li class="layout-menu__item"
+          [hidden]="!permissions[pmsConf.increase_labor.R] && !permissions[pmsConf.reduction_labor.R] && !permissions[pmsConf.adjust.R] && !permissions[pmsConf.arrears.R] && !permissions[pmsConf.adjust_general.R] && !permissions[pmsConf.regime_approval.R]">
           <a class="layout-menu__link" nz-dropdown nzTrigger="click" [nzDropdownMenu]="declarationMenu"
             [nzOverlayClassName]="'header-dropdown-menu'">
             <span class="layout-menu__icon">
               <i nz-icon nzType="delivered-procedure" nzTheme="outline"></i>
             </span>
-            <span class="layout-menu__text">Kê khai</span>
+            <span class="layout-menu__text">Kê khai cá nhân</span>
           </a>
           <nz-dropdown-menu #declarationMenu="nzDropdownMenu">
             <ul nz-menu>
-              <li nz-menu-item [hidden]="!permissions[pmsConf.increase_labor.R]"><a
-                  [routerLink]="['/declarations/increase-labor']"><i nz-icon nzType="arrow-up" nzTheme="outline"></i>Báo
-                  tăng lao động</a></li>
-              <li nz-menu-item [hidden]="!permissions[pmsConf.reduction_labor.R]"><a
-                  [routerLink]="['/declarations/reduction-labor']"><i nz-icon nzType="arrow-down"
-                    nzTheme="outline"></i>Báo giảm lao động</a></li>
-              <li nz-menu-item [hidden]="!permissions[pmsConf.adjust.R]"><a [routerLink]="['/declarations/adjust']"><i
-                    nz-icon nzType="form" nzTheme="outline"></i>Điều chỉnh chức danh, mức đóng</a></li>
-              <li nz-menu-item [hidden]="!permissions[pmsConf.adjust.R]"><a [routerLink]="['/declarations/allocation-card']"><i
-                      nz-icon nzType="form" nzTheme="outline"></i>Đăng ký, đăng ký lại, điều chỉnh đóng BHXH tự nguyện, cấp sổ BHXH</a></li>
-                      <li nz-menu-item [hidden]="!permissions[pmsConf.adjust.R]"><a [routerLink]="['/declarations/register-allocation-card']"><i
-                        nz-icon nzType="form" nzTheme="outline"></i>Đăng ký đóng, cấp thẻ BHYT đối với người chỉ tham gia BHYT</a></li>
+               
+              <li nz-menu-item [hidden]="!permissions[pmsConf.adjust.R]"><a [routerLink]="['/declarations/register-insurance-required']"><i
+                  nz-icon nzType="form" nzTheme="outline"></i>605 Đăng ký đóng BHXH bắt buộc (Người lao động có thời hạn ở nước ngoài)</a></li>
 
-              <li nz-menu-item [hidden]="!permissions[pmsConf.adjust.R]"><a [routerLink]="['/declarations/pending-retirement']"><i
-                      nz-icon nzType="form" nzTheme="outline"></i>Tạm dừng đóng vào quỹ hưu trí và tử tuất</a></li>
-              <li nz-menu-item [hidden]="!permissions[pmsConf.adjust.R]"><a [routerLink]="['/declarations/pending-retirement-covid']"><i
-                        nz-icon nzType="form" nzTheme="outline"></i>Tạm dừng đóng vào quỹ hưu trí và tử tuất do ảnh hưởng của dịch Covid 19</a></li>
-                <li nz-menu-item [hidden]="!permissions[pmsConf.adjust.R]"><a [routerLink]="['/declarations/reissue-health-insurance-card']"><i
-                          nz-icon nzType="form" nzTheme="outline"></i>Cấp lại thẻ BHYT do thay đổi mã quyền lợi, thay đổi thông tin in trên thẻ</a></li>
-              <li nz-menu-item [hidden]="!permissions[pmsConf.arrears.R]"><a [routerLink]="['/declarations/arrears']"><i
-                    nz-icon nzType="carry-out" nzTheme="outline"></i>Truy thu điều chỉnh điều chỉnh chức danh, mức
-                  đóng(trường hợp báo muộn)</a></li>
-              <li nz-menu-item [hidden]="!permissions[pmsConf.adjust_general.R]"><a
-                  [routerLink]="['/declarations/adjust-general']"><i nz-icon nzType="dribbble-square"
-                    nzTheme="outline"></i>Truy thu (Trường hợp vi phạp quy định của pháp luật về đóng BHXH.BHYT, BHTNLĐ,
-                  BNN)</a></li>
-              <li nz-menu-item [hidden]="!permissions[pmsConf.company_change.R]"><a
-                  [routerLink]="['/declarations/company-change']"><i nz-icon nzType="edit" nzTheme="outline"></i>Đăng ký
-                  thay đổi thông tin đơn vị</a></li>
-              <li nz-menu-item [hidden]="!permissions[pmsConf.reissue_insurance_card.R]"><a
-                [routerLink]="['/declarations/reissue-insurance-card']"><i nz-icon nzType="account-book"
-                  nzTheme="outline"></i>Cấp lại sổ BHXH do hỏng, do mất</a></li>
-                <li nz-menu-item [hidden]="!permissions[pmsConf.reissue_insurance_card.R]"><a
-                    [routerLink]="['/declarations/infomation-insurance-card']"><i nz-icon nzType="account-book"
-                      nzTheme="outline"></i>Cấp lại sổ BHXH do thay đổi họ, tên, chữ đệm; ngày, tháng, năm sinh; giới tính, dân tộc; quốc tịch</a></li>
-               <li nz-menu-item [hidden]="!permissions[pmsConf.reissue_insurance_card.R]"><a
-                        [routerLink]="['/declarations/adjustment-insurance-card']"><i nz-icon nzType="account-book"
-                          nzTheme="outline"></i>Cấp lại sổ BHXH do điểu chỉnh nội dung đã ghi trên sổ BHXH</a></li>
-              <li nz-menu-item [hidden]="!permissions[pmsConf.health_insurance_card.R]"><a
-                [routerLink]="['/declarations/health-insurance-card']"><i nz-icon nzType="idcard"
-                  nzTheme="outline"></i>Cấp lại thẻ BHYT do hỏng, do mất</a></li>
-              <li nz-menu-item [hidden]="!permissions[pmsConf.regime_approval.R]"><a
-                  [routerLink]="['/declarations/regime-approval']"><i nz-icon nzType="diff" nzTheme="outline"></i>Xét
-                  duyệt chế độ ôm đau, Thai sản và Dưỡng sức, phục hồi sức khỏe</a></li>
-              <li nz-menu-item [hidden]="!permissions[pmsConf.sicknesses_approval.R]"><a
-                    [routerLink]="['/declarations/sicknesses-approval']"><i nz-icon nzType="safety" nzTheme="outline"></i>Xét
-                    duyệt chế độ ôm đau</a></li>
-              <li nz-menu-item [hidden]="!permissions[pmsConf.maternity_approval.R]"><a
-                    [routerLink]="['/declarations/maternity-approval']"><i nz-icon nzType="heart" nzTheme="outline"></i>Xét
-                    duyệt chế độ thai sản</a></li>
-              <li nz-menu-item [hidden]="!permissions[pmsConf.healthRecovery_approval.R]"><a
-                [routerLink]="['/declarations/health-recovery-approval']"><i nz-icon nzType="user-add" nzTheme="outline"></i>Xét
-                duyệt chế độ dưỡng sức, phục hồi sức khỏe</a></li>
+              <li nz-menu-item [hidden]="!permissions[pmsConf.adjust.R]"><a [routerLink]="['/declarations/return-payment']"><i
+                      nz-icon nzType="form" nzTheme="outline"></i>606  Hoàn trả tiền đã đóng </a></li>
             </ul>
           </nz-dropdown-menu>
         </li>
+        
         <li class="layout-menu__item" [hidden]="!permissions[pmsConf.contract.R]">
           <a [routerLink]="['/contract/list']" class="layout-menu__link">
             <span class="layout-menu__icon">

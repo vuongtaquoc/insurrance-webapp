@@ -5,7 +5,7 @@
         <nz-form-label [nzSpan]="6">Loại hồ sơ</nz-form-label>
         <nz-form-control [nzSpan]="16">
           <nz-select formControlName="declarationCode" nzAllowClear nzPlaceHolder="Lựa chọn">
-            <nz-option [nzValue]="type.id" [nzLabel]="type.name" *ngFor="let type of declarationTypes"></nz-option>
+            <nz-option [nzValue]="type.declarationCode" [nzLabel]="type.declarationName" *ngFor="let type of declarationTypes"></nz-option>
           </nz-select>
         </nz-form-control>
       </nz-form-item>

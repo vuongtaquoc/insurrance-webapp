@@ -173,7 +173,7 @@ export class PendingRetirementCovidComponent implements OnInit, OnDestroy {
       this.documentListService.getDocumentList(this.declarationCode).subscribe(documentList => {
         this.documentList = documentList;
       });
-
+      this.declarations.files = [];
       this.informations = this.loadDefaultInformations();
 
       this.handler = eventEmitter.on(this.eventValidData, ({ name, isValid, leaf, initialize, errors }) => {
@@ -620,15 +620,18 @@ private setDateToInformationList(records: any)
             documentCode: doc.documentCode,
             planCode: emp.planCode,
             employeeId: emp.employeeId,
+            isExitsIsurranceNo: emp.isExitsIsurranceNo,
             origin: {
               employeeId: emp.employeeId,
               isLeaf: true,
               planCode: emp.planCode,
               documentCode: doc.documentCode,
+              isExitsIsurranceNo: emp.isExitsIsurranceNo,
             }
         };
       }
-
+      item.isurranceNo = emp.isurranceNo,           
+      item.isurranceCode = emp.isurranceCode,  
       item.companyRelease = item.companyRelease ? item.companyRelease : this.buildMessgaeByConfig(doc.companyRelease,emp);
       item.dateRelease = item.dateRelease ? item.dateRelease : this.buildMessgaeByConfig(doc.dateRelease,emp);
       item.documentNo = this.buildMessgaeByConfig(doc.documentNo,emp);
@@ -636,6 +639,8 @@ private setDateToInformationList(records: any)
       item.isurranceNo = emp.isurranceNo;
       item.isurranceCode = emp.isurranceCode;
       item.fullName = emp.fullName;
+      item.isExitsIsurranceNo = emp.isExitsIsurranceNo;
+      item.origin.isExitsIsurranceNo = emp.isExitsIsurranceNo;
       informations.push(item);
     });
 
@@ -650,7 +655,7 @@ private setDateToInformationList(records: any)
   });
 
 
-  this.informations = informations;
+  this.informations = this.fomatInfomation(informations);
   }
 
   fomatInfomation(infomations) {
@@ -660,8 +665,9 @@ private setDateToInformationList(records: any)
         if (!column.key || !p[column.key]) return '';
         return p[column.key];
       });
-      p.data.origin = {
+      p.origin = {
         employeeId: p.employeeId,
+        isExitsIsurranceNo: p.isExitsIsurranceNo,
         isLeaf: true,
       }
     });
@@ -677,6 +683,7 @@ private setDateToInformationList(records: any)
         data: [index + 1],
         origin: {
           employeeId: '',
+          isExitsIsurranceNo: false,
           isLeaf: true,
         }
       });
@@ -692,12 +699,15 @@ private setDateToInformationList(records: any)
         data: [index + 1],
         origin: {
           employeeId: '',
+          isExitsIsurranceNo: true,
           isLeaf: true,
         }
       });
     }
     return dataFake;
   }
+
+
   handleChangeInfomation({ records, columns }) {
 
     //update informations
@@ -777,13 +787,15 @@ private setDateToInformationList(records: any)
     const data: any = [];
     row.data = data;
     row.isMaster = false;
+    row.isExitsIsurranceNo = true;
 
     row.origin = {
       isLeaf: true,
+      isExitsIsurranceNo: true,
     };
 
     informations.splice(insertBefore ? rowNumber : rowNumber + 1, 0, row);
-    this.informations  = informations;
+    this.informations  = this.fomatInfomation(informations);;
     this.notificeEventValidData('documentList');
     eventEmitter.emit('unsaved-changed');
   }
@@ -792,7 +804,7 @@ private setDateToInformationList(records: any)
     const infomations = [ ...this.informations ];
 
     const infomaionDeleted = infomations.splice(rowNumber, numOfRows);
-    this.informations = infomations;
+    this.informations = this.fomatInfomation(infomations);
     this.notificeEventValidData('documentList');
     eventEmitter.emit('unsaved-changed');
   }

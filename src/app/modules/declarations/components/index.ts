@@ -41,3 +41,7 @@ export * from './adjustment-insurance-card/adjustment-insurance-card.component';
 export * from './reissue-health-insurance-card/reissue-health-insurance-card.component';
 export * from './reissue-health-insurance/reissue-health-insurance.component';
 export * from './infomation-insurance-card/infomation-insurance-card.component';
+export * from './reissue-insurance-expire/reissue-insurance-expire.component';
+export * from './register-insurance-required/register-insurance-required.component';
+export * from './return-payment-organization/return-payment-organization.component';
+export * from './return-payment/return-payment.component';

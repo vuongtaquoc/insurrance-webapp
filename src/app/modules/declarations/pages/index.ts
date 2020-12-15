@@ -57,3 +57,15 @@ export * from './reissue-health-insurance-card-edit/reissue-health-insurance-car
 export * from './infomation-insurance-card-add/infomation-insurance-card-add.component';
 export * from './infomation-insurance-card-edit/infomation-insurance-card-edit.component';
 export * from './infomation-insurance-card-list/infomation-insurance-card-list.component';
+export * from './reissue-insurance-expire-add/reissue-insurance-expire-add.component';
+export * from './reissue-insurance-expire-edit/reissue-insurance-expire-edit.component';
+export * from './reissue-insurance-expire-list/reissue-insurance-expire-list.component';
+export * from './register-insurance-required-add/register-insurance-required-add.component';
+export * from './register-insurance-required-edit/register-insurance-required-edit.component';
+export * from './register-insurance-required-list/register-insurance-required-list.component';
+export * from './return-payment-organization-add/return-payment-organization-add.component';
+export * from './return-payment-organization-edit/return-payment-organization-edit.component';
+export * from './return-payment-organization-list/return-payment-organization-list.component';
+export * from './return-payment-add/return-payment-add.component';
+export * from './return-payment-edit/return-payment-edit.component';
+export * from './return-payment-list/return-payment-list.component';

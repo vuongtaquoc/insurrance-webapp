@@ -36,6 +36,9 @@ const TABLES = {
   documentList600d: 'Bảng kê hồ sơ',
   allocationCard: 'Bảng kê D03-TS',
   reissuehealthinsurancecard610: 'D02-TL',
+  registerInsuranceRequired: 'TK1-TS',
+  returnPaymentOrganization: 'TK1-TS',
+  returnPayment: 'TK1-TS',
   documentList610: 'Bảng kê hồ sơ',
 };
 

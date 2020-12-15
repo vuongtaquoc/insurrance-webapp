@@ -1,6 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CategoryService } from '@app/core/services';
+import { DeclarationConfigService } from '@app/core/services';
 import { SelectItem } from '@app/core/interfaces';
 import { validateLessThanEqualNowBirthday, validateDateSign, getBirthDay, validateIdentifyCard } from '@app/shared/utils/custom-validation';
 
@@ -17,7 +17,7 @@ export class DashboardSearchComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private categoryService: CategoryService,
+    private declarationConfigService: DeclarationConfigService,
   ) { }
 
   ngOnInit() {
@@ -60,7 +60,7 @@ export class DashboardSearchComponent implements OnInit {
   }
 
   loadDeclarationType() {
-    this.categoryService.getCategories('declarationType').subscribe(data => {
+    this.declarationConfigService.filter().subscribe(data => {
       this.declarationTypes = data;
     });
   }

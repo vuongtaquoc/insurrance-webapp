@@ -603,10 +603,12 @@ reformatInformations() {
             fullName: emp.fullName,
             planCode: emp.origin.declarationCode,
             employeeId: emp.employeeId,
+            isExitsIsurranceNo: emp.isExitsIsurranceNo,
             origin: {
               employeeId: emp.employeeId,
               isLeaf: true,
               planCode: emp.origin.declarationCode,
+              isExitsIsurranceNo: emp.isExitsIsurranceNo,
             }
           };
       }
@@ -626,7 +628,7 @@ reformatInformations() {
       p.data.origin = p.origin;
     });
 
-    this.informations = informations;
+    this.informations = this.fomatInfomation(informations);
   }
 
   fomatInfomation(infomations) {
@@ -636,8 +638,9 @@ reformatInformations() {
         if (!column.key || !p[column.key]) return '';
         return p[column.key];
       });
-      p.data.origin = {
+      p.origin = {
         employeeId: p.employeeId,
+        isExitsIsurranceNo: p.isExitsIsurranceNo,
         isLeaf: true,
       }
     });
@@ -653,6 +656,7 @@ reformatInformations() {
         data: [index + 1],
         origin: {
           employeeId: '',
+          isExitsIsurranceNo: false,
           isLeaf: true,
         }
       });
@@ -752,7 +756,7 @@ reformatInformations() {
     const infomations = [ ...this.informations ];
 
     const infomaionDeleted = infomations.splice(rowNumber, numOfRows);
-    this.informations = infomations;
+    this.informations = this.fomatInfomation(infomations);
     this.notificeEventValidData('documentList');
     eventEmitter.emit('unsaved-changed');
   }
@@ -769,7 +773,7 @@ reformatInformations() {
     };
 
     informations.splice(insertBefore ? rowNumber : rowNumber + 1, 0, row);
-    this.informations  = informations;
+    this.informations  = this.fomatInfomation(informations);
     this.notificeEventValidData('documentList');
     eventEmitter.emit('unsaved-changed');
   }

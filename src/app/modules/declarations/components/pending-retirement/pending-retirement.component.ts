@@ -173,7 +173,7 @@ export class PendingRetirementComponent implements OnInit, OnDestroy {
       this.documentListService.getDocumentList(this.declarationCode).subscribe(documentList => {
         this.documentList = documentList;
       });
-
+      this.declarations.files = [];
       this.handler = eventEmitter.on(this.eventValidData, ({ name, isValid, leaf, initialize, errors }) => {
         this.allInitialize[name] = leaf.length === initialize.length;
         this.isTableValid = Object.values(this.allInitialize).indexOf(false) === -1 ? false : true;
@@ -190,6 +190,7 @@ export class PendingRetirementComponent implements OnInit, OnDestroy {
         this.updateEmployeeInInfomation(data.employee);
       }));
 
+      this.informations = this.loadDefaultInformations();
     });
   }
 
@@ -581,6 +582,21 @@ getDocumentByPlancode(planCode: string) {
   }
 }
 
+private loadDefaultInformations() {
+    const dataFake = [];
+    for (let index = 0; index < 10; index++) {
+      dataFake.push({
+        data: [index + 1],
+        origin: {
+          employeeId: '',
+          isExitsIsurranceNo: true,
+          isLeaf: true,
+        }
+      });
+    }
+    return dataFake;
+  }
+
 
 private setDateToInformationList(records: any)
 {
@@ -618,15 +634,18 @@ private setDateToInformationList(records: any)
             documentCode: doc.documentCode,
             planCode: emp.planCode,
             employeeId: emp.employeeId,
+            isExitsIsurranceNo: emp.isExitsIsurranceNo,
             origin: {
               employeeId: emp.employeeId,
               isLeaf: true,
               planCode: emp.planCode,
               documentCode: doc.documentCode,
+              isExitsIsurranceNo: emp.isExitsIsurranceNo,
             }
         };
       }
-
+      item.isurranceNo = emp.isurranceNo,           
+      item.isurranceCode = emp.isurranceCode,  
       item.companyRelease = item.companyRelease ? item.companyRelease : this.buildMessgaeByConfig(doc.companyRelease,emp);
       item.dateRelease = item.dateRelease ? item.dateRelease : this.buildMessgaeByConfig(doc.dateRelease,emp);
       item.documentNo = this.buildMessgaeByConfig(doc.documentNo,emp);
@@ -634,6 +653,8 @@ private setDateToInformationList(records: any)
       item.isurranceNo = emp.isurranceNo;
       item.isurranceCode = emp.isurranceCode;
       item.fullName = emp.fullName;
+      item.isExitsIsurranceNo = emp.isExitsIsurranceNo;
+      item.origin.isExitsIsurranceNo = emp.isExitsIsurranceNo;
       informations.push(item);
     });
 
@@ -648,24 +669,40 @@ private setDateToInformationList(records: any)
   });
 
 
-  this.informations = informations;
+  this.informations = this.fomatInfomation(informations);
   }
 
   fomatInfomation(infomations) {
-    if(!infomations) {
-      return [];
-    }
     let infomationscopy = [ ...infomations ];
     infomationscopy.forEach(p => {
       p.data = this.tableHeaderColumnsDocuments.map(column => {
         if (!column.key || !p[column.key]) return '';
         return p[column.key];
       });
-      p.data.origin = {
+      p.origin = {
         employeeId: p.employeeId,
+        isExitsIsurranceNo: p.isExitsIsurranceNo,
         isLeaf: true,
       }
     });
+
+    const itemPerPage = 10 - infomationscopy.length;
+    let numberItem = 5;
+    if(itemPerPage > 0) {
+      numberItem = itemPerPage;
+    }
+
+    for (let index = 0; index < numberItem; index++) {
+      infomationscopy.push({
+        data: [index + 1],
+        origin: {
+          employeeId: '',
+          isExitsIsurranceNo: false,
+          isLeaf: true,
+        }
+      });
+    }
+
     return infomationscopy;
   }
 
@@ -748,13 +785,15 @@ private setDateToInformationList(records: any)
     const data: any = [];
     row.data = data;
     row.isMaster = false;
+    row.isExitsIsurranceNo = true;
 
     row.origin = {
       isLeaf: true,
+      isExitsIsurranceNo: true,
     };
 
     informations.splice(insertBefore ? rowNumber : rowNumber + 1, 0, row);
-    this.informations  = informations;
+    this.informations  = this.fomatInfomation(informations);
     this.notificeEventValidData('documentList');
     eventEmitter.emit('unsaved-changed');
   }
@@ -763,7 +802,7 @@ private setDateToInformationList(records: any)
     const infomations = [ ...this.informations ];
 
     const infomaionDeleted = infomations.splice(rowNumber, numOfRows);
-    this.informations = infomations;
+    this.informations = this.fomatInfomation(infomations);
     this.notificeEventValidData('documentList');
     eventEmitter.emit('unsaved-changed');
   }
