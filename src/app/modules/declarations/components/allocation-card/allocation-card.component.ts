@@ -9,7 +9,6 @@ import * as moment from 'moment';
 import * as _ from 'lodash';
 import { validationColumnsPlanCode } from '@app/shared/constant-valid';
 import { PLANCODECOUNTBHYT } from '@app/shared/constant-valid';
-
 import { Declaration, DocumentList } from '@app/core/models';
 import {
   CityService,
@@ -536,15 +535,8 @@ export class AllocationCardComponent implements OnInit, OnDestroy {
     this.tableSubject.next({type});
   }
 
-  private saveAndView(type) {   
-
-    if (!this.isCheckIsuranceCode) {
-      this.modalService.warning({
-        nzTitle: 'Đơn vị chưa kiểm tra Mã số BHXH và trạng thái của người tham gia'
-      });
-      return;
-    }
-
+  private saveAndView(type) {        
+   
     this.tableSubmitErrors = {};
     this.tableSubmitErrorCount = 0;
     const errorDocumentForm = this.validDocumentForm();
@@ -568,6 +560,14 @@ export class AllocationCardComponent implements OnInit, OnDestroy {
       },
       0
     );
+     //Kiêm tra nếu tồn tại nhân viên bên tab báo tăng thì yêu cầu kiêm tra mã số BHXH
+    const hastEmployeeInTabIncreaselabor = this.isHasLeaf();
+    if (!this.isCheckIsuranceCode && hastEmployeeInTabIncreaselabor) {
+      this.modalService.warning({
+        nzTitle: 'Đơn vị chưa kiểm tra Mã số BHXH và trạng thái của người tham gia'
+      });
+      return;
+    }
 
     if (count > 0) {
 
@@ -812,13 +812,12 @@ export class AllocationCardComponent implements OnInit, OnDestroy {
       } else if (column.key === 'isExitsIsurranceNo') {
 
         const isExitsIsurranceNo = records[r][c];
-        const indexOfIsurranceNo = this.tableHeaderColumnsDocuments.findIndex(c => c.key === 'isurranceNo')
-        const indexOfIsurranceCode = this.tableHeaderColumnsDocuments.findIndex(c => c.key === 'isurranceCode')
+        const indexOfIsurranceNo = this.tableHeaderColumns.findIndex(c => c.key === 'isurranceNo');
+        const indexOfIsurranceCode = this.tableHeaderColumns.findIndex(c => c.key === 'isurranceCode');
         clearTimeout(this.timer);
         this.timer = setTimeout(() => {
           if (!isExitsIsurranceNo) {
-            this.updateNextColumns(instance, r, '', [ indexOfIsurranceNo, indexOfIsurranceCode ]);
-            this.updateNextColumns(instance, r, '', [ indexOfIsurranceNo, indexOfIsurranceNo ]);
+           this.updateNextColumns(instance, r, '', [ indexOfIsurranceNo, indexOfIsurranceCode ]);
           } else {
             this.updateNextColumns(instance, r, records[r].origin.isurranceNo, [indexOfIsurranceNo]);
             this.updateNextColumns(instance, r, records[r].origin.isurranceCode, [indexOfIsurranceCode]);
@@ -840,13 +839,13 @@ export class AllocationCardComponent implements OnInit, OnDestroy {
       } else if (column.key === 'recipientsCityCode') {
         this.updateNextColumns(instance, r, '', [ c + 1, c + 2, c + 3 ]);
       } else if( column.key === 'numberMonthJoin' || column.key === 'salary') {
-        this.calculatorSalary(instance, cell, c, r, records);
+          this.calculatorSalary(instance, cell, c, r, records);
       } else if( column.key === 'tyleNSNN') {
-        this.calculatorNSNH(instance, cell, c, r, records);
+          this.calculatorSalary(instance, cell, c, r, records);
       } else if( column.key === 'tyleNSDP') {
-        this.calculatorNSDP(instance, cell, c, r, records);
+          this.calculatorSalary(instance, cell, c, r, records);
       } else if( column.key === 'tyleTCCNHTK') {
-        this.calculatorTCCNHTK(instance, cell, c, r, records);
+          this.calculatorSalary(instance, cell, c, r, records);
       } else if( column.key === 'paymentMethodCode') {
 
         const paymentMethodCode = records[r][c];
@@ -1094,8 +1093,9 @@ export class AllocationCardComponent implements OnInit, OnDestroy {
     this.panel[type].active = isActive;
   }   
 
-  handleChangeForm() {
-    eventEmitter.emit('unsaved-changed');
+  handleChangeForm(event) {
+     this.reCaculatorSalary();
+     eventEmitter.emit('unsaved-changed');
   }
 
   checkInsurranceCode() {
@@ -1165,6 +1165,71 @@ export class AllocationCardComponent implements OnInit, OnDestroy {
       this.isSpinning = false;    
      
     });
+  }
+
+  reCaculatorSalary() {
+      const indexOfPaymentMethodCode = this.tableHeaderColumns.findIndex(c => c.key === 'paymentMethodCode');
+      const indexOfNumberMonthJoin = this.tableHeaderColumns.findIndex(c => c.key === 'numberMonthJoin');
+      const indexOfSalary = this.tableHeaderColumns.findIndex(c => c.key === 'salary');
+      const indexOfMoneyPayment = this.tableHeaderColumns.findIndex(c => c.key === 'moneyPayment');
+      const indexOftyleNSNN = this.tableHeaderColumns.findIndex(c => c.key === 'tyleNSNN');
+      const indexOftyleNSDP = this.tableHeaderColumns.findIndex(c => c.key === 'tyleNSDP');
+      const indexOftyleTCCNHTK = this.tableHeaderColumns.findIndex(c => c.key === 'tyleTCCNHTK');
+      const indexOfplayerClose = this.tableHeaderColumns.findIndex(c => c.key === 'playerClose');
+      const indexOffromDate = this.tableHeaderColumns.findIndex(c => c.key === 'fromDate');     
+      
+    const declarations = [...this.declarations];
+    declarations.forEach((declaration, rowIndex) => {
+        const salary = declaration.data[indexOfSalary];
+        if (declaration.isLeaf &&  Number(salary)) {
+          const tyleTCCNHTK = declaration.data[indexOftyleTCCNHTK];
+          const tyleNSDP = declaration.data[indexOftyleNSDP];
+          const tyleNSNN = declaration.data[indexOftyleNSNN];
+          const numberMonthJoin = declaration.data[indexOfNumberMonthJoin];
+          const paymentMethodCode = declaration.data[indexOfPaymentMethodCode];
+          const fromDate = declaration.data[indexOffromDate];
+          let sotienphaidong = 0;
+          if (paymentMethodCode === 'VS') {
+            sotienphaidong = this.soTienphaidongvesau(numberMonthJoin, salary);
+          } else if (paymentMethodCode === 'CT') {
+            sotienphaidong = this.soTienphaidongConThieu(numberMonthJoin, salary);
+          } else if (paymentMethodCode === 'DB') { 
+            sotienphaidong = this.soTienphaidongDongBu(numberMonthJoin, salary, fromDate);
+          } else {
+            sotienphaidong = this.soTienphaiDongHangThang(numberMonthJoin, salary);
+          }
+
+          if (!Number(sotienphaidong)) {
+            sotienphaidong = 0
+          }
+          const ratio =  ((this.coefficient || 0) *  (this.ratioPayment || 0)) / 100;
+          let sotienNSNN = ((ratio * (Number(tyleNSNN) || 0)) / 100) * (Number(numberMonthJoin) || 0);
+          if (!Number(sotienNSNN)) {
+            sotienNSNN = 0
+          }
+          let sotienNSDP = (ratio * (Number(tyleNSDP) || 0)) / 100;
+          if (!Number(sotienNSDP)) {
+            sotienNSDP = 0
+          }
+
+          let sotienTCCNHTK = (ratio * (Number(tyleTCCNHTK) || 0)) / 100;
+          if (!Number(sotienTCCNHTK)) {
+            sotienTCCNHTK = 0
+          }
+          let tongSotienphaiDong = (sotienphaidong || 0) - ((sotienNSNN || 0) + (sotienNSDP || 0) + (sotienTCCNHTK || 0));
+          if (!Number(tongSotienphaiDong)) {
+            tongSotienphaiDong = 0
+          }
+          
+          declaration.data[Number(indexOftyleNSNN) + 1] =  sotienNSNN.toString();
+          declaration.data[Number(indexOftyleNSDP) + 1] = sotienNSDP.toString();
+          declaration.data[Number(indexOftyleTCCNHTK) + 1] = sotienTCCNHTK.toString();
+          declaration.data[Number(indexOfMoneyPayment)] = sotienphaidong.toString();
+          declaration.data[Number(indexOfplayerClose)] =  tongSotienphaiDong.toString();
+        }
+    });
+
+    this.declarations = declarations;
   }
 
   private updateOrders(declarations) {
@@ -1839,96 +1904,108 @@ export class AllocationCardComponent implements OnInit, OnDestroy {
   
 
   private calculatorSalary(instance, cell, c, r, records) {
+      const indexOfPaymentMethodCode = this.tableHeaderColumns.findIndex(c => c.key === 'paymentMethodCode');
       const indexOfNumberMonthJoin = this.tableHeaderColumns.findIndex(c => c.key === 'numberMonthJoin');
       const indexOfSalary = this.tableHeaderColumns.findIndex(c => c.key === 'salary');
       const indexOfMoneyPayment = this.tableHeaderColumns.findIndex(c => c.key === 'moneyPayment');
+      const indexOftyleNSNN = this.tableHeaderColumns.findIndex(c => c.key === 'tyleNSNN');
+      const indexOftyleNSDP = this.tableHeaderColumns.findIndex(c => c.key === 'tyleNSDP');
+      const indexOftyleTCCNHTK = this.tableHeaderColumns.findIndex(c => c.key === 'tyleTCCNHTK');
+      const indexOfplayerClose = this.tableHeaderColumns.findIndex(c => c.key === 'playerClose');
+      const indexOffromDate = this.tableHeaderColumns.findIndex(c => c.key === 'fromDate');
+      const fromDate = records[r][indexOffromDate];
+      const tyleTCCNHTK = records[r][indexOftyleTCCNHTK];
+      const tyleNSDP = records[r][indexOftyleNSDP];
+      const tyleNSNN = records[r][indexOftyleNSNN];
       const salary = records[r][indexOfSalary];
       const numberMonthJoin = records[r][indexOfNumberMonthJoin];
+      const paymentMethodCode = records[r][indexOfPaymentMethodCode];
+      
+
       clearTimeout(this.timer);
       this.timer = setTimeout(() => {
+        let sotienphaidong = 0;
 
-        const ratio =  ((this.ratioPayment || 0) *  (salary || 0)) / 100;
-        let total = ratio * (numberMonthJoin || 0);
-        if (!Number(total)) {
-          total = 0
+        if (paymentMethodCode === 'VS') {
+          sotienphaidong = this.soTienphaidongvesau(numberMonthJoin, salary);
+        } else if (paymentMethodCode === 'CT') {
+          sotienphaidong = this.soTienphaidongConThieu(numberMonthJoin, salary);
+        } else if (paymentMethodCode === 'DB') { 
+          sotienphaidong = this.soTienphaidongDongBu(numberMonthJoin, salary, fromDate);
+        } else {
+          sotienphaidong = this.soTienphaiDongHangThang(numberMonthJoin, salary);
         }
-        this.updateNextColumns(instance, r, total, [indexOfMoneyPayment], true);
-        this.calculatorTotalPayment(instance, cell, c, r, records);
+
+        if (!Number(sotienphaidong)) {
+          sotienphaidong = 0
+        }
+        const ratio =  ((this.coefficient || 0) *  (this.ratioPayment || 0)) / 100;
+        let sotienNSNN = ((ratio * (tyleNSNN || 0)) / 100) * (numberMonthJoin || 0);
+        if (!Number(sotienNSNN)) {
+          sotienNSNN = 0
+        }
+        let sotienNSDP = (ratio * (tyleNSDP || 0)) / 100;
+        if (!Number(sotienNSDP)) {
+          sotienNSDP = 0
+        }
+
+        let sotienTCCNHTK = (ratio * (tyleTCCNHTK || 0)) / 100;
+        if (!Number(sotienTCCNHTK)) {
+          sotienTCCNHTK = 0
+        }
+        let tongSotienphaiDong = (sotienphaidong || 0) - ((sotienNSNN || 0) + (sotienNSDP || 0) + (sotienTCCNHTK || 0));
+        if (!Number(tongSotienphaiDong)) {
+          tongSotienphaiDong = 0
+        }
+        this.updateNextColumns(instance, r, sotienphaidong, [indexOfMoneyPayment], true);
+        this.updateNextColumns(instance, r, sotienNSNN, [indexOftyleNSNN + 1], true);
+        this.updateNextColumns(instance, r, sotienNSDP, [indexOftyleNSDP + 1], true);
+        this.updateNextColumns(instance, r, sotienTCCNHTK, [indexOftyleTCCNHTK + 1], true);
+        this.updateNextColumns(instance, r, tongSotienphaiDong, [indexOfplayerClose], true);
       }, 10);
       
   }
 
-  private calculatorNSNH(instance, cell, c, r, records) {
-    const indexOfNumberMonthJoin = this.tableHeaderColumns.findIndex(c => c.key === 'numberMonthJoin');
-    const indexOftyleNSNN = this.tableHeaderColumns.findIndex(c => c.key === 'tyleNSNN');
-    const tyleNSNN = records[r][indexOftyleNSNN];
-    const numberMonthJoin = records[r][indexOfNumberMonthJoin];
-    clearTimeout(this.timer);
-    this.timer = setTimeout(() => {
-      
-      const ratio =  ((this.coefficient || 0) *  (this.ratioPayment || 0)) / 100;
-      let total = ((ratio * (tyleNSNN || 0)) / 100) * (numberMonthJoin || 0);
-      if (!Number(total)) {
-        total = 0
-      }
-      this.updateNextColumns(instance, r, total, [indexOftyleNSNN + 1], true);
-      this.calculatorTotalPayment(instance, cell, c, r, records);
-    }, 10);
-    
-  }
-
-  private calculatorNSDP(instance, cell, c, r, records) {
-    const indexOftyleNSDP = this.tableHeaderColumns.findIndex(c => c.key === 'tyleNSDP');
-    const tyleNSDP = records[r][indexOftyleNSDP];
-    clearTimeout(this.timer);
-    this.timer = setTimeout(() => {
-      
-      const ratio =  ((this.coefficient || 0) *  (this.ratioPayment || 0)) / 100;
-      let total = (ratio * (tyleNSDP || 0)) / 100;
-      if (!Number(total)) {
-        total = 0
-      }
-      this.updateNextColumns(instance, r, total, [indexOftyleNSDP + 1], true);
-      this.calculatorTotalPayment(instance, cell, c, r, records);
-    }, 10);
-    
-  }
-  
-  private calculatorTCCNHTK(instance, cell, c, r, records) {
-    const indexOftyleTCCNHTK = this.tableHeaderColumns.findIndex(c => c.key === 'tyleTCCNHTK');
-    const tyleTCCNHTK = records[r][indexOftyleTCCNHTK];
-    clearTimeout(this.timer);
-    this.timer = setTimeout(() => {
-      
-      const ratio =  ((this.coefficient || 0) *  (this.ratioPayment || 0)) / 100;
-      let total = (ratio * (tyleTCCNHTK || 0)) / 100;
-      if (!Number(total)) {
-        total = 0
-      }
-      this.updateNextColumns(instance, r, total, [indexOftyleTCCNHTK + 1], true);
-      this.calculatorTotalPayment(instance, cell, c, r, records);
-    }, 10);
-    
-  }
-
-  private calculatorTotalPayment(instance, cell, c, r, records) {
-    const indexOfmoneyPayment = this.tableHeaderColumns.findIndex(c => c.key === 'moneyPayment');
-    const indexOfsoTienNSNN = this.tableHeaderColumns.findIndex(c => c.key === 'soTienNSNN');
-    const indexOfsoTienNSDP = this.tableHeaderColumns.findIndex(c => c.key === 'soTienNSDP');
-    const indexOftoChuCaNhanHTKhac = this.tableHeaderColumns.findIndex(c => c.key === 'toChuCaNhanHTKhac');
-    const indexOfplayerClose = this.tableHeaderColumns.findIndex(c => c.key === 'playerClose');
-    const moneyPayment = records[r][indexOfmoneyPayment];
-    const soTienNSNN = records[r][indexOfsoTienNSNN];
-    const soTienNSDP = records[r][indexOfsoTienNSDP];
-    const toChuCaNhanHTKhac = records[r][indexOftoChuCaNhanHTKhac];
-    let total = (moneyPayment || 0) - ((soTienNSNN || 0) + (soTienNSDP || 0) + (toChuCaNhanHTKhac || 0));
-    if (!Number(total)) {
-      total = 0
+  private soTienphaidongvesau(numberMonthJoin, salary) {
+    let sotienphaidong = 0;
+    for(let i = 1 ; i<= numberMonthJoin; i++) {
+      sotienphaidong += (((this.ratioPayment || 0) *  (salary || 0)) / 100) / Math.pow(1 + 0.00628, i-1);
     }
-    this.updateNextColumns(instance, r, total, [indexOfplayerClose], true);
+
+    return Math.round(sotienphaidong);
   }
 
-   
+  private soTienphaidongConThieu(numberMonthJoin, salary) {
+    let sotienphaidong = 0;
+    for(let i = 1 ; i<= numberMonthJoin; i++) {
+      sotienphaidong += (((this.ratioPayment || 0) *  (salary || 0)) / 100) * Math.pow(1 + 0.00628, i);
+    }
+
+    return Math.round(sotienphaidong);
+  }
+
+  private soTienphaidongDongBu(numberMonthJoin, salary, tungaydong) {
+    const curentDate = new Date();
+    const cellValueMoment = moment(tungaydong, DATE_FORMAT.ONLY_MONTH_YEAR);
+    const toDateValueMoment = moment(curentDate, DATE_FORMAT.ONLY_MONTH_YEAR);
+    let sothangdongcham = toDateValueMoment.diff(cellValueMoment, "month") + 1;
+    if (sothangdongcham > numberMonthJoin) {
+      sothangdongcham = numberMonthJoin;
+    }
+
+    if (sothangdongcham < 1) {
+      sothangdongcham = 1;
+    }
+    let sotienphaidong =  (((this.ratioPayment || 0) * (salary || 0) * (numberMonthJoin || 0)) /100) * Math.pow(1 + 0.00628, sothangdongcham);
+    
+    return Math.round(sotienphaidong);
+  }
+
+  private soTienphaiDongHangThang(numberMonthJoin, salary) {
+    const ratio =  ((this.ratioPayment || 0) *  (salary || 0)) / 100;
+    let sotienphaidong = ratio * (numberMonthJoin || 0);
+    return Math.round(sotienphaidong);
+  }
 
   get coefficient() {
     return this.form.get('coefficientCode').value;
@@ -2045,6 +2122,15 @@ export class AllocationCardComponent implements OnInit, OnDestroy {
     });
 
     return this.formatNote(mesage, argsMessgae);;
+  }
+
+  protected isHasLeaf() {    
+    const declarations = [ ...this.declarations];
+    const indexOfIsurranceNo = this.tableHeaderColumns.findIndex(c => c.key === 'isurranceNo');
+    const declarationUsers = declarations.filter(d => {
+      return d.origin && (d.origin.employeeId || d.employeeId) > 0 && d.data[indexOfIsurranceNo] !== '' && d.data[indexOfIsurranceNo] !== undefined;
+    });
+    return declarationUsers.length > 0;
   }
 
 }

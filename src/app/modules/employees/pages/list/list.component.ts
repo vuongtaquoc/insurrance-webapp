@@ -100,7 +100,16 @@ export class EmployeeListComponent implements OnInit {
         ratio: data.ratioInsurrance.ratio,
         rate: data.ratioInsurrance.bhxh,
         paymentMethodCode: data.ratioInsurrance.month,
-        orders: data.order
+        orders: data.order,
+        bankCode: '',
+        registerCityCode: 'all',
+        registerDistrictCode: 'all',
+        recipientsCityCode: 'all',
+        recipientsDistrictCode: 'all',
+        cityFirstRegistCode: 'all',
+        relationshipCityCode: 'all',
+        relationshipDistrictCode: 'all',
+        isMaster: false
       }
 
       this.isSpinning = false;

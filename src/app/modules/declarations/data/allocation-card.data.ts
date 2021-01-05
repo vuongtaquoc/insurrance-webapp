@@ -85,14 +85,22 @@ export const TABLE_HEADER_COLUMNS = [{
   width: 120,
   title: '(4)',
   key: 'isurranceNo',
-  fieldName: 'Số số BHXH'
+  fieldName: 'Số số BHXH',
+  validations: {
+    required: true,
+    duplicate: true,
+  }
 }, {
   type: 'numeric',
   align: 'right',
   width: 123,
   title: '(5.1)',
   key: 'isurranceCode',
-  fieldName: 'Mã số BHXH'  
+  fieldName: 'Mã số BHXH',
+  validations: {
+    required: true,
+    duplicate: true,
+  }
 }, {
   type: 'text',
   key: 'isurranceCodeStatus',
@@ -281,7 +289,6 @@ export const TABLE_HEADER_COLUMNS = [{
   align: 'right',
   mask: '#,##0',
   fieldName: 'Mức thu nhập tháng đóng BHXH',
-  sum: true,
   key: 'salary',
   validations: {
     number: true,

@@ -61,10 +61,10 @@ export class ManageUnitFormComponent implements OnInit, OnDestroy {
         const companyInfo = this.companyInfo;
         this.departments = companyInfo.departments ? companyInfo.departments : [];
         this.form = this.formBuilder.group({
-            cityCode: [companyInfo.cityCode, [Validators.required]],
-            isurranceDepartmentCode: [companyInfo.isurranceDepartmentCode, [Validators.required]],
+            cityCode: [{value:companyInfo.cityCode, disabled: true }, [Validators.required]],
+            isurranceDepartmentCode: [{value:companyInfo.isurranceDepartmentCode, disabled: true }, [Validators.required]],
             salaryAreaCode: [companyInfo.salaryAreaCode, [Validators.required]],
-            isurranceCode: [companyInfo.isurranceCode, [Validators.required]],
+            isurranceCode: [{value:companyInfo.isurranceCode, disabled: true }, [Validators.required]],
             name: [companyInfo.name, [Validators.required]],
             address: [companyInfo.address, [Validators.required]],
             addressRegister: [companyInfo.addressRegister, [Validators.required]],

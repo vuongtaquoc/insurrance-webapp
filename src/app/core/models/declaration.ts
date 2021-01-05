@@ -6,6 +6,7 @@ export class Declaration {
   key?: string;
   parentKey?: string;
   isInitialize?: boolean;
+  employeeId?: any;
   hasLeaf?: boolean;
   planDefault?: string;
   isLeaf?: boolean;

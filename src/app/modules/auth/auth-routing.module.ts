@@ -7,7 +7,8 @@ import {
   RequestResetPasswordComponent,
   RequestResetSuccessComponent,
   ResetPasswordComponent,
-  ResetSuccessComponent
+  ResetSuccessComponent,
+  ChangePasswordComponent
 } from './pages';
 
 const routes: Routes = [
@@ -20,6 +21,8 @@ const routes: Routes = [
       { path: 'forgot-success', component: RequestResetSuccessComponent },
       { path: 'reset-password', component: ResetPasswordComponent },
       { path: 'reset-success', component: ResetSuccessComponent },
+      { path: 'new-password/:token',  component: ChangePasswordComponent }
+      
     ]
   }
 ];

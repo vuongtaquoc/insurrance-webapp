@@ -588,9 +588,9 @@
               <div nz-row [nzGutter]="10">
                 <div nz-col [nzSpan]="8">
                   <nz-form-item>
-                    <nz-form-label class="text-left" [nzSpan]="10">Chức vụ</nz-form-label>
+                    <nz-form-label class="text-left" [nzSpan]="10">PC Chức vụ</nz-form-label>
                     <nz-form-control [nzSpan]="14" [nzErrorTip]="allowanceLevelTpl">
-                      <nz-input-number placeholder="Chức vụ" formControlName="allowanceLevel"
+                      <nz-input-number placeholder="PC Chức vụ" formControlName="allowanceLevel"
                         [nzFormatter]="formatterCurrency"></nz-input-number>
                       <ng-template #allowanceLevelTpl let-control>
                         <ng-container *ngIf="control.hasError('pattern')">
@@ -675,7 +675,7 @@
                 <div nz-col [nzSpan]="8">
                   <nz-form-item>
                     <nz-form-label class="text-left" [nzSpan]="10">Các khoản bổ sung</nz-form-label>
-                    <nz-form-control [nzSpan]="14" [nzErrorTip]="allowanceAdditional">
+                    <nz-form-control [nzSpan]="14" [nzErrorTip]="allowanceAdditionalTpl">
                       <nz-input-number placeholder="Các khoản bổ sung" formControlName="allowanceAdditional"
                         [nzFormatter]="formatterCurrency"></nz-input-number>
                       <ng-template #allowanceAdditionalTpl let-control>
@@ -689,7 +689,7 @@
                 <div nz-col [nzSpan]="8">
                   <nz-form-item>
                     <nz-form-label class="text-left" [nzSpan]="10">PC CLBL</nz-form-label>
-                    <nz-form-control [nzSpan]="14" [nzErrorTip]="allowanceOther">
+                    <nz-form-control [nzSpan]="14" [nzErrorTip]="allowanceOtherTpl">
                       <nz-input-number placeholder="PC CLBL" formControlName="allowanceOther"
                         [nzFormatter]="formatterCurrency"></nz-input-number>
                       <ng-template #allowanceOtherTpl let-control>
@@ -869,6 +869,7 @@
               Phụ lục: Thành viên hộ gia đình của NLĐ
               <label class="employee-form__group-title--right" nz-checkbox (ngModelChange)="changeMaster($event)"
                 formControlName="isMaster">NLĐ là chủ hộ</label>
+                
             </h3>
             <!-- ROW START -->
             <div nz-row [nzGutter]="10">

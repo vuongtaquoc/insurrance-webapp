@@ -152,8 +152,8 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
       allowanceSeniority: [employee.allowanceSeniority, [Validators.min(0), Validators.max(100), Validators.pattern(REGEX.ONLY_NUMBER_INCLUDE_DECIMAL)]],
       allowanceSeniorityJob: [employee.allowanceSeniorityJob, [Validators.min(0), Validators.max(100), Validators.pattern(REGEX.ONLY_NUMBER_INCLUDE_DECIMAL)]],
       allowanceSalary: [employee.allowanceSalary, [Validators.pattern(REGEX.ONLY_NUMBER)]],
-      allowanceAdditional: [employee.allowanceAdditional],
-      allowanceOther: [employee.allowanceOther, [Validators.pattern(REGEX.ONLY_NUMBER)]],
+      allowanceAdditional: [employee.allowanceAdditional,[Validators.min(0),Validators.pattern(REGEX.ONLY_NUMBER)]],
+      allowanceOther: [employee.allowanceOther, [Validators.min(0),Validators.pattern(REGEX.ONLY_NUMBER)]],
       cityFirstRegistCode: [employee.cityFirstRegistCode, Validators.required],
       hospitalFirstRegistCode: [employee.hospitalFirstRegistCode, Validators.required],
       mstncn: [employee.mstncn, [Validators.pattern(REGEX.ONLY_NUMBER)]],
@@ -1073,10 +1073,15 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
       this.showDialogNotFound();
     }
 
+    let gender = "0";
+    if(result.gender === '0') {
+      gender = "1";
+    }
+
     this.employeeForm.patchValue({
       fullName: result.fullName,
       identityCar: result.identityCar,
-      gender: result.gender,
+      gender: gender,
       birthday: this.buildBirthday(result.typeBirthday, result.birthday),
       recipientsAddress: result.address,
       typeBirthday: result.typeBirthday,

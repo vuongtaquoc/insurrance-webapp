@@ -67,9 +67,16 @@
 			}
 		},
 		"resetPassword": {},
+		"changePassword": {
+			"pageTitle": "Thay đổi mật khẩu",
+			"title": "Thay đổi mật khẩu",
+			"password": "Mật khẩu mới",
+			"newPassword": "Nhập lại mật khẩu"
+		},
 		"requestReset": {
 			"pageTitle": "Quên mật khẩu",
 			"title": "Quên mật khẩu",
+			"requestSuccess": "Vui lòng kiểm kiểm tra email",
 			"description": "Vui lòng nhập email để lấy lại mật khẩu",
 			"loginLink": "Quay lại trang đăng nhập",
 			"form": {

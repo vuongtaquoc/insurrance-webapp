@@ -47,10 +47,10 @@
                   <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">
                     {{ 'customers.from.isurranceCode' | translate }}</nz-form-label>
                   <nz-form-control [nzSpan]="14" [nzErrorTip]="companyCodetempl" class="item-left-2">
-                    <input nz-input placeholder="{{ 'customers.from.companyCode' | translate }}" formControlName="code" />
+                    <input nz-input placeholder="{{ 'customers.from.isurranceCode' | translate }}" formControlName="code" />
                     <ng-template #companyCodetempl let-control>
                       <ng-container *ngIf="control.hasError('required')">
-                        {{ 'customers.from.companyCode' | translate }} không để trống
+                        {{ 'customers.from.isurranceCode' | translate }} không để trống
                       </ng-container>
                     </ng-template>
                   </nz-form-control>

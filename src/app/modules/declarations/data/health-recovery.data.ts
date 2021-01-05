@@ -178,6 +178,7 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   type: 'text',
   width: 120,
   title: '(C.3)',
+  wordWrap: true,
   key: 'accountHolder'
 }, {
   type: 'text',
@@ -358,6 +359,7 @@ export const TABLE_HEADER_COLUMNS_PART_2 = [{
   type: 'text',
   width: 120,
   title: '(C.3)',
+  wordWrap: true,
   key: 'accountHolder'
 }, {
   type: 'text',

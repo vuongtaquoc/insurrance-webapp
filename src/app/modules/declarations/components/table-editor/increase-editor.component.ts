@@ -588,7 +588,6 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
             required: true
           };
           validationColumn.fieldName = 'Từ tháng, năm';
-          // instance.jexcel.clearValidation(y, Number(cell) - 1);
           instance.jexcel.validationCell(y, Number(cell) - 1, validationColumn.fieldName, validationColumn.validations);
         }
       } else {
@@ -596,7 +595,6 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
           required: true
         };
         validationColumn.fieldName = 'Từ tháng, năm';
-        // instance.jexcel.clearValidation(y, Number(cell) - 1);
         instance.jexcel.validationCell(y, Number(cell) - 1, validationColumn.fieldName, validationColumn.validations);
       }
     }else if (column.key === 'contractTypeFromDate') {
@@ -623,7 +621,6 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
             required: false
           };
           validationColumn.fieldName = 'Từ ngày';
-          // instance.jexcel.clearValidation(y, cell);
           instance.jexcel.validationCell(y, cell, validationColumn.fieldName, validationColumn.validations);
         }
       } else {
@@ -631,7 +628,6 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
           required: false
         };
         validationColumn.fieldName = 'Từ ngày';
-        // instance.jexcel.clearValidation(y, cell);
         instance.jexcel.validationCell(y, cell, validationColumn.fieldName, validationColumn.validations);
       }
     } else if (column.key === 'contractTypeToDate') {
@@ -658,7 +654,6 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
             required: false
           };
           validationColumn.fieldName = 'Từ ngày';
-          // instance.jexcel.clearValidation(y, Number(cell) - 1);
           instance.jexcel.validationCell(y, Number(cell) - 1, validationColumn.fieldName, validationColumn.validations);
         }
       } else {
@@ -693,7 +688,6 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
             required: false
           };
           validationColumn.fieldName = 'Từ ngày';
-          // instance.jexcel.clearValidation(y, cell);
           instance.jexcel.validationCell(y, cell, validationColumn.fieldName, validationColumn.validations);
         }
       } else {
@@ -701,7 +695,6 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
           required: false
         };
         validationColumn.fieldName = 'Từ ngày';
-        // instance.jexcel.clearValidation(y, cell);
         instance.jexcel.validationCell(y, cell, validationColumn.fieldName, validationColumn.validations);
       }
     } else if (column.key === 'workTypeToDate') {
@@ -728,7 +721,6 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
             required: false
           };
           validationColumn.fieldName = 'Từ ngày';
-          // instance.jexcel.clearValidation(y, Number(cell) - 1);
           instance.jexcel.validationCell(y, Number(cell) - 1, validationColumn.fieldName, validationColumn.validations);
         }
       } else {
@@ -736,7 +728,6 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
           required: false
         };
         validationColumn.fieldName = 'Từ ngày';
-        // instance.jexcel.clearValidation(y, Number(cell) - 1);
         instance.jexcel.validationCell(y, Number(cell) - 1, validationColumn.fieldName, validationColumn.validations);
       }
     } else if (column.key === 'careFromDate') {
@@ -763,7 +754,6 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
             required: false
           };
           validationColumn.fieldName = 'Từ ngày';
-          // instance.jexcel.clearValidation(y, cell);
           instance.jexcel.validationCell(y, cell, validationColumn.fieldName, validationColumn.validations);
         }
       } else {
@@ -771,7 +761,6 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
           required: false
         };
         validationColumn.fieldName = 'Từ ngày';
-        // instance.jexcel.clearValidation(y, cell);
         instance.jexcel.validationCell(y, cell, validationColumn.fieldName, validationColumn.validations);
       }
     } else if (column.key === 'careTypeToDate') {

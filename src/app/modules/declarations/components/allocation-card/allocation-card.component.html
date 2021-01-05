@@ -105,7 +105,7 @@
                   <nz-form-item>
                     <nz-form-label [nzNoColon]="true" [nzSpan]="18">Tỷ lệ đóng (%)</nz-form-label>
                     <nz-form-control [nzSpan]="6" [nzErrorTip]="ratioPaymentTpl">
-                      <input nz-input formControlName="ratioPayment" (onChange)="handleChangeForm()">
+                      <input nz-input formControlName="ratioPayment"  (ngModelChange)="handleChangeForm($event)">
                       <ng-template #ratioPaymentTpl let-control>
                         <ng-container *ngIf="control.hasError('required')">
                           <p class="regime-approval-form__error">Tỷ lệ đóng (%) không để trống</p>
@@ -125,7 +125,7 @@
                   <nz-form-item>
                     <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Chuẩn nghèo(CN)</nz-form-label>
                     <nz-form-control [nzSpan]="14">
-                      <nz-select [nzSize]="'small'" class="custom-select" nzShowSearch nzAllowClear formControlName="coefficientCode">
+                      <nz-select [nzSize]="'small'" class="custom-select"  (ngModelChange)="handleChangeForm($event)" nzShowSearch nzAllowClear formControlName="coefficientCode">
                         <nz-option *ngFor="let coefficient of coefficients" [nzLabel]="coefficient.name"
                           [nzValue]="coefficient.id">
                         </nz-option>

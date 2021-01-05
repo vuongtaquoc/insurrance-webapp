@@ -146,6 +146,7 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
 
           instance.jexcel.setValue(nextColumn, '');
         }
+        this.validIsurrance();
         this.validationCellByOtherCell(value, column, r, instance, c);
          
       },
@@ -248,7 +249,8 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
         planType: d.planType,
         formula: !!d.formula,
         isInitialize: d.isInitialize,
-        groupObject: d.groupObject
+        groupObject: d.groupObject,
+        isRequiredIsurranceNo: d.isRequiredIsurranceNo,
       };
 
       data.push(d.data);
@@ -275,6 +277,8 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
         }
       });
     });
+
+    this.validIsurrance();
  }
 
   private handleDeleteUser(user) {
@@ -383,7 +387,8 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
   validationCellByOtherCell(cellValue, column, y, instance, cell) {
     setTimeout(() => {
       if (column.key === 'fromDate') {
-        const toDateValue = this.spreadsheet.getValueFromCoords(Number(cell) + 1, y);
+        const indexOftoDate =  this.columns.findIndex(c => c.key === 'toDate');
+        const toDateValue = this.spreadsheet.getValueFromCoords(indexOftoDate, y);
         const validationColumn = this.columns[cell];
 
         if (toDateValue && cellValue) {
@@ -407,14 +412,14 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
               required: true
             };
             validationColumn.fieldName = 'Từ tháng, năm';
-            instance.jexcel.clearValidation(y, cell);
+            instance.jexcel.validationCell(y, cell, validationColumn.fieldName, validationColumn.validations);
           }
         } else {
           validationColumn.validations = {
             required: true
           };
           validationColumn.fieldName = 'Từ tháng, năm';
-          instance.jexcel.clearValidation(y, cell);
+          instance.jexcel.validationCell(y, cell, validationColumn.fieldName, validationColumn.validations);
         }
 
         this.handleEvent({
@@ -447,14 +452,14 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
               required: true
             };
             validationColumn.fieldName = 'Từ tháng, năm';
-            instance.jexcel.clearValidation(y, Number(cell) - 1);
+            instance.jexcel.validationCell(y,  Number(cell) - 1, validationColumn.fieldName, validationColumn.validations);
           }
         } else {
           validationColumn.validations = {
             required: true
           };
           validationColumn.fieldName = 'Từ tháng, năm';
-          instance.jexcel.clearValidation(y, Number(cell) - 1);
+          instance.jexcel.validationCell(y,  Number(cell) - 1, validationColumn.fieldName, validationColumn.validations);
         }
 
         this.handleEvent({
@@ -613,4 +618,37 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
 
     column.editor = customAutocomplete(this.spreadsheet, this.getHospitalsByCityCode.bind(this));
   }
+
+  private validIsurrance() {
+    setTimeout(() => {
+        const indexIsExitsIsurranceNo = this.columns.findIndex(c => c.key === 'isExitsIsurranceNo');
+        const indexisurranceNo = this.columns.findIndex(c => c.key === 'isurranceNo');
+        const indexIsurranceCode = this.columns.findIndex(c => c.key === 'isurranceCode');
+        this.data.forEach((d, y) => {
+          const isRequiredIsurranceNo = d.data.options.isRequiredIsurranceNo;
+          const isExitsIsurranceNo =  d.data[indexIsExitsIsurranceNo];
+            if(!isExitsIsurranceNo && !isRequiredIsurranceNo) {
+              const column = this.columns[indexisurranceNo];
+              const validIsurranceNo = {
+                ...column.validations                
+              }
+              validIsurranceNo.required = false;
+              this.spreadsheet.validationCell(y, indexisurranceNo, column.fieldName ? column.fieldName : column.title, validIsurranceNo);
+              const columnIsurranceCode = this.columns[indexIsurranceCode];
+              const validIsurranceCode = {
+                ...columnIsurranceCode.validations                
+              }
+              validIsurranceCode.required = false;
+              this.spreadsheet.validationCell(y, indexIsurranceCode, columnIsurranceCode.fieldName ? columnIsurranceCode.fieldName : columnIsurranceCode.title, validIsurranceCode);
+            }
+        });
+
+        this.handleEvent({
+          type: 'validate',
+          deletedIndexes: [],
+          user: {}
+        });
+    }, 10);
+  }
+
 }
