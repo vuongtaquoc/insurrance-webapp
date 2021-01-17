@@ -53,6 +53,14 @@ export class PlanService {
     );
   }
 
+  public getDetailByCode(code: string) {
+    return this.http.get(`/plan/code/${ code }`).pipe(
+      map(detail => {
+        return detail;
+      })
+    );
+  }
+
   public getDetailByIdShowCode(id: string) {
     return this.http.get('/plan', {
       params: { id }

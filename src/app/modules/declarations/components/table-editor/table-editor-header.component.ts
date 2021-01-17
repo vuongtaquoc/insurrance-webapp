@@ -269,6 +269,7 @@ export class TableEditorHeaderComponent implements AfterViewInit, OnInit, OnDest
         formula: !!d.formula,
         planType: d.planType,
         planDefault: d.planDefault,
+        rate: d.rate,
         isInitialize: d.isInitialize,
         isRequiredIsurranceNo: d.isRequiredIsurranceNo,
         groupObject: d.groupObject

@@ -24,6 +24,7 @@ import {
   RelationshipService,
   DeclarationConfigService,
   VillageService,
+  SalaryAreaService,
 } from '@app/core/services';
 import { DATE_FORMAT, DOCUMENTBYPLANCODE, ACTION } from '@app/shared/constant';
 import { eventEmitter } from '@app/shared/utils/event-emitter';
@@ -91,6 +92,7 @@ export class ReducingLaborComponent implements OnInit, OnDestroy {
   tabSubject: Subject<any> = new Subject<any>();
   handlers: any = [];
   isSpinning = false;
+  salaryAreas: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -106,7 +108,8 @@ export class ReducingLaborComponent implements OnInit, OnDestroy {
     private districtService:  DistrictService,
     private wardService: WardsService,
     private declarationConfigService: DeclarationConfigService,
-    private villageService: VillageService
+    private villageService: VillageService,
+    private salaryAreaService: SalaryAreaService,
   ) {
   }
 
@@ -118,6 +121,7 @@ export class ReducingLaborComponent implements OnInit, OnDestroy {
     });
     
     this.loadDeclarationConfig();
+    this.loadSalaryInfo();
     //Init data families table editor
     forkJoin([
       this.cityService.getCities(),
@@ -210,6 +214,13 @@ export class ReducingLaborComponent implements OnInit, OnDestroy {
     });
   }
 
+  private loadSalaryInfo() {
+    const companyInfo  =  this.authenticationService.currentCredentials.companyInfo;
+    this.salaryAreaService.getDetailByCode(companyInfo.salaryAreaCode).subscribe((data) => {
+      this.salaryAreas = data;
+    });
+    
+  }
   private updateEmployeeInInfomation(user) {
 
     const informations = [ ...this.informations ];

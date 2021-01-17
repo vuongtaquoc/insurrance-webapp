@@ -25,7 +25,8 @@ import {
   VillageService,
   PeopleService,
   DeclarationConfigService,
-  NationalityService
+  NationalityService,
+  SalaryAreaService,
 } from '@app/core/services';
 import { DATE_FORMAT, DOCUMENTBYPLANCODE, ACTION } from '@app/shared/constant';
 import { eventEmitter } from '@app/shared/utils/event-emitter';
@@ -97,6 +98,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
   tabSubject: Subject<any> = new Subject<any>();
   handlers: any = [];
   isSpinning = false;
+  salaryAreas: any;
   timer: any;
   isCheckIsuranceCode: boolean = false;
   constructor(
@@ -115,7 +117,8 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     private villageService: VillageService,
     private peopleService: PeopleService,
     private declarationConfigService: DeclarationConfigService,
-    private nationalityService: NationalityService
+    private nationalityService: NationalityService,
+    private salaryAreaService: SalaryAreaService,
   ) {
 
     this.getRelationshipDistrictsByCityCode = this.getRelationshipDistrictsByCityCode.bind(this);
@@ -135,7 +138,8 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
       usedocumentDT01:[true],
     });
 
-    this.loadDeclarationConfig();     
+    this.loadDeclarationConfig();   
+    this.loadSalaryInfo();  
     //Init data families table editor
     forkJoin([
       this.cityService.getCities(),
@@ -260,6 +264,14 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     });
   }
   
+  private loadSalaryInfo() {
+      const companyInfo  =  this.authenticationService.currentCredentials.companyInfo;
+      this.salaryAreaService.getDetailByCode(companyInfo.salaryAreaCode).subscribe((data) => {
+        this.salaryAreas = data;
+      });
+      
+  }
+
   private updateEmployeeInFamily(user) {
     const families = [ ...this.families ];
     families.forEach(d => {

@@ -5,7 +5,8 @@ import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import {
     CityService, IsurranceDepartmentService, SalaryAreaService, CompanyService,
     PaymentMethodServiced, GroupCompanyService, DepartmentService, DistrictService, WardsService,
-    AuthenticationService
+    AuthenticationService, CoefficientService,
+    CategoryService, BenefitLevelService
 } from '@app/core/services';
 import { forkJoin } from 'rxjs';
 import { REGEX, CRON_TIMES, schemaSign } from '@app/shared/constant';
@@ -37,7 +38,9 @@ export class ManageUnitFormComponent implements OnInit, OnDestroy {
     times: any[] = [];
     timer: any;
     loaddingToken: boolean = false;
-
+    benefitLevels:  any;
+    coefficients: any;
+    calculationTypes: any;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -53,6 +56,9 @@ export class ManageUnitFormComponent implements OnInit, OnDestroy {
         private wardsService: WardsService,
         private companyService: CompanyService,
         private authenticationService: AuthenticationService,
+        private benefitLevelService: BenefitLevelService,
+        private coefficientService: CoefficientService,
+        private categoryService: CategoryService,
 
     ) { }
 
@@ -82,7 +88,11 @@ export class ManageUnitFormComponent implements OnInit, OnDestroy {
             fromDate: [companyInfo.fromDate, [Validators.required]],
             expired: [companyInfo.expired, [Validators.required]],
             submissionType: [(companyInfo.submissionType || '0').toString(), [Validators.required]],
+            interestCalculation: [(companyInfo.interestCalculation || '0').toString(), [Validators.required]],
             groupCode: [companyInfo.groupCode, [Validators.required]],
+            objectType: [companyInfo.objectType, [Validators.required]],
+            calculationType: [(companyInfo.calculationType || '0').toString(), [Validators.required]],
+            coefficient: [(companyInfo.coefficient || '0').toString(), [Validators.required]],
             wardsCode: [companyInfo.wardsCode],
             districtCode: [companyInfo.districtCode],
             subjectsCard: [(companyInfo.subjectsCard || '0').toString()],
@@ -95,10 +105,13 @@ export class ManageUnitFormComponent implements OnInit, OnDestroy {
             this.groupCompanyService.getGroupCompany(),
             this.paymentMethodServiced.getPaymentMethods(),
             this.districtService.getDistrict(companyInfo.cityCode),
-            this.wardsService.getWards(companyInfo.districtCode)
+            this.wardsService.getWards(companyInfo.districtCode),
+            this.benefitLevelService.filter(),
+            this.coefficientService.filter(),
+            this.categoryService.getCategories('calculationtype')
         ];
 
-        forkJoin(jobs).subscribe(([cities, salaryAreas, isurranceDepartments, groupCompanies, paymentMethods, districts, wards]) => {
+        forkJoin(jobs).subscribe(([cities, salaryAreas, isurranceDepartments, groupCompanies, paymentMethods, districts, wards, benefitLevels, coefficients, calculationTypes]) => {
             this.cities = cities;
             this.salaryAreas = salaryAreas;
             this.isurranceDepartments = isurranceDepartments;
@@ -106,6 +119,9 @@ export class ManageUnitFormComponent implements OnInit, OnDestroy {
             this.paymentMethods = paymentMethods;
             this.wards = wards;
             this.districts = districts;
+            this.benefitLevels = benefitLevels;
+            this.coefficients = coefficients;
+            this.calculationTypes = calculationTypes;
         });
         
         this.loading = true;
@@ -144,7 +160,7 @@ export class ManageUnitFormComponent implements OnInit, OnDestroy {
 
     getData() {
         const currentCopmanyInfo = {
-            ...this.form.value,
+            ...this.form.getRawValue(),
             id: this.companyInfo.id,
             companyId: this.companyInfo.companyId,
         }
@@ -286,8 +302,7 @@ export class ManageUnitFormComponent implements OnInit, OnDestroy {
         this.form.patchValue({
             [key]: value.toUpperCase()
         });
-    }
-
+    }  
 
     checkDuplicateDepartment() {
         let isDup = false;

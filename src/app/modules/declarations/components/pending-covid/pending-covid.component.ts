@@ -38,7 +38,7 @@ export class PendingCovidComponent extends GeneralBaseComponent implements OnIni
     private peopleService: PeopleService,
     private wardService: WardsService,
     private salaryAreaService: SalaryAreaService,
-    private planService: PlanService,
+    protected planService: PlanService,
     private departmentService: DepartmentService,
     private documentListService: DocumentListService,
     private employeeService: EmployeeService,
@@ -46,7 +46,7 @@ export class PendingCovidComponent extends GeneralBaseComponent implements OnIni
     private relationshipService: RelationshipService,
     private villageService: VillageService,
   ) {
-    super(declarationService, modalService, hospitalService);
+    super(declarationService, modalService, hospitalService, planService);
     this.getRecipientsDistrictsByCityCode = this.getRecipientsDistrictsByCityCode.bind(this);
     this.getRecipientsWardsByDistrictCode = this.getRecipientsWardsByDistrictCode.bind(this);
     this.getRegisterDistrictsByCityCode = this.getRegisterDistrictsByCityCode.bind(this);
@@ -69,8 +69,10 @@ export class PendingCovidComponent extends GeneralBaseComponent implements OnIni
       this.departmentService.getDepartments(),
       this.categoryService.getCategories('relationshipDocumentType'),
       this.relationshipService.getRelationships(),
-      this.categoryService.getCategories('livesAreaCode')
-    ]).subscribe(([ cities, nationalities, peoples, salaryAreas, plans, departments, relationshipDocumentTypies, relationShips, livesAreas ]) => {
+      this.categoryService.getCategories('livesAreaCode'),
+      this.categoryService.getCategories('workType'),
+      this.categoryService.getCategories('contractType'),
+    ]).subscribe(([ cities, nationalities, peoples, salaryAreas, plans, departments, relationshipDocumentTypies, relationShips, livesAreas, workTypes, contractType  ]) => {
       this.updateSourceToColumn(TABLE_ADJUST_HEADER_COLUMNS, 'peopleCode', peoples);
       this.updateSourceToColumn(TABLE_ADJUST_HEADER_COLUMNS, 'nationalityCode', nationalities);
       this.updateSourceToColumn(TABLE_ADJUST_HEADER_COLUMNS, 'registerCityCode', cities);
@@ -80,6 +82,8 @@ export class PendingCovidComponent extends GeneralBaseComponent implements OnIni
       this.updateSourceToColumn(TABLE_ADJUST_HEADER_COLUMNS, 'departmentCode', departments);
       this.updateSourceToColumn(TABLE_ADJUST_HEADER_COLUMNS, 'livesAreaCode', livesAreas);
 
+      this.updateSourceToColumn(TABLE_ADJUST_HEADER_COLUMNS, 'workTypeCode', workTypes);
+      this.updateSourceToColumn(TABLE_ADJUST_HEADER_COLUMNS, 'contractTypeCode', contractType);
       // // get filter columns
       this.updateFilterToColumn(TABLE_ADJUST_HEADER_COLUMNS, 'registerDistrictCode', this.getRegisterDistrictsByCityCode);
       this.updateFilterToColumn(TABLE_ADJUST_HEADER_COLUMNS, 'registerWardsCode', this.getRegisterWardsByDistrictCode);

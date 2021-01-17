@@ -38,7 +38,7 @@ export class IncreaseComponent extends GeneralBaseComponent implements OnInit, O
     private peopleService: PeopleService,
     private wardService: WardsService,
     private salaryAreaService: SalaryAreaService,
-    private planService: PlanService,
+    protected planService: PlanService,
     private departmentService: DepartmentService,
     private employeeService: EmployeeService,
     private authenticationService: AuthenticationService,
@@ -47,7 +47,7 @@ export class IncreaseComponent extends GeneralBaseComponent implements OnInit, O
     private externalService: ExternalService,
 
   ) {
-    super(declarationService, modalService, hospitalService);
+    super(declarationService, modalService, hospitalService, planService);
     this.getRecipientsDistrictsByCityCode = this.getRecipientsDistrictsByCityCode.bind(this);
     this.getRecipientsWardsByDistrictCode = this.getRecipientsWardsByDistrictCode.bind(this);
     this.getRegisterDistrictsByCityCode = this.getRegisterDistrictsByCityCode.bind(this);

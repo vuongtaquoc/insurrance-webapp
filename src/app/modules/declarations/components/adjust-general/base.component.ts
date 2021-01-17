@@ -10,12 +10,14 @@ import { eventEmitter } from '@app/shared/utils/event-emitter';
 import {
   DeclarationService,
   HospitalService,
+  PlanService,
 } from '@app/core/services';
 import { ACTION } from '@app/shared/constant';
 import { validationColumnsPlanCode, PLANCODECOUNTBHXH } from '@app/shared/constant-valid';
 import { CONSTPARENTDELETEAUTOROW, ContactType } from '@app/shared/constant';
 export class GeneralBaseComponent {
   @Input() data: any;
+  @Input() salaryAreas: any;
   @Input() NzPageHeaderContentDirective: string;
   @Input() hasForm = false;
   @Input() files: any[] = [];
@@ -90,6 +92,7 @@ export class GeneralBaseComponent {
     protected declarationService: DeclarationService,
     protected modalService: NzModalService,
     protected hospitalService: HospitalService,
+    protected planService: PlanService
   ) {}
 
   initializeTableColumns(nested, columns, tableName, currentCredentials) {
@@ -244,9 +247,9 @@ export class GeneralBaseComponent {
         employee.isExitsIsurranceNo = (employee.isurranceNo !== '' && employee.isurranceNo !== null);
         employee.gender = employee.gender === '1';
         employee.workAddress = this.currentCredentials.companyInfo.address;
-
         employee.planCode = declarations[parentIndex].planDefault;
         if(employee.planCode) {
+          employee.rate = declarations[parentIndex].rate;
           const planConfigInfo = validationColumnsPlanCode[employee.planCode] || {note:{argsColumn: [], message: ''}};
           const argsColumn = planConfigInfo.note.argsColumn || [] ;
           const argsMessgae = [];
@@ -430,7 +433,7 @@ export class GeneralBaseComponent {
         this.timer = setTimeout(() => {
           this.updateNextColumns(instance, r, '', [c + 4], true);
         }, 10);
-      }else if (column.key === 'registerCityCode') {
+      } else if (column.key === 'registerCityCode') {
         this.updateNextColumns(instance, r, '', [ c + 1, c + 2 ]);
       } else if (column.key === 'isExitsIsurranceNo') {
         const isExitsIsurranceNo = records[r][c];
@@ -452,27 +455,38 @@ export class GeneralBaseComponent {
         const indexOfFromDate = this.headers[tableName].columns.findIndex(c => c.key === 'fromDate')
         const planCode = records[r][c];
         const fromDate = records[r][indexOfFromDate];
-        this.setDataByPlanCode(instance, records,r, planCode, tableName, fromDate);
-
+        if(planCode) {
+          this.planService.getDetailByCode(planCode).subscribe(data => {
+            this.setDataByPlanCode(instance, records,r, planCode, tableName, fromDate, data.ratio);
+          });
+        } else {
+          this.setDataByPlanCode(instance, records,r, planCode, tableName, fromDate, 0);
+        }
+        
       } else if (column.key === 'fromDate') {
         const indexOfPlanCode = this.headers[tableName].columns.findIndex(c => c.key === 'planCode')
         const indexOfFromDate = this.headers[tableName].columns.findIndex(c => c.key === 'fromDate')
         const planCode = records[r][indexOfPlanCode];
         const fromDate = records[r][indexOfFromDate];
-        this.setDataByPlanCode(instance, records,r, planCode, tableName,fromDate);
-
+        this.setDataByPlanCode(instance, records,r, planCode, tableName,fromDate, null);
+      } else if (column.key === 'fromDate') {
+        const indexOfPlanCode = this.headers[tableName].columns.findIndex(c => c.key === 'planCode')
+        const indexOfFromDate = this.headers[tableName].columns.findIndex(c => c.key === 'fromDate')
+        const planCode = records[r][indexOfPlanCode];
+        const fromDate = records[r][indexOfFromDate];
+        this.setDataByPlanCode(instance, records,r, planCode, tableName,fromDate, null);
       } else if (column.key === 'contractNo' || column.key === 'contractCancelNo') {
         const indexOfPlanCode = this.headers[tableName].columns.findIndex(c => c.key === 'planCode')
         const indexOfFromDate = this.headers[tableName].columns.findIndex(c => c.key === 'fromDate')
         const planCode = records[r][indexOfPlanCode];
         const fromDate = records[r][indexOfFromDate];
-        this.setDataByPlanCode(instance, records,r, planCode, tableName,fromDate);
+        this.setDataByPlanCode(instance, records,r, planCode, tableName,fromDate, null);
       } else if (column.key === 'dateSign' || column.key === 'dateCancelSign') {
         const indexOfPlanCode = this.headers[tableName].columns.findIndex(c => c.key === 'planCode')
         const indexOfFromDate = this.headers[tableName].columns.findIndex(c => c.key === 'fromDate')
         const planCode = records[r][indexOfPlanCode];
         const fromDate = records[r][indexOfFromDate];
-        this.setDataByPlanCode(instance, records,r, planCode, tableName,fromDate);
+        this.setDataByPlanCode(instance, records,r, planCode, tableName,fromDate, null);
      }  else if (column.key === 'hospitalFirstRegistCode') {
         const hospitalFirstCode = cell.innerText.split(' - ').shift();
         if(hospitalFirstCode !== '' && hospitalFirstCode !== undefined)
@@ -483,6 +497,26 @@ export class GeneralBaseComponent {
         } else {
           this.updateNextColumns(instance, r, '', [ c + 1 ]);
         }
+      } else if (column.key === 'salary') {
+        const salary = records[r][c];
+        if(salary > 0) {
+          this.updateNextColumns(instance, r, '0', [c + 1]);
+          // instance.jexcel.setReadonly(Number(r), c + 1);
+         } 
+        //  else {
+        //   instance.jexcel.setReadonly(Number(r), c + 1, true);
+        // }
+
+      } else if (column.key === 'ratio') {
+        const ratio = records[r][c];
+        if(ratio > 0) {
+          this.updateNextColumns(instance, r, '0', [c - 1]);
+          // instance.jexcel.setReadonly(Number(r), c - 1);
+        } 
+        // else {
+        //   instance.jexcel.setReadonly(Number(r), c - 1, true);
+        // }
+
       } else if(column.key === 'contractTypeCode') {
         const contractTypeCode = records[r][c];
         if(ContactType.CT_HDKXDTH === contractTypeCode) {
@@ -529,7 +563,7 @@ export class GeneralBaseComponent {
     eventEmitter.emit('unsaved-changed');
   }
 
-  private setDataByPlanCode(instance, records, r, planCode,tableName, fromDate) {
+  private setDataByPlanCode(instance, records, r, planCode,tableName, fromDate, ratio) {
     clearTimeout(this.timer);
         this.timer = setTimeout(() => {
           const indexEmployeeIdClone = this.headers[tableName].columns.findIndex(c => c.key === 'employeeIdClone');
@@ -554,6 +588,10 @@ export class GeneralBaseComponent {
             const indexColumnNote = this.headers[tableName].columns.findIndex(c => c.key === 'reason');
             const notebuild = this.formatNote(planConfigInfo.note.message, argsMessgae);
             this.updateNextColumns(instance, r, notebuild, [indexColumnNote]);
+            if(ratio) {
+              const indexColumnRate = this.headers[tableName].columns.findIndex(c => c.key === 'rate');
+              this.updateNextColumns(instance, r, ratio, [indexColumnRate], true);
+            }
             this.processEmployeeByPlanCode(cloneEmployee, tableName, records, r, fromDate);
           }
         }, 10);

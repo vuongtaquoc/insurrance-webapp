@@ -105,7 +105,8 @@ export class RegisterIvanRegisterComponent implements OnInit {
       vendorToken: [''],
       fromDate: [''],
       expired: [''],      
-      companyType: [''],
+      companyType: ['',[Validators.required]],
+      careers: ['', [Validators.required]],
       license: [''],
       issued: ['', [Validators.required]],
       note: [''],
@@ -138,8 +139,8 @@ export class RegisterIvanRegisterComponent implements OnInit {
     this.isFirst = value;
 
     if (value) {
-      this.registerForm.get('companyType').setValidators(Validators.required);
-      this.registerForm.get('companyType').setValidators(Validators.required);
+      // this.registerForm.get('companyType').setValidators(Validators.required);
+      // this.registerForm.get('companyType').setValidators(Validators.required);
       this.registerForm.get('license').setValidators(Validators.required);
       this.registerForm.get('license').setValidators(Validators.required);
       this.registerForm.get('issued').setValidators(Validators.required);
@@ -154,8 +155,8 @@ export class RegisterIvanRegisterComponent implements OnInit {
       });
       
     } else {
-      this.registerForm.get('companyType').clearValidators();
-      this.registerForm.get('companyType').markAsPristine();
+      // this.registerForm.get('companyType').clearValidators();
+      // this.registerForm.get('companyType').markAsPristine();
       this.registerForm.get('license').clearValidators();
       this.registerForm.get('license').markAsPristine();
       this.registerForm.get('issued').clearValidators();
@@ -312,6 +313,7 @@ export class RegisterIvanRegisterComponent implements OnInit {
       fromDate: data.fromDate,
       expired: data.expired,       
       companyType: data.companyType,
+      careers: data.careers,
       license: data.license,
       issued: data.issued,
       note: data.note,
@@ -366,7 +368,6 @@ export class RegisterIvanRegisterComponent implements OnInit {
     };
 
     if(!this.isFirst) {
-      contracInfo.companyType = null;
       contracInfo.license = null;
       contracInfo.issued = null;
       contracInfo.note = null;

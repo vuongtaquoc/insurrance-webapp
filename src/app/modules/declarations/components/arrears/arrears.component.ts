@@ -24,6 +24,7 @@ import {
   RelationshipService,
   DeclarationConfigService,
   VillageService,
+  SalaryAreaService,
 } from '@app/core/services';
 import { DATE_FORMAT, DOCUMENTBYPLANCODE, ACTION } from '@app/shared/constant';
 import { eventEmitter } from '@app/shared/utils/event-emitter';
@@ -90,6 +91,8 @@ export class ArrearsComponent implements OnInit, OnDestroy {
   tabSubject: Subject<any> = new Subject<any>();
   handlers: any = [];
   isSpinning = false;
+  salaryAreas: any;
+
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
@@ -104,7 +107,8 @@ export class ArrearsComponent implements OnInit, OnDestroy {
     private districtService:  DistrictService,
     private wardService: WardsService,
     private declarationConfigService: DeclarationConfigService,
-    private villageService: VillageService
+    private villageService: VillageService,
+    private salaryAreaService: SalaryAreaService,
   ) {
   }
 
@@ -115,6 +119,7 @@ export class ArrearsComponent implements OnInit, OnDestroy {
     });
 
     this.loadDeclarationConfig();
+    this.loadSalaryInfo();
     //Init data families table editor
     forkJoin([
       this.cityService.getCities(),
@@ -205,6 +210,13 @@ export class ArrearsComponent implements OnInit, OnDestroy {
        this.autoCreateDocumentList = data.autoCreateDocumentList;
        this.autoCreateFamilies = data.autoCreateFamilies;
        this.allowAttachFile = data.allowAttachFile;
+    });
+  }
+
+  private loadSalaryInfo() {
+    const companyInfo  =  this.authenticationService.currentCredentials.companyInfo;
+    this.salaryAreaService.getDetailByCode(companyInfo.salaryAreaCode).subscribe((data) => {
+      this.salaryAreas = data;
     });
   }
 

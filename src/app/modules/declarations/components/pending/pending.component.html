@@ -34,6 +34,7 @@
       <app-increase-editor
       tableName="pending"
       [data]="declarations.pending.table"
+      [salaryAreas] = "salaryAreas"
       [nestedHeaders]="headers.pending.nested"
       [columns]="headers.pending.columns"
       [events]="tableSubject.asObservable()"

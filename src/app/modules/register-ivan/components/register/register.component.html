@@ -170,7 +170,7 @@
             </div><!-- col -->
           </div><!-- END ROW -->
           <!-- ROW START -->
-          <div nz-row [nzGutter]="8" *ngIf="isFirst">
+          <div nz-row [nzGutter]="8">
             <div nz-col [nzSpan]="24">
               <nz-form-item>
                 <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="4">
@@ -188,6 +188,26 @@
                   <ng-template #companyTypeError let-control>
                     <ng-container *ngIf="control.hasError('required')">
                       Loại hình đơn vị không để trống
+                    </ng-container>
+                  </ng-template>
+
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+          </div><!-- END ROW -->
+           <!-- ROW START -->
+           <div nz-row [nzGutter]="8">
+            <div nz-col [nzSpan]="24">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="4">
+                  {{ 'company.from.career' | translate }}
+                </nz-form-label>
+                <nz-form-control class="ant-col-offset-1-edit" [nzSpan]="19" nzOffset="1"
+                  [nzErrorTip]="careersTypeError">
+                  <input nz-input formControlName="careers" />
+                  <ng-template #careersTypeError let-control>
+                    <ng-container *ngIf="control.hasError('required')">
+                      {{ 'company.from.career' | translate }} không được để trống
                     </ng-container>
                   </ng-template>
 

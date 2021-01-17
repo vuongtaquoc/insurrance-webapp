@@ -4,7 +4,6 @@ export const TABLE_NESTED_HEADERS = [
   [
     { title: 'STT', rowspan: '3' },
     { title: 'Họ và tên', subtitle: 'Nhập chữ thường', rowspan: '3' },
-    { title: 'Số sổ BHXH', rowspan: '3' },
     { title: 'Kiểm tra mã số BHXH', colspan: '2' },
     { title: 'Chỉ có năm sinh hoặc tháng/năm', rowspan: '3' },
     { title: 'Ngày, tháng, năm sinh', rowspan: '3' },
@@ -60,29 +59,12 @@ export const TABLE_HEADER_COLUMNS = [{
     required: true,
     duplicate: true
   }
-}, 
-{
-  type: 'text',
-  width: 120,
-  title: '(3)',
-  key: 'isurranceNo',
-  fieldName: 'Số số BHXH',
-  warnings: {
-    duplicateUserFields: {
-      primary: 'isurranceNo',
-      check: ['employeeId']
-    },
-  },
-  validations: {
-    required: true,
-    duplicate: true
-  }
 }, {
   type: 'numeric',
   align: 'right',
   width: 123,
-  title: '(4.1)',
-  key: 'isurranceCode',
+  title: '(3.1)',
+  key: 'isurranceNo',
   fieldName: 'Mã số BHXH',
   validations: {
     required: true,
@@ -94,12 +76,12 @@ export const TABLE_HEADER_COLUMNS = [{
   key: 'isurranceCodeStatus',
   width: 123,
   readOnly: true,
-  title: '(4.2)',
+  title: '(3.2)',
   wordWrap: true,
 }, {
   type: 'dropdown',
   width: 70,
-  title: '(5)',
+  title: '(4)',
   fieldName: 'Loại ngày tháng nắm sinh',
   source: [ { id: '0', name: 'Ngày tháng năm' },{ id: '1', name: 'tháng/năm' }, { id: '2', name: 'năm' } ],
   key: 'typeBirthday',
@@ -112,7 +94,7 @@ export const TABLE_HEADER_COLUMNS = [{
 }, {
   type: 'text',
   width: 80,
-  title: '(6)',
+  title: '(5)',
   fieldName: 'Nắm sinh',
   key: 'birthday',
   validations: {
@@ -122,14 +104,14 @@ export const TABLE_HEADER_COLUMNS = [{
 }, {
   type: 'checkbox',
   width: 35,
-  title: '(7)',
+  title: '(6)',
   align: 'center',
   key: 'gender'
 }, {
   type: 'dropdown',
   autocomplete: true,
   width: 75,
-  title: '(8)',
+  title: '(7)',
   source: [ 'Chọn' ],
   key: 'peopleCode',
   fieldName: 'Dân tộc',
@@ -146,7 +128,7 @@ export const TABLE_HEADER_COLUMNS = [{
   type: 'dropdown',
   autocomplete: true,
   width: 100,
-  title: '(9)',
+  title: '(8)',
   source: [ 'Chọn' ],
   align: 'left',
   key: 'nationalityCode',
@@ -161,7 +143,7 @@ export const TABLE_HEADER_COLUMNS = [{
   type: 'numeric',
   align: 'right',
   width: 100,
-  title: '(10)',
+  title: '(9)',
   key: 'identityCar',
   fieldName: 'Số CMND/Hộ chiếu/Thẻ căn cước',
   validations: {
@@ -172,7 +154,7 @@ export const TABLE_HEADER_COLUMNS = [{
   type: 'numeric',
   align: 'right',
   width: 100,
-  title: '(11)',
+  title: '(10)',
   fieldName: 'Số điện thoại',
   key: 'mobile',
   validations: {
@@ -183,7 +165,7 @@ export const TABLE_HEADER_COLUMNS = [{
   align: 'right',
   autocomplete: true,
   width: 135,
-  title: '(12)',
+  title: '(11)',
   key: 'familyNo',
 }, {
   type: 'dropdown',
@@ -193,7 +175,7 @@ export const TABLE_HEADER_COLUMNS = [{
     required:true,
   },
   width: 145,
-  title: '(13.1)',
+  title: '(12.1)',
   source: [ 'Chọn' ],
   align: 'left',
   key: 'registerCityCode'
@@ -206,7 +188,7 @@ export const TABLE_HEADER_COLUMNS = [{
     required:true,
   },
   source: [],
-  title: '(13.2)',
+  title: '(12.2)',
   align: 'left',
   key: 'registerDistrictCode',
   defaultLoad: true
@@ -214,7 +196,7 @@ export const TABLE_HEADER_COLUMNS = [{
   type: 'dropdown',
   autocomplete: true,
   width: 175,
-  title: '(13.3)',
+  title: '(12.3)',
   source: [  ],
   align: 'left',
   key: 'registerWardsCode',
@@ -227,7 +209,7 @@ export const TABLE_HEADER_COLUMNS = [{
   type: 'dropdown',
   autocomplete: true,
   width: 145,
-  title: '(14.1)',
+  title: '(13.1)',
   align: 'left',
   source: [ 'Chọn' ],
   key: 'recipientsCityCode',
@@ -239,7 +221,7 @@ export const TABLE_HEADER_COLUMNS = [{
   type: 'dropdown',
   autocomplete: true,
   width: 145,
-  title: '(14.2)',
+  title: '(13.2)',
   align: 'left',
   source: [ ],
   key: 'recipientsDistrictCode',
@@ -252,7 +234,7 @@ export const TABLE_HEADER_COLUMNS = [{
   type: 'dropdown',
   autocomplete: true,
   width: 175,
-  title: '(14.3)',
+  title: '(13.3)',
   align: 'left',
   source: [],
   key: 'recipientsWardsCode',
@@ -264,7 +246,7 @@ export const TABLE_HEADER_COLUMNS = [{
 }, {
   type: 'text',
   width: 165,
-  title: '(14.4)',
+  title: '(13.4)',
   align: 'left',
   wordWrap: true,
   key: 'recipientsAddress'
@@ -273,7 +255,7 @@ export const TABLE_HEADER_COLUMNS = [{
   type: 'text',
   autocomplete: true,
   width: 85,
-  title: '(15.1)',
+  title: '(14.1)',
   source: [ ],
   wordWrap: true,
   key: 'hospitalFirstRegistCode',
@@ -285,7 +267,7 @@ export const TABLE_HEADER_COLUMNS = [{
 }, {
   type: 'text',
   width: 300,
-  title: '(15.2)',
+  title: '(14.2)',
   align: 'left',
   wordWrap: true,
   key: 'hospitalFirstRegistName',
@@ -296,13 +278,16 @@ export const TABLE_HEADER_COLUMNS = [{
 }, {
   type: 'text',
   width: 180,
-  title: '(16)',
+  title: '(15)',
   wordWrap: true,
+  validations: {
+    required: true,
+  },
   key: 'reason'
 }, {
   type: 'text',
   width: 180,
-  title: '(17)',
+  title: '(16)',
   wordWrap: true,
   key: 'documentAttached'
 },{

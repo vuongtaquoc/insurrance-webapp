@@ -65,6 +65,7 @@
             [pageName]="declarationName"
             [pageCode]="declarationCode"
             [allowAttach] = "allowAttachFile"
+            [salaryAreas] = "salaryAreas"
             [data]="declarations.origin['600d']"
             [files] = 'declarations.files'
             [tabEvents]="tabSubject.asObservable()"
@@ -76,7 +77,7 @@
         <nz-tab [nzTitle]="tabDocumentList">
           <ng-template #tabDocumentList>
             <div class="page-adjust-general__tab-title" [ngClass]="{'page-adjust-general__tab-title--error': tableSubmitErrors.documentList600d > 0}">
-              Bảng kê hồ sơ
+              Bảng kê thông tin (Mẫu D01-TS)
             </div>
           </ng-template>
           <div class="page-document-list__container">

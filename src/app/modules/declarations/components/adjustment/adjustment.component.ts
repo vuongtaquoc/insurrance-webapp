@@ -38,7 +38,7 @@ export class AdjustmentComponent extends GeneralBaseComponent implements OnInit,
     private peopleService: PeopleService,
     private wardService: WardsService,
     private salaryAreaService: SalaryAreaService,
-    private planService: PlanService,
+    protected planService: PlanService,
     private departmentService: DepartmentService,
     private documentListService: DocumentListService,
     private employeeService: EmployeeService,
@@ -46,7 +46,7 @@ export class AdjustmentComponent extends GeneralBaseComponent implements OnInit,
     private relationshipService: RelationshipService,
     private villageService: VillageService,
   ) {
-    super(declarationService, modalService, hospitalService);
+    super(declarationService, modalService, hospitalService, planService);
     this.getRecipientsDistrictsByCityCode = this.getRecipientsDistrictsByCityCode.bind(this);
     this.getRecipientsWardsByDistrictCode = this.getRecipientsWardsByDistrictCode.bind(this);
     this.getRegisterDistrictsByCityCode = this.getRegisterDistrictsByCityCode.bind(this);

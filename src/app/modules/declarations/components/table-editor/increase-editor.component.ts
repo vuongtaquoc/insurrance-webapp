@@ -11,7 +11,7 @@ import * as moment from 'moment';
 import { DATE_FORMAT } from '@app/shared/constant';
 import { validationColumnsPlanCode } from '@app/shared/constant-valid';
 import { validateLessThanEqualNowBirthdayGrid, getBirthDayGrid } from '@app/shared/utils/custom-validation';
-
+import { ContactType } from '@app/shared/constant';
 @Component({
   selector: 'app-increase-editor',
   templateUrl: './increase-editor.component.html',
@@ -21,6 +21,7 @@ import { validateLessThanEqualNowBirthdayGrid, getBirthDayGrid } from '@app/shar
 export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, AfterViewInit {
   @ViewChild('spreadsheet', { static: true }) spreadsheetEl;
   @Input() data: any[] = [];
+  @Input() salaryAreas: any;
   @Input() columns: any[] = [];
   @Input() nestedHeaders: any[] = [];
   @Input() validationRules: any = {};
@@ -271,6 +272,7 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
         formula: !!d.formula,
         planType: d.planType,
         planDefault: d.planDefault,
+        rate: d.rate,
         isInitialize: d.isInitialize,
         groupObject: d.groupObject,
         isRequiredIsurranceNo: d.isRequiredIsurranceNo,
@@ -302,6 +304,7 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
     this.setWarningSalaryWhenAddEmployee(data);
     this.validationCellByPlanCode();
     this.validIsurrance();
+    this.setReadOnlyByData(data);
   }
 
   private setWarningSalaryWhenAddEmployee(data: any) {
@@ -320,6 +323,42 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
 
   }
 
+  private setReadOnlyByData(data: any) {
+    
+    data.forEach((row, rowIndex) => {
+      const isLeaf = row.origin.isLeaf  || row.options.isLeaf;     
+      if(!isLeaf) return;
+      const indexOfEmployeeId = this.columns.findIndex(c => c.key === 'employeeId');
+      const employeeId = row[indexOfEmployeeId];
+      if(employeeId === null) return;
+
+      // const indexOfSalary = this.columns.findIndex(c => c.key === 'salary');
+      // const indexOfRatio = this.columns.findIndex(c => c.key === 'ratio');
+      const indexOfContractTypeCode = this.columns.findIndex(c => c.key === 'contractTypeCode');
+      // const salary = row[indexOfSalary];
+      // const ratio = row[indexOfRatio];
+      const contractTypeCode = row[indexOfContractTypeCode];
+      if(ContactType.CT_HDKXDTH === contractTypeCode) {
+        this.spreadsheet.setReadonly(Number(rowIndex), indexOfContractTypeCode + 2);
+      }else {
+        this.spreadsheet.setReadonly(Number(rowIndex), indexOfContractTypeCode + 2, true);
+      }
+
+      // if(salary > 0) {
+      //   this.spreadsheet.setReadonly(Number(rowIndex), indexOfRatio);
+      // }else {
+      //   this.spreadsheet.setReadonly(Number(rowIndex), indexOfRatio, true);
+      // }
+
+      // if(ratio > 0) {
+      //   this.spreadsheet.setReadonly(Number(rowIndex), indexOfSalary);
+      // }else {
+      //   this.spreadsheet.setReadonly(Number(rowIndex), indexOfSalary, true);
+      // }
+
+    });
+  }
+
   private validChangeSalary(data: any, rowIndex) {
     const indexOfColumnPlan = this.columns.findIndex(c => c.key === 'planCode');
     const planCode = data[indexOfColumnPlan];
@@ -331,7 +370,6 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
       const indexOfColumnAllowanceLevelNew = this.columns.findIndex(c => c.key === 'allowanceLevelNew');
       const indexOfColumnAllowanceSeniorityNew = this.columns.findIndex(c => c.key === 'allowanceSeniorityNew');
       const indexOfColumnAllowanceSeniorityJobNew = this.columns.findIndex(c => c.key === 'allowanceSeniorityJobNew');
-      const indexOfColumnAllowanceOtherNew = this.columns.findIndex(c => c.key === 'allowanceOtherNew');
 
       const salaryNew = data[indexOfColumnSalaryNew];
       const ratioNew = data[indexOfColumnRatioNew];
@@ -340,7 +378,6 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
       const allowanceLevelNew = data[indexOfColumnAllowanceLevelNew];
       const allowanceSeniorityNew = data[indexOfColumnAllowanceSeniorityNew];
       const allowanceSeniorityJobNew = data[indexOfColumnAllowanceSeniorityJobNew];
-      const allowanceOtherNew = data[indexOfColumnAllowanceOtherNew];
 
       const indexOfColumnSalary = this.columns.findIndex(c => c.key === 'salary');
       const indexOfColumnRatio = this.columns.findIndex(c => c.key === 'ratio');
@@ -349,7 +386,7 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
       const indexOfColumnAllowanceLevel = this.columns.findIndex(c => c.key === 'allowanceLevel');
       const indexOfColumnAllowanceSeniority = this.columns.findIndex(c => c.key === 'allowanceSeniority');
       const indexOfColumnAllowanceSeniorityJob = this.columns.findIndex(c => c.key === 'allowanceSeniorityJob');
-      const indexOfColumnAllowanceOther = this.columns.findIndex(c => c.key === 'allowanceOther');
+       
 
       const salary = data[indexOfColumnSalary];
       const ratio = data[indexOfColumnRatio];
@@ -358,14 +395,14 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
       const allowanceLevel = data[indexOfColumnAllowanceLevel];
       const allowanceSeniority = data[indexOfColumnAllowanceSeniority];
       const allowanceSeniorityJob = data[indexOfColumnAllowanceSeniorityJob];
-      const allowanceOther = data[indexOfColumnAllowanceOther];
+       
       // console.log(salary,salaryNew);
       // console.log(ratio,ratioNew);
       // console.log(allowanceSalary,allowanceSalaryNew);
       // console.log(allowanceAdditional,allowanceAdditionalNew);
       if ( Number(salary) === Number(salaryNew) && Number(ratio) === Number(ratioNew)
         && Number(allowanceSalary) === Number(allowanceSalaryNew) && Number(allowanceAdditional) === Number(allowanceAdditionalNew)
-        && Number(allowanceLevel) === Number(allowanceLevelNew)  && Number(allowanceOther) === Number(allowanceOtherNew))
+        && Number(allowanceLevel) === Number(allowanceLevelNew))
         //&& Number(allowanceSeniorityJob) === Number(allowanceSeniorityJobNew)  && Number(allowanceSeniority) === (allowanceSeniorityNew))
 
       {
@@ -374,14 +411,13 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
           otherName:'Tiền lương mức đóng mới'
         };
         const messageError = 'Tiền lương mức đóng cũ, Tiền lương mức đóng mới chưa được điều chỉnh';
-        this.spreadsheet.setCellError(fieldName, indexOfColumnSalaryNew, rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true, messageError);
-        this.spreadsheet.setCellError(fieldName, indexOfColumnRatioNew, rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true, messageError);
-        this.spreadsheet.setCellError(fieldName, indexOfColumnAllowanceSalaryNew, rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true, messageError);
-        this.spreadsheet.setCellError(fieldName, indexOfColumnAllowanceAdditionalNew, rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true, messageError);
-        this.spreadsheet.setCellError(fieldName, indexOfColumnAllowanceLevelNew, rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true, messageError);
-        this.spreadsheet.setCellError(fieldName, indexOfColumnAllowanceSeniorityNew, rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true, messageError);
-        this.spreadsheet.setCellError(fieldName, indexOfColumnAllowanceSeniorityJobNew, rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true, messageError);
-        this.spreadsheet.setCellError(fieldName, indexOfColumnAllowanceOtherNew, rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true, messageError);
+        this.spreadsheet.setCellError(fieldName, indexOfColumnSalary, rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true, messageError);
+        this.spreadsheet.setCellError(fieldName, indexOfColumnRatio, rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true, messageError);
+        this.spreadsheet.setCellError(fieldName, indexOfColumnAllowanceSalary, rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true, messageError);
+        this.spreadsheet.setCellError(fieldName, indexOfColumnAllowanceAdditional, rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true, messageError);
+        this.spreadsheet.setCellError(fieldName, indexOfColumnAllowanceLevel, rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true, messageError);
+        this.spreadsheet.setCellError(fieldName, indexOfColumnAllowanceSeniority, rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true, messageError);
+        this.spreadsheet.setCellError(fieldName, indexOfColumnAllowanceSeniorityJob, rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true, messageError);
       }
     }else if(planCode === 'CD') {
       const indexOfColumnLevelWork = this.columns.findIndex(c => c.key === 'levelWork');
@@ -798,8 +834,32 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
         // instance.jexcel.clearValidation(y, Number(cell) - 1);
         instance.jexcel.validationCell(y, Number(cell) - 1, validationColumn.fieldName, validationColumn.validations);
       }
-    }  
-    
+    } else if (column.key === 'salary') { 
+      const ratio = this.spreadsheet.getValueFromCoords(Number(cell) + 1, y);
+      if(ratio === 0) {
+        const validationColumn = this.columns[Number(cell)];
+        validationColumn.validations = {
+          min: this.salaryAreas.salaray,
+         };
+         validationColumn.fieldName = 'Tiền lương';
+        instance.jexcel.validationCell(y, cell, validationColumn.fieldName, validationColumn.validations);
+      }
+    } else if (column.key === 'ratio') { 
+      const ratio = this.spreadsheet.getValueFromCoords(Number(cell), y);
+      const validationColumn = this.columns[Number(cell) - 1];
+      if(ratio > 0) {
+        validationColumn.validations = {
+            required: true,
+            number: true
+        };       
+      } else {
+        validationColumn.validations = {
+          min: this.salaryAreas.salaray,
+         };
+      }
+      validationColumn.fieldName = 'Tiền lương';
+      instance.jexcel.validationCell(y, Number(cell) - 1, validationColumn.fieldName, validationColumn.validations);
+    }
     this.handleEvent({
       type: 'validate',
       part: '',
@@ -812,7 +872,7 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
     setTimeout(() => {
         const indexIsExitsIsurranceNo = this.columns.findIndex(c => c.key === 'isExitsIsurranceNo');
         const indexisurranceNo = this.columns.findIndex(c => c.key === 'isurranceNo');
-        const indexIsurranceCode = this.columns.findIndex(c => c.key === 'isurranceCode');
+         
         this.data.forEach((d, y) => {
           const isRequiredIsurranceNo = d.data.options.isRequiredIsurranceNo;
           const isExitsIsurranceNo =  d.data[indexIsExitsIsurranceNo];
@@ -823,12 +883,6 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
               }
               validIsurranceNo.required = false;
               this.spreadsheet.validationCell(y, indexisurranceNo, column.fieldName ? column.fieldName : column.title, validIsurranceNo);
-              const columnIsurranceCode = this.columns[indexIsurranceCode];
-              const validIsurranceCode = {
-                ...columnIsurranceCode.validations                
-              }
-              validIsurranceCode.required = false;
-              this.spreadsheet.validationCell(y, indexIsurranceCode, columnIsurranceCode.fieldName ? columnIsurranceCode.fieldName : columnIsurranceCode.title, validIsurranceCode);
             }
         });
 

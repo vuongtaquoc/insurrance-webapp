@@ -66,6 +66,7 @@
             [pageCode]="declarationCode"
             [allowAttach] = "allowAttachFile"
             [data]="declarations.origin['600c']"
+            [salaryAreas] = "salaryAreas"
             [files] = 'declarations.files'
             [tabEvents]="tabSubject.asObservable()"
             (onChange)="handleChangeTable($event, 'pending')"
@@ -76,7 +77,7 @@
         <nz-tab [nzTitle]="tabDocumentList">
           <ng-template #tabDocumentList>
             <div class="page-adjust-general__tab-title" [ngClass]="{'page-adjust-general__tab-title--error': tableSubmitErrors.documentList600c > 0}">
-              Bảng kê hồ sơ
+              Bảng kê thông tin (Mẫu D01-TS)
             </div>
           </ng-template>
           <div class="page-document-list__container">

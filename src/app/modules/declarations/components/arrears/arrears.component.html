@@ -57,7 +57,7 @@
         <nz-tab [nzTitle]="tabAdjustment">
           <ng-template #tabAdjustment>
             <div class="page-adjust-general__tab-title" [ngClass]="{'page-adjust-general__tab-title--error': tableSubmitErrors.adjustment601a > 0}">
-              D02-TS Điều chỉnh
+              D02-LT
             </div>
           </ng-template>
           <app-adjustment
@@ -65,6 +65,7 @@
             [allowAttach] = "allowAttachFile"
             [pageName]="declarationName"
             [pageCode]="declarationCode"
+            [salaryAreas] = "salaryAreas"
             [data]="declarations.origin['601a']"
             [files] = 'declarations.files'
             [tabEvents]="tabSubject.asObservable()"
@@ -76,7 +77,7 @@
         <nz-tab [nzTitle]="tabDocumentList" [nzDisabled]="!informations || !informations.length">
           <ng-template #tabDocumentList>
             <div class="page-adjust-general__tab-title" [ngClass]="{'page-adjust-general__tab-title--error': tableSubmitErrors.documentList601a > 0}">
-              Bảng kê hồ sơ
+              Bảng kê thông tin (Mẫu D01-TS)
             </div>
           </ng-template>
           <div class="page-document-list__container">

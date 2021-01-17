@@ -31,7 +31,8 @@ import {
   DeclarationConfigService,
   PaymentMethodServiced,
   CoefficientService,
-  FileUploadEmitter
+  FileUploadEmitter,
+  AppConfigService,
 } from '@app/core/services';
 import { DATE_FORMAT, DOCUMENTBYPLANCODE, REGEX } from '@app/shared/constant';
 import { eventEmitter } from '@app/shared/utils/event-emitter';
@@ -132,7 +133,8 @@ export class AllocationCardComponent implements OnInit, OnDestroy {
     private declarationConfigService: DeclarationConfigService,
     private paymentMethodServiced: PaymentMethodServiced,
     private coefficientService: CoefficientService,
-    private fileUploadEmitter: FileUploadEmitter
+    private fileUploadEmitter: FileUploadEmitter,
+    private appConfigService: AppConfigService,
   ) {
     this.getRecipientsDistrictsByCityCode = this.getRecipientsDistrictsByCityCode.bind(this);
     this.getRecipientsWardsByDistrictCode = this.getRecipientsWardsByDistrictCode.bind(this);
@@ -149,15 +151,14 @@ export class AllocationCardComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    const date = new Date();
-    this.currentCredentials = this.authenticationService.currentCredentials;
-    this.loadCoefficient();
-    this.loadDeclarationConfig();
     this.form = this.formBuilder.group({
-      coefficientCode:[null, [Validators.required]],
-      ratioPayment:['22', [Validators.min(0), Validators.max(99), Validators.pattern(REGEX.ONLY_NUMBER)]],
+      coefficientCode:[{value:null, disabled: true }, [Validators.required]],
+      ratioPayment:[{value:null, disabled: true }, [Validators.min(0), Validators.max(99), Validators.pattern(REGEX.ONLY_NUMBER)]],
     });
-    
+    this.currentCredentials = this.authenticationService.currentCredentials;
+    this.loadCoefficient(this.currentCredentials.companyInfo.coefficient);
+    this.loadDeclarationConfig();
+    this.loadAppConfig();
     this.documentForm = this.formBuilder.group({
       submitter: [this.currentCredentials.companyInfo.delegate, Validators.required],
       mobile: [this.currentCredentials.companyInfo.mobile,  [Validators.required, Validators.pattern(REGEX.ONLY_NUMBER)]],
@@ -271,6 +272,13 @@ export class AllocationCardComponent implements OnInit, OnDestroy {
     });   
   }
 
+  private loadAppConfig() {
+    this.appConfigService.getAppConfig().subscribe((data) => {
+      this.form.patchValue({
+        ratioPayment: data.ratioPayment,           
+      });
+    });
+  }
   ngOnDestroy() {
     eventEmitter.destroy(this.handlers);
     eventEmitter.destroy(this.handler);
@@ -317,7 +325,6 @@ export class AllocationCardComponent implements OnInit, OnDestroy {
         employee.tyleNSDP = 0;
         employee.toChuCaNhanHTKhac = 0;
         employee.numberMonthJoin = 0;
-        employee.salary = 0;
         employee.sumRatio = 0;
         employee.moneyPayment = 0;
         employee.paymentMethodCode = null;
@@ -1889,13 +1896,12 @@ export class AllocationCardComponent implements OnInit, OnDestroy {
     return str;
   }
 
-  private loadCoefficient() {
+  private loadCoefficient(coefficient) {
     this.coefficientService.filter().subscribe(data => {
        this.coefficients = data;
-
        if (data.length > 0) {
         this.form.patchValue({
-          coefficientCode: data[0].id,           
+          coefficientCode: (coefficient ? coefficient.toString() : data[0].id),           
         });
        }
        

@@ -35,6 +35,7 @@ import {
   SwitchVendorService,
   SubmitDeclarationService,
   DeclarationFileUploadService,
+  AppConfigService,
 } from './services';
 
 @NgModule({
@@ -75,6 +76,7 @@ import {
     SwitchVendorService,
     SubmitDeclarationService,
     DeclarationFileUploadService,
+    AppConfigService,
   ],
   declarations: []
 })

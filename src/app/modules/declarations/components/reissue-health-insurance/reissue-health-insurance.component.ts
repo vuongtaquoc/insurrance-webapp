@@ -125,8 +125,8 @@ export class ReissueHealthInsuranceComponent extends GeneralNormalBaseComponent 
 
     const declarations = [...this.declarations.reissuehealthinsurancecard.table];
     const INSURRANCE_FULLNAME_INDEX = 1;
-    const INSURRANCE_CODE_INDEX = 3;
-    const INSURRANCE_STATUS_INDEX = 4;
+    const INSURRANCE_CODE_INDEX = 2;
+    const INSURRANCE_STATUS_INDEX = 3;
     const errors = {};
     const leafs = declarations.filter(d => d.isLeaf && d.data[INSURRANCE_CODE_INDEX]);
 

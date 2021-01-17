@@ -65,7 +65,7 @@
         <nz-tab [nzTitle]="tabIncrease">
           <ng-template #tabIncrease>
             <div class="page-adjust-general__tab-title" [ngClass]="{'page-adjust-general__tab-title--error': tableSubmitErrors.increaselabor600 > 0}">
-              D02-TS Tăng
+              D02-LT
             </div>
           </ng-template>
           <app-increase
@@ -73,6 +73,7 @@
             [pageName]="declarationName"
             [pageCode]="declarationCode"
             [allowAttach] = "allowAttachFile"
+            [salaryAreas] = "salaryAreas"
             [declarationGeneral] = "declarationGeneral"
             [files] = 'declarations.files'
             [data]="declarations.origin['600']"
@@ -111,7 +112,7 @@
         <nz-tab [nzTitle]="tabDocumentList">
           <ng-template #tabDocumentList>
               <div class="page-adjust-general__tab-title" [ngClass]="{'page-adjust-general__tab-title--error': tableSubmitErrors.documentList600 > 0}">
-                Bảng kê hồ sơ
+                Bảng kê thông tin (Mẫu D01-TS)
               </div>
           </ng-template>
           <div class="page-document-list__container">

@@ -23,5 +23,9 @@ export class SalaryAreaService {
       params: { id }
     });
   }
+
+  public getDetailByCode(code: string) {
+    return this.http.get(`/salary-area/code/${ code }`);
+  }
   
 }

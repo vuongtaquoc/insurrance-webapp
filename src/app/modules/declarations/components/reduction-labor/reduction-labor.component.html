@@ -65,12 +65,13 @@
         <nz-tab [nzTitle]="tabReduction">
           <ng-template #tabReduction>
             <div class="page-adjust-general__tab-title" [ngClass]="{'page-adjust-general__tab-title--error': tableSubmitErrors.reductionlabor600a > 0}">
-              D02-TS Giảm
+              D02-LT
             </div>
           </ng-template>
           <app-reduction
             [declarationId]="declarationId"
             [pageName]="declarationName"
+            [salaryAreas] = "salaryAreas"
             [allowAttach] = "allowAttachFile"
             [pageCode]="declarationCode"
             [data]="declarations.origin['600a']"
@@ -84,7 +85,7 @@
         <nz-tab [nzTitle]="tabDocumentList" [nzDisabled]="!informations || !informations.length">
           <ng-template #tabDocumentList>
             <div class="page-adjust-general__tab-title" [ngClass]="{'page-adjust-general__tab-title--error': tableSubmitErrors.documentList600a > 0}">
-              Bảng kê hồ sơ
+              Bảng kê thông tin (Mẫu D01-TS)
             </div>
           </ng-template>
           <div class="page-document-list__container">

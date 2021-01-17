@@ -46,6 +46,7 @@
       <app-increase-editor
       tableName="adjustment"
       [data]="declarations.adjustment.table"
+      [salaryAreas]="salaryAreas"
       [nestedHeaders]="headers.adjustment.nested"
       [columns]="headers.adjustment.columns"
       [events]="tableSubject.asObservable()"

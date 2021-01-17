@@ -36,6 +36,7 @@
       [data]="declarations.pendingCovid.table"
       [nestedHeaders]="headers.pendingCovid.nested"
       [columns]="headers.pendingCovid.columns"
+      [salaryAreas] = "salaryAreas"
       [events]="tableSubject.asObservable()"
       [validate]="validateSubject.asObservable()"
       (onChange)="handleChangeTable($event,'pendingCovid')"

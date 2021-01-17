@@ -130,6 +130,7 @@ export class DeclarationService {
         employeeId: (d.employeeId || d.id),
         planType: d.planType,
         planDefault: d.planDefault,
+        rate: d.rate,
         key: d.code,
         data: [ d.codeView, d.name ],
         hasLeaf: d.hasChildren,
@@ -185,6 +186,7 @@ export class DeclarationService {
         origin: d,
         planType: d.planType,
         planDefault: d.planDefault,
+        rate: d.rate,
         key: d.code,
         data: [ d.codeView, d.name ],
         hasLeaf: d.hasChildren,
@@ -262,6 +264,7 @@ export class DeclarationService {
       isInitialize,
       planType: parent.planType,
       planDefault: parent.planDefault,
+      rate: parent.rate,
       isRequiredIsurranceNo: parent.isRequiredIsurranceNo,
       groupObject: parent.groupObject,
       data: tableHeaderColumns.map(column => {

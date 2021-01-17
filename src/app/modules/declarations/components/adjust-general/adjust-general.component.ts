@@ -25,7 +25,8 @@ import {
   VillageService,
   PeopleService,
   NationalityService,
-  DeclarationConfigService
+  DeclarationConfigService,
+  SalaryAreaService,
 } from '@app/core/services';
 import { DATE_FORMAT, DOCUMENTBYPLANCODE, ACTION } from '@app/shared/constant';
 import { eventEmitter } from '@app/shared/utils/event-emitter';
@@ -86,7 +87,7 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
     tables: {}
   };
   isSpinning = false;
-
+  salaryAreas: any;
   families: any[] = [];
   informations: any[] = [];
   tableNestedHeadersFamilies: any[] = TABLE_FAMILIES_NESTED_HEADERS;
@@ -113,7 +114,8 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
     private villageService: VillageService,
     private peopleService: PeopleService,
     private declarationConfigService: DeclarationConfigService,
-    private nationalityService: NationalityService
+    private nationalityService: NationalityService,
+    private salaryAreaService: SalaryAreaService,
   ) {
 
     this.getRelationshipDistrictsByCityCode = this.getRelationshipDistrictsByCityCode.bind(this);
@@ -133,6 +135,7 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
     });
 
     this.loadDeclarationConfig();
+    this.loadSalaryInfo();
     //Init data families table editor
     forkJoin([
       this.cityService.getCities(),
@@ -248,6 +251,13 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
        this.autoCreateDocumentList = data.autoCreateDocumentList;
        this.autoCreateFamilies = data.autoCreateFamilies;
        this.allowAttachFile = data.allowAttachFile;
+    });
+  }
+
+  private loadSalaryInfo() {
+    const companyInfo  =  this.authenticationService.currentCredentials.companyInfo;
+    this.salaryAreaService.getDetailByCode(companyInfo.salaryAreaCode).subscribe((data) => {
+      this.salaryAreas = data;
     });
   }
 

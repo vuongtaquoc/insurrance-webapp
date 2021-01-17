@@ -128,10 +128,10 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
       recipientsWardsCode: [employee.recipientsWardsCode, Validators.required],
       recipientsAddress: [employee.recipientsAddress, Validators.required],
       isurranceCode: [employee.isurranceCode, [Validators.minLength(10), Validators.maxLength(10), Validators.pattern(REGEX.ONLY_NUMBER)]],
-      mobile: [employee.mobile, [Validators.maxLength(15), Validators.pattern(REGEX.PHONE_NUMBER)]],
+      mobile: [employee.mobile, [Validators.required, Validators.maxLength(15), Validators.pattern(REGEX.PHONE_NUMBER)]],
       identityCar: [employee.identityCar, [Validators.required, Validators.maxLength(15), validateIdentifyCard]],
       familyNo: [employee.familyNo],
-      isurranceNo: [employee.isurranceNo, [Validators.maxLength(15), Validators.pattern(REGEX.ONLY_CHARACTER_NUMBER)]],
+      // isurranceNo: [employee.isurranceNo, [Validators.maxLength(15), Validators.pattern(REGEX.ONLY_CHARACTER_NUMBER)]],
       healthNo: [employee.healthNo, [Validators.maxLength(15), Validators.pattern(REGEX.ONLY_CHARACTER_NUMBER)]],
       contractNo: [employee.contractNo, [Validators.required, Validators.maxLength(100)]],
       dateSign: [employee.dateSign ? employee.dateSign.split('/').join('') : '', [Validators.required, validateDateSign]],
@@ -144,8 +144,8 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
       workTypeToDate: [employee.workTypeToDate ? employee.workTypeToDate.split('/').join('') : ''],
       careFromDate: [employee.careFromDate ? employee.careFromDate.split('/').join('') : ''],
       careTypeToDate: [employee.careTypeToDate ? employee.careTypeToDate.split('/').join('') : ''],
-      salary: [employee.salary, [Validators.required, Validators.pattern(REGEX.ONLY_NUMBER)]],
-      ratio: [employee.ratio, [Validators.required, Validators.pattern(REGEX.ONLY_NUMBER)]],
+      salary: [employee.salary],
+      ratio: [employee.ratio],
       salaryAreaCode: [employee.salaryAreaCode, Validators.required],
       rate: [employee.rate, [Validators.required, Validators.min(0), Validators.max(100), Validators.pattern(REGEX.ONLY_NUMBER_INCLUDE_DECIMAL)]],
       allowanceLevel: [employee.allowanceLevel, [Validators.min(0), Validators.max(99), Validators.pattern(REGEX.ONLY_NUMBER)]],
@@ -234,6 +234,9 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
         status: paymentStatus[0].id,
         relationshipDocumentType: relationshipDocumentTypies[0].id
       });
+
+      this.changeRatio(employee.ratio);
+      this.changeSalary(employee.salary);
     });
 
     this.families = this.formatFamilies(employee.families);
@@ -1109,6 +1112,28 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
     }
 
     return result;
+  }
+
+  private changeSalary(event) {
+     if(event > 0) {
+      this.employeeForm.get('ratio').disable();
+      this.employeeForm.get('ratio').setValue(0);
+      this.employeeForm.controls["ratio"].setValidators([Validators.pattern(REGEX.ONLY_NUMBER_INCLUDE_DECIMAL)]);
+     }else {
+       this.employeeForm.get('ratio').enable();
+       this.employeeForm.controls["ratio"].setValidators([Validators.required,Validators.min(1), Validators.max(13), Validators.pattern(REGEX.ONLY_NUMBER_INCLUDE_DECIMAL)]);
+     }
+  }
+
+  private changeRatio(event) {
+    if(event > 0) {
+      this.employeeForm.get('salary').disable();
+      this.employeeForm.get('salary').setValue(0);
+      this.employeeForm.controls["salary"].setValidators([Validators.pattern(REGEX.ONLY_NUMBER)]);
+     }else {
+       this.employeeForm.get('salary').enable();
+       this.employeeForm.controls["salary"].setValidators([Validators.required, Validators.pattern(REGEX.ONLY_NUMBER)]);
+     }
   }
 
 }

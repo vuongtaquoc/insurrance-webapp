@@ -622,8 +622,7 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
   private validIsurrance() {
     setTimeout(() => {
         const indexIsExitsIsurranceNo = this.columns.findIndex(c => c.key === 'isExitsIsurranceNo');
-        const indexisurranceNo = this.columns.findIndex(c => c.key === 'isurranceNo');
-        const indexIsurranceCode = this.columns.findIndex(c => c.key === 'isurranceCode');
+        const indexisurranceNo = this.columns.findIndex(c => c.key === 'isurranceNo');         
         this.data.forEach((d, y) => {
           const isRequiredIsurranceNo = d.data.options.isRequiredIsurranceNo;
           const isExitsIsurranceNo =  d.data[indexIsExitsIsurranceNo];
@@ -634,12 +633,6 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
               }
               validIsurranceNo.required = false;
               this.spreadsheet.validationCell(y, indexisurranceNo, column.fieldName ? column.fieldName : column.title, validIsurranceNo);
-              const columnIsurranceCode = this.columns[indexIsurranceCode];
-              const validIsurranceCode = {
-                ...columnIsurranceCode.validations                
-              }
-              validIsurranceCode.required = false;
-              this.spreadsheet.validationCell(y, indexIsurranceCode, columnIsurranceCode.fieldName ? columnIsurranceCode.fieldName : columnIsurranceCode.title, validIsurranceCode);
             }
         });
 

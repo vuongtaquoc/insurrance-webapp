@@ -5,29 +5,16 @@ export const TABLE_NESTED_HEADERS = [
     { title: 'STT', rowspan: '3' },
     { title: 'Họ và tên', subtitle: 'Nhập chữ thường', rowspan: '3' },
     { title: 'Đã có sổ BHXH', rowspan: '3' },
-    { title: 'Số sổ BHXH', rowspan: '3' },
     { title: 'Kiểm tra mã số BHXH', colspan: '2' },
     { title: 'Chỉ có năm sinh hoặc tháng/năm', rowspan: '3' },
     { title: 'Ngày, tháng, năm sinh', rowspan: '3' },
     { title: 'Nữ', rowspan: '3' },
-    { title: 'Dân tộc', rowspan: '3' },
-    { title: 'Quốc tịch', rowspan: '3' },
     { title: 'Số CMND/Hộ chiếu/Thẻ căn cước', rowspan: '3' },
-    { title: 'Số điện thoại liên hệ', rowspan: '3' },
-	{ title: 'Email', rowspan: '3' },
-    { title: 'Mã số hộ gia đình', rowspan: '3' },
-    { title: 'Địa chỉ đăng ký giấy khai sinh', subtitle: 'hoặc nguyên quán hoặc HKTT hoặc tạm trú', colspan: '3', rowspan: '2' },
-    { title: 'Địa chỉ nhận hồ sơ', subtitle: 'nơi sinh sống', colspan: '4', rowspan: '2' },
-	{ title: 'Vùng sinh sống', rowspan: '3' },
-    { title: 'Vùng lương tối thiểu', rowspan: '3' },
-    { title: 'Nơi đăng ký KCB', colspan: '2' },
     { title: 'Cấp bập, chức vụ, chức danh nghề', rowspan: '3' },
     { title: 'Vị trí làm việc', colspan: '3' },
+    { title: 'Tiền lương', colspan: '7' },
     { title: 'Ngành/nghề nặng nhọc độc hại', colspan: '2' },
-    { title: 'Nơi làm việc', rowspan: '3' },
-    { title: 'Phòng ban', rowspan: '3' },
     { title: 'Quyết định/Hợp đồng lao động', colspan: '5', rowspan: '2' },
-    { title: 'Tiền lương', colspan: '8' },
     { title: 'Thời điểm đóng', colspan: '2' },
     { title: 'Phương án', rowspan: '3' },
     { title: 'Tỷ lệ đóng', rowspan: '3' },
@@ -36,38 +23,29 @@ export const TABLE_NESTED_HEADERS = [
   [
     { title: 'Mã số BHXH', rowspan: '2' },
     { title: 'Trạng thái', rowspan: '2' },
-    { title: 'Mã đơn vị KCB', rowspan: '2' },
-    { title: 'Tên đơn vị KCB', rowspan: '2' },
     { title: 'Loại', rowspan: '2' },
-    { title: 'Từ ngày', rowspan: '2' },
-    { title: 'Đến ngày', rowspan: '2' },
     { title: 'Từ ngày', rowspan: '2' },
     { title: 'Đến ngày', rowspan: '2' },
     { title: 'Tiền lương', rowspan: '2' },
     { title: 'Hệ số', rowspan: '2' },
-    { title: 'Phụ cấp', colspan: '6' },
+    { title: 'Phụ cấp', colspan: '5' },
+    { title: 'Từ ngày', rowspan: '2' },
+    { title: 'Đến ngày', rowspan: '2' },
     { title: 'Tháng. năm bắt đầu', rowspan: '2' },
     { title: 'Tháng. năm kết thúc', rowspan: '2' },
   ],
   [
-    { title: 'Tỉnh/TP' },
-    { title: 'Quận/huyện' },
-    { title: 'Xã/phường' },
-    { title: 'Tỉnh/TP' },
-    { title: 'Quận/huyện' },
-    { title: 'Xã/phường' },
-    { title: 'Số nhà, đường phố, thôn, xóm' },
-    { title: 'Số' },
-    { title: 'Ngày ký' },
-    { title: 'Loại hợp đồng' },
-    { title: 'Ngày bắt đầu' },
-    { title: 'Ngày kết thúc' },
     { title: 'Phụ cấp lương' },
     { title: 'Các khoản bổ sung' },
     { title: 'Chức vụ' },
     { title: 'Thâm niên VK (%)' },
     { title: 'Thâm niên nghề (%)' },
-    { title: 'Chênh lệch bảo lưu' },
+    { title: 'Số' },
+    { title: 'Ngày ký' },
+    { title: 'Loại hợp đồng' },
+    { title: 'Ngày bắt đầu' },
+    { title: 'Ngày kết thúc' },
+   
   ],
 ];
 
@@ -100,27 +78,11 @@ export const TABLE_HEADER_COLUMNS = [{
   align: 'center',
   key: 'isExitsIsurranceNo',   
 }, {
-  type: 'text',
-  width: 120,
-  title: '(4)',
-  key: 'isurranceNo',
-  fieldName: 'Số sổ BHXH',
-  warnings: {
-    duplicateUserFields: {
-      primary: 'isurranceNo',
-      check: ['employeeId']
-    },
-  },
-  validations: {
-    required: true,
-    duplicate: true,
-  }
-}, {
   type: 'numeric',
   align: 'right',
   width: 123,
-  title: '(5.1)',
-  key: 'isurranceCode',
+  title: '(4.1)',
+  key: 'isurranceNo',
   fieldName: 'Mã số BHXH',
   warnings: {
     duplicateUserFields: {
@@ -136,13 +98,13 @@ export const TABLE_HEADER_COLUMNS = [{
   type: 'text',
   key: 'isurranceCodeStatus',
   width: 123,
-  title: '(5.2)',
+  title: '(4.2)',
   wordWrap: true,
   readOnly:true,
 }, {
   type: 'dropdown',
   width: 70,
-  title: '(6)',
+  title: '(5)',
   source: [ { id: '0', name: 'Ngày tháng năm' },{ id: '1', name: 'tháng/năm' }, { id: '2', name: 'năm' } ],
   key: 'typeBirthday',
   warnings: {
@@ -154,7 +116,7 @@ export const TABLE_HEADER_COLUMNS = [{
 }, {
   type: 'text',
   width: 80,
-  title: '(7)',
+  title: '(6)',
   fieldName: 'Ngày tháng năm sinh',
   key: 'birthday',
   validations: {
@@ -164,47 +126,14 @@ export const TABLE_HEADER_COLUMNS = [{
 }, {
   type: 'checkbox',
   width: 35,
-  title: '(8)',
+  title: '(7)',
   align: 'center',
   key: 'gender'
-}, {
-  type: 'dropdown',
-  autocomplete: true,
-  width: 75,
-  title: '(9)',
-  source: [ 'Chọn' ],
-  key: 'peopleCode',
-  validations: {
-    required: true,
-  },
-  warnings: {
-    duplicateUserFields: {
-      primary: 'peopleCode',
-      check: ['fullName']
-    }
-  }
-}, {
-  type: 'dropdown',
-  autocomplete: true,
-  width: 100,
-  title: '(10)',
-  source: [ 'Chọn' ],
-  align: 'left',
-  key: 'nationalityCode',
-    validations: {
-    required: true,
-  },
-  warnings: {
-    duplicateUserFields: {
-      primary: 'nationalityCode',
-      check: ['fullName']
-    }
-  }
 }, {
   type: 'numeric',
   align: 'right',
   width: 100,
-  title: '(11)',
+  title: '(8)',
   key: 'identityCar',
   fieldName: 'Số CMND/Hộ chiếu/Thẻ căn cước',
   validations: {
@@ -213,160 +142,9 @@ export const TABLE_HEADER_COLUMNS = [{
     duplicate: true
   }
 }, {
-  type: 'numeric',
-  align: 'right',
-  width: 100,
-  title: '(12)',
-  fieldName: 'Số điện thoại',
-  key: 'mobile',
-  validations: {
-    phone: true
-  }
-},{
-  type: 'text',
-  width: 100,
-  title: '(13)',
-  align: 'left',
-  wordWrap: true,
-  key: 'email'
-},{
-  type: 'numeric',
-  align: 'right',
-  autocomplete: true,
-  width: 135,
-  title: '(14)',
-  key: 'familyNo',
-}, {
-  type: 'dropdown',
-  fieldName: 'Tỉnh thàng đăng ký khai sinh',
-  autocomplete: true,
-  validations: {
-    required:true,
-  },
-  width: 145,
-  title: '(15.1)',
-  source: [ 'Chọn' ],
-  align: 'left',
-  key: 'registerCityCode'
-}, {
-  type: 'dropdown',
-  autocomplete: true,
-  width: 145,
-  fieldName: 'Quận huyện đăng ký khai sinh',
-  validations: {
-    required:true,
-  },
-  source: [ ],
-  title: '(15.2)',
-  align: 'left',
-  key: 'registerDistrictCode',
-  defaultLoad: true
-}, {
-  type: 'dropdown',
-  autocomplete: true,
-  width: 175,
-  title: '(15.3)',
-  source: [  ],
-  align: 'left',
-  key: 'registerWardsCode',
-  defaultLoad: true,
-  fieldName: 'Xã phương đăng ký khai sinh',
-  validations: {
-    required:true,
-  }
-}, {
-  type: 'dropdown',
-  autocomplete: true,
-  width: 145,
-  title: '(16.1)',
-  align: 'left',
-  source: [ 'Chọn' ],
-  key: 'recipientsCityCode',
-  fieldName: 'Tỉnh thành nhận hồ sơ',
-  validations: {
-    required:true,
-  }
-}, {
-  type: 'dropdown',
-  autocomplete: true,
-  width: 145,
-  title: '(16.2)',
-  align: 'left',
-  source: [ ],
-  key: 'recipientsDistrictCode',
-  defaultLoad: true,
-  fieldName: 'Quận huyện nhận hồ sơ',
-  validations: {
-    required:true,
-  }
-}, {
-  type: 'dropdown',
-  autocomplete: true,
-  width: 175,
-  title: '(16.3)',
-  align: 'left',
-  source: [],
-  key: 'recipientsWardsCode',
-  defaultLoad: true,
-  fieldName: 'Xã phường nhận hồ sơ',
-  validations: {
-    required:true,
-  }
-}, {
-  type: 'text',
-  width: 165,
-  title: '(16.4)',
-  align: 'left',
-  wordWrap: true,
-  key: 'recipientsAddress'
-},
-{
-  type: 'dropdown',
-  autocomplete: true,
-  width: 75,
-  title: '(17)',
-  source: [],
-  key: 'livesAreaCode'
-}
-,{
-  type: 'dropdown',
-  autocomplete: true,
-  width: 75,
-  title: '(18)',
-  source: [ ],
-  fieldName: 'Vùng lương tối thiểu',
-  key: 'salaryAreaCode',
-  validations: {
-    required: true,
-  }
-}, {
-  type: 'text',
-  autocomplete: true,
-  width: 85,
-  title: '(19.1)',
-  source: [ ],
-  wordWrap: true,
-  fieldName: 'Mã đơn vị KCB',
-  key: 'hospitalFirstRegistCode',
-  validations: {
-    required:true,
-  },
-  defaultLoad: true,
-}, {
-  type: 'text',
-  width: 300,
-  title: '(19.2)',
-  align: 'left',
-  fieldName: 'Tên đơn vị KCB',
-  wordWrap: true,
-  key: 'hospitalFirstRegistName',
-  validations: {
-    required:true,
-  }
-}, {
   type: 'text',
   width: 135,
-  title: '(20)',
+  title: '(9)',
   validations: {
     required: true,
   },
@@ -377,92 +155,26 @@ export const TABLE_HEADER_COLUMNS = [{
   type: 'dropdown',
   autocomplete: true,
   width: 100,
-  title: '(21.1)',
+  title: '(10.1)',
   source: [],
   key: 'workTypeCode'
 }, {
   type: 'text',
   width: 80,
-  title: '(21.2)',
+  title: '(10.2)',
   key: 'workTypeFromDate',
   fieldName: 'Từ ngày',
 }, {
   type: 'text',
   width: 80,
-  title: '(21.3)',
+  title: '(10.3)',
   key: 'workTypeToDate',
   fieldName: 'Từ ngày',
-},
-{
-  type: 'text',
-  width: 100,
-  title: '(22.1)',
-  key: 'careFromDate',
-  fieldName: 'Từ ngày',
-}, {
-  type: 'text',
-  width: 100,
-  title: '(22.2)',
-  key: 'careTypeToDate',
-  fieldName: 'Từ ngày',
-}, {
-  type: 'text',
-  width: 135,
-  wordWrap: true,
-  title: '(23)',
-  fieldName: 'Nới làm việc',
-  key: 'workAddress',
-  validations: {
-    required: true,
-  }
-}, {
-  type: 'dropdown',
-  autocomplete: true,
-  source: [ ],
-  width: 135,
-  title: '(24)',
-  key: 'departmentCode'
-}, {
-  type: 'numeric',
-  align: 'right',
-  width: 100,
-  title: '(25.1)',
-  key: 'contractNo'
-}, {
-  type: 'text',
-  width: 100,
-  title: '(25.2)',
-  key: 'dateSign',
-  fieldName: 'Ngày ký',
-  validations: {
-    lessThanNow: true
-  }
 },{
-  type: 'dropdown',
-  autocomplete: true,
-  source: [ ],
-  width: 100,
-  title: '(25.3)',
-  key: 'contractTypeCode',
-  fieldName: 'Loại hợp đồng'  
-},{
-  type: 'text',
-  width: 100,
-  title: '(25.4)',
-  key: 'contractTypeFromDate',
-  fieldName: 'Ngày băt đầu',   
-},{
-  type: 'text',
-  width: 100,
-  title: '(25.5)',
-  key: 'contractTypeToDate',
-  fieldName: 'Ngày kết thúc',
-  checkReadonly: true,
-}, {
   type: 'numeric',
   align: 'right',
   width: 80,
-  title: '(26.1)',
+  title: '(11.1)',
   mask: '#,##0',
   fieldName: 'Tiền lương',
   sum: true,
@@ -478,11 +190,13 @@ export const TABLE_HEADER_COLUMNS = [{
   type: 'numeric',
   align: 'right',
   width: 80,
-  title: '(26.2)',
+  title: '(11.2)',
   fieldName: 'Hệ số',
   mask: '#,##0',
   validations: {
     required: true,
+    min: 0,
+    max: 13,
     number: true
   },
   sum: true,
@@ -494,7 +208,7 @@ export const TABLE_HEADER_COLUMNS = [{
   type: 'numeric',
   align: 'right',
   width: 80,
-  title: '(26.3)',
+  title: '(11.3)',
   mask: '#,##0',
   defaultValue:0,
   sum: true,
@@ -510,8 +224,8 @@ export const TABLE_HEADER_COLUMNS = [{
 }, {
   type: 'numeric',
   align: 'right',
-  width: 80,
-  title: '(26.4)',
+  width: 120,
+  title: '(11.4)',
   mask: '#,##0',
   defaultValue:0,
   sum: true,
@@ -527,8 +241,8 @@ export const TABLE_HEADER_COLUMNS = [{
 }, {
   type: 'numeric',
   align: 'right',
-  width: 80,
-  title: '(26.5)',
+  width: 120,
+  title: '(11.5)',
   mask: '#,##0',
   defaultValue:0,
   sum: true,
@@ -546,7 +260,7 @@ export const TABLE_HEADER_COLUMNS = [{
   type: 'numeric',
   align: 'right',
   width: 70,
-  title: '(26.6)',
+  title: '(11.6)',
   key: 'allowanceSeniority',
   fieldName: 'Thâm niên VK',
   suffix: '%',
@@ -559,7 +273,7 @@ export const TABLE_HEADER_COLUMNS = [{
   type: 'numeric',
   align: 'right',
   width: 70,
-  title: '(26.7)',
+  title: '(11.7)',
   key: 'allowanceSeniorityJob',
   fieldName: 'Thâm niên nghề',
   suffix: '%',
@@ -567,27 +281,58 @@ export const TABLE_HEADER_COLUMNS = [{
     min: 0,
     max: 100
   }
+},{
+  type: 'text',
+  width: 100,
+  title: '(12.1)',
+  key: 'careFromDate',
+  fieldName: 'Từ ngày',
+}, {
+  type: 'text',
+  width: 100,
+  title: '(12.2)',
+  key: 'careTypeToDate',
+  fieldName: 'Từ ngày',
 }, {
   type: 'numeric',
   align: 'right',
-  width: 80,
-  title: '(26.8)',
-  mask: '#,##0',
-  defaultValue: 0,
-  sum: true,
-  key: 'allowanceOther',
-  fieldName: 'Chênh lệch bảo lưu',
-  validations: {
-    required: true,
-    number: true
-  },
-  format: (value) => {
-    return format.currency(value);
-  }
+  width: 100,
+  title: '(13.1)',
+  key: 'contractNo'
 }, {
   type: 'text',
+  width: 100,
+  title: '(13.2)',
+  key: 'dateSign',
+  fieldName: 'Ngày ký',
+  validations: {
+    lessThanNow: true
+  }
+},{
+  type: 'dropdown',
+  autocomplete: true,
+  source: [ ],
+  width: 100,
+  title: '(13.3)',
+  key: 'contractTypeCode',
+  fieldName: 'Loại hợp đồng'  
+},{
+  type: 'text',
+  width: 100,
+  title: '(13.4)',
+  key: 'contractTypeFromDate',
+  fieldName: 'Ngày băt đầu',   
+},{
+  type: 'text',
+  width: 100,
+  title: '(13.5)',
+  key: 'contractTypeToDate',
+  fieldName: 'Ngày kết thúc',
+  checkReadonly: true,
+},  {
+  type: 'text',
   width: 60,
-  title: '(27.1)',
+  title: '(14.1)',
   key: 'fromDate',
   fieldName: 'Từ tháng, năm',
   validations: {
@@ -597,7 +342,7 @@ export const TABLE_HEADER_COLUMNS = [{
 }, {
   type: 'text',
   width: 60,
-  title: '(27.2)',
+  title: '(14.2)',
   fieldName: 'Đến tháng năm',
   key: 'toDate',
   isCalendar: true
@@ -606,7 +351,7 @@ export const TABLE_HEADER_COLUMNS = [{
   type: 'dropdown',
   autocomplete: true,
   width: 50,
-  title: '(28)',
+  title: '(15)',
   source: [ ],
   key: 'planCode',
   fieldName: 'Phương án',
@@ -619,7 +364,7 @@ export const TABLE_HEADER_COLUMNS = [{
   mask: '#,##0',
   // decimal: ',',
   width: 50,
-  title: '(29)',
+  title: '(16)',
   key: 'rate',
   fieldName: 'Tỷ lệ đóng',
   validations: {
@@ -632,7 +377,7 @@ export const TABLE_HEADER_COLUMNS = [{
 }, {
   type: 'text',
   width: 180,
-  title: '(30)',
+  title: '(17)',
   wordWrap: true,
   key: 'reason'
 },{

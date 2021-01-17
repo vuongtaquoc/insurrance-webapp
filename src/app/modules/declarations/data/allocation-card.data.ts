@@ -5,18 +5,11 @@ export const TABLE_NESTED_HEADERS = [
     { title: 'STT', rowspan: '3' },
     { title: 'Họ và tên', subtitle: 'Nhập chữ thường', rowspan: '3' },
     { title: 'Đã có sổ BHXH', rowspan: '3' },
-    { title: 'Số sổ BHXH', rowspan: '3' },
     { title: 'Kiểm tra mã số BHXH', colspan: '2' },
     { title: 'Chỉ có năm sinh hoặc tháng/năm', rowspan: '3' },
     { title: 'Ngày, tháng, năm sinh', rowspan: '3' },
     { title: 'Nữ', rowspan: '3' },
-    { title: 'Dân tộc', rowspan: '3' },
-    { title: 'Quốc tịch', rowspan: '3' },
-    { title: 'Số CMND/Hộ chiếu/Thẻ căn cước', rowspan: '3' },
-    { title: 'Số điện thoại liên hệ', rowspan: '3' },
-    { title: 'Mã số hộ gia đình', rowspan: '3' },
-    { title: 'Địa chỉ đăng ký giấy khai sinh', subtitle: 'hoặc nguyên quán hoặc HKTT hoặc tạm trú', colspan: '3', rowspan: '2' },
-    { title: 'Địa chỉ nhận hồ sơ', subtitle: 'nơi sinh sống', colspan: '4', rowspan: '2' },
+    { title: 'Địa chỉ', subtitle: 'nơi sinh sống', colspan: '4', rowspan: '2' },
     { title: 'Mực thu nhập tháng đóng BHXH', rowspan: '3' },
     { title: 'Phương án', rowspan: '3' },
     { title: 'Phương thức đóng', colspan: '3', rowspan: '2' },
@@ -33,9 +26,6 @@ export const TABLE_NESTED_HEADERS = [
     { title: 'Người tham gia đóng', rowspan: '2' },
   ],
   [
-    { title: 'Tỉnh/TP' },
-    { title: 'Quận/huyện' },
-    { title: 'Xã/phường' },
     { title: 'Tỉnh/TP' },
     { title: 'Quận/huyện' },
     { title: 'Xã/phường' },
@@ -81,21 +71,11 @@ export const TABLE_HEADER_COLUMNS = [{
   align: 'center',
   key: 'isExitsIsurranceNo'
 }, {
-  type: 'text',
-  width: 120,
-  title: '(4)',
-  key: 'isurranceNo',
-  fieldName: 'Số số BHXH',
-  validations: {
-    required: true,
-    duplicate: true,
-  }
-}, {
   type: 'numeric',
   align: 'right',
   width: 123,
-  title: '(5.1)',
-  key: 'isurranceCode',
+  title: '(4.1)',
+  key: 'isurranceNo',
   fieldName: 'Mã số BHXH',
   validations: {
     required: true,
@@ -105,13 +85,13 @@ export const TABLE_HEADER_COLUMNS = [{
   type: 'text',
   key: 'isurranceCodeStatus',
   width: 123,
-  title: '(5.2)',
+  title: '(4.2)',
   wordWrap: true,
   readOnly:true,
 }, {
   type: 'dropdown',
   width: 70,
-  title: '(6)',
+  title: '(5)',
   source: [ { id: '0', name: 'Ngày tháng năm' },{ id: '1', name: 'tháng/năm' }, { id: '2', name: 'năm' } ],
   key: 'typeBirthday',
   warnings: {
@@ -123,7 +103,7 @@ export const TABLE_HEADER_COLUMNS = [{
 }, {
   type: 'text',
   width: 80,
-  title: '(7)',
+  title: '(6)',
   fieldName: 'Ngày tháng năm sinh',
   key: 'birthday',
   validations: {
@@ -133,114 +113,14 @@ export const TABLE_HEADER_COLUMNS = [{
 }, {
   type: 'checkbox',
   width: 35,
-  title: '(8)',
+  title: '(7)',
   align: 'center',
   key: 'gender'
 }, {
   type: 'dropdown',
   autocomplete: true,
-  width: 75,
-  title: '(9)',
-  source: [ 'Chọn' ],
-  key: 'peopleCode',
-  validations: {
-    required: true,
-  },
-  warnings: {
-    duplicateUserFields: {
-      primary: 'peopleCode',
-      check: ['fullName']
-    }
-  }
-}, {
-  type: 'dropdown',
-  autocomplete: true,
-  width: 100,
-  title: '(10)',
-  source: [ 'Chọn' ],
-  align: 'left',
-  key: 'nationalityCode',
-    validations: {
-    required: true,
-  },
-  warnings: {
-    duplicateUserFields: {
-      primary: 'nationalityCode',
-      check: ['fullName']
-    }
-  }
-}, {
-  type: 'numeric',
-  align: 'right',
-  width: 100,
-  title: '(11)',
-  key: 'identityCar',
-  fieldName: 'Số CMND/Hộ chiếu/Thẻ căn cước',
-  validations: {
-    required: true,
-    cardId: true,
-    duplicate: true
-  }
-}, {
-  type: 'numeric',
-  align: 'right',
-  width: 100,
-  title: '(12)',
-  fieldName: 'Số điện thoại',
-  key: 'mobile',
-  validations: {
-    phone: true
-  }
-},{
-  type: 'numeric',
-  align: 'right',
-  autocomplete: true,
-  width: 135,
-  title: '(13)',
-  key: 'familyNo',
-}, {
-  type: 'dropdown',
-  fieldName: 'Tỉnh thàng đăng ký khai sinh',
-  autocomplete: true,
-  validations: {
-    required:true,
-  },
   width: 145,
-  title: '(14.1)',
-  source: [ 'Chọn' ],
-  align: 'left',
-  key: 'registerCityCode'
-}, {
-  type: 'dropdown',
-  autocomplete: true,
-  width: 145,
-  fieldName: 'Quận huyện đăng ký khai sinh',
-  validations: {
-    required:true,
-  },
-  source: [ ],
-  title: '(14.2)',
-  align: 'left',
-  key: 'registerDistrictCode',
-  defaultLoad: true
-}, {
-  type: 'dropdown',
-  autocomplete: true,
-  width: 175,
-  title: '(14.3)',
-  source: [  ],
-  align: 'left',
-  key: 'registerWardsCode',
-  defaultLoad: true,
-  fieldName: 'Xã phương đăng ký khai sinh',
-  validations: {
-    required:true,
-  }
-}, {
-  type: 'dropdown',
-  autocomplete: true,
-  width: 145,
-  title: '(15.1)',
+  title: '(8.1)',
   align: 'left',
   source: [ 'Chọn' ],
   key: 'recipientsCityCode',
@@ -252,7 +132,7 @@ export const TABLE_HEADER_COLUMNS = [{
   type: 'dropdown',
   autocomplete: true,
   width: 145,
-  title: '(15.2)',
+  title: '(8.2)',
   align: 'left',
   source: [ ],
   key: 'recipientsDistrictCode',
@@ -265,7 +145,7 @@ export const TABLE_HEADER_COLUMNS = [{
   type: 'dropdown',
   autocomplete: true,
   width: 175,
-  title: '(15.3)',
+  title: '(8.3)',
   align: 'left',
   source: [],
   key: 'recipientsWardsCode',
@@ -277,7 +157,7 @@ export const TABLE_HEADER_COLUMNS = [{
 }, {
   type: 'text',
   width: 165,
-  title: '(15.4)',
+  title: '(8.4)',
   align: 'left',
   wordWrap: true,
   key: 'recipientsAddress'
@@ -380,7 +260,6 @@ export const TABLE_HEADER_COLUMNS = [{
   mask: '#,##0',
   fieldName: 'Số tiền NS nhà nước hỗ trợ',
   sum: true,
-  readOnly: true,
   key: 'soTienNSNN',
   validations: {
     number: true
@@ -411,7 +290,6 @@ export const TABLE_HEADER_COLUMNS = [{
   fieldName: 'Số tiền NS địa phương hỗ trợ',
   sum: true,
   key: 'soTienNSDP',
-  readOnly: true,
   validations: {
     number: true
   },
@@ -421,7 +299,7 @@ export const TABLE_HEADER_COLUMNS = [{
 }, {
   type: 'numeric',
   align: 'right',
-  width: 70,
+  width: 90,
   title: '(19.6)',
   fieldName: 'Tỷ lệ tổ chức, cá nhân khác hỗ trợ (%)',
   key: 'tyleTCCNHTK',
@@ -435,12 +313,11 @@ export const TABLE_HEADER_COLUMNS = [{
 {
   type: 'numeric',
   align: 'right',
-  width: 80,
+  width: 100,
   title: '(19.7)',
   mask: '#,##0',
   // decimal: ',',
   sum: true,
-  readOnly: true,
   key: 'toChuCaNhanHTKhac',
   validations: {
     number: true

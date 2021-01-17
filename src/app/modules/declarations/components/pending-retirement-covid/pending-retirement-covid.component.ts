@@ -24,6 +24,7 @@ import {
   RelationshipService,
   VillageService,
   DeclarationConfigService,
+  SalaryAreaService,
 } from '@app/core/services';
 import { DATE_FORMAT, DOCUMENTBYPLANCODE, ACTION } from '@app/shared/constant';
 import { eventEmitter } from '@app/shared/utils/event-emitter';
@@ -88,6 +89,8 @@ export class PendingRetirementCovidComponent implements OnInit, OnDestroy {
   tabSubject: Subject<any> = new Subject<any>();
   handlers: any = [];
   isSpinning = false;
+  salaryAreas: any;
+
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
@@ -103,6 +106,7 @@ export class PendingRetirementCovidComponent implements OnInit, OnDestroy {
     private wardService: WardsService,
     private villageService: VillageService,
     private declarationConfigService: DeclarationConfigService,
+    private salaryAreaService: SalaryAreaService,
   ) {
   }
 
@@ -113,6 +117,7 @@ export class PendingRetirementCovidComponent implements OnInit, OnDestroy {
     });
 
     this.loadDeclarationConfig();
+    this.loadSalaryInfo();  
     //Init data families table editor
     forkJoin([
       this.cityService.getCities(),
@@ -205,6 +210,13 @@ export class PendingRetirementCovidComponent implements OnInit, OnDestroy {
        this.autoCreateDocumentList = data.autoCreateDocumentList;
        this.autoCreateFamilies = data.autoCreateFamilies;
        this.allowAttachFile = data.allowAttachFile;
+    });
+  }
+
+  private loadSalaryInfo() {
+    const companyInfo  =  this.authenticationService.currentCredentials.companyInfo;
+    this.salaryAreaService.getDetailByCode(companyInfo.salaryAreaCode).subscribe((data) => {
+      this.salaryAreas = data;
     });
   }
 

@@ -11,4 +11,5 @@ export class Declaration {
   planDefault?: string;
   isLeaf?: boolean;
   IsRequiredIsurranceNo? : boolean;
+  rate?: any;
 }
