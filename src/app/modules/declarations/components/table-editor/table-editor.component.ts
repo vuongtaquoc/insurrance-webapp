@@ -596,9 +596,6 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
   private async getHospitalsByCityCode(table, keyword, c, r) {
     const indexOfCloumnRecipientsCityCode= this.columns.findIndex(c => c.key === 'recipientsCityCode');
     const cityCode = table.getValueFromCoords(indexOfCloumnRecipientsCityCode, r);
-    // if (!cityCode) {
-    //   return [];
-    // }
 
     return await this.hospitalService.searchHospital(cityCode, keyword).toPromise();
   }
@@ -629,7 +626,7 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
             if(!isExitsIsurranceNo && !isRequiredIsurranceNo) {
               const column = this.columns[indexIsurranceCode];
               const validIsurranceNo = {
-                ...column.validations                
+                ...column.validations,                               
               }
               validIsurranceNo.required = false;
               this.spreadsheet.validationCell(y, indexIsurranceCode, column.fieldName ? column.fieldName : column.title, validIsurranceNo);

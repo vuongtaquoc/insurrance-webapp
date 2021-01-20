@@ -4,6 +4,7 @@ export const TABLE_NESTED_HEADERS = [
   [
     { title: 'STT', rowspan: '3' },
     { title: 'Họ và tên', subtitle: 'Nhập chữ thường', rowspan: '3' },
+    { title: 'Đã có mã số BHXH', rowspan: '3' },
     { title: 'Kiểm tra mã số BHXH', colspan: '2' },
     { title: 'Chỉ có năm sinh hoặc tháng/năm', rowspan: '3' },
     { title: 'Ngày, tháng, năm sinh', rowspan: '3' },
@@ -65,16 +66,21 @@ export const TABLE_HEADER_COLUMNS = [{
     required: true,
   }
 }, {
+  type: 'checkbox',
+  width: 45,
+  title: '(3)',
+  align: 'center',
+  key: 'isExitsIsurranceNo',   
+}, {
   type: 'numeric',
   align: 'right',
   width: 123,
-  title: '(3.1)',
+  title: '(4.1)',
   key: 'isurranceCode',
   fieldName: 'Mã số BHXH',
   validations: {
-    numberLength: 10,
     required: true,
-    duplicate: true
+    duplicate: true,
   }
 }, {
   type: 'text',

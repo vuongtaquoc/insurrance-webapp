@@ -802,8 +802,8 @@ export class ReturnPaymentComponent implements OnInit, OnDestroy {
   checkInsurranceCode() {
     const declarations = [...this.declarations];
     const INSURRANCE_FULLNAME_INDEX = 1;
-    const INSURRANCE_CODE_INDEX = 3;
-    const INSURRANCE_STATUS_INDEX = 4;
+    const INSURRANCE_CODE_INDEX = 2;
+    const INSURRANCE_STATUS_INDEX = 3;
     const errors = {};
     this.isCheckIsuranceCode = true;
     const leafs = declarations.filter(d => d.isLeaf && d.data[INSURRANCE_CODE_INDEX]);

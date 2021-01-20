@@ -85,7 +85,7 @@ export const TABLE_DOCUMENT_HEADER_COLUMNS = [{
   }
 }, {
   type: 'text',
-  width: 200,
+  width: 250,
   title: '(9)',
   align: 'left',
   wordWrap: true,

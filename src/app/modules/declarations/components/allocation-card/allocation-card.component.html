@@ -101,39 +101,62 @@
               </div><!-- page-declarations__group-button -->
               <div class="page-declarations__title">
                 <h2>Danh sách người tham gia bảo hiểm xã hội Tự nguyện</h2>
-                <form nz-form [formGroup]="form" class="page-declarations__search_normal">
+                <form nz-form [formGroup]="form" class="page-declarations__search">
                   <nz-form-item>
-                    <nz-form-label [nzNoColon]="true" [nzSpan]="18">Tỷ lệ đóng (%)</nz-form-label>
-                    <nz-form-control [nzSpan]="6" [nzErrorTip]="ratioPaymentTpl">
-                      <input nz-input formControlName="ratioPayment"  (ngModelChange)="handleChangeForm($event)">
-                      <ng-template #ratioPaymentTpl let-control>
+                    <nz-form-label [nzNoColon]="true" [nzSpan]="10">Số</nz-form-label>
+                    <nz-form-control [nzSpan]="14" [nzErrorTip]="batchTpl">
+                      <input nz-input formControlName="batch" (onChange)="handleChangeForm()">
+                      <ng-template #batchTpl let-control>
                         <ng-container *ngIf="control.hasError('required')">
-                          <p class="regime-approval-form__error">Tỷ lệ đóng (%) không để trống</p>
+                          <p class="regime-approval-form__error">Số tờ khai không để trống</p>
                         </ng-container>
-                        <ng-container *ngIf="control.hasError('min')">
-                            <p class="regime-approval-form__error"> Tỷ lệ đóng (%) phải lơn hơn 0</p>
-                          </ng-container>
-                          <ng-container *ngIf="control.hasError('max')">
-                              <p class="regime-approval-form__error">Tỷ lệ đóng (%) phải nhỏ hơn hoặc bằng 100</p>
-                          </ng-container>
                         <ng-container *ngIf="control.hasError('pattern')">
-                          <p class="regime-approval-form__error">Tỷ lệ đóng (%) tờ khai phải số</p>
+                          <p class="regime-approval-form__error">Số tờ khai phải số</p>
                         </ng-container>
                       </ng-template>
                     </nz-form-control>
                   </nz-form-item>
                   <nz-form-item>
-                    <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Chuẩn nghèo(CN)</nz-form-label>
-                    <nz-form-control [nzSpan]="14">
-                      <nz-select [nzSize]="'small'" class="custom-select"  (ngModelChange)="handleChangeForm($event)" nzShowSearch nzAllowClear formControlName="coefficientCode">
-                        <nz-option *ngFor="let coefficient of coefficients" [nzLabel]="coefficient.name"
-                          [nzValue]="coefficient.id">
-                        </nz-option>
-                      </nz-select>
+                    <nz-form-label [nzNoColon]="true" [nzSpan]="10">Tháng</nz-form-label>
+                    <nz-form-control [nzSpan]="14" [nzErrorTip]="monthTpl">
+                      <input nz-input formControlName="month" (onChange)="handleChangeForm()">
+                      <ng-template #monthTpl let-control>
+                        <ng-container *ngIf="control.hasError('required')">
+                          <p class="regime-approval-form__error">Tháng tờ khai không để trống</p>
+                        </ng-container>
+                        <ng-container *ngIf="control.hasError('min')">
+                          <p class="regime-approval-form__error"> Tháng phải lơn hơn 0</p>
+                        </ng-container>
+                        <ng-container *ngIf="control.hasError('max')">
+                            <p class="regime-approval-form__error">Tháng phải nhỏ hơn hoặc bằng 12</p>
+                        </ng-container>
+                        <ng-container *ngIf="control.hasError('pattern')">
+                          <p class="regime-approval-form__error">Tháng tờ khai phải số</p>
+                        </ng-container>
+                      </ng-template>
+                    </nz-form-control>
+                  </nz-form-item>
+                  <nz-form-item>
+                    <nz-form-label [nzNoColon]="true" [nzSpan]="10">Năm</nz-form-label>
+                    <nz-form-control [nzSpan]="14" [nzErrorTip]="yearTpl">
+                      <input nz-input formControlName="year" (onChange)="handleChangeForm()">
+                      <ng-template #yearTpl let-control>
+                        <ng-container *ngIf="control.hasError('required')">
+                          <p class="regime-approval-form__error">Năm tờ khai không để trống</p>
+                        </ng-container>
+                        <ng-container *ngIf="control.hasError('pattern')">
+                          <p class="regime-approval-form__error">Năm tờ khai phải số</p>
+                        </ng-container>
+                        <ng-container *ngIf="control.hasError('min')">
+                            <p class="regime-approval-form__error"> Năm phải lơn hơn năm 1990</p>
+                        </ng-container>
+                        <ng-container *ngIf="control.hasError('maxlength')">
+                            <p class="regime-approval-form__error"> Năm chỉ được tối đa 4 ký tự</p>
+                        </ng-container>
+                      </ng-template>
                     </nz-form-control>
                   </nz-form-item>
                 </form>
-
                 <div class="page-declarations__check-code">
                   <button nz-button nzType="default" (click)="checkInsurranceCode($event)">Kiểm tra mã số BHXH</button>
                 </div><!-- page-declarations__check-code -->
@@ -182,7 +205,7 @@
           <h1><strong>{{declarationCode}}</strong> | {{declarationName}}</h1>
             <h2>PHỤ LỤC THÀNH VIÊN GIA ĐÌNH</h2>
             <div class="document-form__process-table">
-              <app-families-list-table 
+              <app-increase-tk1-table
                 tableName="family" 
                 [data]="families" 
                 [nestedHeaders]="tableNestedHeadersFamilies"
@@ -191,7 +214,7 @@
                 (onChange)="handleChangeDataFamilies($event)" 
                 (onDelete)="handleDeleteMember($event)"
                 (onAddRow)="handleAddMember($event)">
-              </app-families-list-table>
+              </app-increase-tk1-table>
             </div>
           </div>
         </nz-tab>

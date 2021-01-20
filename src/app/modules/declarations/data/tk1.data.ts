@@ -7,7 +7,7 @@ export const TABLE_FAMILIES_NESTED_HEADERS = [
     { title: 'Nữ', rowspan: '3' },
     { title: 'Dân tộc', rowspan: '3' },
     { title: 'Quốc tịch', rowspan: '3' },
-    { title: 'Số CMND/CCCD/Hộ chiếu', rowspan: '3' },
+    { title: 'Số CMND/CCCD/ Hộ chiếu', rowspan: '3' },
     { title: 'Số điện thoại', rowspan: '3' },
     { title: 'Địa chỉ đăng ký giấy khai sinh', subtitle: 'hoặc nguyên quán hoặc HKTT hoặc tạm trú', colspan: '3' },
     { title: 'Địa chỉ nhận hồ sơ', subtitle: 'nơi sinh sống', colspan: '4' },
