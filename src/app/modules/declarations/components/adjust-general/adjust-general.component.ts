@@ -27,12 +27,13 @@ import {
   NationalityService,
   DeclarationConfigService,
   SalaryAreaService,
+  HospitalService,
 } from '@app/core/services';
 import { DATE_FORMAT, DOCUMENTBYPLANCODE, ACTION } from '@app/shared/constant';
 import { eventEmitter } from '@app/shared/utils/event-emitter';
 
 import { TableEditorErrorsComponent } from '@app/shared/components';
-import { TABLE_FAMILIES_NESTED_HEADERS, TABLE_FAMILIES_HEADER_COLUMNS } from '@app/modules/declarations/data/families-editor.data';
+import { TABLE_FAMILIES_NESTED_HEADERS, TABLE_FAMILIES_HEADER_COLUMNS } from '@app/modules/declarations/data/tk1.data';
 import { TABLE_DOCUMENT_NESTED_HEADERS, TABLE_DOCUMENT_HEADER_COLUMNS } from '@app/modules/declarations/data/document-list-editor.data';
 
 import { Router } from '@angular/router';
@@ -116,6 +117,7 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
     private declarationConfigService: DeclarationConfigService,
     private nationalityService: NationalityService,
     private salaryAreaService: SalaryAreaService,
+    private hospitalService: HospitalService,
   ) {
 
     this.getRelationshipDistrictsByCityCode = this.getRelationshipDistrictsByCityCode.bind(this);
@@ -126,6 +128,10 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
     this.getWardsByDistrictCode = this.getWardsByDistrictCode.bind(this);
 
     this.getRelationShips = this.getRelationShips.bind(this);
+    this.getRecipientsWardsByDistrictCode = this.getRecipientsWardsByDistrictCode.bind(this);
+    this.getRegisterDistrictsByCityCode = this.getRegisterDistrictsByCityCode.bind(this);
+    this.getRecipientsDistrictsByCityCode = this.getRecipientsDistrictsByCityCode.bind(this);
+    this.getRegisterWardsByDistrictCode = this.getRegisterWardsByDistrictCode.bind(this);
   }
 
   ngOnInit() {
@@ -150,6 +156,17 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
       this.updateSourceToColumn(this.tableHeaderColumnsFamilies, 'relationshipCode', relationShips);
       this.updateSourceToColumn(this.tableHeaderColumnsFamilies, 'peopleCode', peoples);
       this.updateSourceToColumn(this.tableHeaderColumnsFamilies, 'nationalityCode', nationalities);
+
+      this.updateSourceToColumn(this.tableHeaderColumnsFamilies, 'declarationPeopleCode', peoples);
+      this.updateSourceToColumn(this.tableHeaderColumnsFamilies, 'declarationNationalityCode', nationalities);
+      this.updateSourceToColumn(this.tableHeaderColumnsFamilies, 'registerCityCode', cities);
+      this.updateSourceToColumn(this.tableHeaderColumnsFamilies, 'recipientsCityCode', cities);
+
+      this.updateFilterToColumn(this.tableHeaderColumnsFamilies, 'registerDistrictCode', this.getRegisterDistrictsByCityCode);
+      this.updateFilterToColumn(this.tableHeaderColumnsFamilies, 'registerWardsCode', this.getRegisterWardsByDistrictCode);
+      this.updateFilterToColumn(this.tableHeaderColumnsFamilies, 'recipientsDistrictCode', this.getRecipientsDistrictsByCityCode);
+      this.updateFilterToColumn(this.tableHeaderColumnsFamilies, 'recipientsWardsCode', this.getRecipientsWardsByDistrictCode)
+
 
       //families filter columns
 
@@ -262,14 +279,19 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
   }
 
   private updateEmployeeInFamily(user) {
-
     const families = [ ...this.families ];
     families.forEach(d => {
       if(d.origin &&  d.origin.isMaster &&  d.origin.employeeId === user.id) {
-        Object.keys(d).forEach(key => {
-          if(user[key] !== undefined) {
-             d[key] = user[key];
+         
+        Object.keys(d).forEach(keyMapping => {
+          let userKey = keyMapping;
+          const column = this.tableHeaderColumnsFamilies.find(c => c.key === keyMapping);
+          if (column) {
+            userKey = column.keyMapping;
           }
+          if(user[userKey] !== undefined) {
+             d[keyMapping] = user[userKey];
+          }           
         });
 
         d.employeeName = user.fullName;
@@ -317,7 +339,9 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
     }
 
     if (data.action === ACTION.EDIT) {
-      this.setDateToInformationList(this.declarations.tables);
+      const declarations = this.tablesToApi(this.declarations.tables);
+      this.setDataToInformationList(declarations);
+      this.setDataToFamilyEditor(declarations);
     }
 
     if (data.action === ACTION.DELETE) {
@@ -610,55 +634,64 @@ export class AdjustGeneralComponent implements OnInit, OnDestroy {
 handleChangeDataFamilies({ instance, cell, c, r, records, columns }) {
   if (c !== null && c !== undefined) {
     c = Number(c);
+   
     const column = this.tableHeaderColumnsFamilies[c];
     if (column.key === 'isMaster') {
       const employeeIsMaster = instance.jexcel.getValueFromCoords(c, r);
-
       if(employeeIsMaster === true) {
-
+        
         this.employeeService.getEmployeeById(records[r].origin.employeeId).subscribe(emp => {
             this.updateNextColumns(instance, r, emp.fullName, [ c + 1]);
-            this.updateNextColumns(instance, r, emp.relationshipMobile, [ c + 2]);
-            this.updateNextColumns(instance, r, emp.relationshipDocumentType, [ c + 3]);
-            this.updateNextColumns(instance, r, emp.relationshipBookNo, [ c + 4]);
-            this.updateNextColumns(instance, r, emp.relationshipCityCode , [ c + 5]);
-            this.updateNextColumns(instance, r, emp.relationshipDistrictCode, [ c + 6]);
-            this.updateNextColumns(instance, r, emp.relationshipWardsCode, [ c + 7]);
-            this.updateNextColumns(instance, r, emp.relationshipVillageCode, [ c + 8]);
-            this.updateNextColumns(instance, r, emp.fullName, [ c + 10]);
-            this.updateNextColumns(instance, r, emp.isurranceCode, [ c + 11]);
-            this.updateNextColumns(instance, r, emp.typeBirthday, [ c + 12]);
-            this.updateNextColumns(instance, r, emp.birthday, [ c + 13]);
-            this.updateNextColumns(instance, r, emp.gender, [ c + 14]);
-            this.updateNextColumns(instance, r, emp.nationalityCode, [ c + 15]);
-            this.updateNextColumns(instance, r, emp.peopleCode, [ c + 16]);
-            this.updateNextColumns(instance, r, emp.registerCityCode, [ c + 18]);
-            this.updateNextColumns(instance, r, emp.registerDistrictCode, [ c + 19]);
-            this.updateNextColumns(instance, r, emp.registerWardsCode, [ c + 20]);
-            this.updateNextColumns(instance, r, '00', [23]);
-            this.updateNextColumns(instance, r, emp.identityCar, [c + 22]);
+            this.updateNextColumns(instance, r, emp.relationFamilyNo, [ c + 2]);
+            this.updateNextColumns(instance, r, emp.relationshipMobile, [ c + 3]);
+            this.updateNextColumns(instance, r, emp.relationshipDocumentType, [ c + 4]);
+            this.updateNextColumns(instance, r, emp.relationshipBookNo, [ c + 5]);
+            this.updateNextColumns(instance, r, emp.relationshipCityCode , [ c + 6]);
+            this.updateNextColumns(instance, r, emp.relationshipDistrictCode, [ c + 7]);
+            this.updateNextColumns(instance, r, emp.relationshipWardsCode, [ c + 8]);
+            this.updateNextColumns(instance, r, emp.relationAddress, [ c + 9]);
+            this.updateNextColumns(instance, r, emp.fullName, [ c + 11]);
+            this.updateNextColumns(instance, r, emp.isurranceCode, [ c + 12]);
+            this.updateNextColumns(instance, r, emp.typeBirthday, [ c + 13]);
+            this.updateNextColumns(instance, r, emp.birthday, [ c + 14]);
+            this.updateNextColumns(instance, r, emp.gender, [ c + 15]);
+            this.updateNextColumns(instance, r, emp.nationalityCode, [ c + 16]);
+            this.updateNextColumns(instance, r, emp.peopleCode, [ c + 17]);
+            this.updateNextColumns(instance, r, emp.registerCityCode, [ c + 19]);
+            this.updateNextColumns(instance, r, emp.registerDistrictCode, [ c + 20]);
+            this.updateNextColumns(instance, r, emp.registerWardsCode, [ c + 21]);
+            this.updateNextColumns(instance, r, '00', [42]);
+            this.updateNextColumns(instance, r, emp.identityCar, [c + 23]);
             this.updateSelectedValueDropDown(columns, instance, r);
         });
 
       }else {
         this.updateNextColumns(instance, r, '', [ c + 1 , c + 2, c + 3, c + 4, c + 5, c + 6, c + 7, c + 8,
-          c + 10, c + 11, c + 11,c + 12,c + 13,c + 14,c + 15,c + 16,c + 17,c + 18,c + 19,c + 20, c + 21, c + 22]);
+         c + 11, c + 11,c + 12,c + 13,c + 14,c + 15,c + 16,c + 17,c + 18,c + 19,c + 20, c + 21, c + 23]);
 
         const value = instance.jexcel.getValueFromCoords(1, r);
         const numberColumn = this.tableHeaderColumnsFamilies.length;
         this.updateNextColumns(instance, r,value, [(numberColumn -1)]);
       }
 
-    }
-
-    if (column.key === 'sameAddress') {
+    }  else if (column.key === 'hospitalFirstRegistCode') {
+      const hospitalFirstCode = cell.innerText.split(' - ').shift();
+      if(hospitalFirstCode !== '' && hospitalFirstCode !== undefined)
+      {
+        this.hospitalService.getById(hospitalFirstCode).subscribe(data => {
+          this.updateNextColumns(instance, r,  data.name, [ c + 1 ]);
+        });
+      } else {
+        this.updateNextColumns(instance, r, '', [ c + 1 ]);
+      }
+    } else if (column.key === 'sameAddress') {
       const isSameAddress = instance.jexcel.getValueFromCoords(c, r);
 
       if(isSameAddress === true)
       {
-        this.updateNextColumns(instance, r, instance.jexcel.getValueFromCoords(7, r), [ c + 1]);
-        this.updateNextColumns(instance, r, instance.jexcel.getValueFromCoords(8, r), [ c + 2]);
-        this.updateNextColumns(instance, r, instance.jexcel.getValueFromCoords(9, r), [ c + 3]);
+        this.updateNextColumns(instance, r, instance.jexcel.getValueFromCoords(26, r), [ c + 1]);
+        this.updateNextColumns(instance, r, instance.jexcel.getValueFromCoords(27, r), [ c + 2]);
+        this.updateNextColumns(instance, r, instance.jexcel.getValueFromCoords(28, r), [ c + 3]);
         this.updateSelectedValueDropDown(columns, instance, r);
 
       } else {
@@ -666,6 +699,12 @@ handleChangeDataFamilies({ instance, cell, c, r, records, columns }) {
         this.updateNextColumns(instance, r, '', [ c + 2]);
         this.updateNextColumns(instance, r, '', [ c + 3]);
       }
+    } else if (column.key === 'registerCityCode') {
+      this.updateNextColumns(instance, r, '', [ c + 1, c + 2 ]);
+    } else if (column.key === 'cityCode') {
+      this.updateNextColumns(instance, r, '', [ c + 1, c + 2 ]);
+    } else if (column.key === 'relationshipCityCode') {
+      this.updateNextColumns(instance, r, '', [ c + 1, c + 2 ]);
     }
 
     if (column.willBeValid) {
@@ -770,13 +809,19 @@ handleValidForm(data) {
 }
 
 private setDataToFamilyEditor(records: any)
-  {
-    const currentFamilis = [...this.families]
+{
+    let currentFamilis = [...this.families]
     const families = [];
     const employees = [];
     const employeesId = [];
     const employeesInDeclaration = this.getEmployeeInDeclarations(records);
-    employeesInDeclaration.forEach(emp => {
+    const employeeNotExitsIsurranceNo = employeesInDeclaration.filter(e => !e.isExitsIsurranceNo);
+    const employeeIsExitsIsurranceNo = employeesInDeclaration.filter(e => e.isExitsIsurranceNo);
+    employeeIsExitsIsurranceNo.forEach(emp => {
+      currentFamilis = currentFamilis.filter(fa => fa.employeeId !== emp.employeeId);
+    });
+    
+    employeeNotExitsIsurranceNo.forEach(emp => {
 
       const firstEmployee = currentFamilis.find(f => f.employeeId === emp.employeeId);
       if(!firstEmployee) {
@@ -794,11 +839,23 @@ private setDataToFamilyEditor(records: any)
             families.push(oldEmp);
           });
         }
-
       }
 
     });
 
+    if(currentFamilis.length === 0 && employees.length === 0) {
+      families.push({
+        isMaster: false,
+      });
+      this.families = families;
+      return;
+    }
+
+    if(employees.length === 0) {
+      this.families = families;
+      return;
+    }
+    
     forkJoin(
       employees.map(emp => {
         return this.employeeService.getEmployeeById(emp.employeeId)
@@ -808,8 +865,27 @@ private setDataToFamilyEditor(records: any)
       emps.forEach(ep => {
         const master = this.getMaster(ep.families);
         master.isMaster = ep.isMaster;
+        master.declarationTypeBirthday = ep.typeBirthday;
+        master.declarationBirthday = ep.birthday;
+        master.declarationGender = ep.gender;
+        master.declarationPeopleCode = ep.peopleCode;
+        master.declarationNationalityCode = ep.nationalityCode;
+        master.declarationIdentityCar = ep.identityCar;
+        master.declarationMobile = ep.mobile;
+        master.registerCityCode =  ep.registerCityCode;
+        master.registerDistrictCode = ep.registerDistrictCode;
+        master.registerWardsCode = ep.registerWardsCode;
+        master.recipientsCityCode = ep.recipientsCityCode;
+        master.recipientsDistrictCode =  ep.recipientsDistrictCode;
+        master.recipientsWardsCode = ep.recipientsWardsCode;
+        master.recipientsAddress = ep.recipientsAddress;
+        master.hospitalFirstRegistCode =  ep.hospitalFirstRegistCode;
+        master.hospitalFirstRegistName = ep.hospitalFirstRegistName;
+        master.reason = ep.reason;
+        master.documentAttached = ep.documentAttached;
         master.employeeName = ep.fullName;
         master.employeeId = ep.employeeId;
+        master.relationFamilyNo = ep.relationFamilyNo;
         master.relationshipMobile = ep.relationshipMobile;
         master.relationshipFullName = ep.relationshipFullName;
         master.relationshipBookNo = ep.relationshipBookNo;
@@ -817,10 +893,10 @@ private setDataToFamilyEditor(records: any)
         master.relationshipCityCode = ep.relationshipCityCode;
         master.relationshipDistrictCode = ep.relationshipDistrictCode;
         master.relationshipWardsCode = ep.relationshipWardsCode;
-        master.relationshipVillageCode = ep.relationshipVillageCode;
-        master.relationshipCode = '00';
+        master.relationAddress = ep.relationAddress;
         master.peopleCode = ep.peopleCode,
         master.nationalityCode = ep.nationalityCode,
+        master.relationshipCode = '00';
         master.conditionValid = ep.relationshipFullName ? ep.relationshipFullName : ep.fullName;
         master.origin = {
           employeeId: ep.employeeId,
@@ -828,7 +904,6 @@ private setDataToFamilyEditor(records: any)
           isMaster: true,
         };
         familiesNotExists.push(master);
-
         if(ep.families.length > 1) {
           ep.families.forEach(fa => {
             if(fa.relationshipCode === '00') {
@@ -856,7 +931,6 @@ private setDataToFamilyEditor(records: any)
       familiesNotExists.forEach(d => {
         families.push(d);
       });
-
       families.forEach(p => {
         p.data = this.tableHeaderColumnsFamilies.map(column => {
           if (!column.key || !p[column.key]) return '';
@@ -892,6 +966,61 @@ private setDataToFamilyEditor(records: any)
       return master;
     }
     return {};
+  }
+
+  private getRecipientsWardsByDistrictCode(instance, cell, c, r, source) {
+    const value = instance.jexcel.getValueFromCoords(c - 1, r);
+
+    if (!value) {
+      return [];
+    }
+
+    return this.wardService.getWards(value).toPromise().then(districts => {
+      this.updateSourceToColumn(this.tableHeaderColumnsFamilies,'recipientsWardsCode', districts);
+
+      return districts;
+    });
+  }
+
+  private getRegisterDistrictsByCityCode(instance, cell, c, r, source) {
+    const value = instance.jexcel.getValueFromCoords(c - 1, r);
+
+    if (!value) {
+      return [];
+    }
+
+    return this.districtService.getDistrict(value).toPromise().then(districts => {
+      this.updateSourceToColumn(this.tableHeaderColumnsFamilies,'registerDistrictCode', districts);
+
+      return districts;
+    });
+  }
+
+  private getRecipientsDistrictsByCityCode(instance, cell, c, r, source) {
+    const value = instance.jexcel.getValueFromCoords(c - 1, r);
+
+    if (!value) {
+      return [];
+    }
+
+    return this.districtService.getDistrict(value).toPromise().then(districts => {
+      this.updateSourceToColumn(this.tableHeaderColumnsFamilies, 'recipientsDistrictCode', districts);
+
+      return districts;
+    });
+  }
+
+  private getRegisterWardsByDistrictCode(instance, cell, c, r, source) {
+    const value = instance.jexcel.getValueFromCoords(c - 1, r);
+
+    if (!value) {
+      return [];
+    }
+
+    return this.wardService.getWards(value).toPromise().then(wards => {
+      this.updateSourceToColumn(this.tableHeaderColumnsFamilies,'registerWardsCode', wards);
+      return wards;
+    });
   }
 
   private getRelationShips(instance, cell, c, r, source) {
@@ -1098,10 +1227,9 @@ getDocumentByPlancode(planCode: string) {
 }
 
 
-private setDateToInformationList(records: any)
+private setDataToInformationList(records: any)
 {
-  const declarations = this.tablesToApi(records);
-  const employeesInDeclaration = this.getEmployeeInDeclarations(declarations);
+  const employeesInDeclaration = this.getEmployeeInDeclarations(records);
   const informations = [];
 
   employeesInDeclaration.forEach(emp => {
@@ -1167,7 +1295,6 @@ private setDateToInformationList(records: any)
     });
 
   });
-
 
   this.informations = this.fomatInfomation(informations);
   }

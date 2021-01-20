@@ -3,12 +3,12 @@ export const TABLE_ADJUST_NESTED_HEADERS = [
   [
     { title: 'STT', rowspan: '3' },
     { title: 'Họ và tên', subtitle: 'Nhập chữ thường', rowspan: '3' },
-    { title: 'Đã có sổ BHXH', rowspan: '3' },
+    { title: 'Đã có Mã số BHXH', rowspan: '3' },
     { title: 'Kiểm tra mã số BHXH', colspan: '2' },
     { title: 'Chỉ có năm sinh hoặc tháng/năm', rowspan: '3' },
     { title: 'Ngày, tháng, năm sinh', rowspan: '3' },
     { title: 'Nữ', rowspan: '3' },
-    { title: 'Số CMTNN/Hộ chiếu/Thẻ căn cước', rowspan: '3' }, 
+    { title: 'Số CCCD/CMTND/ Hộ chiếu', rowspan: '3' }, 
     { title: 'Cấp bập, chức vụ, chức danh nghề', rowspan: '3' },
     { title: 'Vị trí làm việc', colspan: '3' },
     { title: 'Ngành/nghề nặng nhọc độc hại', colspan: '2' },
@@ -91,7 +91,7 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   type: 'numeric',
   width: 123,
   title: '(4.1)',
-  key: 'isurranceNo',
+  key: 'isurranceCode',
   fieldName: 'Mã số BHXH',
   warnings: {
     duplicateUserFields: {
@@ -149,7 +149,7 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   width: 100,
   title: '(8)',
   key: 'identityCar',
-  fieldName: 'Số CMND/Hộ chiếu/Thẻ căn cước',
+  fieldName: 'Số CCCD/CMTND/ Hộ chiếu',
   validations: {
     required:true,
     cardId: true,

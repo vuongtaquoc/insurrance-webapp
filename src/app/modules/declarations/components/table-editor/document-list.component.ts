@@ -160,22 +160,15 @@ export class DocumentListTableComponent implements OnInit, OnDestroy, OnChanges,
   private validIsurrance() {
     setTimeout(() => {
         const indexIsExitsIsurranceNo = this.columns.findIndex(c => c.key === 'isExitsIsurranceNo');
-        const indexisurranceNo = this.columns.findIndex(c => c.key === 'isurranceNo');
         const indexIsurranceCode = this.columns.findIndex(c => c.key === 'isurranceCode');
         this.data.forEach((d, y) => {
           const isExitsIsurranceNo =  d.origin.isExitsIsurranceNo;
             if(isExitsIsurranceNo) {
-              const column = this.columns[indexisurranceNo];
+              const column = this.columns[indexIsurranceCode];
               const validIsurranceNo = {
                   required: true,
               }
-              this.spreadsheet.validationCell(y, indexisurranceNo, column.fieldName ? column.fieldName : column.title, validIsurranceNo);
-              const columnIsurranceCode = this.columns[indexIsurranceCode];
-              const validIsurranceCode = {
-                  required: true,
-                  numberLength: 10
-              }
-              this.spreadsheet.validationCell(y, indexIsurranceCode, columnIsurranceCode.fieldName ? columnIsurranceCode.fieldName : columnIsurranceCode.title, validIsurranceCode);
+              this.spreadsheet.validationCell(y, indexIsurranceCode, column.fieldName ? column.fieldName : column.title, validIsurranceNo);
             }
         });
 

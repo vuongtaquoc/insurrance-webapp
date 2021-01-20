@@ -4,7 +4,7 @@ export const TABLE_NESTED_HEADERS = [
   [
     { title: 'STT', rowspan: '3' },
     { title: 'Họ và tên', subtitle: 'Nhập chữ thường', rowspan: '3' },
-    { title: 'Đã có sổ BHXH', rowspan: '3' },
+    { title: 'Đã có mã số BHXH', rowspan: '3' },
     { title: 'Kiểm tra mã số BHXH', colspan: '2' },
     { title: 'Chỉ có năm sinh hoặc tháng/năm', rowspan: '3' },
     { title: 'Ngày, tháng, năm sinh', rowspan: '3' },
@@ -75,7 +75,7 @@ export const TABLE_HEADER_COLUMNS = [{
   align: 'right',
   width: 123,
   title: '(4.1)',
-  key: 'isurranceNo',
+  key: 'isurranceCode',
   fieldName: 'Mã số BHXH',
   validations: {
     required: true,

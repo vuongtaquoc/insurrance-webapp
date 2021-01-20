@@ -25,6 +25,7 @@ export * from './company-change/company-change.component';
 export * from './health-insurance-card/health-insurance-card.component';
 export * from './table-editor/table-editor-normal.component';
 export * from './table-editor/table-editor-header.component';
+export * from './table-editor/increase-tk1.component';
 export * from './reissue-insurance-card/reissue-insurance-card.component';
 export * from './health-recovery-approval/health-recovery-approval.component';
 export * from './maternity-approval/maternity-approval.component';

@@ -125,7 +125,6 @@ export class GeneralBaseComponent {
     const declarationUsers = declarations.filter(d => {
       return d.isLeaf && d.origin && (d.origin.employeeId || d.origin.id) === user.id;
     });
-
     declarationUsers.forEach(declaration => {
       declaration.origin = {
         ...declaration.origin,
@@ -437,14 +436,12 @@ export class GeneralBaseComponent {
         this.updateNextColumns(instance, r, '', [ c + 1, c + 2 ]);
       } else if (column.key === 'isExitsIsurranceNo') {
         const isExitsIsurranceNo = records[r][c];
-        const indexOfIsurranceNo = this.headers[tableName].columns.findIndex(c => c.key === 'isurranceNo')
         const indexOfIsurranceCode = this.headers[tableName].columns.findIndex(c => c.key === 'isurranceCode')
         clearTimeout(this.timer);
         this.timer = setTimeout(() => {
           if (!isExitsIsurranceNo) {
-            this.updateNextColumns(instance, r, '', [ indexOfIsurranceNo, indexOfIsurranceCode ]);
+            this.updateNextColumns(instance, r, '', [ indexOfIsurranceCode ]);
           } else {
-            this.updateNextColumns(instance, r, records[r].origin.isurranceNo, [indexOfIsurranceNo]);
             this.updateNextColumns(instance, r, records[r].origin.isurranceCode, [indexOfIsurranceCode]);
           }
         }, 10);

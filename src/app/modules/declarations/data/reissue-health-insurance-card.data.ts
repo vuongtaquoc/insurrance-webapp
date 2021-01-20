@@ -11,7 +11,7 @@ export const TABLE_NESTED_HEADERS = [
     { title: 'Dân tộc', rowspan: '2' },
     { title: 'Quốc tịch', rowspan: '2' },
     { title: 'Mã số hộ gia đình', rowspan: '2' },
-    { title: 'Số CMND/Hộ chiếu/Thẻ căn cước', rowspan: '2' },
+    { title: 'Số CCCD/CMTND/ Hộ chiếu', rowspan: '2' },
     { title: 'Số điện thoại liên hệ', rowspan: '2' },
 	  { title: 'Email', rowspan: '2' },
     { title: 'Địa chỉ đăng ký giấy khai sinh', subtitle: 'hoặc nguyên quán hoặc HKTT hoặc tạm trú', colspan: '3' },
@@ -153,7 +153,7 @@ export const TABLE_HEADER_COLUMNS = [{
   width: 100,
   title: '(10)',
   key: 'identityCar',
-  fieldName: 'Số CMND/Hộ chiếu/Thẻ căn cước',
+  fieldName: 'Số CCCD/CMTND/ Hộ chiếu',
   validations: {
     required: true,
     cardId: true,

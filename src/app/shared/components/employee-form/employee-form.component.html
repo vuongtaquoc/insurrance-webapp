@@ -296,20 +296,20 @@
                           </div><!-- col -->
                           <div nz-col [nzSpan]="8">
                             <nz-form-item>
-                              <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="15">Số CMT/HC/Thẻ căn cước
+                              <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="15">Số CMND/CCCD/Hộ chiếu
                               </nz-form-label>
                               <nz-form-control [nzSpan]="9" [nzErrorTip]="identityCarTpl">
-                                <input nz-input placeholder="Số CMT/HC/Thẻ căn cước" formControlName="identityCar"
+                                <input nz-input placeholder="Số CMND/CCCD/Hộ chiếu" formControlName="identityCar"
                                   (keyup)="handleUpperCase('identityCar')" />
                                 <ng-template #identityCarTpl let-control>
                                   <ng-container *ngIf="control.hasError('required')">
-                                    Số CMT/HC/Thẻ căn cước không để trống
+                                    Số CMND/CCCD/Hộ chiếu không để trống
                                   </ng-container>
                                   <ng-container *ngIf="control.hasError('maxlength')">
-                                    Số CMT/HC/Thẻ căn cước chỉ được tối đa 15 ký tự
+                                    Số CMND/CCCD/Hộ chiếu chỉ được tối đa 15 ký tự
                                   </ng-container>
                                   <ng-container *ngIf="control.hasError('cardId')">
-                                    Số CMT/HC/Thẻ căn cước không đúng định dạng
+                                    SSố CMND/CCCD/Hộ chiếu không đúng định dạng
                                   </ng-container>
                                 </ng-template>
                               </nz-form-control>
@@ -980,7 +980,7 @@
     <div class="employee-form__footer" *nzModalFooter>
       <button class="employee-form__button-export" *ngIf="(employee.id) && !isSpinning" nz-button nzType="primary"
         (click)="download()">
-        Xuất KT1-TS
+        Xuất TK1-TS
       </button>
       <button class="employee-form__button-save" nz-button nzType="primary" (click)="save()">
         <i nz-icon nzType="save"></i>Lưu

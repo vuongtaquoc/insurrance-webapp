@@ -2,7 +2,7 @@ export const TABLE_ARREARS_NESTED_HEADERS = [
   [
     { title: 'STT', rowspan: '3' },
     { title: 'Họ và tên', subtitle: 'Nhập chữ thường', rowspan: '3' },
-    { title: 'Đã có sổ BHXH', rowspan: '3' },
+    { title: 'Đã có mã số BHXH', rowspan: '3' },
     { title: 'Số sổ BHXH', rowspan: '3' },
     { title: 'Kiểm tra mã số BHXH', colspan: '2' },
     { title: 'Chỉ có năm sinh hoặc tháng/năm', rowspan: '3' },

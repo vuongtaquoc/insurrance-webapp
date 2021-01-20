@@ -2,7 +2,6 @@ export const TABLE_DOCUMENT_NESTED_HEADERS = [
   [
     { title: 'STT'},
     { title: 'Họ và tên' },
-    { title: 'Số sổ BHXH' },
     { title: 'Mã sổ BHXH' },
     { title: 'Tên, loại văn bản'},
     { title: 'Số hiệu văn bản'},
@@ -31,19 +30,12 @@ export const TABLE_DOCUMENT_HEADER_COLUMNS = [{
   type: 'text',
   width: 100,
   title: '(3)',
-  key: 'isurranceNo',
-  fieldName: 'Số sổ bảo hiểm'
-  
-}, {
-  type: 'text',
-  width: 100,
-  title: '(4)',
   key: 'isurranceCode',
   fieldName: 'Mã số BHXH',
   }, {
   type: 'text',
   width: 150,
-  title: '(5)',
+  title: '(4)',
   wordWrap: true,
   key: 'documentType',
   fieldName: 'Loại văn bản',
@@ -53,7 +45,7 @@ export const TABLE_DOCUMENT_HEADER_COLUMNS = [{
 }, {
   type: 'text',
   width: 120,
-  title: '(6)',
+  title: '(5)',
   align: 'left',
   key: 'documentNo',
   fieldName: 'Số hiểu văn bản',
@@ -63,7 +55,7 @@ export const TABLE_DOCUMENT_HEADER_COLUMNS = [{
 }, {
   type: 'text',
   width: 100,
-  title: '(7)',
+  title: '(6)',
   align: 'left',
   key: 'dateRelease',
   fieldName: 'Ngày ban hành',
@@ -73,7 +65,7 @@ export const TABLE_DOCUMENT_HEADER_COLUMNS = [{
 }, {
   type: 'text',
   width:110,
-  title: '(8)',
+  title: '(7)',
   align: 'left',
   key: 'dateEffective',
   fieldName: 'Ngày văn bản có hiệu lực',
@@ -84,7 +76,7 @@ export const TABLE_DOCUMENT_HEADER_COLUMNS = [{
   type: 'text',
   width: 240,
   wordWrap: true,
-  title: '(9)',
+  title: '(8)',
   align: 'left',
   key: 'companyRelease',
   fieldName: 'Cơ quan ban hành văn bản',
@@ -94,7 +86,7 @@ export const TABLE_DOCUMENT_HEADER_COLUMNS = [{
 }, {
   type: 'text',
   width: 200,
-  title: '(10)',
+  title: '(9)',
   align: 'left',
   wordWrap: true,
   fieldName: 'Trích yếu văn bản',
@@ -105,7 +97,7 @@ export const TABLE_DOCUMENT_HEADER_COLUMNS = [{
 }, {
   type: 'text',
   width: 260,
-  title: '(11)',
+  title: '(10)',
   fieldName: 'Trích lược nội dung cần thẩm định',
   wordWrap: true,
   align: 'left',

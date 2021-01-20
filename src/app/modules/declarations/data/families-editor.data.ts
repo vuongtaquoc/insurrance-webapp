@@ -9,7 +9,7 @@ export const TABLE_FAMILIES_NESTED_HEADERS = [
   [
     { title: 'Chủ hộ', rowspan: '2' },
     { title: 'Mã số hộ gia đình', rowspan: '2' },
-    { title: 'Số điện thoại (nếu có)', rowspan: '2' },
+    { title: 'Số điện thoại', rowspan: '2' },
     { title: 'Loại giấy tờ', rowspan: '2' },
     { title: 'Số sổ hộ khẩu (hoặc số tạm trú)', rowspan: '2' },
     { title: 'Địa chỉ số hộ khẩu(hoặc sổ tạm trú)', colspan: '4' },

@@ -836,10 +836,10 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
       }
     } else if (column.key === 'salary') { 
       const ratio = this.spreadsheet.getValueFromCoords(Number(cell) + 1, y);
-      if(ratio === 0) {
+      if(Number(ratio) === 0) {
         const validationColumn = this.columns[Number(cell)];
         validationColumn.validations = {
-          min: this.salaryAreas.salaray,
+          min: Number(this.salaryAreas.salaray),
          };
          validationColumn.fieldName = 'Tiền lương';
         instance.jexcel.validationCell(y, cell, validationColumn.fieldName, validationColumn.validations);
@@ -847,14 +847,14 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
     } else if (column.key === 'ratio') { 
       const ratio = this.spreadsheet.getValueFromCoords(Number(cell), y);
       const validationColumn = this.columns[Number(cell) - 1];
-      if(ratio > 0) {
+      if(Number(ratio) > 0) {
         validationColumn.validations = {
             required: true,
             number: true
         };       
       } else {
         validationColumn.validations = {
-          min: this.salaryAreas.salaray,
+          min: Number(this.salaryAreas.salaray),
          };
       }
       validationColumn.fieldName = 'Tiền lương';
@@ -871,18 +871,18 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
   private validIsurrance() {
     setTimeout(() => {
         const indexIsExitsIsurranceNo = this.columns.findIndex(c => c.key === 'isExitsIsurranceNo');
-        const indexisurranceNo = this.columns.findIndex(c => c.key === 'isurranceNo');
+        const indexisurranceCode = this.columns.findIndex(c => c.key === 'isurranceCode');
          
         this.data.forEach((d, y) => {
           const isRequiredIsurranceNo = d.data.options.isRequiredIsurranceNo;
           const isExitsIsurranceNo =  d.data[indexIsExitsIsurranceNo];
             if(!isExitsIsurranceNo && !isRequiredIsurranceNo) {
-              const column = this.columns[indexisurranceNo];
+              const column = this.columns[indexisurranceCode];
               const validIsurranceNo = {
                 ...column.validations                
               }
               validIsurranceNo.required = false;
-              this.spreadsheet.validationCell(y, indexisurranceNo, column.fieldName ? column.fieldName : column.title, validIsurranceNo);
+              this.spreadsheet.validationCell(y, indexisurranceCode, column.fieldName ? column.fieldName : column.title, validIsurranceNo);
             }
         });
 

@@ -10,7 +10,7 @@ export const TABLE_FAMILIES_NESTED_HEADERS = [
     { title: 'Dân tộc', rowspan: 2 },
     { title: 'Nơi cấp giấy khai sinh', subtitle: 'hoặc nguyên quán hoặc HKTT hoặc tạm trú', colspan: 3 },
     { title: 'Mối quan hệ với chủ hộ', rowspan: 2 },
-    { title: 'Số CMND/Hộ chiếu/Thẻ căn cước', rowspan: 2 },
+    { title: 'Số CCCD/CMTND/ Hộ chiếu', rowspan: 2 },
     { title: 'Ghi chú', rowspan: 2 }
   ],
   [

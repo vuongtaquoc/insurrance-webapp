@@ -9,7 +9,7 @@ import { DeclarationService, CategoryService, BankService,
 import { GeneralNormalBaseComponent } from '@app/modules/declarations/components/reissue-health-insurance-card/base.component';
 
 import { TABLE_HEADER_COLUMNS, TABLE_NESTED_HEADERS } from '@app/modules/declarations/data/reissue-health-insurance-card.data';
-import { Subject, forkJoin } from 'rxjs';
+import { Subject, forkJoin, Subscription } from 'rxjs';
 import { eventEmitter } from '@app/shared/utils/event-emitter';
 
 @Component({

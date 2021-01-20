@@ -344,7 +344,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
 
   getData() {
     const formData = {
-      ...this.employeeForm.value,
+      ...this.employeeForm.getRawValue(),
       birthday: getBirthDay(this.employeeForm.value.birthday, this.birthTypeOnlyYear, this.birthTypeOnlyYearMonth).format,
       dateSign: this.dateSign,
       contractTypeFromDate: this.contractTypeFromDate,

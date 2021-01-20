@@ -4,7 +4,7 @@ export const TABLE_NESTED_HEADERS_PART_1 = [
     { title: 'STT', rowspan: 2 },
     { title: 'Họ và tên', rowspan: 2 },
     { title: 'Mã số BHXH/ Số sổ BHXH', rowspan: 2 },
-    { title: 'Số CMND/Hộ chiếu/Thẻ căn cước', rowspan: 2 },
+    { title: 'Số CCCD/CMTND/ Hộ chiếu', rowspan: 2 },
     { title: 'Mã nhân viên', rowspan: 2 },
     { title: 'Ngày quay trở lại làm việc tại đơn vị', rowspan: 2 },
     { title: 'Số Seri', rowspan: 2 },
@@ -61,7 +61,7 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   width: 135,
   title: '(2)',
   key: 'identityCar',
-  fieldName: 'Số CMND/Hộ chiếu/Thẻ căn cước',
+  fieldName: 'Số CCCD/CMTND/ Hộ chiếu',
   validations: {
     cardId: true,
     duplicate: true
@@ -214,7 +214,7 @@ export const TABLE_NESTED_HEADERS_PART_2 = [
     { title: 'STT', rowspan: 3 },
     { title: 'Họ và tên', rowspan: 3 },
     { title: 'Mã số BHXH/ Số sổ BHXH', rowspan: 3 },
-    { title: 'Số CMND/Hộ chiếu/Thẻ căn cước', rowspan: 3 },
+    { title: 'Số CCCD/CMTND/ Hộ chiếu', rowspan: 3 },
     { title: 'Mã nhân viên', rowspan: 3 },
     { title: 'Số ngày đề nghị hưởng chế độ tại đơn vị', colspan: 3 },
     { title: 'Hồ sơ đã giải quyết', colspan: 3 },
@@ -267,7 +267,7 @@ export const TABLE_HEADER_COLUMNS_PART_2 = [{
   width: 135,
   title: '(2)',
   key: 'identityCar',
-  fieldName: 'Số CMND/Hộ chiếu/Thẻ căn cước',
+  fieldName: 'Số CCCD/CMTND/ Hộ chiếu',
   validations: {
     cardId: true,
     duplicate: true

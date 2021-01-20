@@ -4,12 +4,12 @@ export const TABLE_NESTED_HEADERS = [
   [
     { title: 'STT', rowspan: '3' },
     { title: 'Họ và tên', subtitle: 'Nhập chữ thường', rowspan: '3' },
-    { title: 'Đã có sổ BHXH', rowspan: '3' },
+    { title: 'Đã có mã số BHXH', rowspan: '3' },
     { title: 'Kiểm tra mã số BHXH', colspan: '2' },
     { title: 'Chỉ có năm sinh hoặc tháng/năm', rowspan: '3' },
     { title: 'Ngày, tháng, năm sinh', rowspan: '3' },
     { title: 'Nữ', rowspan: '3' },
-    { title: 'Số CMND/Hộ chiếu/Thẻ căn cước', rowspan: '3' },
+    { title: 'Số CCCD/CMTND/ Hộ chiếu', rowspan: '3' },
     { title: 'Cấp bập, chức vụ, chức danh nghề', rowspan: '3' },
     { title: 'Vị trí làm việc', colspan: '3' },
     { title: 'Tiền lương', colspan: '7' },
@@ -63,10 +63,10 @@ export const TABLE_HEADER_COLUMNS = [{
   fieldName: 'Họ và tên',
   key: 'fullName',
   warnings: {
-    duplicateUserFields: {
-      primary: 'fullName',
-      check: ['employeeId']
-    },
+    // duplicateUserFields: {
+    //   primary: 'fullName',
+    //   check: ['employeeId']
+    // },
   },
   validations: {
     required: true,
@@ -82,14 +82,14 @@ export const TABLE_HEADER_COLUMNS = [{
   align: 'right',
   width: 123,
   title: '(4.1)',
-  key: 'isurranceNo',
+  key: 'isurranceCode',
   fieldName: 'Mã số BHXH',
-  warnings: {
-    duplicateUserFields: {
-      primary: 'isurranceCode',
-      check: ['employeeId']
-    },
-  },
+  // warnings: {
+  //   duplicateUserFields: {
+  //     primary: 'isurranceCode',
+  //     check: ['employeeId']
+  //   },
+  // },
   validations: {
     required: true,
     duplicate: true   
@@ -108,10 +108,10 @@ export const TABLE_HEADER_COLUMNS = [{
   source: [ { id: '0', name: 'Ngày tháng năm' },{ id: '1', name: 'tháng/năm' }, { id: '2', name: 'năm' } ],
   key: 'typeBirthday',
   warnings: {
-    duplicateUserFields: {
-      primary: 'typeBirthday',
-      check: ['fullName']
-    }
+    // duplicateUserFields: {
+    //   primary: 'typeBirthday',
+    //   check: ['fullName']
+    // }
   }
 }, {
   type: 'text',
@@ -135,7 +135,7 @@ export const TABLE_HEADER_COLUMNS = [{
   width: 100,
   title: '(8)',
   key: 'identityCar',
-  fieldName: 'Số CMND/Hộ chiếu/Thẻ căn cước',
+  fieldName: 'Số CCCD/CMTND/ Hộ chiếu',
   validations: {
     required: true,
     cardId: true,

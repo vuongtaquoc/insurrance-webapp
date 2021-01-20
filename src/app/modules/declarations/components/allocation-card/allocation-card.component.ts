@@ -820,14 +820,12 @@ export class AllocationCardComponent implements OnInit, OnDestroy {
 
         const isExitsIsurranceNo = records[r][c];
         const indexOfIsurranceNo = this.tableHeaderColumns.findIndex(c => c.key === 'isurranceNo');
-        const indexOfIsurranceCode = this.tableHeaderColumns.findIndex(c => c.key === 'isurranceCode');
         clearTimeout(this.timer);
         this.timer = setTimeout(() => {
           if (!isExitsIsurranceNo) {
-           this.updateNextColumns(instance, r, '', [ indexOfIsurranceNo, indexOfIsurranceCode ]);
+           this.updateNextColumns(instance, r, '', [ indexOfIsurranceNo ]);
           } else {
             this.updateNextColumns(instance, r, records[r].origin.isurranceNo, [indexOfIsurranceNo]);
-            this.updateNextColumns(instance, r, records[r].origin.isurranceCode, [indexOfIsurranceCode]);
           }
         }, 10);
 

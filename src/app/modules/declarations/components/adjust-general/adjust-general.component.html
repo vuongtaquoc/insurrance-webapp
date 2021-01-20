@@ -120,14 +120,14 @@
         <nz-tab [nzTitle]="tabFamily" [nzDisabled]="!families || !families.length">
           <ng-template #tabFamily>
             <div class="page-adjust-general__tab-title" [ngClass]="{'page-adjust-general__tab-title--error': tableSubmitErrors.family601 > 0}">
-              PL TVHD-NLD
+              TK1-TS
             </div>
           </ng-template>
           <div class="page-document-list__container page-document-list__container--note">
             <h1>{{declarationCode}} | {{declarationName}}</h1>
             <h2>PHỤ LỤC THÀNH VIÊN GIA ĐÌNH</h2>
             <div class="document-form__process-table">
-              <app-families-list-table
+              <app-increase-tk1-table
                 tableName="family"
                 [tableEvent]="eventValidData"
                 [data]="families"
@@ -137,14 +137,14 @@
                 (onChange)="handleChangeDataFamilies($event)"
                 (onDelete)="handleDeleteMember($event)"
                 (onAddRow)="handleAddMember($event)"
-              ></app-families-list-table>
+              ></app-increase-tk1-table>
             </div>
           </div>
         </nz-tab><!-- tab 4-->
         <nz-tab [nzTitle]="tabDocumentList" [nzDisabled]="!informations || !informations.length">
           <ng-template #tabDocumentList>
             <div class="page-adjust-general__tab-title" [ngClass]="{'page-adjust-general__tab-title--error': tableSubmitErrors.documentList601 > 0}">
-              Bảng kê thông tin (Mẫu D01-TS)
+              D01-TS
             </div>
           </ng-template>
           <div class="page-document-list__container">
