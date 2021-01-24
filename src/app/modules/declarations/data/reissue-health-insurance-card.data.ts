@@ -291,7 +291,7 @@ export const TABLE_HEADER_COLUMNS = [{
   title: '(16)',
   wordWrap: true,
   fieldName:'Nội dung thay đổi',
-  key: 'reason',
+  key: 'note',
   validations: {
     required:true,
   }
@@ -299,7 +299,7 @@ export const TABLE_HEADER_COLUMNS = [{
 {
   type: 'text',
   width: 250,
-  title: '(16)',
+  title: '(17)',
   wordWrap: true,
   fieldName:'Tài liệu đính kèm',
   key: 'documentAttached'

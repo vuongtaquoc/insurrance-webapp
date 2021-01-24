@@ -633,7 +633,7 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
         validationColumn.fieldName = 'Từ tháng, năm';
         instance.jexcel.validationCell(y, Number(cell) - 1, validationColumn.fieldName, validationColumn.validations);
       }
-    }else if (column.key === 'contractTypeFromDate') {
+    } else if (column.key === 'contractTypeFromDate') {
       const toDateValue = this.spreadsheet.getValueFromCoords(Number(cell) + 1, y);
       const validationColumn = this.columns[cell];
 
@@ -836,30 +836,16 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
       }
     } else if (column.key === 'salary') { 
       const ratio = this.spreadsheet.getValueFromCoords(Number(cell) + 1, y);
-      if(Number(ratio) === 0) {
-        const validationColumn = this.columns[Number(cell)];
+      const validationColumn = this.columns[Number(cell)];
+      delete validationColumn.validations.min;
+      if (Number(cellValue) > 0) {
         validationColumn.validations = {
           min: Number(this.salaryAreas.salaray),
-         };
-         validationColumn.fieldName = 'Tiền lương';
-        instance.jexcel.validationCell(y, cell, validationColumn.fieldName, validationColumn.validations);
-      }
-    } else if (column.key === 'ratio') { 
-      const ratio = this.spreadsheet.getValueFromCoords(Number(cell), y);
-      const validationColumn = this.columns[Number(cell) - 1];
-      if(Number(ratio) > 0) {
-        validationColumn.validations = {
-            required: true,
-            number: true
-        };       
-      } else {
-        validationColumn.validations = {
-          min: Number(this.salaryAreas.salaray),
-         };
+         };         
       }
       validationColumn.fieldName = 'Tiền lương';
-      instance.jexcel.validationCell(y, Number(cell) - 1, validationColumn.fieldName, validationColumn.validations);
-    }
+      instance.jexcel.validationCell(y, cell, validationColumn.fieldName, validationColumn.validations);
+    }  
     this.handleEvent({
       type: 'validate',
       part: '',

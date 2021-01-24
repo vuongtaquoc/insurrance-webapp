@@ -32,6 +32,70 @@ export const validationColumnsHeader: any = {
   }
 }
 
+export const validationColumnsPlanCodeBHYT: any = {
+  'TM': {
+    note: {
+      message: 'Đóng mới BHXH từ {0}', 
+      argsColumn: ['fromDate']    
+    }
+  },'DL': {
+    note: {
+      message: 'Đóng lại BHXH từ {0}', 
+      argsColumn: ['fromDate']    
+    }
+  },'DT': {
+    note: {
+      message: 'Đóng tiếp BHXH từ {0}', 
+      argsColumn: ['fromDate']    
+    }
+  },'DC': {
+    note: {
+      message: 'Điều chỉnh BHXH từ {0}', 
+      argsColumn: ['fromDate']    
+    }
+  },'GB': {
+    note: {
+      message: 'Điều chỉnh BHXH từ {0}', 
+      argsColumn: ['fromDate']    
+    }
+  },'GD': {
+    note: {
+      message: 'Điều chỉnh BHXH từ {0}', 
+      argsColumn: ['fromDate']    
+    }
+  },'GH': {
+    note: {
+      message: 'Điều chỉnh BHXH từ {0}', 
+      argsColumn: ['fromDate']    
+    }
+  }
+ }
+export const RatioFamily: any = {
+  1 : {
+    percent: 100,
+    ratio: 20
+  },
+  2 : {
+    percent: 70,
+    ratio: 20
+  },
+  3 : {
+    percent: 60,
+    ratio: 20
+  },
+  4 : {
+    percent: 50,
+    ratio: 20
+  },
+  5 : {
+    percent: 40,
+    ratio: 20
+  },
+  0 : {
+    percent: 40,
+    ratio: 20
+  }
+}
 
 export const validationColumnsPlanCode: any = {
   'GH1': {

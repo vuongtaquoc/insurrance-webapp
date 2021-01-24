@@ -107,6 +107,7 @@ import {
 
 import {
   TableEditorComponent,
+  RegisterAllocationEditorComponent,
   TableEditorNormalComponent,
   TableEditorHeaderComponent,
   DocumentListTableComponent,
@@ -188,6 +189,7 @@ import { RegimeAutoSizeDirective } from './directives';
     ReductionLaborAddComponent,
     ReductionLaborEditComponent,
     TableEditorComponent,
+    RegisterAllocationEditorComponent,
     TableEditorNormalComponent,
     TableEditorHeaderComponent,
     DocumentListTableComponent,

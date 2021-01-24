@@ -161,7 +161,7 @@
                 </form>
               </div><!-- page-declarations__title -->
               <div class="page-declarations__editor">
-                <app-table-editor 
+                <app-register-allocation-editor 
                   tableName="allocationCard" 
                   [nestedHeaders]="tableNestedHeaders"
                   [columns]="tableHeaderColumns" 
@@ -174,7 +174,7 @@
                   (onAddRow)="handleAddRow($event)" 
                   (onFocus)="handleFocus($event)" 
                   (onSort)="handleSort($event)">
-                </app-table-editor>
+                </app-register-allocation-editor>
               </div><!-- page-declarations__editor -->
               <div class="sumCar">
                   <form nz-form [formGroup]="declarationGeneral">

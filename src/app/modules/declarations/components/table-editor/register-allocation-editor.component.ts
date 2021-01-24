@@ -12,12 +12,12 @@ import { eventEmitter } from '@app/shared/utils/event-emitter';
 import { DATE_FORMAT } from '@app/shared/constant';
 
 @Component({
-  selector: 'app-table-editor',
+  selector: 'app-register-allocation-editor',
   templateUrl: './table-editor.component.html',
   styleUrls: ['./table-editor.component.less'],
   encapsulation: ViewEncapsulation.None
 })
-export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, OnChanges {
+export class RegisterAllocationEditorComponent implements AfterViewInit, OnInit, OnDestroy, OnChanges {
   @ViewChild('spreadsheet', { static: true }) spreadsheetEl;
   @Input() data: any[] = [];
   @Input() columns: any[] = [];
@@ -150,14 +150,6 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
         }
         this.validIsurrance();
         this.validationCellByOtherCell(value, column, r, instance, c);
-        const isLeaf = this.data[r].origin.isLeaf  || this.data[r].isLeaf;       
-        if(isLeaf) {
-          clearTimeout(this.validateTimer);
-          this.validateTimer = setTimeout(() => {
-            this.validRatio(this.spreadsheet.getJson()[r], r);
-          }, 10);
-        }
-         
       },
       ondeleterow: (el, rowNumber, numOfRows) => {
         this.onDelete.emit({
@@ -286,7 +278,7 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
         }
       });
     });
-    this.setWarningRatioWhenAddEmployee(data);
+
     this.setReadOnlyByData(data);
     this.validIsurrance();
  }
@@ -672,57 +664,6 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
           user: {}
         });
     }, 10);
-  }
-
-  private setWarningRatioWhenAddEmployee(data: any) {
-    clearTimeout(this.validateTimer);
-    this.validateTimer = setTimeout(() => {
-      data.forEach((row, rowIndex) => {
-        const isLeaf = row.origin.isLeaf  || row.options.isLeaf;       
-        if(!isLeaf) return;
-        this.validRatio(row, rowIndex);
-      });
-    }, 10);
-
-  }
-
-  private validRatio(data: any, rowIndex) {
-    const indexOfEmployeeId = this.columns.findIndex(c => c.key === 'employeeId');
-    const employeeId = data[indexOfEmployeeId];
-    if (Number(employeeId)===0) return;
-    const indexOfColumnTyleNSNN = this.columns.findIndex(c => c.key === 'tyleNSNN');
-    const indexOfColumnTyleNSDP = this.columns.findIndex(c => c.key === 'tyleNSDP');
-    const indexOfColumnTyleTCCNHTK = this.columns.findIndex(c => c.key === 'tyleTCCNHTK');
-
-    const indexOfPlayerClose = this.columns.findIndex(c => c.key === 'playerClose');
-    const indexOfMoneyPayment = this.columns.findIndex(c => c.key === 'moneyPayment');
-
-    const tyleNSNN = data[indexOfColumnTyleNSNN];
-    const TyleNSNNCanUse = [0,10,25,30];
-    const ratioNew = data[indexOfColumnTyleNSDP];
-    const tyleTCCNHTK = data[indexOfColumnTyleTCCNHTK];
-    const totalRatio = Number(tyleNSNN) + Number(ratioNew) +  Number(tyleTCCNHTK);
-
-
-    if (totalRatio > 100) {
-      const fieldName = {
-        name: 'Tỷ lệ hỗ trợ',
-        otherName:'Tỷ lệ hỗ trợ'
-      };      
-      const messageError = 'Tổng mức tỷ lệ hộ trợ mức đóng phải nhỏ hơn 100%';
-      this.spreadsheet.setCellError(fieldName, indexOfColumnTyleNSDP, rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true, messageError);
-      this.spreadsheet.setCellError(fieldName, indexOfColumnTyleTCCNHTK, rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true, messageError);
-    }
-
-    if(!TyleNSNNCanUse.includes(Number(tyleNSNN))) {
-      const fieldName = {
-        name: 'Tỷ lệ hỗ trợ',
-        otherName:'Tỷ lệ hỗ trợ'
-      };      
-      const messageError = 'Tỷ lệ Ngân sách nhà nước hỗ trợ chỉ hỗ trợ 10%,25%,30%';
-      this.spreadsheet.setCellError(fieldName, indexOfColumnTyleNSNN, rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true, messageError);
-    }
-
   }
 
   private setReadOnlyByData(data: any) {

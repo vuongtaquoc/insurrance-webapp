@@ -281,7 +281,7 @@ export const TABLE_HEADER_COLUMNS = [{
   width: 180,
   title: '(15)',
   wordWrap: true,
-  key: 'reason'
+  key: 'note'
 }, {
   type: 'text',
   width: 180,

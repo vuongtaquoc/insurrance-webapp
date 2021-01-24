@@ -5,16 +5,16 @@ export const TABLE_NESTED_HEADERS = [
     { title: 'STT', rowspan: '3' },
     { title: 'Họ và tên', subtitle: 'Nhập chữ thường', rowspan: '3' },
     { title: 'Đã có mã số BHXH', rowspan: '3' },
-    { title: 'Kiểm tra mã số BHXH', colspan: '2' },
-    { title: 'Chỉ có năm sinh hoặc tháng/năm', rowspan: '3' },
-    { title: 'Ngày, tháng, năm sinh', rowspan: '3' },
-    { title: 'Nữ', rowspan: '3' },
+    { title: 'Kiểm tra mã số BHXH', colspan: '2' },   
     { title: 'Địa chỉ', subtitle: 'nơi sinh sống', colspan: '4', rowspan: '2' },
     { title: 'Mực thu nhập tháng đóng BHXH', rowspan: '3' },
     { title: 'Phương án', rowspan: '3' },
     { title: 'Phương thức đóng', colspan: '3', rowspan: '2' },
-    { title: 'Số tền đóng', colspan: '8'},
+    { title: 'Số tiền đóng', colspan: '8'},
     { title: 'Ghi chú', rowspan: '3' },
+    { title: 'Chỉ có năm sinh hoặc tháng/năm', rowspan: '3' },
+    { title: 'Ngày, tháng, năm sinh', rowspan: '3' },
+    { title: 'Nữ', rowspan: '3' },
   ],
   [
     { title: 'Mã số BHXH', rowspan: '2' },
@@ -88,39 +88,11 @@ export const TABLE_HEADER_COLUMNS = [{
   title: '(4.2)',
   wordWrap: true,
   readOnly:true,
-}, {
-  type: 'dropdown',
-  width: 70,
-  title: '(5)',
-  source: [ { id: '0', name: 'Ngày tháng năm' },{ id: '1', name: 'tháng/năm' }, { id: '2', name: 'năm' } ],
-  key: 'typeBirthday',
-  warnings: {
-    duplicateUserFields: {
-      primary: 'typeBirthday',
-      check: ['fullName']
-    }
-  }
-}, {
-  type: 'text',
-  width: 80,
-  title: '(6)',
-  fieldName: 'Ngày tháng năm sinh',
-  key: 'birthday',
-  validations: {
-    required: true,
-    lessThanNow: true
-  }
-}, {
-  type: 'checkbox',
-  width: 35,
-  title: '(7)',
-  align: 'center',
-  key: 'gender'
-}, {
+},  {
   type: 'dropdown',
   autocomplete: true,
   width: 145,
-  title: '(8.1)',
+  title: '(5.1)',
   align: 'left',
   source: [ 'Chọn' ],
   key: 'recipientsCityCode',
@@ -132,7 +104,7 @@ export const TABLE_HEADER_COLUMNS = [{
   type: 'dropdown',
   autocomplete: true,
   width: 145,
-  title: '(8.2)',
+  title: '(5.2)',
   align: 'left',
   source: [ ],
   key: 'recipientsDistrictCode',
@@ -145,7 +117,7 @@ export const TABLE_HEADER_COLUMNS = [{
   type: 'dropdown',
   autocomplete: true,
   width: 175,
-  title: '(8.3)',
+  title: '(5.3)',
   align: 'left',
   source: [],
   key: 'recipientsWardsCode',
@@ -157,7 +129,7 @@ export const TABLE_HEADER_COLUMNS = [{
 }, {
   type: 'text',
   width: 165,
-  title: '(8.4)',
+  title: '(5.4)',
   align: 'left',
   wordWrap: true,
   key: 'recipientsAddress'
@@ -165,7 +137,7 @@ export const TABLE_HEADER_COLUMNS = [{
 {
   type: 'numeric',
   width: 120,
-  title: '(16)',
+  title: '(6)',
   align: 'right',
   mask: '#,##0',
   fieldName: 'Mức thu nhập tháng đóng BHXH',
@@ -182,7 +154,7 @@ export const TABLE_HEADER_COLUMNS = [{
   type: 'dropdown',
   autocomplete: true,
   width: 50,
-  title: '(17)',
+  title: '(7)',
   source: [ ],
   key: 'planCode',
   fieldName: 'Phương án',
@@ -193,7 +165,7 @@ export const TABLE_HEADER_COLUMNS = [{
   type: 'dropdown',
   autocomplete: true,
   width: 150,
-  title: '(18.1)',
+  title: '(8.1)',
   align: 'left',
   wordWrap: true,
   source: [ ],
@@ -202,7 +174,7 @@ export const TABLE_HEADER_COLUMNS = [{
   type: 'numeric',
   align: 'right',
   width: 80,
-  title: '(18.2)',
+  title: '(8.2)',
   key: 'numberMonthJoin',
   fieldName: 'Số tháng đóng',
   validations: {
@@ -333,10 +305,10 @@ export const TABLE_HEADER_COLUMNS = [{
   mask: '#,##0',
   fieldName: 'Người tham gia đóng',
   sum: true,
-  readOnly: true,
   key: 'playerClose',
   validations: {
-    number: true
+    number: true,
+    min: 0,
   },
   format: (value) => {
     return format.currency(value);
@@ -347,6 +319,34 @@ export const TABLE_HEADER_COLUMNS = [{
   title: '(20)',
   wordWrap: true,
   key: 'reason'
+},{
+  type: 'dropdown',
+  width: 70,
+  title: '(5)',
+  source: [ { id: '0', name: 'Ngày tháng năm' },{ id: '1', name: 'tháng/năm' }, { id: '2', name: 'năm' } ],
+  key: 'typeBirthday',
+  warnings: {
+    duplicateUserFields: {
+      primary: 'typeBirthday',
+      check: ['fullName']
+    }
+  }
+}, {
+  type: 'text',
+  width: 80,
+  title: '(6)',
+  fieldName: 'Ngày tháng năm sinh',
+  key: 'birthday',
+  validations: {
+    required: true,
+    lessThanNow: true
+  }
+}, {
+  type: 'checkbox',
+  width: 35,
+  title: '(7)',
+  align: 'center',
+  key: 'gender'
 },{
   type: 'hidden',
   width: 140,

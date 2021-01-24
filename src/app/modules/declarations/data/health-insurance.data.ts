@@ -283,7 +283,7 @@ export const TABLE_HEADER_COLUMNS = [{
   validations: {
     required: true,
   },
-  key: 'reason'
+  key: 'note'
 }, {
   type: 'text',
   width: 180,

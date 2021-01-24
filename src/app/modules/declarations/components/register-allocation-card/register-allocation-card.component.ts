@@ -7,7 +7,7 @@ import findIndex from 'lodash/findIndex';
 import * as jexcel from 'jstable-editor/dist/jexcel.js';
 import * as moment from 'moment';
 import * as _ from 'lodash';
-import { validationColumnsPlanCode } from '@app/shared/constant-valid';
+import { validationColumnsPlanCode, RatioFamily } from '@app/shared/constant-valid';
 import { PLANCODECOUNTBHYT } from '@app/shared/constant-valid';
 
 import { Declaration, DocumentList } from '@app/core/models';
@@ -106,6 +106,7 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
   status: any;
   timer: any;
   ratioPayment = 0;
+  calculationType = 0;
   tyleTGBHYT = 0;
   salaryBase = 0;
   tyleNSNN = 0;
@@ -153,6 +154,8 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
   ngOnInit() {
     const date = new Date();
     this.currentCredentials = this.authenticationService.currentCredentials;
+    this.calculationType = this.currentCredentials.companyInfo.calculationType;
+    this.setColumnByCalculationType();
     this.loadAppConfig();
     this.loadDeclarationConfig();
     this.form = this.formBuilder.group({
@@ -810,15 +813,21 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
       } else if (column.key === 'recipientsCityCode') {
         this.updateNextColumns(instance, r, '', [ c + 1, c + 2, c + 3 ]);
       } else if( column.key === 'numberMonthJoin') {
-
-        this.calculatorSalary(instance, cell, c, r, records);
-
+        
+        if (this.calculationType === 1) {
+          this.calculatorSalaryOption1(instance, cell, c, r, records);
+        } else {
+          this.calculatorSalaryOption2(instance, cell, c, r, records);
+        }
       } else if( column.key === 'salary') {
 
-        this.calculatorSalary(instance, cell, c, r, records);
+        if (this.calculationType === 1) {
+          this.calculatorSalaryOption1(instance, cell, c, r, records);
+        } else {
+          this.calculatorSalaryOption2(instance, cell, c, r, records);
+        }
 
-      }  else if(column.key === 'sumRatio') {
-
+      } else if(column.key === 'sumRatio') {
         const value = records[r][c];
         if(value > 0) {
           this.timer = setTimeout(() => {
@@ -1880,32 +1889,95 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
     });
   }
 
-  private calculatorSalary(instance, cell, c, r, records) {
+  private calculatorSalaryOption1(instance, cell, c, r, records) {
       const indexOfNumberMonthJoin = this.tableHeaderColumns.findIndex(c => c.key === 'numberMonthJoin');
       const indexOfSalary = this.tableHeaderColumns.findIndex(c => c.key === 'salary');
+      const indexOfOrder = this.tableHeaderColumns.findIndex(c => c.key === 'orders');
       const indexOfSumRatio = this.tableHeaderColumns.findIndex(c => c.key === 'sumRatio');
+      const indexOfSoTienNSDP = this.tableHeaderColumns.findIndex(c => c.key === 'soTienNSDP');
+      const indexOfTyleNSDP = this.tableHeaderColumns.findIndex(c => c.key === 'tyleNSDP');
       const indexOfMoneyPayment = this.tableHeaderColumns.findIndex(c => c.key === 'moneyPayment');
       const numberMonthJoin = records[r][indexOfNumberMonthJoin];
       const salary = records[r][indexOfSalary];
       const sumRatio = records[r][indexOfSumRatio];
+      const order = records[r][indexOfOrder];
+      const percent = this.getPercent(order);      
       clearTimeout(this.timer);
       this.timer = setTimeout(() => {
         // Nếu người dùng nhập giá trị lương thì set bằng giá trị lương
+        let total = 0;
+        let soTienNSDP = 0;
         if (salary > 0) {
-          this.updateNextColumns(instance, r, salary, [indexOfMoneyPayment], true);
-          this.updateNextColumns(instance, r, 0, [indexOfSumRatio], true);
-        } else if(sumRatio > 0) {
-          const total = sumRatio *  (this.salaryBase || 0);
-          this.updateNextColumns(instance, r, total, [indexOfMoneyPayment], true);
-        }else {
-          const ratio =  ((100 - (this.tyleNSNN || 0)) / 100);
-          const total = ((numberMonthJoin *  (this.salaryBase || 0) * ratio * (this.tyleTGBHYT || 0)) / 100);
-          this.updateNextColumns(instance, r, total, [indexOfMoneyPayment], true);
+          total = ((((salary || 0)  * this.tyleTGBHYT ) / 100) * Number(numberMonthJoin) * percent.percent) / 100;
+        } else {
+          total = (((sumRatio * this.salaryBase * this.tyleTGBHYT) / 100) * Number(numberMonthJoin) * percent.percent) / 100;
         }
-        
+
+        if (order === 1) {
+          soTienNSDP = (total * percent.ratio) / 100;
+        } else {
+          soTienNSDP = this.getFirstPersion(records, r);
+        }
+
+        this.updateNextColumns(instance, r, total, [indexOfMoneyPayment], true);
+        this.updateNextColumns(instance, r, soTienNSDP, [indexOfSoTienNSDP], true);
+        this.updateNextColumns(instance, r, percent.ratio, [indexOfTyleNSDP], true);
       }, 10);
-      
   } 
+
+  private calculatorSalaryOption2(instance, cell, c, r, records) {
+    const indexOfNumberMonthJoin = this.tableHeaderColumns.findIndex(c => c.key === 'numberMonthJoin');
+    const indexOfSalary = this.tableHeaderColumns.findIndex(c => c.key === 'salary');
+    const indexOfOrder = this.tableHeaderColumns.findIndex(c => c.key === 'orders');
+    const indexOfSumRatio = this.tableHeaderColumns.findIndex(c => c.key === 'sumRatio');
+    const indexOfSoTienNSDP = this.tableHeaderColumns.findIndex(c => c.key === 'soTienNSDP');
+    const indexOfTyleNSDP = this.tableHeaderColumns.findIndex(c => c.key === 'tyleNSDP');
+    const indexOfMoneyPayment = this.tableHeaderColumns.findIndex(c => c.key === 'moneyPayment');
+    const numberMonthJoin = records[r][indexOfNumberMonthJoin];
+    const salary = records[r][indexOfSalary];
+    const sumRatio = records[r][indexOfSumRatio];
+    const order = records[r][indexOfOrder];
+    const percent = this.getPercent(order);      
+    clearTimeout(this.timer);
+    this.timer = setTimeout(() => {
+      // Nếu người dùng nhập giá trị lương thì set bằng giá trị lương
+      let total = 0;
+      let soTienNSDP = 0;
+      if (salary > 0) {
+        total = ((((salary || 0)  * this.tyleTGBHYT ) / 100) * Number(numberMonthJoin) * percent.percent) / 100;
+      } else {
+        total = (((sumRatio * this.salaryBase * this.tyleTGBHYT) / 100) * Number(numberMonthJoin) * percent.percent) / 100;
+      }
+      soTienNSDP = (total * percent.ratio) / 100;
+      this.updateNextColumns(instance, r, total, [indexOfMoneyPayment], true);
+      this.updateNextColumns(instance, r, soTienNSDP, [indexOfSoTienNSDP], true);
+      this.updateNextColumns(instance, r, percent.ratio, [indexOfTyleNSDP], true);
+    }, 10);
+  } 
+
+
+  private getFirstPersion(records, r) {
+    const parentKey = records[r].options.parentKey;
+    const persions = [];
+    records.forEach(row => {
+      if (parentKey === row.options.parentKey) {
+        persions.push(row);
+      }
+    });
+
+    if( persions.length === 0) {
+      return -1;
+    }
+    const indexOfOrder = this.tableHeaderColumns.findIndex(c => c.key === 'orders');
+    const indexOfSoTienNSDP = this.tableHeaderColumns.findIndex(c => c.key === 'soTienNSDP');
+    const firstPersion = persions.find(p => p[indexOfOrder] === 1);
+    if (firstPersion) {
+      // Lấy số tiền ngân sách DP hỗ trợ ban đầu
+      return firstPersion[indexOfSoTienNSDP];
+    }
+
+    return 0;
+  }
 
   private sumCreateBHXH() {
     let totalCardInsurance =  0;
@@ -2049,6 +2121,40 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
       return d.origin && (d.origin.employeeId || d.employeeId) > 0 && d.data[indexOfIsurranceCode] !== '' && d.data[indexOfIsurranceCode] !== undefined;
     });
     return declarationUsers.length > 0;
+  }
+
+  private getPercent(order) {
+    const percent = RatioFamily[order] || RatioFamily[0];
+    return percent;
+  }
+
+  private setColumnByCalculationType() 
+  {
+    
+    if (this.calculationType === 1) {
+
+        this.tableHeaderColumns.forEach((column, index) => {
+          if(column.column === 'tyleNSDP') {
+            const columnToChuCaNhanHTKhac = this.tableHeaderColumns[index + 1];
+            column.key = 'soTienNSDP';
+            column.fieldName = 'NSDP hỗ trợ';
+            column.format = columnToChuCaNhanHTKhac.format;
+            delete column.suffix;
+            delete column.validations.max;
+          }
+          if(column.column === 'soTienNSDP') {
+            column.key = 'tyleNSDP';
+          }
+        });
+
+        this.tableNestedHeaders.forEach((headers) => {
+            headers.forEach((column) => {
+               if(column.title === 'Tỷ lệ NSĐP hỗ trợ(%)') {
+                column.title = 'NSĐP hỗ trợ';
+               }
+            });
+        });
+    }
   }
 
 }

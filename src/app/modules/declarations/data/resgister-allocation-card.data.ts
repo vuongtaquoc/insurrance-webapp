@@ -234,6 +234,7 @@ export const TABLE_HEADER_COLUMNS = [{
   title: '(14.1)',
   fieldName: 'Tỷ lệ NSDP hỗ trợ (%)',
   key: 'tyleNSDP',
+  column: 'tyleNSDP',
   suffix: '%',
   validations: {
     // number: true,
@@ -253,7 +254,7 @@ export const TABLE_HEADER_COLUMNS = [{
     number: true
   },
   format: (value) => {
-    return format.currency(value, '0,0.000');
+    return format.currency(value);
   }
 },  {
   type: 'numeric',
@@ -327,9 +328,17 @@ export const TABLE_HEADER_COLUMNS = [{
   type: 'hidden',
   width: 140,
   title: 'key',
+  key: 'soTienNSDP',
+  column: 'soTienNSDP',
+}
+,{
+  type: 'hidden',
+  width: 140,
+  title: 'key',
   key: 'employeeId',
   isMasterKey: true
-},{
+}
+,{
   type: 'hidden',
   width: 140,
   title: 'key',
