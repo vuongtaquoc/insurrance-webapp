@@ -7,7 +7,7 @@ import findIndex from 'lodash/findIndex';
 import * as jexcel from 'jstable-editor/dist/jexcel.js';
 import * as moment from 'moment';
 import * as _ from 'lodash';
-import { validationColumnsPlanCode, RatioFamily } from '@app/shared/constant-valid';
+import { validationColumnsPlanCode603, RatioFamily } from '@app/shared/constant-valid';
 import { PLANCODECOUNTBHYT } from '@app/shared/constant-valid';
 
 import { Declaration, DocumentList } from '@app/core/models';
@@ -31,7 +31,9 @@ import {
   ExternalService,
   DeclarationConfigService,
   FileUploadEmitter,
-  AppConfigService
+  AppConfigService,
+  GroupBenefitLevelService,
+
 } from '@app/core/services';
 import { DATE_FORMAT, DOCUMENTBYPLANCODE, REGEX } from '@app/shared/constant';
 import { eventEmitter } from '@app/shared/utils/event-emitter';
@@ -78,6 +80,7 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
 
   tableSubmitErrors = {};
   tableSubmitErrorCount = 0;
+  salaryAreas: any;
   families: any[] = [];
   informations: any[] = [];
   declaration: any;
@@ -92,6 +95,7 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
   handlers: any[] = [];
   handler;
   isTableValid = false;
+  parentKeyNotCaculator = 'II_1';
   allInitialize: any = {};
   tableErrors = {};
   panel: any = {
@@ -106,9 +110,11 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
   status: any;
   timer: any;
   ratioPayment = 0;
+  objectType = '';
   calculationType = 0;
   tyleTGBHYT = 0;
   salaryBase = 0;
+  level = 0;
   tyleNSNN = 0;
   formatterCurrency = (value: number) => typeof value === 'number' ? `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',') : '';
   eventValidData = 'adjust-general:validate';
@@ -136,6 +142,7 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
     private declarationConfigService: DeclarationConfigService,
     private fileUploadEmitter: FileUploadEmitter,
     private appConfigService: AppConfigService,
+    private groupBenefitLevelService: GroupBenefitLevelService,
   ) {
     this.getRecipientsDistrictsByCityCode = this.getRecipientsDistrictsByCityCode.bind(this);
     this.getRecipientsWardsByDistrictCode = this.getRecipientsWardsByDistrictCode.bind(this);
@@ -155,8 +162,10 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
     const date = new Date();
     this.currentCredentials = this.authenticationService.currentCredentials;
     this.calculationType = this.currentCredentials.companyInfo.calculationType;
-    this.setColumnByCalculationType();
-    this.loadAppConfig();
+    this.objectType = this.currentCredentials.companyInfo.objectType;
+    this.loadAppConfig((data) => {
+      this.loadBenefitLevel(data, this.objectType);
+    });
     this.loadDeclarationConfig();
     this.form = this.formBuilder.group({
       batch: [{value:'1', disabled: true }, Validators.required],
@@ -349,14 +358,35 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
         employee.gender = employee.gender === '1';
         employee.workAddress = this.currentCredentials.companyInfo.address;
         employee.planCode = declarations[parentIndex].planDefault;
+        if(employee.planCode) {
+          employee.rate = declarations[parentIndex].rate;
+          const planConfigInfo = validationColumnsPlanCode603[employee.planCode] || {note:{argsColumn: [], message: ''}};
+          const argsColumn = planConfigInfo.note.argsColumn || [] ;
+          const argsMessgae = [];
+          argsColumn.forEach(column => {
+            const firstColumn = column.split('$').shift();
+            let messageBuilder = '';
+            if(employee[firstColumn] !== undefined && employee[firstColumn] !== '') {
+              messageBuilder =  column.split('$')[1] || '';
+              messageBuilder = messageBuilder + employee[firstColumn];
+            }
+            argsMessgae.push(messageBuilder);
+          });
+
+          employee.reason = this.formatNote(planConfigInfo.note.message, argsMessgae);
+        }
+
+        if (this.level === 2 || this.level === 3 || this.level === 4) {
+          employee.salary = 0;
+        }
+
         employee.motherDayDead = null;
         employee.contractNo = null;
         employee.dateSign = null;
-        employee.tyleNSDP = 0;
+        employee.tyleNSDP = null;
         employee.toChuCaNhanHTKhac = 0;
         employee.fromDateJoin = null;
         employee.numberMonthJoin = 0;
-        employee.salary = 0;
         employee.sumRatio = 0;
         employee.moneyPayment = 0;
         //
@@ -767,7 +797,9 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
 
   handleChangeTable({ instance, cell, c, r, records }) {
     eventEmitter.emit('unsaved-changed');
-    if (c !== null && c !== undefined) {
+    let parentKey = '';
+    if (c !== null && c !== undefined && records[r].options.isLeaf) {
+      parentKey = records[r].options.parentKey;
       c = Number(c);
       const column = this.tableHeaderColumns[c];
       if (column.key === "fullName") {
@@ -798,6 +830,16 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
           }
         }, 10);
 
+      } else if (column.key === 'planCode') {
+        const indexOfFromDateJoin = this.tableHeaderColumns.findIndex(c => c.key === 'fromDateJoin')
+        const planCode = records[r][c];
+        const fromDateJoin = records[r][indexOfFromDateJoin];
+        this.setDataByPlanCode(instance, records,r, planCode, fromDateJoin);
+      } else if (column.key === 'fromDateJoin') {
+        const indexOfPlanCode = this.tableHeaderColumns.findIndex(c => c.key === 'planCode')
+        const fromDateJoin = records[r][c];
+        const planCode = records[r][indexOfPlanCode];
+        this.setDataByPlanCode(instance, records,r, planCode, fromDateJoin);
       } else if (column.key === 'hospitalFirstRegistCode') {
         const hospitalFirstCode = cell.innerText.split(' - ').shift();
         if(hospitalFirstCode !== '' && hospitalFirstCode !== undefined)
@@ -812,29 +854,33 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
         this.updateNextColumns(instance, r, '', [ c + 1, c + 2 ]);
       } else if (column.key === 'recipientsCityCode') {
         this.updateNextColumns(instance, r, '', [ c + 1, c + 2, c + 3 ]);
-      } else if( column.key === 'numberMonthJoin') {
-        
-        if (this.calculationType === 1) {
-          this.calculatorSalaryOption1(instance, cell, c, r, records);
-        } else {
-          this.calculatorSalaryOption2(instance, cell, c, r, records);
+      } else if( column.key === 'tyleNSDP') {
+        if (this.parentKeyNotCaculator !== parentKey) {
+          this.getCaculatorByLevel(instance, cell, c, r, records);
         }
+      } else if( column.key === 'numberMonthJoin') {
+
+        if (this.parentKeyNotCaculator !== parentKey) {
+          this.getCaculatorByLevel(instance, cell, c, r, records);
+        }
+        
       } else if( column.key === 'salary') {
 
-        if (this.calculationType === 1) {
-          this.calculatorSalaryOption1(instance, cell, c, r, records);
-        } else {
-          this.calculatorSalaryOption2(instance, cell, c, r, records);
+        const salary = records[r][c];
+        if(salary > 0) {
+          this.updateNextColumns(instance, r, '0', [c + 1]);
+        } 
+        
+        if (this.parentKeyNotCaculator !== parentKey) {
+          this.getCaculatorByLevel(instance, cell, c, r, records);
         }
 
-      } else if(column.key === 'sumRatio') {
-        const value = records[r][c];
-        if(value > 0) {
-          this.timer = setTimeout(() => {
-            this.updateNextColumns(instance, r, '0', [c - 1], true);
-          }, 10);
-        }
-      } 
+      } else if (column.key === 'sumRatio') {
+        const ratio = records[r][c];
+        if(ratio > 0) {
+          this.updateNextColumns(instance, r, '0', [c - 1]);
+        } 
+      }
     }
     // update declarations
     this.declarations.forEach((declaration: any, index) => {
@@ -851,7 +897,7 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
 
     const employeesInDeclaration = this.getEmployeeInDeclaration(records);
     this.setDataToFamilies(employeesInDeclaration);
-    this.setDataToInformationList(employeesInDeclaration);
+    // this.setDataToInformationList(employeesInDeclaration);
     this.sumCreateBHXH();
     this.notificeEventValidData('allocationCard');
     this.notificeEventValidData('families');
@@ -1880,14 +1926,100 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
     return str;
   }
 
-  private loadAppConfig() {
+  loadAppConfig(callback) {
     this.appConfigService.getAppConfig().subscribe((data) => {
+      callback(data);
+    });
+  }
+
+  private loadBenefitLevel(data,code) {
+    this.groupBenefitLevelService.getBylevel(code).subscribe((item) => {
       this.ratioPayment = data.ratioPayment;
       this.tyleTGBHYT = data.tyleTGBHYT;
       this.salaryBase = data.salaryBase;
       this.tyleNSNN = data.tyleNSNN;
-    });
+      this.level = item.level;
+      const maxSalry = 20 * data.salaryBase;
+      this.salaryAreas = {
+        salaray: data.salaryBase
+      }
+      this.setColumnByCalculationType() ;
+      this.tableHeaderColumns.forEach((column, index) => {
+        if (column.key === 'salary' && item.level === 5) {
+            column.validations = {
+              number: true,
+              min: data.salaryBase,
+              max: maxSalry
+            }
+        }
+
+        if (column.key === 'salary' && (item.level === 2 || item.level === 3 || item.level === 4)) {
+          column.readOnly = true;
+        }
+
+        if (column.key === 'moneyPayment' && (item.level === 2 || item.level === 3)) {
+          column.readOnly = true;
+        }
+
+        if(column.key === 'tyleNSDP' && ( item.level === 2 ||  item.level === 3)) {
+          column.type = 'dropdown';
+          column.source = [ { id: 100, name: '100%' }];
+        }
+
+        if(column.key === 'tyleNSDP' && item.level === 1) {
+          column.readOnly = true;
+        }
+
+        if(column.key === 'tyleNSDP' && ( item.level === 4)) {
+          delete column.suffix;
+          column.type = 'dropdown';
+          column.source = [{ id: 30, name: '30%' }, { id: 70, name: '70%' }, { id: 100, name: '100%' }];
+        }
+
+        if(column.key === 'tyleNSDP' && ( item.level === 5)) {
+          column.type = 'dropdown';
+          column.source = [{ id: 20, name: '20' }];
+        }
+      });
+
+      this.form.patchValue({
+        benefitLevelName: item.benefitLevel,
+        resource: item.groupBenefitLevel
+      });
+
+    })
   }
+
+
+  private setColumnByCalculationType() 
+  {
+    
+    if (this.calculationType === 1) {
+
+        this.tableHeaderColumns.forEach((column, index) => {
+          if(column.column === 'tyleNSDP') {
+            const columnToChuCaNhanHTKhac = this.tableHeaderColumns[index + 1];
+            column.key = 'soTienNSDP';
+            column.fieldName = 'NSDP hỗ trợ';
+            column.format = columnToChuCaNhanHTKhac.format;
+            delete column.suffix;
+            delete column.validations.max;
+          }
+          if(column.column === 'soTienNSDP') {
+            column.key = 'tyleNSDP';
+          }
+        });
+
+        this.tableNestedHeaders.forEach((headers) => {
+            headers.forEach((column) => {
+               if(column.title === 'Tỷ lệ NSĐP hỗ trợ(%)') {
+                column.title = 'NSĐP hỗ trợ';
+               }
+            });
+        });
+    }
+  }
+
 
   private calculatorSalaryOption1(instance, cell, c, r, records) {
       const indexOfNumberMonthJoin = this.tableHeaderColumns.findIndex(c => c.key === 'numberMonthJoin');
@@ -1955,6 +2087,74 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
     }, 10);
   } 
 
+  private calculatorSalaryLevel1(instance, cell, c, r, records) {
+    const indexOfNumberMonthJoin = this.tableHeaderColumns.findIndex(c => c.key === 'numberMonthJoin');
+    const indexOfSalary = this.tableHeaderColumns.findIndex(c => c.key === 'salary');
+    const indexOfSumRatio = this.tableHeaderColumns.findIndex(c => c.key === 'sumRatio');
+    const indexOfSoTienNSDP = this.tableHeaderColumns.findIndex(c => c.key === 'soTienNSDP');
+    const indexOfTyleNSDP = this.tableHeaderColumns.findIndex(c => c.key === 'tyleNSDP');
+    const indexOfMoneyPayment = this.tableHeaderColumns.findIndex(c => c.key === 'moneyPayment');
+    const numberMonthJoin = records[r][indexOfNumberMonthJoin];
+    const salary = records[r][indexOfSalary];
+    const sumRatio = records[r][indexOfSumRatio];
+    clearTimeout(this.timer);
+    this.timer = setTimeout(() => {
+       
+      let total = 0;
+      let soTienNSDP = 0;
+      if (salary > 0) {
+        total = (((salary || 0)  * this.tyleTGBHYT ) / 100) * Number(numberMonthJoin);
+      } else {
+        total = ((sumRatio * this.salaryBase * this.tyleTGBHYT) / 100) * Number(numberMonthJoin);
+      }
+      this.updateNextColumns(instance, r, total, [indexOfMoneyPayment], true);
+      this.updateNextColumns(instance, r, 0, [indexOfSoTienNSDP], true);
+      this.updateNextColumns(instance, r, 0, [indexOfTyleNSDP], true);
+    }, 10);
+  } 
+
+  private calculatorSalaryLevel234(instance, cell, c, r, records) {
+    const indexOfNumberMonthJoin = this.tableHeaderColumns.findIndex(c => c.key === 'numberMonthJoin');
+    const indexOfSalary = this.tableHeaderColumns.findIndex(c => c.key === 'salary');
+    const indexOfSumRatio = this.tableHeaderColumns.findIndex(c => c.key === 'sumRatio');
+    const indexOfSoTienNSDP = this.tableHeaderColumns.findIndex(c => c.key === 'soTienNSDP');
+    const indexOfTyleNSDP = this.tableHeaderColumns.findIndex(c => c.key === 'tyleNSDP');
+    const indexOfMoneyPayment = this.tableHeaderColumns.findIndex(c => c.key === 'moneyPayment');
+    const numberMonthJoin = records[r][indexOfNumberMonthJoin];
+    const salary = records[r][indexOfSalary];
+    const sumRatio = records[r][indexOfSumRatio];
+    const tyleNSDP =  records[r][indexOfTyleNSDP];
+
+    clearTimeout(this.timer);
+    this.timer = setTimeout(() => {
+      // Nếu người dùng nhập giá trị lương thì set bằng giá trị lương
+      let total = 0;
+      let soTienNSDP = 0;
+      if (salary > 0) {
+        total = (((salary || 0)  * this.tyleTGBHYT ) / 100) * Number(numberMonthJoin);
+      } else {
+        total = ((sumRatio * this.salaryBase * this.tyleTGBHYT) / 100) * Number(numberMonthJoin);
+      }
+      soTienNSDP = (total * tyleNSDP) / 100;
+      this.updateNextColumns(instance, r, total, [indexOfMoneyPayment], true);
+      this.updateNextColumns(instance, r, soTienNSDP, [indexOfSoTienNSDP], true);
+    }, 10);
+  } 
+
+  private getCaculatorByLevel(instance, cell, c, r, records) {
+
+    if(this.level === 1) {
+      this.calculatorSalaryLevel1(instance, cell, c, r, records);
+    } else if(this.level === 2 || this.level === 3 || this.level === 4) {
+      this.calculatorSalaryLevel234(instance, cell, c, r, records);
+    } else {
+      if (this.calculationType === 1) {
+        this.calculatorSalaryOption1(instance, cell, c, r, records);
+      } else {
+        this.calculatorSalaryOption2(instance, cell, c, r, records);
+      }
+    }
+  }
 
   private getFirstPersion(records, r) {
     const parentKey = records[r].options.parentKey;
@@ -1982,10 +2182,12 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
   private sumCreateBHXH() {
     let totalCardInsurance =  0;
     const indexOfPlanCode = this.tableHeaderColumns.findIndex(c => c.key === 'planCode');
+    const indexOfIsExitsIsurranceNo = this.tableHeaderColumns.findIndex(c => c.key === 'isExitsIsurranceNo');
     this.declarations.forEach(d => {
         const planCode = d.data[indexOfPlanCode];
+        const isExitsIsurranceNo = d.data[indexOfIsExitsIsurranceNo];
         const isSumNumberInsurance = PLANCODECOUNTBHYT.findIndex(p => p === planCode) > -1;
-        if(isSumNumberInsurance) {
+        if(isSumNumberInsurance && !isExitsIsurranceNo) {
           totalCardInsurance += 1;
         }
     });
@@ -2127,34 +2329,29 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
     const percent = RatioFamily[order] || RatioFamily[0];
     return percent;
   }
+  
+  private setDataByPlanCode(instance, records, r, planCode, fromDate) {
+    clearTimeout(this.timer);
+    this.timer = setTimeout(() => {     
+      const planConfigInfo = validationColumnsPlanCode603[planCode] || {note:{argsColumn: [], message: ''}};
+      const argsColumn = planConfigInfo.note.argsColumn || [] ;
+      const argsMessgae = [];
 
-  private setColumnByCalculationType() 
-  {
-    
-    if (this.calculationType === 1) {
+      argsColumn.forEach(column => {
+        const firstColumn = column.split('$').shift();
+        const indexOfColumn = this.tableHeaderColumns.findIndex(c => c.key === firstColumn);
+        const valueColunm = records[r][indexOfColumn];
+        let messageBuilder = '';
+        if(valueColunm !== undefined && valueColunm !== '') {
+          messageBuilder =  column.split('$')[1] || '';
+          messageBuilder = messageBuilder + valueColunm;
+        }
+        argsMessgae.push(messageBuilder);
+      });
 
-        this.tableHeaderColumns.forEach((column, index) => {
-          if(column.column === 'tyleNSDP') {
-            const columnToChuCaNhanHTKhac = this.tableHeaderColumns[index + 1];
-            column.key = 'soTienNSDP';
-            column.fieldName = 'NSDP hỗ trợ';
-            column.format = columnToChuCaNhanHTKhac.format;
-            delete column.suffix;
-            delete column.validations.max;
-          }
-          if(column.column === 'soTienNSDP') {
-            column.key = 'tyleNSDP';
-          }
-        });
-
-        this.tableNestedHeaders.forEach((headers) => {
-            headers.forEach((column) => {
-               if(column.title === 'Tỷ lệ NSĐP hỗ trợ(%)') {
-                column.title = 'NSĐP hỗ trợ';
-               }
-            });
-        });
-    }
+      const indexColumnNote = this.tableHeaderColumns.findIndex(c => c.key === 'reason');
+      const notebuild = this.formatNote(planConfigInfo.note.message, argsMessgae);
+      this.updateNextColumns(instance, r, notebuild, [indexColumnNote]);
+    }, 10);
   }
-
 }

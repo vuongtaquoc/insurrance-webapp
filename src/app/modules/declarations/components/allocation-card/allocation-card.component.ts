@@ -351,11 +351,8 @@ export class AllocationCardComponent implements OnInit, OnDestroy {
         employee.planCode = declarations[parentIndex].planDefault;
         employee.tyleNSDP = 0;
         employee.toChuCaNhanHTKhac = 0;
-        employee.numberMonthJoin = 0;
         employee.sumRatio = 0;
         employee.moneyPayment = 0;
-        employee.paymentMethodCode = null;
-        employee.numberMonthJoin = 0;
         employee.fromDate = null;
         employee.moneyPayment = 0;
         employee.tyleNSNN = 0;
@@ -365,7 +362,6 @@ export class AllocationCardComponent implements OnInit, OnDestroy {
         employee.tyleTCCNHTK = 0;
         employee.toChuCaNhanHTKhac = 0;
         employee.playerClose = 0;
-
         //
         if (accepted) {
           if (declarations[childLastIndex].isInitialize) {
@@ -819,7 +815,7 @@ export class AllocationCardComponent implements OnInit, OnDestroy {
         }
       } else if (column.key === 'registerCityCode') {
         this.updateNextColumns(instance, r, '', [ c + 1, c + 2 ]);
-      }else if (column.key === 'planCode') {
+      } else if (column.key === 'planCode') {
         const indexOfFromDate = this.tableHeaderColumns.findIndex(c => c.key === 'fromDate')
         const planCode = records[r][c];
         const fromDate = records[r][indexOfFromDate];
@@ -870,11 +866,13 @@ export class AllocationCardComponent implements OnInit, OnDestroy {
         const paymentMethodCode = records[r][c];
         const numberMonth = Number(paymentMethodCode);
         this.timer = setTimeout(() => {
-            if (numberMonth) {
-              this.updateNextColumns(instance, r, numberMonth, [c + 1], true);
-            } else {
-              this.updateNextColumns(instance, r, '0', [c + 1], true);
-            }
+          if (numberMonth) {
+            this.updateNextColumns(instance, r, numberMonth, [c + 1], true);
+            instance.jexcel.setReadonly(Number(r), c + 1);
+          } else {
+            instance.jexcel.setReadonly(Number(r), c + 1, true);
+            this.updateNextColumns(instance, r, '0', [c + 1], true);
+          }
         }, 10);
 
       }  else if(column.key === 'sumRatio') {
@@ -902,7 +900,7 @@ export class AllocationCardComponent implements OnInit, OnDestroy {
 
     const employeesInDeclaration = this.getEmployeeInDeclaration(records);
     this.setDataToFamilies(employeesInDeclaration);
-    this.setDataToInformationList(employeesInDeclaration);
+    // this.setDataToInformationList(employeesInDeclaration);
     this.notificeEventValidData('allocationCard');
     this.notificeEventValidData('families');
     this.notificeEventValidData('informations');

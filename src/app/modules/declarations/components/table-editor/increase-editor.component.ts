@@ -835,10 +835,11 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
         instance.jexcel.validationCell(y, Number(cell) - 1, validationColumn.fieldName, validationColumn.validations);
       }
     } else if (column.key === 'salary') { 
-      const ratio = this.spreadsheet.getValueFromCoords(Number(cell) + 1, y);
+      const indexOfSalary =  this.columns.findIndex(c => c.key === 'salary');
+      const salary = this.spreadsheet.getValueFromCoords(indexOfSalary, y);
       const validationColumn = this.columns[Number(cell)];
       delete validationColumn.validations.min;
-      if (Number(cellValue) > 0) {
+      if (Number(salary) > 0) {
         validationColumn.validations = {
           min: Number(this.salaryAreas.salaray),
          };         

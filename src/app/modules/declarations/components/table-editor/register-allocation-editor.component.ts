@@ -21,6 +21,7 @@ export class RegisterAllocationEditorComponent implements AfterViewInit, OnInit,
   @ViewChild('spreadsheet', { static: true }) spreadsheetEl;
   @Input() data: any[] = [];
   @Input() columns: any[] = [];
+  @Input() salaryAreas: any;
   @Input() nestedHeaders: any[] = [];
   @Input() tableName: string;
   @Input() events: Observable<any>;
@@ -150,6 +151,13 @@ export class RegisterAllocationEditorComponent implements AfterViewInit, OnInit,
         }
         this.validIsurrance();
         this.validationCellByOtherCell(value, column, r, instance, c);
+        const isLeaf = this.data[r].origin.isLeaf  || this.data[r].isLeaf;       
+        if(isLeaf) {
+          clearTimeout(this.validateTimer);
+          this.validateTimer = setTimeout(() => {
+            this.validRatio(this.spreadsheet.getJson()[r], r);
+          }, 10);
+        }
       },
       ondeleterow: (el, rowNumber, numOfRows) => {
         this.onDelete.emit({
@@ -281,6 +289,7 @@ export class RegisterAllocationEditorComponent implements AfterViewInit, OnInit,
 
     this.setReadOnlyByData(data);
     this.validIsurrance();
+    this.setWarningRatioWhenAddEmployee(data);
  }
 
   private handleDeleteUser(user) {
@@ -424,11 +433,6 @@ export class RegisterAllocationEditorComponent implements AfterViewInit, OnInit,
           instance.jexcel.validationCell(y, cell, validationColumn.fieldName, validationColumn.validations);
         }
 
-        this.handleEvent({
-          type: 'validate',
-          deletedIndexes: [],
-          user: {}
-        });
       } else if (column.key === 'toDate') {
         const fromDateValue = this.spreadsheet.getValueFromCoords(Number(cell) - 1, y);
         const validationColumn = this.columns[Number(cell) - 1];
@@ -463,12 +467,6 @@ export class RegisterAllocationEditorComponent implements AfterViewInit, OnInit,
           validationColumn.fieldName = 'Từ tháng, năm';
           instance.jexcel.validationCell(y,  Number(cell) - 1, validationColumn.fieldName, validationColumn.validations);
         }
-
-        this.handleEvent({
-          type: 'validate',
-          deletedIndexes: [],
-          user: {}
-        });
       } else if (column.key === 'isReductionWhenDead') {
           const columnIndex = Number(cell) + 1; 
           const motherDayDead = this.columns[columnIndex];
@@ -481,11 +479,6 @@ export class RegisterAllocationEditorComponent implements AfterViewInit, OnInit,
           }
           motherDayDead.fieldName = 'Ngày chết';
           instance.jexcel.validationCell(y, columnIndex, motherDayDead.fieldName, motherDayDead.validations);
-          this.handleEvent({
-            type: 'validate',
-            deletedIndexes: [],
-            user: {}
-          });
       } else if(column.key === 'dateSign') {
           const indexOfFromDateJoin =  this.columns.findIndex(c => c.key === 'fromDateJoin');
           const fromDateJoinValue = this.spreadsheet.getValueFromCoords(indexOfFromDateJoin, y);
@@ -581,7 +574,23 @@ export class RegisterAllocationEditorComponent implements AfterViewInit, OnInit,
         }
         validationColumn.fieldName = 'Ngày biên lai';
         instance.jexcel.validationCell(y, indexOfNumberMonthJoin, validationColumn.fieldName, validationColumn.validations);
-      }
+      } else if (column.key === 'salary') { 
+        const validationColumn = this.columns[Number(cell)];
+        const indexOfSalary =  this.columns.findIndex(c => c.key === 'salary');
+        const salary = this.spreadsheet.getValueFromCoords(indexOfSalary, y);
+        delete validationColumn.validations.min;
+        if (Number(salary) > 0) {
+          validationColumn.validations.min = Number(this.salaryAreas.salaray);
+        }
+        validationColumn.fieldName = 'Tiền lương';
+        instance.jexcel.validationCell(y, cell, validationColumn.fieldName, validationColumn.validations);
+      } 
+
+      this.handleEvent({
+        type: 'validate',
+        deletedIndexes: [],
+        user: {}
+      });
     }, 50);
   }
 
@@ -666,6 +675,38 @@ export class RegisterAllocationEditorComponent implements AfterViewInit, OnInit,
     }, 10);
   }
 
+  private setWarningRatioWhenAddEmployee(data: any) {
+    clearTimeout(this.validateTimer);
+    this.validateTimer = setTimeout(() => {
+      data.forEach((row, rowIndex) => {
+        const isLeaf = row.origin.isLeaf  || row.options.isLeaf;       
+        if(!isLeaf) return;
+        this.validRatio(row, rowIndex);
+      });
+    }, 10);
+
+  }
+
+  private validRatio(data: any, rowIndex) {
+    const indexOfEmployeeId = this.columns.findIndex(c => c.key === 'employeeId');
+    const employeeId = data[indexOfEmployeeId];
+    if (Number(employeeId)===0) return;
+    const indexOfColumnSalary = this.columns.findIndex(c => c.key === 'salary');
+
+    const salary = data[indexOfColumnSalary];
+    const surplus = salary % 50000;
+     
+    // if(surplus > 0 && salary > 0) {
+    //   const fieldName = {
+    //     name: 'Mức thu nhập đóng bảo hiểm',
+    //     otherName:'Mức thu nhập đóng bảo hiểm'
+    //   };      
+    //   const messageError = 'Mức thu nhập trong khoảng từ mức chuản nghèo đến 20 lần lương cơ sở và là bội số của 50.000 NVD';
+    //   this.spreadsheet.setCellError(fieldName, indexOfColumnSalary, rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true, messageError);
+    // }
+
+  }
+
   private setReadOnlyByData(data: any) {
     
     data.forEach((row, rowIndex) => {
@@ -676,10 +717,8 @@ export class RegisterAllocationEditorComponent implements AfterViewInit, OnInit,
       if(employeeId === null) return;
 
       const indexOfTyleNSNN = this.columns.findIndex(c => c.key === 'tyleNSNN');
-      const indexOfTyleNSDP = this.columns.findIndex(c => c.key === 'tyleNSDP');
       const indexOfTyleTCCNHTK = this.columns.findIndex(c => c.key === 'tyleTCCNHTK');
       const tyleNSNN = row[indexOfTyleNSNN];
-      const tyleNSDP = row[indexOfTyleNSDP];
       const tyleTCCNHTK = row[indexOfTyleTCCNHTK];
 
       if(Number(tyleNSNN) > 0) {
@@ -687,13 +726,6 @@ export class RegisterAllocationEditorComponent implements AfterViewInit, OnInit,
       }else {
         this.spreadsheet.setReadonly(Number(rowIndex), indexOfTyleNSNN + 1, true);
       }
-
-      if(Number(tyleNSDP) > 0) {
-        this.spreadsheet.setReadonly(Number(rowIndex), indexOfTyleNSDP + 1);
-      }else {
-        this.spreadsheet.setReadonly(Number(rowIndex), indexOfTyleNSDP + 1, true);
-      }
-
       if(Number(tyleTCCNHTK) > 0) {
         this.spreadsheet.setReadonly(Number(rowIndex), indexOfTyleTCCNHTK + 1);
       }else {

@@ -70,6 +70,25 @@ export const validationColumnsPlanCodeBHYT: any = {
     }
   }
  }
+
+ export const validationColumnsPlanCode603: any = {
+  'TM': {
+    note: {
+      message: 'Tăng mới BHYT của  {0} {1}',
+      argsColumn: ['fullName$','fromDateJoin$, từ ngày '],  
+    }
+  },'DC': {
+    note: {
+      message: 'Điều chỉnh BHYT của {0} {1}',
+      argsColumn: ['fullName$','fromDateJoin$, từ ngày '],  
+    }
+  },'GH': {
+    note: {
+      message: ' Giảm lương BHYT của {0} {1}',
+      argsColumn: ['fullName$','fromDateJoin$, từ ngày '], 
+    }
+  } 
+ }
 export const RatioFamily: any = {
   1 : {
     percent: 100,

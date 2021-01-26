@@ -587,9 +587,34 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
             min: 1
           };
         }
-        validationColumn.fieldName = 'Ngày biên lai';
+        validationColumn.fieldName = 'Số tháng đóng';
         instance.jexcel.validationCell(y, indexOfNumberMonthJoin, validationColumn.fieldName, validationColumn.validations);
+      } else if (column.key ==='numberMonthJoin') {
+        const paymentMethodCode = this.spreadsheet.getValueFromCoords(Number(cell) - 1, y);
+        const validationColumn = this.columns[Number(cell)];
+        delete validationColumn.validations.max;
+        if (paymentMethodCode === 'VS') {
+          validationColumn.validations = {
+            required: true,
+            min: 1,
+            max: 60
+          };          
+        } else if(paymentMethodCode === 'TH') {
+          validationColumn.validations = {
+            required: true,
+            min: 1,
+            max: 120
+          };
+        } else if(paymentMethodCode === 'DB') {
+          validationColumn.validations = {
+            required: true,
+            min: 1
+          };
+        }
+        validationColumn.fieldName = 'Số tháng đóng';
+        instance.jexcel.validationCell(y, Number(cell), validationColumn.fieldName, validationColumn.validations);
       }
+      
     }, 50);
   }
 
@@ -693,16 +718,18 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
     const indexOfColumnTyleNSNN = this.columns.findIndex(c => c.key === 'tyleNSNN');
     const indexOfColumnTyleNSDP = this.columns.findIndex(c => c.key === 'tyleNSDP');
     const indexOfColumnTyleTCCNHTK = this.columns.findIndex(c => c.key === 'tyleTCCNHTK');
+    const indexOfColumnSalary = this.columns.findIndex(c => c.key === 'salary');
 
     const indexOfPlayerClose = this.columns.findIndex(c => c.key === 'playerClose');
     const indexOfMoneyPayment = this.columns.findIndex(c => c.key === 'moneyPayment');
 
+    const salary = data[indexOfColumnSalary];
     const tyleNSNN = data[indexOfColumnTyleNSNN];
-    const TyleNSNNCanUse = [0,10,25,30];
+     
     const ratioNew = data[indexOfColumnTyleNSDP];
     const tyleTCCNHTK = data[indexOfColumnTyleTCCNHTK];
     const totalRatio = Number(tyleNSNN) + Number(ratioNew) +  Number(tyleTCCNHTK);
-
+    const surplus = salary % 50000;
 
     if (totalRatio > 100) {
       const fieldName = {
@@ -714,13 +741,13 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
       this.spreadsheet.setCellError(fieldName, indexOfColumnTyleTCCNHTK, rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true, messageError);
     }
 
-    if(!TyleNSNNCanUse.includes(Number(tyleNSNN))) {
+    if(surplus > 0) {
       const fieldName = {
-        name: 'Tỷ lệ hỗ trợ',
-        otherName:'Tỷ lệ hỗ trợ'
+        name: 'Mức thu nhập đóng bảo hiểm',
+        otherName:'Mức thu nhập đóng bảo hiểm'
       };      
-      const messageError = 'Tỷ lệ Ngân sách nhà nước hỗ trợ chỉ hỗ trợ 10%,25%,30%';
-      this.spreadsheet.setCellError(fieldName, indexOfColumnTyleNSNN, rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true, messageError);
+      const messageError = 'Mức thu nhập trong khoảng từ mức chuản nghèo đến 20 lần lương cơ sở và là bội số của 50.000 VNĐ';
+      this.spreadsheet.setCellError(fieldName, indexOfColumnSalary, rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true, messageError);
     }
 
   }

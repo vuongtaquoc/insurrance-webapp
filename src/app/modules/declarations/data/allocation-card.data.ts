@@ -169,7 +169,10 @@ export const TABLE_HEADER_COLUMNS = [{
   align: 'left',
   wordWrap: true,
   source: [ ],
-  key: 'paymentMethodCode'
+  key: 'paymentMethodCode',
+  validations: {
+    required: true
+  }
 }, {
   type: 'numeric',
   align: 'right',
@@ -186,7 +189,7 @@ export const TABLE_HEADER_COLUMNS = [{
 {
   type: 'text',
   width: 60,
-  title: '(18.3)',
+  title: '(8.3)',
   key: 'fromDate',
   fieldName: 'Từ tháng, năm',
   validations: {
@@ -196,7 +199,7 @@ export const TABLE_HEADER_COLUMNS = [{
 {
   type: 'numeric',
   width: 120,
-  title: '(19.1)',
+  title: '(9.1)',
   align: 'right',
   mask: '#,##0',
   fieldName: 'Tổng số tiền phải đóng',
@@ -211,13 +214,13 @@ export const TABLE_HEADER_COLUMNS = [{
     return format.currency(value);
   }
 },{
-  type: 'numeric',
+  type: 'dropdown',
   align: 'right',
   width: 70,
-  title: '(19.2)',
+  title: '(9.2)',
   fieldName: 'Tỷ lệ NSNN hỗ trợ (%)',
+  source: [ { id: 0 , name: '0 %' },{ id: 10 , name: '10 %' },{ id: 25 , name: '25 %' }, { id: 30 , name: '30 %' } ],
   key: 'tyleNSNN',
-  suffix: '%',
   validations: {
     // number: true,
     min: 0,
@@ -228,7 +231,7 @@ export const TABLE_HEADER_COLUMNS = [{
   type: 'numeric',
   align: 'right',
   width: 80,
-  title: '(19.3)',
+  title: '(9.3)',
   mask: '#,##0',
   fieldName: 'Số tiền NS nhà nước hỗ trợ',
   sum: true,
@@ -243,7 +246,7 @@ export const TABLE_HEADER_COLUMNS = [{
   type: 'numeric',
   align: 'right',
   width: 70,
-  title: '(19.4)',
+  title: '(9.4)',
   fieldName: 'Tỷ lệ NSĐP hỗ trợ (%)',
   key: 'tyleNSDP',
   suffix: '%',
@@ -257,7 +260,7 @@ export const TABLE_HEADER_COLUMNS = [{
   type: 'numeric',
   align: 'right',
   width: 80,
-  title: '(19.5)',
+  title: '(9.5)',
   mask: '#,##0',
   fieldName: 'Số tiền NS địa phương hỗ trợ',
   sum: true,
@@ -272,7 +275,7 @@ export const TABLE_HEADER_COLUMNS = [{
   type: 'numeric',
   align: 'right',
   width: 90,
-  title: '(19.6)',
+  title: '(9.6)',
   fieldName: 'Tỷ lệ tổ chức, cá nhân khác hỗ trợ (%)',
   key: 'tyleTCCNHTK',
   suffix: '%',
@@ -286,7 +289,7 @@ export const TABLE_HEADER_COLUMNS = [{
   type: 'numeric',
   align: 'right',
   width: 100,
-  title: '(19.7)',
+  title: '(9.7)',
   mask: '#,##0',
   // decimal: ',',
   sum: true,
@@ -301,7 +304,7 @@ export const TABLE_HEADER_COLUMNS = [{
   type: 'numeric',
   align: 'right',
   width: 100,
-  title: '(19.8)',
+  title: '(9.8)',
   mask: '#,##0',
   fieldName: 'Người tham gia đóng',
   sum: true,
@@ -316,13 +319,13 @@ export const TABLE_HEADER_COLUMNS = [{
 }, {
   type: 'text',
   width: 220,
-  title: '(20)',
+  title: '(10)',
   wordWrap: true,
   key: 'reason'
 },{
   type: 'dropdown',
   width: 70,
-  title: '(5)',
+  title: '(11)',
   source: [ { id: '0', name: 'Ngày tháng năm' },{ id: '1', name: 'tháng/năm' }, { id: '2', name: 'năm' } ],
   key: 'typeBirthday',
   warnings: {
@@ -334,7 +337,7 @@ export const TABLE_HEADER_COLUMNS = [{
 }, {
   type: 'text',
   width: 80,
-  title: '(6)',
+  title: '(12)',
   fieldName: 'Ngày tháng năm sinh',
   key: 'birthday',
   validations: {
@@ -344,7 +347,7 @@ export const TABLE_HEADER_COLUMNS = [{
 }, {
   type: 'checkbox',
   width: 35,
-  title: '(7)',
+  title: '(13)',
   align: 'center',
   key: 'gender'
 },{

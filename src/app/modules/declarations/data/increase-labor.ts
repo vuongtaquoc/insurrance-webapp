@@ -202,7 +202,7 @@ export const TABLE_HEADER_COLUMNS = [{
   sum: true,
   key: 'ratio',
   format: (value) => {
-    return format.currency(value, '0,0.000');
+    return format.currency(value, '0,0.00');
   }
 }, {
   type: 'numeric',
@@ -219,7 +219,7 @@ export const TABLE_HEADER_COLUMNS = [{
     number: true
   },
   format: (value) => {
-    return format.currency(value,'0,0.000');
+    return format.currency(value,'0,0.00');
   }
 }, {
   type: 'numeric',

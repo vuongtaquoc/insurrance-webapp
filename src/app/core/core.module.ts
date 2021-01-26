@@ -36,6 +36,7 @@ import {
   SubmitDeclarationService,
   DeclarationFileUploadService,
   AppConfigService,
+  GroupBenefitLevelService,
 } from './services';
 
 @NgModule({
@@ -77,6 +78,7 @@ import {
     SubmitDeclarationService,
     DeclarationFileUploadService,
     AppConfigService,
+    GroupBenefitLevelService,
   ],
   declarations: []
 })
