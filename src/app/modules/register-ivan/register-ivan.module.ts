@@ -23,7 +23,7 @@ import {
   RegisterIvanComponent
 } from './pages';
 
-import { RegisterIvanProvisoComponent, RegisterIvanRegisterComponent, RegisterIvanStopServiceComponent, RegisterIvanGuideComponent } from "./components";
+import { RegisterIvanProvisoComponent, RegisterIvanRegisterComponent, RegisterIvanStopServiceComponent, RegisterIvanGuideComponent, RegisterIvanAdjustInfoComponent } from "./components";
 
 @NgModule({
   imports: [
@@ -51,6 +51,7 @@ import { RegisterIvanProvisoComponent, RegisterIvanRegisterComponent, RegisterIv
     RegisterIvanStopServiceComponent,
     RegisterIvanRegisterComponent,
     RegisterIvanGuideComponent,
+    RegisterIvanAdjustInfoComponent
   ],
   providers: [
     AuthenticationService
