@@ -855,7 +855,7 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
       } else if (column.key === 'recipientsCityCode') {
         this.updateNextColumns(instance, r, '', [ c + 1, c + 2, c + 3 ]);
       } else if( column.key === 'tyleNSDP') {
-        if (this.parentKeyNotCaculator !== parentKey) {
+        if (this.parentKeyNotCaculator !== parentKey && (this.level === 2 || this.level === 3 || this.level === 4)) {
           this.getCaculatorByLevel(instance, cell, c, r, records);
         }
       } else if( column.key === 'numberMonthJoin') {
@@ -1943,7 +1943,7 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
       this.salaryAreas = {
         salaray: data.salaryBase
       }
-      this.setColumnByCalculationType() ;
+      this.setColumnByCalculationType();
       this.tableHeaderColumns.forEach((column, index) => {
         if (column.key === 'salary' && item.level === 5) {
             column.validations = {
@@ -1957,7 +1957,7 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
           column.readOnly = true;
         }
 
-        if (column.key === 'moneyPayment' && (item.level === 2 || item.level === 3)) {
+        if (column.column === 'moneyPayment' && (item.level === 2 || item.level === 3)) {
           column.readOnly = true;
         }
 
@@ -1977,8 +1977,10 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
         }
 
         if(column.key === 'tyleNSDP' && ( item.level === 5)) {
-          column.type = 'dropdown';
-          column.source = [{ id: 20, name: '20' }];
+          if(this.calculationType !== 1) {
+            column.type = 'dropdown';
+            column.source = [{ id: 20, name: '20' }];
+          }
         }
       });
 
@@ -2006,6 +2008,7 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
             delete column.validations.max;
           }
           if(column.column === 'soTienNSDP') {
+            column.type = 'hidden',
             column.key = 'tyleNSDP';
           }
         });
@@ -2018,6 +2021,8 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
             });
         });
     }
+
+    console.log(this.tableHeaderColumns, 'xxxx');
   }
 
 
@@ -2142,7 +2147,7 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
   } 
 
   private getCaculatorByLevel(instance, cell, c, r, records) {
-
+    console.log(this.level);
     if(this.level === 1) {
       this.calculatorSalaryLevel1(instance, cell, c, r, records);
     } else if(this.level === 2 || this.level === 3 || this.level === 4) {

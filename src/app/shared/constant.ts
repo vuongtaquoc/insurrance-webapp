@@ -1169,7 +1169,8 @@ export const errorMessages = {
   2027: 'Tên đăng nhập đã tồn tại',
   2020: 'Tài khoản vượt quá số lượng cho phép',
   2035: 'Không thể xóa tài khoản mặc định của đơn vị',
-  3020: 'Mã số BHXH (mã đơn vị) đã được đăng ký sử dụng, vui lòng kiểm tra lại'
+  3020: 'Mã số BHXH (mã đơn vị) đã được đăng ký sử dụng, vui lòng kiểm tra lại',
+  3021: 'Đơn vị chưa đăng ký sử dụng dịch vụ IVAN Của MBHXH, Vui lòng tạo hồ sơ đăng ký IVAN trước khi tạo hồ sơ thay đổi'
 }
 
 

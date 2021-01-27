@@ -105,7 +105,7 @@
                   Mã số BHXH (mã đơn vị)
                 </nz-form-label>
                 <nz-form-control class="margin-left-1p" [nzSpan]="14" [nzErrorTip]="errorManageUnitCode">
-                  <input nz-input placeholder="Mã đơn vị" [disabled]="isFirst" formControlName="isurranceCode"
+                  <input nz-input placeholder="Mã đơn vị" formControlName="isurranceCode"
                     (keyup)="handleUpperCase('isurranceCode')" />
                   <ng-template #errorManageUnitCode let-control>
                     <ng-container *ngIf="control.hasError('required')">
@@ -491,7 +491,7 @@
           <div nz-row [nzGutter]="8" *ngIf="isFirst">
             <nz-collapse [nzBordered]="false" class="collapse-attachment-files">
               <nz-collapse-panel [nzActive]="true" class="collapse-attachment" [nzHeader]="attachmentHeader">
-                <app-file-attachment class="app-file-attachment" [files]="files"
+                <app-file-attachment *ngIf="selectedTab == 'register'" class="app-file-attachment" [files]="files"
                   [rowDefault]="'Giấy phép đăng ký kinh doanh'" (onSelectedFileChanged)="handleFileSelected($event)">
                 </app-file-attachment>
               </nz-collapse-panel>

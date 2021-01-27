@@ -12,7 +12,7 @@ import {
 } from '@app/core/services';
 import { eventEmitter } from '@app/shared/utils/event-emitter';
 import { getBirthDay } from '@app/shared/utils/custom-validation';
-import { forkJoin } from 'rxjs';
+import { forkJoin, Observable, Subscription } from 'rxjs';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { DomSanitizer } from '@angular/platform-browser';
 
@@ -26,6 +26,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 
 export class RegisterIvanRegisterComponent implements OnInit {
   @Input() isSwichVendor: boolean;
+  @Input() tabEvents: Observable<any>;
   registerIvanData: any[] = [];
   registerForm: FormGroup;
   isFirst: boolean = false;
@@ -48,6 +49,7 @@ export class RegisterIvanRegisterComponent implements OnInit {
   dataStandard: string;
   useDate: string;
   dataBonus: string;
+  selectedTab: string = '';
   authenticationToken: string;
   contract: any = {};
   contractDetail: any = {};
@@ -56,7 +58,7 @@ export class RegisterIvanRegisterComponent implements OnInit {
   times: any[] = [];
   timer: any;
   loaddingToken: boolean = false;
-
+  tabSubscription: Subscription;
   panel: any = {
     general: { active: false },
     attachment: { active: false }
@@ -119,7 +121,8 @@ export class RegisterIvanRegisterComponent implements OnInit {
       {
         validator: MustMatch('emailOfContract', 'emailConfirm')
       });
-    
+
+    this.tabSubscription = this.tabEvents.subscribe((data) => this.handleTabChanged(data));  
     this.getFullHeight();
     this.InitializeData();
     this.changeHasToken('0');
@@ -135,9 +138,19 @@ export class RegisterIvanRegisterComponent implements OnInit {
     });
   }
 
+//   private changeSalary(event) {
+//     if(event > 0) {
+//      this.employeeForm.get('ratio').disable();
+//      this.employeeForm.get('ratio').setValue(0);
+//      this.employeeForm.controls["ratio"].setValidators([Validators.pattern(REGEX.ONLY_NUMBER_INCLUDE_DECIMAL)]);
+//     }else {
+//       this.employeeForm.get('ratio').enable();
+//       this.employeeForm.controls["ratio"].setValidators([Validators.required,Validators.min(1), Validators.max(13), Validators.pattern(REGEX.ONLY_NUMBER_INCLUDE_DECIMAL)]);
+//     }
+//  }
+
   changeIsFirst(value) {
     this.isFirst = value;
-
     if (value) {
       // this.registerForm.get('companyType').setValidators(Validators.required);
       // this.registerForm.get('companyType').setValidators(Validators.required);
@@ -147,6 +160,7 @@ export class RegisterIvanRegisterComponent implements OnInit {
       this.registerForm.get('issued').setValidators(Validators.required);
       this.registerForm.get('note').setValidators(Validators.required);
       this.registerForm.get('note').setValidators(Validators.required);
+      this.registerForm.get('isurranceCode').disable();
       this.registerForm.get('isurranceCode').clearValidators();
       this.registerForm.get('isurranceCode').markAsPristine();
       
@@ -157,13 +171,13 @@ export class RegisterIvanRegisterComponent implements OnInit {
     } else {
       // this.registerForm.get('companyType').clearValidators();
       // this.registerForm.get('companyType').markAsPristine();
+      this.registerForm.get('isurranceCode').enable();
       this.registerForm.get('license').clearValidators();
       this.registerForm.get('license').markAsPristine();
       this.registerForm.get('issued').clearValidators();
       this.registerForm.get('issued').markAsPristine();
       this.registerForm.get('note').clearValidators();
       this.registerForm.get('note').markAsPristine();
-      this.registerForm.get('isurranceCode').setValidators(Validators.required);
       this.registerForm.get('isurranceCode').setValidators(Validators.required);
       
     }
@@ -173,7 +187,6 @@ export class RegisterIvanRegisterComponent implements OnInit {
 
   save() {
     this.isSubmit = true;
-    this.isSpinning = true;
     for (const i in this.registerForm.controls) {
       this.registerForm.controls[i].markAsDirty();
       this.registerForm.controls[i].updateValueAndValidity();
@@ -183,6 +196,7 @@ export class RegisterIvanRegisterComponent implements OnInit {
     if (this.registerForm.invalid || this.formContractIsvalid) {
       return;
     }
+    
     if(this.isFirst && this.fileUpload.length < 1) {
       this.modalService.error({
         nzTitle: 'Lỗi đăng ký',
@@ -194,7 +208,7 @@ export class RegisterIvanRegisterComponent implements OnInit {
     
     const fromData = this.getData();
     this.contractService.create(fromData).subscribe(data => {
-      this.isSpinning = false;
+      this.isSpinning = true;
       if (fromData.privateKey === '' || fromData.privateKey === undefined) {
         
         this.modalService.success({
@@ -213,7 +227,7 @@ export class RegisterIvanRegisterComponent implements OnInit {
           }
         });
       }
-      
+      this.isSpinning = false;
       this.router.navigate([this.authenticationService.currentCredentials.role.defaultUrl]);
     });
     this.isSpinning = false;
@@ -349,6 +363,9 @@ export class RegisterIvanRegisterComponent implements OnInit {
 
   get hasToken() {
     return this.registerForm.get('hasToken').value;
+  }
+  handleTabChanged({selected}) {
+    this.selectedTab = selected;
   }
 
   handleFormValuesChanged(data) {

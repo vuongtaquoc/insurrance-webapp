@@ -335,7 +335,7 @@ export const TABLE_HEADER_COLUMNS = [{
 },{
   type: 'hidden',
   width: 140,
-  title: 'key',
+  title: 'key CCC',
   key: 'soTienNSDP',
   column: 'soTienNSDP',
 }

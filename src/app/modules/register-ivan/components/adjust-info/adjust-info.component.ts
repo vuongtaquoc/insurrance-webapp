@@ -12,7 +12,7 @@ import {
 } from '@app/core/services';
 import { eventEmitter } from '@app/shared/utils/event-emitter';
 import { getBirthDay } from '@app/shared/utils/custom-validation';
-import { forkJoin } from 'rxjs';
+import { forkJoin, Observable, Subscription } from 'rxjs';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { DomSanitizer } from '@angular/platform-browser';
 
@@ -26,6 +26,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 
 export class RegisterIvanAdjustInfoComponent implements OnInit {
   @Input() isSwichVendor: boolean;
+  @Input() tabEvents: Observable<any>;
   registerIvanData: any[] = [];
   registerForm: FormGroup;  
   files: any[] = [];
@@ -44,6 +45,7 @@ export class RegisterIvanAdjustInfoComponent implements OnInit {
   wards: City[] = [];
   fileUpload: any = [];
   amount: number;
+  selectedTab: string = '';
   dataStandard: string;
   useDate: string;
   dataBonus: string;
@@ -55,7 +57,7 @@ export class RegisterIvanAdjustInfoComponent implements OnInit {
   times: any[] = [];
   timer: any;
   loaddingToken: boolean = false;
-
+  tabSubscription: Subscription;
   panel: any = {
     general: { active: false },
     attachment: { active: false }
@@ -116,7 +118,7 @@ export class RegisterIvanAdjustInfoComponent implements OnInit {
       {
         validator: MustMatch('emailOfContract', 'emailConfirm')
       });
-
+    this.tabSubscription = this.tabEvents.subscribe((data) => this.handleTabChanged(data));  
     this.getFullHeight();
     this.InitializeData();
     this.changeHasToken('0');
@@ -130,6 +132,10 @@ export class RegisterIvanAdjustInfoComponent implements OnInit {
     this.registerForm.patchValue({
       [key]: value.toUpperCase()
     });
+  }
+
+  handleTabChanged({selected}) {
+    this.selectedTab = selected;
   }
 
   changeIsFirst(value) {
@@ -189,7 +195,7 @@ export class RegisterIvanAdjustInfoComponent implements OnInit {
   }
 
   private getFullHeight() {
-    return '55%';
+    return '47%';
   }
 
   InitializeData() {

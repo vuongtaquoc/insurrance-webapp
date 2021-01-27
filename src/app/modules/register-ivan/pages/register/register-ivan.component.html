@@ -14,7 +14,7 @@
 
       <div class="register-ivan-form">
         <div class="register-ivan-form__content" [ngClass]="{'page-declarations-hide-last-tab': !checked}">
-          <nz-tabset class="register-ivan-tabset" [nzSelectedIndex]="2">
+          <nz-tabset class="register-ivan-tabset" [nzSelectedIndex]="2" (nzSelectChange)="handleSelectTab($event)">
             <nz-tab nzTitle="Điều khoản">
               <app-register-ivan-proviso  class="app-register-ivan-proviso"></app-register-ivan-proviso>
             </nz-tab><!-- Tab 1 -->
@@ -24,12 +24,12 @@
             </nz-tab><!-- Tab 2 -->
 
             <nz-tab nzTitle="Hồ sơ đăng ký sử dụng dịch vụ I-VAN">
-              <app-register-ivan-register [isSwichVendor] = "checked" class="app-register-ivan-register">
+              <app-register-ivan-register  [tabEvents]="tabSubject.asObservable()" [isSwichVendor] = "checked" class="app-register-ivan-register">
               </app-register-ivan-register>
             </nz-tab><!-- Tab 3 -->
 
             <nz-tab nzTitle="Hồ sơ Thay đổi, bổ sung thông tin đăng ký sử dụng dịch vụ I-VAN">
-              <app-register-ivan-adjust-info [isSwichVendor] = "checked" class="app-register-ivan-register">
+              <app-register-ivan-adjust-info [tabEvents]="tabSubject.asObservable()" [isSwichVendor] = "checked" class="app-register-ivan-register">
               </app-register-ivan-adjust-info>
             </nz-tab><!-- Tab 3 -->
 

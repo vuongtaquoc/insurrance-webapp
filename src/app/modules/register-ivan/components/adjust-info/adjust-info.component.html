@@ -411,6 +411,54 @@
             </div><!-- col -->
           </div><!-- END ROW -->
           <!-- ROW START -->
+          <!-- ROW START -->
+          <div nz-row [nzGutter]="8" >
+            <div nz-col [nzSpan]="24">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="4">
+                Nội dung TĐ, yêu cầu
+                </nz-form-label>
+                <nz-form-control class="ant-col-offset-1-edit" [nzSpan]="19" nzOffset="1"
+                  [nzErrorTip]="errorNoteChange">
+                  <input nz-input placeholder="Địa chỉ giao dịch" formControlName="note" />
+                  <ng-template #errorNoteChange let-control>
+                    <ng-container *ngIf="control.hasError('required')">
+                      Nội dung không để trống
+                    </ng-container>
+                  </ng-template>
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+          </div><!-- END ROW -->
+
+          <!-- ROW START -->
+          <div nz-row [nzGutter]="8" >
+            <div nz-col [nzSpan]="24">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzSpan]="4">
+                  Địa chỉ nhận hs bưu chính
+                </nz-form-label>
+                <nz-form-control class="ant-col-offset-1-edit" [nzSpan]="19" nzOffset="1">
+                  <input nz-input placeholder=" Địa chỉ giao nhận hs bưu chính" formControlName="addressReception" />
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+          </div><!-- END ROW -->
+          <div nz-row [nzGutter]="8">
+            <nz-collapse [nzBordered]="false" class="collapse-attachment-files">
+              <nz-collapse-panel [nzActive]="false" class="collapse-attachment" [nzHeader]="attachmentHeader">
+                <app-file-attachment *ngIf="selectedTab == 'adjust'" class="app-file-attachment" [files]="files"
+                   (onSelectedFileChanged)="handleFileSelected($event)">
+                </app-file-attachment>
+              </nz-collapse-panel>
+            </nz-collapse>
+
+            <div class="attachment-header-custom">
+              <ng-template #attachmentHeader>
+                Tài liệu kèm theo
+              </ng-template>
+            </div>
+          </div><!-- END ROW -->
 
           <div class="register-certificate">
             <h3 class="employee-form__group-title employee-form__group-title--disabled">
