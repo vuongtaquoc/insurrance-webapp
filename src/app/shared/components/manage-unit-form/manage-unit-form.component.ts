@@ -20,6 +20,9 @@ import { REGEX, CRON_TIMES, schemaSign } from '@app/shared/constant';
 })
 export class ManageUnitFormComponent implements OnInit, OnDestroy {
     @Input() companyInfo: any = {};
+    isShowObjectType: any = true;
+    isShowCalculationType: any = true;
+    isShowCoefficient: any = true;
 
     form: FormGroup;
     cities: City[] = [];
@@ -38,7 +41,7 @@ export class ManageUnitFormComponent implements OnInit, OnDestroy {
     times: any[] = [];
     timer: any;
     loaddingToken: boolean = false;
-    benefitLevels:  any;
+    benefitLevels: any;
     coefficients: any;
     calculationTypes: any;
 
@@ -67,10 +70,10 @@ export class ManageUnitFormComponent implements OnInit, OnDestroy {
         const companyInfo = this.companyInfo;
         this.departments = companyInfo.departments ? companyInfo.departments : [];
         this.form = this.formBuilder.group({
-            cityCode: [{value:companyInfo.cityCode, disabled: true }, [Validators.required]],
-            isurranceDepartmentCode: [{value:companyInfo.isurranceDepartmentCode, disabled: true }, [Validators.required]],
+            cityCode: [{ value: companyInfo.cityCode, disabled: true }, [Validators.required]],
+            isurranceDepartmentCode: [{ value: companyInfo.isurranceDepartmentCode, disabled: true }, [Validators.required]],
             salaryAreaCode: [companyInfo.salaryAreaCode, [Validators.required]],
-            isurranceCode: [{value:companyInfo.isurranceCode, disabled: true }, [Validators.required]],
+            isurranceCode: [{ value: companyInfo.isurranceCode, disabled: true }, [Validators.required]],
             name: [companyInfo.name, [Validators.required]],
             address: [companyInfo.address, [Validators.required]],
             addressRegister: [companyInfo.addressRegister, [Validators.required]],
@@ -123,7 +126,7 @@ export class ManageUnitFormComponent implements OnInit, OnDestroy {
             this.coefficients = coefficients;
             this.calculationTypes = calculationTypes;
         });
-        
+
         this.loading = true;
         this.buildShemaURL();
     }
@@ -142,7 +145,7 @@ export class ManageUnitFormComponent implements OnInit, OnDestroy {
         if (this.checkDuplicateDepartment()) {
             return;
         }
-        
+
         if (this.form.invalid) {
             return;
         }
@@ -254,6 +257,8 @@ export class ManageUnitFormComponent implements OnInit, OnDestroy {
 
 
     changeGroup(value) {
+
+
         if (value === '01' || value === '06' || value === '07') {
             this.form.get('districtCode').clearValidators();
             this.form.get('districtCode').markAsPristine();
@@ -293,8 +298,30 @@ export class ManageUnitFormComponent implements OnInit, OnDestroy {
             this.form.get('wardsCode').markAsPristine();
         }
 
+        this.hideControl(value);
+
     }
 
+    hideControl(value) {
+        switch (value) {
+            case "01":
+            case "07":
+                this.isShowObjectType = this.isShowCalculationType = this.isShowCoefficient = false;
+                break;
+
+            case "05":
+                this.isShowCoefficient = false;
+                this.isShowObjectType = this.isShowCalculationType = true;
+                break;
+            case "06":
+                this.isShowObjectType = this.isShowCalculationType = false;
+                this.isShowCoefficient = true;
+                break;
+            default:
+                this.isShowObjectType = this.isShowCalculationType = this.isShowCoefficient = true;
+                break;
+        }
+    }
 
     handleUpperCase(key) {
         const value = this.form.value[key];
@@ -302,7 +329,7 @@ export class ManageUnitFormComponent implements OnInit, OnDestroy {
         this.form.patchValue({
             [key]: value.toUpperCase()
         });
-    }  
+    }
 
     checkDuplicateDepartment() {
         let isDup = false;
@@ -329,36 +356,36 @@ export class ManageUnitFormComponent implements OnInit, OnDestroy {
         let shemaSign = window['schemaSign'] || schemaSign;
         shemaSign = shemaSign.replace('token', this.authenticationToken);
         this.shemaUrl = shemaSign.replace('declarationId', 'sign');
-      }
-    
+    }
+
     cronJob() {
 
-        if(this.loaddingToken) {
+        if (this.loaddingToken) {
 
             this.timer = setTimeout(() => {
-            this.getTokenInfo();
-            this.cronJob();
-        
-            },CRON_TIMES);
-        
-        }else {
+                this.getTokenInfo();
+                this.cronJob();
+
+            }, CRON_TIMES);
+
+        } else {
             clearTimeout(this.timer);
         }
     }
 
     private getTokenInfo() {
-    
+
         const companyId = this.authenticationService.currentCredentials.companyInfo.id;
         this.companyService.getCompanyInfo(companyId).subscribe(data => {
-          this.form.patchValue({
-            privateKey: data.privateKey,
-            vendorToken: data.vendorToken,
-            fromDate: data.fromDate,
-            expired: data.expired,       
-          });  
-    
-          this.loaddingToken = false;
+            this.form.patchValue({
+                privateKey: data.privateKey,
+                vendorToken: data.vendorToken,
+                fromDate: data.fromDate,
+                expired: data.expired,
+            });
+
+            this.loaddingToken = false;
         });
-    
-      }
+
+    }
 }
