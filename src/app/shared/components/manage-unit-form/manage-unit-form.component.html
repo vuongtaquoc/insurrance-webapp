@@ -372,12 +372,11 @@
           </div><!-- col -->
         </div><!-- END ROW -->
         <div nz-row [nzGutter]="10">
-          <div nz-col [nzSpan]="isShowCoefficient ? 12: 24" *ngIf="isShowCalculationType">
+          <div nz-col [nzSpan]="24" *ngIf="isShowCalculationType">
             <nz-form-item>
-              <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="isShowCoefficient ? 10: 5">Hình thức tính
+              <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="5">Hình thức tính
               </nz-form-label>
-              <nz-form-control [nzSpan]="isShowCoefficient ? 13: 19" class="margin-left-1p"
-                nzErrorTip="Hình thức tính không để trống">
+              <nz-form-control [nzSpan]="19" nzErrorTip="Hình thức tính không để trống">
                 <nz-select nzShowSearch formControlName="calculationType" nzAllowClear nzPlaceHolder="Lựa chọn">
                   <nz-option [nzValue]="calculationType.id" [nzLabel]="calculationType.name"
                     *ngFor="let calculationType of calculationTypes"></nz-option>
@@ -386,10 +385,14 @@
               </nz-form-control>
             </nz-form-item>
           </div><!-- col -->
-          <div nz-col [nzSpan]="12" *ngIf="isShowCoefficient">
+      
+        </div><!-- END ROW -->
+
+        <div nz-row [nzGutter]="10">
+          <div nz-col [nzSpan]="24" *ngIf="isShowCoefficient">
             <nz-form-item>
-              <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">Chuẩn nghèo(CN)</nz-form-label>
-              <nz-form-control [nzSpan]="14" class="margin-left-1p" nzErrorTip="Hình thức tính không để trống">
+              <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="5">Chuẩn nghèo(CN)</nz-form-label>
+              <nz-form-control [nzSpan]="7" nzErrorTip="Hình thức tính không để trống">
                 <nz-select nzShowSearch formControlName="coefficient" nzAllowClear nzPlaceHolder="Lựa chọn">
                   <nz-option [nzValue]="coefficient.id" [nzLabel]="coefficient.name"
                     *ngFor="let coefficient of coefficients"></nz-option>
@@ -398,7 +401,8 @@
               </nz-form-control>
             </nz-form-item>
           </div><!-- col -->
-        </div><!-- END ROW -->
+        </div>
+
         <div nz-row [nzGutter]="10">
           <div nz-col [nzSpan]="12">
             <nz-form-item>
