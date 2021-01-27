@@ -602,8 +602,8 @@
               <div nz-col [nzSpan]="12">
                 <nz-form-item>
                   <nz-form-label class="text-left padding-left-2p" nzOffset="2" [nzSpan]="8">Đến ngày</nz-form-label>
-                  <nz-form-control [nzSpan]="14">
-                    <input nz-input readonly formControlName="expired" [nzErrorTip]="errorExpired" />
+                  <nz-form-control [nzSpan]="14" [nzErrorTip]="errorExpired">
+                    <input nz-input readonly formControlName="expired" />
                     <ng-template #errorExpired let-control>
                       <ng-container *ngIf="control.hasError('required')">
                         Đến ngày không được để trống

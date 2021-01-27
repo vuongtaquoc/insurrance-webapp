@@ -5,8 +5,6 @@
     <nz-spin [nzSpinning]="isSpinning" class="register__spinning">
       <div class="register-info">
         <h3 class="employee-form__group-title employee-form__group-title--disabled"> A. Thông tin đơn vị:</h3>
-        <p class="mg-bottom-10 text-color-red">Đơn vị vui lòng nhập chính xác các thông tin dưới đây để đảm bảo giao
-          dịch được với cơ quan BHXH và lập hợp đồng, hóa đơn</p>
         <form nz-form [formGroup]="registerForm">
           <!-- ROW START -->
           <div nz-row [nzGutter]="8">
@@ -51,9 +49,9 @@
           </div><!-- END ROW -->
           <!-- ROW START -->
           <div nz-row [nzGutter]="8">
-            <div nz-col [nzSpan]="12">
+            <div nz-col [nzSpan]="24">
               <nz-form-item>
-                <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">
+                <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="4">
                   Nhóm đối tượng
                   <span class="icon-edit">
                     <a nz-button nzType="primary" nzShape="circle">
@@ -61,7 +59,7 @@
                     </a>
                   </span>
                 </nz-form-label>
-                <nz-form-control [nzSpan]="14" [nzErrorTip]="groupCodeError">
+                <nz-form-control class="ant-col-offset-1-edit" [nzSpan]="19" nzOffset="1" [nzErrorTip]="groupCodeError">
                   <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn" formControlName="groupCode">
                     <nz-option *ngFor="let groupCompany of groupCompanies" [nzLabel]="groupCompany.name"
                       [nzValue]="groupCompany.id"></nz-option>
@@ -73,6 +71,26 @@
                     </ng-container>
                   </ng-template>
 
+                </nz-form-control>
+              </nz-form-item>
+            </div><!-- col -->
+            
+          </div><!-- END ROW -->
+          <!-- ROW START -->
+          <div nz-row [nzGutter]="8">
+            <div nz-col [nzSpan]="12">
+              <nz-form-item>
+                <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">
+                  Mã số BHXH (mã đơn vị)
+                </nz-form-label>
+                <nz-form-control class="margin-left-1p" [nzSpan]="14" [nzErrorTip]="errorManageUnitCode">
+                  <input nz-input placeholder="Mã đơn vị" formControlName="isurranceCode"
+                    (keyup)="handleUpperCase('isurranceCode')" />
+                  <ng-template #errorManageUnitCode let-control>
+                    <ng-container *ngIf="control.hasError('required')">
+                      Mã đơn vị không để trống
+                    </ng-container>
+                  </ng-template>
                 </nz-form-control>
               </nz-form-item>
             </div><!-- col -->
@@ -96,50 +114,32 @@
                 </nz-form-control>
               </nz-form-item>
             </div><!-- col -->
+            
           </div><!-- END ROW -->
           <!-- ROW START -->
           <div nz-row [nzGutter]="8">
+              <div nz-col [nzSpan]="12">
+                  <nz-form-item>
+                      <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">
+                      {{ 'agencies.from.tax' | translate }}
+                    </nz-form-label>
+                    <nz-form-control class="margin-left-1p" [nzSpan]="14" [nzErrorTip]="taxtpl">
+                      <input nz-input placeholder="mã số thuế" formControlName="taxCode"
+                        (keyup)="handleUpperCase('code')" />
+                      <ng-template #taxtpl let-control>
+                        <ng-container *ngIf="control.hasError('required')">
+                          Mã số thuế không để trống
+                        </ng-container>
+                        <ng-container *ngIf="control.hasError('maxlength')">
+                          {{ 'agencies.from.tax' | translate }}chỉ được tối đa 50 ký tự
+                        </ng-container>
+                      </ng-template>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div><!-- col -->
             <div nz-col [nzSpan]="12">
               <nz-form-item>
-                <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">
-                  Mã số BHXH (mã đơn vị)
-                </nz-form-label>
-                <nz-form-control class="margin-left-1p" [nzSpan]="14" [nzErrorTip]="errorManageUnitCode">
-                  <input nz-input placeholder="Mã đơn vị" [disabled]="isFirst" formControlName="isurranceCode"
-                    (keyup)="handleUpperCase('isurranceCode')" />
-                  <ng-template #errorManageUnitCode let-control>
-                    <ng-container *ngIf="control.hasError('required')">
-                      Mã đơn vị không để trống
-                    </ng-container>
-                  </ng-template>
-                </nz-form-control>
-              </nz-form-item>
-            </div><!-- col -->
-            <div nz-col [nzSpan]="12">
-              <nz-form-item>
-                <nz-form-label class="text-left" [nzRequired]="true" nzOffset="2" [nzSpan]="8">
-                  {{ 'agencies.from.tax' | translate }}
-                </nz-form-label>
-                <nz-form-control class="margin-left-1p" [nzSpan]="14" [nzErrorTip]="taxtpl">
-                  <input nz-input placeholder="mã số thuế" formControlName="taxCode"
-                    (keyup)="handleUpperCase('code')" />
-                  <ng-template #taxtpl let-control>
-                    <ng-container *ngIf="control.hasError('required')">
-                      Mã số thuế không để trống
-                    </ng-container>
-                    <ng-container *ngIf="control.hasError('maxlength')">
-                      {{ 'agencies.from.tax' | translate }}chỉ được tối đa 50 ký tự
-                    </ng-container>
-                  </ng-template>
-                </nz-form-control>
-              </nz-form-item>
-            </div><!-- col -->
-          </div><!-- END ROW -->
-          <!-- ROW START -->
-          <div nz-row [nzGutter]="8">
-            <div nz-col [nzSpan]="12">
-              <nz-form-item>
-                <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">
+                  <nz-form-label class="text-left" [nzRequired]="true" nzOffset="2" [nzSpan]="8">
                   Điện thoại cố định
                 </nz-form-label>
                 <nz-form-control [nzSpan]="14" [nzErrorTip]="errorLandlinePhone">
@@ -511,8 +511,8 @@
               <div nz-col [nzSpan]="12">
                 <nz-form-item>
                   <nz-form-label class="text-left padding-left-2p" nzOffset="2" [nzSpan]="8">Đến ngày</nz-form-label>
-                  <nz-form-control [nzSpan]="14">
-                    <input nz-input readonly formControlName="expired" [nzErrorTip]="errorExpired" />
+                  <nz-form-control [nzSpan]="14" [nzErrorTip]="errorExpired" >
+                    <input nz-input readonly formControlName="expired" />
                     <ng-template #errorExpired let-control>
                       <ng-container *ngIf="control.hasError('required')">
                         Đến ngày không được để trống

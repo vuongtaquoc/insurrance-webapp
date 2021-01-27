@@ -173,6 +173,7 @@ export class RegisterIvanRegisterComponent implements OnInit {
 
   save() {
     this.isSubmit = true;
+    this.isSpinning = true;
     for (const i in this.registerForm.controls) {
       this.registerForm.controls[i].markAsDirty();
       this.registerForm.controls[i].updateValueAndValidity();
@@ -193,6 +194,7 @@ export class RegisterIvanRegisterComponent implements OnInit {
     
     const fromData = this.getData();
     this.contractService.create(fromData).subscribe(data => {
+      this.isSpinning = false;
       if (fromData.privateKey === '' || fromData.privateKey === undefined) {
         
         this.modalService.success({
@@ -214,12 +216,12 @@ export class RegisterIvanRegisterComponent implements OnInit {
       
       this.router.navigate([this.authenticationService.currentCredentials.role.defaultUrl]);
     });
-
+    this.isSpinning = false;
   }
 
   private getFullHeight() {
     if(this.isFirst) {
-      return '40%';
+      return '37%';
     } else {
       return '45%'; 
     }
@@ -359,7 +361,7 @@ export class RegisterIvanRegisterComponent implements OnInit {
       ...this.registerForm.value,
       companyId: this.companyId,
       customerId: this.currentCompanyId,
-      isSiwchVendor: this.isSwichVendor,
+      isSiwchVendor: false,
       authorityDate: this.authorityDate,
       isurranceDepartmentName: this.getNameOfDropdown(this.isurranceDepartments, this.registerForm.value.isurranceDepartmentCode),   
       contractDetail: this.contractDetail,

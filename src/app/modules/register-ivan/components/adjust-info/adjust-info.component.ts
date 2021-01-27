@@ -27,8 +27,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 export class RegisterIvanAdjustInfoComponent implements OnInit {
   @Input() isSwichVendor: boolean;
   registerIvanData: any[] = [];
-  registerForm: FormGroup;
-  isFirst: boolean = false;
+  registerForm: FormGroup;  
   files: any[] = [];
   isSubmit: boolean = false;
   companyId: string = '0';
@@ -60,8 +59,7 @@ export class RegisterIvanAdjustInfoComponent implements OnInit {
   panel: any = {
     general: { active: false },
     attachment: { active: false }
-  };
-  formContractIsvalid = false;
+  };  
 
   constructor(
     private formBuilder: FormBuilder,
@@ -135,15 +133,7 @@ export class RegisterIvanAdjustInfoComponent implements OnInit {
   }
 
   changeIsFirst(value) {
-    this.isFirst = value;
-
     if (value) {
-      // this.registerForm.get('companyType').setValidators(Validators.required);
-      // this.registerForm.get('companyType').setValidators(Validators.required);
-      // this.registerForm.get('license').setValidators(Validators.required);
-      // this.registerForm.get('license').setValidators(Validators.required);
-      // this.registerForm.get('note').setValidators(Validators.required);
-      // this.registerForm.get('note').setValidators(Validators.required);
       this.registerForm.get('isurranceCode').clearValidators();
       this.registerForm.get('isurranceCode').markAsPristine();
 
@@ -152,15 +142,8 @@ export class RegisterIvanAdjustInfoComponent implements OnInit {
       });
 
     } else {
-      // this.registerForm.get('companyType').clearValidators();
-      // this.registerForm.get('companyType').markAsPristine();
-      // this.registerForm.get('license').clearValidators();
-      // this.registerForm.get('license').markAsPristine();
-      // this.registerForm.get('note').clearValidators();
-      // this.registerForm.get('note').markAsPristine();
       this.registerForm.get('isurranceCode').setValidators(Validators.required);
       this.registerForm.get('isurranceCode').setValidators(Validators.required);
-
     }
 
     this.getFullHeight();
@@ -168,16 +151,41 @@ export class RegisterIvanAdjustInfoComponent implements OnInit {
 
   save() {
     this.isSubmit = true;
+    this.isSpinning = true;
     for (const i in this.registerForm.controls) {
       this.registerForm.controls[i].markAsDirty();
       this.registerForm.controls[i].updateValueAndValidity();
     }
 
-    eventEmitter.emit('formContract:validFrom');
-    if (this.registerForm.invalid || this.formContractIsvalid) {
+    eventEmitter.emit('formContract:validFrom');     
+    if (this.registerForm.invalid) {
       return;
     }
     const fromData = this.getData();
+    this.contractService.create(fromData).subscribe(data => {
+      this.isSpinning = false;
+      if (fromData.privateKey === '' || fromData.privateKey === undefined) {
+        
+        this.modalService.success({
+          nzTitle: 'Đăng ký thành công',
+          nzContent: 'Chúng tôi sẽ liên hệ lại đơn vị để xác nhận thông tin lập hợp đồng, hóa đơn'
+        });
+
+      } else {
+        this.modalService.confirm({
+          nzTitle: 'Thay đổi, bổ sung thông tin đăng ký thành công, Bạn có muốn nộp tờ khai đăng ký với Cở Quan BHXH?',
+          nzOkText: 'Nộp tờ khai',
+          nzCancelText: 'Không',
+          nzOkType: 'danger',
+          nzOnOk: () => {
+            this.signDeclaration(data);
+          }
+        });
+      }
+      
+      this.router.navigate([this.authenticationService.currentCredentials.role.defaultUrl]);
+    });
+    this.isSpinning = false;
   }
 
   private getFullHeight() {
@@ -317,22 +325,13 @@ export class RegisterIvanAdjustInfoComponent implements OnInit {
       ...this.registerForm.value,
       companyId: this.companyId,
       customerId: this.currentCompanyId,
-      isSiwchVendor: this.isSwichVendor,
+      isSiwchVendor: true,
       authorityDate: this.authorityDate,
       isurranceDepartmentName: this.getNameOfDropdown(this.isurranceDepartments, this.registerForm.value.isurranceDepartmentCode),
       contractDetail: this.contractDetail,
       hasToken: this.hasToken == 1 ? true : false,
       files: this.fileUpload
     };
-
-    if (!this.isFirst) {
-      contracInfo.license = null;
-      contracInfo.note = null;
-      contracInfo.addressReception = null;
-      contracInfo.files = [];
-    } else {
-      contracInfo.isurranceCode = null;
-    }
 
     if (this.hasToken === '0') {
       contracInfo.privateKey = null;
@@ -358,11 +357,6 @@ export class RegisterIvanAdjustInfoComponent implements OnInit {
 
     return birth.format;
   }
-
-  handleValidForm(data) {
-    this.formContractIsvalid = data.result;
-  }
-
 
   private readToken() {
     this.buildShemaURL('sign');
