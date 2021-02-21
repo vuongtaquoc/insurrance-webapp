@@ -92,7 +92,7 @@ export class EmployeeListComponent implements OnInit {
   }
 
   add() {
-
+    const currentCredentials = this.authenticationService.currentCredentials;
     this.isSpinning = true;
     this.employeeService.getPressCreate().subscribe(data => {
       const employee =
@@ -101,6 +101,7 @@ export class EmployeeListComponent implements OnInit {
         rate: data.ratioInsurrance.bhxh,
         paymentMethodCode: data.ratioInsurrance.month,
         orders: data.order,
+        addressWorking: currentCredentials.companyInfo.address,
         bankCode: '',
         registerCityCode: 'all',
         registerDistrictCode: 'all',

@@ -91,7 +91,6 @@ export class DocumentFormComponent implements OnInit {
   }
 
   private  downloadFileUpload(declarationFileInfo: any) {
-
     declarationFileInfo.isDownloading = true;
     this.declarationFileUploadService.downloadDeclarationFile(declarationFileInfo.id).then(response => {
       const fileName =  declarationFileInfo.declaretionName;

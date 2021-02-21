@@ -138,9 +138,15 @@ export class GeneralNormalBaseComponent {
       const employeeExists = declarations.filter(d => d.parentKey === groupInfo.type);
       const accepted = employeeExists.findIndex(e => (e.origin && (e.origin.employeeId || e.origin.id)) === employee.employeeId) === -1;
       // replace
-      employee.gender = employee.gender === '1';
+      if(typeof(employee.gender) !== 'boolean') {
+        employee.gender = employee.gender === '1';
+      }
       employee.employeeIdClone = employee.id;
-      employee.workAddress = this.currentCredentials.companyInfo.address;
+      if (employee.addressWorking !== '') {
+        employee.workAddress = employee.addressWorking;
+      } else {
+        employee.workAddress = this.currentCredentials.companyInfo.address;
+      }
       employee.planCode = groupInfo.planCode;
       employee.note = groupInfo.note;
       if (accepted) {
@@ -206,8 +212,15 @@ export class GeneralNormalBaseComponent {
       this.employeeSelected.forEach(employee => {
         const accepted = declarations.findIndex(e => (e.origin && (e.origin.employeeId || e.origin.id)) === employee.id) === -1;
         // replace
-        employee.gender = employee.gender === '1';
-        employee.workAddress = this.currentCredentials.companyInfo.address;
+        if(typeof(employee.gender) !== 'boolean') {
+          employee.gender = employee.gender === '1';
+        }
+
+        if (employee.addressWorking !== '') {
+          employee.workAddress = employee.addressWorking;
+        } else {
+          employee.workAddress = this.currentCredentials.companyInfo.address;
+        }
         
         if(tableName === 'reissuehealthinsurancecard') {
           employee.hospitalFirstRegistCodeOld = employee.hospitalFirstRegistCode;

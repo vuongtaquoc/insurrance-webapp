@@ -294,8 +294,15 @@ export class ReissueInsuranceCardComponent implements OnInit, OnDestroy {
   }
 
   private setDataToEmployee(employee) {
-    employee.gender = employee.gender === '1';
-    employee.workAddress = this.currentCredentials.companyInfo.address;
+    if(typeof(employee.gender) !== 'boolean') {
+      employee.gender = employee.gender === '1';
+    }
+
+    if (employee.addressWorking !== '') {
+      employee.workAddress = employee.addressWorking;
+    } else {
+      employee.workAddress = this.currentCredentials.companyInfo.address;
+    }
     //employee.note = this.formatNote(employee.isurranceNo);
   }
 

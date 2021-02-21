@@ -7,12 +7,16 @@ import cloneDeep from 'lodash/cloneDeep';
 import * as jexcel from 'jstable-editor/dist/jexcel.js';
 
 import { ApplicationHttpClient } from '@app/core/http';
+import { AuthenticationService } from '@app/core/services/authentication.service';
 
 import { PAGE_SIZE } from '@app/shared/constant';
 
 @Injectable({ providedIn: 'root' })
 export class DeclarationService {
-  constructor(private http: ApplicationHttpClient) {
+  constructor(
+    private http: ApplicationHttpClient,
+    private authService: AuthenticationService
+  ) {
   }
 
   public getDeclarationInitials(pageId, tableHeaderColumns) {
@@ -95,6 +99,18 @@ export class DeclarationService {
 
     return this.http.post('/declarations', body, options);
   }
+
+  public upload(body, options: any = {}) {
+    options.displayLoading = true;
+
+    return this.http.post('/declarations/upload', body, options).pipe(
+      map(detail => {
+        const declaration = detail;       
+        return declaration;
+      })
+    );
+  }
+
 
   public update(id, body, options: any = {}) {
     options.displayLoading = true;
@@ -307,5 +323,13 @@ export class DeclarationService {
       },
       []
     );
+  }
+
+  public downloadFileTemplate(declarationCode: string ) {
+    return this.http.getFile(`/declarations/download-template/${ declarationCode }`, {
+      headers: {
+        token: this.authService.getCredentialToken()
+      }
+    });
   }
 }

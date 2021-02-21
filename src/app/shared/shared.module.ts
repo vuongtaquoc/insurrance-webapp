@@ -62,12 +62,14 @@ import {
   DeclarationResultComponent,
   DeclarationResultOfCompanyComponent,
   DeclarationResultDetailComponent,
+  UploadFormComponent,
 } from './components';
 
 import {
   CardFullHeightDirective,
   EditorAutoSizeDirective,
-  PluploadDirective
+  PluploadDirective,
+  PluploadExcelDirective,
 } from './directives';
 
 @NgModule({
@@ -114,6 +116,7 @@ import {
     CardFullHeightDirective,
     EditorAutoSizeDirective,
     PluploadDirective,
+    PluploadExcelDirective,
     ManageUnitFormComponent,
     DepartmentComponent,
     AcountFormComponent,
@@ -123,6 +126,7 @@ import {
     DeclarationResultComponent,
     DeclarationResultOfCompanyComponent,
     DeclarationResultDetailComponent,
+    UploadFormComponent,
   ],
   exports: [
     FormsModule,
@@ -139,6 +143,7 @@ import {
     CardFullHeightDirective,
     EditorAutoSizeDirective,
     PluploadDirective,
+    PluploadExcelDirective,
     NzCheckboxModule,
     NzToolTipModule,
     ManageUnitFormComponent,
@@ -148,6 +153,7 @@ import {
     DeclarationResultComponent,
     DeclarationResultOfCompanyComponent,
     DeclarationResultDetailComponent,
+    UploadFormComponent,
   ],
   providers: [
     AuthenticationService,
@@ -174,6 +180,7 @@ import {
     DeclarationResultComponent,
     DeclarationResultOfCompanyComponent,
     DeclarationResultDetailComponent,
+    UploadFormComponent,
   ]
 })
 export class SharedModule { }

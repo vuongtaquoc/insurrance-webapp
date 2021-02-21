@@ -20,6 +20,8 @@ export const TABLE_REDUCTION_NESTED_HEADERS = [
     { title: 'Ngày chết', rowspan: '3' },
     { title: 'Quyết định châm dứt HĐLD/ chuyển công tác/nghỉ hưu', colspan: '2', rowspan: '2' },
     { title: 'Ghi chú', rowspan: '3' },
+    { title: 'Nơi làm việc', rowspan: '3' },
+    { title: 'Tĩnh lãi', rowspan: '3' },
   ],
   [
     { title: 'Mã số BHXH', rowspan: '2' },
@@ -156,6 +158,7 @@ export const TABLE_REDUCTION_HEADER_COLUMNS = [{
   type: 'text',
   width: 135,
   title: '(9)',
+  fieldName:'Cấp bập, chức vụ, chức danh nghề',
   validations: {
     required: true,
   },
@@ -240,6 +243,7 @@ export const TABLE_REDUCTION_HEADER_COLUMNS = [{
   sum: true,
   key: 'salary',
   validations: {
+    required: true,
     number: true
   },
   format: (value) => {
@@ -298,13 +302,16 @@ export const TABLE_REDUCTION_HEADER_COLUMNS = [{
   mask: '#,##0',
   // decimal: ',',
   sum: true,
+  suffix: '%',
   key: 'allowanceLevel',
+  fieldName: 'Chức vụ',
   validations: {
+    required: true,
     min: 0,
     max: 99
   },
   format: (value) => {
-    return format.currency(value);
+    return format.currency(value,'0,0.00');
   }
 }, {
   type: 'numeric',
@@ -313,7 +320,10 @@ export const TABLE_REDUCTION_HEADER_COLUMNS = [{
   key: 'allowanceSeniority',
   suffix: '%',
   validations: {
-    number: true
+    number: true,
+    required: true,
+    min: 0,
+    max: 99
   }
 }, {
   type: 'numeric',
@@ -322,7 +332,10 @@ export const TABLE_REDUCTION_HEADER_COLUMNS = [{
   key: 'allowanceSeniorityJob',
   suffix: '%',
   validations: {
-    number: true
+    number: true,
+    required: true,
+    min: 0,
+    max: 99
   }
 }, {
   type: 'text',
@@ -394,6 +407,22 @@ export const TABLE_REDUCTION_HEADER_COLUMNS = [{
   title: '(23)',
   wordWrap: true,
   key: 'reason'
+},{
+  type: 'text',
+  width: 280,
+  title: '(24)',
+  wordWrap: true,
+  key: 'workAddress',
+  fieldName: 'Nơi làm việc',
+  validations: {
+    required: true,
+  },
+},{
+  type: 'checkbox',
+  width: 60,
+  title: '(25)',
+  align: 'center',
+  key: 'interest',
 },{
   type: 'hidden',
   width: 140,

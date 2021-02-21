@@ -1,8 +1,8 @@
 <div class="page-container">
-  <div class="page-card page-increase-labor">
-    <h1>{{declarationCode}} | {{declarationName}}</h1>
-
-    <div class="page-increase-labor__menu-bar">
+    <div class="page-card page-increase-labor">
+      <h1>{{declarationCode}} | {{declarationName}}</h1>
+  
+      <div class="page-increase-labor__menu-bar">
         <div class="page-increase-labor__filter">
           <nz-year-picker [(ngModel)]="year" (ngModelChange)="onChangeYear($event)" nzPlaceHolder="Chọn năm"></nz-year-picker>
         </div>
@@ -15,25 +15,25 @@
           <button nz-button nzType="default"><i nz-icon nzType="delete"></i>Xóa</button> -->
         </div>
       </div><!-- page-increase-labor__menu-bar -->
-  
+    
       <nz-table
         #rowSelectionTable
         nzBordered
         [nzData]="declarations"
         [nzPageSize]="declarations.length"
         [nzShowPagination]="false"
-        class="table ui-table-custom--center table-editor"
+        class="table-editor"
         [nzScroll]="{ y: '400px' }"
       >
-      <thead (nzSortChange)="sort($event)">
+        <thead (nzSortChange)="sort($event)">
           <tr class="ui-table-custom-header">
             <th nzShowSort nzColumnKey="createDate" nzWidth="150px" class="cell-custom-reduction width-12p">Ngày lập</th>
             <th nzShowSort nzColumnKey="documentNo" nzWidth="140px" class="cell-custom-reduction width-7p">Số hồ sơ</th>
             <th nzShowSort nzColumnKey="declarationName" class="cell-custom-reduction">Giấy tờ, biểu mẫu</th>
-            <th nzShowSort nzColumnKey="sendDate" nzWidth="140px" class="cell-custom-reduction width-7p">Ngày nộp</th>
-            <th nzShowSort nzColumnKey="status" nzWidth="180px" class="cell-custom-reduction  width-12p">Kết quả giải quyết</th>
-            <th nzWidth="80px" class="cell-custom-reduction  width-7p">Tờ khai</th>
-            <th nzWidth="100px" class="cell-custom-reduction width-7p">Thao tác</th>
+            <th nzShowSort nzColumnKey="sendDate" nzWidth="150px" class="cell-custom-reduction width-7p">Ngày nộp</th>
+            <th nzWidth="150px" class="cell-custom-reduction width-7p">Trạng thái</th>
+            <th nzShowSort nzColumnKey="status" nzWidth="280px" class="cell-custom-reduction  width-12p">Kết quả BHXH</th>
+            <th nzWidth="140px" class="cell-custom-reduction width-7p">Thao tác</th>
           </tr>
   
           <tr class="ui-table-custom-filter">
@@ -52,7 +52,7 @@
                 <nz-date-picker class="input-filter" [(ngModel)]="param.sendDate" nzPlaceHolder="Tìm kiếm..." nzSize="small" nzFormat="dd/MM/yyyy" (ngModelChange)="handleFilter('sendDate')"></nz-date-picker>
             </th>
             <th class="cell-custom-reduction">
-              <nz-select style="width: 170px;" nzSize="small" nzAllowClear class="input-filter" [(ngModel)]="param.status" (ngModelChange)="handleFilter('status')">
+              <nz-select style="width: 150px;" nzSize="small" nzAllowClear class="input-filter" [(ngModel)]="param.status" (ngModelChange)="handleFilter('status')">
                   <nz-option nzValue="0" [nzLabel]="status[0] | translate"> </nz-option>
                   <nz-option nzValue="1" [nzLabel]="status[1] | translate"></nz-option>
                   <nz-option nzValue="2" [nzLabel]="status[2] | translate"> </nz-option>
@@ -66,15 +66,21 @@
         </thead>
         <tbody>
           <tr *ngFor="let data of rowSelectionTable.data" class="status_{{data.status}}">
-            <td class="text-center">{{ data.createDate }}</td>
+            <td class="text-center">{{ data.sendDate }}</td>
             <td class="text-center">{{ data.documentNo }}</td>
             <td class="text-wrap">{{ data.declarationName }}</td>
-            <td class="text-center">{{ data.sendDate }}</td>
-            <td class="text-center"> {{ status[data.status] | translate }}</td>
+            <td class="text-center">{{ data.createDate }}</td>
+            <td class="text-left">  {{ status[data.status] | translate }}</td>
+            <td class="text-left"> 
+                {{ data.resultSubmit }}
+            </td>
             <td class="text-center">
-                <button nz-button nzType="link" nzBlock (click)="viewDocument(data)" >Xem</button>
-              </td>
-            <td class="text-center">
+                <a (click)="loadResultOfDeclaration(data)"  *ngIf="(data.status === 3)" title="Tra cứu kết quả BHXH" nz-button nzType="link">
+                    <i nz-icon nzType="search" nzTheme="outline"></i>
+                </a>
+                <a (click)="viewDocument(data)"  title="Xem tờ khai" nz-button nzType="link">
+                  <i nz-icon nzType="eye" nzTheme="outline"></i>
+                </a>
               <a [routerLink]="['/declarations/return-payment-organization/' + data.id + '/edit']" nz-button nzType="link">
                 <i nz-icon nzType="edit" nzTheme="outline"></i>
               </a>
@@ -86,3 +92,4 @@
       <app-pagination [total]="total" [selected]="selectedPage" (onPageChange)="pageChange($event)"></app-pagination>
     </div>
   </div>
+  

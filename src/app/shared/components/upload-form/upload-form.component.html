@@ -1,0 +1,40 @@
+<div class="acount-form">
+  <div class="acount-form__content">
+    <form nz-form [formGroup]="accountForm">
+        <div nz-row [nzGutter]="10">
+            <div nz-col [nzSpan]="24">
+              <div nz-col [nzSpan]="24"><span>Tải file Mẫu: &nbsp;</span> <a (click)="downloadFileTemplate()">Tải về</a></div>
+            </div>
+            <div nz-col [nzSpan]="24">
+              <nz-form-item>
+               <nz-form-control [nzSpan]="24" class="margin-left-1p" [nzErrorTip]="errorRepresentation">
+                <nz-input-group nzSearch [nzAddOnAfter]="suffixButton">
+                  <input nz-input placeholder="File Upload" formControlName="fileName"
+                    placeholder="Upload Excel" />
+                </nz-input-group>
+                <ng-template #suffixButton>
+                  <button nz-button class="employee-form__button-search"
+                    pluploadExcel
+                    (onSelectedFileChanged)="handleFileSelected($event)"                   
+                    nzSearch><i nz-icon nzType="paper-clip" nzTheme="outline"></i>Chọn File
+                  </button>
+                </ng-template>    
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+        </div>       
+           
+    </form>
+        <!-- ROW START -->
+  </div>
+  <div class="acount-form__footer" *nzModalFooter>   
+      <button nz-button nzType="default" *ngIf="!isDownloading" (click)="uploadFile()">
+          <i nz-icon nzType="rollback"></i>Upload
+      </button>
+      <ng-template #indicatorTemplate><i nz-icon nzType="loading"></i></ng-template>
+      <nz-spin *ngIf="isDownloading" nzSimple [nzIndicator]="indicatorTemplate"> </nz-spin>
+    <button nz-button nzType="default" *ngIf="!isDownloading" (click)="dismiss()">
+        <i nz-icon nzType="rollback"></i>Đóng
+    </button>
+  </div>
+</div>

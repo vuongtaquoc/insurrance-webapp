@@ -141,8 +141,8 @@
                         <div nz-row [nzGutter]="10">
                           <div nz-col [nzSpan]="24">
                             <nz-form-item>
-                              <nz-form-label class="text-left mg-r-10" [nzSpan]="3">Nơi làm việc</nz-form-label>
-                              <nz-form-control [nzSpan]="21">
+                              <nz-form-label class="text-left mg-r-10"  [nzRequired]="true" [nzSpan]="3">Nơi làm việc</nz-form-label>
+                              <nz-form-control [nzSpan]="21" nzErrorTip="Nơi làm việc không để trống">
                                 <input nz-input placeholder="Nơi làm việc" formControlName="addressWorking" />
                               </nz-form-control>
                             </nz-form-item>

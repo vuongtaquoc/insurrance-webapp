@@ -19,3 +19,4 @@ export * from './file-attachment/file-attachment.component';
 export * from './declaration-result/declaration-result.component';
 export * from './declaration-result-company/declaration-result-company.component';
 export * from './declaration-result-detail/declaration-result-detail.component';
+export * from './upload-form/upload-form.component';

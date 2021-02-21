@@ -134,12 +134,15 @@ export const TABLE_HEADER_COLUMNS = [{
   align: 'left',
   key: 'nationalityCode',
   fieldName: 'Quốc tịch',
-  warnings: {
-    duplicateUserFields: {
-      primary: 'nationalityCode',
-      check: ['employeeId']
-    }
+  validations: {
+    required: true,
   }
+  // warnings: {
+  //   duplicateUserFields: {
+  //     primary: 'nationalityCode',
+  //     check: ['employeeId']
+  //   }
+  // }
 }, {
   type: 'numeric',
   align: 'right',

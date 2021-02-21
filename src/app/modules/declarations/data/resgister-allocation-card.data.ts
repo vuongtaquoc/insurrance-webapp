@@ -28,7 +28,7 @@ export const TABLE_NESTED_HEADERS = [
     { title: 'Trạng thái', rowspan: '2' },
     { title: 'Mã đơn vị KCB', rowspan: '2' },
     { title: 'Tên đơn vị KCB', rowspan: '2' },
-    { title: 'Tỷ lệ NSĐP hỗ trợ(%)', rowspan: '2' },
+    { title: 'Tỷ lệ NSĐP hỗ trợ(%)', columnName: 'tyleNSDP', rowspan: '2' },
     { title: 'Tổ chức, cá nhân khác hỗ trợ(đồng)', rowspan: '2' },
     { title: 'Từ ngày', rowspan: '2' },
     { title: 'Số tháng', rowspan: '2' },
@@ -289,6 +289,7 @@ export const TABLE_HEADER_COLUMNS = [{
   // decimal: ',',
   key: 'salary',
   validations: {
+    required: true,
     number: true
   },
   format: (value) => {
@@ -338,6 +339,12 @@ export const TABLE_HEADER_COLUMNS = [{
   title: 'key CCC',
   key: 'soTienNSDP',
   column: 'soTienNSDP',
+},{
+  type: 'hidden',
+  width: 140,
+  title: 'moneyPersion',
+  key: 'moneyPersion',
+  column: 'moneyPersion',
 }
 ,{
   type: 'hidden',

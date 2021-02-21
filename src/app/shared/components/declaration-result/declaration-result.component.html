@@ -1,43 +1,68 @@
 <div class="declaration-result">
   <div class="declaration-result__content">
   <h2><span>Hồ sơ</span> : {{declarationFileInfo.declarationCode}} | {{declarationFileInfo.declarationName}}</h2>
-  <h1>KẾT QUẢ CÁ BƯỚC XỬ LÝ HỒ SƠ</h1>
+  <h1>Kết quả tiếp nhận hồ sơ </h1>
   <nz-table
       nzBordered
       #ajaxTable
       nzShowSizeChanger
       [nzFrontPagination]="false"
-      [nzData]="declarationFileInfo.resultResearch.detail"
+      [nzData]="resultHeader"
+      [nzLoading]="loading"
+      [nzTotal]="total"
+      [(nzPageIndex)]="pageIndex"
+      [(nzPageSize)]="pageSize"
+      class="table-editor">
+      <thead>
+        <tr>
+          <th>Bước</th>
+          <th>Ngày</th>
+          <th>Mô tả</th>   
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of ajaxTable.data;">
+          <td>{{ data.isurranceDepartmentName }}</td>
+          <td>{{ data.actualReceiptDate }}</td>
+          <td>{{ data.department }}</td>
+        </tr>
+      </tbody>
+    </nz-table>
+        <!-- ROW START -->
+        <h1>Kết quả xử lý hồ sơ </h1>
+        <nz-table
+      nzBordered
+      #ajaxTableDetail
+      nzShowSizeChanger
+      [nzFrontPagination]="false"
+      [nzData]="resultDetail"
       [nzLoading]="loading"
       [nzTotal]="total"
       [(nzPageIndex)]="pageIndex"
       [(nzPageSize)]="pageSize"
       class="table-editor "
-    >
+      >
       <thead>
         <tr>
           <th style="width: 40px;">Bước</th>
-          <th style="width: 200px;">Cơ quan bảo hiểm</th>
-          <th>Phòng ban</th>
-          <th>Nhân viên xử lý</th>
-          <th style="width: 100px;">Xem Kết quả</th>
+          <th style="width: 200px;">Phòng ban</th>
+          <th>Cán bộ tiếp nhận</th>   
+          <th>Ngày nhân thực tế</th>
+          <th>Ngày trả thực tế</th>    
+          <th>Hành động</th>        
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let data of ajaxTable.data;">
+        <tr *ngFor="let data of ajaxTableDetail.data;">
           <td>{{ data.step }}</td>
-          <td>{{ data.isurranceDepartmentName }}</td>
           <td>{{ data.department }}</td>
           <td>{{ data.employeeHandler }}</td>
-          <td style="text-align: center;"> 
-            <a (click)="viewDetail(data)">
-              <i nz-icon nzType="eye" nzTheme="outline"></i>
-             </a>
-          </td>
+          <td>{{ data.actualReceiptDate }}</td>
+          <td>{{ data.actualResponseDate }}</td>
+          <td>{{ data.action }}</td>
         </tr>
       </tbody>
     </nz-table>
-        <!-- ROW START -->
   </div>
   <div class="declaration-result__footer" *nzModalFooter>
     <button nz-button nzType="default" (click)="dismiss()">

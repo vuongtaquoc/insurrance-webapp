@@ -171,10 +171,17 @@ export class GeneralBaseComponent {
     if (childLastIndex > -1) {
       const employeeExists = declarations.filter(d => d.parentKey === groupInfo.type);
       const accepted = employeeExists.findIndex(e => (e.origin && (e.origin.employeeId || e.origin.id)) === employee.employeeId) === -1;
-      // replace
-      employee.gender = employee.gender === '1';
+      // replace     
+      if(typeof(employee.gender) !== 'boolean') {
+        employee.gender = employee.gender === '1';
+      }
+       
       employee.employeeIdClone = employee.id;
-      employee.workAddress = this.currentCredentials.companyInfo.address;
+      if(employee.addressWorking !== '') {
+        employee.workAddress = employee.addressWorking;
+      } else {
+        employee.workAddress = this.currentCredentials.companyInfo.address;
+      }
       employee.planCode = groupInfo.planCode;
       employee.note = groupInfo.note;
       
@@ -226,6 +233,81 @@ export class GeneralBaseComponent {
 
   }
 
+  addEmployeeImport(dataImport, tableName) {
+    const declarations = [ ...this.declarations[tableName].table];
+    dataImport.forEach(employee => {
+      const employeeExists = declarations.filter(d => d.parentKey === employee.categoryCode);
+      const accepted = employeeExists.findIndex(e => (e.origin && (e.origin.employeeId || e.origin.id)) === employee.id) === -1;
+      const parentIndex = findIndex(declarations, d => d.key === employee.categoryCode);
+      const childLastIndex = findLastIndex(declarations, d => d.isLeaf && d.parentKey === employee.categoryCode);
+      
+      if(typeof(employee.gender) !== 'boolean') {
+        employee.gender = employee.gender === 1;
+      }
+      
+      if(employee.planCode && employee.reason === '') {
+        const planConfigInfo = validationColumnsPlanCode[employee.planCode] || {note:{argsColumn: [], message: ''}};
+        const argsColumn = planConfigInfo.note.argsColumn || [] ;
+        const argsMessgae = [];
+        argsColumn.forEach(column => {
+          const firstColumn = column.split('$').shift();
+          let messageBuilder = '';
+          if(employee[firstColumn] !== undefined && employee[firstColumn] !== '') {
+            messageBuilder =  column.split('$')[1] || '';
+            messageBuilder = messageBuilder + employee[firstColumn];
+          }
+          argsMessgae.push(messageBuilder);
+        });
+
+        employee.reason = this.formatNote(planConfigInfo.note.message, argsMessgae);
+      }
+
+      if (accepted) {
+        if (declarations[childLastIndex].isInitialize) {
+          // remove initialize data
+          declarations.splice(childLastIndex, 1);
+
+          declarations.splice(childLastIndex, 0, this.declarationService.getLeaf(declarations[parentIndex], employee, this.headers[tableName].columns));
+        } else {
+          declarations.splice(childLastIndex + 1, 0, this.declarationService.getLeaf(declarations[parentIndex], employee, this.headers[tableName].columns));
+        }
+      }
+    });
+
+    this.updateOrders(declarations);
+    this.declarations[tableName].table = this.declarationService.updateFormula(declarations, this.headers[tableName].columns);
+    const records = this.toTableRecords(declarations);
+    this.declarations[tableName].origin = Object.values(this.updateOrigin(records, tableName));
+
+    this.onChange.emit({
+      action: ACTION.MUNTILEADD,
+      tableName,
+      data: this.declarations[tableName].origin,
+      dataChange : [],
+      columns: this.headers[tableName].columns,
+    });
+
+    // clean employee
+    this.employeeSelected.length = 0;
+    this.tableSubject.next({
+      tableName,
+      type: 'validate'
+    });
+
+    this.tableSubject.next({
+      tableName,
+      type: 'readonly',
+      data: this.declarations.table
+    });
+
+    this.employeeSubject.next({
+      type: 'refesh',
+      status: 'success'
+    });
+
+    eventEmitter.emit('unsaved-changed');
+  }
+
   handleAddEmployee(type, tableName) {
     if (!this.employeeSelected.length) {
       return this.modalService.warning({
@@ -235,17 +317,22 @@ export class GeneralBaseComponent {
     const declarations = [ ...this.declarations[tableName].table];
     const parentIndex = findIndex(declarations, d => d.key === type);
     const childLastIndex = findLastIndex(declarations, d => d.isLeaf && d.parentKey === type);
-
     if (childLastIndex > -1) {
       const employeeExists = declarations.filter(d => d.parentKey === type);
 
       this.employeeSelected.forEach(employee => {
         const accepted = employeeExists.findIndex(e => (e.origin && (e.origin.employeeId || e.origin.id)) === employee.id) === -1;
-
         // replace
         employee.isExitsIsurranceNo = (employee.isurranceNo !== '' && employee.isurranceNo !== null);
-        employee.gender = employee.gender === '1';
-        employee.workAddress = this.currentCredentials.companyInfo.address;
+        if(typeof(employee.gender) !== 'boolean') {
+          employee.gender = employee.gender === '1';
+        }
+
+        if(employee.addressWorking !== '') {
+          employee.workAddress = employee.addressWorking;
+        } else {
+          employee.workAddress = this.currentCredentials.companyInfo.address;
+        }
         employee.planCode = declarations[parentIndex].planDefault;
         if(employee.planCode) {
           employee.rate = declarations[parentIndex].rate;
@@ -262,11 +349,31 @@ export class GeneralBaseComponent {
             argsMessgae.push(messageBuilder);
           });
 
-          employee.note = this.formatNote(planConfigInfo.note.message, argsMessgae);
+          employee.reason = this.formatNote(planConfigInfo.note.message, argsMessgae);
         }
 
         //copy salary
         if(tableName === 'adjustment' || tableName === 'pending' || tableName === 'pendingCovid') {
+          if( employee.allowanceLevel === '' || employee.allowanceLevel === undefined || employee.allowanceLevel === null) {
+            employee.allowanceLevel = 0;
+          }
+
+          if( employee.allowanceOther === '' || employee.allowanceOther === undefined || employee.allowanceOther === null) {
+            employee.allowanceOther = 0;
+          }
+
+          if( employee.allowanceSalary === '' || employee.allowanceSalary === undefined || employee.allowanceSalary === null) {
+            employee.allowanceSalary = 0;
+          }
+
+          if( employee.allowanceSeniority === '' || employee.allowanceSeniority === undefined || employee.allowanceSeniority === null) {
+            employee.allowanceSeniority = 0;
+          }
+
+          if( employee.allowanceSeniorityJob === '' || employee.allowanceSeniorityJob === undefined || employee.allowanceSeniorityJob === null) {
+            employee.allowanceSeniorityJob = 0;
+          }
+
           employee.allowanceAdditionalNew = employee.allowanceAdditional;
           employee.allowanceLevelNew = employee.allowanceLevel;
           employee.allowanceOtherNew = employee.allowanceOther;

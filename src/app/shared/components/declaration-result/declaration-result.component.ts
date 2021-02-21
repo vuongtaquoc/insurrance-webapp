@@ -12,7 +12,6 @@ import { City, District, Wards } from '@app/core/models';
 
 import { download } from '@app/shared/utils/download-file';
 import { DATE_FORMAT, MIME_TYPE, schemaSign } from '@app/shared/constant';
-import { DeclarationResultDetailComponent } from '@app/shared/components';
 
 @Component({
   selector: 'app-declaration-result',
@@ -22,6 +21,8 @@ import { DeclarationResultDetailComponent } from '@app/shared/components';
 })
 export class DeclarationResultComponent implements OnInit {
   @Input() declarationFileInfo: any;
+  resultDetail: any = [];
+  resultHeader: any = [];
   shemaUrl: any;
   constructor(
     private formBuilder: FormBuilder,
@@ -32,28 +33,36 @@ export class DeclarationResultComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    
+    this.getResult();
+    this.getDetailInResult();
   }
 
+  getDetailInResult() {
+      this.declarationFileInfo.resultResearch.detail.forEach((data) => {
+        if(data.step === '0') return;
+        data.historyProcessDeclarations.forEach((item) => {
+          this.resultDetail.push( {
+            step: data.step,
+            department: data.department,
+            action: item.action,
+            employeeHandler: item.employeeHandler,
+            timeProcess: item.timeProcess,
+            actualReceiptDate: data.actualReceiptDate,
+            actualResponseDate: data.actualResponseDate,
+          });
+        });
+      });
+  }
+
+  getResult() {
+    this.declarationFileInfo.resultResearch.detail.forEach((data) => { 
+      if(data.step === '0') {
+        this.resultHeader.push(data);
+      }
+    });
+  }
+  
   dismiss(): void {
     this.modal.destroy();
   }
-
-  viewDetail(declarationInfo) {
-    const modalView = this.modalService.create({
-      nzWidth: 680,
-      nzWrapClassName: 'document-modal',
-      nzTitle: declarationInfo.department, 
-      nzContent: DeclarationResultDetailComponent,
-      nzOnOk: (data) => console.log('Click ok', data),
-      nzComponentParams: {
-        declarationInfo
-      }
-    });
-
-    modalView.afterClose.subscribe(result => {
-    });
-
-  }
-  
 }

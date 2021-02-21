@@ -118,7 +118,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
       code: [employee.code, [Validators.required, Validators.maxLength(50), Validators.pattern(REGEX.ONLY_CHARACTER_NUMBER)]],
       departmentCode: employee.departmentCode,
       email: [employee.email, [Validators.pattern(REGEX.EMAIL)]],
-      addressWorking: [employee.addressWorking],
+      addressWorking: [employee.addressWorking, Validators.required],
       registerCityCode: [employee.registerCityCode, Validators.required],
       registerDistrictCode: [employee.registerDistrictCode, Validators.required],
       registerWardsCode: [employee.registerWardsCode, Validators.required],

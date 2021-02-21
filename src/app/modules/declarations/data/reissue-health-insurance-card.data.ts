@@ -63,7 +63,7 @@ export const TABLE_HEADER_COLUMNS = [{
   align: 'right',
   width: 123,
   title: '(3.1)',
-  key: 'isurranceNo',
+  key: 'isurranceCode',
   fieldName: 'Mã số BHXH',
   validations: {
     duplicate: true,

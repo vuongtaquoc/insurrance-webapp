@@ -9,7 +9,7 @@ import * as moment from 'moment';
 import * as _ from 'lodash';
 import { REGEX } from '@app/shared/constant';
 import { PLANCODECOUNTBHXH, PLANCODECOUNTBHYT } from '@app/shared/constant-valid';
-import { DocumentFormComponent } from '@app/shared/components';
+import { DocumentFormComponent, UploadFormComponent } from '@app/shared/components';
 
 import { Declaration, DocumentList } from '@app/core/models';
 import {
@@ -621,6 +621,30 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
     });
   }
 
+  uploadData() {
+    const uploadData = {
+        declarationCode: this.declarationCode,
+        fileName : '',
+    };
+    const modal = this.modalService.create({
+      nzWidth: 680,
+      nzWrapClassName: 'document-modal',
+      nzTitle: 'Thủ tục ' + this.declarationCode + ' Nhập dữ liệu từ excel',
+      nzContent: UploadFormComponent,
+      nzOnOk: (data) => console.log('Click ok', data),
+      nzComponentParams: {
+        uploadData
+      }
+    });
+
+    modal.afterClose.subscribe(result => {
+      if(result) {
+        this.informations = this.fomatInfomation(result.informations);
+        eventEmitter.emit('tableEditor:uploadData', result.declarationDetail);
+      }
+    });
+  }
+
   get submitter() {
     return this.documentForm.get('submitter').value;
   }
@@ -846,10 +870,12 @@ private setDataToFamilyEditor(records: any)
     });
     
     employeeNotExitsIsurranceNo.forEach(emp => {
-
       const firstEmployee = currentFamilis.find(f => f.employeeId === emp.employeeId);
       if(!firstEmployee) {
-        employees.push(emp);
+        const empExisted = employees.find(f => f.employeeId === emp.employeeId);
+        if (!empExisted) {
+          employees.push(emp);
+        }
       } else {
 
         const family = families.find(p => p.employeeId === emp.employeeId);
@@ -1490,7 +1516,7 @@ private setDataToInformationList(records: any)
     const data: any = [];
     row.data = data;
     row.isMaster = false;
-	row.isExitsIsurranceNo = false;
+	  row.isExitsIsurranceNo = false;
     row.origin = {
       isLeaf: true,
 	  isExitsIsurranceNo: false,

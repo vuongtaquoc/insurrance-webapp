@@ -20,10 +20,6 @@ import { REGEX, CRON_TIMES, schemaSign } from '@app/shared/constant';
 })
 export class ManageUnitFormComponent implements OnInit, OnDestroy {
     @Input() companyInfo: any = {};
-    isShowObjectType: any = true;
-    isShowCalculationType: any = true;
-    isShowCoefficient: any = true;
-
     form: FormGroup;
     cities: City[] = [];
     isurranceDepartments: any;
@@ -91,16 +87,18 @@ export class ManageUnitFormComponent implements OnInit, OnDestroy {
             fromDate: [companyInfo.fromDate, [Validators.required]],
             expired: [companyInfo.expired, [Validators.required]],
             submissionType: [(companyInfo.submissionType || '0').toString(), [Validators.required]],
-            interestCalculation: [(companyInfo.interestCalculation || '0').toString(), [Validators.required]],
+            interestCalculation: [(companyInfo.interestCalculation || '0').toString()],
             groupCode: [companyInfo.groupCode, [Validators.required]],
-            objectType: [companyInfo.objectType, [Validators.required]],
-            calculationType: [(companyInfo.calculationType || '0').toString(), [Validators.required]],
-            coefficient: [(companyInfo.coefficient || '0').toString(), [Validators.required]],
+            objectType: [companyInfo.objectType],
+            calculationType: [(companyInfo.calculationType || '0').toString()],
+            coefficient: [(companyInfo.coefficient || '0').toString()],
             wardsCode: [companyInfo.wardsCode],
             districtCode: [companyInfo.districtCode],
             subjectsCard: [(companyInfo.subjectsCard || '0').toString()],
         });
 
+        this.changeGroup(companyInfo.groupCode, false);
+        this.changeObjectType(companyInfo.objectType);
         const jobs = [
             this.cityService.getCities(),
             this.salaryAreaService.getSalaryAreas(),
@@ -186,6 +184,10 @@ export class ManageUnitFormComponent implements OnInit, OnDestroy {
             currentCopmanyInfo.wardsCode = null;
         }
 
+        if (currentCopmanyInfo.objectType !== 'GD') {
+            currentCopmanyInfo.calculationType = 0;
+        }
+
         return currentCopmanyInfo;
     }
 
@@ -251,13 +253,24 @@ export class ManageUnitFormComponent implements OnInit, OnDestroy {
         });
     }
 
+    get objectType() {
+        return this.form.get('objectType').value;
+    }
+
     get groupCode() {
         return this.form.get('groupCode').value;
     }
 
+    changeObjectType(value) {
+        if (value === 'GD') {
+            this.form.get('calculationType').setValidators(Validators.required);
+        } else {
+            this.form.get('calculationType').clearValidators();
+            this.form.get('calculationType').markAsPristine();
+        }
+    }
 
-    changeGroup(value) {
-
+    changeGroup(value, isChangeValue) {
 
         if (value === '01' || value === '06' || value === '07') {
             this.form.get('districtCode').clearValidators();
@@ -266,12 +279,45 @@ export class ManageUnitFormComponent implements OnInit, OnDestroy {
             this.form.get('wardsCode').markAsPristine();
             this.form.get('subjectsCard').clearValidators();
             this.form.get('subjectsCard').markAsPristine();
-        } else if (value === '02' || value === '05') {
+
+            this.form.get('objectType').clearValidators();
+            this.form.get('objectType').markAsPristine();
+
+            this.form.get('coefficient').clearValidators();
+            this.form.get('coefficient').markAsPristine();
+        }  if ( value === '06') {
+            this.form.get('coefficient').setValidators(Validators.required);
+            this.form.get('districtCode').clearValidators();
+            this.form.get('districtCode').markAsPristine();
+            this.form.get('wardsCode').clearValidators();
+            this.form.get('wardsCode').markAsPristine();
+            this.form.get('subjectsCard').clearValidators();
+            this.form.get('subjectsCard').markAsPristine();
+
+            this.form.get('objectType').clearValidators();
+            this.form.get('objectType').markAsPristine();
+            
+        } else if (value === '02') {
             this.form.get('districtCode').setValidators(Validators.required);
             this.form.get('wardsCode').setValidators(Validators.required);
 
             this.form.get('subjectsCard').clearValidators();
             this.form.get('subjectsCard').markAsPristine();
+            this.form.get('objectType').clearValidators();
+            this.form.get('objectType').markAsPristine();
+
+            this.form.get('coefficient').clearValidators();
+            this.form.get('coefficient').markAsPristine();
+
+        } else if (value === '05') {
+            this.form.get('districtCode').setValidators(Validators.required);
+            this.form.get('wardsCode').setValidators(Validators.required);
+            this.form.get('objectType').setValidators(Validators.required);
+
+            this.form.get('subjectsCard').clearValidators();
+            this.form.get('subjectsCard').markAsPristine();
+            this.form.get('coefficient').clearValidators();
+            this.form.get('coefficient').markAsPristine();
         } else if (value === '03') {
             this.form.get('subjectsCard').setValidators(Validators.required);
 
@@ -279,6 +325,10 @@ export class ManageUnitFormComponent implements OnInit, OnDestroy {
             this.form.get('districtCode').markAsPristine();
             this.form.get('wardsCode').clearValidators();
             this.form.get('wardsCode').markAsPristine();
+            this.form.get('objectType').clearValidators();
+            this.form.get('objectType').markAsPristine();
+            this.form.get('coefficient').clearValidators();
+            this.form.get('coefficient').markAsPristine();
         }
         else if (value === '04') {
             this.form.get('districtCode').setValidators(Validators.required);
@@ -287,7 +337,10 @@ export class ManageUnitFormComponent implements OnInit, OnDestroy {
             this.form.get('wardsCode').markAsPristine();
             this.form.get('subjectsCard').clearValidators();
             this.form.get('subjectsCard').markAsPristine();
-
+            this.form.get('objectType').clearValidators();
+            this.form.get('objectType').markAsPristine();
+            this.form.get('coefficient').clearValidators();
+            this.form.get('coefficient').markAsPristine();
         }
         else {
             this.form.get('districtCode').clearValidators();
@@ -296,31 +349,22 @@ export class ManageUnitFormComponent implements OnInit, OnDestroy {
             this.form.get('subjectsCard').markAsPristine();
             this.form.get('wardsCode').clearValidators();
             this.form.get('wardsCode').markAsPristine();
+            this.form.get('objectType').clearValidators();
+            this.form.get('objectType').markAsPristine();
+            this.form.get('coefficient').clearValidators();
+            this.form.get('coefficient').markAsPristine();
         }
 
-        this.hideControl(value);
-
-    }
-
-    hideControl(value) {
-        switch (value) {
-            case "01":
-            case "07":
-                this.isShowObjectType = this.isShowCalculationType = this.isShowCoefficient = false;
-                break;
-
-            case "05":
-                this.isShowCoefficient = false;
-                this.isShowObjectType = this.isShowCalculationType = true;
-                break;
-            case "06":
-                this.isShowObjectType = this.isShowCalculationType = false;
-                this.isShowCoefficient = true;
-                break;
-            default:
-                this.isShowObjectType = this.isShowCalculationType = this.isShowCoefficient = true;
-                break;
+        if (isChangeValue) {
+            this.form.patchValue({
+                objectType: null,
+                calculationType: null,
+                coefficient: null,
+                interestCalculation: null,
+    
+            });
         }
+        
     }
 
     handleUpperCase(key) {

@@ -198,7 +198,7 @@ export class RegisterAllocationEditorComponent implements AfterViewInit, OnInit,
       ondoubleclickreadonly: (el) => {
         this.modalService.info({
           nzTitle: 'Hướng dẫn',
-          nzContent: 'Hãy chọn NLĐ ở danh sách bên trái để kê khai. Nếu thêm mới NLĐ nhấn dấu + (góc trên bên trái) hoặc sử dụng chức năng Lấy file mẫu và Nạp dữ liệu để thực hiện.'
+          nzContent: 'Hãy chọn NLĐ ở danh sách bên trái để kê khai. Nếu thêm mới NLĐ nhấn dấu + (góc trên bên trái) hoặc sử dụng chức năng Lấy file mẫu và Nhập excel để thực hiện.'
         });
       }
     });
@@ -519,9 +519,11 @@ export class RegisterAllocationEditorComponent implements AfterViewInit, OnInit,
           }
       } else if(column.key === 'fromDateJoin') {
         const indexOfDateSign =  this.columns.findIndex(c => c.key === 'dateSign');
+        const indexOfContractNo =  this.columns.findIndex(c => c.key === 'contractNo');
         const fromdateSignValue = this.spreadsheet.getValueFromCoords(indexOfDateSign, y);
+        const contractNo = this.spreadsheet.getValueFromCoords(indexOfContractNo, y);
         const validationColumn = this.columns[indexOfDateSign];
-        if (cellValue && fromdateSignValue) {
+        if (cellValue && fromdateSignValue && contractNo) {
           const cellValueMoment = moment(cellValue, DATE_FORMAT.FULL);
           const fromDateValueMoment = moment(fromdateSignValue, DATE_FORMAT.FULL);
           const isAfter = fromDateValueMoment.isAfter(cellValueMoment);
@@ -544,9 +546,13 @@ export class RegisterAllocationEditorComponent implements AfterViewInit, OnInit,
             instance.jexcel.validationCell(y, indexOfDateSign, validationColumn.fieldName, validationColumn.validations);
           }
         } else {
-          validationColumn.validations = {
-            required: true
-          };
+          if(contractNo !== '') {
+            validationColumn.validations = {
+              required: true
+            };
+          }else {
+            delete validationColumn.validations.required;
+          }
           validationColumn.fieldName = 'Ngày biên lai';
           instance.jexcel.validationCell(y, indexOfDateSign, validationColumn.fieldName, validationColumn.validations);
         }
@@ -572,19 +578,57 @@ export class RegisterAllocationEditorComponent implements AfterViewInit, OnInit,
             min: 1
           };
         }
-        validationColumn.fieldName = 'Ngày biên lai';
+        validationColumn.fieldName = 'Số tháng';
         instance.jexcel.validationCell(y, indexOfNumberMonthJoin, validationColumn.fieldName, validationColumn.validations);
       } else if (column.key === 'salary') { 
         const validationColumn = this.columns[Number(cell)];
         const indexOfSalary =  this.columns.findIndex(c => c.key === 'salary');
+        const indexOfSumRatio =  this.columns.findIndex(c => c.key === 'sumRatio');
         const salary = this.spreadsheet.getValueFromCoords(indexOfSalary, y);
+        const sumRatio = this.spreadsheet.getValueFromCoords(indexOfSumRatio, y);
         delete validationColumn.validations.min;
+        if (Number(sumRatio) === 0) {
+          validationColumn.validations.min = Number(this.salaryAreas.salaray);
+        }
         if (Number(salary) > 0) {
           validationColumn.validations.min = Number(this.salaryAreas.salaray);
         }
         validationColumn.fieldName = 'Tiền lương';
         instance.jexcel.validationCell(y, cell, validationColumn.fieldName, validationColumn.validations);
-      } 
+      } else if (column.key === 'sumRatio') {
+          const validationColumn = this.columns[Number(cell) -1];
+          if (!validationColumn.readOnly) {
+            const indexOfSumRatio =  this.columns.findIndex(c => c.key === 'sumRatio');
+            const sumRatio = this.spreadsheet.getValueFromCoords(indexOfSumRatio, y);
+            delete validationColumn.validations.min;
+            if (Number(sumRatio) === 0) {
+              validationColumn.validations.min = Number(this.salaryAreas.salaray);
+            }
+            validationColumn.fieldName = 'Tiền lương';
+            instance.jexcel.validationCell(y, Number(cell) -1, validationColumn.fieldName, validationColumn.validations);
+          } else {
+            const validationColumnSumRatio = this.columns[Number(cell)];
+            validationColumnSumRatio.validations.min = 1;
+            validationColumnSumRatio.fieldName = 'Tổng hộ số';
+            instance.jexcel.validationCell(y, cell, validationColumnSumRatio.fieldName, validationColumnSumRatio.validations);
+          }           
+        } else if (column.key === 'contractNo') { 
+          const indexOfDateSign =  this.columns.findIndex(c => c.key === 'dateSign');
+          const indexOfContractNo =  this.columns.findIndex(c => c.key === 'contractNo');
+          const contractNo = this.spreadsheet.getValueFromCoords(indexOfContractNo, y);
+          const validationColumn = this.columns[indexOfDateSign];
+          if (contractNo !== '') {
+            validationColumn.validations = {
+              required: true
+            };
+            validationColumn.fieldName = 'Ngày biên lai';
+            instance.jexcel.validationCell(y, indexOfDateSign, validationColumn.fieldName, validationColumn.validations);
+          }else {
+            delete validationColumn.validations.required;
+            validationColumn.fieldName = 'Ngày biên lai';
+            instance.jexcel.validationCell(y, indexOfDateSign, validationColumn.fieldName, validationColumn.validations);
+          }
+        }
 
       this.handleEvent({
         type: 'validate',
@@ -690,21 +734,24 @@ export class RegisterAllocationEditorComponent implements AfterViewInit, OnInit,
   private validRatio(data: any, rowIndex) {
     const indexOfEmployeeId = this.columns.findIndex(c => c.key === 'employeeId');
     const employeeId = data[indexOfEmployeeId];
-    if (Number(employeeId)===0) return;
+    if (Number(employeeId) === 0) return;
     const indexOfColumnSalary = this.columns.findIndex(c => c.key === 'salary');
-
-    const salary = data[indexOfColumnSalary];
-    const surplus = salary % 50000;
-     
-    // if(surplus > 0 && salary > 0) {
-    //   const fieldName = {
-    //     name: 'Mức thu nhập đóng bảo hiểm',
-    //     otherName:'Mức thu nhập đóng bảo hiểm'
-    //   };      
-    //   const messageError = 'Mức thu nhập trong khoảng từ mức chuản nghèo đến 20 lần lương cơ sở và là bội số của 50.000 NVD';
-    //   this.spreadsheet.setCellError(fieldName, indexOfColumnSalary, rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true, messageError);
-    // }
-
+    const indexOfColumnSumRatio = this.columns.findIndex(c => c.key === 'sumRatio');
+    const salary = data[indexOfColumnSalary];   
+    const sumRatio = data[indexOfColumnSumRatio];
+    if (this.salaryAreas.level === 5) {
+      if (sumRatio == 0) {
+        if (Number(salary) < this.salaryAreas.salaray || Number(salary) > this.salaryAreas.maxSalry) {
+          const fieldName = {
+            name: 'Mức thu nhập lương',
+            otherName:'Mức thu nhập lương'
+          };      
+           
+          const messageError = 'Tiền lương phải nằm trong khoảng ' + this.salaryAreas.salaray + ' đến' + this.salaryAreas.maxSalry;
+          this.spreadsheet.setCellError(fieldName, indexOfColumnSalary, rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true, messageError);
+        }
+      }
+    }
   }
 
   private setReadOnlyByData(data: any) {

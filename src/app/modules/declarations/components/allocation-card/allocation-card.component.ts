@@ -345,9 +345,15 @@ export class AllocationCardComponent implements OnInit, OnDestroy {
         const accepted = employeeExists.findIndex(e => (e.origin && (e.origin.employeeId || e.origin.id)) === employee.id) === -1;
 
         // replace
-        employee.gender = employee.gender === '1';
+        if(typeof(employee.gender) !== 'boolean') {
+          employee.gender = employee.gender === '1';
+        }
         employee.isExitsIsurranceNo = (employee.isurranceNo !== '' && employee.isurranceNo !== null);
-        employee.workAddress = this.currentCredentials.companyInfo.address;
+        if(employee.addressWorking !== '') {
+          employee.workAddress = employee.addressWorking;
+        } else {
+          employee.workAddress = this.currentCredentials.companyInfo.address;
+        }
         employee.planCode = declarations[parentIndex].planDefault;
         employee.tyleNSDP = 0;
         employee.toChuCaNhanHTKhac = 0;
@@ -2084,14 +2090,27 @@ export class AllocationCardComponent implements OnInit, OnDestroy {
         if (!Number(sotienphaidong)) {
           sotienphaidong = 0
         }
-        const ratio =  ((this.currentCredentials.companyInfo.coefficient || 0) *  (this.ratioPayment || 0)) / 100;
+
         let sotienNSNN = records[r][indexOftyleNSNN +1];
-        if(tyleNSNN > 0) {
-          sotienNSNN = ((ratio * (tyleNSNN || 0)) / 100) * (numberMonthJoin || 0);
-          if (!Number(sotienNSNN)) {
-            sotienNSNN = 0
+        const ratio =  ((this.currentCredentials.companyInfo.coefficient || 0) *  (this.ratioPayment || 0)) / 100;
+
+        if (paymentMethodCode === 'TH') { 
+          if(tyleNSNN > 0) {
+            sotienNSNN = this.soNganSNNConThieu(numberMonthJoin, tyleNSNN);
+            if (!Number(sotienNSNN)) {
+              sotienNSNN = 0
+            }
+          }
+        } else {
+          
+          if(tyleNSNN > 0) {
+            sotienNSNN = ((ratio * (tyleNSNN || 0)) / 100) * (numberMonthJoin || 0);
+            if (!Number(sotienNSNN)) {
+              sotienNSNN = 0
+            }
           }
         }
+       
         let sotienNSDP = records[r][indexOftyleNSDP +1];
         if(tyleNSDP > 0) {
           sotienNSDP = ((ratio * (tyleNSDP || 0)) / 100) * (numberMonthJoin || 0);
@@ -2135,6 +2154,15 @@ export class AllocationCardComponent implements OnInit, OnDestroy {
       sotienphaidong += (((this.ratioPayment || 0) *  (salary || 0)) / 100) * Math.pow(1 + this.interestRate, i);
     }
 
+    return Math.round(sotienphaidong);
+  }
+
+  private soNganSNNConThieu(numberMonthJoin, tyleNSNN) {
+    let sotienphaidong = 0;
+    for(let i = 1 ; i<= numberMonthJoin; i++) {
+      sotienphaidong += ((((this.ratioPayment || 0) *  (tyleNSNN || 0)) / 100) * (this.currentCredentials.companyInfo.coefficient || 0)) * Math.pow(1 + this.interestRate, i);
+    }
+    sotienphaidong = sotienphaidong / 100;
     return Math.round(sotienphaidong);
   }
 

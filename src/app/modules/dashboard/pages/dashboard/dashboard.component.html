@@ -12,8 +12,8 @@
             <th nzWidth="150px" class="table__middle cell__header">Ngày gửi</th>
             <th class="table__middle cell__header">Giấy tờ đi kèm</th>
             <th nzWidth="80px" class="table__middle cell__header">Lần gửi</th>
-            <th nzWidth="100px" class="table__middle cell__header">Trạng thái</th>
-            <th nzWidth="300px" class="table__middle cell__header">Kết quả xử lý HS của cơ quan BHXH</th>
+            <th nzWidth="130px" class="table__middle cell__header">Số hồ sơ</th>
+            <th nzWidth="500px" class="table__middle cell__header">Kết quả xử lý HS của cơ quan BHXH</th>
           </tr>
         </thead>
         <tbody>
@@ -29,9 +29,10 @@
               </p>
             </td>
             <td class="text-center">{{document.sendTimes}}</td>
-            <td class="text-center">{{ status[document.satus] | translate }}</td>
+            <!-- <td class="text-center">{{ status[document.satus] | translate }}</td> -->
+            <td class="text-center">{{document.documentNo}}</td>
             <td>
-              <span class="table__document-number">Số hồ sơ: {{document.documentNo}}</span>
+              <p> {{document.description}}</p>
               Tiến độ xử lý: <a class="table__label-detail" (click)="viewResult(document)" >Chi tiết</a>
             </td>
           </tr>

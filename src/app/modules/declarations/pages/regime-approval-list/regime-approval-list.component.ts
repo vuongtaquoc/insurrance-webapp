@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 
-import { DeclarationService, DeclarationConfigService } from '@app/core/services';
+import { DeclarationService, DeclarationConfigService, ExternalService } from '@app/core/services';
 import { Declaration } from '@app/core/interfaces';
 
 import { PAGE_SIZE,  RESULTSUBMIT } from '@app/shared/constant';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { DocumentFormComponent } from '@app/shared/components';
 import * as moment from 'moment';
+import { DeclarationResultComponent } from '@app/shared/components';
 
 @Component({
   selector: 'app-regime-approval-list',
@@ -40,6 +41,7 @@ export class RegimeApprovalListComponent implements OnInit {
     private declarationService: DeclarationService,
     private modalService: NzModalService,
     private declarationConfigService: DeclarationConfigService,
+    private externalService: ExternalService,
   ) {}
 
   ngOnInit() {
@@ -151,6 +153,41 @@ export class RegimeApprovalListComponent implements OnInit {
     });
   }
 
+  private loadResultOfDeclaration(declaration) {
+    if (declaration.documentNo === '' || declaration.documentNo === null) {
+      this.modalService.warning({
+        nzTitle: 'Chứa có mã số hồ sơ cần tra cứu'
+      });
+      return;
+    }
+    
+    const docmentNo = this.replace(declaration.documentNo, '/');
+    this.externalService.getProcessDeclarationDocNo(docmentNo).subscribe(data => {
+      const modal = this.modalService.create({
+        nzWidth: 980,
+        nzWrapClassName: 'document-modal',
+        nzTitle: 'Kết quả xử lý hồ sơ số: ' + data.documentNo,
+        nzContent: DeclarationResultComponent,
+        nzOnOk: (data) => console.log('Click ok', data),
+        nzComponentParams: {
+          declarationFileInfo: data,
+        }
+      });
+  
+      modal.afterClose.subscribe(result => {
+      });
+    });
+  }
+
+  private replace(strValue, charWillbeRemove) {
+    const arrayValue = strValue.split('/');
+    let valueAfterReturn = '';
+    arrayValue.forEach(element => {
+      valueAfterReturn = valueAfterReturn + element;
+    });
+
+    return valueAfterReturn;
+  }
   onChangeYear () {
     if(!moment(this.year,"YYYY").isValid()) {
       this.year = '';

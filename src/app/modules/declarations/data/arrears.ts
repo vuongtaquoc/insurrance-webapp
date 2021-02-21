@@ -236,7 +236,7 @@ export const TABLE_ARREARS_HEADER_COLUMNS = [{
   width: 135,
   wordWrap: true,
   title: '(15)',
-  fieldName: 'Nới làm việc',
+  fieldName: 'Nơi làm việc',
   key: 'workAddress',
   validations: {
     required: true,

@@ -412,8 +412,7 @@ export const TABLE_FAMILIES_HEADER_COLUMNS = [{
   keyMapping: 'isurranceCode',
   fieldName: 'Mã số BHXH',
   validations: {
-    numberLength: 10,
-    required: true
+    numberLength: 10
   }
 }, {
   type: 'dropdown',

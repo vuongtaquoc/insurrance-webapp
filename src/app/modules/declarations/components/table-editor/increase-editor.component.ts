@@ -206,7 +206,7 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
       ondoubleclickreadonly: (el) => {
         this.modalService.info({
           nzTitle: 'Hướng dẫn',
-          nzContent: 'Hãy chọn NLĐ ở danh sách bên trái để kê khai. Nếu thêm mới NLĐ nhấn dấu + (góc trên bên trái) hoặc sử dụng chức năng Lấy file mẫu và Nạp dữ liệu để thực hiện.'
+          nzContent: 'Hãy chọn NLĐ ở danh sách bên trái để kê khai. Nếu thêm mới NLĐ nhấn dấu + (góc trên bên trái) hoặc sử dụng chức năng Lấy file mẫu và Nhập excel để thực hiện.'
         });
       }
     });

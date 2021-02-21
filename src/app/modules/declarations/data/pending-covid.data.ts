@@ -19,6 +19,8 @@ export const TABLE_ADJUST_NESTED_HEADERS = [
     { title: 'Tỷ lệ đóng', rowspan: '3' },
     { title: 'Quyết định/Văn bản chứng minh', colspan: '2', rowspan: '2' },
     { title: 'Ghi chú', rowspan: '3' },
+    { title: 'Nơi làm việc', rowspan: '3' },
+    { title: 'Tĩnh lãi', rowspan: '3' },
   ],
   [
     { title: 'Mã số BHXH', rowspan: '2' },
@@ -230,6 +232,7 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   fieldName: 'Mức lương',
   readOnly: true,
   validations: {
+    required: true,
     number: true
   },
   format: (value) => {
@@ -292,17 +295,18 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   title: '(12.5)',
   mask: '#,##0',
   // decimal: ',',
+  readOnly: true,
   sum: true,
   key: 'allowanceLevelNew',
   fieldName: 'Chức vụ lương',
-  readOnly: true,
+  suffix: '%',
   validations: {
-    number: true,
+    required: true,
     min: 0,
     max: 99
   },
   format: (value) => {
-    return format.currency(value);
+    return format.currency(value,'0,0.00');
   }
 }, {
   type: 'numeric',
@@ -401,13 +405,14 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   sum: true,
   key: 'allowanceLevel',
   fieldName: 'Phụ cấp chức vụ lương mới',
+  suffix: '%',
   validations: {
-    number: true,
+    required: true,
     min: 0,
     max: 99
   },
   format: (value) => {
-    return format.currency(value);
+    return format.currency(value,'0,0.00');
   }
 }, {
   type: 'numeric',
@@ -501,6 +506,22 @@ export const TABLE_ADJUST_HEADER_COLUMNS = [{
   title: '(18)',
   wordWrap: true,
   key: 'reason'
+},{
+  type: 'text',
+  width: 280,
+  title: '(19)',
+  wordWrap: true,
+  key: 'workAddress',
+  fieldName: 'Nơi làm việc',
+  validations: {
+    required: true,
+  },
+},{
+  type: 'checkbox',
+  width: 60,
+  title: '(20)',
+  align: 'center',
+  key: 'interest',
 },
 {
   type: 'hidden',

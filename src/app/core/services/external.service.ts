@@ -44,6 +44,10 @@ export class ExternalService {
     return this.http.get(`/external-sevice/process-document/${declarationFileId}`);
   }
 
+  public getProcessDeclarationDocNo(docummentNo: string): Observable<any> {
+    return this.http.get(`/external-sevice/process-document-no/${docummentNo}`);
+  }
+
   public getProcessDeclarationOfCompany(declarationFileId: string): Observable<any> {
     return this.http.get(`/external-sevice/result-declaration-of-company/${declarationFileId}`);
   }

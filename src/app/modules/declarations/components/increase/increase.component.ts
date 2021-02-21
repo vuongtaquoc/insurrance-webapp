@@ -97,6 +97,11 @@ export class IncreaseComponent extends GeneralBaseComponent implements OnInit, O
     this.handlers.push(eventEmitter.on('tree-declaration:deleteUser', (data) => {
       this.handleUserDeleteTables(data.employee,'increaselabor');
     }));
+
+    this.handlers.push(eventEmitter.on('tableEditor:uploadData', (data) => {
+       this.addEmployeeImport(data,'increaselabor');
+    }));
+    
     this.handlers.push(eventEmitter.on('tree-declaration:updateUser', (data) => {
       this.handleUserUpdateTables(data.employee, 'increaselabor');
     }));

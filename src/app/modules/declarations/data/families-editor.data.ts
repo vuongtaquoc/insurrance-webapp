@@ -154,8 +154,7 @@ export const TABLE_FAMILIES_HEADER_COLUMNS = [{
   key: 'isurranceCode',
   fieldName: 'Mã số BHXH',
   validations: {
-    numberLength: 10,
-    required: true
+    // numberLength: 10,
   }
 }, {
   type: 'dropdown',
@@ -258,7 +257,10 @@ export const TABLE_FAMILIES_HEADER_COLUMNS = [{
   width: 100,
   title: '(22)',
   key: 'relationshipCode',
-  source: []
+  source: [],
+  validations: {
+    required: true
+  }
 },{
   type: 'text',
   width: 120,

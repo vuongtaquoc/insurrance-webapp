@@ -19,6 +19,8 @@ export const TABLE_NESTED_HEADERS = [
     { title: 'Phương án', rowspan: '3' },
     { title: 'Tỷ lệ đóng', rowspan: '3' },
     { title: 'Ghi chú', rowspan: '3' },
+    { title: 'Nơi làm việc', rowspan: '3' },
+    { title: 'Tĩnh lãi', rowspan: '3' },
   ],
   [
     { title: 'Mã số BHXH', rowspan: '2' },
@@ -219,7 +221,7 @@ export const TABLE_HEADER_COLUMNS = [{
     number: true
   },
   format: (value) => {
-    return format.currency(value,'0,0.00');
+    return format.currency(value);
   }
 }, {
   type: 'numeric',
@@ -247,6 +249,7 @@ export const TABLE_HEADER_COLUMNS = [{
   defaultValue:0,
   sum: true,
   key: 'allowanceLevel',
+  suffix: '%',
   fieldName: 'Chức vụ',
   validations: {
     required: true,
@@ -254,7 +257,7 @@ export const TABLE_HEADER_COLUMNS = [{
     max: 99
   },
   format: (value) => {
-    return format.currency(value);
+    return format.currency(value,'0,0.00');
   }
 }, {
   type: 'numeric',
@@ -265,9 +268,10 @@ export const TABLE_HEADER_COLUMNS = [{
   fieldName: 'Thâm niên VK',
   suffix: '%',
   validations: {
-    // number: true,
+    number: true,
+    required: true,
     min: 0,
-    max: 100
+    max: 99
   }
 }, {
   type: 'numeric',
@@ -278,8 +282,10 @@ export const TABLE_HEADER_COLUMNS = [{
   fieldName: 'Thâm niên nghề',
   suffix: '%',
   validations: {
+    number: true,
+    required: true,
     min: 0,
-    max: 100
+    max: 99
   }
 },{
   type: 'text',
@@ -381,6 +387,23 @@ export const TABLE_HEADER_COLUMNS = [{
   wordWrap: true,
   key: 'reason'
 },{
+  type: 'text',
+  width: 280,
+  title: '(18)',
+  wordWrap: true,
+  key: 'workAddress',
+  fieldName: 'Nơi làm việc',
+  validations: {
+    required: true,
+  },
+},{
+  type: 'checkbox',
+  width: 60,
+  title: '(19)',
+  align: 'center',
+  key: 'interest',
+},
+{
   type: 'hidden',
   width: 140,
   title: 'key',
