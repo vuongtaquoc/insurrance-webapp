@@ -20,3 +20,6 @@ export * from './declaration-result/declaration-result.component';
 export * from './declaration-result-company/declaration-result-company.component';
 export * from './declaration-result-detail/declaration-result-detail.component';
 export * from './upload-form/upload-form.component';
+export * from './employee-upload-form/employee-upload-form.component';
+export * from './import-errors/import-errors.component';
+

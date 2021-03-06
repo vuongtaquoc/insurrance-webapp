@@ -40,6 +40,11 @@ export class EmployeeService {
     );
   }
 
+  public upload(body, options: any = {}) {
+    options.displayLoading = true;
+    return this.http.post('/employees/upload', body, options);
+  }
+
   public getEmployees(filters = {}) {
     return this.http.getList('/employees', {
       params: {

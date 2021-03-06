@@ -6,6 +6,9 @@
         <h1>Thông tin người lao động</h1>
         <div class="page-employees__menu-bar">
           <div class="page-employees__group-button">
+              <button nz-button nzType="primary" class="element-form_button-add" (click)="uploadData()">
+                  <i nz-icon nzType="file-excel" nzTheme="outline"></i>
+                  Nhập excel </button>
             <button nz-button nzType="primary" class="element-form_button-add" (click)="add()"><i nz-icon nzType="plus"
                 nzTheme="outline"></i>Thêm người
               lao động</button>
@@ -32,7 +35,6 @@
               <th nzShowSort nzColumnKey="fullName" class="text-center cell-custom">Họ và tên</th>
               <th nzWidth="150px" nzShowSort nzColumnKey="code" class="text-center cell-custom">Mã nhân viên</th>
               <th nzShowSort nzColumnKey="isurranceCode" class="cell-custom">Mã số BHXH</th>
-              <th nzShowSort nzColumnKey="isurranceNo" class="text-center cell-custom">Số sổ BHXH</th>
               <th nzShowSort nzColumnKey="identityCar" class="text-center cell-custom">CMND/HC/TCC</th>
               <th nzShowSort nzColumnKey="birthday" class="text-center cell-custom width-9p">Năm sinh</th>
               <th nzWidth="80px" class="cell-custom width-3p">GT</th>
@@ -47,8 +49,6 @@
                 [(ngModel)]="param.code" (ngModelChange)="handleFilter('code')" /></td>
             <td class="cell-custom"><input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small"
                 [(ngModel)]="param.isurranceCode" (ngModelChange)="handleFilter('isurranceCode')" /></td>
-            <td class="cell-custom"><input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small"
-                [(ngModel)]="param.isurranceNo" (ngModelChange)="handleFilter('isurranceNo')" /></td>
             <td class="cell-custom"><input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small"
                 [(ngModel)]="param.identityCar" (ngModelChange)="handleFilter('identityCar')" /></td>
             <td class="cell-custom"><input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small"
@@ -70,7 +70,6 @@
             <td>{{ data.fullName }}</td>
             <td>{{ data.code }}</td>
             <td>{{ data.isurranceCode }}</td>
-            <td class="text-center">{{ data.isurranceNo }}</td>
             <td>{{ data.identityCar }}</td>
             <td>{{ data.birthday }}</td>
             <td class="text-center">{{ gender[data.gender] | translate }}</td>

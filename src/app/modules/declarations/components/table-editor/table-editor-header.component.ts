@@ -151,7 +151,7 @@ export class TableEditorHeaderComponent implements AfterViewInit, OnInit, OnDest
         if (column.key === 'typeBirthday') {
           const nextColumn = jexcel.getColumnNameFromId([Number(c) + 1, r]);
 
-          instance.jexcel.setValue(nextColumn, '');
+          instance.jexcel.setValue(nextColumn, '', false);
         }
 
 

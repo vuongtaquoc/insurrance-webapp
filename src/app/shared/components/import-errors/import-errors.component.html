@@ -1,0 +1,12 @@
+<div class="message-editors-error" *ngIf="(showDetail)">
+    Lỗi dữ liệu vui lòng kiêm tra lại file dữ liệu
+    <a class="more" (click)="showMore()">Xem chi tiết</a>
+</div>
+<div class="table-editors-error">
+  <div *ngIf="!(showDetail)">
+      <div class="table-editors-error__item" *ngFor="let item of data">
+        - Cột <b style="font-weight: bold;">{{item.column }}</b> STT <b style="font-weight: bold;">{{item.order }}</b>
+        {{item.errorMessages }}
+      </div>
+  </div>
+</div>

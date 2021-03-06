@@ -642,7 +642,7 @@ export class InfomationInsuranceCardComponent implements OnInit, OnDestroy {
       } else if (column.key === 'registerCityCode') {
         this.updateNextColumns(instance, r, '', [ c + 1, c + 2 ]);
       } else if (column.key === 'recipientsCityCode') {
-        this.updateNextColumns(instance, r, '', [ c + 1, c + 2, c + 4, c + 5 ]);
+        this.updateNextColumns(instance, r, '', [ c + 1, c + 2, c + 3]);
       } else if (column.key === 'fullName') {
         clearTimeout(this.timer);
         this.timer = setTimeout(() => {
@@ -833,10 +833,10 @@ export class InfomationInsuranceCardComponent implements OnInit, OnDestroy {
     return this.hospitalService.getHospitals(value).toPromise();
   }
 
-  private updateNextColumns(instance, r, value, nextColumns = []) {
+  private updateNextColumns(instance, r, value, nextColumns = [], force = false) {
     nextColumns.forEach(columnIndex => {
       const columnName = jexcel.getColumnNameFromId([columnIndex, r]);
-      instance.jexcel.setValue(columnName, value);
+      instance.jexcel.setValue(columnName, value, force);
     });
   }
 

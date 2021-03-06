@@ -903,10 +903,10 @@ export class ReissueInsuranceExpireComponent implements OnInit, OnDestroy {
     return this.hospitalService.getHospitals(value).toPromise();
   }
 
-  private updateNextColumns(instance, r, value, nextColumns = []) {
+  private updateNextColumns(instance, r, value, nextColumns = [], force = false) {
     nextColumns.forEach(columnIndex => {
       const columnName = jexcel.getColumnNameFromId([columnIndex, r]);
-      instance.jexcel.setValue(columnName, value);
+      instance.jexcel.setValue(columnName, value, force);
     });
   }
 

@@ -84,12 +84,6 @@ export const TABLE_FAMILIES_HEADER_COLUMNS = [{
   source: [ { id: '0', name: 'Ngày tháng năm' },{ id: '1', name: 'tháng/năm' }, { id: '2', name: 'năm' } ],
   key: 'declarationTypeBirthday',
   keyMapping: 'typeBirthday',
-  warnings: {
-    // duplicateUserFields: {
-    //   primary: 'typeBirthday',
-    //   check: ['employeeId']
-    // }
-  }
 }, {
   type: 'text',
   width: 80,
@@ -136,12 +130,7 @@ export const TABLE_FAMILIES_HEADER_COLUMNS = [{
   key: 'declarationNationalityCode',
   fieldName: 'Quốc tịch',
   keyMapping: 'nationalityCode',
-  warnings: {
-    // duplicateUserFields: {
-    //   primary: 'nationalityCode',
-    //   check: ['employeeId']
-    // }
-  }
+  
 }, {
   type: 'numeric',
   align: 'right',

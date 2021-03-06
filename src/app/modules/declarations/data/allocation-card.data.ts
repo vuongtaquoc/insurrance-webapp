@@ -169,6 +169,7 @@ export const TABLE_HEADER_COLUMNS = [{
   align: 'left',
   wordWrap: true,
   source: [ ],
+  fieldName: 'Phương thức đóng',
   key: 'paymentMethodCode',
   validations: {
     required: true

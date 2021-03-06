@@ -147,7 +147,7 @@ export class RegisterAllocationEditorComponent implements AfterViewInit, OnInit,
         if (column.key === 'typeBirthday') {
           const nextColumn = jexcel.getColumnNameFromId([Number(c) + 1, r]);
 
-          instance.jexcel.setValue(nextColumn, '');
+          instance.jexcel.setValue(nextColumn, '', false);
         }
         this.validIsurrance();
         this.validationCellByOtherCell(value, column, r, instance, c);
@@ -156,6 +156,7 @@ export class RegisterAllocationEditorComponent implements AfterViewInit, OnInit,
           clearTimeout(this.validateTimer);
           this.validateTimer = setTimeout(() => {
             this.validRatio(this.spreadsheet.getJson()[r], r);
+            this.validMoneyPlayer(this.spreadsheet.getJson()[r], r);
           }, 10);
         }
       },
@@ -609,7 +610,7 @@ export class RegisterAllocationEditorComponent implements AfterViewInit, OnInit,
           } else {
             const validationColumnSumRatio = this.columns[Number(cell)];
             validationColumnSumRatio.validations.min = 1;
-            validationColumnSumRatio.fieldName = 'Tổng hộ số';
+            validationColumnSumRatio.fieldName = 'Tổng hệ số';
             instance.jexcel.validationCell(y, cell, validationColumnSumRatio.fieldName, validationColumnSumRatio.validations);
           }           
         } else if (column.key === 'contractNo') { 
@@ -628,7 +629,7 @@ export class RegisterAllocationEditorComponent implements AfterViewInit, OnInit,
             validationColumn.fieldName = 'Ngày biên lai';
             instance.jexcel.validationCell(y, indexOfDateSign, validationColumn.fieldName, validationColumn.validations);
           }
-        }
+        }  
 
       this.handleEvent({
         type: 'validate',
@@ -726,6 +727,7 @@ export class RegisterAllocationEditorComponent implements AfterViewInit, OnInit,
         const isLeaf = row.origin.isLeaf  || row.options.isLeaf;       
         if(!isLeaf) return;
         this.validRatio(row, rowIndex);
+        this.validMoneyPlayer(row, rowIndex);
       });
     }, 10);
 
@@ -779,6 +781,33 @@ export class RegisterAllocationEditorComponent implements AfterViewInit, OnInit,
         this.spreadsheet.setReadonly(Number(rowIndex), indexOfTyleTCCNHTK + 1, true);
       }
     });
+  }
+
+  private validMoneyPlayer(data: any, rowIndex) {    
+    const indexOfEmployeeId = this.columns.findIndex(c => c.key === 'employeeId');
+    const employeeId = data[indexOfEmployeeId];
+    if (Number(employeeId)===0) return;
+
+    const indexOfSoTienNSDP = this.columns.findIndex(c => c.key === 'soTienNSDP');
+    const indexOfTyleNSDP = this.columns.findIndex(c => c.key === 'tyleNSDP');
+    const indexOfToChuCaNhanHTKhac = this.columns.findIndex(c => c.key === 'toChuCaNhanHTKhac');
+    const indexOfMoneyPayment = this.columns.findIndex(c => c.key === 'moneyPayment');
+    const indexOfNumberMonthJoin = this.columns.findIndex(c => c.key === 'numberMonthJoin');
+    const soTienNSDP = data[indexOfSoTienNSDP];
+    const toChuCaNhanHTKhac = data[indexOfToChuCaNhanHTKhac];
+    const moneyPayment = data[indexOfMoneyPayment];
+    const numberMonthJoin = data[indexOfNumberMonthJoin];
+    const totalSubport = Number(soTienNSDP) + Number(toChuCaNhanHTKhac);
+    if(totalSubport > Number(moneyPayment) && Number(numberMonthJoin) > 0 ) {
+      const fieldName = {
+        name: 'Hỗ trợ thêm',
+        otherName:'Hỗ trợ thêm'
+      }; 
+
+      const messageError = 'Tổng mức hỗ trợ phải nhỏ hơn hoặc bằng số tiền phải đóng';
+      this.spreadsheet.setCellError(fieldName, indexOfTyleNSDP, rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true, messageError);
+      this.spreadsheet.setCellError(fieldName, indexOfToChuCaNhanHTKhac, rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true, messageError);
+    }
   }
 
 }

@@ -10,6 +10,7 @@ import * as _ from 'lodash';
 import { validationColumnsPlanCodeBHYT } from '@app/shared/constant-valid';
 import { PLANCODECOUNTBHYT } from '@app/shared/constant-valid';
 import { Declaration, DocumentList } from '@app/core/models';
+import { UploadFormComponent } from '@app/shared/components';
 import {
   CityService,
   DistrictService,
@@ -324,6 +325,57 @@ export class AllocationCardComponent implements OnInit, OnDestroy {
     });
   }
 
+  addEmployeeImport(dataImport) {
+    const declarations = [ ...this.declarations ];
+    let categoryCodeTempl = '';
+    let employeeFirst = {};
+    dataImport.forEach(employee => {
+      console.log(employee);
+      const employeeExists = declarations.filter(d => d.parentKey === employee.categoryCode);
+      const accepted = employeeExists.findIndex(e => (e.origin && (e.origin.employeeId || e.origin.id)) === employee.id) === -1;
+      const parentIndex = findIndex(declarations, d => d.key === employee.categoryCode);
+      const childLastIndex = findLastIndex(declarations, d => d.isLeaf && d.parentKey === employee.categoryCode);
+      
+      if (typeof(employee.gender) !== 'boolean') {
+        employee.gender = employee.gender === 1;
+      }
+      
+      if (employee.planCode && employee.reason === '') {
+        const planConfigInfo = validationColumnsPlanCodeBHYT[employee.planCode] || {note:{argsColumn: [], message: ''}};
+        const argsColumn = planConfigInfo.note.argsColumn || [] ;
+        const argsMessgae = [];
+        argsColumn.forEach(column => {
+          const firstColumn = column.split('$').shift();
+          let messageBuilder = '';
+          if(employee[firstColumn] !== undefined && employee[firstColumn] !== '') {
+            messageBuilder =  column.split('$')[1] || '';
+            messageBuilder = messageBuilder + employee[firstColumn];
+          }
+          argsMessgae.push(messageBuilder);
+        });
+
+        employee.reason = this.formatNote(planConfigInfo.note.message, argsMessgae);
+      }
+
+      if (accepted) {
+        if (declarations[childLastIndex].isInitialize) {
+          // remove initialize data
+          declarations.splice(childLastIndex, 1);
+
+          declarations.splice(childLastIndex, 0, this.declarationService.getLeaf(declarations[parentIndex], employee, this.tableHeaderColumns));
+        } else {
+          declarations.splice(childLastIndex + 1, 0, this.declarationService.getLeaf(declarations[parentIndex], employee, this.tableHeaderColumns));
+        }
+      }
+    });
+
+    this.updateOrders(declarations);
+    this.declarations = this.declarationService.updateFormula(declarations, this.tableHeaderColumns);
+    this.notificeEventValidData('allocationCard');
+    this.notificeEventValidData('families');
+    eventEmitter.emit('unsaved-changed');
+  }
+  
   handleAddEmployee(type) {
     if (!this.employeeSelected.length) {
       return this.modalService.warning({
@@ -2092,8 +2144,7 @@ export class AllocationCardComponent implements OnInit, OnDestroy {
         }
 
         let sotienNSNN = records[r][indexOftyleNSNN +1];
-        const ratio =  ((this.currentCredentials.companyInfo.coefficient || 0) *  (this.ratioPayment || 0)) / 100;
-
+        const ratio =  ((this.currentCredentials.companyInfo.coefficient || 700000) *  (this.ratioPayment || 0)) / 100;
         if (paymentMethodCode === 'TH') { 
           if(tyleNSNN > 0) {
             sotienNSNN = this.soNganSNNConThieu(numberMonthJoin, tyleNSNN);
@@ -2340,6 +2391,29 @@ export class AllocationCardComponent implements OnInit, OnDestroy {
       const notebuild = this.formatNote(planConfigInfo.note.message, argsMessgae);
       this.updateNextColumns(instance, r, notebuild, [indexColumnNote]);
     }, 10);
+  }
+
+  uploadData() {
+    const uploadData = {
+        declarationCode: this.declarationCode
+    };
+    const modal = this.modalService.create({
+      nzWidth: 680,
+      nzWrapClassName: 'document-modal',
+      nzTitle: 'Thủ tục ' + this.declarationCode + ' Nhập dữ liệu từ excel',
+      nzContent: UploadFormComponent,
+      nzOnOk: (data) => console.log('Click ok', data),
+      nzComponentParams: {
+        uploadData
+      }
+    });
+
+    modal.afterClose.subscribe(result => {
+      if(result) {
+        this.informations = this.fomatInfomation(result.informations);
+        this.addEmployeeImport(result.declarationDetail);
+      }
+    });
   }
 
 }

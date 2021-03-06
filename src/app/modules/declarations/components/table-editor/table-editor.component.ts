@@ -146,7 +146,7 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
         if (column.key === 'typeBirthday') {
           const nextColumn = jexcel.getColumnNameFromId([Number(c) + 1, r]);
 
-          instance.jexcel.setValue(nextColumn, '');
+          instance.jexcel.setValue(nextColumn, '', false);
         }
         this.validIsurrance();
         this.validationCellByOtherCell(value, column, r, instance, c);

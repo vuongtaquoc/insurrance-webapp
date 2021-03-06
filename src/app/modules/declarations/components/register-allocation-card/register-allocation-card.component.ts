@@ -9,7 +9,7 @@ import * as moment from 'moment';
 import * as _ from 'lodash';
 import { validationColumnsPlanCode603, RatioFamily } from '@app/shared/constant-valid';
 import { PLANCODECOUNTBHYT } from '@app/shared/constant-valid';
-
+import { UploadFormComponent } from '@app/shared/components';
 import { Declaration, DocumentList } from '@app/core/models';
 import {
   CityService,
@@ -38,7 +38,7 @@ import {
 import { DATE_FORMAT, DOCUMENTBYPLANCODE, REGEX } from '@app/shared/constant';
 import { eventEmitter } from '@app/shared/utils/event-emitter';
 
-import { TABLE_NESTED_HEADERS, TABLE_HEADER_COLUMNS } from '@app/modules/declarations/data/resgister-allocation-card.data';
+import { TABLE_NESTED_HEADERS, TABLE_NESTED_HEADERS_TYPE, TABLE_HEADER_COLUMNS, TABLE_HEADER_COLUMNS_TYPE } from '@app/modules/declarations/data/resgister-allocation-card.data';
 import { TABLE_FAMILIES_NESTED_HEADERS, TABLE_FAMILIES_HEADER_COLUMNS } from '@app/modules/declarations/data/tk1.data';
 import { TABLE_DOCUMENT_NESTED_HEADERS, TABLE_DOCUMENT_HEADER_COLUMNS } from '@app/modules/declarations/data/document-list-editor.data';
 import { TableEditorErrorsComponent } from '@app/shared/components';
@@ -66,8 +66,8 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
   currentCredentials: any;
   documentForm: FormGroup;
   declarations: Declaration[] = [];
-  tableNestedHeaders: any[] = TABLE_NESTED_HEADERS;
-  tableHeaderColumns: any[] = TABLE_HEADER_COLUMNS;
+  tableNestedHeaders: any[] = [];
+  tableHeaderColumns: any[] = [];
   tableNestedHeadersFamilies: any[] = TABLE_FAMILIES_NESTED_HEADERS;
   tableHeaderColumnsFamilies: any[] = TABLE_FAMILIES_HEADER_COLUMNS;
   tableNestedHeadersDocuments: any[] = TABLE_DOCUMENT_NESTED_HEADERS;
@@ -163,9 +163,18 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     const date = new Date();
-    this.currentCredentials = this.authenticationService.currentCredentials;
+    this.currentCredentials = this.authenticationService.currentCredentials;    
     this.calculationType = this.currentCredentials.companyInfo.calculationType;
-    console.log(this.calculationType, this.currentCredentials.companyInfo.calculationType);
+    const objectType = this.currentCredentials.companyInfo.objectType;
+    if (this.calculationType === 1 && objectType === 'GD'){
+      this.tableNestedHeaders = TABLE_NESTED_HEADERS_TYPE;
+      this.tableHeaderColumns = TABLE_HEADER_COLUMNS_TYPE;
+    } else {
+      this.tableNestedHeaders = TABLE_NESTED_HEADERS;
+      this.tableHeaderColumns = TABLE_HEADER_COLUMNS;
+    }
+    
+    console.log(this.calculationType, this.currentCredentials.companyInfo.objectType);
     this.objectType = this.currentCredentials.companyInfo.objectType;
     this.loadAppConfig((data) => {
       this.loadBenefitLevel(data, this.objectType);
@@ -228,7 +237,6 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
       this.updateFilterToColumn(this.tableHeaderColumnsFamilies, 'registerWardsCode', this.getRegisterWardsByDistrictCode);
       this.updateFilterToColumn(this.tableHeaderColumnsFamilies, 'recipientsDistrictCode', this.getRecipientsDistrictsByCityCode);
       this.updateFilterToColumn(this.tableHeaderColumnsFamilies, 'recipientsWardsCode', this.getRecipientsWardsByDistrictCode)
-
       
       // get filter columns
       this.updateFilterToColumn(this.tableHeaderColumns, 'registerDistrictCode', this.getRegisterDistrictsByCityCode);
@@ -339,6 +347,204 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
     });
   }
 
+  addEmployeeImport(dataImport) {
+    const declarations = [ ...this.declarations ];
+    // console.log(this.declarations,'xxxxx');
+    let categoryCodeTempl = '';
+    let employeeFirst = {};
+    dataImport.forEach(employee => {
+
+      if (categoryCodeTempl !== employee.categoryCode) {
+        categoryCodeTempl = employee.categoryCode;
+        employeeFirst = this.getFistEmployeeInDeclaration(this.declarations, categoryCodeTempl);
+      }
+
+      const employeeExists = declarations.filter(d => d.parentKey === employee.categoryCode);
+      const accepted = employeeExists.findIndex(e => (e.origin && (e.origin.employeeId || e.origin.id)) === employee.id) === -1;
+      const parentIndex = findIndex(declarations, d => d.key === employee.categoryCode);
+      const childLastIndex = findLastIndex(declarations, d => d.isLeaf && d.parentKey === employee.categoryCode);
+      
+      if (typeof(employee.gender) !== 'boolean') {
+        employee.gender = employee.gender === 1;
+      }
+      
+      if (employee.planCode && employee.reason === '') {
+        const planConfigInfo = validationColumnsPlanCode603[employee.planCode] || {note:{argsColumn: [], message: ''}};
+        const argsColumn = planConfigInfo.note.argsColumn || [] ;
+        const argsMessgae = [];
+        argsColumn.forEach(column => {
+          const firstColumn = column.split('$').shift();
+          let messageBuilder = '';
+          if(employee[firstColumn] !== undefined && employee[firstColumn] !== '') {
+            messageBuilder =  column.split('$')[1] || '';
+            messageBuilder = messageBuilder + employee[firstColumn];
+          }
+          argsMessgae.push(messageBuilder);
+        });
+
+        if (this.level === 4) {
+          employee.tyleNSDP = 0;
+        }else {
+          employee.tyleNSDP = null;
+        }
+
+        if (this.readOnlySalary) {
+          employee.salary = 0;
+        }
+
+        employee.sumRatio = this.defaultValueRatio;
+        employee.moneyPayment = 0;
+        
+        if (this.parentKeyNotCaculator !== employee.categoryCode) {
+          this.getCaculatorByLevelUpload(employeeFirst, employee);
+        }
+        
+        employee.reason = this.formatNote(planConfigInfo.note.message, argsMessgae);
+      }
+
+      if (accepted) {
+        if (declarations[childLastIndex].isInitialize) {
+          // remove initialize data
+          declarations.splice(childLastIndex, 1);
+
+          declarations.splice(childLastIndex, 0, this.declarationService.getLeaf(declarations[parentIndex], employee, this.tableHeaderColumns));
+        } else {
+          declarations.splice(childLastIndex + 1, 0, this.declarationService.getLeaf(declarations[parentIndex], employee, this.tableHeaderColumns));
+        }
+      }
+    });
+
+    this.updateOrders(declarations);
+    this.declarations = this.declarationService.updateFormula(declarations, this.tableHeaderColumns);
+    this.sumCreateBHXH();
+    this.notificeEventValidData('allocationCard');
+    this.notificeEventValidData('families');
+    eventEmitter.emit('unsaved-changed');
+  }
+
+  private getCaculatorByLevelUpload(employeeFirst, employee) {
+    if(this.level === 1) {
+      this.calculatorSalaryLevel1Upload(employee);
+    } else if(this.level === 2 || this.level === 3 || this.level === 4) {
+       this.calculatorSalaryLevel234Upload(employee);
+    } else {
+      if (this.calculationType === 1) {
+         this.calculatorSalaryOption1Upload(employee, employeeFirst);
+      } else {
+        this.calculatorSalaryOption2Upload(employee, employeeFirst);
+      }
+    }
+  }
+
+  private calculatorSalaryLevel1Upload(employee) {
+      let total = 0;
+      let soTienNSDP = 0;
+      let moneyPersion = 0;
+
+      if (employee.salary > 0) {
+        total = (((employee.salary || 0)  * this.tyleTGBHYT ) / 100) * Number(employee.numberMonthJoin);
+        moneyPersion = (employee.salary || 0);
+      } else {
+        total = ((employee.sumRatio * this.salaryBase * this.tyleTGBHYT) / 100) * Number(employee.numberMonthJoin);
+        moneyPersion = (this.salaryBase * employee.sumRatio);
+      }
+
+      employee.moneyPayment = total;
+      employee.soTienNSDP = 0;
+      employee.tyleNSDP = 0;
+      employee.moneyPersion = moneyPersion;
+  }
+
+  private calculatorSalaryLevel234Upload(employee) {
+      let total = 0;
+      let soTienNSDP = 0;
+      let moneyPersion = 0;
+
+      if (employee.salary > 0) {
+        total = ((((employee.salary || 0)  * this.tyleTGBHYT * (100 - this.tyleNSNN)) / 100) * Number(employee.numberMonthJoin)) /100;
+        moneyPersion = (employee.salary || 0);
+        soTienNSDP =  (((employee.salary * employee.tyleNSDP * this.tyleTGBHYT) / 100) * Number(employee.numberMonthJoin)) / 100;
+      } else {
+        total = (((employee.sumRatio * this.salaryBase * this.tyleTGBHYT * (100 - this.tyleNSNN)) / 100) * Number(employee.numberMonthJoin)) / 100;
+        moneyPersion = (this.salaryBase * employee.sumRatio);
+        soTienNSDP = (((this.salaryBase * employee.tyleNSDP * this.tyleTGBHYT) / 100) * Number(employee.numberMonthJoin)) / 100;
+      }
+
+      employee.moneyPayment = total;
+      employee.soTienNSDP = soTienNSDP;
+      employee.moneyPersion = moneyPersion;
+  }
+
+  private calculatorSalaryOption1Upload(employee, employeeFirst) {
+      
+      const order = employeeFirst.index;
+      employeeFirst.index = employeeFirst.index + 1;
+      const percent = this.getPercent(employeeFirst.index); 
+
+      let total = 0;
+      let soTienNSDP = 0;
+      if (employee.salary > 0) {
+        total = ((((employee.salary || 0)  * this.tyleTGBHYT ) / 100) * Number(employee.numberMonthJoin) * percent.percent) / 100;
+      } else {
+        total = (((employee.sumRatio * this.salaryBase * this.tyleTGBHYT) / 100) * Number(employee.numberMonthJoin) * percent.percent) / 100;
+      }
+
+      if (order === 0) {
+        soTienNSDP = (total * percent.ratio) / 100;
+        employeeFirst.soTienNSDP =  soTienNSDP;
+        employeeFirst.tyleNSDP = percent.percent;
+
+      } else {
+
+        soTienNSDP = employeeFirst.soTienNSDP;
+
+      }
+      
+      const moneyPersion = (this.salaryBase * employee.sumRatio * percent.percent) / 100;
+      employee.moneyPayment = total;
+      employee.soTienNSDP = soTienNSDP;
+      employee.tyleNSDP = percent.ratio; 
+      employee.moneyPersion = moneyPersion;
+  }
+
+  private calculatorSalaryOption2Upload(employee, employeeFirst) {
+      
+      employeeFirst.index  = employeeFirst.index + 1;
+      const percent = this.getPercent(employeeFirst.index); 
+      let total = 0;
+      let soTienNSDP = 0;
+      if (employee.salary > 0) {
+        total = ((((employee.salary || 0)  * this.tyleTGBHYT ) / 100) * Number(employee.numberMonthJoin) * percent.percent) / 100;
+      } else {
+        total = (((employee.sumRatio * this.salaryBase * this.tyleTGBHYT) / 100) * Number(employee.numberMonthJoin) * percent.percent) / 100;
+      }
+
+      soTienNSDP = (total * percent.ratio) / 100;
+      const moneyPersion = (this.salaryBase * employee.sumRatio * percent.percent) / 100;
+      employee.moneyPayment = total;
+      employee.soTienNSDP = soTienNSDP;
+      employee.tyleNSDP = percent.ratio; 
+      employee.moneyPersion = moneyPersion;
+       
+  }
+
+  private getFistEmployeeInDeclaration(declarations, categoryCode) {
+    const result: { index: 0, soTienNSDP: number, tyleNSDP : number } = { index: 0, soTienNSDP: 0, tyleNSDP: 0 };
+    const employeeInCategory = declarations.filter(p => p.isLeaf && p.parentKey === categoryCode && !p.isInitialize);
+    result.index = employeeInCategory.length;
+    const indexOfSoTienNSDP = this.tableHeaderColumns.findIndex(c => c.key === 'soTienNSDP');
+    const indexOfTyleNSDP = this.tableHeaderColumns.findIndex(c => c.key === 'tyleNSDP');
+
+    if(result.index > 0) {
+
+      result.soTienNSDP = employeeInCategory[0].data[indexOfSoTienNSDP];
+      result.tyleNSDP = employeeInCategory[0].data[indexOfTyleNSDP];
+
+    }
+
+    return result;
+  }
+
   handleAddEmployee(type) {
     if (!this.employeeSelected.length) {
       return this.modalService.warning({
@@ -387,9 +593,7 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
           employee.reason = this.formatNote(planConfigInfo.note.message, argsMessgae);
         }
 
-        // if (this.level === 2 || this.level === 3 || this.level === 4) {
-        //   employee.salary = 0;
-        // }
+         
         if (this.level === 4) {
           employee.tyleNSDP = 0;
         }else {
@@ -402,6 +606,7 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
         employee.contractNo = null;
         employee.dateSign = null;
         employee.toChuCaNhanHTKhac = 0;
+        employee.soTienNSDP = 0;
         employee.fromDateJoin = null;
         employee.numberMonthJoin = 0;
         employee.sumRatio = this.defaultValueRatio;
@@ -822,7 +1027,7 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
       if (column.key === "fullName") {
         clearTimeout(this.timer);
         this.timer = setTimeout(() => {
-          this.updateNextColumns(instance, r, '', [c + 2], true);
+          this.updateNextColumns(instance, r, '', [c + 3], true);
         }, 10);
       } else if (column.key == "isReductionWhenDead") {
 
@@ -1193,9 +1398,6 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
           errors
         });
       }, 20);
-    }, () => {
-      this.isSpinning = false;    
-     
     });
   }
 
@@ -1961,14 +2163,13 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
         this.readOnlySalary = item.readOnlySalary;
         this.readOnlyRatio = item.readOnlyRatio;
         this.defaultValueRatio = item.defaultValueRatio;
-        console.log(item,'item');
         const maxSalry = 20 * data.salaryBase;
         this.salaryAreas = {
           salaray: data.salaryBase,
           level: item.level,
           maxSalry: maxSalry,
         }
-        this.setColumnByCalculationType(item);
+        console.log(item, item.level);
         this.tableHeaderColumns.forEach((column, index) => {
           if (column.key === 'salary' && item.level === 5) {
               column.validations = {
@@ -1993,10 +2194,6 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
             column.type = 'dropdown';
             column.source = [ { id: 100, name: '100%' }];
           }
-
-          // if(column.key === 'tyleNSDP' && item.level === 1) {
-          //   column.readOnly = true;
-          // }
 
           if(column.key === 'tyleNSDP' && ( item.level === 4)) {
             delete column.suffix;
@@ -2026,38 +2223,6 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
       })
     },10);
   }
-
-
-  private setColumnByCalculationType(item) 
-  {
-    if (this.calculationType === 1 && item.code === 'GD') {
-      const tableNestedHeaders = [...this.tableNestedHeaders];
-        this.tableHeaderColumns.forEach((column, index) => {
-          if(column.column === 'tyleNSDP') {
-            const columnToChuCaNhanHTKhac = this.tableHeaderColumns[index + 1];
-            column.key = 'soTienNSDP';
-            column.fieldName = 'NSDP hỗ trợ';
-            column.format = columnToChuCaNhanHTKhac.format;
-            delete column.suffix;
-            delete column.validations.max;
-          }
-          if(column.column === 'soTienNSDP') {
-            column.type = 'hidden',
-            column.key = 'tyleNSDP';
-          }
-        });       
-    
-      tableNestedHeaders.forEach((headers) => {
-        headers.forEach((column) => {
-          if(column.columnName === 'tyleNSDP' ) {
-            column.title = this.calculationType === 1 ? 'NSĐP hỗ trợ': 'Tỷ lệ NSĐP hỗ trợ(%)';
-          }
-        });
-      });
-      this.tableNestedHeaders = tableNestedHeaders;
-    } 
-  }
-
 
   private calculatorSalaryOption1(instance, cell, c, r, records) {
       const indexOfNumberMonthJoin = this.tableHeaderColumns.findIndex(c => c.key === 'numberMonthJoin');
@@ -2406,5 +2571,28 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
       const notebuild = this.formatNote(planConfigInfo.note.message, argsMessgae);
       this.updateNextColumns(instance, r, notebuild, [indexColumnNote]);
     }, 10);
+  }
+
+  uploadData() {
+    const uploadData = {
+        declarationCode: this.declarationCode
+    };
+    const modal = this.modalService.create({
+      nzWidth: 680,
+      nzWrapClassName: 'document-modal',
+      nzTitle: 'Thủ tục ' + this.declarationCode + ' Nhập dữ liệu từ excel',
+      nzContent: UploadFormComponent,
+      nzOnOk: (data) => console.log('Click ok', data),
+      nzComponentParams: {
+        uploadData
+      }
+    });
+
+    modal.afterClose.subscribe(result => {
+      if(result) {
+        this.informations = this.fomatInfomation(result.informations);
+        this.addEmployeeImport(result.declarationDetail);
+      }
+    });
   }
 }

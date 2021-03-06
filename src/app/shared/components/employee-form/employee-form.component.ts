@@ -679,10 +679,24 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
       master = familiescopy[indexOf];
       master.relationshipCode = '00';
     }
-
-    master.cityCode = this.relationshipCityCode;
-    master.districtCode = this.relationshipDistrictCode;
-    master.wardsCode = this.relationshipWardsCode;
+    if(!this.relationshipCityCode) {
+      master.cityCode = 'all';
+    }else {
+      master.cityCode = this.relationshipCityCode;
+    }
+    
+    if(!this.relationshipDistrictCode) {
+      master.districtCode = 'all';
+    }else {
+      master.districtCode = this.relationshipDistrictCode;
+    }
+   
+    if(!this.relationshipWardsCode) {
+      master.wardsCode = 'all';
+    }else {
+      master.wardsCode = this.relationshipWardsCode;
+    }
+   
     master.fullName = this.relationshipFullName;
     master.isurranceCode = this.insurranceCode;
     master.birthday = this.birthday;

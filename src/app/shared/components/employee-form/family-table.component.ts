@@ -113,7 +113,7 @@ export class EmployeeFamilyTableComponent implements OnInit, OnDestroy, OnChange
           if (column.key === 'typeBirthday') {
             const nextColumn = jexcel.getColumnNameFromId([Number(c) + 1, r]);
 
-            instance.jexcel.setValue(nextColumn, '');
+            instance.jexcel.setValue(nextColumn, '',  false);
           }
         },
         ondeleterow: (el, rowNumber, numOfRows) => {

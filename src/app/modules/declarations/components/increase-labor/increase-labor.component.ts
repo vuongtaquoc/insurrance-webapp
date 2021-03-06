@@ -623,8 +623,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
 
   uploadData() {
     const uploadData = {
-        declarationCode: this.declarationCode,
-        fileName : '',
+        declarationCode: this.declarationCode
     };
     const modal = this.modalService.create({
       nzWidth: 680,
@@ -789,10 +788,10 @@ private updateSelectedValueDropDown(columns, instance, r) {
   });
 }
 
-private updateNextColumns(instance, r, value, nextColumns = []) {
+private updateNextColumns(instance, r, value, nextColumns = [], force = false) {
   nextColumns.forEach(columnIndex => {
     const columnName = jexcel.getColumnNameFromId([columnIndex, r]);
-    instance.jexcel.setValue(columnName, value);
+    instance.jexcel.setValue(columnName, value, force);
   });
 }
 

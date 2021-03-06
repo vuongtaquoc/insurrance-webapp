@@ -93,7 +93,7 @@ export class FamiliesListTableComponent implements OnInit, OnDestroy, OnChanges,
         if (column.key === 'typeBirthday') {
           const nextColumn = jexcel.getColumnNameFromId([Number(c) + 1, r]);
 
-          instance.jexcel.setValue(nextColumn, '');
+          instance.jexcel.setValue(nextColumn, '', false);
         }
 
         this.validationCellByOtherCell(value, column, r, instance.jexcel, records);

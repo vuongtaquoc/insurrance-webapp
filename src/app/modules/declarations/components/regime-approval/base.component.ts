@@ -371,10 +371,10 @@ export class RegimeApprovalBaseComponent {
     eventEmitter.emit('unsaved-changed');
   }
 
-  private updateNextColumns(instance, r, value, nextColumns = []) {
+  private updateNextColumns(instance, r, value, nextColumns = [], force = false) {
     nextColumns.forEach(columnIndex => {
       const columnName = jexcel.getColumnNameFromId([columnIndex, r]);
-      instance.jexcel.setValue(columnName, value);
+      instance.jexcel.setValue(columnName, value, force);
     });
   }
 

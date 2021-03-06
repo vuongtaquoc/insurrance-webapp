@@ -3,8 +3,7 @@ import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { TranslateService } from '@ngx-translate/core';
 import { EmployeeService,AuthenticationService, DepartmentService } from '@app/core/services';
-import { EmployeeFormComponent } from '@app/shared/components';
-import { ManageUnitFormComponent } from '@app/shared/components';
+import { EmployeeFormComponent, EmployeeUploadFormComponent, ManageUnitFormComponent, TableInportErrorsComponent } from '@app/shared/components';
 import { PAGE_SIZE, GENDER } from '@app/shared/constant';
 
 @Component({
@@ -209,4 +208,39 @@ export class EmployeeListComponent implements OnInit {
       });
     });
   }
+
+  uploadData() {
+    const uploadData = {
+        declarationCode: 'employee'
+    };
+    const modal = this.modalService.create({
+      nzWidth: 680,
+      nzWrapClassName: 'document-modal',
+      nzTitle: 'Nhập dữ liệu từ excel',
+      nzContent: EmployeeUploadFormComponent,
+      nzOnOk: (data) => console.log('Click ok', data),
+      nzComponentParams: {
+        uploadData
+      }
+    });
+
+    modal.afterClose.subscribe(result => {
+      if(result.rowSuccess === 0 || !result.rowSuccess) {
+        this.modalService.error({
+          nzWidth: 680,
+          nzTitle: 'Lỗi dữ liệu. Vui lòng sửa!',
+          nzContent: TableInportErrorsComponent,
+          nzComponentParams: {         
+            errors: result
+          }
+        });
+      }else {
+        this.getEmployees();
+        this.modalService.success({
+          nzTitle: 'Import nhân viên thành công'
+        });
+      }
+    });
+  }
+  
 }

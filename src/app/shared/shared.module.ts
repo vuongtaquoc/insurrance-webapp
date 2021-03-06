@@ -63,6 +63,8 @@ import {
   DeclarationResultOfCompanyComponent,
   DeclarationResultDetailComponent,
   UploadFormComponent,
+  EmployeeUploadFormComponent,
+  TableInportErrorsComponent,
 } from './components';
 
 import {
@@ -127,6 +129,8 @@ import {
     DeclarationResultOfCompanyComponent,
     DeclarationResultDetailComponent,
     UploadFormComponent,
+    EmployeeUploadFormComponent,
+    TableInportErrorsComponent,
   ],
   exports: [
     FormsModule,
@@ -154,6 +158,8 @@ import {
     DeclarationResultOfCompanyComponent,
     DeclarationResultDetailComponent,
     UploadFormComponent,
+    EmployeeUploadFormComponent,
+    TableInportErrorsComponent,
   ],
   providers: [
     AuthenticationService,
@@ -181,6 +187,8 @@ import {
     DeclarationResultOfCompanyComponent,
     DeclarationResultDetailComponent,
     UploadFormComponent,
+    EmployeeUploadFormComponent,
+    TableInportErrorsComponent,
   ]
 })
 export class SharedModule { }

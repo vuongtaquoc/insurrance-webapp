@@ -98,17 +98,15 @@ export class IncreaseTk1TableComponent implements OnInit, OnDestroy, OnChanges, 
 
         if (column.key === 'typeBirthday') {
           const nextColumn = jexcel.getColumnNameFromId([Number(c) + 1, r]);
-
-          instance.jexcel.setValue(nextColumn, '');
+          instance.jexcel.setValue(nextColumn, '', false);
         }
 
         if (column.key === 'declarationTypeBirthday') {
           const nextColumn = jexcel.getColumnNameFromId([Number(c) + 1, r]);
-
-          instance.jexcel.setValue(nextColumn, '');
+          instance.jexcel.setValue(nextColumn, '', false);
         }
 
-        this.validationCellByOtherCell(value, column, r, instance.jexcel, records);
+         this.validationCellByOtherCell(value, column, r, instance.jexcel, records);
       },
       ondeleterow: (el, rowNumber, numOfRows) => {
         this.onDelete.emit({

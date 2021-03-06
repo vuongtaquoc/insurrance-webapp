@@ -9,7 +9,7 @@ import * as moment from 'moment';
 import * as _ from 'lodash';
 import { REGEX } from '@app/shared/constant';
 import { PLANCODECOUNTBHXH, PLANCODECOUNTBHYT } from '@app/shared/constant-valid';
-import { DocumentFormComponent } from '@app/shared/components';
+import { DocumentFormComponent, UploadFormComponent } from '@app/shared/components';
 
 import { Declaration, DocumentList } from '@app/core/models';
 import {
@@ -778,6 +778,29 @@ private setDateToInformationList(records: any)
     for (let i = 0; i < args.length; i++)
        str = str.replace("{" + i + "}", args[i]);
     return str;
+  }
+
+  uploadData() {
+    const uploadData = {
+        declarationCode: this.declarationCode
+    };
+    const modal = this.modalService.create({
+      nzWidth: 680,
+      nzWrapClassName: 'document-modal',
+      nzTitle: 'Thủ tục ' + this.declarationCode + ' Nhập dữ liệu từ excel',
+      nzContent: UploadFormComponent,
+      nzOnOk: (data) => console.log('Click ok', data),
+      nzComponentParams: {
+        uploadData
+      }
+    });
+
+    modal.afterClose.subscribe(result => {
+      if(result) {
+        this.informations = this.fomatInfomation(result.informations);
+        eventEmitter.emit('tableEditor:uploadData', result.declarationDetail);
+      }
+    });
   }
 
   private getFileByDeclarationCode(code) {
