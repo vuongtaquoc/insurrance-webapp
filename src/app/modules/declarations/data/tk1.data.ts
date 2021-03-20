@@ -278,10 +278,7 @@ export const TABLE_FAMILIES_HEADER_COLUMNS = [{
   wordWrap: true,
   key: 'reason',
   keyMapping: 'reason',
-  fieldName: 'Ghi chú',
-  validations: {
-    required: true
-  }
+  fieldName: 'Ghi chú'
 }, {
   type: 'text',
   width: 180,

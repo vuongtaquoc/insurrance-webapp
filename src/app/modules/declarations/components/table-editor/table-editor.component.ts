@@ -256,6 +256,7 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
         key: d.key,
         isParent: d.isParent,
         planType: d.planType,
+        genderAdd: d.genderAdd,
         formula: !!d.formula,
         isInitialize: d.isInitialize,
         groupObject: d.groupObject,
@@ -572,7 +573,7 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
         if (cellValue === 'VS') {
           validationColumn.validations = {
             required: true,
-            min: 1,
+            min: 24,
             max: 60
           };          
         } else if(cellValue === 'TH') {
@@ -596,7 +597,7 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
         if (paymentMethodCode === 'VS') {
           validationColumn.validations = {
             required: true,
-            min: 1,
+            min: 24,
             max: 60
           };          
         } else if(paymentMethodCode === 'TH') {
@@ -719,17 +720,20 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
     const indexOfColumnTyleNSDP = this.columns.findIndex(c => c.key === 'tyleNSDP');
     const indexOfColumnTyleTCCNHTK = this.columns.findIndex(c => c.key === 'tyleTCCNHTK');
     const indexOfColumnSalary = this.columns.findIndex(c => c.key === 'salary');
-
+    const indexOfColumnPaymentMethodCode = this.columns.findIndex(c => c.key === 'paymentMethodCode');
+    const indexOfColumnNumberMonthJoin = this.columns.findIndex(c => c.key === 'numberMonthJoin');
     const indexOfPlayerClose = this.columns.findIndex(c => c.key === 'playerClose');
     const indexOfMoneyPayment = this.columns.findIndex(c => c.key === 'moneyPayment');
 
     const salary = data[indexOfColumnSalary];
     const tyleNSNN = data[indexOfColumnTyleNSNN];
-     
+    const paymentMethodCode = data[indexOfColumnPaymentMethodCode];
     const ratioNew = data[indexOfColumnTyleNSDP];
     const tyleTCCNHTK = data[indexOfColumnTyleTCCNHTK];
+    const numberMonthJoin = data[indexOfColumnNumberMonthJoin];
     const totalRatio = Number(tyleNSNN) + Number(ratioNew) +  Number(tyleTCCNHTK);
     const surplus = salary % 50000;
+    const surplusPermonth = numberMonthJoin % 12;
 
     if (totalRatio > 100) {
       const fieldName = {
@@ -748,6 +752,16 @@ export class TableEditorComponent implements AfterViewInit, OnInit, OnDestroy, O
       };      
       const messageError = 'Mức thu nhập trong khoảng từ mức chuản nghèo đến 20 lần lương cơ sở và là bội số của 50.000 VNĐ';
       this.spreadsheet.setCellError(fieldName, indexOfColumnSalary, rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true, messageError);
+    }
+
+    if (paymentMethodCode === 'VS' && surplusPermonth > 0) 
+    {
+      const fieldNameNumberJoin = {
+        name: 'Số tháng đóng bảo hiểm xa hội',
+        otherName:'Số tháng đóng bảo hiểm xa hội'
+      };      
+      const messageError = 'Số tháng đóng bảo hiểm xa hội vơi phương án đóng về sau phải là bội số của 12';
+      this.spreadsheet.setCellError(fieldNameNumberJoin, indexOfColumnNumberMonthJoin, rowIndex, { duplicateOtherField: 'otherXValue' }, { duplicateOtherField: false }, true, messageError);
     }
 
   }

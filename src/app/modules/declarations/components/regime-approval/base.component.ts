@@ -79,22 +79,30 @@ export class RegimeApprovalBaseComponent {
 
     const declarations = [ ...this.declarations[part].table ];
     const parentIndex = findIndex(declarations, d => d.key === type);
+    const declarationParent = declarations.find(c => c.key === type);
+    const genderCanAdd = (declarationParent.genderAdd || '').split(',');
     const childLastIndex = findLastIndex(declarations, d => d.isLeaf && d.parentKey === type);
-
+    
     if (childLastIndex > -1) {
       const employeeExists = declarations.filter(d => d.parentKey === type);
 
       this.employeeSelected.forEach(employee => {
         const accepted = employeeExists.findIndex(e => (e.origin && (e.origin.employeeId || e.origin.id)) === employee.id) === -1;
-
-        // replace
-        employee.gender = !employee.gender;
+        // replace     
+        if(typeof(employee.gender) !== 'boolean') {
+          employee.gender = employee.gender === '1';
+        }
         employee.bankCode = '';
         employee.bankName = '';
         employee.accountHolder = '';
-        employee.bankAccount = '';
+        employee.bankAccount = '';        
+        let gender = '1';
+        if(employee.gender) {
+          gender = '0';
+        }
 
-        if (accepted) {
+        const isCanAdd =  genderCanAdd.indexOf(gender) > -1;
+        if (accepted && isCanAdd) {
           if (declarations[childLastIndex].isInitialize) {
             // remove initialize declarations
             declarations.splice(childLastIndex, 1);
@@ -285,6 +293,7 @@ export class RegimeApprovalBaseComponent {
   }
 
   handleChangeTable({ instance, cell, c, r, records }, part) {
+    console.log(records[r], 'records');
     if (c !== null && c !== undefined) {
       c = Number(c);
       const column =  this.headers[part].columns[c];
@@ -397,17 +406,20 @@ export class RegimeApprovalBaseComponent {
       row.parent = beforeRow.parent;
       row.parentKey = beforeRow.parentKey;
       row.planType = beforeRow.planType;
+      row.genderAdd = beforeRow.genderAdd;  
       row.groupObject = beforeRow.groupObject;
     } else if (!beforeRow.isLeaf && afterRow.isLeaf) {
       row.parent = afterRow.parent;
       row.parentKey = afterRow.parentKey;
       row.planType = afterRow.planType;
       row.groupObject = afterRow.groupObject;
+      row.genderAdd = beforeRow.genderAdd;  
     } else if (beforeRow.isLeaf && afterRow.isLeaf) {
       row.parent = beforeRow.parent;
       row.parentKey = beforeRow.parentKey;
       row.planType = beforeRow.planType;
       row.groupObject = beforeRow.groupObject;
+      row.genderAdd = beforeRow.genderAdd;  
     }
 
     declarations.splice(insertBefore ? rowNumber : rowNumber + 1, 0, row);
@@ -597,7 +609,8 @@ export class RegimeApprovalBaseComponent {
           parentKey: declaration.parentKey,
           key: declaration.key,
           planType: declaration.planType,
-          groupObject: declaration.groupObject
+          groupObject: declaration.groupObject,
+          genderAdd: declaration.genderAdd
         }
       };
 

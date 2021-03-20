@@ -122,6 +122,22 @@ export const REGEX = {
     }     
   ];
 
+  export const TEMPLATEUPLOAD =
+  [
+    {
+      key: 'EFY',
+      value: 'Bảo hiểm EFY'
+    },
+    {
+      key: 'VNPT',
+      value: 'Bảo hiểm VNPT'
+    },
+    {
+      key: 'VIETTEL',
+      value: 'Bảo hiểm VIETTEL'
+    },
+  ];
+
 export const CONSTPARENTDELETEAUTOROW =
   [
     {

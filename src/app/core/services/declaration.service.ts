@@ -153,7 +153,8 @@ export class DeclarationService {
         isOther: d.isOther,
         groupObject: d.groupObject,
         isRequiredIsurranceNo: d.isRequiredIsurranceNo,
-        isParent: true
+        isParent: true,
+        genderAdd: d.genderAdd,
       });
 
       if (d.hasChildren) {
@@ -209,7 +210,8 @@ export class DeclarationService {
         isParent: true,
         isOther: d.isOther,
         isRequiredIsurranceNo: d.isRequiredIsurranceNo,
-        groupObject: d.groupObject        
+        groupObject: d.groupObject, 
+        genderAdd: d.genderAdd   
       };
 
       parts.part1.push({ ...data });
@@ -283,6 +285,7 @@ export class DeclarationService {
       rate: parent.rate,
       isRequiredIsurranceNo: parent.isRequiredIsurranceNo,
       groupObject: parent.groupObject,
+      genderAdd: parent.genderAdd,
       data: tableHeaderColumns.map(column => {
         if (!column.key) return '';
 

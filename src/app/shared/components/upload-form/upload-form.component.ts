@@ -31,7 +31,8 @@ export class UploadFormComponent implements OnInit {
   ngOnInit() {
     this.accountForm = this.formBuilder.group({
       fileName: [''],
-      file: '',
+      file: [''],
+      templateType: [''],
     });
   }
 

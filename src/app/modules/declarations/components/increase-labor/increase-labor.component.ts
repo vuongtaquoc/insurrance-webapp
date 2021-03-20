@@ -7,7 +7,7 @@ import findIndex from 'lodash/findIndex';
 import * as jexcel from 'jstable-editor/dist/jexcel.js';
 import * as moment from 'moment';
 import * as _ from 'lodash';
-import { REGEX } from '@app/shared/constant';
+import { REGEX, TEMPLATEUPLOAD } from '@app/shared/constant';
 import { PLANCODECOUNTBHXH, PLANCODECOUNTBHYT } from '@app/shared/constant-valid';
 import { DocumentFormComponent, UploadFormComponent } from '@app/shared/components';
 
@@ -623,7 +623,8 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
 
   uploadData() {
     const uploadData = {
-        declarationCode: this.declarationCode
+        declarationCode: this.declarationCode,
+        templateTypes: TEMPLATEUPLOAD,
     };
     const modal = this.modalService.create({
       nzWidth: 680,

@@ -272,7 +272,8 @@ export class TableEditorHeaderComponent implements AfterViewInit, OnInit, OnDest
         rate: d.rate,
         isInitialize: d.isInitialize,
         isRequiredIsurranceNo: d.isRequiredIsurranceNo,
-        groupObject: d.groupObject
+        groupObject: d.groupObject,
+        genderAdd: d.genderAdd,
       };
 
       data.push(d.data);

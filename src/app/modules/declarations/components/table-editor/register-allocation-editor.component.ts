@@ -261,6 +261,7 @@ export class RegisterAllocationEditorComponent implements AfterViewInit, OnInit,
         isInitialize: d.isInitialize,
         groupObject: d.groupObject,
         isRequiredIsurranceNo: d.isRequiredIsurranceNo,
+        genderAdd: d.genderAdd,
       };
 
       data.push(d.data);

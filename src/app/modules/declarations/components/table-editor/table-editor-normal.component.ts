@@ -252,6 +252,7 @@ export class TableEditorNormalComponent implements AfterViewInit, OnInit, OnDest
         key: d.key,
         isParent: d.isParent,
         planType: d.planType,
+        genderAdd: d.genderAdd,
         formula: !!d.formula,
         isInitialize: d.isInitialize,
         groupObject: d.groupObject

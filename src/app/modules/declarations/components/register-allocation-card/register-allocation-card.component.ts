@@ -592,11 +592,16 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
 
           employee.reason = this.formatNote(planConfigInfo.note.message, argsMessgae);
         }
-
-         
+          
         if (this.level === 4) {
           employee.tyleNSDP = 0;
-        }else {
+        } else if(this.level === 5){
+          if(this.calculationType === 2) {
+            employee.tyleNSDP = 20;
+          } else if (this.calculationType === 0) {
+            employee.tyleNSDP = 0;
+          }
+        } else{
           employee.tyleNSDP = null;
         }
         if (this.readOnlySalary) {
@@ -1145,17 +1150,20 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
       row.parent = beforeRow.parent;
       row.parentKey = beforeRow.parentKey;
       row.planType = beforeRow.planType;
-      row.groupObject = beforeRow.groupObject;      
+      row.groupObject = beforeRow.groupObject;    
+      row.genderAdd = beforeRow.genderAdd; 
     } else if (!beforeRow.isLeaf && afterRow.isLeaf) {
       row.parent = afterRow.parent;
       row.parentKey = afterRow.parentKey;
       row.planType = afterRow.planType;
       row.groupObject = afterRow.groupObject;
+      row.genderAdd = beforeRow.genderAdd; 
     } else if (beforeRow.isLeaf && afterRow.isLeaf) {
       row.parent = beforeRow.parent;
       row.parentKey = beforeRow.parentKey;
       row.planType = beforeRow.planType;
       row.groupObject = beforeRow.groupObject;
+      row.genderAdd = beforeRow.genderAdd; 
     }
 
     declarations.splice(insertBefore ? rowNumber : rowNumber + 1, 0, row);
@@ -2198,6 +2206,7 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
           if(column.key === 'tyleNSDP' && ( item.level === 4)) {
             delete column.suffix;
             column.type = 'numeric';
+            column.readOnly = false;
             column.suffix = '%';
             column.validations =  {
               number: true,
@@ -2208,9 +2217,16 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
           }
 
           if(column.key === 'tyleNSDP' && ( item.level === 5)) {
-            if(this.calculationType !== 1) {
+            if(this.calculationType === 2) {
               column.type = 'dropdown';
+              column.readOnly = true;
               column.source = [{ id: 20, name: '20' }];
+            }
+
+            if(this.calculationType === 0) {
+              column.type = 'dropdown';
+              column.readOnly = true;
+              column.source = [{ id: 0, name: '0' }];
             }
           }
         });

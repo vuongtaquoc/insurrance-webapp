@@ -220,10 +220,11 @@ export const TABLE_HEADER_COLUMNS = [{
   width: 70,
   title: '(9.2)',
   fieldName: 'Tỷ lệ NSNN hỗ trợ (%)',
-  source: [ { id: 0 , name: '0 %' },{ id: 10 , name: '10 %' },{ id: 25 , name: '25 %' }, { id: 30 , name: '30 %' } ],
+  source: [{ id: 10 , name: '10 %' },{ id: 25 , name: '25 %' }, { id: 30 , name: '30 %' } ],
   key: 'tyleNSNN',
   validations: {
     // number: true,
+    required: true,
     min: 0,
     max: 100
   }

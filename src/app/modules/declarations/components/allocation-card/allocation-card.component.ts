@@ -330,7 +330,6 @@ export class AllocationCardComponent implements OnInit, OnDestroy {
     let categoryCodeTempl = '';
     let employeeFirst = {};
     dataImport.forEach(employee => {
-      console.log(employee);
       const employeeExists = declarations.filter(d => d.parentKey === employee.categoryCode);
       const accepted = employeeExists.findIndex(e => (e.origin && (e.origin.employeeId || e.origin.id)) === employee.id) === -1;
       const parentIndex = findIndex(declarations, d => d.key === employee.categoryCode);
@@ -413,7 +412,7 @@ export class AllocationCardComponent implements OnInit, OnDestroy {
         employee.moneyPayment = 0;
         employee.fromDate = null;
         employee.moneyPayment = 0;
-        employee.tyleNSNN = 0;
+        employee.tyleNSNN = null;
         employee.soTienNSNN = 0;
         employee.tyleNSDP = 0;
         employee.soTienNSDP = 0;
@@ -983,17 +982,20 @@ export class AllocationCardComponent implements OnInit, OnDestroy {
       row.parent = beforeRow.parent;
       row.parentKey = beforeRow.parentKey;
       row.planType = beforeRow.planType;
-      row.groupObject = beforeRow.groupObject;      
+      row.groupObject = beforeRow.groupObject; 
+      row.genderAdd = beforeRow.genderAdd;     
     } else if (!beforeRow.isLeaf && afterRow.isLeaf) {
       row.parent = afterRow.parent;
       row.parentKey = afterRow.parentKey;
       row.planType = afterRow.planType;
       row.groupObject = afterRow.groupObject;
+      row.genderAdd = beforeRow.genderAdd;  
     } else if (beforeRow.isLeaf && afterRow.isLeaf) {
       row.parent = beforeRow.parent;
       row.parentKey = beforeRow.parentKey;
       row.planType = beforeRow.planType;
       row.groupObject = beforeRow.groupObject;
+      row.genderAdd = beforeRow.genderAdd;  
     }
 
     declarations.splice(insertBefore ? rowNumber : rowNumber + 1, 0, row);

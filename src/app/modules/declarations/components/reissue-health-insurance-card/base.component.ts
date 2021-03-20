@@ -464,16 +464,19 @@ export class GeneralNormalBaseComponent {
       row.parentKey = beforeRow.parentKey;
       row.planType = beforeRow.planType;
       row.groupObject = beforeRow.groupObject;
+      row.genderAdd = beforeRow.genderAdd; 
     } else if (!beforeRow.isLeaf && afterRow.isLeaf) {
       row.parent = afterRow.parent;
       row.parentKey = afterRow.parentKey;
       row.planType = afterRow.planType;
       row.groupObject = afterRow.groupObject;
+      row.genderAdd = beforeRow.genderAdd; 
     } else if (beforeRow.isLeaf && afterRow.isLeaf) {
       row.parent = beforeRow.parent;
       row.parentKey = beforeRow.parentKey;
       row.planType = beforeRow.planType;
       row.groupObject = beforeRow.groupObject;
+      row.genderAdd = beforeRow.genderAdd; 
     }
 
     declarations.splice(insertBefore ? rowNumber : rowNumber + 1, 0, row);
@@ -710,6 +713,7 @@ export class GeneralNormalBaseComponent {
           key: declaration.key,
           planType: declaration.planType,
           groupObject: declaration.groupObject,
+          genderAdd: declaration.genderAdd
         }
       };
 

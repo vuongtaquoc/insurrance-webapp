@@ -4,7 +4,7 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import { TranslateService } from '@ngx-translate/core';
 import { EmployeeService,AuthenticationService, DepartmentService } from '@app/core/services';
 import { EmployeeFormComponent, EmployeeUploadFormComponent, ManageUnitFormComponent, TableInportErrorsComponent } from '@app/shared/components';
-import { PAGE_SIZE, GENDER } from '@app/shared/constant';
+import { PAGE_SIZE, GENDER, TEMPLATEUPLOAD } from '@app/shared/constant';
 
 @Component({
   selector: 'app-employees-list',
@@ -211,7 +211,8 @@ export class EmployeeListComponent implements OnInit {
 
   uploadData() {
     const uploadData = {
-        declarationCode: 'employee'
+        declarationCode: 'employee',
+        templateTypes: TEMPLATEUPLOAD,
     };
     const modal = this.modalService.create({
       nzWidth: 680,

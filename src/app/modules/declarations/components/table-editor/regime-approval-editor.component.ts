@@ -249,7 +249,8 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
         formula: !!d.formula,
         planType: d.planType,
         isInitialize: d.isInitialize,
-        groupObject: d.groupObject
+        groupObject: d.groupObject,
+        genderAdd: d.genderAdd,
       };
 
       data.push(d.data);

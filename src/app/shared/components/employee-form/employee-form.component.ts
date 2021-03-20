@@ -1129,12 +1129,26 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
   }
 
   private changeSalary(event) {
+    // console.log(event);
      if(event > 0) {
       this.employeeForm.get('ratio').disable();
       this.employeeForm.get('ratio').setValue(0);
+      this.employeeForm.get('allowanceLevel').setValue(0);
+      this.employeeForm.get('allowanceSeniority').setValue(0);
+      this.employeeForm.get('allowanceSeniorityJob').setValue(0);
+      this.employeeForm.get('allowanceLevel').disable();
+      this.employeeForm.get('allowanceSeniority').disable();
+      this.employeeForm.get('allowanceSeniorityJob').disable();
+      this.employeeForm.get('allowanceSalary').enable();
+      this.employeeForm.get('allowanceAdditional').enable();
       this.employeeForm.controls["ratio"].setValidators([Validators.pattern(REGEX.ONLY_NUMBER_INCLUDE_DECIMAL)]);
      }else {
        this.employeeForm.get('ratio').enable();
+       this.employeeForm.get('allowanceLevel').enable();
+       this.employeeForm.get('allowanceSeniority').enable();
+       this.employeeForm.get('allowanceSeniorityJob').enable();
+       this.employeeForm.get('allowanceSalary').disable();
+       this.employeeForm.get('allowanceAdditional').disable();
        this.employeeForm.controls["ratio"].setValidators([Validators.required,Validators.min(1), Validators.max(13), Validators.pattern(REGEX.ONLY_NUMBER_INCLUDE_DECIMAL)]);
      }
   }
@@ -1143,7 +1157,9 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
     if(event > 0) {
       this.employeeForm.get('salary').disable();
       this.employeeForm.get('salary').setValue(0);
-      this.employeeForm.controls["salary"].setValidators([Validators.pattern(REGEX.ONLY_NUMBER)]);
+      this.employeeForm.get('allowanceSalary').setValue(0);
+      this.employeeForm.get('allowanceAdditional').setValue(0);
+      this.employeeForm.controls["ratio"].setValidators([Validators.required,Validators.min(1), Validators.max(13), Validators.pattern(REGEX.ONLY_NUMBER_INCLUDE_DECIMAL)]);
      }else {
        this.employeeForm.get('salary').enable();
        this.employeeForm.controls["salary"].setValidators([Validators.required, Validators.pattern(REGEX.ONLY_NUMBER)]);

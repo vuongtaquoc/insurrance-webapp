@@ -276,6 +276,7 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
         isInitialize: d.isInitialize,
         groupObject: d.groupObject,
         isRequiredIsurranceNo: d.isRequiredIsurranceNo,
+        genderAdd: d.genderAdd,
       };
 
       data.push(d.data);
@@ -840,8 +841,10 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
       const validationColumn = this.columns[Number(cell)];
       delete validationColumn.validations.min;
       if (Number(salary) > 0) {
+        const maxSalary = Number(this.salaryAreas.salaray) * 20;
         validationColumn.validations = {
           min: Number(this.salaryAreas.salaray),
+          max: maxSalary,
          };         
       }
       validationColumn.fieldName = 'Tiền lương';

@@ -774,17 +774,20 @@ export class GeneralBaseComponent {
       row.parent = beforeRow.parent;
       row.parentKey = beforeRow.parentKey;
       row.planType = beforeRow.planType;
+      row.genderAdd = beforeRow.genderAdd;
       row.groupObject = beforeRow.groupObject;
     } else if (!beforeRow.isLeaf && afterRow.isLeaf) {
       row.parent = afterRow.parent;
       row.parentKey = afterRow.parentKey;
       row.planType = afterRow.planType;
+      row.genderAdd = beforeRow.genderAdd;
       row.groupObject = afterRow.groupObject;
     } else if (beforeRow.isLeaf && afterRow.isLeaf) {
       row.parent = beforeRow.parent;
       row.parentKey = beforeRow.parentKey;
       row.planType = beforeRow.planType;
       row.groupObject = beforeRow.groupObject;
+      row.genderAdd = beforeRow.genderAdd;
     }
 
     declarations.splice(insertBefore ? rowNumber : rowNumber + 1, 0, row);
@@ -1034,6 +1037,7 @@ export class GeneralBaseComponent {
           key: declaration.key,
           planType: declaration.planType,
           groupObject: declaration.groupObject,
+          genderAdd: declaration.genderAdd,
         }
       };
 

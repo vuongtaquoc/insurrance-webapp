@@ -8,10 +8,16 @@
             <div nz-col [nzSpan]="24">
               <nz-form-item>
                <nz-form-control [nzSpan]="24" class="margin-left-1p" [nzErrorTip]="errorRepresentation">
-                <nz-input-group nzSearch [nzAddOnAfter]="suffixButton">
+                <nz-input-group nzSearch [nzAddOnAfter]="suffixButton" [nzAddOnBefore]="addOnBeforeTemplate">
                   <input nz-input placeholder="File Upload" formControlName="fileName"
                     placeholder="Upload Excel" />
                 </nz-input-group>
+                <ng-template #addOnBeforeTemplate>
+                    <nz-select nzShowSearch nzPlaceHolder="File upload"
+                    (ngModelChange)="changeCityFirstRegistCode($event)" formControlName="templateType">
+                    <nz-option *ngFor="let temp of uploadData.templateTypes" [nzLabel]="temp.value" [nzValue]="temp.key"></nz-option>
+                  </nz-select>
+                </ng-template>
                 <ng-template #suffixButton>
                   <button nz-button class="employee-form__button-search"
                     pluploadExcel

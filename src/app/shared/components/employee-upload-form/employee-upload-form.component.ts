@@ -32,7 +32,8 @@ export class EmployeeUploadFormComponent implements OnInit {
   ngOnInit() {
     this.accountForm = this.formBuilder.group({
       fileName: [''],
-      file: '',
+      file: [''],
+      templateType: [''],
     });
   }
 
