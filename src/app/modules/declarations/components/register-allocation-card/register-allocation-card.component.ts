@@ -1086,7 +1086,7 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
           this.getCaculatorByLevel(instance, cell, c, r, records);
         }
       } else if( column.key === 'numberMonthJoin') {
-
+        console.log(parentKey, 'xxxxxx')
         if (this.parentKeyNotCaculator !== parentKey) {
           this.getCaculatorByLevel(instance, cell, c, r, records);
         }
@@ -2177,7 +2177,13 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
           level: item.level,
           maxSalry: maxSalry,
         }
-        console.log(item, item.level);
+
+        // console.log(item, item.level,'xxxxx');
+        const objectType = this.currentCredentials.companyInfo.objectType;
+        if (this.calculationType === 0 && objectType === 'GD') {
+          this.tyleNSNN = 0;
+        }
+      
         this.tableHeaderColumns.forEach((column, index) => {
           if (column.key === 'salary' && item.level === 5) {
               column.validations = {
@@ -2293,6 +2299,13 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
     const order = records[r][indexOfOrder];
     const percent = this.getPercent(order);      
     clearTimeout(this.timer);
+    // console.log(this.level,'vao ddaay', percent);
+    let ratioSupport = percent.ratio;
+    const objectType = this.currentCredentials.companyInfo.objectType;
+    if (this.calculationType === 0 && objectType === 'GD') {
+      ratioSupport = 0;
+    }
+
     this.timer = setTimeout(() => {
       // Nếu người dùng nhập giá trị lương thì set bằng giá trị lương
       let total = 0;
@@ -2302,11 +2315,11 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
       } else {
         total = (((sumRatio * this.salaryBase * this.tyleTGBHYT) / 100) * Number(numberMonthJoin) * percent.percent) / 100;
       }
-      soTienNSDP = (total * percent.ratio) / 100;
+      soTienNSDP = (total * ratioSupport) / 100;
       const moneyPersion = (this.salaryBase * sumRatio * percent.percent) / 100;
       this.updateNextColumns(instance, r, total, [indexOfMoneyPayment], true);
       this.updateNextColumns(instance, r, soTienNSDP, [indexOfSoTienNSDP], true);
-      this.updateNextColumns(instance, r, percent.ratio, [indexOfTyleNSDP], true);
+      this.updateNextColumns(instance, r, ratioSupport, [indexOfTyleNSDP], true);
       this.updateNextColumns(instance, r, moneyPersion, [indexOfMoneyPersion], true);
     }, 10);
   } 
@@ -2377,7 +2390,7 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
     }, 10);
   } 
 
-  private getCaculatorByLevel(instance, cell, c, r, records) {
+  private getCaculatorByLevel(instance, cell, c, r, records) {    
     if(this.level === 1) {
       this.calculatorSalaryLevel1(instance, cell, c, r, records);
     } else if(this.level === 2 || this.level === 3 || this.level === 4) {

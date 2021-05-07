@@ -96,7 +96,7 @@ export class EmployeeListComponent implements OnInit {
     this.employeeService.getPressCreate().subscribe(data => {
       const employee =
       {
-        ratio: data.ratioInsurrance.ratio,
+        ratio: 0,//data.ratioInsurrance.ratio,
         rate: data.ratioInsurrance.bhxh,
         paymentMethodCode: data.ratioInsurrance.month,
         orders: data.order,
