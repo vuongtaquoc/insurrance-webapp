@@ -7,6 +7,7 @@ import { ApplicationHttpClient } from '@app/core/http';
 import { Credential } from '@app/core/models';
 
 const CREDENTIAL_STORAGE = 'CREDENTIALS';
+const REMEMBERME_STORAGE = 'REMEMBERME';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
@@ -52,7 +53,7 @@ export class AuthenticationService {
   }
 
   public resetPassword(token: string, password: string, confirmPassword: string) {
-    return this.http.post(`/password-reset?token=${token}`, {
+    return this.http.post(`/session/change-password?token=${token}`, {
       password,
       confirmPassword
     });
@@ -66,7 +67,7 @@ export class AuthenticationService {
     }
   }
 
-  private storeCredentials(data) {
+  public storeCredentials(data) {
     const credentials: Credential = {
       token: data.token,
       username: data.username,
@@ -88,5 +89,17 @@ export class AuthenticationService {
     credentials.companyInfo = companyInfo;
     localStorage.setItem(CREDENTIAL_STORAGE, JSON.stringify(credentials));
     this.credentialSubject.next(credentials);
+  }
+
+  public saveRememberMe(objectLoginFrom) {
+    if (objectLoginFrom.remember) {
+      localStorage.setItem(REMEMBERME_STORAGE, JSON.stringify(objectLoginFrom));
+    } else {
+      localStorage.removeItem(REMEMBERME_STORAGE);
+    }    
+  }
+
+  public getAutoLogin() {
+    return JSON.parse(localStorage.getItem(REMEMBERME_STORAGE));
   }
 }

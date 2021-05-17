@@ -26,8 +26,12 @@ export class DeclarationFileService {
     });
   }
 
-  public downloadDeclarationFile(declarationId: string ) {
-    return this.http.getFile(`/declaration-file/download/${ declarationId }`, {
+  public downloadDeclarationFile(declarationId: string , type: string) {
+    let root = '/declaration-file/download';
+    if (type === '.pdf') {
+      root = '/declaration-file/download-pdf';
+    }
+    return this.http.getFile(`${root}/${ declarationId }`, {
       headers: {
         token: this.authService.getCredentialToken()
       }

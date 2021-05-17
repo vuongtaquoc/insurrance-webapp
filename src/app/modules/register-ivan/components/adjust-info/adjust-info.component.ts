@@ -108,7 +108,7 @@ export class RegisterIvanAdjustInfoComponent implements OnInit {
       companyType: ['', [Validators.required]],
       careers: ['', [Validators.required]],
       license: [''],
-      note: [''],
+      note: ['', [Validators.required]],
       addressReception: [''],
       authorityNo: [''],
       authorityDate: [''],
@@ -157,7 +157,7 @@ export class RegisterIvanAdjustInfoComponent implements OnInit {
 
   save() {
     this.isSubmit = true;
-    this.isSpinning = true;
+   
     for (const i in this.registerForm.controls) {
       this.registerForm.controls[i].markAsDirty();
       this.registerForm.controls[i].updateValueAndValidity();
@@ -167,9 +167,10 @@ export class RegisterIvanAdjustInfoComponent implements OnInit {
     if (this.registerForm.invalid) {
       return;
     }
+    
     const fromData = this.getData();
     this.contractService.create(fromData).subscribe(data => {
-      this.isSpinning = false;
+      this.isSpinning = true;
       if (fromData.privateKey === '' || fromData.privateKey === undefined) {
         
         this.modalService.success({
@@ -188,7 +189,7 @@ export class RegisterIvanAdjustInfoComponent implements OnInit {
           }
         });
       }
-      
+      this.isSpinning = false;
       this.router.navigate([this.authenticationService.currentCredentials.role.defaultUrl]);
     });
     this.isSpinning = false;

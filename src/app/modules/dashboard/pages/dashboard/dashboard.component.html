@@ -42,12 +42,15 @@
     </div>
 
     <div class="ui-table-paging-custom">
-      <div class="ui-table-paging-custom__statistics">* Danh sách có 3/3 hồ sơ</div>
+      <div class="ui-table-paging-custom__statistics">* Danh sách có 3/{{total}} hồ sơ</div>
       <div class="ui-table-paging-custom__paging">
+         
         <span>Hiển thị</span>
-        <nz-select nzSize="small">
-          <nz-option *ngFor="let page of pageNumbers" [nzLabel]="page.label" [nzValue]="page.value"></nz-option>
-        </nz-select>
+        <form nz-form [formGroup]="pageSizeForm">
+          <nz-select (ngModelChange)="changePageNumbers($event)" formControlName="pageSize">
+            <nz-option *ngFor="let page of pageNumbers" [nzLabel]="page.label" [nzValue]="page.value"></nz-option>
+          </nz-select>
+        </form>
         <span>Hồ sơ/1 trang</span>
       </div>
     </div>

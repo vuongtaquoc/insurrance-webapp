@@ -86,7 +86,7 @@ export class DeclarationSidebarComponent implements OnInit, OnDestroy {
       const modal = this.modalService.create({
         nzWidth: 980,
         nzWrapClassName: 'employee-modal',
-        nzTitle: 'Cập nhật thông tin người lao động 111',
+        nzTitle: 'Cập nhật thông tin người lao động',
         nzContent: EmployeeFormComponent,
         nzOnOk: (data) => console.log('Click ok', data),
         nzComponentParams: {

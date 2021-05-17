@@ -14,6 +14,7 @@ import { eventEmitter } from '@app/shared/utils/event-emitter';
 import {
   DeclarationService
 } from '@app/core/services';
+import { HolidayConfig } from '@app/shared/constant-valid';
 
 export class RegimeApprovalBaseComponent {
   @Input() data: any;
@@ -85,7 +86,7 @@ export class RegimeApprovalBaseComponent {
     
     if (childLastIndex > -1) {
       const employeeExists = declarations.filter(d => d.parentKey === type);
-
+      let showCanAddEmployee = false;
       this.employeeSelected.forEach(employee => {
         const accepted = employeeExists.findIndex(e => (e.origin && (e.origin.employeeId || e.origin.id)) === employee.id) === -1;
         // replace     
@@ -93,6 +94,8 @@ export class RegimeApprovalBaseComponent {
           employee.gender = employee.gender === '1';
         }
         employee.bankCode = '';
+        employee.subsidizeReceipt = '0';
+        employee.conditionPrenatal = '0';
         employee.bankName = '';
         employee.accountHolder = '';
         employee.bankAccount = '';        
@@ -100,7 +103,7 @@ export class RegimeApprovalBaseComponent {
         if(employee.gender) {
           gender = '0';
         }
-
+        this.setValueDefault(part, type,  employee);
         const isCanAdd =  genderCanAdd.indexOf(gender) > -1;
         if (accepted && isCanAdd) {
           if (declarations[childLastIndex].isInitialize) {
@@ -111,9 +114,16 @@ export class RegimeApprovalBaseComponent {
           } else {
             declarations.splice(childLastIndex + 1, 0, this.declarationService.getLeaf(declarations[parentIndex], employee, this.headers[part].columns));
           }
+        } else {
+          showCanAddEmployee = true;
         }
       });
 
+      if(showCanAddEmployee) {
+        this.modalService.warning({
+          nzTitle: 'Tiêu chí không phù hợp với giớ tính đối tượng kê khai',
+        });
+      }
       // update orders
       this.updateOrders(declarations);
 
@@ -159,6 +169,23 @@ export class RegimeApprovalBaseComponent {
       data: this.declarations[part].table
     });    
     eventEmitter.emit('unsaved-changed');
+  }
+
+  setValueDefault(part, type, employee) {
+
+    if (this.tableName['sicknessesPart1'] === part) {
+      
+      if (type === 'III') 
+      {
+        employee.childrenNumberSick = 1;
+      }
+
+    } else if(this.tableName['maternityPart1'] === part) {
+      if (type === 'III_1' || type === 'III_2' || type === 'III_3'|| type === 'IV' || type === 'V_1' || type === 'V_2' || type === 'VI_1' || type === 'VII' || type === 'VIII')
+      {
+        employee.childrenNumber = 1;
+      }
+    }
   }
 
   handleSort({ direction, source, dist }, part) {
@@ -293,7 +320,8 @@ export class RegimeApprovalBaseComponent {
   }
 
   handleChangeTable({ instance, cell, c, r, records }, part) {
-    console.log(records[r], 'records');
+    // console.log(records[r], 'records');    
+    const parentKey = records[r].options.parentKey;
     if (c !== null && c !== undefined) {
       c = Number(c);
       const column =  this.headers[part].columns[c];
@@ -310,6 +338,17 @@ export class RegimeApprovalBaseComponent {
             this.updateNextColumns(instance, r, data.id, [ indexColunmBakCode]);
           });  
         }
+      } else if(column.key === 'childrenBirthday') {
+        const indexDateStartWork = this.headers[part].columns.findIndex(d => d.key === 'dateStartWork');
+        const dateStartWorkValue = instance.jexcel.getValueFromCoords(indexDateStartWork, r);
+        const indexChildrenBirthday = this.headers[part].columns.findIndex(d => d.key === 'childrenBirthday');
+        const childrenBirthdayValue = instance.jexcel.getValueFromCoords(indexChildrenBirthday, r);
+        if(this.tableName['maternityPart1'] === part && !dateStartWorkValue && childrenBirthdayValue && (parentKey === 'V_1' || parentKey === 'V_2'))
+        {
+          const childrenBirthdayMoment =  moment(childrenBirthdayValue, DATE_FORMAT.FULL).add('months', 2);
+          this.updateNextColumns(instance, r, childrenBirthdayMoment.format(DATE_FORMAT.FULL), [ indexDateStartWork ]);
+        }
+         
       } else if (column.key === 'regimeFromDate' || column.key === 'regimeToDate') {
         clearTimeout(this.timer);
         this.timer = setTimeout(() => {
@@ -318,19 +357,19 @@ export class RegimeApprovalBaseComponent {
           let totalColumn;
 
           if (column.key === 'regimeFromDate') {
+            const indexColunmRegimeRequestDate = this.headers[part].columns.findIndex(d => d.key === 'regimeRequestDate');
             regimeFromDateValue = instance.jexcel.getValueFromCoords(c, r);
             regimeToDateValue = instance.jexcel.getValueFromCoords(c + 1, r);
+            this.updateNextColumns(instance, r, regimeFromDateValue, [ indexColunmRegimeRequestDate]);
             totalColumn = c + 2;
           } else {
             regimeFromDateValue = instance.jexcel.getValueFromCoords(c - 1, r);
             regimeToDateValue = instance.jexcel.getValueFromCoords(c, r);
             totalColumn = c + 1;
           }
-          if (regimeFromDateValue && regimeToDateValue) {
-            const regimeFromDateMoment = moment(regimeFromDateValue, DATE_FORMAT.FULL);
-            const regimeToDateMoment = moment(regimeToDateValue, DATE_FORMAT.FULL);
-            const totalValue = regimeToDateMoment.diff(regimeFromDateMoment, 'days');
-            instance.jexcel.setValueFromCoords(totalColumn, r, totalValue >= 0 ? totalValue + 1 : 0);
+          if (regimeFromDateValue && regimeToDateValue) {            
+            const totalValue = this.caculatorDateDiff(regimeFromDateValue,  regimeToDateValue, part, parentKey); //this.getDayWorker(this.parseDate(regimeFromDateValue), this.parseDate(regimeToDateValue));
+            instance.jexcel.setValueFromCoords(totalColumn, r, totalValue);
           }
         }, 100);
       }else if(column.key ==='subsidizeReceipt') {
@@ -655,4 +694,127 @@ export class RegimeApprovalBaseComponent {
     }, 10);
 
   }
+
+  private caculatorDateDiff(regimeFromDateValue, regimeToDateValue, part, parentKey) {
+      if (this.tableName['maternityPart1'] === part && (parentKey === 'II' || parentKey === 'IX' 
+      || parentKey === 'III_2' || parentKey === 'IV' || parentKey === 'IV'
+      || parentKey === 'V_1' || parentKey === 'V_2' || parentKey === 'VI_1')) {
+        return this.dateDiff(regimeFromDateValue, regimeToDateValue);
+      } else {
+        return this.getDayWorker(this.parseDate(regimeFromDateValue), this.parseDate(regimeToDateValue));
+      }
+  }
+  protected dateDiff(regimeFromDateValue, regimeToDateValue) {
+      const regimeFromDateMoment = moment(regimeFromDateValue, DATE_FORMAT.FULL);
+      const regimeToDateMoment = moment(regimeToDateValue, DATE_FORMAT.FULL);
+      const totalValue = regimeToDateMoment.diff(regimeFromDateMoment, 'days');
+      const totalDay = totalValue >= 0 ? totalValue + 1 : 0;
+      return totalDay;
+  }
+
+  protected parseDate(input) {
+    // Transform date from text to date
+    const parts = input.match(/(\d+)/g);
+    // new Date(year, month [, date [, hours[, minutes[, seconds[, ms]]]]])
+    return new Date(parts[2], parts[1]-1, parts[0]); // months are 0-basedƯ
+  }
+
+  private getDayWorker(fromDate, toDate) {
+
+    const sat = [];
+    const sun = [];
+    const day = [];
+  
+    if (fromDate.getFullYear() === toDate.getFullYear()) {
+      if (fromDate.getMonth() === toDate.getMonth()) {
+        var startDate = fromDate.getDate();
+        var endDate = toDate.getDate();
+        this.getWeekend(sat, sun, day, fromDate, startDate, endDate, HolidayConfig);
+      } else {
+        this.getWeekendBetweenDate(sat, sun, day, fromDate, toDate, HolidayConfig);
+      }
+    } else {
+      for (let i = fromDate.getFullYear(); i <= toDate.getFullYear(); i++) {
+        let fDate = fromDate;
+        let tDate = toDate;
+        switch (i) {
+          case fromDate.getFullYear():
+            tDate = new Date(fromDate.getFullYear(), 11, 31);
+            break;
+  
+          case toDate.getFullYear():
+            fDate = new Date(toDate.getFullYear(), 0, 31);
+            break;
+  
+          default:
+            fDate = new Date(i, 0, 31);
+            tDate = new Date(i, 11, 31);
+            break;
+        }
+        this.getWeekendBetweenDate(sat, sun, day, fDate, tDate, HolidayConfig);
+      }
+    }
+  
+     return day.length;
+  }
+
+  private getWeekendBetweenDate(sat, sun, day, fromDate, toDate, holidays) {
+    for (let i = fromDate.getMonth(); i <= toDate.getMonth(); i++) {
+      let startDate;
+      let endDate;
+      let dateValue;
+      switch (i) {
+        case fromDate.getMonth():
+          startDate = fromDate.getDate();
+          endDate = this.daysInMonth(fromDate.getMonth(), fromDate.getFullYear());
+          dateValue = fromDate;
+          break;
+        case toDate.getMonth():
+          startDate = 1;
+          endDate = toDate.getDate();
+          dateValue = toDate;
+          break;
+        default:
+          startDate = 1;
+          endDate = this.daysInMonth(i, fromDate.getFullYear());
+          dateValue = new Date(fromDate.getFullYear(), i, 1);
+          break;
+      }
+      this.getWeekend(sat, sun, day, dateValue, startDate, endDate, holidays);
+    }
+  }
+  
+  protected getWeekend(sat, sun, day, date, startDate, endDate, holidays) {
+    for (let i = startDate; i <= endDate; i++) {
+        const newDate = new Date(date.getFullYear(), date.getMonth(), i);
+      switch (newDate.getDay()) {
+        case 0:
+          sun.push(newDate);
+          break;
+        case 6:
+          sat.push(newDate);
+          break;
+        default:
+          let newMonth = (newDate.getMonth() + 1).toString();
+          let newDay = (newDate.getDate()).toString();
+          if (newMonth.length === 1) {
+            newMonth = '0'+ newMonth;
+          }
+  
+          if (newDay.length === 1) {
+            newDay = '0'+ newDay;
+          }
+          let shortDay = newDate.getFullYear() + ''+ newMonth + '' + newDay;
+          if (!holidays.includes(shortDay)) {
+            day.push(newDate);
+          }
+          break;
+      }
+    }
+  }
+
+  private daysInMonth(month, year) {
+    return new Date(year, month + 1, 0).getDate();
+  }  
+  
 }

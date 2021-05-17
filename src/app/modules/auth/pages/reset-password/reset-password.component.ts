@@ -56,15 +56,15 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
   }
 
   handleSubmit() {
-    this.authService.resetPassword(this.token, this.form.password.value, this.form.confirmPassword.value)
-      .subscribe(
-        () => {
-          this.router.navigate(['/auth/reset-success'], { replaceUrl: true });
-        },
-        (error) => {
-          console.error(error);
-        }
-      );
+    // this.authService.resetPassword(this.form.password.value, this.form.confirmPassword.value)
+    //   .subscribe(
+    //     () => {
+    //       this.router.navigate(['/auth/reset-success'], { replaceUrl: true });
+    //     },
+    //     (error) => {
+    //       console.error(error);
+    //     }
+    //   );
   }
 
   get form() {

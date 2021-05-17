@@ -123,6 +123,7 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
         });
       },
       onchange: (instance, cell, c, r, value) => {
+        // console.log(this.tableName,instance, cell, c, r, value);
         this.onChange.emit({
           instance, cell, c, r, value,
           records: this.spreadsheet.getJson(),
@@ -136,9 +137,8 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
 
           instance.jexcel.setValue(nextColumn, '', false);
         }
-
-        this.validationCellByOtherCell(value, column, r, instance, c);
         this.updateCellValidation();
+        this.validationCellByOtherCell(value, column, r, instance, c);
       },
       ondeleterow: (el, rowNumber, numOfRows) => {
         this.onDelete.emit({
@@ -196,6 +196,7 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
     this.updateEditorToColumn('childrenGodchilDreceptionDate');
     this.updateEditorToColumn('childrenDreceptionDate');
     this.updateEditorToColumn('motherDayDead');
+    this.updateEditorToColumn('motherConclusionDate');
     this.updateEditorToColumn('cotherConclusionDate');
     this.updateEditorToColumn('recordSolvedFromDate');
     this.updateEditorToColumn('dateStartWork');
@@ -290,7 +291,9 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
   }
 
   private updateCellValidation() {
-    if ([this.maternityPart1, this.maternityPart2].indexOf(this.tableName) > -1) {
+  
+    // if ([this.maternityPart1, this.maternityPart2].indexOf(this.tableName) > -1) {
+    if ([this.maternityPart1].indexOf(this.tableName) > -1) {
       this.validMaternity();
     } else if ([this.healthRecoveryPart1].indexOf(this.tableName) > -1) {
       this.validHealthRecoveryPart1();
@@ -329,8 +332,7 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
 
 
   private validMaternity() {
-    const parentKeys = ['II', 'III_1', 'III_2', 'III_3', 'IV', 'V_1', 'V_2', 'VI_1', 'VI_2', 'VII', 'VIII', 'IX'];
-
+      const parentKeys = ['I','II', 'III_1', 'III_2', 'III_3', 'IV', 'V_1', 'V_2', 'VI_1', 'VI_2', 'VII', 'VIII', 'IX'];
       const childrenWeekOld = {
         required: true,
         number: true,
@@ -341,9 +343,24 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
         required: true
       };
       const validationColumns: any = {
+        'I' : {
+          regimeFromDate: {
+            required: true,
+            lessThanNow: true,
+          },
+          regimeSum: {
+            required: true,
+            min:1,
+            max:2,
+          }
+        },
         'II': {
           childrenWeekOld,
-          planCode
+          planCode,
+          regimeFromDate: {
+            required: true,
+            lessThanNow: true,
+          }
         },
         'III_1': {
           planCode,
@@ -353,22 +370,35 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
         },
         'III_2': {
           planCode,
+          regimeSum: {
+            required: true,
+            min:1,
+          },
+          childrenBirthday: {
+            required: true,
+          }
         },
         'III_3': {
           childrenWeekOld,
-          planCode,
-          motherDayDead: {
+          planCode,          
+          childrenBirthday: {
             required: true
           }
         },
         'IV': {
           planCode,
+          childrenGodchilDreceptionDate: {
+            required: true,
+          }
         },
         'V_1': {
           planCode,
           childrenBirthday: {
             required: true,
             lessThanNow: true
+          },
+          childrenGodchilDreceptionDate: {
+            required: true,
           }
         },
         'V_2': {
@@ -378,6 +408,9 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
           },
           childrenWeekOld:{
             number: true,
+          },
+          childrenGodchilDreceptionDate: {
+            required: true,
           }
         },
         'VI_1': {
@@ -388,6 +421,9 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
           childrenBirthday: {
             required: true,
             lessThanNow: true
+          },
+          childrenGodchilDreceptionDate: {
+            required: true,
           }
         },
         'VI_2': {
@@ -397,34 +433,64 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
           },
           childrenWeekOld:{
             number: true,
+          },
+          childrenBirthday: {
+            required: true,
+            lessThanNow: true
           }
         },
         'VII': {
           planCode,
           childrenWeekOld:{
             number: true,
+          },
+          regimeSum: {
+            required: true,
+            min: 1,
+            max: 14,
           }
         },
         'IX': {
           planCode,
           childrenWeekOld:{
             number: true,
+          },
+          regimeFromDate: {
+            required: true,
+            lessThanNow: true,
           }
         }
       };
+
       const readonlyColumns = {
-        'II': ['childrenDayDead', 'surrogacy', 'motherDayDead'],
-        'III_1': ['childrenDayDead', 'surrogacy', 'motherDayDead'],
-        'III_2': ['surrogacy', 'motherDayDead'],
-        'III_3': ['childrenDayDead', 'surrogacy'],
-        'IV': ['childrenDayDead', 'surrogacy', 'motherDayDead'],
-        'V_1': ['childrenDayDead', 'surrogacy', 'motherDayDead'],
-        'V_2': ['surrogacy', 'motherDayDead'],
-        'VI_1': ['childrenDayDead', 'surrogacy', 'motherDayDead'],
-        'VI_2': ['surrogacy', 'motherDayDead'],
-        'VII': ['childrenDayDead', 'motherDayDead'],
-        'VIII': ['childrenDayDead', 'motherDayDead'],
-        'IX': ['childrenDayDead', 'surrogacy', 'motherDayDead']
+        'I': ['childrenBirthday', 'childrenNumber', 'childrenWeekOld','maternityLeave', 'parentsOffWork', 'childrenGodchilDreceptionDate',
+          'dateStartWork','childrenDayDead','surrogacy', 'motherIdentityCar','childrenIsurranceCode', 'motherIsurranceCode', 'childrenHealthNo','motherHealthNo', 'examinationCost',
+          'isSurgeryOrPremature'],
+        'II': ['childrenDayDead', 'childrenNumber', 'childrenWeekOld', 'conditionReproduction','maternityLeave', 'parentsOffWork', 'childrenGodchilDreceptionDate', 'dateStartWork',
+          'childrenDayDead', 'surrogacy', 'motherIdentityCar', 'childrenIsurranceCode', 'motherIsurranceCode', 'childrenHealthNo', 'motherHealthNo', 'examinationCost', 'isSurgeryOrPremature' ],
+        'III_1': ['regimeToDate', 'conditionPrenatal', 'childrenWeekOld', 'parentsOffWork', 'childrenGodchilDreceptionDate', 'dateStartWork', 'childrenDayDead', 'surrogacy', 'motherIdentityCar', 
+                  'childrenIsurranceCode', 'motherIsurranceCode', 'childrenHealthNo', 'motherHealthNo', 'examinationCost', 'isSurgeryOrPremature'],
+        'III_2': ['regimeToDate', 'conditionPrenatal', 'childrenWeekOld', 'conditionReproduction', 'parentsOffWork', 'dateStartWork', 'surrogacy', 'motherIdentityCar', 'childrenIsurranceCode',
+                  'motherIsurranceCode', 'childrenHealthNo', 'motherHealthNo', 'examinationCost', 'isSurgeryOrPremature'],
+        'III_3': ['regimeToDate', 'regimeSum', 'regimeRequestDate', 'conditionPrenatal', 'childrenWeekOld', 'conditionReproduction', 'childrenGodchilDreceptionDate', 'dateStartWork', 'childrenIsurranceCode', 'childrenHealthNo', 
+                  'motherHealthNo', 'examinationCost'],
+        'IV': ['regimeToDate', 'regimeRequestDate', 'regimeSum', 'conditionPrenatal', 'childrenWeekOld', 'conditionReproduction', 'maternityLeave', 'parentsOffWork', 'childrenDayDead', 'surrogacy',
+              'motherIdentityCar', 'childrenIsurranceCode', 'motherIsurranceCode', 'childrenHealthNo', 'motherHealthNo', 'examinationCost', 'isSurgeryOrPremature'],
+        'V_1': ['regimeToDate', 'regimeToDate', 'regimeRequestDate', 'regimeSum', 'conditionPrenatal', 'childrenWeekOld', 'parentsOffWork', 'childrenDayDead', 'surrogacy', 'motherIdentityCar', 'childrenIsurranceCode', 'childrenIsurranceCode',
+                'childrenHealthNo', 'motherHealthNo', 'examinationCost', 'isSurgeryOrPremature'],
+        'V_2':  ['regimeToDate', 'regimeToDate', 'regimeRequestDate','regimeSum', 'conditionPrenatal', 'childrenWeekOld', 'parentsOffWork', 'childrenDayDead', 'surrogacy', 'motherIdentityCar', 'childrenIsurranceCode', 'childrenIsurranceCode',
+        'childrenHealthNo', 'motherHealthNo', 'examinationCost', 'isSurgeryOrPremature'],
+        'VI_1': ['regimeToDate', 'regimeRequestDate', 'regimeSum','conditionPrenatal', 'childrenWeekOld', 'maternityLeave', 'childrenDayDead', 'surrogacy', 'motherIdentityCar', 'examinationCost',
+                'isSurgeryOrPremature'],
+        'VI_2':  ['regimeToDate', 'regimeRequestDate', 'conditionPrenatal', 'childrenWeekOld', 'parentsOffWork', 'surrogacy', 'motherIdentityCar', 'childrenIsurranceCode', 'childrenIsurranceCode',
+        'childrenHealthNo', 'motherHealthNo', 'examinationCost', 'isSurgeryOrPremature'],
+        'VII': ['conditionPrenatal', 'childrenWeekOld', 'conditionReproduction', 'maternityLeave', 'parentsOffWork', 'childrenGodchilDreceptionDate', 'dateStartWork', 'childrenDayDead',
+                'motherIdentityCar', 'childrenIsurranceCode', 'childrenHealthNo', 'motherHealthNo', 'examinationCost'],
+        'VIII': ['regimeFromDate', 'regimeToDate', 'regimeRequestDate', 'conditionPrenatal', 'childrenWeekOld', 'conditionReproduction', 'maternityLeave', 'parentsOffWork', 'childrenGodchilDreceptionDate',
+                'dateStartWork', 'childrenDayDead', 'examinationCost', 'isSurgeryOrPremature', 'regimeSum'],
+        'IX': ['childrenBirthday', 'childrenNumber', 'conditionPrenatal','childrenWeekOld', 'conditionReproduction', 'maternityLeave', 'parentsOffWork', 'childrenGodchilDreceptionDate', 
+              'dateStartWork', 'childrenDayDead', 'surrogacy', 'motherIdentityCar', 'childrenIsurranceCode', 'motherIsurranceCode', 'childrenHealthNo', 'motherHealthNo', 
+              'examinationCost', 'isSurgeryOrPremature']
       };
 
       setTimeout(() => {
@@ -450,8 +516,7 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
               // set readonly column
               readonlyColumns[parentKey].forEach(column => {
                 const x = this.columns.findIndex(c => c.key === column);
-
-                this.spreadsheet.setReadonly(y, x);
+                this.spreadsheet.setReadonlyCellAndClear(y, x);
               });
             }
           });
@@ -544,24 +609,51 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
   private validSicknessesPart1() {
     const parentKeys = ['I', 'II', 'III'];
       const validationColumns: any = {
-        'II': {
-          diagnosticCode: {
+        'I': {
+          regimeFromDate: {
             required: true,
+            lessThanNow: true,
           },
-          diagnosticName: {
+          regimeRequestDate: {
             required: true,
+            lessThanNow: true,
           }
         },
         'III': {
           childrenBirthday: {
             required: true,
-            lessThanNow: true
+            lessThanNow: true,
           },
-          childrenHealthNo: {
+          regimeFromDate: {
             required: true,
+            lessThanNow: true,
+          },
+          regimeRequestDate: {
+            required: true,
+            lessThanNow: true,
+          }
+        },
+        'II': {
+          diagnosticCode: {
+            required: true,
+          },
+          regimeFromDate: {
+            required: true,
+            lessThanNow: true,
+          },
+          regimeRequestDate: {
+            required: true,
+            lessThanNow: true,
           }
         },
       };
+
+      const readonlyColumns = {
+        'I': ['childrenBirthday', 'childrenHealthNo', 'childrenNumberSick'],
+        'III': ['conditionWork', 'maternityLeave','diagnosticCode'],
+        'II': ['conditionWork', 'certificationHospital', 'maternityLeave', 'childrenBirthday', 'childrenHealthNo', 'childrenNumberSick' ],
+      };
+      
       setTimeout(() => {
         parentKeys.forEach(parentKey => {
           const columnIndexes = [];
@@ -577,9 +669,17 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
 
           this.data.forEach((d, y) => {
             if (d.parentKey === parentKey) {
+
               columnIndexes.forEach(x => {
                 const column = this.columns[x];
                 this.spreadsheet.validationCell(y, x, column.fieldName, validationColumns[parentKey][column.key]);
+              });
+
+               // set readonly column
+               readonlyColumns[parentKey].forEach(column => {
+                const x = this.columns.findIndex(c => c.key === column);
+
+                this.spreadsheet.setReadonlyCellAndClear(y, x);
               });
             }
           });
@@ -592,6 +692,7 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
         });
     }, 50);
   }
+
   private updateCellReadonly() {
     const readonlyColumnIndex = this.columns.findIndex(c => !!c.checkReadonly);
 
@@ -700,12 +801,17 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
   }
 
   private validationCellByOtherCell(cellValue, column, y, instance, cell) {
+
+    const records = this.spreadsheet.getJson();
+    const parentKey = records[y].options.parentKey;
+    // console.log(parentKey, this.tableName);   
     setTimeout(() => {
       if (column.key === 'planCode') {
         const rules = this.validationRules[cellValue];
         const x = this.columns.findIndex(c => c.key === 'childrenNumber');
         const cellSelected = column.source.find(s => s.id === cellValue);
         const validationColumn = this.columns[x];
+        this.validDataByPlanCode(column, y, instance, cell, parentKey);
 
         if (!rules) {
           validationColumn.validations = undefined;
@@ -728,114 +834,30 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
         validationColumn.validations = rules;
         validationColumn.fieldName = fieldName;
         instance.jexcel.validationCell(y, x, fieldName, rules);
-
-        this.handleEvent({
-          type: 'validate',
-          part: '',
-          parentKey: '',
-          user: {}
-        });
-      } else if (column.key === 'regimeFromDate') {
-        const regimeToDateValue = this.spreadsheet.getValueFromCoords(Number(cell) + 1, y);
-        const validationColumn = this.columns[cell];
-
-        if (regimeToDateValue && cellValue) {
-          const cellValueMoment = moment(cellValue, DATE_FORMAT.FULL);
-          const regimeToDateValueMoment = moment(regimeToDateValue, DATE_FORMAT.FULL);
-          const isAfter = cellValueMoment.isAfter(regimeToDateValueMoment);
-
-          if (isAfter) {
-            validationColumn.validations = {
-              required: true,
-              lessThan: true
-            };
-            if ([this.sicknessesPart1, this.sicknessesPart2].indexOf(this.tableName) === -1) {
-              validationColumn.validations.lessThanNow = true;
-            }
-            validationColumn.fieldName = {
-              name: 'Từ ngày',
-              message: 'Ngày đầu tiên người lao động được chỉ định nghỉ chế độ < hoặc = Ngày cuối cùng người lao động được chỉ định nghỉ chế độ',
-            };
-
-            instance.jexcel.validationCell(y, cell, validationColumn.fieldName, validationColumn.validations);
-          } else {
-            validationColumn.validations = {
-              required: true,
-            };
-            if ([this.sicknessesPart1, this.sicknessesPart2].indexOf(this.tableName) === -1) {
-              validationColumn.validations.lessThanNow = true;
-            }
-            validationColumn.fieldName = 'Từ ngày';
-            instance.jexcel.validationCell(y, cell, validationColumn.fieldName, validationColumn.validations);
-          }
-        } else {
-          validationColumn.validations = {
-            required: true,
-          };
-          if ([this.sicknessesPart1, this.sicknessesPart2].indexOf(this.tableName) === -1) {
-            validationColumn.validations.lessThanNow = true;
-          }
-          validationColumn.fieldName = 'Từ ngày';
-
-          instance.jexcel.validationCell(y, cell, validationColumn.fieldName, validationColumn.validations);
-        }
-
-        this.handleEvent({
-          type: 'validate',
-          part: '',
-          parentKey: '',
-          user: {}
-        });
+      } else if (column.key === 'regimeFromDate') {        
+        this.validFromDateByTable(column, y, instance, cell, parentKey);
       } else if (column.key === 'regimeToDate') {
-        const regimeFromDateValue = this.spreadsheet.getValueFromCoords(Number(cell) - 1, y);
-        const validationColumn = this.columns[Number(cell) - 1];
-
-        if (cellValue && regimeFromDateValue) {
-          const cellValueMoment = moment(cellValue, DATE_FORMAT.FULL);
-          const regimeFromDateValueMoment = moment(regimeFromDateValue, DATE_FORMAT.FULL);
-          const isAfter = regimeFromDateValueMoment.isAfter(cellValueMoment);
-
-          if (isAfter) {
-            validationColumn.validations = {
-              required: true,
-              lessThan: true,
-            };
-            if ([this.sicknessesPart1, this.sicknessesPart2].indexOf(this.tableName) === -1) {
-              validationColumn.validations.lessThanNow = true;
-            }
-            validationColumn.fieldName = {
-              name: 'Từ ngày',
-              message: 'Ngày đầu tiên người lao động được chỉ định nghỉ chế độ < hoặc = Ngày cuối cùng người lao động được chỉ định nghỉ chế độ',
-            };
-
-            instance.jexcel.validationCell(y, Number(cell) - 1, validationColumn.fieldName, validationColumn.validations);
-          } else {
-            validationColumn.validations = {
-              required: true,
-            };
-            if ([this.sicknessesPart1, this.sicknessesPart2].indexOf(this.tableName) === -1) {
-              validationColumn.validations.lessThanNow = true;
-            }
-            validationColumn.fieldName = 'Từ ngày';
-            instance.jexcel.validationCell(y, Number(cell) - 1, validationColumn.fieldName, validationColumn.validations);
-          }
-        } else {
-          validationColumn.validations = {
-            required: true,
-          };
-          if ([this.sicknessesPart1, this.sicknessesPart2].indexOf(this.tableName) === -1) {
-            validationColumn.validations.lessThanNow = true;
-          }
-          validationColumn.fieldName = 'Từ ngày';
-          instance.jexcel.validationCell(y, Number(cell) - 1, validationColumn.fieldName, validationColumn.validations);
-        }
-
-        this.handleEvent({
-          type: 'validate',
-          part: '',
-          parentKey: '',
-          user: {}
-        });
+        this.validToDateByTable(column, y, instance, cell, parentKey);
+      } else if (column.key === 'regimeRequestDate') {
+        const indexOfRegimeFromDate = this.columns.findIndex(c => c.key === 'regimeFromDate');
+        const regimeFromDateValue = this.spreadsheet.getValueFromCoords(indexOfRegimeFromDate, y); 
+        this.validRegimeRequestDateByTable(regimeFromDateValue, column, y, instance, cell, parentKey);
+      } else if (column.key === 'childrenBirthday') {        
+        this.validFromDateByTable(column, y, instance, cell, parentKey);
+        this.validChildrenBirthdayByTable(column, y, instance, cell, parentKey)
+        this.validChildrenGodchilDreceptionDateByTable(column, y, instance, cell, parentKey);
+        this.validChildrenDayDeadByTable(column, y, instance, cell, parentKey);
+      } else if(column.key === 'childrenGodchilDreceptionDate') {
+        this.validChildrenGodchilDreceptionDateByTable(column, y, instance, cell, parentKey);
+        this.validDateStartWorkByTable(column, y, instance, cell, parentKey);
+      } else if(column.key === 'dateStartWork') {
+        this.validDateStartWorkByTable(column, y, instance, cell, parentKey);
+      } else if(column.key === 'dateStartWork') {
+        this.validDateStartWorkByTable(column, y, instance, cell, parentKey);
+      } else if(column.key === 'childrenDayDead') {
+        this.validChildrenDayDeadByTable(column, y, instance, cell, parentKey);
+      } else if(column.key === 'childrenNumber') { 
+        this.validChildrenNumber(column, y, instance, cell);
       } else if (column.key === 'subsidizeReceipt') {
         const bankAccountColumn = this.columns[Number(cell) + 1];
         const accountHolderColumn = this.columns[Number(cell) + 2];
@@ -860,15 +882,998 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
         instance.jexcel.validationCell(y, Number(cell) + 1, bankAccountColumn.fieldName, bankAccountColumn.validations);
         instance.jexcel.validationCell(y, Number(cell) + 2, accountHolderColumn.fieldName, accountHolderColumn.validations);
         instance.jexcel.validationCell(y, Number(cell) + 3, bankCodeColumn.fieldName, bankCodeColumn.validations);
-
-        this.handleEvent({
-          type: 'validate',
-          part: '',
-          parentKey: '',
-          user: {}
-        });
-        
       }
+      this.handleEvent({
+        type: 'validate',
+        part: '',
+        parentKey: '',
+        user: {}
+      });
     }, 50);
   }
+
+
+  private validDataByPlanCode(column, y, instance, cell, parentKey) {
+    const indexOfPlanCode = this.columns.findIndex(c => c.key === 'planCode');
+    const planCodeValue = this.spreadsheet.getValueFromCoords(indexOfPlanCode, y);
+
+    const indexOfMotherConclusionDate = this.columns.findIndex(c => c.key === 'motherConclusionDate');
+    const motherConclusionDateValue = this.spreadsheet.getValueFromCoords(indexOfMotherConclusionDate, y);
+
+    const indexOfMotherDayDead = this.columns.findIndex(c => c.key === 'motherDayDead');
+    const motherDayDeadValue = this.spreadsheet.getValueFromCoords(indexOfMotherDayDead, y);
+
+    if (this.tableName === 'maternityPart1') {
+        const motherDayDeadColumn = this.columns[indexOfMotherDayDead];
+        const motherConclusionDateColumn = this.columns[indexOfMotherConclusionDate];
+        if (planCodeValue === 'RR2') {
+          motherDayDeadColumn.readonly = true;
+          this.spreadsheet.setReadonlyCellAndClear(Number(y), Number(indexOfMotherDayDead), false);
+          this.spreadsheet.setReadonlyCellAndClear(Number(y), Number(indexOfMotherConclusionDate), true);
+          motherDayDeadColumn.validations = { required: false };
+          motherConclusionDateColumn.validations = { 
+            required: true,
+            lessThanNow: true,
+          };         
+        } else {
+          this.spreadsheet.setReadonlyCellAndClear(Number(y), Number(indexOfMotherDayDead), true);
+          this.spreadsheet.setReadonlyCellAndClear(Number(y), Number(indexOfMotherConclusionDate), false);
+          motherDayDeadColumn.validations = { required: true,  lessThanNow: true  };
+          motherConclusionDateColumn.validations = { 
+            required: false,
+          };       
+        }
+
+        motherDayDeadColumn.fieldName = 'Ngày mẹ chết';
+        motherConclusionDateColumn.fieldName = 'Ngày kết luận (mẹ được kết luận không còn đủ sức khỏe chăm con)';
+
+        instance.jexcel.validationCell(y, indexOfMotherDayDead, motherDayDeadColumn.fieldName, motherDayDeadColumn.validations);
+        instance.jexcel.validationCell(y, indexOfMotherConclusionDate, motherConclusionDateColumn.fieldName, motherConclusionDateColumn.validations);
+    }
+
+  }
+  private validFromDateByTable(column, y, instance, cell, parentKey) {
+    if (this.tableName === 'maternityPart1' &&  (parentKey === 'III_1' || parentKey === 'III_2') ) {
+      this.validFromDate630BIII2(column, y, instance, cell);
+    } else if (this.tableName === 'maternityPart1' && parentKey === 'III_3' ) {
+      this.validFromDate630BIII3(column, y, instance, cell);
+    } else if (this.tableName === 'maternityPart1' && parentKey === 'IV' ) {
+      this.validFromDate630BIV(column, y, instance, cell);
+    } else if (this.tableName === 'maternityPart1' && (parentKey === 'V_1' || parentKey === 'V_2') ) {
+      this.validFromDate630BV1(column, y, instance, cell);
+    } else if (this.tableName === 'maternityPart1' && parentKey === 'VI_1') {
+      this.validFromDate630BVI1(column, y, instance, cell);
+    } else if (this.tableName === 'maternityPart1' && parentKey === 'VI_1') {
+      this.validFromDate630BVI1(column, y, instance, cell);
+    } else if (this.tableName === 'maternityPart1' && parentKey === 'VII') {
+      this.validFromDate630BVII(column, y, instance, cell);
+    }
+  }
+
+  private validToDateByTable(column, y, instance, cell, parentKey) { 
+    if (this.tableName === 'sicknessesPart1' &&  (parentKey === 'I' || parentKey === 'II' || parentKey === 'III') ) {
+      this.validToDate(column, y, instance, cell);
+    } if (this.tableName === 'maternityPart1' &&  (parentKey === 'I' || parentKey === 'II' || parentKey === 'IX') ) {
+      this.validToDate(column, y, instance, cell);
+    } else if(this.tableName === 'maternityPart1' && parentKey === 'VII') {
+      this.validToDateVII(column, y, instance, cell);
+    }
+  }
+
+  private validChildrenGodchilDreceptionDateByTable(column, y, instance, cell, parentKey) {
+    if (this.tableName === 'maternityPart1' &&  (parentKey === 'III_2') ) {
+      this.validChildrenGodchilDreceptionDateIII2(column, y, instance, cell);
+    } else if(this.tableName === 'maternityPart1' && (parentKey === 'IV' || parentKey ==='VI_1')) {
+      this.validChildrenGodchilDreceptionDateIV(column, y, instance, cell);
+    }else if(this.tableName === 'maternityPart1' && (parentKey === 'V_1' || parentKey ==='V_2')) {
+      this.validChildrenGodchilDreceptionDateV12(column, y, instance, cell);
+    }
+  }
+
+  private validDateStartWorkByTable(column, y, instance, cell, parentKey) {
+    if (this.tableName === 'maternityPart1' &&  (parentKey === 'IV' || parentKey === 'VI_1') ) {
+      this.validDateStartWorkIV(column, y, instance, cell);
+    }
+  }
+
+  private validChildrenDayDeadByTable(column, y, instance, cell, parentKey) {
+    if (this.tableName === 'maternityPart1' &&  (parentKey === 'III_3') ) {
+      this.validchildrenDayDeadIII3(column, y, instance, cell);
+    } else if (this.tableName === 'maternityPart1' &&  parentKey === 'III_2') {
+      this.validchildrenDayDeadIII2(column, y, instance, cell);
+    }
+  }
+
+  private validToDate(column, y, instance, cell) {
+    const indexOfRegimeFromDate = this.columns.findIndex(c => c.key === 'regimeFromDate');
+    const regimeFromDateValue = this.spreadsheet.getValueFromCoords(indexOfRegimeFromDate, y);
+    const indexOfRegimeToDate = this.columns.findIndex(c => c.key === 'regimeToDate');
+    const regimeToDateDateValue = this.spreadsheet.getValueFromCoords(indexOfRegimeToDate, y);
+    const validationColumn = this.columns[indexOfRegimeToDate];
+
+    if (regimeToDateDateValue && regimeFromDateValue) {
+      const cellValueMoment = moment(regimeFromDateValue, DATE_FORMAT.FULL);
+      const regimeToDateValueMoment = moment(regimeToDateDateValue, DATE_FORMAT.FULL);
+      const isAfter = cellValueMoment.isAfter(regimeToDateValueMoment);
+      if (isAfter) {
+        validationColumn.validations = {
+          required: true,
+          lessThan: true
+        };
+        validationColumn.fieldName = {
+          name: 'Đến ngày',
+          message: 'Ngày đầu tiên người lao động được chỉ định nghỉ chế độ < hoặc = Ngày cuối cùng người lao động được chỉ định nghỉ chế độ',
+        };
+
+        instance.jexcel.validationCell(y, indexOfRegimeToDate, validationColumn.fieldName, validationColumn.validations);
+      } else {
+        validationColumn.validations = {
+          required: true,
+          lessThanNow: true
+        };
+         
+        validationColumn.fieldName = 'Đến ngày';
+        instance.jexcel.validationCell(y, indexOfRegimeToDate, validationColumn.fieldName, validationColumn.validations);
+      }
+    } else {
+      validationColumn.validations = {
+        required: true,
+        lessThanNow: true
+      };
+      validationColumn.fieldName = 'Đến ngày';
+
+      instance.jexcel.validationCell(y, indexOfRegimeToDate, validationColumn.fieldName, validationColumn.validations);
+    }
+  }
+
+  //T12: Nam nghỉ khi vợ sinh VII
+  private validToDateVII(column, y, instance, cell) {
+    const indexOfChildrenBirthday = this.columns.findIndex(c => c.key === 'childrenBirthday');
+    const childrenBirthdayValue = this.spreadsheet.getValueFromCoords(indexOfChildrenBirthday, y);
+    
+    const indexOfRegimeToDate = this.columns.findIndex(c => c.key === 'regimeToDate');
+    const regimeToDateDateValue = this.spreadsheet.getValueFromCoords(indexOfRegimeToDate, y);
+
+    const indexOfRegimeFromDate = this.columns.findIndex(c => c.key === 'regimeFromDate');
+    const regimeFromDateValue = this.spreadsheet.getValueFromCoords(indexOfRegimeFromDate, y);
+
+    const validationColumn = this.columns[indexOfRegimeToDate];
+
+    if (regimeToDateDateValue && childrenBirthdayValue) {      
+
+      const regimeToDateValueMoment = moment(regimeToDateDateValue, DATE_FORMAT.FULL);
+      const childrenBirthdayMoment = moment(childrenBirthdayValue, DATE_FORMAT.FULL).add('days',  35);
+      const isAfter = regimeToDateValueMoment.isAfter(moment(childrenBirthdayMoment.format(DATE_FORMAT.FULL), DATE_FORMAT.FULL));
+     
+      if (isAfter) {
+        validationColumn.validations = {
+          required: true,
+          lessThan: true
+        };
+        validationColumn.fieldName = {
+          name: 'Đến ngày',
+          message: 'Đến ngày được hưởng phải nhỏ hơn hoặc bằng ngày sinh của con cộng 35 ngày [' + childrenBirthdayMoment.format(DATE_FORMAT.FULL) + ']',
+        };
+
+        instance.jexcel.validationCell(y, indexOfRegimeToDate, validationColumn.fieldName, validationColumn.validations);
+      } else {
+        validationColumn.validations = {
+          lessThanNow: true
+        };
+         
+        validationColumn.fieldName = 'Đến ngày';
+        instance.jexcel.validationCell(y, indexOfRegimeToDate, validationColumn.fieldName, validationColumn.validations);
+      }
+    } else if(regimeToDateDateValue && regimeFromDateValue) {
+      
+      const regimeToDateValueMoment = moment(regimeToDateDateValue, DATE_FORMAT.FULL);
+      const regimeFromDateMoment = moment(regimeFromDateValue, DATE_FORMAT.FULL);
+      const isAfterFromDate = regimeFromDateMoment.isAfter(regimeToDateValueMoment);
+      
+      if(isAfterFromDate) {
+        validationColumn.validations = {
+          required: true,
+          lessThan: true
+        };
+        validationColumn.fieldName = {
+          name: 'Đến ngày',
+          message: 'Đến ngày phải lớn hơn Từ ngày',
+        };
+
+        instance.jexcel.validationCell(y, indexOfRegimeToDate, validationColumn.fieldName, validationColumn.validations);
+      } else {
+        validationColumn.validations = {
+          lessThanNow: true
+        };
+         
+        validationColumn.fieldName = 'Đến ngày';
+        instance.jexcel.validationCell(y, indexOfRegimeToDate, validationColumn.fieldName, validationColumn.validations);
+      }
+
+    } else {
+      validationColumn.validations = {
+        lessThanNow: true
+      };
+
+      validationColumn.fieldName = 'Đến ngày';
+      instance.jexcel.validationCell(y, indexOfRegimeToDate, validationColumn.fieldName, validationColumn.validations);
+    }
+  }
+
+  private validChildrenNumber(column, y, instance, cell) {
+      const indexOfChildrenNumber = this.columns.findIndex(c => c.key === 'childrenNumber');
+      const childrenNumberValue = this.spreadsheet.getValueFromCoords(indexOfChildrenNumber, y);
+      const validationColumn = this.columns[indexOfChildrenNumber];
+      if(childrenNumberValue > 5) {
+        validationColumn.validations = {
+          max: 5,
+        };
+  
+        validationColumn.fieldName = 'Số con';
+        instance.jexcel.validationCell(y, indexOfChildrenNumber, validationColumn.fieldName, validationColumn.validations);
+      }
+      // const indexOfChildrenBirthday = this.columns.findIndex(c => c.key === 'childrenBirthday');
+      // const childrenBirthdayValue = this.spreadsheet.getValueFromCoords(indexOfChildrenBirthday, y);
+  }
+
+  /// Con chết III_2 T6
+  private  validFromDate630BIII2(column, y, instance, cell)
+  {
+      const indexOfRegimeFromDate = this.columns.findIndex(c => c.key === 'regimeFromDate');
+      const regimeFromDateValue = this.spreadsheet.getValueFromCoords(indexOfRegimeFromDate, y);
+      const indexOfChildrenBirthday = this.columns.findIndex(c => c.key === 'childrenBirthday');
+      const childrenBirthdayValue = this.spreadsheet.getValueFromCoords(indexOfChildrenBirthday, y);
+
+      const validationColumn = this.columns[indexOfRegimeFromDate];
+      if (childrenBirthdayValue && regimeFromDateValue) {
+        const cellValueMoment = moment(regimeFromDateValue, DATE_FORMAT.FULL);
+        const maxChildrenBirthdayMoment = moment(childrenBirthdayValue, DATE_FORMAT.FULL).subtract('days', 1);
+        const minchildrenBirthdayMoment = moment(childrenBirthdayValue, DATE_FORMAT.FULL).subtract('months', 2);
+        const isAfterMaxchildrenBirthday = cellValueMoment.isAfter(moment(maxChildrenBirthdayMoment.format(DATE_FORMAT.FULL), DATE_FORMAT.FULL));
+        const isAfterMinchildrenBirthday = moment(minchildrenBirthdayMoment.format(DATE_FORMAT.FULL), DATE_FORMAT.FULL).isAfter(cellValueMoment);
+        if(isAfterMaxchildrenBirthday) {
+            validationColumn.validations = {
+              required: true,
+              lessThan: true,
+            };
+            validationColumn.fieldName = {
+              name: 'Từ ngày đơn vị đề nghị',
+              message: 'Từ ngày đơn vị đề nghị phải nhỏ hơn một ngày, sau ngày sinh của con [' + childrenBirthdayValue + ']',
+            };
+            instance.jexcel.validationCell(y, indexOfRegimeFromDate, validationColumn.fieldName, validationColumn.validations);
+        } else if(isAfterMinchildrenBirthday) {
+          validationColumn.validations = {
+            required: true,
+            lessThan: true,
+          };
+          validationColumn.fieldName = {
+            name: 'Từ ngày đơn vị đề nghị',
+            message: 'Từ ngày đơn vị đề nghị phải lớn hơn thời gian sinh con trước 2 tháng',
+          };
+          instance.jexcel.validationCell(y, indexOfRegimeFromDate, validationColumn.fieldName, validationColumn.validations);
+        }
+        else {
+          validationColumn.validations = {
+            required: true,
+            lessThanNow: true,
+          };
+          
+          validationColumn.fieldName = 'Từ ngày đơn vị đề nghị';
+          instance.jexcel.validationCell(y, indexOfRegimeFromDate, validationColumn.fieldName, validationColumn.validations);
+        }
+        
+      } else {
+        validationColumn.validations = {
+          required: true,
+          lessThanNow: true,
+        };
+        
+        validationColumn.fieldName = 'Từ ngày đơn vị đề nghị';
+        instance.jexcel.validationCell(y, indexOfRegimeFromDate, validationColumn.fieldName, validationColumn.validations);
+      }
+  }
+
+  //T7 trương hợp mẹ chết sau sinh
+  private  validFromDate630BIII3(column, y, instance, cell)
+  {
+      const indexOfRegimeFromDate = this.columns.findIndex(c => c.key === 'regimeFromDate');
+      const regimeFromDateValue = this.spreadsheet.getValueFromCoords(indexOfRegimeFromDate, y);
+      const indexOfChildrenBirthday = this.columns.findIndex(c => c.key === 'childrenBirthday');
+      const childrenBirthdayValue = this.spreadsheet.getValueFromCoords(indexOfChildrenBirthday, y);
+
+      const validationColumn = this.columns[indexOfRegimeFromDate];
+      if (childrenBirthdayValue && regimeFromDateValue) {
+        const cellValueMoment = moment(regimeFromDateValue, DATE_FORMAT.FULL);
+        const minchildrenBirthdayMoment = moment(childrenBirthdayValue, DATE_FORMAT.FULL).subtract('months', 2);
+        const isAfterMinchildrenBirthday = moment(minchildrenBirthdayMoment.format(DATE_FORMAT.FULL), DATE_FORMAT.FULL).isAfter(cellValueMoment);
+        if(isAfterMinchildrenBirthday) {
+          validationColumn.validations = {
+            required: true,
+            lessThan: true,
+          };
+          validationColumn.fieldName = {
+            name: 'Từ ngày đơn vị đề nghị',
+            message: 'Từ ngày đơn vị đề nghị phải lớn hơn thời gian sinh con trước 2 tháng',
+          };
+          instance.jexcel.validationCell(y, indexOfRegimeFromDate, validationColumn.fieldName, validationColumn.validations);
+        }
+        else {
+          validationColumn.validations = {
+            required: true,
+            lessThanNow: true,
+          };
+          
+          validationColumn.fieldName = 'Từ ngày đơn vị đề nghị';
+          instance.jexcel.validationCell(y, indexOfRegimeFromDate, validationColumn.fieldName, validationColumn.validations);
+        }
+        
+      } else {
+        validationColumn.validations = {
+          required: true,
+          lessThanNow: true,
+        };
+        
+        validationColumn.fieldName = 'Từ ngày đơn vị đề nghị';
+        instance.jexcel.validationCell(y, indexOfRegimeFromDate, validationColumn.fieldName, validationColumn.validations);
+      }
+  }
+
+  /// Con chết III_2 T8
+  private  validFromDate630BIV(column, y, instance, cell)
+  {
+      const indexOfRegimeFromDate = this.columns.findIndex(c => c.key === 'regimeFromDate');
+      const regimeFromDateValue = this.spreadsheet.getValueFromCoords(indexOfRegimeFromDate, y);
+      const indexOfChildrenBirthday = this.columns.findIndex(c => c.key === 'childrenBirthday');
+      const childrenBirthdayValue = this.spreadsheet.getValueFromCoords(indexOfChildrenBirthday, y);
+      const indexOfchildrenGodchilDreceptionDate = this.columns.findIndex(c => c.key === 'childrenGodchilDreceptionDate');
+      const childrenGodchilDreceptionDateValue = this.spreadsheet.getValueFromCoords(indexOfchildrenGodchilDreceptionDate, y);
+
+      const validationColumn = this.columns[indexOfRegimeFromDate];
+      if (childrenBirthdayValue && regimeFromDateValue) {
+        const regimeFromDateMoment = moment(regimeFromDateValue, DATE_FORMAT.FULL);
+        const childrenBirthdayMoment =  moment(childrenBirthdayValue, DATE_FORMAT.FULL);
+        const maxChildrenBirthdayMoment = moment(childrenBirthdayValue, DATE_FORMAT.FULL).add('months', 6);
+        const isAfter = childrenBirthdayMoment.isAfter(regimeFromDateMoment);
+        const isAfterMax = regimeFromDateMoment.isAfter(moment(maxChildrenBirthdayMoment.format(DATE_FORMAT.FULL), DATE_FORMAT.FULL));
+        const childrenGodchilDreceptionDateMoment = moment(childrenGodchilDreceptionDateValue, DATE_FORMAT.FULL);
+        const isAfterchildrenGodchil = childrenGodchilDreceptionDateMoment.isAfter(regimeFromDateMoment);
+        if(isAfter) {
+            validationColumn.validations = {
+              required: true,
+              lessThan: true,
+            };
+            validationColumn.fieldName = {
+              name: 'Từ ngày',
+              message: 'Từ ngày đề nghị phải lơn hơn hoặc bằng sinh của con [' + maxChildrenBirthdayMoment.format(DATE_FORMAT.FULL) + ']',
+            };
+            instance.jexcel.validationCell(y, indexOfRegimeFromDate, validationColumn.fieldName, validationColumn.validations);
+        } else if (isAfterchildrenGodchil) {
+          validationColumn.validations = {
+            required: true,
+            lessThan: true,
+          };
+          validationColumn.fieldName = {
+            name: 'Từ ngày',
+            message: 'Từ ngày đề nghị phải lớn hơn hoặc bằng ngày nhận con nuôi  [' + childrenGodchilDreceptionDateValue + ']',
+          };
+          instance.jexcel.validationCell(y, indexOfRegimeFromDate, validationColumn.fieldName, validationColumn.validations);
+        } else if(isAfterMax) {
+          validationColumn.validations = {
+            required: true,
+            lessThan: true,
+          };
+          validationColumn.fieldName = {
+            name: 'Từ ngày',
+            message: 'Từ ngày đề nghị phải nhỏ hơn hoặc bằng [' + maxChildrenBirthdayMoment.format(DATE_FORMAT.FULL) + ']',
+          };
+          instance.jexcel.validationCell(y, indexOfRegimeFromDate, validationColumn.fieldName, validationColumn.validations);
+       }  else {
+            validationColumn.validations = {
+              lessThanNow: true,
+            };
+            
+            validationColumn.fieldName = 'Từ ngày';
+            instance.jexcel.validationCell(y, indexOfRegimeFromDate, validationColumn.fieldName, validationColumn.validations);
+        }
+        
+      } else {
+        validationColumn.validations = {
+          lessThanNow: true,
+        };
+        
+        validationColumn.fieldName = 'Từ ngày';
+        instance.jexcel.validationCell(y, indexOfRegimeFromDate, validationColumn.fieldName, validationColumn.validations);
+      }
+  }
+
+  /// Mang thai hộ V1, V2 10
+  private  validFromDate630BV1(column, y, instance, cell)
+  {
+      const indexOfRegimeFromDate = this.columns.findIndex(c => c.key === 'regimeFromDate');
+      const regimeFromDateValue = this.spreadsheet.getValueFromCoords(indexOfRegimeFromDate, y);
+      const indexOfChildrenBirthday = this.columns.findIndex(c => c.key === 'childrenBirthday');
+      const childrenBirthdayValue = this.spreadsheet.getValueFromCoords(indexOfChildrenBirthday, y);
+
+      const validationColumn = this.columns[indexOfRegimeFromDate];
+      if (childrenBirthdayValue && regimeFromDateValue) {
+        const regimeFromDateMoment = moment(regimeFromDateValue, DATE_FORMAT.FULL);
+        const childrenBirthdayMoment = moment(childrenBirthdayValue, DATE_FORMAT.FULL).add('days', 1);
+        const monthChildrenBirthdayMoment = moment(childrenBirthdayValue, DATE_FORMAT.FULL).subtract('months', 2);
+
+        const isAfterMin = moment(monthChildrenBirthdayMoment.format(DATE_FORMAT.FULL), DATE_FORMAT.FULL).isAfter(regimeFromDateMoment);
+        const isAfterMax = regimeFromDateMoment.isAfter(moment(childrenBirthdayMoment.format(DATE_FORMAT.FULL), DATE_FORMAT.FULL));
+        if(isAfterMin) {
+            validationColumn.validations = {
+              required: true,
+              lessThan: true,
+            };
+            validationColumn.fieldName = {
+              name: 'Từ ngày',
+              message: 'Từ ngày đề nghị phài lớn hơn hoặc bằng sau 2 tháng sinh con [' + monthChildrenBirthdayMoment.format(DATE_FORMAT.FULL) + ']',
+            };
+            instance.jexcel.validationCell(y, indexOfRegimeFromDate, validationColumn.fieldName, validationColumn.validations);
+        } else if(isAfterMax) {
+          validationColumn.validations = {
+            required: true,
+            lessThan: true,
+          };
+          validationColumn.fieldName = {
+            name: 'Từ ngày',
+            message: 'Từ ngày phải nhỏ hơn hoặc bằng ngày sinh của con cộng 1 ngày [' + childrenBirthdayMoment.format(DATE_FORMAT.FULL) + ']',
+          };
+          instance.jexcel.validationCell(y, indexOfRegimeFromDate, validationColumn.fieldName, validationColumn.validations);
+        }
+        else {
+          validationColumn.validations = {
+            required: true,
+            lessThanNow: true,
+          };
+          
+          validationColumn.fieldName = 'Từ ngày';
+          instance.jexcel.validationCell(y, indexOfRegimeFromDate, validationColumn.fieldName, validationColumn.validations);
+        }
+        
+      } else {
+        validationColumn.validations = {
+          required: true,
+          lessThanNow: true,
+        };
+        
+        validationColumn.fieldName = 'Từ ngày';
+        instance.jexcel.validationCell(y, indexOfRegimeFromDate, validationColumn.fieldName, validationColumn.validations);
+      }
+  }
+
+  //T11: Nhờ mang thai hộ VI_1
+  private  validFromDate630BVI1(column, y, instance, cell)
+  {
+      const indexOfRegimeFromDate = this.columns.findIndex(c => c.key === 'regimeFromDate');
+      const regimeFromDateValue = this.spreadsheet.getValueFromCoords(indexOfRegimeFromDate, y);
+      const indexOfChildrenBirthday = this.columns.findIndex(c => c.key === 'childrenBirthday');
+      const childrenBirthdayValue = this.spreadsheet.getValueFromCoords(indexOfChildrenBirthday, y);
+
+      const indexOfChildrenGodchilDreceptionDate = this.columns.findIndex(c => c.key === 'childrenGodchilDreceptionDate');
+      const childrenGodchilDreceptionDateValue = this.spreadsheet.getValueFromCoords(indexOfChildrenGodchilDreceptionDate, y);
+
+      const validationColumn = this.columns[indexOfRegimeFromDate];
+      if (childrenBirthdayValue && regimeFromDateValue) {
+        const regimeFromDateMoment = moment(regimeFromDateValue, DATE_FORMAT.FULL);
+        const maxChildrenBirthdayMoment = moment(childrenBirthdayValue, DATE_FORMAT.FULL).add('months', 6);
+        const minchildrenBirthdayMoment = moment(childrenGodchilDreceptionDateValue, DATE_FORMAT.FULL);
+        const isAfterMin = minchildrenBirthdayMoment.isAfter(regimeFromDateMoment);
+        const isAfterMax = regimeFromDateMoment.isAfter(moment(maxChildrenBirthdayMoment.format(DATE_FORMAT.FULL), DATE_FORMAT.FULL));
+        if(isAfterMin) {
+          validationColumn.validations = {
+            required: true,
+            lessThan: true,
+          };
+
+          validationColumn.fieldName = {
+            name: 'Từ ngày',
+            message: 'Từ ngày phải phải lơn hoăn hoặc bằng ngày nhận nuôi [' + childrenGodchilDreceptionDateValue + ']',
+          };
+          instance.jexcel.validationCell(y, indexOfRegimeFromDate, validationColumn.fieldName, validationColumn.validations);
+
+        } else if(isAfterMax) {
+            validationColumn.validations = {
+              required: true,
+              lessThan: true,
+            };
+            validationColumn.fieldName = {
+              name: 'Từ ngày',
+              message: 'Từ ngày đề nghị phải nhỏ hơn hoặc bằng ngày sinh của con cộng 6 tháng [' + maxChildrenBirthdayMoment.format(DATE_FORMAT.FULL) + ']',
+            };
+            instance.jexcel.validationCell(y, indexOfRegimeFromDate, validationColumn.fieldName, validationColumn.validations);
+        } else {
+          validationColumn.validations = {
+            lessThanNow: true,
+          };
+          
+          validationColumn.fieldName = 'Từ ngày';
+          instance.jexcel.validationCell(y, indexOfRegimeFromDate, validationColumn.fieldName, validationColumn.validations);
+        }
+        
+      } else {
+        validationColumn.validations = {
+          lessThanNow: true,
+        };
+        
+        validationColumn.fieldName = 'Từ ngày';
+        instance.jexcel.validationCell(y, indexOfRegimeFromDate, validationColumn.fieldName, validationColumn.validations);
+      }
+  }
+
+ //T12: Nam nghỉ khi vợ sinh VII
+ private  validFromDate630BVII(column, y, instance, cell)
+ {
+     const indexOfRegimeFromDate = this.columns.findIndex(c => c.key === 'regimeFromDate');
+     const regimeFromDateValue = this.spreadsheet.getValueFromCoords(indexOfRegimeFromDate, y);
+     const indexOfChildrenBirthday = this.columns.findIndex(c => c.key === 'childrenBirthday');
+     const childrenBirthdayValue = this.spreadsheet.getValueFromCoords(indexOfChildrenBirthday, y);
+
+     const validationColumn = this.columns[indexOfRegimeFromDate];
+     if (childrenBirthdayValue && regimeFromDateValue) {
+      const regimeFromDateMoment = moment(regimeFromDateValue, DATE_FORMAT.FULL);
+      const childrenBirthdayMoment = moment(childrenBirthdayValue, DATE_FORMAT.FULL);
+      const dayOffMoment = moment(childrenBirthdayValue, DATE_FORMAT.FULL).add('days',  30);
+      const isAfterOff = regimeFromDateMoment.isAfter(moment(dayOffMoment.format(DATE_FORMAT.FULL), DATE_FORMAT.FULL));
+      const isAfter = childrenBirthdayMoment.isAfter(regimeFromDateMoment);
+      if(isAfter) {
+           validationColumn.validations = {
+             required: true,
+             lessThan: true,
+           };
+           validationColumn.fieldName = {
+             name: 'Từ ngày',
+             message: 'Từ ngày phải lơn hơn hoặc bằng ngày sing của con ' + childrenBirthdayValue,
+           };
+           instance.jexcel.validationCell(y, indexOfRegimeFromDate, validationColumn.fieldName, validationColumn.validations);
+       } else if(isAfterOff) {
+        validationColumn.validations = {
+          required: true,
+          lessThan: true,
+        };
+        validationColumn.fieldName = {
+          name: 'Từ ngày',
+          message: 'Từ ngày phải nhỏ hơn hoặc bằng ngày sinh của con + 30 ngày ' + dayOffMoment.format(DATE_FORMAT.FULL),
+        };
+        instance.jexcel.validationCell(y, indexOfRegimeFromDate, validationColumn.fieldName, validationColumn.validations);
+      }   else {
+         validationColumn.validations = {
+           required: true,
+           lessThanNow: true,
+         };
+         
+         validationColumn.fieldName = 'Từ ngày';
+         instance.jexcel.validationCell(y, indexOfRegimeFromDate, validationColumn.fieldName, validationColumn.validations);
+       }
+       
+     } else {
+       validationColumn.validations = {
+         required: true,
+         lessThanNow: true,
+       };
+       
+       validationColumn.fieldName = 'Từ ngày';
+       instance.jexcel.validationCell(y, indexOfRegimeFromDate, validationColumn.fieldName, validationColumn.validations);
+     }
+ }
+
+
+  private validChildrenBirthdayByTable(column, y, instance, cell, parentKey) {
+    if(this.tableName === 'maternityPart1') {
+      this.validChildrenBirthday(column, y, instance, cell);
+    }
+  }
+
+  private validRegimeRequestDateByTable(toDate, column, y, instance, cell, parentKey) {
+    if((this.tableName === 'sicknessesPart1' || this.tableName === 'sicknessesPart2') && (parentKey === 'I' || parentKey === 'II' || parentKey === 'II')) {
+      this.validRegimeRequestDate(toDate, column, y, instance, cell);
+    }
+  }
+  
+
+  private validChildrenBirthday(column, y, instance, cell) {
+    const indexOfTypeBirthday = this.columns.findIndex(c => c.key === 'typeBirthday');
+    const indexOfChildrenBirthday = this.columns.findIndex(c => c.key === 'childrenBirthday');
+    const indexOfBirthday = this.columns.findIndex(c => c.key === 'birthday');
+    const typeBirthdayValue = this.spreadsheet.getValueFromCoords(indexOfTypeBirthday, y);
+    const birthdayValue = this.spreadsheet.getValueFromCoords(indexOfBirthday, y);
+    const childrenBirthdayValue = this.spreadsheet.getValueFromCoords(indexOfChildrenBirthday, y);
+    const validationColumn = this.columns[indexOfChildrenBirthday];
+    if (birthdayValue && childrenBirthdayValue) {
+      const dateFomat = this.getDateTimeFomatByTypeBirthday(typeBirthdayValue);
+      const birthdayMoment = moment(birthdayValue, dateFomat);
+      const childrenBirthdayMoment = moment(childrenBirthdayValue, DATE_FORMAT.FULL);
+      const isAfter = birthdayMoment.isAfter(childrenBirthdayMoment);
+      if (isAfter) {
+
+        validationColumn.validations = {
+          required: true,
+          lessThan: true
+        };
+        validationColumn.fieldName = {
+          name: 'Ngày sinh của con',
+          message: 'Ngày sinh của con phải lơn hơn ngày sinh của mẹ ' + birthdayValue,
+        };
+
+        instance.jexcel.validationCell(y, indexOfChildrenBirthday, validationColumn.fieldName, validationColumn.validations);
+      } else {
+        validationColumn.validations.lessThanNow = true;
+        validationColumn.fieldName = 'Ngày sinh của con';
+        instance.jexcel.validationCell(y, indexOfChildrenBirthday, validationColumn.fieldName, validationColumn.validations);
+      }
+    } else {
+      validationColumn.validations = {
+        required: true,
+        lessThanNow: true
+      };
+      validationColumn.fieldName = 'Ngày sinh của con';
+      instance.jexcel.validationCell(y, indexOfChildrenBirthday, validationColumn.fieldName, validationColumn.validations);
+    }
+  }
+
+
+  private validRegimeRequestDate(fromDate ,column, y, instance, cell ) {
+      const indexOfRegimeRequestDate = this.columns.findIndex(c => c.key === 'regimeRequestDate');
+      const regimeRequestDateValue = this.spreadsheet.getValueFromCoords(indexOfRegimeRequestDate, y);
+      const validationColumn = this.columns[indexOfRegimeRequestDate];
+      
+      if (regimeRequestDateValue && fromDate) {
+        const fromDateMoment = moment(fromDate, DATE_FORMAT.FULL);
+        const regimeRequestDateMoment = moment(regimeRequestDateValue, DATE_FORMAT.FULL);
+        const isAfter = fromDateMoment.isAfter(regimeRequestDateMoment);
+        if (isAfter) {
+            validationColumn.validations = {
+              required: true,
+              lessThan: true,
+            };
+            validationColumn.fieldName = {
+              name: 'Từ ngày đơn vị đề nghị',
+              message: 'Từ ngày đơn vị đề nghị phải lờn hơn hoặc bằng từ ngày hưởng chế độ',
+            };
+            instance.jexcel.validationCell(y, indexOfRegimeRequestDate, validationColumn.fieldName, validationColumn.validations);
+          } else {
+            validationColumn.validations = {
+              required: true,
+              lessThanNow: true,
+            };
+            
+            validationColumn.fieldName = 'Từ ngày đơn vị đề nghị';
+            instance.jexcel.validationCell(y, indexOfRegimeRequestDate, validationColumn.fieldName, validationColumn.validations);
+          }
+    } else {
+      validationColumn.validations = {
+        required: true,
+        lessThanNow: true,
+      };
+      
+      validationColumn.fieldName = 'Từ ngày đơn vị đề nghị';
+      instance.jexcel.validationCell(y, indexOfRegimeRequestDate, validationColumn.fieldName, validationColumn.validations);
+    }
+  }
+
+  //T6: Con chết sau khi sinh III_2
+  private validChildrenGodchilDreceptionDateIII2(column, y, instance, cell) {
+    const indexOfChildrenBirthday = this.columns.findIndex(c => c.key === 'childrenBirthday');
+    const childrenBirthdayValue = this.spreadsheet.getValueFromCoords(indexOfChildrenBirthday, y);
+    const indexOfChildrenGodchilDreceptionDate = this.columns.findIndex(c => c.key === 'childrenGodchilDreceptionDate');
+    const childrenGodchilDreceptionDateValue = this.spreadsheet.getValueFromCoords(indexOfChildrenGodchilDreceptionDate, y);
+    const validationColumn = this.columns[indexOfChildrenGodchilDreceptionDate];
+
+    if (childrenBirthdayValue && childrenGodchilDreceptionDateValue) {
+      const childrenBirthdayMoment = moment(childrenBirthdayValue, DATE_FORMAT.FULL);
+      const childrenGodchilDreceptionDateMoment = moment(childrenGodchilDreceptionDateValue, DATE_FORMAT.FULL);
+
+      const monChildrenBirthdayMoment = moment(childrenBirthdayValue, DATE_FORMAT.FULL).add('months',  6);
+      const isAfterMon = childrenGodchilDreceptionDateMoment.isAfter(moment(monChildrenBirthdayMoment.format(DATE_FORMAT.FULL), DATE_FORMAT.FULL));
+
+      const isAfter = childrenBirthdayMoment.isAfter(childrenGodchilDreceptionDateMoment);
+      if (isAfter) {
+        validationColumn.validations = {
+          required: true,
+          lessThan: true
+        };
+        validationColumn.fieldName = {
+          name: 'Ngày nhận nuôi',
+          message: 'Ngày nhận nuôi con phải lơn hơn hoặc bằng ngày sinh của con [' + childrenBirthdayValue + ']',
+        };
+
+        instance.jexcel.validationCell(y, indexOfChildrenGodchilDreceptionDate, validationColumn.fieldName, validationColumn.validations);
+      } else if(isAfterMon) {
+        validationColumn.validations = {
+          required: true,
+          lessThan: true
+        };
+        validationColumn.fieldName = {
+          name: 'Ngày nhận nuôi',
+          message: 'Ngày nhận nuôi con phải nhỏn hơn hoặc bằng ngày sinh của con + 6 tháng [' + monChildrenBirthdayMoment.format(DATE_FORMAT.FULL) + ']',
+        };
+
+        instance.jexcel.validationCell(y, indexOfChildrenGodchilDreceptionDate, validationColumn.fieldName, validationColumn.validations);
+      } else {
+        validationColumn.validations = {
+        };
+         
+        validationColumn.fieldName = 'Ngày nhận nuôi';
+        instance.jexcel.validationCell(y, indexOfChildrenGodchilDreceptionDate, validationColumn.fieldName, validationColumn.validations);
+      }
+    } else {
+      validationColumn.validations = {
+      };
+      validationColumn.fieldName = 'Ngày nhận nuôi';
+
+      instance.jexcel.validationCell(y, indexOfChildrenGodchilDreceptionDate, validationColumn.fieldName, validationColumn.validations);
+    }
+  }
+
+  //T8: Nuôi con nuôi IV, VI_1
+  private validChildrenGodchilDreceptionDateIV(column, y, instance, cell) {
+    const indexOfChildrenBirthday = this.columns.findIndex(c => c.key === 'childrenBirthday');
+    const childrenBirthdayValue = this.spreadsheet.getValueFromCoords(indexOfChildrenBirthday, y);
+    const indexOfChildrenGodchilDreceptionDate = this.columns.findIndex(c => c.key === 'childrenGodchilDreceptionDate');
+    const childrenGodchilDreceptionDateValue = this.spreadsheet.getValueFromCoords(indexOfChildrenGodchilDreceptionDate, y);
+    const validationColumn = this.columns[indexOfChildrenGodchilDreceptionDate];
+
+    if (childrenBirthdayValue && childrenGodchilDreceptionDateValue) {
+      const childrenBirthdayMoment = moment(childrenBirthdayValue, DATE_FORMAT.FULL);
+      const childrenGodchilDreceptionDateMoment = moment(childrenGodchilDreceptionDateValue, DATE_FORMAT.FULL);
+
+      const monChildrenBirthdayMoment = moment(childrenBirthdayValue, DATE_FORMAT.FULL).add('months',  6);
+      const isAfterMon = childrenGodchilDreceptionDateMoment.isAfter(moment(monChildrenBirthdayMoment.format(DATE_FORMAT.FULL), DATE_FORMAT.FULL));
+
+      const isAfter = childrenBirthdayMoment.isAfter(childrenGodchilDreceptionDateMoment);
+      if (isAfter) {
+        validationColumn.validations = {
+          required: true,
+          lessThan: true
+        };
+        validationColumn.fieldName = {
+          name: 'Ngày nhận nuôi',
+          message: 'Ngày nhận nuôi con phải lơn hơn hoặc bằng ngày sinh của con [' + childrenBirthdayValue + ']',
+        };
+
+        instance.jexcel.validationCell(y, indexOfChildrenGodchilDreceptionDate, validationColumn.fieldName, validationColumn.validations);
+      } else if(isAfterMon) {
+        validationColumn.validations = {
+          required: true,
+          lessThan: true
+        };
+        validationColumn.fieldName = {
+          name: 'Ngày nhận nuôi',
+          message: 'Ngày nhận nuôi con phải nhỏn hơn hoặc bằng ngày sinh của con + 6 tháng [' + monChildrenBirthdayMoment.format(DATE_FORMAT.FULL) + ']',
+        };
+
+        instance.jexcel.validationCell(y, indexOfChildrenGodchilDreceptionDate, validationColumn.fieldName, validationColumn.validations);
+      } else {
+        validationColumn.validations = {
+          required: true,
+          lessThanNow: true,
+        };
+         
+        validationColumn.fieldName = 'Ngày nhận nuôi';
+        instance.jexcel.validationCell(y, indexOfChildrenGodchilDreceptionDate, validationColumn.fieldName, validationColumn.validations);
+      }
+    } else {
+      validationColumn.validations = {
+        required: true,
+        lessThanNow: true,
+      };
+      validationColumn.fieldName = 'Ngày nhận nuôi';
+
+      instance.jexcel.validationCell(y, indexOfChildrenGodchilDreceptionDate, validationColumn.fieldName, validationColumn.validations);
+    }
+  }
+
+   //T10: Mang thai hộ V_1, V_2
+   private validChildrenGodchilDreceptionDateV12(column, y, instance, cell) {
+    const indexOfChildrenBirthday = this.columns.findIndex(c => c.key === 'childrenBirthday');
+    const childrenBirthdayValue = this.spreadsheet.getValueFromCoords(indexOfChildrenBirthday, y);
+    const indexOfChildrenGodchilDreceptionDate = this.columns.findIndex(c => c.key === 'childrenGodchilDreceptionDate');
+    const childrenGodchilDreceptionDateValue = this.spreadsheet.getValueFromCoords(indexOfChildrenGodchilDreceptionDate, y);
+    const validationColumn = this.columns[indexOfChildrenGodchilDreceptionDate];
+
+    if (childrenBirthdayValue && childrenGodchilDreceptionDateValue) {
+      const childrenBirthdayMoment = moment(childrenBirthdayValue, DATE_FORMAT.FULL).add('days', 1);
+      const childrenGodchilDreceptionDateMoment = moment(childrenGodchilDreceptionDateValue, DATE_FORMAT.FULL);
+
+      const monChildrenBirthdayMoment = moment(childrenBirthdayValue, DATE_FORMAT.FULL).add('months', 6);
+      const isAfterMon = childrenGodchilDreceptionDateMoment.isAfter(moment(monChildrenBirthdayMoment.format(DATE_FORMAT.FULL), DATE_FORMAT.FULL));
+
+      const isAfter = moment(childrenBirthdayMoment.format(DATE_FORMAT.FULL), DATE_FORMAT.FULL).isAfter(childrenGodchilDreceptionDateMoment);
+      if (isAfter) {
+        validationColumn.validations = {
+          required: true,
+          lessThan: true
+        };
+        validationColumn.fieldName = {
+          name: 'Ngày nhận nuôi',
+          message: 'Ngày nhận nuôi phải lớn hơn ngày sinh của con [' + childrenBirthdayValue + ']',
+        };
+
+        instance.jexcel.validationCell(y, indexOfChildrenGodchilDreceptionDate, validationColumn.fieldName, validationColumn.validations);
+      } else if(isAfterMon) {
+        validationColumn.validations = {
+          required: true,
+          lessThan: true
+        };
+        validationColumn.fieldName = {
+          name: 'Ngày nhận nuôi',
+          message: 'Ngày nhận nuôi phải nhỏn hơn hoặc bằng ngày sinh của con + 6 tháng [' + monChildrenBirthdayMoment.format(DATE_FORMAT.FULL) + ']',
+        };
+
+        instance.jexcel.validationCell(y, indexOfChildrenGodchilDreceptionDate, validationColumn.fieldName, validationColumn.validations);
+      } else {
+        validationColumn.validations = {
+          required: true,
+          lessThanNow: true,
+        };
+         
+        validationColumn.fieldName = 'Ngày nhận nuôi';
+        instance.jexcel.validationCell(y, indexOfChildrenGodchilDreceptionDate, validationColumn.fieldName, validationColumn.validations);
+      }
+    } else {
+      validationColumn.validations = {
+        required: true,
+        lessThanNow: true,
+      };
+      validationColumn.fieldName = 'Ngày nhận nuôi';
+
+      instance.jexcel.validationCell(y, indexOfChildrenGodchilDreceptionDate, validationColumn.fieldName, validationColumn.validations);
+    }
+  }
+
+  //T8: Nuôi con nuôi IV
+  private validDateStartWorkIV(column, y, instance, cell) {
+    const indexOfDateStartWork = this.columns.findIndex(c => c.key === 'dateStartWork');
+    const dateStartWorkValue = this.spreadsheet.getValueFromCoords(indexOfDateStartWork, y);
+    const indexOfChildrenGodchilDreceptionDate = this.columns.findIndex(c => c.key === 'childrenGodchilDreceptionDate');
+    const childrenGodchilDreceptionDateValue = this.spreadsheet.getValueFromCoords(indexOfChildrenGodchilDreceptionDate, y);
+    const validationColumn = this.columns[indexOfChildrenGodchilDreceptionDate];
+
+    if (dateStartWorkValue && childrenGodchilDreceptionDateValue) {
+      const dateStartWorkMoment = moment(dateStartWorkValue, DATE_FORMAT.FULL);
+      const childrenGodchilDreceptionDateMoment = moment(childrenGodchilDreceptionDateValue, DATE_FORMAT.FULL);
+      const isAfter = childrenGodchilDreceptionDateMoment.isAfter(dateStartWorkMoment);
+      if (isAfter) {
+        validationColumn.validations = {
+          required: true,
+          lessThan: true
+        };
+        validationColumn.fieldName = {
+          name: 'Ngày đi làm thực tế',
+          message: 'Ngày đi làm thực tế phải lớn hơn hoặc bẳng ngày nhân luôn [' + childrenGodchilDreceptionDateValue + ']',
+        };
+
+        instance.jexcel.validationCell(y, indexOfChildrenGodchilDreceptionDate, validationColumn.fieldName, validationColumn.validations);
+      }  else {
+        validationColumn.validations = {
+          lessThanNow: true,
+        };
+         
+        validationColumn.fieldName = 'Ngày đi làm thực tế';
+        instance.jexcel.validationCell(y, indexOfChildrenGodchilDreceptionDate, validationColumn.fieldName, validationColumn.validations);
+      }
+    } else {
+      validationColumn.validations = {
+        lessThanNow: true,
+      };
+      validationColumn.fieldName = 'Ngày đi làm thực tế';
+
+      instance.jexcel.validationCell(y, indexOfChildrenGodchilDreceptionDate, validationColumn.fieldName, validationColumn.validations);
+    }
+  }
+
+  //T7: Mẹ chết sau khi sinh III_3
+  private validchildrenDayDeadIII3(column, y, instance, cell) {
+    const indexOfChildrenDayDead = this.columns.findIndex(c => c.key === 'childrenDayDead');
+    const childrenDayDeadValue = this.spreadsheet.getValueFromCoords(indexOfChildrenDayDead, y);
+    const indexOfChildrenBirthday = this.columns.findIndex(c => c.key === 'childrenBirthday');
+    const childrenBirthdayValue = this.spreadsheet.getValueFromCoords(indexOfChildrenBirthday, y);
+    const validationColumn = this.columns[indexOfChildrenDayDead];
+
+    if (childrenDayDeadValue && childrenBirthdayValue) {
+      const childrenDayDeadMoment = moment(childrenDayDeadValue, DATE_FORMAT.FULL);
+      const childrenBirthdayMoment = moment(childrenBirthdayValue, DATE_FORMAT.FULL);
+      const isAfter = childrenBirthdayMoment.isAfter(childrenDayDeadMoment);
+      if (isAfter) {
+        validationColumn.validations = {
+          required: true,
+          lessThan: true
+        };
+        validationColumn.fieldName = {
+          name: 'Ngày con chết',
+          message: 'Ngày con chết phải lớn hơn ngày sinh con [' + childrenDayDeadValue + ']',
+        };
+
+        instance.jexcel.validationCell(y, indexOfChildrenDayDead, validationColumn.fieldName, validationColumn.validations);
+      }  else {
+        validationColumn.validations = {
+          lessThanNow: true,
+        };
+         
+        validationColumn.fieldName = 'Ngày đi làm thực tế';
+        instance.jexcel.validationCell(y, indexOfChildrenDayDead, validationColumn.fieldName, validationColumn.validations);
+      }
+    } else {
+      validationColumn.validations = {
+        lessThanNow: true,
+      };
+      validationColumn.fieldName = 'Ngày đi làm thực tế';
+
+      instance.jexcel.validationCell(y, indexOfChildrenDayDead, validationColumn.fieldName, validationColumn.validations);
+    }
+  }
+  //T6: Con chết sau khi sinh III_2
+  private validchildrenDayDeadIII2(column, y, instance, cell) {
+    const indexOfChildrenDayDead = this.columns.findIndex(c => c.key === 'childrenDayDead');
+    const childrenDayDeadValue = this.spreadsheet.getValueFromCoords(indexOfChildrenDayDead, y);
+    const indexOfChildrenBirthday = this.columns.findIndex(c => c.key === 'childrenBirthday');
+    const childrenBirthdayValue = this.spreadsheet.getValueFromCoords(indexOfChildrenBirthday, y);
+    const validationColumn = this.columns[indexOfChildrenDayDead];
+
+    if (childrenDayDeadValue && childrenBirthdayValue) {
+      const childrenDayDeadMoment = moment(childrenDayDeadValue, DATE_FORMAT.FULL);
+      const childrenBirthdayMoment = moment(childrenBirthdayValue, DATE_FORMAT.FULL);      
+      const monChildrenBirthdayMoment = moment(childrenBirthdayValue, DATE_FORMAT.FULL).add('months',  6);
+      const isAfter = childrenBirthdayMoment.isAfter(childrenDayDeadMoment);
+      const isAfterMax = childrenDayDeadMoment.isAfter(moment(monChildrenBirthdayMoment.format(DATE_FORMAT.FULL), DATE_FORMAT.FULL));
+      if (isAfter) {
+        validationColumn.validations = {
+          required: true,
+          lessThan: true
+        };
+        validationColumn.fieldName = {
+          name: 'Ngày con chết',
+          message: 'Ngày con chết phải lớn hơn ngày sinh con [' + childrenBirthdayValue + ']',
+        };
+
+        instance.jexcel.validationCell(y, indexOfChildrenDayDead, validationColumn.fieldName, validationColumn.validations);
+      } else if (isAfterMax) {
+        validationColumn.validations = {
+          required: true,
+          lessThan: true
+        };
+        validationColumn.fieldName = {
+          name: 'Ngày con chết',
+          message: 'Ngày con chết phải nhỏ hơn hoặc bằng ngày sinh con cộng 6 tháng [' + monChildrenBirthdayMoment.format(DATE_FORMAT.FULL) + ']',
+        };
+
+        instance.jexcel.validationCell(y, indexOfChildrenDayDead, validationColumn.fieldName, validationColumn.validations);
+      } else {
+        validationColumn.validations = {
+          required: true,
+        };
+         
+        validationColumn.fieldName = 'Ngày con chết';
+        instance.jexcel.validationCell(y, indexOfChildrenDayDead, validationColumn.fieldName, validationColumn.validations);
+      }
+    } else {
+      validationColumn.validations = {
+        required: true,
+      };
+      validationColumn.fieldName = 'Ngày con chết';
+
+      instance.jexcel.validationCell(y, indexOfChildrenDayDead, validationColumn.fieldName, validationColumn.validations);
+    }
+  }
+
+  private getDateTimeFomatByTypeBirthday(typeBirthday) {
+    
+    if (typeBirthday === 0) {
+      return DATE_FORMAT.FULL;
+    }
+
+    if (typeBirthday === 1) {
+      return DATE_FORMAT.ONLY_MONTH_YEAR;
+    }
+
+    if (typeBirthday === 2) {
+      return DATE_FORMAT.ONLY_YEAR;
+    }
+
+    return DATE_FORMAT.FULL;
+
+  }
+
 }

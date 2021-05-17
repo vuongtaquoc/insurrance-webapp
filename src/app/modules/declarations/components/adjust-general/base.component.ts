@@ -18,6 +18,7 @@ import { CONSTPARENTDELETEAUTOROW, ContactType } from '@app/shared/constant';
 export class GeneralBaseComponent {
   @Input() data: any;
   @Input() salaryAreas: any;
+  @Input() headerForm: any;
   @Input() NzPageHeaderContentDirective: string;
   @Input() hasForm = false;
   @Input() files: any[] = [];
@@ -530,7 +531,7 @@ export class GeneralBaseComponent {
   }
 
   handleChangeTable({ instance, cell, c, r, records }, tableName) {
-
+    //  console.log(this.headerForm,'XXXXXXXXDUCLV');
     if (c !== null && c !== undefined) {
       c = Number(c);
       const column = this.headers[tableName].columns[c];

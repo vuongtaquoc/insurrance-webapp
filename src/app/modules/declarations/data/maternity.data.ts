@@ -173,16 +173,19 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   source: [],
   width: 230,
   title: '(9)',
+  fieldName: 'Điều kiện sinh con',
   key: 'conditionReproduction'
 }, {
   type: 'text',
   width: 120,
   title: '(10.1)',
+  fieldName: 'Mã số bảo hiểm XH của con',
   key: 'childrenIsurranceCode'
 }, {
   type: 'text',
   width: 120,
   title: '(10.2)',
+  fieldName: 'Mã thẻ BHYT của con',
   key: 'childrenHealthNo'
 }, {
   type: 'numeric',
@@ -198,19 +201,24 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   type: 'text',
   width: 80,
   title: '(10.4)',
+  fieldName: 'Ngày sinh của con',
   key: 'childrenBirthday',
+  validations: {
+  },
   isCalendar: true
 }, {
   type: 'numeric',
   align: 'right',
   width: 50,
   title: '(10.5)',
+  fieldName: 'Số con',
   key: 'childrenNumber',
 }, {
   type: 'text',
   width: 80,
   title: '(10.6)',
   key: 'childrenDayDead',
+  fieldName: 'Ngày con chết',
   isCalendar: true,
   checkReadonly: true
 }, {
@@ -218,6 +226,7 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   width: 65,
   title: '(10.7)',
   key: 'childrenNumberSick',
+  fieldName: 'Số con chết hoặc số thai chết lưu khi sinh',
   validations: {
     numeric: true,
   }
@@ -225,6 +234,7 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   type: 'text',
   width: 80,
   title: '(10.8)',
+  fieldName: 'Ngày nhân nuôi con nuôi',
   key: 'childrenGodchilDreceptionDate',
   isCalendar: true
 }, {
@@ -237,16 +247,19 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   type: 'text',
   width: 120,
   title: '(11.1)',
+  fieldName: 'Mã số BHXH của mẹ',
   key: 'motherIsurranceCode'
 }, {
   type: 'text',
   width: 120,
   title: '(11.2)',
+  fieldName: 'Mã thẻ BHYT mẹ',
   key: 'motherHealthNo'
 }, {
   type: 'text',
   width: 135,
   title: '(11.3)',
+  fieldName: 'Số chứng minh thư của mẹ',
   key: 'motherIdentityCar',
 }, {
   type: 'checkbox',
@@ -258,29 +271,34 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   type: 'text',
   width: 120,
   title: '(11.5)',
+  fieldName: 'Mang thai hộ',
   key: 'surrogacy',
 }, {
   type: 'checkbox',
   width: 65,
   align: 'center',
   title: '(11.6)',
+  fieldName: 'Phẫu thuật/thai dưới 32 tuần',
   key: 'isSurgeryOrPremature'
 }, {
   type: 'text',
   width: 80,
   title: '(11.7)',
+  fieldName: "Ngày mẹ chết",
   key: 'motherDayDead',
   isCalendar: true
 }, {
   type: 'text',
   width: 90,
   title: '(11.8)',
+  fieldName: "Ngày kết luận (mẹ được kết luận không còn đủ sức khỏe chăm con)",
   key: 'motherConclusionDate',
   isCalendar: true
 }, {
   type: 'numeric',
   width: 100,
   title: '(11.9)',
+  fieldName: 'Phí giám định y khoa',
   key: 'examinationCost',
 }, {
   type: 'text',  
@@ -360,7 +378,19 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   width: 140,
   title: 'key',
   key: 'employeeId',
-  isMasterKey: true
+  isMasterKey: true,
+},
+{
+  type: 'hidden',
+  width: 70,
+  title: '(5)',
+  key: 'typeBirthday',
+}, {
+  type: 'hidden',
+  width: 80,
+  title: '(6)',
+  fieldName: 'Ngày tháng năm sinh',
+  key: 'birthday',
 }
 ];
 
@@ -453,10 +483,10 @@ export const TABLE_HEADER_COLUMNS_PART_2 = [{
   fieldName: 'Tổng số',
   ignoreRequiredRow: ['VIII'],
   readOnly: true,
-  validations: {
-    required: true,
-    min: 1
-  }
+  // validations: {
+  //   required: true,
+  //   min: 1
+  // }
 }, {
   type: 'text',
   width: 85,
@@ -549,18 +579,18 @@ export const TABLE_HEADER_COLUMNS_PART_2 = [{
 
 export const VALIDATION_RULES = {
   SC1: {
-    numberLengthByOtherField: 1
+    numberLengthByOtherField: 1,
   },
   SC2: {
-    numberLengthByOtherField: 2
+    numberLengthByOtherField: 2,
   },
   SC3: {
-    minNumberLengthByOtherField: 3
+    minNumberLengthByOtherField: 3,
   },
   CC3: {
-    minNumberLengthByOtherField: 1
+    minNumberLengthByOtherField: 1,
   },
   NCN2: {
-    minNumberLengthByOtherField: 2
+    minNumberLengthByOtherField: 2,
   }
 };

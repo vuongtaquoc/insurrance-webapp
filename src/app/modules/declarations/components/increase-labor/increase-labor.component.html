@@ -74,6 +74,7 @@
             [pageCode]="declarationCode"
             [allowAttach] = "allowAttachFile"
             [salaryAreas] = "salaryAreas"
+            [headerForm] = "declarations.form"
             [declarationGeneral] = "declarationGeneral"
             [files] = 'declarations.files'
             [data]="declarations.origin['600']"
@@ -151,7 +152,7 @@
           </button>
         </div>
       </ng-template>
-      <app-increase-form [data]="declarations.formOrigin" (onFormValid) = "handleValidForm($event)" class="page-regime-approval__form" [ngClass]="{'page-regime-approval__form--hidden': (selectedTabIndex == 0 || selectedTabIndex == 2 || selectedTabIndex == 3 || selectedTabIndex == 4)}" (onFormValuesChanged)="handleFormValuesChanged($event)"></app-increase-form>
+      <app-increase-form [data]="declarations.formOrigin"  (onFormValid) = "handleValidForm($event)" class="page-regime-approval__form" [ngClass]="{'page-regime-approval__form--hidden': (selectedTabIndex == 0 || selectedTabIndex == 2 || selectedTabIndex == 3 || selectedTabIndex == 4)}" (onFormValuesChanged)="handleFormValuesChanged($event)"></app-increase-form>
     </div>
   </nz-spin>
 </div>

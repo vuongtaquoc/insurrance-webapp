@@ -7,6 +7,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { INTERNAL_SERVER_ERROR } from 'http-status-codes';
 import { REGEX } from "@app/shared/constant";
 import { AuthenticationService } from '@app/core/services';
+import { NzModalService } from 'ng-zorro-antd/modal';
 
 @Component({
   selector: 'app-auth-request-reset',
@@ -24,6 +25,7 @@ export class RequestResetPasswordComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private authService: AuthenticationService,
+    private modalService: NzModalService,
     private titleService: Title,
     private translateService: TranslateService
   ) { }
@@ -58,7 +60,9 @@ export class RequestResetPasswordComponent implements OnInit, OnDestroy {
           this.router.navigate(['/auth/forgot-success'], { replaceUrl: true });
         },
         (error) => {
-          console.error(error);
+          this.modalService.warning({
+            nzTitle: error.message
+          });
         }
       );
   }

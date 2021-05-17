@@ -39,44 +39,63 @@ export class AuthLoginComponent implements OnInit, OnDestroy {
     this.subscription = this.translateService.get('auth.login.pageTitle').subscribe(text => {
       this.titleService.setTitle(text);
     });
-
     this.loginForm = this.formBuilder.group({
-      username: ['', [Validators.required, Validators.pattern(REGEX.ONLY_CHARACTER_NUMBER)]],
-      password: ['', [Validators.required, Validators.pattern(REGEX.ONLY_CHARACTER_NUMBER)]],
+      username: ['', [Validators.required]],//, Validators.pattern(REGEX.ONLY_CHARACTER_NUMBER)]],
+      password: ['', [Validators.required]],//, Validators.pattern(REGEX.ONLY_CHARACTER_NUMBER)]],
       remember: [false],
       // companyName: ['', Validators.required]
     });
-  }
 
+    this.setDefault();
+  }
+  
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }
 
-  handleSubmit() {
+  private setDefault() {
+    const lcLoginForm = this.authService.getAutoLogin();
+    if (lcLoginForm) {
+      this.loading = true;
+      this.loginForm.patchValue({
+        username: lcLoginForm.username,
+        password: lcLoginForm.password,
+        remember: lcLoginForm.remember,
+      });
+    
+      this.loginAction(lcLoginForm.username, lcLoginForm.password);
+    }
+  }
 
+  handleSubmit() {
+    
     if(this.loginForm.invalid) {
       return;
     }
     this.loading = true;
+    this.loginAction(this.form.username.value, this.form.password.value);
+  }
 
+  private loginAction(username, password) {
     this.authService
-      .login(this.form.username.value, this.form.password.value)
-      .pipe(
-        finalize(() => {
-          this.loginForm.markAsPristine();
-          this.loading = false;
-        })
-      )
-      .subscribe(
-        () => {
-          this.navigatePageDefault();
-        },
-        (error) => {
-          this.modalService.warning({
-            nzTitle: error.message
-          });
-        }
-      );
+    .login(username, password)
+    .pipe(
+      finalize(() => {
+        this.loginForm.markAsPristine();
+        this.loading = false;
+      })
+    )
+    .subscribe(
+      () => {
+        this.authService.saveRememberMe(this.loginForm.value);
+        this.navigatePageDefault();
+      },
+      (error) => {
+        this.modalService.warning({
+          nzTitle: error.message
+        });
+      }
+    );
   }
 
   get form() {

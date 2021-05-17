@@ -5,7 +5,7 @@ import { first } from 'rxjs/operators';
 import { Title } from '@angular/platform-browser';
 import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
-
+import { NzModalService } from 'ng-zorro-antd/modal';
 import { AuthenticationService } from '@app/core/services';
 
 @Component({
@@ -25,7 +25,8 @@ export class ChangePasswordComponent implements OnInit, OnDestroy {
     private router: Router,
     private authService: AuthenticationService,
     private titleService: Title,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private modalService: NzModalService,
   ) {}
 
   ngOnInit() {
@@ -36,16 +37,22 @@ export class ChangePasswordComponent implements OnInit, OnDestroy {
 
     this.token = this.route.snapshot.params.token;
     this.resetForm = this.formBuilder.group({
-      userId: [],
+      username: [{ value: '', disabled: true }],
       password: [],
       confirmPassword: []
     });
-
     this.authService.getUserByToken(this.token)
       .pipe(first())
       .subscribe(
         (data: any) => {
-          // this.form.userId.setValue(data.userId);
+          if (data) {
+            this.form.username.setValue(data.userId);
+          } else {
+            this.modalService.error({
+              nzTitle: 'Thời gian đổi mật khẩu hết hạn vui lòng cấp lấy lại token'
+            });
+            this.router.navigate(['/auth/forgot'], { replaceUrl: true });
+          }
         }
       );
   }
@@ -57,11 +64,17 @@ export class ChangePasswordComponent implements OnInit, OnDestroy {
   handleSubmit() {
     this.authService.resetPassword(this.token, this.form.password.value, this.form.confirmPassword.value)
       .subscribe(
-        () => {
-          this.router.navigate(['/auth/reset-success'], { replaceUrl: true });
+        (data: any) => {
+          this.modalService.info({
+            nzTitle: 'Đổi mật khẩu thành công, vui lòng đang nhập hệ thống với mật khẩu đã thay đổi'
+          });
+          // this.router.navigate(['/auth/login'], { replaceUrl: true });
+          this.router.navigate(['/auth/login'], { replaceUrl: true });
         },
         (error) => {
-          console.error(error);
+          this.modalService.warning({
+            nzTitle: error.message
+          });
         }
       );
   }

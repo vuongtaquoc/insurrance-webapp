@@ -24,8 +24,14 @@
         <tr *ngFor="let data of ajaxTable.data;">
           <td>{{ data.fileName }}</td>
           <td class="text-center">
-            <a (click)="downloadFile(data)" *ngIf="!data.isDownloading">
-              <i nz-icon nzType="eye" nzTheme="outline"></i>
+            <a (click)="downloadFile(data, '.excel')" title="Tải file định dạng Excel" style="padding:10px;" *ngIf="(!data.isFileUpload && !data.isDownloading)">
+              <i nz-icon nzType="file-excel" nzTheme="outline"></i>
+            </a>
+            <a (click)="downloadFile(data ,'.pdf')" title="Tải file định dạng Pdf" *ngIf="(!data.isFileUpload && !data.isDownloading)">
+              <i nz-icon nzType="file-pdf" nzTheme="outline"></i>
+            </a>
+            <a (click)="downloadFile(data ,'pdf')" title="Tải file định dạng Pdf" *ngIf="(data.isFileUpload && !data.isDownloading)">
+              <i nz-icon nzType="download" nzTheme="outline"></i>
             </a>
             <ng-template #indicatorTemplate><i nz-icon nzType="loading"></i></ng-template>
             <nz-spin *ngIf="data.isDownloading" nzSimple [nzIndicator]="indicatorTemplate"> </nz-spin>

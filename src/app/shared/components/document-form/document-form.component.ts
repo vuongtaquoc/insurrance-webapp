@@ -68,26 +68,42 @@ export class DocumentFormComponent implements OnInit {
     });
   }
 
-  downloadFile(declarationFileInfo: any) {
-    
+  downloadFile(declarationFileInfo: any, type: any) {
     if (declarationFileInfo.isFileUpload) {
       this.downloadFileUpload(declarationFileInfo);      
     } else {
-      this.downloadDeclartion(declarationFileInfo);
+      this.downloadDeclartion(declarationFileInfo, type);
     }
   }
 
-  private downloadDeclartion(declarationFileInfo: any) {
+  private downloadDeclartion(declarationFileInfo: any, type: any) {
+    if (type === '.pdf') {
+      this.downloadDeclarationFileConvertPdf(declarationFileInfo, type);
+    } else {
+      this.downloadDeclarationFile(declarationFileInfo, type);
+    }
+  }
 
+  private downloadDeclarationFile(declarationFileInfo: any, type: any) {
     declarationFileInfo.isDownloading = true;
-    this.declarationFileService.downloadDeclarationFile(declarationFileInfo.id).then(response => {
+    this.declarationFileService.downloadDeclarationFile(declarationFileInfo.id, type).then(response => {
       const subfixFile = this.getSufixFile(declarationFileInfo.xmlFile)
       const fileName =  declarationFileInfo.fullPathFile + subfixFile;
       const mimeType = this.getMimeType(subfixFile);
       download(fileName, response, mimeType);
       declarationFileInfo.isDownloading = false;
     });
+  }
 
+  private downloadDeclarationFileConvertPdf(declarationFileInfo: any, type: any) {
+    declarationFileInfo.isDownloading = true;
+    this.declarationFileService.downloadDeclarationFile(declarationFileInfo.id, type).then(response => {
+      const subfixFile = '.pdf'
+      const fileName =  declarationFileInfo.fullPathFile + subfixFile;
+      const mimeType = this.getMimeType(subfixFile);
+      download(fileName, response, mimeType);
+      declarationFileInfo.isDownloading = false;
+    });
   }
 
   private  downloadFileUpload(declarationFileInfo: any) {

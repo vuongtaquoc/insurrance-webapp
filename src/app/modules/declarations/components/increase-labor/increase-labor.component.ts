@@ -102,7 +102,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
   tabSubscription: Subscription;
   handlers: any = [];
   isSpinning = false;
-  salaryAreas: any;
+  salaryAreas: any;  
   timer: any;
   selectedTab: any;
   isCheckIsuranceCode: boolean = false;
@@ -349,6 +349,7 @@ export class IncreaseLaborComponent implements OnInit, OnDestroy {
   }
 
   handleChangeTable(data, tableName) {
+    //  console.log(this.headerForm,'handleChangeTable');
     this.declarations.tables[tableName] = this.declarations[tableName] || {};
     this.declarations.tables[data.tableName]= data.data;
     if(tableName === 'increaselabor') {
@@ -855,6 +856,10 @@ private getEmployeeInDeclarations(records: any) {
 handleValidForm(data) {
   this.formError = data.errorMessage;
 }
+
+// formValuesChanged(data) {
+//   this.headerForm = data;
+// }
 
 private setDataToFamilyEditor(records: any)
 {

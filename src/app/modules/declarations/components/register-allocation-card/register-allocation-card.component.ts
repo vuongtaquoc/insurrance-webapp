@@ -2191,6 +2191,11 @@ export class RegisterAllocationCardComponent implements OnInit, OnDestroy {
                 max: maxSalry
               }
           }
+  
+          if (column.key === 'numberMonthJoin' && objectType === 'GD') {
+            column.type = 'dropdown';
+            column.source = [ { id: 3, name: '3 tháng' }, { id: 6, name: '6 tháng' }, { id: 12, name: '12 tháng' }];
+          }
 
           if (column.key === 'salary') { //&& (item.level === 2 || item.level === 3 || item.level === 4)) {
             column.readOnly = item.readOnlySalary;

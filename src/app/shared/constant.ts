@@ -14,6 +14,20 @@ export const ROLE = {
 
 
 export const PAGE_SIZE = 10;
+export const PAGE_LIST = [{
+    label: '10',
+    value: 10
+  }, {
+    label: '20',
+    value: 20
+  }, {
+    label: '50',
+    value: 50
+  }, {
+    label: '100',
+    value: 100
+  }
+];
 export const schemaSign = 'mbhxh:token,declarationId';
 
 export const GENDER = {
@@ -1179,16 +1193,20 @@ export const errorMessages = {
   8: 'Dữ liệu không hợp lệ',
   2040: 'NLĐ đã có hồ sơ, bạn không thể xóa',
   2001: 'Sai Tên đăng nhập hoặc Mật khẩu. Vui lòng thử lại!',
+  2003: 'Email không tồn tại trong hệ thống. Vuil lòng kiểm tra lại',
   3018: 'Email đã tồn tại trong hệ thống',
   2030: 'Email đã tồn tại trong hệ thống',
   2028: 'Tên đăng nhập không được để trống',
   2027: 'Tên đăng nhập đã tồn tại',
-  2020: 'Tài khoản vượt quá số lượng cho phép',
+  2020: 'Tài khoản/Mật khẩu vượt quá số lượng cho phép',
   2035: 'Không thể xóa tài khoản mặc định của đơn vị',
   3020: 'Mã số BHXH (mã đơn vị) đã được đăng ký sử dụng, vui lòng kiểm tra lại',
   3021: 'Đơn vị chưa đăng ký sử dụng dịch vụ IVAN Của MBHXH, Vui lòng tạo hồ sơ đăng ký IVAN trước khi tạo hồ sơ thay đổi',
   5053: 'Không được để trống',
   5061: 'Lỗi trong quá trình lưu dữ liệu',
+  304: 'Phiên làm việc đã hết hạn, vui lòng cấp lại mã xác thức qua email',
+  2026: 'Mật khẩu không được để trống',
+  2036: 'Xác nhận mật khẩu không khớp với mật khẩu thay đổi',
 }
 
 

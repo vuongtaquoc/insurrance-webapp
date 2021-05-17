@@ -22,6 +22,7 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
   @ViewChild('spreadsheet', { static: true }) spreadsheetEl;
   @Input() data: any[] = [];
   @Input() salaryAreas: any;
+  @Input() headerForm: any;
   @Input() columns: any[] = [];
   @Input() nestedHeaders: any[] = [];
   @Input() validationRules: any = {};
@@ -564,16 +565,31 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
   }
 
   validationCellByOtherCell(cellValue, column, y, instance, cell) {
+    // console.log(this.headerForm, 'validationCellByOtherCell');
     if (column.key === 'fromDate') {
+      const dateOfDaclaration = this.getDateOfDeclaration();
       const toDateValue = this.spreadsheet.getValueFromCoords(Number(cell) + 1, y);
       const validationColumn = this.columns[cell];
 
-      if (toDateValue && cellValue) {
+      if (cellValue) {
         const cellValueMoment = moment(cellValue, DATE_FORMAT.ONLY_MONTH_YEAR);
         const toDateValueMoment = moment(toDateValue, DATE_FORMAT.ONLY_MONTH_YEAR);
+        const dateOfDaclarationMoment = moment(dateOfDaclaration, DATE_FORMAT.ONLY_MONTH_YEAR);
         const isAfter = cellValueMoment.isAfter(toDateValueMoment);
+        const isAfterDeclaration = cellValueMoment.isAfter(dateOfDaclarationMoment);
+        // console.log(dateOfDaclarationMoment,cellValueMoment);
+        if (isAfterDeclaration) {
+          validationColumn.validations = {
+            required: true,
+            lessThan: true
+          };
+          validationColumn.fieldName = {
+            name: 'Từ tháng, năm',
+            message: '<Từ tháng, năm> phải nhỏ hơn hoặc bằng tháng của tờ khai',
+          };
 
-        if (isAfter) {
+          instance.jexcel.validationCell(y, cell, validationColumn.fieldName, validationColumn.validations);
+        } else if (isAfter) {
           validationColumn.validations = {
             required: true,
             lessThan: true
@@ -584,7 +600,7 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
           };
 
           instance.jexcel.validationCell(y, cell, validationColumn.fieldName, validationColumn.validations);
-        } else {
+        }  else {
           validationColumn.validations = {
             required: true
           };
@@ -841,10 +857,10 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
       const validationColumn = this.columns[Number(cell)];
       delete validationColumn.validations.min;
       if (Number(salary) > 0) {
-        const maxSalary = Number(this.salaryAreas.salaray) * 20;
+        // const maxSalary = Number(this.salaryAreas.salaray) * 20;
         validationColumn.validations = {
           min: Number(this.salaryAreas.salaray),
-          max: maxSalary,
+          // max: maxSalary,
          };         
       }
       validationColumn.fieldName = 'Tiền lương';
@@ -916,6 +932,24 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
       });
 
     }, 10);
+  }
+
+  private getDateOfDeclaration() {
+    const date = new Date();
+    let month = (date.getMonth() + 1).toString();
+    if (this.headerForm.month) {
+      month = this.headerForm.month;
+    }
+
+    let year =  date.getFullYear().toString();
+    if (this.headerForm.year) {
+      year = this.headerForm.year;
+    }
+    if (month.length === 1) {
+      month = '0' + month;
+    }
+    const dateOfDeclaration = month + '/' + year;
+    return dateOfDeclaration;
   }
 
 }

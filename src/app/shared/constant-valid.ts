@@ -89,6 +89,7 @@ export const validationColumnsPlanCodeBHYT: any = {
     }
   } 
  }
+ 
 export const RatioFamily: any = {
   1 : {
     percent: 100,
@@ -115,6 +116,15 @@ export const RatioFamily: any = {
     ratio: 20
   }
 }
+
+export const HolidayConfig: any =  [
+    '20200430',  
+    '20200501',
+    '20210430',
+    '20210501',
+    '20200902',
+    '20210902',
+  ]
 
 export const validationColumnsPlanCode: any = {
   'GH1': {

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SelectItem } from '@app/core/interfaces';
 import { SubmitDeclarationService, ExternalService } from '@app/core/services';
-import { PAGE_SIZE, DECLARATIONRESULT} from '@app/shared/constant';
+import { PAGE_SIZE, PAGE_LIST, DECLARATIONRESULT} from '@app/shared/constant';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { DeclarationResultComponent, DeclarationResultOfCompanyComponent } from '@app/shared/components';
 
@@ -16,32 +16,25 @@ export class DashboardComponent implements OnInit {
   skip: number;
   selectedPage: number = 1;
   declarations: any[] = [];
-  pageNumbers: SelectItem[];
+  pageNumbers: any = PAGE_LIST;
+  pageSizeForm: FormGroup;
   declarationCode: string = '';
   fromDate: any;
   isSpinning: boolean;
   toDate: any;
+  pageSize: number = PAGE_SIZE;
   status: any = DECLARATIONRESULT;
   constructor(
     private submitDeclarationService: SubmitDeclarationService,
     private modalService: NzModalService,
     private externalService: ExternalService,
+    private formBuilder: FormBuilder,
   ) {
   }
 
   ngOnInit() {
-    this.pageNumbers = [{
-      label: '5',
-      value: 5
-    }, {
-      label: '10',
-      value: 10
-    }, {
-      label: '15',
-      value: 15
-    }];
-    
     this.getDeclarations(this.skip);
+    this.fromBuild();
   }
 
   private getDeclarations(skip = 0, take = PAGE_SIZE) {
@@ -57,7 +50,7 @@ export class DashboardComponent implements OnInit {
       this.skip = skip;
 
       if (res.data.length === 0 && this.selectedPage > 1) {
-        this.skip -= PAGE_SIZE;
+        this.skip -= this.pageSize;
         this.selectedPage -= 1;
         this.getDeclarations(this.skip);
       }
@@ -84,6 +77,12 @@ export class DashboardComponent implements OnInit {
         this.loadResultOfDeclaration(declaration);
       }
       
+  }
+
+  private fromBuild() {
+    this.pageSizeForm = this.formBuilder.group({
+      pageSize: this.pageSize,
+    });
   }
 
   private loadResultOfDeclaration(declaration) {
@@ -129,5 +128,13 @@ export class DashboardComponent implements OnInit {
       this.isSpinning = false;
 
     });
-}
+  }
+
+  private pageChange(page){
+
+  }
+  private changePageNumbers(page) {
+    this.getDeclarations(this.skip, page);
+    this.pageSize = page;
+  }
 }
