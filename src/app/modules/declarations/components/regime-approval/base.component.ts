@@ -181,9 +181,15 @@ export class RegimeApprovalBaseComponent {
       }
 
     } else if(this.tableName['maternityPart1'] === part) {
-      if (type === 'III_1' || type === 'III_2' || type === 'III_3'|| type === 'IV' || type === 'V_1' || type === 'V_2' || type === 'VI_1' || type === 'VII' || type === 'VIII')
+      if (type === 'III_1' || type === 'III_2' || type === 'III_3'|| type === 'IV' || type === 'V_1' || type === 'V_2' || type === 'VI_1' || type === 'VI_2' || type === 'VII' || type === 'VIII')
       {
         employee.childrenNumber = 1;
+      } else  if(type === 'IX') {
+        if(employee.gender) {
+          employee.planCode = 'TT1';
+        } else {
+          employee.planCode = 'TT2';
+        }
       }
     }
   }

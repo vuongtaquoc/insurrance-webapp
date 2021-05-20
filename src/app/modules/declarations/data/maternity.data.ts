@@ -143,7 +143,6 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   key: 'regimeSum',
   fieldName: 'Tổng số ngày thực tế người lao động nghỉ việc trong kỳ đề nghị giải quyết',
   validations: {
-    required: true,
     min: 1
   },
   readOnly: false,

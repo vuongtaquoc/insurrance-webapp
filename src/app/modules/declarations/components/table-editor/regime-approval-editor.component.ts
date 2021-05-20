@@ -96,6 +96,7 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
       tableWidth: '100%',
       tableHeight: '100%',
       columnSorting: false,
+      search: false,
       freezeColumns: 1,
       defaultColAlign: 'left',
       onfocus: () => {
@@ -123,7 +124,6 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
         });
       },
       onchange: (instance, cell, c, r, value) => {
-        // console.log(this.tableName,instance, cell, c, r, value);
         this.onChange.emit({
           instance, cell, c, r, value,
           records: this.spreadsheet.getJson(),
@@ -389,6 +389,9 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
           planCode,
           childrenGodchilDreceptionDate: {
             required: true,
+          },
+          childrenBirthday: {
+            required: true
           }
         },
         'V_1': {
@@ -465,30 +468,30 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
       const readonlyColumns = {
         'I': ['childrenBirthday', 'childrenNumber', 'childrenWeekOld','maternityLeave', 'parentsOffWork', 'childrenGodchilDreceptionDate',
           'dateStartWork','childrenDayDead','surrogacy', 'motherIdentityCar','childrenIsurranceCode', 'motherIsurranceCode', 'childrenHealthNo','motherHealthNo', 'examinationCost',
-          'isSurgeryOrPremature'],
+          'isSurgeryOrPremature', 'motherDayDead', 'motherConclusionDate'],
         'II': ['childrenDayDead', 'childrenNumber', 'childrenWeekOld', 'conditionReproduction','maternityLeave', 'parentsOffWork', 'childrenGodchilDreceptionDate', 'dateStartWork',
-          'childrenDayDead', 'surrogacy', 'motherIdentityCar', 'childrenIsurranceCode', 'motherIsurranceCode', 'childrenHealthNo', 'motherHealthNo', 'examinationCost', 'isSurgeryOrPremature' ],
-        'III_1': ['regimeToDate', 'conditionPrenatal', 'childrenWeekOld', 'parentsOffWork', 'childrenGodchilDreceptionDate', 'dateStartWork', 'childrenDayDead', 'surrogacy', 'motherIdentityCar', 
+          'childrenDayDead', 'surrogacy', 'motherIdentityCar', 'childrenIsurranceCode', 'motherIsurranceCode', 'childrenHealthNo', 'motherHealthNo', 'examinationCost', 'isSurgeryOrPremature', 'motherDayDead', 'motherConclusionDate' ],
+        'III_1': [ 'motherDayDead', 'motherConclusionDate','regimeToDate', 'conditionPrenatal', 'childrenWeekOld', 'parentsOffWork', 'childrenGodchilDreceptionDate', 'dateStartWork', 'childrenDayDead', 'surrogacy', 'motherIdentityCar', 
                   'childrenIsurranceCode', 'motherIsurranceCode', 'childrenHealthNo', 'motherHealthNo', 'examinationCost', 'isSurgeryOrPremature'],
-        'III_2': ['regimeToDate', 'conditionPrenatal', 'childrenWeekOld', 'conditionReproduction', 'parentsOffWork', 'dateStartWork', 'surrogacy', 'motherIdentityCar', 'childrenIsurranceCode',
+        'III_2': [ 'motherDayDead', 'motherConclusionDate','regimeToDate', 'conditionPrenatal', 'childrenWeekOld', 'conditionReproduction', 'parentsOffWork', 'dateStartWork', 'surrogacy', 'motherIdentityCar', 'childrenIsurranceCode',
                   'motherIsurranceCode', 'childrenHealthNo', 'motherHealthNo', 'examinationCost', 'isSurgeryOrPremature'],
         'III_3': ['regimeToDate', 'regimeSum', 'regimeRequestDate', 'conditionPrenatal', 'childrenWeekOld', 'conditionReproduction', 'childrenGodchilDreceptionDate', 'dateStartWork', 'childrenIsurranceCode', 'childrenHealthNo', 
                   'motherHealthNo', 'examinationCost'],
-        'IV': ['regimeToDate', 'regimeRequestDate', 'regimeSum', 'conditionPrenatal', 'childrenWeekOld', 'conditionReproduction', 'maternityLeave', 'parentsOffWork', 'childrenDayDead', 'surrogacy',
+        'IV': [ 'motherDayDead', 'motherConclusionDate','regimeToDate', 'regimeRequestDate', 'regimeSum', 'conditionPrenatal', 'childrenWeekOld', 'conditionReproduction', 'maternityLeave', 'parentsOffWork', 'childrenDayDead', 'surrogacy',
               'motherIdentityCar', 'childrenIsurranceCode', 'motherIsurranceCode', 'childrenHealthNo', 'motherHealthNo', 'examinationCost', 'isSurgeryOrPremature'],
-        'V_1': ['regimeToDate', 'regimeToDate', 'regimeRequestDate', 'regimeSum', 'conditionPrenatal', 'childrenWeekOld', 'parentsOffWork', 'childrenDayDead', 'surrogacy', 'motherIdentityCar', 'childrenIsurranceCode', 'childrenIsurranceCode',
+        'V_1': ['motherDayDead', 'motherConclusionDate','regimeToDate', 'regimeToDate', 'regimeRequestDate', 'regimeSum', 'conditionPrenatal', 'childrenWeekOld', 'parentsOffWork', 'childrenDayDead', 'surrogacy', 'motherIdentityCar', 'childrenIsurranceCode', 'childrenIsurranceCode',
                 'childrenHealthNo', 'motherHealthNo', 'examinationCost', 'isSurgeryOrPremature'],
-        'V_2':  ['regimeToDate', 'regimeToDate', 'regimeRequestDate','regimeSum', 'conditionPrenatal', 'childrenWeekOld', 'parentsOffWork', 'childrenDayDead', 'surrogacy', 'motherIdentityCar', 'childrenIsurranceCode', 'childrenIsurranceCode',
+        'V_2':  ['motherDayDead', 'motherConclusionDate','regimeToDate', 'regimeToDate', 'regimeRequestDate','regimeSum', 'conditionPrenatal', 'childrenWeekOld', 'parentsOffWork', 'childrenDayDead', 'surrogacy', 'motherIdentityCar', 'childrenIsurranceCode', 'childrenIsurranceCode',
         'childrenHealthNo', 'motherHealthNo', 'examinationCost', 'isSurgeryOrPremature'],
         'VI_1': ['regimeToDate', 'regimeRequestDate', 'regimeSum','conditionPrenatal', 'childrenWeekOld', 'maternityLeave', 'childrenDayDead', 'surrogacy', 'motherIdentityCar', 'examinationCost',
                 'isSurgeryOrPremature'],
         'VI_2':  ['regimeToDate', 'regimeRequestDate', 'conditionPrenatal', 'childrenWeekOld', 'parentsOffWork', 'surrogacy', 'motherIdentityCar', 'childrenIsurranceCode', 'childrenIsurranceCode',
         'childrenHealthNo', 'motherHealthNo', 'examinationCost', 'isSurgeryOrPremature'],
-        'VII': ['conditionPrenatal', 'childrenWeekOld', 'conditionReproduction', 'maternityLeave', 'parentsOffWork', 'childrenGodchilDreceptionDate', 'dateStartWork', 'childrenDayDead',
+        'VII': ['motherDayDead', 'motherConclusionDate','conditionPrenatal', 'childrenWeekOld', 'conditionReproduction', 'maternityLeave', 'parentsOffWork', 'childrenGodchilDreceptionDate', 'dateStartWork', 'childrenDayDead',
                 'motherIdentityCar', 'childrenIsurranceCode', 'childrenHealthNo', 'motherHealthNo', 'examinationCost'],
-        'VIII': ['regimeFromDate', 'regimeToDate', 'regimeRequestDate', 'conditionPrenatal', 'childrenWeekOld', 'conditionReproduction', 'maternityLeave', 'parentsOffWork', 'childrenGodchilDreceptionDate',
+        'VIII': ['motherDayDead', 'motherConclusionDate','regimeFromDate', 'regimeToDate', 'regimeRequestDate', 'conditionPrenatal', 'childrenWeekOld', 'conditionReproduction', 'maternityLeave', 'parentsOffWork', 'childrenGodchilDreceptionDate',
                 'dateStartWork', 'childrenDayDead', 'examinationCost', 'isSurgeryOrPremature', 'regimeSum'],
-        'IX': ['childrenBirthday', 'childrenNumber', 'conditionPrenatal','childrenWeekOld', 'conditionReproduction', 'maternityLeave', 'parentsOffWork', 'childrenGodchilDreceptionDate', 
+        'IX': ['motherDayDead', 'motherConclusionDate','childrenBirthday', 'childrenNumber', 'conditionPrenatal','childrenWeekOld', 'conditionReproduction', 'maternityLeave', 'parentsOffWork', 'childrenGodchilDreceptionDate', 
               'dateStartWork', 'childrenDayDead', 'surrogacy', 'motherIdentityCar', 'childrenIsurranceCode', 'motherIsurranceCode', 'childrenHealthNo', 'motherHealthNo', 
               'examinationCost', 'isSurgeryOrPremature']
       };
@@ -801,7 +804,6 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
   }
 
   private validationCellByOtherCell(cellValue, column, y, instance, cell) {
-
     const records = this.spreadsheet.getJson();
     const parentKey = records[y].options.parentKey;
     // console.log(parentKey, this.tableName);   
@@ -812,7 +814,6 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
         const cellSelected = column.source.find(s => s.id === cellValue);
         const validationColumn = this.columns[x];
         this.validDataByPlanCode(column, y, instance, cell, parentKey);
-
         if (!rules) {
           validationColumn.validations = undefined;
           validationColumn.fieldName = undefined;
@@ -833,11 +834,16 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
 
         validationColumn.validations = rules;
         validationColumn.fieldName = fieldName;
-        instance.jexcel.validationCell(y, x, fieldName, rules);
+        instance.jexcel.validationCell(Number(y), x, fieldName, rules);
       } else if (column.key === 'regimeFromDate') {        
         this.validFromDateByTable(column, y, instance, cell, parentKey);
+        this.validChildrenBirthdayByTable(column, y, instance, cell, parentKey)
       } else if (column.key === 'regimeToDate') {
         this.validToDateByTable(column, y, instance, cell, parentKey);
+      } else if (column.key === 'motherConclusionDate') {
+        this.validMotherConclusionDate(column, y, instance, cell, parentKey);
+      } else if (column.key === 'motherDayDead') {
+        this.validMotherDayDead(column, y, instance, cell, parentKey);
       } else if (column.key === 'regimeRequestDate') {
         const indexOfRegimeFromDate = this.columns.findIndex(c => c.key === 'regimeFromDate');
         const regimeFromDateValue = this.spreadsheet.getValueFromCoords(indexOfRegimeFromDate, y); 
@@ -848,6 +854,7 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
         this.validChildrenGodchilDreceptionDateByTable(column, y, instance, cell, parentKey);
         this.validChildrenDayDeadByTable(column, y, instance, cell, parentKey);
       } else if(column.key === 'childrenGodchilDreceptionDate') {
+        this.validChildrenBirthdayByTable(column, y, instance, cell, parentKey)
         this.validChildrenGodchilDreceptionDateByTable(column, y, instance, cell, parentKey);
         this.validDateStartWorkByTable(column, y, instance, cell, parentKey);
       } else if(column.key === 'dateStartWork') {
@@ -858,31 +865,10 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
         this.validChildrenDayDeadByTable(column, y, instance, cell, parentKey);
       } else if(column.key === 'childrenNumber') { 
         this.validChildrenNumber(column, y, instance, cell);
-      } else if (column.key === 'subsidizeReceipt') {
-        const bankAccountColumn = this.columns[Number(cell) + 1];
-        const accountHolderColumn = this.columns[Number(cell) + 2];
-        const bankCodeColumn = this.columns[Number(cell) + 3];
-
-        if (cellValue === 'ATM') {
-          bankAccountColumn.validations = { required: true };
-          accountHolderColumn.validations = { required: true };
-          bankAccountColumn.readonly = false;
-          bankCodeColumn.validations = { required: true };
-        } else {
-          bankAccountColumn.validations = { };
-          bankAccountColumn.readonly = true;
-          accountHolderColumn.validations = { };
-          bankCodeColumn.validations = { };
-        }
-
-        bankAccountColumn.fieldName = 'Số tài khoản';
-        accountHolderColumn.fieldName = 'Tên chủ tài khoản';
-        bankCodeColumn.fieldName = 'Ngân hàng';
-
-        instance.jexcel.validationCell(y, Number(cell) + 1, bankAccountColumn.fieldName, bankAccountColumn.validations);
-        instance.jexcel.validationCell(y, Number(cell) + 2, accountHolderColumn.fieldName, accountHolderColumn.validations);
-        instance.jexcel.validationCell(y, Number(cell) + 3, bankCodeColumn.fieldName, bankCodeColumn.validations);
+      } else if (column.key === 'subsidizeReceipt' || column.key === 'bankAccount' || column.key === 'accountHolder' || column.key === 'bankName') {
+         this.validSubsidizeReceipt(column, y, instance, cell, parentKey)
       }
+      
       this.handleEvent({
         type: 'validate',
         part: '',
@@ -892,59 +878,96 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
     }, 50);
   }
 
+  private validSubsidizeReceipt(column, y, instance, cell, parentKey) 
+  {
+    const indexOfSubsidizeReceipt = this.columns.findIndex(c => c.key === 'subsidizeReceipt');    
+    const indexOfBankAccount = this.columns.findIndex(c => c.key === 'bankAccount');
+    const indexOfAccountHolder = this.columns.findIndex(c => c.key === 'accountHolder');
+    const indexOfBankName = this.columns.findIndex(c => c.key === 'bankName');
+
+    const bankAccountColumn = this.columns[indexOfBankAccount];
+    const accountHolderColumn = this.columns[indexOfAccountHolder];
+    const bankCodeColumn = this.columns[indexOfBankName];
+    const subsidizeReceiptValue = this.spreadsheet.getValueFromCoords(indexOfSubsidizeReceipt, y);
+    if (subsidizeReceiptValue === 'ATM') {
+      bankAccountColumn.validations = { required: true };
+      accountHolderColumn.validations = { required: true };
+      bankCodeColumn.validations = { required: true };
+    } else {
+      bankAccountColumn.validations = { };
+      accountHolderColumn.validations = { };
+      bankCodeColumn.validations = { };
+    }
+
+    bankAccountColumn.fieldName = 'Số tài khoản';
+    accountHolderColumn.fieldName = 'Tên chủ tài khoản';
+    bankCodeColumn.fieldName = 'Ngân hàng';
+
+    instance.jexcel.validationCell(y, indexOfBankAccount, bankAccountColumn.fieldName, bankAccountColumn.validations);
+    instance.jexcel.validationCell(y, indexOfAccountHolder, accountHolderColumn.fieldName, accountHolderColumn.validations);
+    instance.jexcel.validationCell(y, indexOfBankName, bankCodeColumn.fieldName, bankCodeColumn.validations);
+  }
 
   private validDataByPlanCode(column, y, instance, cell, parentKey) {
+    this.validMotherConclusionDate(column, y, instance, cell, parentKey);
+    this.validMotherDayDead(column, y, instance, cell, parentKey);
+ }
+
+  private validMotherConclusionDate(column, y, instance, cell, parentKey) {
     const indexOfPlanCode = this.columns.findIndex(c => c.key === 'planCode');
     const planCodeValue = this.spreadsheet.getValueFromCoords(indexOfPlanCode, y);
 
     const indexOfMotherConclusionDate = this.columns.findIndex(c => c.key === 'motherConclusionDate');
     const motherConclusionDateValue = this.spreadsheet.getValueFromCoords(indexOfMotherConclusionDate, y);
+    const motherConclusionDateColumn = this.columns[indexOfMotherConclusionDate];
+    if (planCodeValue && planCodeValue === 'RR2') { 
+      motherConclusionDateColumn.validations = { 
+        required: true,
+        lessThanNow: true,
+      };   
+    } else {
+      motherConclusionDateColumn.validations = { 
+        required: false,
+      };   
+    }
+    motherConclusionDateColumn.fieldName = 'Ngày kết luận (mẹ được kết luận không còn đủ sức khỏe chăm con)';
+    instance.jexcel.validationCell(y, indexOfMotherConclusionDate, motherConclusionDateColumn.fieldName, motherConclusionDateColumn.validations);
+  }
+
+  private validMotherDayDead(column, y, instance, cell, parentKey) {
+    const indexOfPlanCode = this.columns.findIndex(c => c.key === 'planCode');
+    const planCodeValue = this.spreadsheet.getValueFromCoords(indexOfPlanCode, y);
 
     const indexOfMotherDayDead = this.columns.findIndex(c => c.key === 'motherDayDead');
     const motherDayDeadValue = this.spreadsheet.getValueFromCoords(indexOfMotherDayDead, y);
-
-    if (this.tableName === 'maternityPart1') {
-        const motherDayDeadColumn = this.columns[indexOfMotherDayDead];
-        const motherConclusionDateColumn = this.columns[indexOfMotherConclusionDate];
-        if (planCodeValue === 'RR2') {
-          motherDayDeadColumn.readonly = true;
-          this.spreadsheet.setReadonlyCellAndClear(Number(y), Number(indexOfMotherDayDead), false);
-          this.spreadsheet.setReadonlyCellAndClear(Number(y), Number(indexOfMotherConclusionDate), true);
-          motherDayDeadColumn.validations = { required: false };
-          motherConclusionDateColumn.validations = { 
-            required: true,
-            lessThanNow: true,
-          };         
-        } else {
-          this.spreadsheet.setReadonlyCellAndClear(Number(y), Number(indexOfMotherDayDead), true);
-          this.spreadsheet.setReadonlyCellAndClear(Number(y), Number(indexOfMotherConclusionDate), false);
-          motherDayDeadColumn.validations = { required: true,  lessThanNow: true  };
-          motherConclusionDateColumn.validations = { 
-            required: false,
-          };       
-        }
-
-        motherDayDeadColumn.fieldName = 'Ngày mẹ chết';
-        motherConclusionDateColumn.fieldName = 'Ngày kết luận (mẹ được kết luận không còn đủ sức khỏe chăm con)';
-
-        instance.jexcel.validationCell(y, indexOfMotherDayDead, motherDayDeadColumn.fieldName, motherDayDeadColumn.validations);
-        instance.jexcel.validationCell(y, indexOfMotherConclusionDate, motherConclusionDateColumn.fieldName, motherConclusionDateColumn.validations);
+    const motherDayDeadColumn = this.columns[indexOfMotherDayDead];
+    if (planCodeValue && planCodeValue === 'RR1') { 
+      motherDayDeadColumn.validations = { 
+        required: true,
+        lessThanNow: true,
+      };   
+    } else {
+      motherDayDeadColumn.validations = { 
+        required: false,
+      };   
     }
-
+    motherDayDeadColumn.fieldName = 'Ngày mẹ chết';
+    instance.jexcel.validationCell(y, indexOfMotherDayDead, motherDayDeadColumn.fieldName, motherDayDeadColumn.validations);
   }
+
   private validFromDateByTable(column, y, instance, cell, parentKey) {
     if (this.tableName === 'maternityPart1' &&  (parentKey === 'III_1' || parentKey === 'III_2') ) {
       this.validFromDate630BIII2(column, y, instance, cell);
     } else if (this.tableName === 'maternityPart1' && parentKey === 'III_3' ) {
-      this.validFromDate630BIII3(column, y, instance, cell);
+     this.validFromDate630BIII3(column, y, instance, cell);
     } else if (this.tableName === 'maternityPart1' && parentKey === 'IV' ) {
       this.validFromDate630BIV(column, y, instance, cell);
     } else if (this.tableName === 'maternityPart1' && (parentKey === 'V_1' || parentKey === 'V_2') ) {
       this.validFromDate630BV1(column, y, instance, cell);
     } else if (this.tableName === 'maternityPart1' && parentKey === 'VI_1') {
-      this.validFromDate630BVI1(column, y, instance, cell);
-    } else if (this.tableName === 'maternityPart1' && parentKey === 'VI_1') {
-      this.validFromDate630BVI1(column, y, instance, cell);
+       this.validFromDate630BVI1(column, y, instance, cell);
+    } else if (this.tableName === 'maternityPart1' && parentKey === 'VI_2') {
+     this.validFromDate630BVI1(column, y, instance, cell);
     } else if (this.tableName === 'maternityPart1' && parentKey === 'VII') {
       this.validFromDate630BVII(column, y, instance, cell);
     }
@@ -977,7 +1000,7 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
   }
 
   private validChildrenDayDeadByTable(column, y, instance, cell, parentKey) {
-    if (this.tableName === 'maternityPart1' &&  (parentKey === 'III_3') ) {
+    if (this.tableName === 'maternityPart1' &&  (parentKey === 'III_3' || parentKey === 'VI_2') ) {
       this.validchildrenDayDeadIII3(column, y, instance, cell);
     } else if (this.tableName === 'maternityPart1' &&  parentKey === 'III_2') {
       this.validchildrenDayDeadIII2(column, y, instance, cell);
@@ -1103,17 +1126,32 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
   private validChildrenNumber(column, y, instance, cell) {
       const indexOfChildrenNumber = this.columns.findIndex(c => c.key === 'childrenNumber');
       const childrenNumberValue = this.spreadsheet.getValueFromCoords(indexOfChildrenNumber, y);
+      const indexOfPlanCode = this.columns.findIndex(c => c.key === 'planCode');
+      const planCodeValue = this.spreadsheet.getValueFromCoords(indexOfPlanCode, y);
+      const rules = this.validationRules[planCodeValue];
       const validationColumn = this.columns[indexOfChildrenNumber];
-      if(childrenNumberValue > 5) {
-        validationColumn.validations = {
-          max: 5,
+      if(rules && childrenNumberValue < 5) {
+        const cellSelected = this.columns[indexOfPlanCode].source.find(s => s.id === planCodeValue);
+        const fieldName = {
+          name: 'Số con',
+          otherField: `phương án ${ cellSelected.name }`
         };
-  
+
+        validationColumn.validations = rules;
+        validationColumn.fieldName = fieldName;
+        instance.jexcel.validationCell(Number(y), indexOfChildrenNumber, fieldName, rules);
+      } else {
+        validationColumn.validations = {
+          min:1
+        }
+
+        if(childrenNumberValue > 5) {
+          validationColumn.validations.max = 5;           
+        }
+
         validationColumn.fieldName = 'Số con';
         instance.jexcel.validationCell(y, indexOfChildrenNumber, validationColumn.fieldName, validationColumn.validations);
       }
-      // const indexOfChildrenBirthday = this.columns.findIndex(c => c.key === 'childrenBirthday');
-      // const childrenBirthdayValue = this.spreadsheet.getValueFromCoords(indexOfChildrenBirthday, y);
   }
 
   /// Con chết III_2 T6
@@ -1792,14 +1830,14 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
           lessThanNow: true,
         };
          
-        validationColumn.fieldName = 'Ngày đi làm thực tế';
+        validationColumn.fieldName = 'Ngày con chết';
         instance.jexcel.validationCell(y, indexOfChildrenDayDead, validationColumn.fieldName, validationColumn.validations);
       }
     } else {
       validationColumn.validations = {
         lessThanNow: true,
       };
-      validationColumn.fieldName = 'Ngày đi làm thực tế';
+      validationColumn.fieldName = 'Ngày con chết';
 
       instance.jexcel.validationCell(y, indexOfChildrenDayDead, validationColumn.fieldName, validationColumn.validations);
     }
