@@ -36,7 +36,7 @@
     "ng-zorro-antd": "9.1.2",
     "ngx-mask": "9.1.2",
     "numeral": "2.0.6",
-    "plupload": "2.3.6",
+    "plupload": "2.3.9",
     "rxjs": "6.4.0",
     "signalr-no-jquery": "^0.2.0",
     "toastr": "2.1.4",
