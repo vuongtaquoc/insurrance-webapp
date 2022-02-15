@@ -37,7 +37,7 @@ export class HealthRecoveryApprovalListComponent implements OnInit {
     sendDate: '',
     status: ''
   };
-
+  isSpinning: boolean;
 
   constructor(
     private declarationService: DeclarationService,
@@ -53,6 +53,7 @@ export class HealthRecoveryApprovalListComponent implements OnInit {
   }
 
   getDeclarations(skip = 0, take = PAGE_SIZE) {
+    this.isSpinning = true;
     this.declarationService.getDeclarations({
       ...this.filter,
       orderby: this.orderby,
@@ -72,6 +73,7 @@ export class HealthRecoveryApprovalListComponent implements OnInit {
 
         this.getDeclarations(this.skip);
       }
+      this.isSpinning = false;
     });
   }
 

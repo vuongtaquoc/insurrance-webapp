@@ -5,7 +5,7 @@ import { DeclarationService, AuthenticationService, DocumentListService, Declara
 import { NzModalService } from 'ng-zorro-antd/modal';
 import * as _ from 'lodash';
 
-import { DocumentFormComponent } from '@app/shared/components';
+import { DocumentFormComponent, DeclarationErrorComponent } from '@app/shared/components';
 import { eventEmitter } from '@app/shared/utils/event-emitter';
 import { DocumentList } from '@app/core/models';
 import { DATE_FORMAT } from '@app/shared/constant';
@@ -330,6 +330,14 @@ export class MaternityApprovalComponent implements OnInit, OnDestroy {
   }
 
   viewDocument(declarationInfo: any) {
+    if (declarationInfo.isError) {
+      this.showDialogDeclarationErrror(declarationInfo);
+    } else {
+      this.showDialogDeclarationResult(declarationInfo);
+    }
+  }
+
+  private showDialogDeclarationResult(declarationInfo: any) {
     const modal = this.modalService.create({
       nzWidth: 680,
       nzWrapClassName: 'document-modal',
@@ -338,6 +346,25 @@ export class MaternityApprovalComponent implements OnInit, OnDestroy {
       nzOnOk: (data) => console.log('Click ok', data),
       nzComponentParams: {
         declarationInfo
+      }
+    });
+
+    modal.afterClose.subscribe(result => {
+    });
+  }
+
+  private showDialogDeclarationErrror(declarationInfo: any) {
+
+    const resultError = declarationInfo.resultError;
+
+    const modal = this.modalService.create({
+      nzWidth: 980,
+      nzWrapClassName: 'document-modal',
+      nzTitle: 'Lỗi dữ liệu tờ khai',
+      nzContent: DeclarationErrorComponent,
+      nzOnOk: (data) => console.log('Click ok', data),
+      nzComponentParams: {
+        resultError
       }
     });
 

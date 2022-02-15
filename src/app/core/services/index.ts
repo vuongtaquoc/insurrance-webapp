@@ -44,4 +44,5 @@ export * from './benefit-level.service';
 export * from './declaration-config.service';
 export * from './app-config.service';
 export * from './group-benefit-level.service';
+export * from './hub.service';
 

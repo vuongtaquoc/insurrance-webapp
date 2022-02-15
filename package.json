@@ -38,6 +38,7 @@
     "numeral": "2.0.6",
     "plupload": "2.3.6",
     "rxjs": "6.4.0",
+    "signalr-no-jquery": "^0.2.0",
     "toastr": "2.1.4",
     "tslib": "1.9.0",
     "uuid": "3.3.2",

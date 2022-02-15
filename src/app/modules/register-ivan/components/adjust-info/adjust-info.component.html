@@ -501,8 +501,7 @@
                     </nz-input-group>
                     <ng-template #suffixButtonToken>
                       <button class="employee-form__button-save read-cks" nz-button nzType="success"
-                        (click)="readToken()" nzSearch>Đọc CKS </button>
-                      <!-- <a type="button" [href]="sanitize('mbhxh:' + authenticationToken + ',sign')" class="employee-form__button-save" >Đọc CKS</a> -->
+                        (click)="getCerfication()" nzSearch>Đọc CKS </button>
                     </ng-template>
                     <ng-template #errorTokenSerial let-control>
                       <ng-container *ngIf="control.hasError('required')">
@@ -513,7 +512,6 @@
                 </nz-form-item>
               </div><!-- col -->
             </div><!-- END ROW -->
-
 
             <!-- ROW START -->
             <div nz-row [nzGutter]="8" *ngIf="!(hasToken === '0')">

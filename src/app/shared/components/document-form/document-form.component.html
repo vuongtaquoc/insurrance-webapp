@@ -1,52 +1,54 @@
 <div class="document-form">
-  <div class="document-form__content">
-  <h2><span>Hồ sơ</span> : {{declarationFiles.declarationCode}} | {{declarationFiles.declarationName}} | {{declarationFiles.createdDate}}</h2>
-  <h1>DANH SÁCH TỜ KHAI</h1>
-  <nz-table
-      nzBordered
-      #ajaxTable
-      nzShowSizeChanger
-      [nzFrontPagination]="false"
-      [nzData]="declarationFiles.fileDetail"
-      [nzLoading]="loading"
-      [nzTotal]="total"
-      [(nzPageIndex)]="pageIndex"
-      [(nzPageSize)]="pageSize"
-      class="table-editor "
-    >
-      <thead>
-        <tr>
-          <th>Tên tờ khai</th>
-          <th style="width: 100px;"><span>{{'contract.table.action' | translate}}</span></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let data of ajaxTable.data;">
-          <td>{{ data.fileName }}</td>
-          <td class="text-center">
-            <a (click)="downloadFile(data, '.excel')" title="Tải file định dạng Excel" style="padding:10px;" *ngIf="(!data.isFileUpload && !data.isDownloading)">
-              <i nz-icon nzType="file-excel" nzTheme="outline"></i>
-            </a>
-            <a (click)="downloadFile(data ,'.pdf')" title="Tải file định dạng Pdf" *ngIf="(!data.isFileUpload && !data.isDownloading)">
-              <i nz-icon nzType="file-pdf" nzTheme="outline"></i>
-            </a>
-            <a (click)="downloadFile(data ,'pdf')" title="Tải file định dạng Pdf" *ngIf="(data.isFileUpload && !data.isDownloading)">
-              <i nz-icon nzType="download" nzTheme="outline"></i>
-            </a>
-            <ng-template #indicatorTemplate><i nz-icon nzType="loading"></i></ng-template>
-            <nz-spin *ngIf="data.isDownloading" nzSimple [nzIndicator]="indicatorTemplate"> </nz-spin>
-          </td>
-        </tr>
-      </tbody>
-    </nz-table>
-        <!-- ROW START -->
-  </div>
-  <div class="document-form__footer" *nzModalFooter>
-    <button nz-button nzType="primary" (click)="signDeclaration()">
-      <i nz-icon nzType="snippets"></i>Nộp tờ khai
-    </button>
-    <button nz-button nzType="default" (click)="dismiss()">
-      <i nz-icon nzType="rollback"></i>Quay lại
-    </button>
-  </div>
+  <nz-spin [nzSpinning]="isSpinning" class="register__spinning">
+    <div class="document-form__content">
+    <h2><span>Hồ sơ</span> : {{declarationFiles.declarationCode}} | {{declarationFiles.declarationName}} | {{declarationFiles.createdDate}}</h2>
+    <h1>DANH SÁCH TỜ KHAI</h1>
+    <nz-table
+        nzBordered
+        #ajaxTable
+        nzShowSizeChanger
+        [nzFrontPagination]="false"
+        [nzData]="declarationFiles.fileDetail"
+        [nzLoading]="loading"
+        [nzTotal]="total"
+        [(nzPageIndex)]="pageIndex"
+        [(nzPageSize)]="pageSize"
+        class="table-editor "
+      >
+        <thead>
+          <tr>
+            <th>Tên tờ khai</th>
+            <th style="width: 100px;"><span>{{'contract.table.action' | translate}}</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of ajaxTable.data;">
+            <td>{{ data.fileName }}</td>
+            <td class="text-center">
+              <a (click)="downloadFile(data, '.excel')" title="Tải file định dạng Excel" style="padding:10px;" *ngIf="(!data.isFileUpload && !data.isDownloading)">
+                <i nz-icon nzType="file-excel" nzTheme="outline"></i>
+              </a>
+              <a (click)="downloadFile(data ,'.pdf')" title="Tải file định dạng Pdf" *ngIf="(!data.isFileUpload && !data.isDownloading)">
+                <i nz-icon nzType="file-pdf" nzTheme="outline"></i>
+              </a>
+              <a (click)="downloadFile(data ,'pdf')" title="Tải file định dạng Pdf" *ngIf="(data.isFileUpload && !data.isDownloading)">
+                <i nz-icon nzType="download" nzTheme="outline"></i>
+              </a>
+              <ng-template #indicatorTemplate><i nz-icon nzType="loading"></i></ng-template>
+              <nz-spin *ngIf="data.isDownloading" nzSimple [nzIndicator]="indicatorTemplate"> </nz-spin>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+          <!-- ROW START -->
+    </div>
+    <div class="document-form__footer" *nzModalFooter>
+      <button nz-button nzType="primary" [disabled]= "isSpinning" (click)="signDeclaration()">
+        <i nz-icon nzType="snippets"></i>Nộp tờ khai
+      </button>
+      <button nz-button nzType="default" [disabled]= "isSpinning" (click)="dismiss()">
+        <i nz-icon nzType="rollback"></i>Quay lại
+      </button>
+    </div>
+  </nz-spin>
 </div>

@@ -79,6 +79,7 @@ export const TABLE_HEADER_COLUMNS_PART_1 = [{
   isCalendar: true,
   fieldName: 'Ngày quay trở lại làm việc tại đơn vị',
   validations: {
+    required: true,
     lessThanNow: true
   }
 }, {

@@ -36,7 +36,7 @@ export class ArrearsListComponent implements OnInit {
     sendDate: '',
     status: ''
   };
-
+  isSpinning: boolean;
   constructor(
     private declarationService: DeclarationService,
     private modalService: NzModalService,
@@ -50,6 +50,7 @@ export class ArrearsListComponent implements OnInit {
   }
 
   getDeclarations(skip = 0, take = PAGE_SIZE) {
+    this.isSpinning = true;
     this.declarationService.getDeclarations({
       ...this.filter,
       orderby: this.orderby,
@@ -69,6 +70,7 @@ export class ArrearsListComponent implements OnInit {
 
         this.getDeclarations(this.skip);
       }
+      this.isSpinning = false;
     });
   }
 

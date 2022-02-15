@@ -33,11 +33,12 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getDeclarations(this.skip);
+    this.getDeclarations(this.skip, this.pageSize);
     this.fromBuild();
   }
 
   private getDeclarations(skip = 0, take = PAGE_SIZE) {
+    this.isSpinning = true;
     this.submitDeclarationService.filter({
       declarationCode: this.declarationCode,
       fromDate: this.fromDate,
@@ -54,6 +55,7 @@ export class DashboardComponent implements OnInit {
         this.selectedPage -= 1;
         this.getDeclarations(this.skip);
       }
+      this.isSpinning = false;
     });
   }
 

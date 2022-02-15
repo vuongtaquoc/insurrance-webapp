@@ -4,7 +4,7 @@ import { MustMatch } from "@app/shared/constant";
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DATE_FORMAT, REGEX } from '@app/shared/constant';
 import { City, District } from '@app/core/models';
-import { schemaSign, CRON_TIMES } from '@app/shared/constant';
+import { schemaSign, CRON_TIMES, HumCommand } from '@app/shared/constant';
 import {
   CityService, IsurranceDepartmentService, SalaryAreaService, CompanyService,
   PaymentMethodServiced, GroupCompanyService, DepartmentService, DistrictService, WardsService,
@@ -15,8 +15,7 @@ import { getBirthDay } from '@app/shared/utils/custom-validation';
 import { forkJoin, Observable, Subscription } from 'rxjs';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { DomSanitizer } from '@angular/platform-browser';
-
-
+import { HubService } from '@app/core/services';
 
 @Component({
   selector: 'app-register-ivan-register',
@@ -64,6 +63,8 @@ export class RegisterIvanRegisterComponent implements OnInit {
     attachment: { active: false }
   };
   formContractIsvalid = false;
+  private hubProxy: any;
+  private handlers;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -81,9 +82,11 @@ export class RegisterIvanRegisterComponent implements OnInit {
     private contractService: ContractService,
     private modalService: NzModalService,
     private sanitizer: DomSanitizer,
+    private hubService: HubService,
   ) {}
 
   ngOnInit() {
+    
     this.registerForm = this.formBuilder.group({
       cityCode: ['', [Validators.required]],
       isurranceDepartmentCode: ['', [Validators.required]],
@@ -127,27 +130,91 @@ export class RegisterIvanRegisterComponent implements OnInit {
     this.InitializeData();
     this.changeHasToken('0');
     this.changeIsFirst(true);  
-    
+    this.handlers = [
+      eventEmitter.on("saveData:error", () => {
+         this.isSpinning = false;
+      }),
+      eventEmitter.on("resultHub:sign", (data) => {
+        this.getResultHub(data);
+      })
+    ];
   }
 
   handleUpperCase(key) {
     const value = this.registerForm.value[key];
-
     this.registerForm.patchValue({
       [key]: value.toUpperCase()
     });
   }
 
-//   private changeSalary(event) {
-//     if(event > 0) {
-//      this.employeeForm.get('ratio').disable();
-//      this.employeeForm.get('ratio').setValue(0);
-//      this.employeeForm.controls["ratio"].setValidators([Validators.pattern(REGEX.ONLY_NUMBER_INCLUDE_DECIMAL)]);
-//     }else {
-//       this.employeeForm.get('ratio').enable();
-//       this.employeeForm.controls["ratio"].setValidators([Validators.required,Validators.min(1), Validators.max(13), Validators.pattern(REGEX.ONLY_NUMBER_INCLUDE_DECIMAL)]);
-//     }
-//  }
+  getResultHub(data) {
+    if(!data || data.tabIndex !== 2) {
+      return;
+    }
+    switch(data.command) {
+      case HumCommand.toekInfo: //Get cerfication
+         this.viewCerfication(data);       
+        break;
+      case HumCommand.signDocument: //Sign document
+        this.resultSign(data);
+        break;
+      default:
+    }
+  }
+
+  resultSign(data) {
+    this.isSpinning = false;
+    this.modalService.success({
+      nzTitle: 'Ký số tờ khai thành công'
+    });
+    this.router.navigate([this.authenticationService.currentCredentials.role.defaultUrl]);
+  }
+
+  viewCerfication(data) {
+    this.isSpinning = false;
+    this.registerForm.patchValue({
+      privateKey: data.privateKey,
+      vendorToken: data.vendorToken,
+      fromDate: data.fromDate,
+      expired: data.expired,       
+    });  
+  }
+
+  getCerfication() {
+    this.isSpinning = true;
+    this.hubProxy = this.hubService.getHubProxy();
+    if (this.hubProxy == null || this.hubProxy.connection.state !== 1) {
+      this.startAppSign();
+    } else {
+      this.getCerficationHub();
+    }
+  }
+
+  private getCerficationHub() {   
+    const argum = `${ this.authenticationService.currentCredentials.token },0,${ HumCommand.toekInfo },${ HumCommand.rootAPI }`;
+    this.hubProxy.invoke("processMessage", argum).done(() => {
+    }).fail((error) => {
+      this.isSpinning = false;
+    });
+  }
+
+  signDeclaration(data) {
+    this.isSpinning = true;
+    this.hubProxy = this.hubService.getHubProxy();
+    if (this.hubProxy == null || this.hubProxy.connection.state !== 1) {
+      this.startAppSign();
+    } else {
+      this.signDeclarationHub(data);
+    }
+  }  
+
+  private signDeclarationHub(data) {   
+    const argum = `${ this.authenticationService.currentCredentials.token },${ data.id },${ HumCommand.signDocument },${ HumCommand.rootAPI }`;
+    this.hubProxy.invoke("processMessage", argum).done(() => {
+    }).fail((error) => {
+      this.isSpinning = false;
+    });
+  }
 
   changeIsFirst(value) {
     this.isFirst = value;
@@ -210,7 +277,6 @@ export class RegisterIvanRegisterComponent implements OnInit {
     this.contractService.create(fromData).subscribe(data => {
       this.isSpinning = true;
       if (fromData.privateKey === '' || fromData.privateKey === undefined) {
-        
         this.modalService.success({
           nzTitle: 'Đăng ký thành công',
           nzContent: 'Chúng tôi sẽ liên hệ lại đơn vị để xác nhận thông tin lập hợp đồng, hóa đơn'
@@ -224,13 +290,14 @@ export class RegisterIvanRegisterComponent implements OnInit {
           nzOkType: 'danger',
           nzOnOk: () => {
             this.signDeclaration(data);
+          },
+          nzOnCancel: () => { 
+            this.router.navigate([this.authenticationService.currentCredentials.role.defaultUrl]);
+            this.isSpinning = false; 
           }
         });
-      }
-      this.isSpinning = false;
-      this.router.navigate([this.authenticationService.currentCredentials.role.defaultUrl]);
+      }          
     });
-    this.isSpinning = false;
   }
 
   private getFullHeight() {
@@ -364,6 +431,7 @@ export class RegisterIvanRegisterComponent implements OnInit {
   get hasToken() {
     return this.registerForm.get('hasToken').value;
   }
+  
   handleTabChanged({selected}) {
     this.selectedTab = selected;
   }
@@ -425,77 +493,25 @@ export class RegisterIvanRegisterComponent implements OnInit {
     this.formContractIsvalid = data.result;
   }
 
-  
-  private readToken() {
-    this.buildShemaURL('sign');
-    this.createLink();
-    this.loaddingToken = true;
-    this.cronJob();
-  }
-
-  private createLink() {
-    const link = document.createElement('a');
-    link.href = this.shemaUrl;
-    link.click();
-  }
-
-  private buildShemaURL(suffix) {
-
+   
+  private startAppSign() 
+  {
     this.authenticationToken = this.authenticationService.currentCredentials.token;
     let shemaSign = window['schemaSign'] || schemaSign;
     shemaSign = shemaSign.replace('token', this.authenticationToken);
-    this.shemaUrl = shemaSign.replace('declarationId', suffix);
-
+    const link = document.createElement('a');
+    link.href = shemaSign.replace('declarationId', '');
+    link.click();
   }
 
-  signDeclaration(data) {
-
-    this.buildShemaURL(data.id);
-    this.createLink();
-
-  }
-
-  cronJob() {
-
-    this.isSpinning = this.loaddingToken;
-    if(this.loaddingToken) {
-
-      this.timer = setTimeout(() => {
-        this.getTokenInfo();
-        this.cronJob();
-  
-      },CRON_TIMES);
-  
-    }else {
-      clearTimeout(this.timer);
-    }
-  }
-
-  private getTokenInfo() {
-    
-    const companyId = this.authenticationService.currentCredentials.companyInfo.id;
-    this.companyService.getCompanyInfo(companyId).subscribe(data => {
-      this.registerForm.patchValue({
-        privateKey: data.privateKey,
-        vendorToken: data.vendorToken,
-        fromDate: data.fromDate,
-        expired: data.expired,       
-      });  
-
-      this.loaddingToken = false;
-    });
-
-  }
 
   getNameOfDropdown(sourceOfDropdown: any, id: string) {
-
     let name = '';
     const item = sourceOfDropdown.find(r => r.id === id);
     if (item) {
       name = item.name;
     }
     return name;
-
   }
 
 }

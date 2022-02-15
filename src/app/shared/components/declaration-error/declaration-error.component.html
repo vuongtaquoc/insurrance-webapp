@@ -1,0 +1,35 @@
+<div class="declaration-result">
+  <div class="declaration-result__content">
+  <nz-table
+      nzBordered
+      #ajaxTable
+      nzShowSizeChanger
+      [nzFrontPagination]="false"
+      [nzData]="resultError"
+      [nzLoading]="loading"
+      [nzTotal]="total"
+      [(nzPageIndex)]="pageIndex"
+      [(nzPageSize)]="pageSize"
+      class="table-editor">
+      <thead>
+        <tr>
+          <th>Nhân viên</th>
+          <th>Dữ liệu</th>
+          <th>Mã tả lỗi</th>   
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of ajaxTable.data;">
+          <td>{{ data.employeeName }}</td>
+          <td>{{ data.valueErorr }}</td>
+          <td>{{ data.columnName }}</td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </div>
+  <div class="declaration-result__footer" *nzModalFooter>
+    <button nz-button nzType="default" (click)="dismiss()">
+      <i nz-icon nzType="rollback"></i>Đóng
+    </button>
+  </div>
+</div>

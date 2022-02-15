@@ -8,6 +8,7 @@ import { DocumentFormComponent } from '@app/shared/components';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import * as moment from 'moment';
 import { DeclarationResultComponent } from '@app/shared/components';
+import { eventEmitter } from "@app/shared/utils/event-emitter";
 
 @Component({
   selector: 'app-increase-labor-list',
@@ -28,10 +29,10 @@ export class IncreaseLaborListComponent implements OnInit {
   selectedPage: number = 1;
   declarationCode: string = '600';
   declarationName: string;
-
   keyword: string = '';
   status: any = RESULTSUBMIT;
   filter: any = {};
+  isSpinning: boolean;
   param: any = {
     createDate: '',
     documentNo: '',
@@ -39,7 +40,7 @@ export class IncreaseLaborListComponent implements OnInit {
     sendDate: '',
     status: ''
   };
-
+  private handlers;
   constructor(
     private declarationService: DeclarationService,
     private modalService: NzModalService,
@@ -51,10 +52,17 @@ export class IncreaseLaborListComponent implements OnInit {
     this.year = new Date();
     this.loadDeclarationConfig();
     this.getDeclarations();
+    this.handlers = [
+      eventEmitter.on("loadDeclaration:sign", () => {
+      setTimeout(() => {
+        this.getDeclarations();
+        }, 3000);
+      })
+    ];
   }
 
   getDeclarations(skip = 0, take = PAGE_SIZE) {
-    
+    this.isSpinning = true;
     this.declarationService.getDeclarations(
       {
         ...this.filter,
@@ -72,9 +80,9 @@ export class IncreaseLaborListComponent implements OnInit {
       if (res.data.length === 0 && this.selectedPage > 1) {
         this.skip -= PAGE_SIZE;
         this.selectedPage -= 1;
-
         this.getDeclarations(this.skip);
       }
+      this.isSpinning = false;
     });
   }
 

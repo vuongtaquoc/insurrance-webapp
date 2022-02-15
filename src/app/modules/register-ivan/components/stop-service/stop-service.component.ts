@@ -3,12 +3,14 @@ import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import {
   CityService, IsurranceDepartmentService, CompanyService,  
-  AuthenticationService, SwitchVendorService
+  AuthenticationService, SwitchVendorService, CustomerService
 } from '@app/core/services';
 import { forkJoin } from 'rxjs';
 import { City, District } from '@app/core/models';
 import { NzModalService } from 'ng-zorro-antd/modal';
-import { schemaSign } from '@app/shared/constant';
+import { schemaSign, HumCommand } from '@app/shared/constant';
+import { HubService } from '@app/core/services';
+import { eventEmitter } from '@app/shared/utils/event-emitter';
 
 @Component({
   selector: 'app-register-ivan-stop-service',
@@ -19,10 +21,12 @@ export class RegisterIvanStopServiceComponent implements OnInit {
   registerForm: FormGroup;
   companyId: string = '0';
   cities: City[] = [];
+  isSpinning: boolean;
   shemaUrl: any;
   authenticationToken: string;
   isurranceDepartments: any;
-
+  private hubProxy: any;
+  private handlers;
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
@@ -32,11 +36,12 @@ export class RegisterIvanStopServiceComponent implements OnInit {
     private authenticationService: AuthenticationService,
     private switchVendorService: SwitchVendorService,
     private modalService: NzModalService,
+    private customerService: CustomerService,   
+    private hubService: HubService,
   ) {
   }
 
   ngOnInit() {
-
     this.registerForm = this.formBuilder.group({
       cityCode: ['', [Validators.required]],
       isurranceDepartmentCode: ['', [Validators.required]],
@@ -45,8 +50,32 @@ export class RegisterIvanStopServiceComponent implements OnInit {
       taxCode: ['', [Validators.required]],
       reason: ['', [Validators.required]],
     });
+    this.handlers = [
+      eventEmitter.on("saveData:error", () => {
+         this.isSpinning = false;
+      }),
+      eventEmitter.on("resultHub:sign", (data) => {
+        this.getResultHub(data);
+      })
+    ];
 
     this.InitializeData();
+  }
+
+  getResultHub(data) {
+    if(!data || data.tabIndex !== 1) {
+      return;
+    }
+    this.isSpinning = false;
+    let mesage = 'Ký số tờ khai thành công';
+    if(!data || !data.status) 
+    {
+      mesage = 'Ký số tờ khai lỗi, vui lòng liên hệ với quản trị';
+    }
+
+    this.modalService.success({
+      nzTitle: mesage,
+    });
   }
 
   InitializeData() {
@@ -78,6 +107,44 @@ export class RegisterIvanStopServiceComponent implements OnInit {
     });
   }
 
+  handleSearchTax() {
+    if (this.tax) {
+      this.isSpinning = true;
+      this.customerService.getOrganizationByTax(this.tax).then((data) => {
+        if (data['ma_so_thue']) {
+         this.setDataFromSearchTax(data);
+        } else {
+          this.registerForm.patchValue({
+            name: '',
+            taxCode: '',
+          });
+
+          this.taxInvalid();
+        }
+      });
+    } else {
+      this.taxInvalid();
+    }
+    this.isSpinning = false;
+  }
+
+  get tax() {
+    return this.registerForm.get('taxCode').value;
+  }
+
+  taxInvalid() {
+    this.modalService.warning({
+      nzTitle: 'Không tìm thấy mã số thuế cần tìm'
+    });
+  }
+
+  setDataFromSearchTax(data: any) {
+    this.registerForm.patchValue({
+      name: data['ten_cty'],
+      active: true,
+    });
+  }
+
   private setDataToForm(data) {
     this.registerForm.patchValue({
       cityCode: data.cityCode,
@@ -98,7 +165,7 @@ export class RegisterIvanStopServiceComponent implements OnInit {
     if (this.registerForm.invalid) {
       return;
     }
-
+    this.isSpinning = true;
     const data = this.getData();
     this.switchVendorService.create(data).subscribe(data => {
       this.modalService.confirm({
@@ -108,6 +175,9 @@ export class RegisterIvanStopServiceComponent implements OnInit {
         nzOkType: 'danger',
         nzOnOk: () => {
           this.signDeclaration(data);
+        },
+        nzOnCancel: () => {
+          this.isSpinning = false;
         }
       });
     });
@@ -149,27 +219,32 @@ export class RegisterIvanStopServiceComponent implements OnInit {
     return name;
   }
 
-  private createLink() {
-    const link = document.createElement('a');
-    link.href = this.shemaUrl;
-    link.click();
+  signDeclaration(data) {
+    this.isSpinning = true;
+    this.hubProxy = this.hubService.getHubProxy();
+    if (this.hubProxy == null || this.hubProxy.connection.state !== 1) {
+      this.startAppSign(data);
+    } else {
+      this.signDeclarationHub(data);
+    }
   }
 
-  private buildShemaURL(suffix) {
-
+  private startAppSign(data) 
+  {
     this.authenticationToken = this.authenticationService.currentCredentials.token;
     let shemaSign = window['schemaSign'] || schemaSign;
     shemaSign = shemaSign.replace('token', this.authenticationToken);
-    this.shemaUrl = shemaSign.replace('declarationId', suffix);
-
+    const link = document.createElement('a');
+    link.href = shemaSign.replace('declarationId', data.id);
+    link.click();
   }
 
-  signDeclaration(data) {
-
-    this.buildShemaURL(data.id);
-    this.createLink();
-
+  private signDeclarationHub(data) {   
+    const argum = `${ this.authenticationService.currentCredentials.token },${ data.id },${ HumCommand.signDocument },${ HumCommand.rootAPI }`;
+    this.hubProxy.invoke("processMessage", argum).done(() => {
+    }).fail((error) => {
+      this.isSpinning = false;
+    });
   }
-
 
 }

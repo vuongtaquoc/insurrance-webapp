@@ -1,5 +1,6 @@
 <div class="manage-unit-form">
   <div class="manage-unit-form__content">
+    <nz-spin [nzSpinning]="isSpinning" class="register__spinning">
     <form nz-form [formGroup]="form">
       <div class="manage-unit-info">
         <h3 class="employee-form__group-title">A. Thông tin đơn vị</h3>
@@ -501,10 +502,9 @@
             </nz-form-item>
           </div><!-- col -->
         </div>
-
-
       </div>
     </form>
+    </nz-spin>
   </div>
 
   <div class="manage-unit-form__footer" *nzModalFooter>

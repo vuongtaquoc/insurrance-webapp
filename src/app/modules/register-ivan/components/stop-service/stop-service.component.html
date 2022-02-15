@@ -1,9 +1,9 @@
 <form nz-form [formGroup]="registerForm">
   <div class="register register-form">
-
-    <div class="page-company__container">
+    <div class="page-company__container">      
       <div>&nbsp;</div>
       <div class="page-company__content">
+        <nz-spin [nzSpinning]="isSpinning" class="register__spinning">
         <div class="register-info">
           <h3 class="text-center employee-form__group-title employee-form__group-title--disabled">
             ĐĂNG KÝ NGỪNG GIAO DỊCH ĐIỆN TỬ TRONG LĨNH VỰC BẢO HIỂM XÃ HỘI
@@ -140,8 +140,8 @@
               <i nz-icon nzType="stop"></i>Quay lại
           </button>
           </div>
-
         </div>
+        </nz-spin>
       </div>
     </div>
   </div>

@@ -38,7 +38,7 @@ export class AdjustmentInsuranceCardListComponent implements OnInit {
     sendDate: '',
     status: ''
   };
-
+  isSpinning: boolean;
 
   constructor(
     private declarationService: DeclarationService,
@@ -54,6 +54,7 @@ export class AdjustmentInsuranceCardListComponent implements OnInit {
   }
 
   getDeclarations(skip = 0, take = PAGE_SIZE) {
+    this.isSpinning = true;
     this.declarationService.getDeclarations({
       ...this.filter,
       orderby: this.orderby,
@@ -73,6 +74,7 @@ export class AdjustmentInsuranceCardListComponent implements OnInit {
 
         this.getDeclarations(this.skip);
       }
+      this.isSpinning = false;
     });
   }
 

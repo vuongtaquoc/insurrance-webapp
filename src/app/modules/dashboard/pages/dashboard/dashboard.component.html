@@ -5,7 +5,10 @@
     <h1>Danh sách hồ sơ giao dịch điện tử</h1>
     <div class="scrollable-container">
       <nz-spin [nzSpinning]="isSpinning" class="dashboard-page-container__spinning">
-      <nz-table class="table" #basicTable [nzData]="declarations" [nzShowPagination]="false"  [nzScroll]="{ y: '250px' }">
+      <nz-table class="table" #basicTable 
+      [nzPageSize] = "pageSize"
+      [nzData]="declarations" 
+      [nzShowPagination]="false"  [nzScroll]="{ y: '280px' }">
         <thead>
           <tr class="table__header">
             <th nzWidth="50px" style="width: 50px" class="table__middle cell__header text-center">STT</th>
@@ -42,7 +45,7 @@
     </div>
 
     <div class="ui-table-paging-custom">
-      <div class="ui-table-paging-custom__statistics">* Danh sách có 3/{{total}} hồ sơ</div>
+      <div class="ui-table-paging-custom__statistics">* Danh sách có {{total}} hồ sơ</div>
       <div class="ui-table-paging-custom__paging">
          
         <span>Hiển thị</span>

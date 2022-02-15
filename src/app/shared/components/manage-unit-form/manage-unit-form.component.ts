@@ -9,8 +9,9 @@ import {
     CategoryService, BenefitLevelService
 } from '@app/core/services';
 import { forkJoin } from 'rxjs';
-import { REGEX, CRON_TIMES, schemaSign } from '@app/shared/constant';
-
+import { REGEX, schemaSign, HumCommand } from '@app/shared/constant';
+import { HubService } from '@app/core/services';
+import { eventEmitter } from '@app/shared/utils/event-emitter';
 
 @Component({
     selector: 'app-manage-unit-form',
@@ -36,10 +37,12 @@ export class ManageUnitFormComponent implements OnInit, OnDestroy {
     shemaUrl: any;
     times: any[] = [];
     timer: any;
-    loaddingToken: boolean = false;
+    isSpinning: boolean = false;
     benefitLevels: any;
     coefficients: any;
     calculationTypes: any;
+    private hubProxy: any;
+    private handlers;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -58,10 +61,12 @@ export class ManageUnitFormComponent implements OnInit, OnDestroy {
         private benefitLevelService: BenefitLevelService,
         private coefficientService: CoefficientService,
         private categoryService: CategoryService,
+        private hubService: HubService,
 
     ) { }
 
     ngOnInit() {
+        this.hubService.connectHub(this.getResultHub.bind(this));
         this.loading = false;
         const companyInfo = this.companyInfo;
         this.departments = companyInfo.departments ? companyInfo.departments : [];
@@ -125,8 +130,12 @@ export class ManageUnitFormComponent implements OnInit, OnDestroy {
             this.calculationTypes = calculationTypes;
         });
 
+        this.handlers = [
+            eventEmitter.on("saveData:error", () => {
+               this.isSpinning = false;
+            })
+        ];
         this.loading = true;
-        this.buildShemaURL();
     }
 
     ngOnDestroy() {
@@ -237,16 +246,6 @@ export class ManageUnitFormComponent implements OnInit, OnDestroy {
             this.isurranceDepartments = data;
         });
     }
-
-
-    getCertification() {
-        const link = document.createElement('a');
-        link.href = this.shemaUrl;
-        link.click();
-        this.loaddingToken = true;
-        this.cronJob();
-    }
-
     getwards(districtCode) {
         this.wardsService.getWards(districtCode).subscribe(data => {
             this.wards = data;
@@ -369,7 +368,6 @@ export class ManageUnitFormComponent implements OnInit, OnDestroy {
 
     handleUpperCase(key) {
         const value = this.form.value[key];
-
         this.form.patchValue({
             [key]: value.toUpperCase()
         });
@@ -389,47 +387,54 @@ export class ManageUnitFormComponent implements OnInit, OnDestroy {
                     code_values.push(x.id)
                 }
             }
-
         }
-
         return isDup;
     }
 
-    private buildShemaURL() {
+    getResultHub(data) {
+        if(!data) {
+          return;
+        }
+
+        this.isSpinning = false;
+        this.cerficationDetail(data);
+    }
+
+    cerficationDetail(data) {
+        this.form.patchValue({
+          privateKey: data.privateKey,
+          vendorToken: data.vendorToken,
+          fromDate: data.fromDate,
+          expired: data.expired,       
+        });  
+      }
+
+    getCertification() {
+        this.isSpinning = true;
+        this.hubProxy = this.hubService.getHubProxy();
+        if (this.hubProxy == null || this.hubProxy.connection.state !== 1) {
+          this.startAppSign();
+        } else {
+          this.getCertificationHub();
+        }
+    }  
+
+    private getCertificationHub() {   
+        const argum = `${ this.authenticationService.currentCredentials.token },0,${ HumCommand.toekInfo },${ HumCommand.rootAPI }`;
+        this.hubProxy.invoke("processMessage", argum).done(() => {
+        }).fail((error) => {
+          this.isSpinning = false;
+        });
+    }
+
+    private startAppSign() 
+    {
         this.authenticationToken = this.authenticationService.currentCredentials.token;
         let shemaSign = window['schemaSign'] || schemaSign;
         shemaSign = shemaSign.replace('token', this.authenticationToken);
-        this.shemaUrl = shemaSign.replace('declarationId', 'sign');
+        const link = document.createElement('a');
+        link.href = shemaSign.replace('declarationId', '');
+        link.click();
     }
-
-    cronJob() {
-
-        if (this.loaddingToken) {
-
-            this.timer = setTimeout(() => {
-                this.getTokenInfo();
-                this.cronJob();
-
-            }, CRON_TIMES);
-
-        } else {
-            clearTimeout(this.timer);
-        }
-    }
-
-    private getTokenInfo() {
-
-        const companyId = this.authenticationService.currentCredentials.companyInfo.id;
-        this.companyService.getCompanyInfo(companyId).subscribe(data => {
-            this.form.patchValue({
-                privateKey: data.privateKey,
-                vendorToken: data.vendorToken,
-                fromDate: data.fromDate,
-                expired: data.expired,
-            });
-
-            this.loaddingToken = false;
-        });
-
-    }
+     
 }

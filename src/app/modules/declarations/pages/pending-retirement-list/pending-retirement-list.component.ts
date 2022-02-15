@@ -39,7 +39,7 @@ export class PendingRetirementListComponent implements OnInit {
     sendDate: '',
     status: ''
   };
-
+  isSpinning: boolean;
   constructor(
     private declarationService: DeclarationService,
     private modalService: NzModalService,
@@ -54,7 +54,7 @@ export class PendingRetirementListComponent implements OnInit {
   }
 
   getDeclarations(skip = 0, take = PAGE_SIZE) {
-    
+    this.isSpinning = true;
     this.declarationService.getDeclarations(
       {
         ...this.filter,
@@ -75,6 +75,7 @@ export class PendingRetirementListComponent implements OnInit {
 
         this.getDeclarations(this.skip);
       }
+      this.isSpinning = false;
     });
   }
 

@@ -8,6 +8,7 @@ import { DocumentFormComponent } from '@app/shared/components';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import * as moment from 'moment';
 import { DeclarationResultComponent } from '@app/shared/components';
+import { eventEmitter } from "@app/shared/utils/event-emitter";
 @Component({
   selector: 'app-register-allocation-card-list',
   templateUrl: './register-allocation-card-list.component.html',
@@ -38,7 +39,9 @@ export class RegisterAllocationCardListComponent implements OnInit {
     sendDate: '',
     status: ''
   };
-
+  
+  isSpinning : boolean;
+  private handlers;
   constructor(
     private declarationService: DeclarationService,
     private modalService: NzModalService,
@@ -50,9 +53,17 @@ export class RegisterAllocationCardListComponent implements OnInit {
     this.year = new Date();
     this.loadDeclarationConfig();
     this.getDeclarations();
+    this.handlers = [
+      eventEmitter.on("loadDeclaration:sign", () => {
+        setTimeout(() => {
+          this.getDeclarations();
+        }, 3000);
+      })
+    ];
   }
 
   getDeclarations(skip = 0, take = PAGE_SIZE) {
+    this.isSpinning = true;
     this.declarationService.getDeclarations({
       ...this.filter,
       orderby: this.orderby,
@@ -72,6 +83,7 @@ export class RegisterAllocationCardListComponent implements OnInit {
 
         this.getDeclarations(this.skip);
       }
+      this.isSpinning = false;
     });
   }
 

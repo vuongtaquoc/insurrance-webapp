@@ -475,22 +475,22 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
                   'childrenIsurranceCode', 'motherIsurranceCode', 'childrenHealthNo', 'motherHealthNo', 'examinationCost', 'isSurgeryOrPremature'],
         'III_2': [ 'motherDayDead', 'motherConclusionDate','regimeToDate', 'conditionPrenatal', 'childrenWeekOld', 'conditionReproduction', 'parentsOffWork', 'dateStartWork', 'surrogacy', 'motherIdentityCar', 'childrenIsurranceCode',
                   'motherIsurranceCode', 'childrenHealthNo', 'motherHealthNo', 'examinationCost', 'isSurgeryOrPremature'],
-        'III_3': ['regimeToDate', 'regimeSum', 'regimeRequestDate', 'conditionPrenatal', 'childrenWeekOld', 'conditionReproduction', 'childrenGodchilDreceptionDate', 'dateStartWork', 'childrenIsurranceCode', 'childrenHealthNo', 
+        'III_3': ['regimeRequestDate', 'conditionPrenatal', 'childrenWeekOld', 'conditionReproduction', 'childrenGodchilDreceptionDate', 'dateStartWork', 'childrenIsurranceCode', 'childrenHealthNo', 
                   'motherHealthNo', 'examinationCost'],
-        'IV': [ 'motherDayDead', 'motherConclusionDate','regimeToDate', 'regimeRequestDate', 'regimeSum', 'conditionPrenatal', 'childrenWeekOld', 'conditionReproduction', 'maternityLeave', 'parentsOffWork', 'childrenDayDead', 'surrogacy',
+        'IV': [ 'motherDayDead', 'motherConclusionDate', 'regimeRequestDate','conditionPrenatal', 'childrenWeekOld', 'conditionReproduction', 'maternityLeave', 'parentsOffWork', 'childrenDayDead', 'surrogacy',
               'motherIdentityCar', 'childrenIsurranceCode', 'motherIsurranceCode', 'childrenHealthNo', 'motherHealthNo', 'examinationCost', 'isSurgeryOrPremature'],
-        'V_1': ['motherDayDead', 'motherConclusionDate','regimeToDate', 'regimeToDate', 'regimeRequestDate', 'regimeSum', 'conditionPrenatal', 'childrenWeekOld', 'parentsOffWork', 'childrenDayDead', 'surrogacy', 'motherIdentityCar', 'childrenIsurranceCode', 'childrenIsurranceCode',
+        'V_1': ['motherDayDead', 'motherConclusionDate', 'regimeRequestDate', 'conditionPrenatal', 'childrenWeekOld', 'parentsOffWork', 'childrenDayDead', 'surrogacy', 'motherIdentityCar', 'childrenIsurranceCode', 'childrenIsurranceCode',
                 'childrenHealthNo', 'motherHealthNo', 'examinationCost', 'isSurgeryOrPremature'],
-        'V_2':  ['motherDayDead', 'motherConclusionDate','regimeToDate', 'regimeToDate', 'regimeRequestDate','regimeSum', 'conditionPrenatal', 'childrenWeekOld', 'parentsOffWork', 'childrenDayDead', 'surrogacy', 'motherIdentityCar', 'childrenIsurranceCode', 'childrenIsurranceCode',
+        'V_2':  ['motherDayDead', 'motherConclusionDate', 'regimeRequestDate', 'conditionPrenatal', 'childrenWeekOld', 'parentsOffWork', 'childrenDayDead', 'surrogacy', 'motherIdentityCar', 'childrenIsurranceCode', 'childrenIsurranceCode',
         'childrenHealthNo', 'motherHealthNo', 'examinationCost', 'isSurgeryOrPremature'],
-        'VI_1': ['regimeToDate', 'regimeRequestDate', 'regimeSum','conditionPrenatal', 'childrenWeekOld', 'maternityLeave', 'childrenDayDead', 'surrogacy', 'motherIdentityCar', 'examinationCost',
+        'VI_1': ['regimeRequestDate','conditionPrenatal', 'childrenWeekOld', 'maternityLeave', 'childrenDayDead', 'surrogacy', 'motherIdentityCar', 'examinationCost',
                 'isSurgeryOrPremature'],
-        'VI_2':  ['regimeToDate', 'regimeRequestDate', 'conditionPrenatal', 'childrenWeekOld', 'parentsOffWork', 'surrogacy', 'motherIdentityCar', 'childrenIsurranceCode', 'childrenIsurranceCode',
+        'VI_2':  ['regimeRequestDate', 'conditionPrenatal', 'childrenWeekOld', 'parentsOffWork', 'surrogacy', 'motherIdentityCar', 'childrenIsurranceCode', 'childrenIsurranceCode',
         'childrenHealthNo', 'motherHealthNo', 'examinationCost', 'isSurgeryOrPremature'],
         'VII': ['motherDayDead', 'motherConclusionDate','conditionPrenatal', 'childrenWeekOld', 'conditionReproduction', 'maternityLeave', 'parentsOffWork', 'childrenGodchilDreceptionDate', 'dateStartWork', 'childrenDayDead',
                 'motherIdentityCar', 'childrenIsurranceCode', 'childrenHealthNo', 'motherHealthNo', 'examinationCost'],
-        'VIII': ['motherDayDead', 'motherConclusionDate','regimeFromDate', 'regimeToDate', 'regimeRequestDate', 'conditionPrenatal', 'childrenWeekOld', 'conditionReproduction', 'maternityLeave', 'parentsOffWork', 'childrenGodchilDreceptionDate',
-                'dateStartWork', 'childrenDayDead', 'examinationCost', 'isSurgeryOrPremature', 'regimeSum'],
+        'VIII': ['motherDayDead', 'motherConclusionDate','regimeFromDate', 'regimeRequestDate', 'conditionPrenatal', 'childrenWeekOld', 'conditionReproduction', 'maternityLeave', 'parentsOffWork', 'childrenGodchilDreceptionDate',
+                'dateStartWork', 'childrenDayDead', 'examinationCost', 'isSurgeryOrPremature'],
         'IX': ['motherDayDead', 'motherConclusionDate','childrenBirthday', 'childrenNumber', 'conditionPrenatal','childrenWeekOld', 'conditionReproduction', 'maternityLeave', 'parentsOffWork', 'childrenGodchilDreceptionDate', 
               'dateStartWork', 'childrenDayDead', 'surrogacy', 'motherIdentityCar', 'childrenIsurranceCode', 'motherIsurranceCode', 'childrenHealthNo', 'motherHealthNo', 
               'examinationCost', 'isSurgeryOrPremature']
@@ -560,20 +560,32 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
         },
         'III_1': {
           ratioReduction: {
+            required: true,
             min: 51,
             max: 100
+          },
+          expertiseDate: {
+            required: true,
           }
         },
         'III_2': {
           ratioReduction: {
+            required: true,
             min: 31,
             max: 50
+          },
+          expertiseDate: {
+            required: true,
           }
         },
         'III_3': {
           ratioReduction: {
+            required: true,
             min: 15,
             max: 30
+          },
+          expertiseDate: {
+            required: true,
           }
         }
       };
@@ -976,10 +988,12 @@ export class RegimeApprovalEditorComponent implements OnInit, OnDestroy, OnChang
   private validToDateByTable(column, y, instance, cell, parentKey) { 
     if (this.tableName === 'sicknessesPart1' &&  (parentKey === 'I' || parentKey === 'II' || parentKey === 'III') ) {
       this.validToDate(column, y, instance, cell);
-    } if (this.tableName === 'maternityPart1' &&  (parentKey === 'I' || parentKey === 'II' || parentKey === 'IX') ) {
+    } else if (this.tableName === 'maternityPart1' &&  (parentKey === 'I' || parentKey === 'II' || parentKey === 'IX') ) {
       this.validToDate(column, y, instance, cell);
     } else if(this.tableName === 'maternityPart1' && parentKey === 'VII') {
       this.validToDateVII(column, y, instance, cell);
+    } else if (this.tableName === 'healthRecoveryPart1') {
+      this.validToDate(column, y, instance, cell);
     }
   }
 

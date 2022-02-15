@@ -31,14 +31,7 @@
             <span class="layout-menu__text">Trang chủ</span>
           </a>
         </li>
-        <li class="layout-menu__item" [hidden]="!permissions[pmsConf.downloadSignXMl.R]">
-          <a href = "/assets/software/MBHXHSignXML.zip" download class="layout-menu__link">
-            <span class="layout-menu__icon">
-              <i nz-icon nzType="cloud-download" nzTheme="outline"></i>
-            </span>
-            <span class="layout-menu__text">Download Phần mềm ký </span>
-          </a>
-        </li>
+        
         <li class="layout-menu__item" [hidden]="!permissions[pmsConf.employees.R] && !permissions[pmsConf.account.R] && !permissions[pmsConf.emailActive.R]">
           <a class="layout-menu__link" nz-dropdown nzTrigger="click" [nzDropdownMenu]="systemMenu"
             [nzOverlayClassName]="'header-dropdown-menu'">
@@ -84,7 +77,7 @@
             <span class="layout-menu__icon">
               <i nz-icon nzType="delivered-procedure" nzTheme="outline"></i>
             </span>
-            <span class="layout-menu__text">Kê khai Tổ chức</span>
+            <span class="layout-menu__text">Tổ chức</span>
           </a>
           <nz-dropdown-menu #declarationOrganization="nzDropdownMenu">
             <ul nz-menu>
@@ -156,7 +149,7 @@
             <span class="layout-menu__icon">
               <i nz-icon nzType="delivered-procedure" nzTheme="outline"></i>
             </span>
-            <span class="layout-menu__text">Kê khai cá nhân</span>
+            <span class="layout-menu__text">Cá nhân</span>
           </a>
           <nz-dropdown-menu #declarationMenu="nzDropdownMenu">
             <ul nz-menu>
@@ -184,6 +177,14 @@
               <i nz-icon nzType="search" nzTheme="outline"></i>
             </span>
             <span class="layout-menu__text">Tra cứu</span>
+          </a>
+        </li>
+        <li class="layout-menu__item" [hidden]="!permissions[pmsConf.downloadSignXMl.R]">
+          <a href = "/setup.exe" download class="layout-menu__link">
+            <span class="layout-menu__icon">
+              <i nz-icon nzType="cloud-download" nzTheme="outline"></i>
+            </span>
+            <span class="layout-menu__text">Tải Phần mềm ký </span>
           </a>
         </li>
         

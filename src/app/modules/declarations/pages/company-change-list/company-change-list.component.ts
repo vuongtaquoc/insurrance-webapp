@@ -30,7 +30,7 @@ export class CompanyChangetListComponent implements OnInit {
   declarationName: string;
   status: any = RESULTSUBMIT;
   keyword: string = '';
-
+  isSpinning: boolean;
   filter: any = {};
   param: any = {
     createDate: '',
@@ -53,6 +53,7 @@ export class CompanyChangetListComponent implements OnInit {
   }
 
   getDeclarations(skip = 0, take = PAGE_SIZE) {
+    this.isSpinning = true;
     this.declarationService.getDeclarations({
       ...this.filter,
       orderby: this.orderby,
@@ -72,6 +73,7 @@ export class CompanyChangetListComponent implements OnInit {
 
         this.getDeclarations(this.skip);
       }
+      this.isSpinning = false;
     });
   }
 

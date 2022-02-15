@@ -65,6 +65,7 @@ import {
   UploadFormComponent,
   EmployeeUploadFormComponent,
   TableInportErrorsComponent,
+  DeclarationErrorComponent,
 } from './components';
 
 import {
@@ -131,6 +132,7 @@ import {
     UploadFormComponent,
     EmployeeUploadFormComponent,
     TableInportErrorsComponent,
+    DeclarationErrorComponent,
   ],
   exports: [
     FormsModule,
@@ -160,6 +162,7 @@ import {
     UploadFormComponent,
     EmployeeUploadFormComponent,
     TableInportErrorsComponent,
+    DeclarationErrorComponent,
   ],
   providers: [
     AuthenticationService,
@@ -189,6 +192,7 @@ import {
     UploadFormComponent,
     EmployeeUploadFormComponent,
     TableInportErrorsComponent,
+    DeclarationErrorComponent,
   ]
 })
 export class SharedModule { }

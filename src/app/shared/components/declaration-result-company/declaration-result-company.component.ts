@@ -10,7 +10,7 @@ import { DropdownItem } from '@app/core/interfaces';
 import { City, District, Wards } from '@app/core/models';
 
 import { download } from '@app/shared/utils/download-file';
-import { DATE_FORMAT, MIME_TYPE, schemaSign } from '@app/shared/constant';
+import { DATE_FORMAT, MIME_TYPE } from '@app/shared/constant';
 
 @Component({
   selector: 'app-declaration-result-company',

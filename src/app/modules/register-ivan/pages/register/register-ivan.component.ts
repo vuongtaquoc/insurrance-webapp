@@ -2,8 +2,11 @@ import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angu
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { Subject } from 'rxjs';
 import { MustMatch } from "@app/shared/constant";
-import { DeclarationService, AuthenticationService, CompanyService, IsurranceDepartmentService, DocumentListService } from '@app/core/services';
+import { DeclarationService, AuthenticationService, CompanyService,
+     IsurranceDepartmentService, DocumentListService, HubService } from '@app/core/services';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import index from 'resize-observer-polyfill';
+import { eventEmitter } from '@app/shared/utils/event-emitter';
 const TAB_NAMES = {
     1: 'switch',
     2: 'register',
@@ -18,6 +21,7 @@ export class RegisterIvanComponent implements OnInit, OnDestroy {
     checked: boolean = false;
     registerForm: FormGroup;
     tabSubject: Subject<any> = new Subject<any>();
+    tabIndex: number = 2;
     panel: any = {
         general: { active: false },
         attachment: { active: false }
@@ -25,15 +29,22 @@ export class RegisterIvanComponent implements OnInit, OnDestroy {
     
     constructor(
         protected declarationService: DeclarationService,
-        private formBuilder: FormBuilder
+        private formBuilder: FormBuilder,
+        private hubService: HubService,
     ) {
     }
 
     ngOnInit() {
+        this.hubService.connectHub(this.getResultHub.bind(this));
     }
 
+    getResultHub(data) { 
+        data.tabIndex = this.tabIndex;
+        eventEmitter.emit("resultHub:sign", data);
+    }
 
     ngOnChanges(changes) {
+        
     }
 
     ngOnDestroy() {
@@ -41,6 +52,7 @@ export class RegisterIvanComponent implements OnInit, OnDestroy {
     }
 
     handleSelectTab({ index }) {
+        this.tabIndex = index;
         this.tabSubject.next({
           type: 'change',
           selected: TAB_NAMES[index]

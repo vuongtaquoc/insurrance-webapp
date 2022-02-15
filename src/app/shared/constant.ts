@@ -28,7 +28,7 @@ export const PAGE_LIST = [{
     value: 100
   }
 ];
-export const schemaSign = 'mbhxh:token,declarationId';
+export const schemaSign = 'lqh:token,declarationId,http://103.145.62.255:8067';
 
 export const GENDER = {
   0: 'common.gender.male',
@@ -1207,8 +1207,26 @@ export const errorMessages = {
   304: 'Phiên làm việc đã hết hạn, vui lòng cấp lại mã xác thức qua email',
   2026: 'Mật khẩu không được để trống',
   2036: 'Xác nhận mật khẩu không khớp với mật khẩu thay đổi',
+  9002: "Token hết hạn vui lòng đăng nhập lại",
+  9003: "Token hết hạn vui lòng đăng nhập lại",
+  9004: "Ký số hợp đồng lỗi",
+  9005: "Dữ liệu không hợp lệ",
+  9007: "Chưa chọn chứ ký số, vui lòng chọn chữ ký số !",
+  9008: "Chưa đặt vị trí chữ ký trên tài liệu cần ký !",
+  9009: "Lỗi trong qua trình ký số hơp đồng",
 }
 
+export const hubConfig  = {
+  host: "http://localhost:16080",
+  hubProxy : "handlerHub",
+  notificeEvent : "reponseResult",
+}
+
+export const HumCommand = {
+  toekInfo: "ToekInfo",
+  signDocument: "SignDocument",
+  rootAPI: "http://103.145.62.255:8067/",
+};
 
 export function formatDateVn(date) {
   var month = date.getMonth() + 1;

@@ -15,7 +15,7 @@
           <button nz-button nzType="default"><i nz-icon nzType="delete"></i>Xóa</button> -->
         </div>
       </div><!-- page-increase-labor__menu-bar -->
-    
+      <nz-spin [nzSpinning]="isSpinning" class="register__spinning">
       <nz-table
         #rowSelectionTable
         nzBordered
@@ -89,6 +89,7 @@
           </tr>
         </tbody>
       </nz-table>
+      </nz-spin>
       <app-pagination [total]="total" [selected]="selectedPage" (onPageChange)="pageChange($event)"></app-pagination>
     </div>
   </div>

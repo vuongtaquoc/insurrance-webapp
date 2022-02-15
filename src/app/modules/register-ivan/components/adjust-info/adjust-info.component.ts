@@ -4,7 +4,7 @@ import { MustMatch } from "@app/shared/constant";
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DATE_FORMAT, REGEX } from '@app/shared/constant';
 import { City, District } from '@app/core/models';
-import { schemaSign, CRON_TIMES } from '@app/shared/constant';
+import { schemaSign, CRON_TIMES, HumCommand } from '@app/shared/constant';
 import {
   CityService, IsurranceDepartmentService, SalaryAreaService, CompanyService,
   PaymentMethodServiced, GroupCompanyService, DepartmentService, DistrictService, WardsService,
@@ -15,8 +15,7 @@ import { getBirthDay } from '@app/shared/utils/custom-validation';
 import { forkJoin, Observable, Subscription } from 'rxjs';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { DomSanitizer } from '@angular/platform-browser';
-
-
+import { HubService } from '@app/core/services';
 
 @Component({
   selector: 'app-register-ivan-adjust-info',
@@ -62,7 +61,8 @@ export class RegisterIvanAdjustInfoComponent implements OnInit {
     general: { active: false },
     attachment: { active: false }
   };  
-
+  private hubProxy: any;
+  private handlers;
   constructor(
     private formBuilder: FormBuilder,
     private cityService: CityService,
@@ -79,6 +79,7 @@ export class RegisterIvanAdjustInfoComponent implements OnInit {
     private contractService: ContractService,
     private modalService: NzModalService,
     private sanitizer: DomSanitizer,
+    private hubService: HubService,
   ) { }
 
   ngOnInit() {
@@ -123,7 +124,14 @@ export class RegisterIvanAdjustInfoComponent implements OnInit {
     this.InitializeData();
     this.changeHasToken('0');
     this.changeIsFirst(true);
-
+    this.handlers = [
+      eventEmitter.on("saveData:error", () => {
+         this.isSpinning = false;
+      }),
+      eventEmitter.on("resultHub:sign", (data) => {
+        this.getResultHub(data);
+      })
+    ];
   }
 
   handleUpperCase(key) {
@@ -132,6 +140,39 @@ export class RegisterIvanAdjustInfoComponent implements OnInit {
     this.registerForm.patchValue({
       [key]: value.toUpperCase()
     });
+  }
+  
+  getResultHub(data) {
+    if(!data || data.tabIndex !== 3) {
+      return;
+    }
+    switch(data.command) {
+      case HumCommand.toekInfo: //Get cerfication
+         this.cerficationDetail(data);       
+        break;
+      case HumCommand.signDocument: //Sign document
+        this.resultSign(data);
+        break;
+      default:
+    }
+  }
+
+  cerficationDetail(data) {
+    this.isSpinning = false;
+    this.registerForm.patchValue({
+      privateKey: data.privateKey,
+      vendorToken: data.vendorToken,
+      fromDate: data.fromDate,
+      expired: data.expired,       
+    });  
+  }
+
+  resultSign(data) {
+    this.isSpinning = false;
+    this.modalService.success({
+      nzTitle: 'Ký số tờ khai thành công'
+    });
+    this.router.navigate([this.authenticationService.currentCredentials.role.defaultUrl]);
   }
 
   handleTabChanged({selected}) {
@@ -186,6 +227,10 @@ export class RegisterIvanAdjustInfoComponent implements OnInit {
           nzOkType: 'danger',
           nzOnOk: () => {
             this.signDeclaration(data);
+          },
+          nzOnCancel: () => { 
+            this.router.navigate([this.authenticationService.currentCredentials.role.defaultUrl]);
+            this.isSpinning = false; 
           }
         });
       }
@@ -365,69 +410,53 @@ export class RegisterIvanAdjustInfoComponent implements OnInit {
     return birth.format;
   }
 
-  private readToken() {
-    this.buildShemaURL('sign');
-    this.createLink();
-    this.loaddingToken = true;
-    this.cronJob();
-  }
-
-  private createLink() {
-    const link = document.createElement('a');
-    link.href = this.shemaUrl;
-    link.click();
-  }
-
-  private buildShemaURL(suffix) {
-
-    this.authenticationToken = this.authenticationService.currentCredentials.token;
-    let shemaSign = window['schemaSign'] || schemaSign;
-    shemaSign = shemaSign.replace('token', this.authenticationToken);
-    this.shemaUrl = shemaSign.replace('declarationId', suffix);
-
-  }
-
   signDeclaration(data) {
+    this.isSpinning = true;
+    this.hubProxy = this.hubService.getHubProxy();
+    if (this.hubProxy == null || this.hubProxy.connection.state !== 1) {
+      this.startAppSign();
+    } else {
+      this.signDeclarationHub(data);
+    }
+  }  
 
-    this.buildShemaURL(data.id);
-    this.createLink();
-
+  private signDeclarationHub(data) {   
+    const argum = `${ this.authenticationService.currentCredentials.token },${ data.id },${ HumCommand.signDocument },${ HumCommand.rootAPI }`;
+    this.hubProxy.invoke("processMessage", argum).done(() => {
+    }).fail((error) => {
+      this.isSpinning = false;
+    });
   }
 
-  cronJob() {
-
-    this.isSpinning = this.loaddingToken;
-    if (this.loaddingToken) {
-
-      this.timer = setTimeout(() => {
-        this.getTokenInfo();
-        this.cronJob();
-
-      }, CRON_TIMES);
-
+  getCerfication() {
+    this.isSpinning = true;
+    this.hubProxy = this.hubService.getHubProxy();
+    if (this.hubProxy == null || this.hubProxy.connection.state !== 1) {
+      this.startAppSign();
     } else {
-      clearTimeout(this.timer);
+      this.getCerficationHub();
     }
   }
 
-  private getTokenInfo() {
-
-    const companyId = this.authenticationService.currentCredentials.companyInfo.id;
-    this.companyService.getCompanyInfo(companyId).subscribe(data => {
-      this.registerForm.patchValue({
-        privateKey: data.privateKey,
-        vendorToken: data.vendorToken,
-        fromDate: data.fromDate,
-        expired: data.expired,
-      });
-
-      this.loaddingToken = false;
+  private getCerficationHub() {   
+    const argum = `${ this.authenticationService.currentCredentials.token },0,${ HumCommand.toekInfo },${ HumCommand.rootAPI }`;
+    this.hubProxy.invoke("processMessage", argum).done(() => {
+    }).fail((error) => {
+      this.isSpinning = false;
     });
-
   }
 
+  private startAppSign() 
+  {
+    this.authenticationToken = this.authenticationService.currentCredentials.token;
+    let shemaSign = window['schemaSign'] || schemaSign;
+    shemaSign = shemaSign.replace('token', this.authenticationToken);
+    const link = document.createElement('a');
+    link.href = shemaSign.replace('declarationId', '');
+    link.click();
+  }
+  
   getNameOfDropdown(sourceOfDropdown: any, id: string) {
-
     let name = '';
     const item = sourceOfDropdown.find(r => r.id === id);
     if (item) {

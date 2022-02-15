@@ -37,6 +37,7 @@ import {
   DeclarationFileUploadService,
   AppConfigService,
   GroupBenefitLevelService,
+  HubService,
 } from './services';
 
 @NgModule({
@@ -79,6 +80,7 @@ import {
     DeclarationFileUploadService,
     AppConfigService,
     GroupBenefitLevelService,
+    HubService,
   ],
   declarations: []
 })
