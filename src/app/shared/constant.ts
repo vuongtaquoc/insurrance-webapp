@@ -28,7 +28,8 @@ export const PAGE_LIST = [{
     value: 100
   }
 ];
-export const schemaSign = 'lqh:token,declarationId,http://103.145.62.255:8067';
+export const tokenRegister = 'registerUser';
+export const schemaSign = 'lqh:token,declarationId,http://localhost:1380';
 
 export const GENDER = {
   0: 'common.gender.male',
@@ -1194,14 +1195,17 @@ export const errorMessages = {
   2040: 'NLĐ đã có hồ sơ, bạn không thể xóa',
   2001: 'Sai Tên đăng nhập hoặc Mật khẩu. Vui lòng thử lại!',
   2003: 'Email không tồn tại trong hệ thống. Vuil lòng kiểm tra lại',
-  3018: 'Email đã tồn tại trong hệ thống',
   2030: 'Email đã tồn tại trong hệ thống',
   2028: 'Tên đăng nhập không được để trống',
   2027: 'Tên đăng nhập đã tồn tại',
   2020: 'Tài khoản/Mật khẩu vượt quá số lượng cho phép',
   2035: 'Không thể xóa tài khoản mặc định của đơn vị',
+  3017: 'Mã số thuế đã tồn tại, vui lòng kiểm tra lại',
+  3018: 'Email đã tồn tại, vui lòng kiểm tra lại',
+  3019: 'Lỗi tạo dữ liệu, vui lòng kiểm tra lại',
   3020: 'Mã số BHXH (mã đơn vị) đã được đăng ký sử dụng, vui lòng kiểm tra lại',
   3021: 'Đơn vị chưa đăng ký sử dụng dịch vụ IVAN Của MBHXH, Vui lòng tạo hồ sơ đăng ký IVAN trước khi tạo hồ sơ thay đổi',
+  3022: 'Mã đại lý đã tồn tại, vui lòng kiểm tra lại',
   5053: 'Không được để trống',
   5061: 'Lỗi trong quá trình lưu dữ liệu',
   304: 'Phiên làm việc đã hết hạn, vui lòng cấp lại mã xác thức qua email',
@@ -1225,7 +1229,7 @@ export const hubConfig  = {
 export const HumCommand = {
   toekInfo: "ToekInfo",
   signDocument: "SignDocument",
-  rootAPI: "http://103.145.62.255:8067/",
+  rootAPI: "http://localhost:1380/",
 };
 
 export function formatDateVn(date) {

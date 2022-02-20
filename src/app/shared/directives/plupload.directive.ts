@@ -94,7 +94,10 @@ export class PluploadDirective {
 
   private getHeaders() {
     let headers = {};
-    const accessToken = this.authService.currentCredentials.token;
+    let accessToken = '';
+    if(this.authService.currentCredentials) {
+      accessToken = this.authService.currentCredentials.token;
+    }
 
     headers['X-Authorization-Token'] = accessToken || '';
 

@@ -935,6 +935,7 @@ export class IncreaseEditorComponent implements OnInit, OnDestroy, OnChanges, Af
   }
 
   private getDateOfDeclaration() {
+    console.log(this.headerForm);
     const date = new Date();
     let month = (date.getMonth() + 1).toString();
     if (this.headerForm.month) {

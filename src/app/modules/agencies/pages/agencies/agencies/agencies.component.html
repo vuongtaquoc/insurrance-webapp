@@ -6,10 +6,10 @@
             <nz-spin [nzSpinning]="isSpinning" class="register__spinning">
             <h1>I. THÔNG TIN ĐẠI LÝ</h1> 
             <div nz-row nzGutter="10">
-                <div nz-col [nzSpan]="24">
+                <div nz-col [nzSpan]="12">
                     <nz-form-item>
-                         <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="6">{{ 'agencies.from.tax' | translate }}</nz-form-label>
-                        <nz-form-control [nzSpan]="10" [nzErrorTip]="taxtpl" >
+                         <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">{{ 'agencies.from.tax' | translate }}</nz-form-label>
+                        <nz-form-control [nzSpan]="14" [nzErrorTip]="taxtpl" >
                             <nz-input-group nzSearch  [nzAddOnAfter]="suffixButton">
                                 <input type="text" formControlName="tax" nz-input placeholder="Tìm kiếm theo mã số thuế" />
                             </nz-input-group>
@@ -27,12 +27,27 @@
                         </nz-form-control>
                     </nz-form-item>
                 </div>
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                        <nz-form-label class="text-left item-padding-left-2" [nzRequired]="true" [nzSpan]="10">{{ 'agencies.from.saleCode' | translate }}</nz-form-label>
+                        <nz-form-control [nzSpan]="14" [nzErrorTip]="saleCodeTpl" class="item-left-2" >
+                        <input nz-input
+                            placeholder="{{ 'agencies.from.saleCode' | translate }}"
+                            formControlName="saleCode" />
+                        <ng-template #saleCodeTpl let-control>
+                            <ng-container *ngIf="control.hasError('required')">
+                                {{ 'agencies.from.saleCode' | translate }} không được để trống
+                            </ng-container>
+                        </ng-template>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
             </div>
             <div nz-row nzGutter="10">
                 <div nz-col [nzSpan]="24">
                     <nz-form-item>
-                        <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="6">{{ 'agencies.from.agenciesName' | translate }}</nz-form-label>
-                        <nz-form-control [nzSpan]="18" [nzErrorTip]="nametpl" >
+                        <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="5">{{ 'agencies.from.agenciesName' | translate }}</nz-form-label>
+                        <nz-form-control [nzSpan]="19" [nzErrorTip]="nametpl" >
                         <input nz-input
                             placeholder="{{ 'agencies.from.agenciesName' | translate }}"
                             formControlName="name" />
@@ -51,8 +66,8 @@
             <div nz-row nzGutter="10">
                 <div nz-col [nzSpan]="24">
                     <nz-form-item>
-                        <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="6">{{ 'agencies.from.address' | translate }}</nz-form-label>
-                        <nz-form-control [nzSpan]="18" [nzErrorTip]="addressTpl" >
+                        <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="5">{{ 'agencies.from.address' | translate }}</nz-form-label>
+                        <nz-form-control [nzSpan]="19" [nzErrorTip]="addressTpl" >
                         <input nz-input
                             placeholder="{{ 'agencies.from.address' | translate }}"
                             formControlName="address"/>
@@ -68,8 +83,8 @@
             <div nz-row nzGutter="10">
                 <div nz-col [nzSpan]="12">
                     <nz-form-item>
-                        <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="12">{{ 'agencies.from.personContact' | translate }}</nz-form-label>
-                        <nz-form-control [nzSpan]="12" [nzErrorTip]="delegateTpl" class="item-left-2" >
+                        <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">{{ 'agencies.from.personContact' | translate }}</nz-form-label>
+                        <nz-form-control [nzSpan]="14" [nzErrorTip]="delegateTpl" class="item-left-2" >
                         <input nz-input
                             placeholder="{{ 'agencies.from.personContact' | translate }}"
                             formControlName="delegate" />
@@ -83,8 +98,8 @@
                 </div>
                 <div nz-col [nzSpan]="12">
                     <nz-form-item>
-                        <nz-form-label class="text-left item-padding-left-2" [nzRequired]="true" [nzSpan]="12">{{ 'agencies.from.tel' | translate }}</nz-form-label>
-                        <nz-form-control [nzSpan]="12" [nzErrorTip]="telTpl" class="item-left-2" >
+                        <nz-form-label class="text-left item-padding-left-2" [nzRequired]="true" [nzSpan]="10">{{ 'agencies.from.tel' | translate }}</nz-form-label>
+                        <nz-form-control [nzSpan]="14" [nzErrorTip]="telTpl" class="item-left-2" >
                         <input nz-input
                             placeholder="{{ 'agencies.from.tel' | translate }}"
                             formControlName="tel" />
@@ -107,8 +122,8 @@
             <div nz-row nzGutter="10">
                 <div nz-col [nzSpan]="12">
                     <nz-form-item>
-                        <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="12">{{ 'agencies.from.email' | translate }}</nz-form-label>
-                        <nz-form-control [nzSpan]="12" [nzErrorTip]="emailTpl" class="item-left-2" >
+                        <nz-form-label class="text-left" [nzRequired]="true" [nzSpan]="10">{{ 'agencies.from.email' | translate }}</nz-form-label>
+                        <nz-form-control [nzSpan]="14" [nzErrorTip]="emailTpl" class="item-left-2" >
                         <input nz-input
                             placeholder="{{ 'agencies.from.email' | translate }}"
                             formControlName="email" />
@@ -125,8 +140,8 @@
                 </div>
                 <div nz-col [nzSpan]="12">
                     <nz-form-item>
-                        <nz-form-label class="text-left item-padding-left-2" [nzRequired]="true" [nzSpan]="12">{{ 'agencies.from.Website' | translate }}</nz-form-label>
-                        <nz-form-control [nzSpan]="12" [nzErrorTip]="websiteTpl" class="item-left-2" >
+                        <nz-form-label class="text-left item-padding-left-2" [nzSpan]="10">{{ 'agencies.from.Website' | translate }}</nz-form-label>
+                        <nz-form-control [nzSpan]="14" [nzErrorTip]="websiteTpl" class="item-left-2" >
                         <input nz-input
                             placeholder="{{ 'agencies.from.Website' | translate }}"
                             formControlName="website" />
@@ -140,7 +155,7 @@
                 </div>
             </div>
             <div nz-row nzGutter="10">
-                <div nz-col [nzSpan]="6">&nbsp;</div>
+                <div nz-col [nzSpan]="5">&nbsp;</div>
                 <div nz-col [nzSpan]="12">
                     <nz-checkbox-wrapper >
                         <label nz-checkbox formControlName="active">{{ 'agencies.from.status' | translate }} </label>

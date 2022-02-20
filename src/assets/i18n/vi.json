@@ -14,7 +14,8 @@
 		"headerMenu": {
 			"setting": "Cài đặt",
 			"register": "Đăng ký IVAN",
-			"logout": "Đăng xuất"
+			"logout": "Đăng xuất",
+			"login": "Đăng nhập"
 		},
 		"notActive": "Chưa kích hoạt",
 		"active": "Đã kích hoạt",
@@ -211,6 +212,7 @@
 		"table": {
 			"stt": "STT",
 			"company": "Tên đại lý",
+			"saleCode": "Mã đại lý",
 			"taxCode": "Mã số thuế",
 			"personContact": "Người đại diện",
 			"tel": "Số điện thoại",
@@ -219,6 +221,7 @@
 		},
 		"from": {
 			"tax": "Mã số thuế / Số CMTND",
+			"saleCode": "Mã đại lý",
 			"agenciesName": "Tên đại lý",
 			"address": "Địa chỉ",
 			"personContact": "Người đại diện",

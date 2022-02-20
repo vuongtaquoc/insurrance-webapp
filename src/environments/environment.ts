@@ -6,7 +6,7 @@ import all from './all';
 export const environment = {
   ...all,
   production: false,
-   apiUrl: 'http://103.145.62.255:8067'
+   apiUrl: 'http://localhost:1380'
   //  apiUrl: 'https://api.mbhxh.com.vn'
 };
 

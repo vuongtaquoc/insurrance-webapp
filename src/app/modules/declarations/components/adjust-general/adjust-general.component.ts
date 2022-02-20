@@ -51,6 +51,8 @@ const TAB_NAMES = {
 })
 export class AdjustGeneralComponent implements OnInit, OnDestroy {
   @Input() declarationId: string;
+  @Input() salaryAreas: any;
+  @Input() headerForm: any;
   @Output() onSubmit: EventEmitter<any> = new EventEmitter();
   @Output() onAddEmployee: EventEmitter<any> = new EventEmitter();
 

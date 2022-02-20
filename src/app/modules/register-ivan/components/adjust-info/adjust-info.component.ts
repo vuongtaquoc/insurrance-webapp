@@ -143,7 +143,7 @@ export class RegisterIvanAdjustInfoComponent implements OnInit {
   }
   
   getResultHub(data) {
-    if(!data || data.tabIndex !== 3) {
+    if(!data || data.tabIndex !== 2) {
       return;
     }
     switch(data.command) {
@@ -169,9 +169,6 @@ export class RegisterIvanAdjustInfoComponent implements OnInit {
 
   resultSign(data) {
     this.isSpinning = false;
-    this.modalService.success({
-      nzTitle: 'Ký số tờ khai thành công'
-    });
     this.router.navigate([this.authenticationService.currentCredentials.role.defaultUrl]);
   }
 

@@ -33,6 +33,10 @@ export class ContractService {
     return this.http.post('/contract', body, options);
   }
 
+  public createCustomer(body, options = {}) {
+    return this.http.postNoAuthen('/contract/customer', body, options);
+  }
+
   public update(id, body, options = {}) {
     return this.http.post(`/contract/${ id }`, body, options);
   }

@@ -399,9 +399,9 @@
                 <nz-form-label class="text-left" [nzRequired]="true" nzOffset="2" [nzSpan]="8">
                   Nhập lại email
                 </nz-form-label>
-                <nz-form-control [nzSpan]="14" [nzErrorTip]="toErrorEmailConfirm">
-                  <input nz-input placeholder="Email liên hệ" formControlName="emailConfirm" />
-                  <ng-template #toErrorEmailConfirm let-control>
+                <nz-form-control [nzSpan]="14" [nzErrorTip]="emailTpl">
+                  <input nz-input placeholder="Nhập lại email" formControlName="email" />
+                  <ng-template #emailTpl let-control>
                     <ng-container *ngIf="control.hasError('required')">
                       Email không được để trống
                     </ng-container>
@@ -490,7 +490,7 @@
           <div nz-row [nzGutter]="8" *ngIf="isFirst">
             <nz-collapse [nzBordered]="false" class="collapse-attachment-files">
               <nz-collapse-panel [nzActive]="true" class="collapse-attachment" [nzHeader]="attachmentHeader">
-                <app-file-attachment *ngIf="selectedTab == 'register'" class="app-file-attachment" [files]="files"
+                <app-file-attachment *ngIf="selectedTab == 'register'"class="app-file-attachment" [files]="files"
                   [rowDefault]="'Giấy phép đăng ký kinh doanh'" (onSelectedFileChanged)="handleFileSelected($event)">
                 </app-file-attachment>
               </nz-collapse-panel>

@@ -38,7 +38,8 @@ import {
 
 import {
   LayoutComponent,
-  AuthLayoutComponent
+  AuthLayoutComponent,
+  RegisterLayoutComponent
 } from './layout';
 
 import {
@@ -105,6 +106,7 @@ import {
   declarations: [
     LayoutComponent,
     AuthLayoutComponent,
+    RegisterLayoutComponent,
     EmployeeFormComponent,
     EmployeeProcessTableComponent,
     EmployeeFamilyTableComponent,

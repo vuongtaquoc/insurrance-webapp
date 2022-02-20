@@ -86,6 +86,10 @@ const routes: Routes = [
     loadChildren: './modules/system/search/search.module#SearchModule',
     canActivate: [AuthGuard],
   },
+  {
+    path: "register",
+    loadChildren: "./modules/register/register.module#RegisterModule",
+  },
    
 ];
 

@@ -8,7 +8,7 @@ import {
 import { forkJoin } from 'rxjs';
 import { City, District } from '@app/core/models';
 import { NzModalService } from 'ng-zorro-antd/modal';
-import { schemaSign, HumCommand } from '@app/shared/constant';
+import { schemaSign, HumCommand, tokenRegister} from '@app/shared/constant';
 import { HubService } from '@app/core/services';
 import { eventEmitter } from '@app/shared/utils/event-emitter';
 
@@ -19,7 +19,7 @@ import { eventEmitter } from '@app/shared/utils/event-emitter';
 })
 export class RegisterIvanStopServiceComponent implements OnInit {
   registerForm: FormGroup;
-  companyId: string = '0';
+  companyId: string = null;
   cities: City[] = [];
   isSpinning: boolean;
   shemaUrl: any;
@@ -63,24 +63,20 @@ export class RegisterIvanStopServiceComponent implements OnInit {
   }
 
   getResultHub(data) {
-    if(!data || data.tabIndex !== 1) {
+    if(!data || data.tabIndex !== 0) {
       return;
     }
     this.isSpinning = false;
-    let mesage = 'Ký số tờ khai thành công';
-    if(!data || !data.status) 
-    {
-      mesage = 'Ký số tờ khai lỗi, vui lòng liên hệ với quản trị';
-    }
-
-    this.modalService.success({
-      nzTitle: mesage,
-    });
   }
 
   InitializeData() {
-    this.companyId = this.authenticationService.currentCredentials.companyInfo.id;
-    this.getDetail();
+    if (!this.authenticationService.currentCredentials) {
+      this.companyId = null;
+      this.getCategory()
+    } else {
+      this.companyId = this.authenticationService.currentCredentials.companyInfo.id;
+      this.getDetail();
+    }
   }
 
   handleUpperCase(key) {
@@ -91,6 +87,16 @@ export class RegisterIvanStopServiceComponent implements OnInit {
     });
   }
 
+  getCategory() {
+    const fork = [
+      this.cityService.getCities(),
+      this.isurranceDepartmentService.getIsurranceDepartments(null),
+    ];
+    forkJoin(fork).subscribe(([cities, isurranceDepartments]) => {
+      this.cities = cities;
+      this.isurranceDepartments = isurranceDepartments;
+    });
+  }
   getDetail() {
     this.switchVendorService.getDraft().subscribe(data => {
       const fork = [
@@ -231,7 +237,12 @@ export class RegisterIvanStopServiceComponent implements OnInit {
 
   private startAppSign(data) 
   {
-    this.authenticationToken = this.authenticationService.currentCredentials.token;
+    if(!this.authenticationService.currentCredentials) {
+      this.authenticationToken = tokenRegister;
+    } else {
+      this.authenticationToken = this.authenticationService.currentCredentials.token
+    }
+
     let shemaSign = window['schemaSign'] || schemaSign;
     shemaSign = shemaSign.replace('token', this.authenticationToken);
     const link = document.createElement('a');
@@ -240,7 +251,13 @@ export class RegisterIvanStopServiceComponent implements OnInit {
   }
 
   private signDeclarationHub(data) {   
-    const argum = `${ this.authenticationService.currentCredentials.token },${ data.id },${ HumCommand.signDocument },${ HumCommand.rootAPI }`;
+    if(!this.authenticationService.currentCredentials) {
+      this.authenticationToken = tokenRegister;
+    } else {
+      this.authenticationToken = this.authenticationService.currentCredentials.token
+    }
+
+    const argum = `${ this.authenticationToken },${ data.id },${ HumCommand.signDocument },${ HumCommand.rootAPI }`;
     this.hubProxy.invoke("processMessage", argum).done(() => {
     }).fail((error) => {
       this.isSpinning = false;

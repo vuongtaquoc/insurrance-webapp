@@ -48,7 +48,7 @@ export class RegisterIvanRegisterComponent implements OnInit {
   dataStandard: string;
   useDate: string;
   dataBonus: string;
-  selectedTab: string = '';
+  selectedTab: string = 'register';
   authenticationToken: string;
   contract: any = {};
   contractDetail: any = {};
@@ -103,7 +103,7 @@ export class RegisterIvanRegisterComponent implements OnInit {
       personContact: ['', [Validators.required]],
       mobile: ['', [Validators.required, Validators.pattern(REGEX.PHONE_NUMBER)]],
       emailOfContract: ['', [Validators.required, Validators.pattern(REGEX.EMAIL)]],
-      emailConfirm: ['', [Validators.required, Validators.pattern(REGEX.EMAIL)]],
+      email: ['', [Validators.required, Validators.pattern(REGEX.EMAIL)]],
       paymentMethodCode: ['', [Validators.required]],
       responseResults: ['', [Validators.required]],
       privateKey: [''],
@@ -122,7 +122,7 @@ export class RegisterIvanRegisterComponent implements OnInit {
       isFirst: ['0']
     },
       {
-        validator: MustMatch('emailOfContract', 'emailConfirm')
+        validator: MustMatch('emailOfContract', 'email')
       });
 
     this.tabSubscription = this.tabEvents.subscribe((data) => this.handleTabChanged(data));  
@@ -148,7 +148,7 @@ export class RegisterIvanRegisterComponent implements OnInit {
   }
 
   getResultHub(data) {
-    if(!data || data.tabIndex !== 2) {
+    if(!data || data.tabIndex !== 1) {
       return;
     }
     switch(data.command) {
@@ -163,10 +163,7 @@ export class RegisterIvanRegisterComponent implements OnInit {
   }
 
   resultSign(data) {
-    this.isSpinning = false;
-    this.modalService.success({
-      nzTitle: 'Ký số tờ khai thành công'
-    });
+    this.isSpinning = false;   
     this.router.navigate([this.authenticationService.currentCredentials.role.defaultUrl]);
   }
 
@@ -388,7 +385,7 @@ export class RegisterIvanRegisterComponent implements OnInit {
       personContact: data.personContact,
       mobile: data.mobile,
       emailOfContract: (data.emailOfContract ? data.emailOfContract : data.email),
-      emailConfirm: (data.emailOfContract ? data.emailOfContract : data.email),
+      email: (data.email ? data.email : data.email),
       paymentMethodCode: data.paymentMethodCode,
       responseResults: (data.responseResults || '0').toString(),
       privateKey: data.privateKey,

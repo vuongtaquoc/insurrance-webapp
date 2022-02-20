@@ -4,7 +4,7 @@ import { Observable, throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
 import toastr from 'toastr';
 
-import { errorMessages } from '@app/shared/constant';
+import { errorMessages, tokenRegister } from '@app/shared/constant';
 import { eventEmitter } from '@app/shared/utils/event-emitter';
 
 import { environment } from '@config';
@@ -85,8 +85,19 @@ export class ApplicationHttpClient {
   post<T>(endpoint: string, body: any | null, options?: RequestOptions): Observable<any> {
     if (options && options.displayLoading) {
       eventEmitter.emit('saveData:loading', true);
-    }
+    }   
+   
+    return this.http.post<any>(endpoint, body, options)
+      .pipe(map(data => this.handleResponse(data, options && options.displayLoading)));
+  }
 
+  postNoAuthen<T>(endpoint: string, body: any | null, options?: RequestOptions): Observable<any> {
+    if (options && options.displayLoading) {
+      eventEmitter.emit('saveData:loading', true);
+    }
+    options.headers = {
+      'X-Authorization-Token': tokenRegister,
+    }
     return this.http.post<any>(endpoint, body, options)
       .pipe(map(data => this.handleResponse(data, options && options.displayLoading)));
   }

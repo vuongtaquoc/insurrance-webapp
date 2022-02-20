@@ -47,6 +47,7 @@ const TAB_NAMES = {
 })
 export class ArrearsComponent implements OnInit, OnDestroy {
   @Input() declarationId: string;
+  @Input() headerForm: any;
   @Output() onSubmit: EventEmitter<any> = new EventEmitter();
   @Output() onAddEmployee: EventEmitter<any> = new EventEmitter();
 

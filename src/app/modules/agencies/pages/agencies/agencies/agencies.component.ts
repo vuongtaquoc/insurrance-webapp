@@ -1,10 +1,11 @@
 import { Input, Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthenticationService, AgencieService} from '@app/core/services';
+import { AuthenticationService, AgencieService, CustomerService} from '@app/core/services';
 import {Company } from '@app/core/models';
 import { Router, ActivatedRoute } from '@angular/router';
 import { DATE_FORMAT, REGEX } from '@app/shared/constant';
 import { NzModalService } from 'ng-zorro-antd/modal';
+import { eventEmitter } from '@app/shared/utils/event-emitter';
 
 @Component({
   selector: 'app-agencies',
@@ -16,12 +17,14 @@ export class AgenciesComponent implements OnInit, OnDestroy {
   item: Company;
   formAgencies: FormGroup;
   loading = false;
+  private handlers: any;
   isSpinning: boolean = false;
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
     private route: ActivatedRoute,
     private agencieService: AgencieService,
+    private customerService: CustomerService,
     private modalService: NzModalService,
   ) {
   }
@@ -29,15 +32,18 @@ export class AgenciesComponent implements OnInit, OnDestroy {
   ngOnInit() {
      
     this.loadForm();
-    this.InitializeData();
+    this.initializeData();
+    this.handlers = [
+      eventEmitter.on("saveData:error", () => {
+         this.isSpinning = false;
+      }),
+    ];
   }
 
-  InitializeData() {
-    
+  initializeData() {
     if (this.agenciesId) {
       this.getDetail();
     }  
-
   }
 
   ngOnDestroy() {
@@ -46,13 +52,14 @@ export class AgenciesComponent implements OnInit, OnDestroy {
 
   private loadForm() {
     this.formAgencies = this.formBuilder.group({
-      tax: ['', Validators.required],
+      tax: ['', Validators.required],      
       name: ['', Validators.required],
       address: ['',Validators.required],
       delegate: ['', Validators.required],
+      saleCode: ['', Validators.required],
       tel: ['', [Validators.required, Validators.maxLength(15), Validators.pattern(REGEX.PHONE_NUMBER) ]],
       email: ['', [Validators.required, Validators.pattern(REGEX.EMAIL)]],
-      website: ['', Validators.required],
+      website: [''],
       active: ['1', Validators.required],
     });
   }
@@ -61,13 +68,12 @@ export class AgenciesComponent implements OnInit, OnDestroy {
   
     if (this.tax) {
       this.isSpinning = true;
-      this.agencieService.getOrganizationByTax(this.tax).then((data) => {
-          if (data['MaSoThue']) {
+      this.customerService.getOrganizationByTax(this.tax).then((data) => {
+          if (data['ma_so_thue']) {
             this.formAgencies.patchValue({
-              name: data['Title'],
-              address: data['DiaChiCongTy'],
-              delegate: data['GiamDoc'],
-              tel:data['NoiNopThue_DienThoai'],
+              name: data['ten_cty'],
+              address: data['dia_chi'],
+              delegate: data['nguoi_dai_dien'],
               active: true,
             });
           } else {
@@ -98,6 +104,7 @@ export class AgenciesComponent implements OnInit, OnDestroy {
       this.formAgencies.patchValue({
         tax: data.tax,
         name: data.name,
+        saleCode: data.saleCode,
         address: data.address,
         delegate: data.delegate,
         tel:data.tel,

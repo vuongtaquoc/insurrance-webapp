@@ -58,6 +58,7 @@
     <thead (nzSortChange)="sort($event)" nzSortFn class="sort-custom">
       <tr class="ui-table-custom-header">
         <th class="cell-custom" style="width: 50px;">{{'agencies.table.stt' | translate}}</th>
+        <th class="cell-custom" nzShowSort nzColumnKey="saleCode">{{'agencies.table.saleCode' | translate}}</th>
         <th class="cell-custom" nzShowSort nzColumnKey="name">{{'agencies.table.company' | translate}}</th>
         <th class="cell-custom" nzShowSort nzColumnKey="tax"><span>{{'agencies.table.taxCode' | translate}}</span></th>
         <th class="cell-custom" nzShowSort nzColumnKey="delegate">
@@ -69,6 +70,8 @@
       </tr>
       <tr class="ui-table-custom-filter">
         <th class="cell-custom"></th>
+        <th class="cell-custom"><input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small"
+          [(ngModel)]="filter.saleCode" (ngModelChange)="handleFilter('saleCode')" /></th>
         <th class="cell-custom"><input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small"
             [(ngModel)]="filter.name" (ngModelChange)="handleFilter('name')" /></th>
         <th class="cell-custom"><input class="input-filter" nz-input placeholder="Tìm kiếm..." nzSize="small"
@@ -84,6 +87,7 @@
     <tbody>
       <tr *ngFor="let data of ajaxTable.data;index as i">
         <td>{{i + 1}}</td>
+        <td>{{ data.saleCode }}</td>
         <td>{{ data.name }}</td>
         <td>{{ data.tax }}</td>
         <td>{{ data.delegate }}</td>
